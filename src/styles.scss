@@ -1,0 +1,21 @@
+/* You can add global styles to this file, and also import other style files */
+// @import '~bootstrap/dist/css/bootstrap.min.css';
+
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.bg-pattern {
+    background-image: url(../src/assets/images/bg-pattern-2.png);
+    background-size: cover;
+}
+
+// html[data-bs-theme="dark"][data-topbar-color="light"],
+// html[data-topbar-color="dark"] {
+//   --ct-topbar-bg: #38414a;
+//   --ct-topbar-item-color: rgba(255, 255, 255, 0.6);
+//   --ct-topbar-item-hover-color: #bccee4;
+//   --ct-topbar-search-bg: #464f5b;
+// }
