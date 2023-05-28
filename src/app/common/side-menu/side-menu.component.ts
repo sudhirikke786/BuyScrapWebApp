@@ -31,32 +31,32 @@ export class SideMenuComponent {
       },
       {
         title:'Adjustment',
-        url:'/home/adjustment',
+        url:'/adjustment',
         icon:'/assets/images/custom/icons/adjustment.png'
       },
       {
         title:'Regrade',
-        url:'/home/regrade',
+        url:'/regrade',
         icon:'/assets/images/custom/icons/regrade.png'
       },
       {
         title:'Certificates of Destruction',
-        url:'/assets/images/custom/icons/certificate.png',
-        icon:'/home/certificate'
+        url:'/certificates',
+        icon:'/assets/images/custom/icons/certificate.png'
       },
       {
         title:'Cash Drawer',
-        url:'/home/cash-drawer',
+        url:'/cash-drawer',
         icon:'/assets/images/custom/icons/cash-drawer.png'
       },
       {
         title:'Reports',
-        url:'/home/reports',
+        url:'/reports',
         icon:'/assets/images/custom/icons/reports.png'
       },
       {
         title:'Admin',
-        url:'/home/admin',
+        url:'/admin',
         icon:'/assets/images/custom/icons/admin.png'
       }
   ]

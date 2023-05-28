@@ -1,1 +1,275 @@
-<p>admin-dashboard works!</p>
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- <div class="row mt-2">
+                            <div class="col text-center">
+                                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> New Ticket</button> 
+                                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> Merge Ticket and Pay</button>
+                            </div>
+                            
+                        </div> -->
+
+                        <div class="bdcmb mt-2">
+                            <div class="row">
+                                <div class="col-sm-6 col-6">
+                                    <h4 class="page-title">Admin</h4>
+                                </div>
+
+                                <div class="col-sm-6 col-6">
+                                    <div class="b-links">
+                                        <a href="index.html">Home</a> / <a href="admin.html">Admin</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-2">
+                            <div class="col-md-6 d-flex">
+                                <h4>User Management</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <app-actionbar [actions]="actionList"></app-actionbar>
+                            </div>
+                            
+                        </div>  
+                        <!-- end page title --> 
+
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                        <p-table [value]="admins" [paginator]="true" [rows]="10"
+                                            [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                            [rowsPerPageOptions]="[10, 25, 50]" >
+
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th>First Name</th>
+                                                    <th>Last Name</th>
+                                                    <th>Username</th>
+                                                    <th>User Permission</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-admin>
+                                                <tr>
+                                                    <td>{{ admin.firstName }}</td>
+                                                    <td>{{ admin.lastName }}</td>
+                                                    <td>{{ admin.username }}</td>
+                                                    <td>{{ admin.userPermission }}</td>
+                                                    <td>
+                                                        <a data-bs-target="#edit-user" data-bs-toggle="modal" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
+                                                        <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="paginatorleft">
+                                                <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
+                                                </p-button>
+                                            </ng-template>
+                                            <ng-template pTemplate="paginatorright">
+                                                <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
+                                                </p-button>
+                                            </ng-template>
+                                        </p-table>
+                                    
+                                    </div> <!-- end card body-->
+                                </div> <!-- end card -->
+                            </div><!-- end col-->
+                        </div>
+                        <!-- end row-->     
+                        
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+                <!-- Footer Start -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <script>document.write(new Date().getFullYear())</script> &copy; BUYSCRAPAPP. All Rights Reserved. 
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-none d-md-flex gap-4 align-item-center justify-content-md-end footer-links">
+                                    <a href="javascript: void(0);">About</a>
+                                    <a href="javascript: void(0);">Support</a>
+                                    <a href="javascript: void(0);">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- end Footer -->
+
+                <!--  Add New User Modal Popup -->
+                <div class="modal fade" id="add-new-user" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <a  data-bs-dismiss="modal" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+                                
+                                <h4 class="modal-title ml-10" id="myLargeModalLabel">Add User</h4>
+
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        
+                                        <form action="">
+                                            
+                                            <div class="row">
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">First Name</label>
+                                                    <input type="text" id="fistname" class="form-control" placeholder="First Name">
+                                                </div>
+
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Last Name</label>
+                                                    <input type="text" id="lastname" class="form-control" placeholder="Last Name">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Select Role</label>
+                                                    <select class="form-select" id="selectrole">
+                                                        <option>Administrator</option>
+                                                        <option>Cashier</option>
+                                                        <option>Scale</option>
+                                                        <option>Employee</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Username</label>
+                                                    <input type="text" id="username" class="form-control" placeholder="Enter Username">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Password</label>
+                                                    <input type="password" id="password" class="form-control" placeholder="Enter Your Password">
+                                                </div>
+
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Confirm Password</label>
+                                                    <input type="password" id="confirmpassword" class="form-control" placeholder="Enter Your Password">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group col-sm-12 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Mail ID</label>
+                                                    <input type="email" id="mailid" class="form-control" placeholder="Enter Mail ID">
+                                                </div>
+                                            </div>
+
+                                            <a class="btn btn-primary btn-materials">Save</a>
+                                        </form>
+
+                                    </div>
+                                </div>                        
+
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+                <!--  Add New User Modal Popup -->
+
+                <!--  Edit User Modal Popup -->
+                <div class="modal fade" id="edit-user" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <a  data-bs-dismiss="modal" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+                                
+                                <h4 class="modal-title ml-10" id="myLargeModalLabel">Edit User</h4>
+
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        
+                                        <form action="">
+                                            
+                                            <div class="row">
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">First Name</label>
+                                                    <input type="text" id="fistname" class="form-control" value="Sanket">
+                                                </div>
+
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Last Name</label>
+                                                    <input type="text" id="lastname" class="form-control" value="Yoshi">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Select Role</label>
+                                                    <select class="form-select" id="selectrole">
+                                                        <option selected>Administrator</option>
+                                                        <option>Cashier</option>
+                                                        <option>Scale</option>
+                                                        <option>Employee</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Username</label>
+                                                    <input type="text" id="username" class="form-control" value="sankety">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Password</label>
+                                                    <input type="password" id="password" class="form-control" value="sanket">
+                                                </div>
+
+                                                <div class="form-group col-sm-6 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Confirm Password</label>
+                                                    <input type="password" id="confirmpassword" class="form-control" value="sanket">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group col-sm-12 mb-2">
+                                                    <label for="simpleinput" class="form-label w-100">Mail ID</label>
+                                                    <input type="email" id="mailid" class="form-control" value="wpfdevelopers87@gmail.com">
+                                                </div>
+                                            </div>
+
+                                            <a class="btn btn-primary btn-materials">Save</a>
+                                        </form>
+
+                                    </div>
+                                </div>                        
+
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+                <!--  Edit User Modal Popup -->
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->

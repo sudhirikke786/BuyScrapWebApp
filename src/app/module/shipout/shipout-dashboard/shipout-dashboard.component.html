@@ -1,1 +1,356 @@
-<p>shipout-dashboard works!</p>
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <div class="bdcmb mt-2">
+                            <div class="row">
+                                <div class="col-sm-6 col-6">
+                                    <h4 class="page-title">Ship Out</h4>
+                                </div>
+
+                                <div class="col-sm-6 col-6">
+                                    <div class="b-links">
+                                        <a href="index.html">Home</a> / <a href="ship-out.html">Ship Out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-2">
+                            <div class="col-md-6 d-flex">
+                                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search..">
+                            </div>
+                            <div class="col-md-6"> 
+                                <app-actionbar [actions]="actionList"></app-actionbar>
+                            </div>
+                            
+                        </div>  
+                        <!-- end page title --> 
+
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                        <p-table [value]="shipouts" [paginator]="true" [rows]="10"
+                                            [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                            [rowsPerPageOptions]="[10, 25, 50]" >
+
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th>Bill of Landing</th>
+                                                    <th>Date Created</th>
+                                                    <th>Carrier</th>
+                                                    <th>Total Net</th>
+                                                    <th>Buyer</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-shipout>
+                                                <tr>
+                                                    <td>{{ shipout.billOfLanding }}</td>
+                                                    <td>{{ shipout.dateCreated }}</td>
+                                                    <td>{{ shipout.carrier }}</td>
+                                                    <td>{{ shipout.totalNet }}</td>
+                                                    <td>{{ shipout.buyer }}</td>
+                                                    <td>
+                                                        <a href="ship-out-details.html" type="button" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-eye"></i> Show</a> 
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="paginatorleft">
+                                                <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
+                                                </p-button>
+                                            </ng-template>
+                                            <ng-template pTemplate="paginatorright">
+                                                <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
+                                                </p-button>
+                                            </ng-template>
+                                        </p-table>
+                                    
+                                    </div> <!-- end card body-->
+                                </div> <!-- end card -->
+                            </div><!-- end col-->
+                        </div>
+                        <!-- end row-->     
+                        
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+                <!-- Footer Start -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <script>document.write(new Date().getFullYear())</script> &copy; BUYSCRAPAPP. All Rights Reserved. 
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-none d-md-flex gap-4 align-item-center justify-content-md-end footer-links">
+                                    <a href="javascript: void(0);">About</a>
+                                    <a href="javascript: void(0);">Support</a>
+                                    <a href="javascript: void(0);">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- end Footer -->
+
+                <!--  New Ship Out Modal Popup -->
+                <div class="modal fade" id="new-ship-out" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myLargeModalLabel">New Ship Out</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                
+                                <div class="row">
+                                
+                                    <div class="col-md-6">
+                                        <input type="text" id="example-palaceholder" class="form-control" placeholder="Search for Sellers, Address, License and License Plate">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Search"><i class="mdi mdi-cust mdi-magnify"></i></a> 
+
+                                        <a class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Refresh"><i class="mdi mdi-cust mdi-refresh"></i></a>
+
+                                        <a href="ship-out-new-seller.html" class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="New Customer"><i class="mdi mdi-cust mdi-account"></i></a>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-3">
+
+                                    <table id="dt-new-ship-out" class="table dt-responsive nowrap w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sellers</th>
+                                                        <th>Driver's License</th>
+                                                        <th>License Plate</th>
+                                                        <th>Address</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                            
+                                            
+                                                <tbody>
+                                                    <tr>
+                                                        <td><img src="assets/images/custom/driving-license.png" class="small-img">MetaLBuyers USA</td>
+                                                        <td>-</td>
+                                                        <td>-</td>
+                                                        <td>12345 Main Street</td>
+                                                        <td><a data-bs-target="#select-new-driver" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-primary">Select</a></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><img src="assets/images/custom/driving-license.png" class="small-img">Tata Model</td>
+                                                        <td>-</td>
+                                                        <td>-</td>
+                                                        <td>32154 Main Street</td>
+                                                        <td><a data-bs-target="#select-new-driver" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-primary">Select</a></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><img src="assets/images/custom/driving-license.png" class="small-img">MetaLBuyers USA</td>
+                                                        <td>-</td>
+                                                        <td>-</td>
+                                                        <td>321, New York Street</td>
+                                                        <td><a data-bs-target="#select-new-driver" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-primary">Select</a></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><img src="assets/images/custom/driving-license.png" class="small-img">Sanket Business</td>
+                                                        <td>-</td>
+                                                        <td>-</td>
+                                                        <td>453, KLM road</td>
+                                                        <td><a data-bs-target="#select-new-driver" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-primary">Select</a></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><img src="assets/images/custom/driving-license.png" class="small-img">MyBusiness</td>
+                                                        <td>-</td>
+                                                        <td>-</td>
+                                                        <td>1452, New Street</td>
+                                                        <td><a data-bs-target="#select-new-driver" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-primary">Select</a></td>
+                                                    </tr>
+                                                    
+                                                </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+                <!--  New Ship Out Modal Popup -->
+
+                <!--  Select New Driver Modal Popup -->
+                <div class="modal fade" id="select-new-driver" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <a data-bs-dismiss="modal" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+
+                                <h4 class="modal-title ml-10" id="myLargeModalLabel">New Driver</h4>
+
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                
+                                <div class="row mt-3">
+                                    <h4>Driver Personal Information</h4>
+
+                                    <div class="form-group col-sm-12">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="carrier" placeholder="Carrier">
+                                            <label for="floatingInput">Carrier</label>
+                                        </div>
+                                    </div>
+                                                
+                                </div>
+
+                                <div class="row mt-2">
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="truck" placeholder="Truck">
+                                            <label for="floatingInput">Truck</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="make" placeholder="Make">
+                                            <label for="floatingInput">Make</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="model" placeholder="Model">
+                                            <label for="floatingInput">Model</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="drivername" placeholder="Driver Name">
+                                            <label for="floatingInput">Driver Name</label>
+                                        </div>
+                                    </div>            
+
+                                </div>
+
+                                <div class="row mt-2">
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="trailer1" placeholder="Trailer 1">
+                                            <label for="floatingInput">Trailer 1</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="trailer2" placeholder="Trailer 2">
+                                            <label for="floatingInput">Trailer 2</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="container" placeholder="Container">
+                                            <label for="floatingInput">Container</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="seal" placeholder="Seal">
+                                            <label for="floatingInput">Seal</label>
+                                        </div>
+                                    </div>            
+
+                                </div>
+
+                                <div class="row mt-2">
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="booking" placeholder="Booking">
+                                            <label for="floatingInput">Booking</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="vesselvoyage" placeholder="Vessel/Voyage">
+                                            <label for="floatingInput">Vessel/Voyage</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="chassis" placeholder="Chassis">
+                                            <label for="floatingInput">Chassis</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="reference" placeholder="Reference">
+                                            <label for="floatingInput">Reference</label>
+                                        </div>
+                                    </div>            
+
+                                </div>
+
+                                <div class="row mt-2">
+
+                                    <div class="form-group col-sm-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="packslip" placeholder="Pack Slip">
+                                            <label for="floatingInput">Pack Slip</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="note" placeholder="Note">
+                                            <label for="floatingInput">Note</label>
+                                        </div>
+                                    </div>          
+
+                                </div>
+
+                                <div class="row mt-3">
+
+                                    <div class="col-sm-12">
+                                        <a class="btn btn-primary btn-materials">Save</a>
+                                    </div>         
+
+                                </div>
+
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+                <!--  Select New Driver Modal Popup -->
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->

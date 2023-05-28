@@ -7,4 +7,18 @@ import { Component } from '@angular/core';
 })
 export class AdjustmentDashboardComponent {
 
+  actionList = [
+    {
+      iconcode:'mdi-magnify',
+      title:'Search'
+    },
+    {
+      iconcode:'mdi-refresh',
+      title:'Refresh'
+    },
+    {
+      iconcode:'mdi-plus',
+      title:'Add Adjustment'
+    }
+  ];
 }
