@@ -1,0 +1,28 @@
+::ng-deep p-multiselect .p-multiselect-label{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem !important;
+}
+
+::ng-deep p-multiselect .p-multiselect-token{
+    margin-bottom: .25rem
+}
+
+// ::ng-deep p-multiselect .p-icon {
+//     display: none;
+// }
+
+::ng-deep p-multiselect .p-multiselect .p-multiselect-trigger {
+    width: 0rem;
+    .p-icon {
+        display: none;
+    }
+}
+
+::ng-deep p-multiselect .p-multiselect-panel .p-multiselect-header {
+    padding: 0.5rem 0.5rem;
+}
+
+::ng-deep p-multiselect .p-multiselect-panel .p-multiselect-items .p-multiselect-item {
+    padding: 0.5rem 0.5rem;
+}

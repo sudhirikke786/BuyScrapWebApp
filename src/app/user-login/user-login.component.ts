@@ -9,13 +9,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class UserLoginComponent {
   
   organizationName: any;
+  value:any = 'kp';
 
   constructor(private route: ActivatedRoute,
               private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe((param)=>{ 
-      this.organizationName = param["orgName"];
+      this.organizationName = param["orgName"] || 'prodTest';
     });
   }
   
