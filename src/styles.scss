@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import url(https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap);
+
+.p-component{
+    font-family: "Cerebri Sans,sans-serif" !important;
+
+}
+.form-control{
+    padding: 0.45rem 0.9rem;
+}
+
+.p-multiselect .p-multiselect-label{
+   // max-height: 35px;
+    padding: 0.3rem 0.8rem !important;
+ 
+}
+
+.p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext{
+    padding: 0.3rem !important;
+}
+
+.p-multiselect.p-multiselect-chip .p-multiselect-token {
+    color: #fff;
+    background-color: #0176B8 !important;
+}
+
+/**input box**/
+
+
+.p-inputtext{
+    padding: 0.45rem 0.9rem !important;
+}
+
+
+/**table**/;
+
+.p-datatable .p-datatable-header{
+    background-color: #fff !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th{
+    background-color: #fff !important;
+    padding: 0.5rem 0.3rem !important;
+}
+.p-datatable .p-datatable-tbody > tr > td {
+   
+    padding: 0.4rem 0.3rem !important;
+}

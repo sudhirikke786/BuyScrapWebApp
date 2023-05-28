@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CashdrawerDashboardComponent } from './cashdrawer-dashboard/cashdrawer-dashboard.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    CashdrawerDashboardComponent
+  ],
   imports: [
     CommonModule
   ]

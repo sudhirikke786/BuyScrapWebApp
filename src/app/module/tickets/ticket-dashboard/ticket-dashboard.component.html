@@ -10,11 +10,10 @@
                     </div>
                     
                 </div> -->
-
         <div class="row mt-2">
             <div class="col-md-3">
-                <p-multiSelect class="col-2" [options]="ticketsTypes" 
-                [(ngModel)]="selectedTickets" defaultLabel="You can choose multiple ..." 
+                <p-multiSelect class="col-2" [options]="ticketsTypes"  [style]="{'minWidth':'100%'}"
+                [(ngModel)]="selectedTickets" [maxSelectedLabels]="3" [resetFilterOnHide]="false" defaultLabel="You can choose  ..." 
                 optionLabel="name" display="chip"></p-multiSelect>
 
             </div>
@@ -49,16 +48,17 @@
                                 <div class="col-md-12">
                                     <p-table #dt1 [value]="tickets" [paginator]="true" [rows]="10"
                                         [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                                        [rowsPerPageOptions]="[ 5, 10, 20, 50]" 
                                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                        [rowsPerPageOptions]="[10, 25, 50]"
                                         [globalFilterFields]="['ticket.id', 'ticket.dateCreated', 'ticket.status', 'ticket.ticketAmount', 'ticket.seller']"
                                         >
                                         <ng-template pTemplate="caption">
-                                            <div class="flex">
-                                                <span class="p-input-icon-left ml-auto">
+                                            
+                                            <div class="d-flex align-items-end" style="display: flex; justify-content: right;">
+                                                <div class="p-input-icon-left ml-auto">
                                                     <i class="pi pi-search"></i>
                                                     <span>Search: </span><input pInputText type="text" placeholder="Search keyword" />
-                                                </span>
+                                                </div>
                                             </div>
                                         </ng-template>
                                         <ng-template pTemplate="header">
@@ -80,17 +80,20 @@
                                                 <td>{{ ticket.ticketAmount }}</td>
                                                 <td>{{ ticket.seller }}</td>
                                                 <td>{{ ticket.dateClosed }}</td>
-                                                <td><a type="button" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Void</a> <a href="ticket-details.html" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-eye"></i> Show</a></td>
-                                            </tr>
+                                                <td>
+                                                    <div class="d-flex no-wrap">
+                                                    <a type="button" class="btn btn-grid btn-danger waves-effect waves-light me-1">
+                                                        <i class="mdi mdi-trash-can-outline"></i> Void</a> 
+                                                        <a href="ticket-details.html" class="btn btn-grid btn-success waves-effect waves-light">
+                                                            <i class="mdi mdi-eye"></i> Show</a>
+
+                                                </div>
+                                            </td>
+                                        </tr>
                                         </ng-template>
-                                        <ng-template pTemplate="paginatorleft">
-                                            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
-                                            </p-button>
-                                        </ng-template>
-                                        <ng-template pTemplate="paginatorright">
-                                            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
-                                            </p-button>
-                                        </ng-template>
+                                        
+                                        
+                                        
                                     </p-table>
                                 </div>
 

@@ -34,6 +34,38 @@ const routes: Routes = [
         {
           path:'sellers-buyers',
           loadChildren:() => import('./module/sellers/sellers.module').then(m => m.SellersModule)
+        },
+        {
+          path:'ship-out',
+          loadChildren:() => import('./module/shipout/shipout.module').then(m => m.ShipoutModule)
+        },
+        {
+          path:'materials',
+          loadChildren:() => import('./module/materials/materials.module').then(m => m.MaterialsModule)
+        },
+        {
+          path:'adjustment',
+          loadChildren:() => import('./module/adjustment/adjustment.module').then(m => m.AdjustmentModule)
+        },
+        {
+          path:'regrade',
+          loadChildren:() => import('./module/regrade/regrade.module').then(m => m.RegradeModule)
+        },
+        {
+          path:'certificates',
+          loadChildren:() => import('./module/certificates/certificates.module').then(m => m.CertificatesModule)
+        },
+        {
+          path:'cash-drawer',
+          loadChildren:() => import('./module/cashdrawer/cashdrawer.module').then(m => m.CashdrawerModule)
+        },
+        {
+          path:'reports',
+          loadChildren:() => import('./module/reports/reports.module').then(m => m.ReportsModule)
+        },
+        {
+          path:'admin',
+          loadChildren:() => import('./module/admin/admin.module').then(m => m.AdminModule)
         }
       ]
   }

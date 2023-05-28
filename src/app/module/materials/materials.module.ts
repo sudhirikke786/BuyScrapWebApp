@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MaterialsDashboardComponent } from './materials-dashboard/materials-dashboard.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    MaterialsDashboardComponent
+  ],
   imports: [
     CommonModule
   ]
