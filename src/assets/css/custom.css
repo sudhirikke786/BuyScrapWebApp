@@ -364,7 +364,7 @@ i.material-icons {
 
 /* ================================== Margin CSS Code =================================*/
 
-/* ================================== Image Upload and Dispaly CSS Code =================================*/
+/* ================================== Image Upload and Display CSS Code =================================*/
 #image-preview {
   width: 100%;
   height: 200px;
@@ -374,12 +374,284 @@ i.material-icons {
   background-position: center;
   padding:10px;
 }
-/* ================================== Image Upload and Dispaly CSS Code =================================*/
+/* ================================== Image Upload and Display CSS Code =================================*/
+
+/* ================================== Image Upload Ticket Modal Popup and Display CSS Code =================================*/
+#image-preview-ticket {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #ccc;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding:10px;
+}
+/* ================================== Image Upload Ticket Modal Popup and Display CSS Code =================================*/
+
+/*=============== NEXT WIZARD FORM CSS ================*/
+  
+.wizard-content-left {
+  background-blend-mode: darken;
+  background-color: rgba(0, 0, 0, 0.45);
+  background-image: url("https://i.ibb.co/X292hJF/form-wizard-bg-2.jpg");
+  background-position: center center;
+  background-size: cover;
+  height: 100vh;
+  padding: 30px;
+}
+.wizard-content-left h1 {
+  color: #ffffff;
+  font-size: 38px;
+  font-weight: 600;
+  padding: 12px 20px;
+  text-align: center;
+}
+
+.form-wizard {
+  color: #888888;
+}
+.form-wizard .wizard-form-radio {
+  display: inline-block;
+  margin-left: 5px;
+  position: relative;
+}
+.form-wizard .wizard-form-radio input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  background-color: #dddddd;
+  height: 25px;
+  width: 25px;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+}
+.form-wizard .wizard-form-radio input[type="radio"]:focus {
+  outline: 0;
+}
+.form-wizard .wizard-form-radio input[type="radio"]:checked {
+  background-color: #fb1647;
+}
+.form-wizard .wizard-form-radio input[type="radio"]:checked::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background-color: #ffffff;
+  border-radius: 50%;
+  left: 1px;
+  right: 0;
+  margin: 0 auto;
+  top: 8px;
+}
+.form-wizard .wizard-form-radio input[type="radio"]:checked::after {
+  content: "";
+  display: inline-block;
+  webkit-animation: click-radio-wave 0.65s;
+  -moz-animation: click-radio-wave 0.65s;
+  animation: click-radio-wave 0.65s;
+  background: #000000;
+  content: '';
+  display: block;
+  position: relative;
+  z-index: 100;
+  border-radius: 50%;
+}
+.form-wizard .wizard-form-radio input[type="radio"] ~ label {
+  /* padding-left: 10px; */
+  cursor: pointer;
+}
+.form-wizard .form-wizard-header {
+  text-align: center;
+  padding: 10px;
+  margin: 20px 0;
+}
+.form-wizard .form-wizard-next-btn, .form-wizard .form-wizard-previous-btn, .form-wizard .form-wizard-submit {
+  background-color: #0176B8;
+  color: #ffffff;
+  display: inline-block;
+  min-width: 100px;
+  min-width: 120px;
+  padding: 10px;
+  text-align: center;
+}
+.form-wizard .form-wizard-next-btn:hover, .form-wizard .form-wizard-next-btn:focus, .form-wizard .form-wizard-previous-btn:hover, .form-wizard .form-wizard-previous-btn:focus, .form-wizard .form-wizard-submit:hover, .form-wizard .form-wizard-submit:focus {
+  color: #ffffff;
+  opacity: 0.6;
+  text-decoration: none;
+}
+.form-wizard .wizard-fieldset {
+  display: none;
+}
+.form-wizard .wizard-fieldset.show {
+  display: block;
+}
+.form-wizard .wizard-form-error {
+  display: none;
+  background-color: #d70b0b;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+}
+.form-wizard .form-wizard-previous-btn {
+  background-color: #fb1647;
+}
+.form-wizard .form-control {
+  font-weight: 300;
+  height: auto !important;
+  padding: 15px;
+  /*color: #888888;
+  background-color: #f1f1f1;
+  border: none;*/
+}
+.form-wizard .form-control:focus {
+  box-shadow: none;
+}
+.form-wizard .form-group {
+  position: relative;
+/*  margin: 25px 0;*/
+}
+.form-wizard .wizard-form-text-label {
+  position: absolute;
+  left: 10px;
+  top: 16px;
+  transition: 0.2s linear all;
+}
+.form-wizard .focus-input .wizard-form-text-label {
+  color: #0176B8;
+  top: -18px;
+  transition: 0.2s linear all;
+  font-size: 12px;
+}
+.form-wizard .form-wizard-steps {
+/*  margin: 30px 0;*/
+margin-bottom: 0;
+}
+.form-wizard .form-wizard-steps li {
+  width: 25%;
+  float: left;
+  position: relative;
+}
+.form-wizard .form-wizard-steps li::after {
+  background-color: #cacbc9;
+  content: "";
+  height: 5px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 27%;
+  transform: translateY(-50%);
+  width: 100%;
+  border-bottom: 1px solid #cacbc9;
+  border-top: 1px solid #cacbc9;
+}
+
+.form-wizard .form-wizard-steps li.inactivated::after{left: 50%;}
+
+.form-wizard .form-wizard-steps li span {
+  background-color: #dddddd;
+  border-radius: 50%;
+  display: inline-block;
+  height: 40px;
+  line-height: 40px;
+  position: relative;
+  text-align: center;
+  width: 40px;
+  z-index: 1;
+}
+.form-wizard .form-wizard-steps li:last-child::after {
+  width: 50%;
+}
+.form-wizard .form-wizard-steps li.active span, .form-wizard .form-wizard-steps li.activated span {
+  background-color: #0176B8;
+  color: #ffffff;
+}
+.form-wizard .form-wizard-steps li.inactivated span{background-color: red; color: #ffffff;}
+.form-wizard .form-wizard-steps li.active::after, .form-wizard .form-wizard-steps li.activated::after {
+  background-color: #cacbc9;
+  left: 50%;
+  width: 50%;
+  border-color: #cacbc9;
+}
+.form-wizard .form-wizard-steps li.activated::after {
+  width: 100%;
+  border-color: #cacbc9;
+}
+.form-wizard .form-wizard-steps li:last-child::after {
+  left: 0;
+}
+.form-wizard .wizard-password-eye {
+  position: absolute;
+  right: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+@keyframes click-radio-wave {
+  0% {
+    width: 25px;
+    height: 25px;
+    opacity: 0.35;
+    position: relative;
+  }
+  100% {
+    width: 60px;
+    height: 60px;
+    margin-left: -15px;
+    margin-top: -15px;
+    opacity: 0.0;
+  }
+}
+@media screen and (max-width: 767px) {
+  .wizard-content-left {
+    height: auto;
+  }
+}
+
+.form-wizard .form-wizard-steps li.active::after{background-color: #cacbc9 !important; border-color: #cacbc9 !important;}
+.formwizardsteps-p{margin-top: 5px; color: #333; margin-bottom: 0;}
+  
+  /*=============== NEXT WIZARD FORM CSS ================*/
+
+  /* ============== Plus Minus Counter ==================*/
+  .minus, .plus{
+      width:30px;
+      height:30px;
+      background:#f2f2f2;
+      border-radius:4px;
+/*      padding:8px 5px 8px 5px;*/
+      border:1px solid #ddd;
+      display: inline-block;
+      vertical-align: middle;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .plus-minus-box input{
+      height:30px;
+      width: 50px;
+      text-align: center;
+/*      font-size: 26px;*/
+      border:1px solid #ddd;
+      border-radius:4px;
+      display: inline-block;
+      vertical-align: middle;
+}
+  /* ============== Plus Minus Counter ==================*/
 
 
 body.authentication-bg{background-color: #F5F5F5 !important;}
 .card-body{box-shadow: 0px 0px 2px grey !important;}
 .btn-primary-bsa{background-color: #0176B8 !important; border-color: #0176B8 !important;}
+.btn-primary-bsa-2{background-color: #32a7e9 !important; border-color: #32a7e9 !important;}
 .custom-control-input:checked~.custom-control-label::before{border-color: #0176B8 !important; background-color: #0176B8 !important;}
 /*.account-pages-bsa a{color: #0176B8 !important;}*/
 .navbar-custom .button-menu-mobile{position: relative; left: 65px;}
@@ -451,10 +723,10 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .materials-name-edit-ul li{list-style: none; display: inline-block; margin: 0 5px;}
 .materials-name-edit-ul li h4{font-size: 16px; line-height: 22px;}
 .materials-pg-boxes img{width:100%; padding: 10px 10px 0 10px;}
-.materials-pg-boxes{background: #f5f5f5; box-shadow: 0px 0px 3px grey; border-radius: 10px; margin-bottom: 20px;}
+.materials-pg-boxes{background: #f5f5f5; box-shadow: 0px 0px 3px grey; border-radius: 10px; margin-bottom: 20px; position: relative;}
 .btn-materials-pg{border:1px solid grey !important; color: #02659d !important; padding: 2px 5px !important;}
 .adjustment-pg-boxes img{width:100%; padding: 10px 10px 0 10px;}
-.adjustment-pg-boxes{background: #f5f5f5; box-shadow: 0px 0px 3px grey; border-radius: 10px; margin-bottom: 20px;}
+.adjustment-pg-boxes{background: #f5f5f5; box-shadow: 0px 0px 3px grey; border-radius: 10px; margin-bottom: 20px; position: relative;}
 .adjustment-name-edit-ul{padding-left:0; margin-bottom: 0; text-align: center; display: flex; align-items: center; justify-content: center;}
 .adjustment-name-edit-ul li{list-style: none; display: inline-block; margin: 0 5px;}
 .btn-adjustment-pg{border:1px solid grey !important; color: #02659d !important; padding: 2px 5px !important;}
@@ -473,8 +745,66 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .money-button-blue{background:#02659d;}
 .report-button{padding:10px; color:#fff; width: 100%; display: block; background: #3ba3fd; font-weight: 600; font-size: 20px;}
 .settings-button{padding:10px; color:#fff; width: 100%; display: block; background: #3ba3fd; font-weight: 600; font-size: 20px;}
-
-
+.cashier-settings-table{width: 100%;}
+.cs-td-1{width:80%;}
+.cs-td-2{width:20%; text-align: right;}
+.upd-img{position: absolute; top: 12px; right: 12px;}
+.btn-upd-img{padding:0 3px !important;}
+.form-wizard-header{background:#f5f5f5 !important;}
+.form-wizard-submit{color: #ffffff; display: inline-block; min-width: 100px; min-width: 120px; padding: 10px; text-align: center;}
+.btn-primary-bsa-orange{background-color: #008000 !important; border-color: #008000 !important; color:#fff !important;}
+hr{margin: 10px 0 !important;}
+.pricing-box{box-shadow: 0px 0px 5px grey; padding: 0; text-align: center; border-top-left-radius: 20px; border-top-right-radius: 20px; cursor: pointer;}
+.pricing-plan-name{margin-bottom: 3px; background: #02659d; color:#fff; margin-top: 0; padding: 12px; font-size: 22px; border-top-left-radius: 20px; border-top-right-radius: 20px;}
+.pricing-plan-price{font-size: 22px; display: flex; justify-content: center;}
+.pricing-plan-popularity{font-size: 18px; font-style: italic; color:#f08000;}
+.pricing-inner-content{padding:8px 15px;}
+.info-p{font-size:12px; margin-bottom: 0; margin-top: 5px;}
+.container-lg{max-width: 1200px !important;}
+.camera-img{height: 22px; margin-right: 10px;}
+.pricing-p{font-size: 15px;}
+.pricing-tbl{text-align: left; color: #333; width: 100%;}
+/*.pricing-tbl-td-1{padding-right: 10px; line-height: 35px;}*/
+.pricing-tbl tr{border-bottom: 1px solid #e5e5e5; padding: 5px; display: block;}
+.fa-green{color: green;}
+.fa-red{color: red;}
+.pricing-steps-heading{text-align: center;}
+.checkbox-addons{float:none !important; width: 20px !important; height: 20px !important; margin-right: 5px; border: 1px solid #afb3b7 !important;}
+.lbl-addons-heading{font-size: 18px; color: #333;}
+.addons-heading{padding: 8px 0; background: #f5f5f5; border-top-left-radius: 20px; border-top-right-radius: 20px;}
+.addons-features-content{margin-bottom: 0; color: #333;}
+.radio-addons{border: 1px solid #afb3b7 !important;}
+.addons-td-1{width:5%;}
+.div-addons{position: relative; top: -10px;}
+.addons-features-content-sub{font-style: italic; font-size: 12px; color: #333; margin-left: 10px;}
+.pricing-tbl-td-1{padding-right: 10px;}
+.lbl-radio{cursor: pointer; width: 100%;}
+.addon-price-calculation{font-size: 20px;}
+.summary-sub-heading{font-size: 13px; font-style: italic; text-align: left; display: block;}
+.summary-h4{margin:0; font-size: 16px; text-align: left; line-height: 22px;}
+.summary-h4-2{margin:0; font-size: 16px; text-align: right; line-height: 22px;}
+.summary-total-h4{margin:0; font-size: 18px; text-align: left; line-height: 22px;}
+.summary-total-h4-2{margin:0; font-size: 18px; text-align: right; line-height: 22px;}
+.summary-tbl-td-1{padding-right: 10px; width: 60%;}
+.pricing-sub-heading{font-size: 14px; font-style: italic;}
+.pricing-box-flat{border-top-left-radius: 0px !important; border-top-right-radius: 0px !important;}
+.pricing-plan-name-flat{border-top-left-radius: 0px !important; border-top-right-radius: 0px !important;}
+.btn-primary-bsa-get-started{background-color: green !important; border-color: green !important; color: #fff !important; width:190px; height:52px; font-size: 20px !important; display: flex !important; align-items: center; justify-content: center; float:right;}
+.pricing-box:focus{box-shadow: 0px 0px 5px blue;}
+.pricing-box-1:hover{box-shadow: 0px 0px 5px blue;}
+.btn-primary-popup-1{background-color: green !important; border-color: green !important; color: #fff !important; width:100%; height:45px; font-size: 18px !important; display: flex !important; align-items: center; justify-content: center;}
+.btn-primary-popup-2{background-color: orange !important; border-color: orange !important; color: #fff !important; width:100%; height:45px; font-size: 18px !important; display: flex !important; align-items: center; justify-content: center;}
+.get-started-popup .btn-close{position: absolute; right: 10px; top: 10px;}
+.get-started-popup .modal-content{padding-top:0px !important;}
+.get-started-top-row{background: #02659d; padding: 10px;}
+.get-started-popup .modal-title{color:#fff;}
+.color-green{color: green;}
+.summary-table{width: 100%; box-shadow: 0px 0px 5px grey;}
+.summary-table tr td{border: 1px solid #e5e5e5; padding: 10px; width: 50%;}
+.pricing-plan-name-summary{margin-bottom:-1px !important;}
+.get-started-btn{text-align: center;}
+.plan-selected{box-shadow: 0px 0px 5px green; background: #eefbdd;}
+.field-spn{font-weight:bold;}
 
 @media only screen and (min-width:576px){
 .pay-print-box{margin-top: 55px !important; text-align: right;}
@@ -484,6 +814,10 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .box{margin-bottom:20px; }
 .mainbox-row{margin-top:20px;}
 .pay-print-box{margin-top:20px !important; text-align: center;}
+.pricing-steps-heading{margin-top: 20px;}
+.addon-price-calculation{margin-top: 10px;}
+.mt-mob-20{margin-top:20px !important;}
+.mt-mob-10{margin-top:10px !important;}
 }
 
 @media only screen and (max-width:768px){
@@ -493,6 +827,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .balance-bar-mobile{display:block;}
 .topbar-menu{padding-left:0 !important;}
 .form-group{margin-top:15px !important;}
+.pricing-plan-name{font-size: 20px;}
 }
 
 @media only screen and (min-width:768px){

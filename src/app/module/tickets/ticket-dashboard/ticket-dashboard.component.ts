@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class TicketDashboardComponent {
 
   selectedTickets = [];
+  orgName = 'abc';
 
   actionList = [{
     iconcode:'mdi-magnify',
@@ -26,7 +27,35 @@ export class TicketDashboardComponent {
     title:'Merge Ticket and Pay'
   },
   
-]
+  ]
+  
+
+  newTicketList = [{
+    iconcode:'mdi-magnify',
+    title:'Search'
+  },
+  {
+    iconcode:'mdi-refresh',
+    title:'Refresh'
+  },
+  {
+    iconcode:'mdi-account',
+    title:'New Customer'
+  }
+  
+  ]
+
+  mergeTicketlist = [{
+    iconcode:'mdi-magnify',
+    title:'Search'
+  },
+  {
+    iconcode:'mdi-refresh',
+    title:'Refresh'
+  }
+  
+  ]
+
   ticketsTypes =  [
     {name: 'All', code: 'All'},
     {name: 'Open', code: 'Open'},
@@ -142,5 +171,33 @@ export class TicketDashboardComponent {
       dateClosed: '--/--/----'
     }
   ];
+
+  visible: boolean = false;
+  ticketvisible: boolean = false;
+
+
+  showMergeDialog(){
+    this.visible = true;
+  }
+
+  AddMergeDialog(){
+    this.ticketvisible = true;
+  }
+
+  getAction(actionCode:any){
+
+    switch (actionCode?.iconcode) {
+      case 'mdi-ticket':
+        this.AddMergeDialog();
+        break;
+      case 'mdi-merge':
+        this.showMergeDialog();
+        break;
+      default:
+        break;
+    }
+
+  
+  }
 
 }

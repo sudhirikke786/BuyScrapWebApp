@@ -22,6 +22,24 @@ export class ShipoutDashboardComponent {
     }
   ];
 
+   newButtonList = [
+    {
+      iconcode:'mdi-magnify',
+      title:'Search'
+    },
+    {
+      iconcode:'mdi-refresh',
+      title:'Refresh'
+    },
+    {
+      iconcode:'mdi-account',
+      title:'New Customer'
+    }
+  ];
+
+
+  
+
   shipouts = [
     {	
       billOfLanding: '117',
@@ -108,5 +126,44 @@ export class ShipoutDashboardComponent {
       buyer: 'Monster Cable INC'
     }
   ];
+
+  newCustomer = [{
+   sellers : '202',
+   dLicense :'2-----',
+   licensePlat:'kksjkdksjd',
+   address:'sllsdlsd'
+  }]
+
+  visible = false;
+  custVisible=  false;
+
+
+  showDialog() {
+    this.visible =  true;
+  }
+
+  showCustomerModel(){
+    this.custVisible = true;
+  }
+  closeDriver(){
+    this.custVisible = false;
+  }
+
+
+  getAction(actionCode:any){
+
+    switch (actionCode?.iconcode) {
+      case 'mdi-plus':
+        this.showDialog();
+        break;
+      case 'mdi-merge':
+      
+        break;
+      default:
+        break;
+    }
+
+  
+  }
 
 }

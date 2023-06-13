@@ -7,18 +7,24 @@ import { PrimengModule } from '../shared/primeng/primeng.module';
 import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 
 import { ShipoutDashboardComponent } from './shipout-dashboard/shipout-dashboard.component';
+import { ShipoutDetailsComponent } from './shipout-details/shipout-details.component';
 
 
 export const routes: Routes = [
   {
     path: '',
     component: ShipoutDashboardComponent
+  },
+  {
+    path: 'details/:id',
+    component: ShipoutDetailsComponent
   }
 ]
 
 @NgModule({
   declarations: [
-    ShipoutDashboardComponent
+    ShipoutDashboardComponent,
+    ShipoutDetailsComponent
   ],
   imports: [
     CommonModule,

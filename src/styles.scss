@@ -37,13 +37,72 @@
 
 .p-datatable .p-datatable-header{
     background-color: #fff !important;
+   border: none !important;
 }
 
 .p-datatable .p-datatable-thead > tr > th{
     background-color: #fff !important;
     padding: 0.5rem 0.3rem !important;
+    font-size: 14px;
+    color: #6c757d;
 }
 .p-datatable .p-datatable-tbody > tr > td {
-   
+   vertical-align: top;
+   font-size: 14px;
     padding: 0.4rem 0.3rem !important;
+    color: #6c757d;
+}
+
+.search-box {
+    span{
+        font-size: 14px;
+        color:#6c757d;
+        font-weight: normal;
+    }
+    .p-inputtext{
+        height: 30px;
+        font-size: 14px;
+        font-weight: normal;
+    }
+
+}
+
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item{
+    padding: 0.2rem 0.75rem;
+}
+.p-multiselect-panel .p-multiselect-header{
+    display: none;
+}
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
+    background-color: #5897fb;
+    color: #fff;
+
+}
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item .p-checkbox{
+    display: none;
+}
+.p-multiselect.p-multiselect-chip .p-multiselect-token {
+   
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: default;
+    float: left;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+    background-color: #0176B8 !important;
+}
+
+.p-paginator .p-paginator-current{
+    position:absolute;
+    left: 0px;
+}
+
+/***/
+.p-dialog .p-dialog-header{
+    padding: 1.5rem 0rem 0.5rem 1.5rem;
+    border-bottom: 1px solid #ccc;
+}
+.p-dialog .p-dialog-content{
+    padding-top:1rem;
 }

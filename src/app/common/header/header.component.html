@@ -19,7 +19,7 @@
                     </div>
 
                     <!-- Sidebar Menu Toggle Button -->
-                    <button class="button-toggle-menu">
+                    <button class="button-toggle-menu" (click)="showHidePanel()">
                         <i class="mdi mdi-menu"></i>
                     </button>
                 </div>
@@ -91,6 +91,15 @@
                                 <i class="fe-settings"></i>
                                 <span>Settings</span>
                             </a>
+                            <a [routerLink]="['/abc/my-account/subscription']" routerLinkActive="router-link-active"  class="dropdown-item notify-item">
+                                <i class="fe-lock"></i>
+                                <span>Subscription</span>
+                            </a>
+                            <a [routerLink]="['/abc/my-account/change-password']" routerLinkActive="router-link-active" class="dropdown-item notify-item">
+                                <i class="fe-lock"></i>
+                                <span>Change Password</span>
+                            </a>
+
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item">

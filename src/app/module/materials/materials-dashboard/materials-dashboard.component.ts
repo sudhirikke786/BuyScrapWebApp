@@ -26,4 +26,31 @@ export class MaterialsDashboardComponent {
     }
   ];
 
+  visible: boolean = false;
+ bulkvisible:boolean = false;
+
+  showDialog(){
+    this.visible = true;
+  }
+  showBulkDialog(){
+    this.bulkvisible = true;
+  }
+
+  getAction(actionCode:any){
+
+    switch (actionCode?.iconcode) {
+      case 'mdi-plus':
+        this.showDialog();
+        break;
+      case 'mdi-currency-usd':
+       this.showBulkDialog();
+        break;
+      default:
+        break;
+    }
+
+  
+  }
+
+
 }

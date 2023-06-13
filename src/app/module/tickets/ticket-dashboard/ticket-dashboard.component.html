@@ -32,7 +32,7 @@
                 <input type="text" id="example-palaceholder" class="form-control" placeholder="Search">
             </div>
             <div class="col-md-3">
-               <app-actionbar [actions]="actionList"></app-actionbar>
+               <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
             </div>
 
         </div>
@@ -53,11 +53,11 @@
                                         [globalFilterFields]="['ticket.id', 'ticket.dateCreated', 'ticket.status', 'ticket.ticketAmount', 'ticket.seller']"
                                         >
                                         <ng-template pTemplate="caption">
-                                            
-                                            <div class="d-flex align-items-end" style="display: flex; justify-content: right;">
+
+                                            <div class="d-flex align-items-end search-box" style="display: flex; justify-content: right;">
                                                 <div class="p-input-icon-left ml-auto">
                                                     <i class="pi pi-search"></i>
-                                                    <span>Search: </span><input pInputText type="text" placeholder="Search keyword" />
+                                                    <span>Search: </span><input  pInputText type="text" placeholder="Search keyword" />
                                                 </div>
                                             </div>
                                         </ng-template>
@@ -82,10 +82,12 @@
                                                 <td>{{ ticket.dateClosed }}</td>
                                                 <td>
                                                     <div class="d-flex no-wrap">
-                                                    <a type="button" class="btn btn-grid btn-danger waves-effect waves-light me-1">
-                                                        <i class="mdi mdi-trash-can-outline"></i> Void</a> 
-                                                        <a href="ticket-details.html" class="btn btn-grid btn-success waves-effect waves-light">
-                                                            <i class="mdi mdi-eye"></i> Show</a>
+                                                        <a type="button" class="btn btn-grid btn-danger waves-effect waves-light me-1">
+                                                            <i class="mdi mdi-trash-can-outline"></i> Void
+                                                        </a> 
+                                                        <a routerLink = "/{{orgName}}/home/detail/{{ticket.id}}" class="btn btn-grid btn-success waves-effect waves-light">
+                                                            <i class="mdi mdi-eye"></i> Show
+                                                        </a>
 
                                                 </div>
                                             </td>
@@ -107,3 +109,150 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
+
+    <p-dialog header="New Ticket" [(visible)]="visible" [style]="{width: '80vw'}">
+        
+        <div class="row">
+                                
+            <div class="col-md-6">
+                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search for Sellers, Address, License and License Plate">
+            </div>
+            <div class="col-md-6">
+
+                <app-actionbar (iconAction)="getAction($event)"  [actions]="newTicketList"></app-actionbar>
+
+                <!-- <a class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Search"><i class="mdi mdi-cust mdi-magnify"></i></a> 
+
+                <a class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Refresh"><i class="mdi mdi-cust mdi-refresh"></i></a>
+
+                <a href="seller-add.html" class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="New Customer"><i class="mdi mdi-cust mdi-account"></i></a>
+            -->
+            </div> 
+
+        </div>
+
+        <div class="row mt-3">
+
+            <table id="dt-new-ticket" class="table dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Sellers</th>
+                                <th>Driver's License</th>
+                                <th>License Plate</th>
+                                <th>Address</th>
+                            </tr>
+                        </thead>
+                    
+                    
+                        <tbody>
+                            <tr>
+                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Alex Jr</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>12345 Main Street</td>
+                            </tr>
+
+                            <tr>
+                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Tommy J</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>32154 Main Street</td>
+                            </tr>
+
+                            <tr>
+                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Pat Jones</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>321, New York Street</td>
+                            </tr>
+
+                            <tr>
+                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> John D</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>453, KLM road</td>
+                            </tr>
+
+                            <tr>
+                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Kate Paul</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>1452, New Street</td>
+                            </tr>
+                            
+                        </tbody>
+            </table>
+
+        </div>
+    </p-dialog>
+
+
+    <p-dialog header="Merge Ticket and Pay" [(visible)]="ticketvisible" [style]="{width: '80vw'}">
+        
+        <div class="row">
+                                
+            <div class="col-md-6">
+                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search for Sellers, Address, License and License Plate">
+            </div>
+            <div class="col-md-6">
+                
+                <app-actionbar (iconAction)="getAction($event)"  [actions]="mergeTicketlist"></app-actionbar>
+
+                </div>
+
+        </div>
+
+        <div class="row mt-3">
+
+            <table id="dt-merge-ticket" class="table dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Sellers</th>
+                                <th>Driver's License</th>
+                                <th>License Plate</th>
+                                <th>Address</th>
+                            </tr>
+                        </thead>
+                    
+                    
+                        <tbody>
+                            <tr>
+                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Alex Jr</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>12345 Main Street</td>
+                            </tr>
+
+                            <tr>
+                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Tommy J</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>32154 Main Street</td>
+                            </tr>
+
+                            <tr>
+                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Pat Jones</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>321, New York Street</td>
+                            </tr>
+
+                            <tr>
+                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> John D</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>453, KLM road</td>
+                            </tr>
+
+                            <tr>
+                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Kate Paul</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>1452, New Street</td>
+                            </tr>
+                            
+                        </tbody>
+            </table>
+
+        </div>
+    </p-dialog>

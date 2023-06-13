@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sellers-buyers-dashboard',
@@ -6,6 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./sellers-buyers-dashboard.component.scss']
 })
 export class SellersBuyersDashboardComponent {
+
+  orgName = 'abc';
+  constructor(private router:Router){
+
+  }
 
   actionList = [
     {
@@ -146,4 +152,22 @@ export class SellersBuyersDashboardComponent {
     }	
   ];
 
+
+
+  getAction(actionCode:any){
+
+    switch (actionCode?.iconcode) {
+      case 'mdi-plus':
+        this.router.navigateByUrl(`abc/sellers-buyers/add-sellers`)
+        break;
+      case 'mdi-merge':
+     
+        break;
+      default:
+        break;
+    }
+
+  
+  }
+  
 }

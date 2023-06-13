@@ -28,7 +28,7 @@
                                 <input type="text" id="example-palaceholder" class="form-control" placeholder="Search for Sellers, Address, License and License Plate">
                             </div>
                             <div class="col-md-6"> 
-                                <app-actionbar [actions]="actionList"></app-actionbar>
+                                <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
                             </div>
                             
                         </div>  
@@ -60,7 +60,7 @@
                                                     <td>{{ seller.address }}</td>
                                                     <td>
                                                         <a href="seller-view.html" type="button" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i> Show</a> 
-                                                        <a class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
+                                                        <a routerLink = "/{{orgName}}/sellers-buyers/view-sellers/{{seller?.sellerId}}" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
                                                         <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
 													</td>
                                                 </tr>
@@ -85,24 +85,7 @@
 
                 </div> <!-- content -->
 
-                <!-- Footer Start -->
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <script>document.write(new Date().getFullYear())</script> &copy; BUYSCRAPAPP. All Rights Reserved. 
-                            </div>
-                            <div class="col-md-6">
-                                <div class="d-none d-md-flex gap-4 align-item-center justify-content-md-end footer-links">
-                                    <a href="javascript: void(0);">About</a>
-                                    <a href="javascript: void(0);">Support</a>
-                                    <a href="javascript: void(0);">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-                <!-- end Footer -->
+           
 
             </div>
 

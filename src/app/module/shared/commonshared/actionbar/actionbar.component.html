@@ -1,5 +1,5 @@
 
 <ng-container *ngFor="let item of actions">
-    <a (click)="actionClick(item)" class="btn me-2 btn-square-less-padd btn-primary waves-effect waves-light" title="Search"><i
+    <a (click)="actionClick(item)" [attr.title]="item?.title" class="btn me-1 btn-square-less-padd btn-primary waves-effect waves-light" title="Search"><i
         class="mdi mdi-cust {{item.iconcode}}"></i></a>
 </ng-container>
