@@ -1,307 +1,656 @@
-            <!-- ============================================================== -->
-            <!-- Start Page Content here -->
-            <!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Start Page Content here -->
+<!-- ============================================================== -->
 
-            <div class="content-page">
+<div class="content-page">
+  <div class="content">
+    <!-- Start Content-->
+    <div class="container-fluid">
+      <div class="bdcmb mt-2">
+        <div class="row">
+          <div class="col-sm-6 col-6">
+            <h4 class="page-title">Certificates of Destruction</h4>
+          </div>
 
-                <div class="content">
+          <div class="col-sm-6 col-6">
+            <div class="b-links">
+              <a href="index.html">Home</a> /
+              <a href="certificates.html">Certificates of Destruction</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                    <!-- Start Content-->
-                    <div class="container-fluid">
+      <div class="row mt-2">
+        <div class="col-md-6 d-flex">
+          <input
+            type="text"
+            id="example-palaceholder"
+            class="form-control"
+            placeholder="Search.."
+          />
+        </div>
+        <div class="col-md-6">
+          <app-actionbar [actions]="actionList"></app-actionbar>
+        </div>
+      </div>
+      <!-- end page title -->
 
-                        <div class="bdcmb mt-2">
-                            <div class="row">
-                                <div class="col-sm-6 col-6">
-                                    <h4 class="page-title">Certificates of Destruction</h4>
-                                </div>
+      <div class="row mt-2">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <p-table
+                [value]="certificates"
+                [paginator]="true"
+                [rows]="10"
+                [showCurrentPageReport]="true"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10, 25, 50]"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Ticket ID</th>
+                    <th>Date Created</th>
+                    <th>Ticket Amount</th>
+                    <th>Seller</th>
+                    <th>Date Closed</th>
+                    <th>Action</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-certificate>
+                  <tr>
+                    <td>{{ certificate.ticketID }}</td>
+                    <td>{{ certificate.dateCreated }}</td>
+                    <td>{{ certificate.ticketAmount }}</td>
+                    <td>{{ certificate.seller }}</td>
+                    <td>{{ certificate.dateClosed }}</td>
+                    <td>
+                      <a
+                        (click)="showModel()"
+                        class="btn btn-grid btn-success waves-effect waves-light"
+                        ><i class="mdi mdi-eye"></i> Show</a
+                      >
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="paginatorleft">
+                  <p-button
+                    type="button"
+                    icon="pi pi-plus"
+                    styleClass="p-button-text"
+                  >
+                  </p-button>
+                </ng-template>
+                <ng-template pTemplate="paginatorright">
+                  <p-button
+                    type="button"
+                    icon="pi pi-cloud"
+                    styleClass="p-button-text"
+                  >
+                  </p-button>
+                </ng-template>
+              </p-table>
+            </div>
+            <!-- end card body-->
+          </div>
+          <!-- end card -->
+        </div>
+        <!-- end col-->
+      </div>
+      <!-- end row-->
+    </div>
+    <!-- container -->
+  </div>
+  <!-- content -->
 
-                                <div class="col-sm-6 col-6">
-                                    <div class="b-links">
-                                        <a href="index.html">Home</a> / <a href="certificates.html">Certificates of Destruction</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row mt-2">
-                            <div class="col-md-6 d-flex">
-                                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search..">
-                            </div>
-                            <div class="col-md-6"> 
-                                <app-actionbar [actions]="actionList"></app-actionbar>
-                            </div>
-                            
-                        </div>  
-                        <!-- end page title --> 
+  <!--  Certificates Show Modal Popup -->
+  <div
+    class="modal fade"
+    id="certificates-show"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myLargeModalLabel"
+    aria-hidden="true"
+  >
+    <div
+      class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <a data-bs-dismiss="modal" class="btn btn-primary btn-back"
+            ><i class="mdi mdi-keyboard-backspace"></i
+          ></a>
 
-                        <div class="row mt-2">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        
-                                        <p-table [value]="certificates" [paginator]="true" [rows]="10"
-                                            [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                            [rowsPerPageOptions]="[10, 25, 50]" >
+          <h5 class="modal-title ml-10" id="myLargeModalLabel">
+            Please enter detailed description of material being processed
+          </h5>
 
-                                            <ng-template pTemplate="header">
-                                                <tr>
-                                                    <th>Ticket ID</th>
-                                                    <th>Date Created</th>
-                                                    <th>Ticket Amount</th>
-                                                    <th>Seller</th>
-                                                    <th>Date Closed</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </ng-template>
-                                            <ng-template pTemplate="body" let-certificate>
-                                                <tr>
-                                                    <td>{{ certificate.ticketID }}</td>
-                                                    <td>{{ certificate.dateCreated }}</td>
-                                                    <td>{{ certificate.ticketAmount }}</td>
-                                                    <td>{{ certificate.seller }}</td>
-                                                    <td>{{ certificate.dateClosed }}</td>
-                                                    <td>
-                                                        <a data-bs-target="#certificates-show" data-bs-toggle="modal" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-eye"></i> Show</a> 
-                                                    </td>
-                                                </tr>
-                                            </ng-template>
-                                            <ng-template pTemplate="paginatorleft">
-                                                <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
-                                                </p-button>
-                                            </ng-template>
-                                            <ng-template pTemplate="paginatorright">
-                                                <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
-                                                </p-button>
-                                            </ng-template>
-                                        </p-table>
-                                    
-                                    </div> <!-- end card body-->
-                                </div> <!-- end card -->
-                            </div><!-- end col-->
-                        </div>
-                        <!-- end row-->     
-                        
-                    </div> <!-- container -->
+          <a
+            data-bs-target="#certificates-capture-image"
+            data-bs-toggle="modal"
+            data-bs-dismiss="modal"
+            class="btn btn-grid btn-primary waves-effect waves-light ml-10"
+          >
+            Capture Image</a
+          >
 
-                </div> <!-- content -->
+          <a
+            data-bs-target="#certificates-view-item"
+            data-bs-toggle="modal"
+            data-bs-dismiss="modal"
+            class="btn btn-grid btn-primary waves-effect waves-light ml-10"
+          >
+            View Item</a
+          >
 
-                <!-- Footer Start -->
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <script>document.write(new Date().getFullYear())</script> &copy; BUYSCRAPAPP. All Rights Reserved. 
-                            </div>
-                            <div class="col-md-6">
-                                <div class="d-none d-md-flex gap-4 align-item-center justify-content-md-end footer-links">
-                                    <a href="javascript: void(0);">About</a>
-                                    <a href="javascript: void(0);">Support</a>
-                                    <a href="javascript: void(0);">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-                <!-- end Footer -->
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <input
+                type="text"
+                id="example-palaceholder"
+                class="form-control"
+                value="My COD added in role based data"
+              />
+            </div>
+          </div>
 
-                <!--  Certificates Show Modal Popup -->
-                <div class="modal fade" id="certificates-show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <a data-bs-dismiss="modal" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                                <h5 class="modal-title ml-10" id="myLargeModalLabel">Please enter detailed description of material being processed</h5>
-                                
-                                <a data-bs-target="#certificates-capture-image" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-grid btn-primary waves-effect waves-light ml-10"> Capture Image</a>
-
-                                <a data-bs-target="#certificates-view-item" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-grid btn-primary waves-effect waves-light ml-10"> View Item</a>
-
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                
-                                <div class="row">
-                                
-                                    <div class="col-md-12">
-                                        <input type="text" id="example-palaceholder" class="form-control" value="My COD added in role based data">
-                                    </div>
-
-                                </div>
-
-                                <div class="row pd-imgs-box mt-3">
-                                    <div class="col-sm-6">
-                                        <div class="pd-imgs" tabindex="1">
-                                            <img src="assets/images/custom/home-ss.png" class="img-responsive">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6">
-                                        <div class="pd-imgs" tabindex="2">
-                                            <img src="assets/images/custom/home-ss.png" class="img-responsive">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row pd-imgs-box mt-3">
-                                    <div class="col-sm-6">
-                                        <div class="pd-imgs" tabindex="3">
-                                            <img src="assets/images/custom/home-ss.png" class="img-responsive">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6">
-                                        <div class="pd-imgs" tabindex="4">
-                                            <img src="assets/images/custom/home-ss.png" class="img-responsive">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row mt-3 text-center">
-                                    <div class="col-sm-12">
-                                        <a href="#" class="btn btn-grid btn-primary waves-effect waves-light btn-display-block">Save</a> 
-                                    </div>
-                                </div>
-                                
-
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div>
-                <!--  Certificates Show Modal Popup -->
-
-                <!--  Certificates - Capture Image Modal Popup -->
-                <div class="modal fade" id="certificates-capture-image" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <a data-bs-target="#certificates-show" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                                <h4 class="modal-title ml-10" id="myLargeModalLabel">Capture Image</h4>
-
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                
-                                <div class="row">
-                                    <div class="col-sm-12 d-flex">
-                                        <label for="cameraSelect"><b>Select a camera :</b></label>
-
-                                        <select id="cameraSelect" class="form-control" style="width:auto;" onchange="selectCamera()">
-                                            <option value="">Select a camera</option>
-                                        </select>
-
-                                        <a class="btn btn-primary ml-10" onclick="captureImage()">Start Capturing</a>
-
-                                        <a class="btn btn-primary ml-10" onclick="captureImage()">Capture Image</a>
-
-                                        <button class="btn btn-primary ml-10" onclick="document.getElementById('upload').click()">Upload Image</button>
-  <input type='file' id="upload" style="display:none">
-
-                                    </div>
-                                </div>    
-
-                                <div class="row mt-3">
-                                    <div class="col-sm-12">
-                                        <div id="image-preview"></div>
-                                    </div>
-                                </div> 
-
-                                <div class="row mt-3">
-                                    <div class="col-sm-12 d-flex">
-
-                                        <div class="form-group">
-                                            <select class="form-select" id="example-select">
-                                                <option>Passport</option>
-                                                <option>Driver License</option>
-                                                <option>ID</option>
-                                            </select>
-                                        </div>
-
-                                        <a class="btn btn-primary ml-10">Save Image</a>
-
-                                        <a data-bs-dismiss="modal" class="btn btn-primary ml-10">Close</a>
-
-                                    </div>
-                                </div>                           
-
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div>
-                <!--  Certificates - Capture Image Modal Popup -->
-
-                <!--  Certificates - View Item Modal Popup -->
-                <div class="modal fade" id="certificates-view-item" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <a data-bs-target="#certificates-show" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                                <h4 class="modal-title ml-10" id="myLargeModalLabel">View Item</h4>
-
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        
-                                        <table id="dt-certificates-view-item" class="table dt-responsive nowrap w-100">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Material</th>
-                                                        <th>Gross Net</th>
-                                                        <th>Amount</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                            
-                                            
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Computer Memory</td>
-                                                        <td>222.00</td>
-                                                        <td>1485.000</td>
-                                                        <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="img-responsive certificates-img"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Computer Memory</td>
-                                                        <td>363.00</td>
-                                                        <td>985.000</td>
-                                                        <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="img-responsive certificates-img"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Copper #1</td>
-                                                        <td>252.00</td>
-                                                        <td>580.000</td>
-                                                        <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="img-responsive certificates-img"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Copper #2</td>
-                                                        <td>341.00</td>
-                                                        <td>951.000</td>
-                                                        <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="img-responsive certificates-img"></td>
-                                                    </tr>
-                                                    
-                                                </tbody>
-                                    </table>
-
-                                    </div>
-                                </div>                        
-
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div>
-                <!--  Certificates - View Item Modal Popup -->
-
+          <div class="row pd-imgs-box mt-3">
+            <div class="col-sm-6">
+              <div class="pd-imgs" tabindex="1">
+                <img
+                  src="assets/images/custom/home-ss.png"
+                  class="img-responsive"
+                />
+              </div>
             </div>
 
-            <!-- ============================================================== -->
-            <!-- End Page content -->
-            <!-- ============================================================== -->
+            <div class="col-sm-6">
+              <div class="pd-imgs" tabindex="2">
+                <img
+                  src="assets/images/custom/home-ss.png"
+                  class="img-responsive"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row pd-imgs-box mt-3">
+            <div class="col-sm-6">
+              <div class="pd-imgs" tabindex="3">
+                <img
+                  src="assets/images/custom/home-ss.png"
+                  class="img-responsive"
+                />
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="pd-imgs" tabindex="4">
+                <img
+                  src="assets/images/custom/home-ss.png"
+                  class="img-responsive"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3 text-center">
+            <div class="col-sm-12">
+              <a
+                href="#"
+                class="btn btn-grid btn-primary waves-effect waves-light btn-display-block"
+                >Save</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!--  Certificates Show Modal Popup -->
+
+  <!--  Certificates - Capture Image Modal Popup -->
+  <div
+    class="modal fade"
+    id="certificates-capture-image"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myLargeModalLabel"
+    aria-hidden="true"
+  >
+    <div
+      class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <a
+            data-bs-target="#certificates-show"
+            data-bs-toggle="modal"
+            data-bs-dismiss="modal"
+            class="btn btn-primary btn-back"
+            ><i class="mdi mdi-keyboard-backspace"></i
+          ></a>
+
+          <h4 class="modal-title ml-10" id="myLargeModalLabel">
+            Capture Image
+          </h4>
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12 d-flex">
+              <label for="cameraSelect"><b>Select a camera :</b></label>
+
+              <select
+                id="cameraSelect"
+                class="form-control"
+                style="width: auto"
+                onchange="selectCamera()"
+              >
+                <option value="">Select a camera</option>
+              </select>
+
+              <a class="btn btn-primary ml-10" onclick="captureImage()"
+                >Start Capturing</a
+              >
+
+              <a class="btn btn-primary ml-10" onclick="captureImage()"
+                >Capture Image</a
+              >
+
+              <button
+                class="btn btn-primary ml-10"
+                onclick="document.getElementById('upload').click()"
+              >
+                Upload Image
+              </button>
+              <input type="file" id="upload" style="display: none" />
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-sm-12">
+              <div id="image-preview"></div>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-sm-12 d-flex">
+              <div class="form-group">
+                <select class="form-select" id="example-select">
+                  <option>Passport</option>
+                  <option>Driver License</option>
+                  <option>ID</option>
+                </select>
+              </div>
+
+              <a class="btn btn-primary ml-10">Save Image</a>
+
+              <a data-bs-dismiss="modal" class="btn btn-primary ml-10">Close</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!--  Certificates - Capture Image Modal Popup -->
+
+  <!--  Certificates - View Item Modal Popup -->
+  <div
+    class="modal fade"
+    id="certificates-view-item"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myLargeModalLabel"
+    aria-hidden="true"
+  >
+    <div
+      class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <a
+            data-bs-target="#certificates-show"
+            data-bs-toggle="modal"
+            data-bs-dismiss="modal"
+            class="btn btn-primary btn-back"
+            ><i class="mdi mdi-keyboard-backspace"></i
+          ></a>
+
+          <h4 class="modal-title ml-10" id="myLargeModalLabel">View Item</h4>
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <table
+                id="dt-certificates-view-item"
+                class="table dt-responsive nowrap w-100"
+              >
+                <thead>
+                  <tr>
+                    <th>Material</th>
+                    <th>Gross Net</th>
+                    <th>Amount</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>Computer Memory</td>
+                    <td>222.00</td>
+                    <td>1485.000</td>
+                    <td>
+                      <img
+                        src="assets/images/custom/aluminium-extrusion.jpg"
+                        class="img-responsive certificates-img"
+                      />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Computer Memory</td>
+                    <td>363.00</td>
+                    <td>985.000</td>
+                    <td>
+                      <img
+                        src="assets/images/custom/aluminium-extrusion.jpg"
+                        class="img-responsive certificates-img"
+                      />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Copper #1</td>
+                    <td>252.00</td>
+                    <td>580.000</td>
+                    <td>
+                      <img
+                        src="assets/images/custom/aluminium-extrusion.jpg"
+                        class="img-responsive certificates-img"
+                      />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Copper #2</td>
+                    <td>341.00</td>
+                    <td>951.000</td>
+                    <td>
+                      <img
+                        src="assets/images/custom/aluminium-extrusion.jpg"
+                        class="img-responsive certificates-img"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!--  Certificates - View Item Modal Popup -->
+</div>
+
+<!-- ============================================================== -->
+<!-- End Page content -->
+<!-- ============================================================== -->
+
+<p-dialog
+  header="New Regrade"
+  [(visible)]="visible"
+  [style]="{ width: '60vw' }"
+>
+  <ng-template pTemplate="header">
+    <a (click)="hideCaptureModel()" class="btn btn-primary btn-back"
+      ><i class="mdi mdi-keyboard-backspace"></i
+    ></a>
+
+    <h5 class="modal-title ml-10" id="myLargeModalLabel">
+      Please enter detailed description of material being processed
+    </h5>
+
+    <a
+      (click)="showCaptureModel()"
+      class="btn btn-grid btn-primary waves-effect waves-light ml-10"
+    >
+      Capture Image</a
+    >
+
+    <a (click)="showItemViewModel()" class="btn btn-grid btn-primary waves-effect waves-light ml-10">
+      View Item</a
+    >
+  </ng-template>
+
+  <div class="row">
+    <div class="col-md-12">
+      <input
+        type="text"
+        id="example-palaceholder"
+        class="form-control"
+        value="My COD added in role based data"
+      />
+    </div>
+  </div>
+
+  <div class="row pd-imgs-box mt-3">
+    <div class="col-sm-6">
+      <div class="pd-imgs" tabindex="1">
+        <img src="assets/images/custom/home-ss.png" class="img-responsive" />
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="pd-imgs" tabindex="2">
+        <img src="assets/images/custom/home-ss.png" class="img-responsive" />
+      </div>
+    </div>
+  </div>
+
+  <div class="row pd-imgs-box mt-3">
+    <div class="col-sm-6">
+      <div class="pd-imgs" tabindex="3">
+        <img src="assets/images/custom/home-ss.png" class="img-responsive" />
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="pd-imgs" tabindex="4">
+        <img src="assets/images/custom/home-ss.png" class="img-responsive" />
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3 text-center">
+    <div class="col-sm-12">
+      <a
+        href="#"
+        class="btn btn-grid btn-primary waves-effect waves-light btn-display-block"
+        >Save</a
+      >
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="New Regrade"
+  [(visible)]="cvisible"
+  [style]="{ width: '80vw' }"
+>
+  <ng-template pTemplate="header">
+    <a (click)="hideCaptureModel()" class="btn btn-primary btn-back"
+      ><i class="mdi mdi-keyboard-backspace"></i
+    ></a>
+
+    <h4 class="modal-title ml-10" id="myLargeModalLabel">Capture Image</h4>
+  </ng-template>
+
+  <div class="row">
+    <div class="col-sm-12 d-flex">
+      <label for="cameraSelect"><b>Select a camera :</b></label>
+
+      <select
+        id="cameraSelect"
+        class="form-control"
+        style="width: auto"
+        onchange="selectCamera()"
+      >
+        <option value="">Select a camera</option>
+      </select>
+
+      <a class="btn btn-primary ml-10" onclick="captureImage()"
+        >Start Capturing</a
+      >
+
+      <a class="btn btn-primary ml-10" onclick="captureImage()"
+        >Capture Image</a
+      >
+
+      <button
+        class="btn btn-primary ml-10"
+        onclick="document.getElementById('upload').click()"
+      >
+        Upload Image
+      </button>
+      <input type="file" id="upload" style="display: none" />
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-sm-12">
+      <div id="image-preview"></div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-sm-12 d-flex">
+      <div class="form-group">
+        <select class="form-select" id="example-select">
+          <option>Passport</option>
+          <option>Driver License</option>
+          <option>ID</option>
+        </select>
+      </div>
+
+      <a class="btn btn-primary ml-10">Save Image</a>
+
+      <a data-bs-dismiss="modal" class="btn btn-primary ml-10">Close</a>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="New Regrade"
+  [(visible)]="ivisible"
+  [style]="{ width: '80vw' }"
+>
+  <ng-template pTemplate="header">
+    <div class="d-flex">
+        <a (click) ="hideItemViewModel()" class="btn btn-primary btn-back"
+        ><i class="mdi mdi-keyboard-backspace"></i
+      ></a>
+  
+      <h4 class="modal-title ml-10" id="myLargeModalLabel">View Item</h4>
+    </div>
+   
+  </ng-template>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <table
+        id="dt-certificates-view-item"
+        class="table dt-responsive nowrap w-100"
+      >
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Gross Net</th>
+            <th>Amount</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Computer Memory</td>
+            <td>222.00</td>
+            <td>1485.000</td>
+            <td>
+              <img
+                src="assets/images/custom/aluminium-extrusion.jpg"
+                class="img-responsive certificates-img"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td>Computer Memory</td>
+            <td>363.00</td>
+            <td>985.000</td>
+            <td>
+              <img
+                src="assets/images/custom/aluminium-extrusion.jpg"
+                class="img-responsive certificates-img"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td>Copper #1</td>
+            <td>252.00</td>
+            <td>580.000</td>
+            <td>
+              <img
+                src="assets/images/custom/aluminium-extrusion.jpg"
+                class="img-responsive certificates-img"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td>Copper #2</td>
+            <td>341.00</td>
+            <td>951.000</td>
+            <td>
+              <img
+                src="assets/images/custom/aluminium-extrusion.jpg"
+                class="img-responsive certificates-img"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</p-dialog>

@@ -69,5 +69,35 @@ export class CertificatesDashboardComponent {
       dateClosed: '04-10-2022'
     }
   ];
+
+  visible = false;
+  cvisible = false;
+  ivisible =  false;
+  showModel(){
+    this.visible = true;
+  }
+
+  showCaptureModel(){
+    this.visible = false;
+    this.cvisible = true;
+  }
+
+  showItemViewModel() {
+    this.ivisible =  true;
+  }
+
+  hideItemViewModel() {
+    this.ivisible =  false;
+  }
+
+
+
+  hideCaptureModel(){
+    this.cvisible = false;
+  }
+
+  hideModel(){
+    this.visible = false;
+  }
   
 }
