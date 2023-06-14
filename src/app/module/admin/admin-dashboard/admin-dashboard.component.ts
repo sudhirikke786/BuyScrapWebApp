@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -6,6 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent {
+
+  constructor(private router:Router){
+
+  }
 
   actionList = [
     {
@@ -63,4 +68,30 @@ export class AdminDashboardComponent {
     }	
   ];
   
+
+  visible = false;
+
+
+  showModel(){
+    this.visible =  true;
+  }
+
+  hideModel() {
+    this.visible = false;
+  }
+  //-location
+
+  getAction(actionCode: any) {
+    switch (actionCode?.iconcode) {
+      case 'mdi-plus':
+        this.showModel();
+        break;
+        case 'mdi-map-marker':
+         this.router.navigateByUrl('/abc/admin/admin-location')
+       break;
+      default:
+        break;
+    }
+  }
+
 }

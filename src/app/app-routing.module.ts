@@ -70,6 +70,10 @@ const routes: Routes = [
         {
           path:'my-account',
           loadChildren:() => import('./my-account/my-account.module').then(m => m.MyAccountModule)
+        },
+        {
+          path:'settings',
+          loadChildren:() => import('./module/settings/settings.module').then(m => m.SettingsModule)
         }
       ]
   }

@@ -1,0 +1,268 @@
+<div class="content">
+
+    <!-- Start Content-->
+    <div class="container-fluid">
+
+        <div class="bdcmb mt-2">
+            <div class="row">
+                <div class="col-sm-6 col-6">
+                    <h4 class="page-title">Settings</h4>
+                </div>
+
+                <div class="col-sm-6 col-6">
+                    <div class="b-links">
+                        <a href="index.html">Home</a> / <a href="settings.html">Settings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- <h4>Reports</h4> -->
+                        <div class="row">
+                            <div class="col-sm-6 mb-20">
+                                <div class="text-center">
+                                    <a (click)="showPSettingsmodel()" class="settings-button">Printer Type</a>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 mb-20">
+                                <div class="text-center">
+                                    <a (click)="showMpVisible()" class="settings-button">Material Price Key</a>
+                                </div>
+                            </div>                                            
+                        </div>  
+
+                        <div class="row">
+                            <div class="col-sm-6 mb-20">
+                                <div class="text-center">
+                                    <a (click)="cashierModel()" class="settings-button">Cashier</a>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 mb-20">
+                                <div class="text-center">
+                                    <a (click)="tiketModel()" class="settings-button">Ticket</a>
+                                </div>
+                            </div>                                            
+                        </div>    
+
+                         <div class="row">
+                            <div class="col-sm-6 mb-20">
+                                <div class="text-center">
+                                    <a (click)="scrapModel()" class="settings-button">Scrap Material Camera</a>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 mb-20">
+                                <div class="text-center">
+                                    <a href="" data-bs-target="#global-camera-settings" data-bs-toggle="modal" class="settings-button">Global Setting</a>
+                                </div>
+                            </div>                                            
+                        </div>     
+
+                        <div class="row">
+                            <div class="col-sm-6 mb-20">
+                                <div class="text-center">
+                                    <a href="" data-bs-target="#sys-pref" data-bs-toggle="modal" class="settings-button">Sys Pref Setting</a>
+                                </div>
+                            </div>                                          
+                        </div>  
+
+                                                       
+                    
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div>
+        <!-- end row-->     
+        
+    </div> <!-- container -->
+
+</div>
+
+
+
+<p-dialog
+header="Printer Settings"
+[(visible)]="pvisible"
+[style]="{ width: '80vw' }"
+>
+<ng-template pTemplate="header">
+
+    <div class="d-flex">
+        <a  (click)="hidePSettingsmodel()" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+                    
+        <h4 class="modal-title ml-10" id="myLargeModalLabel">Printer Settings</h4>
+</div>
+</ng-template>
+
+<app-printer-type></app-printer-type>
+ 
+
+
+
+</p-dialog>
+
+
+
+
+        <p-dialog
+            header="Add Money"
+            [(visible)]="mpVisible"
+            [style]="{ width: '50vw' }"
+          >
+            <ng-template pTemplate="header">
+
+                <div class="d-flex">
+                <a   class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+                                
+                <h4 class="modal-title ml-10" id="myLargeModalLabel">Material Price Key Settings</h4>
+            </div>
+             
+            </ng-template>
+
+            <app-printer-price></app-printer-price>
+            </p-dialog>
+
+
+            <p-dialog
+            header="Cashier Settings"
+            [(visible)]="cvisible"
+            [style]="{ width: '60vw' }"
+          >
+            <ng-template pTemplate="header">
+
+                <div class="d-flex">
+                <a   class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+                                
+                <h4 class="modal-title ml-10" id="myLargeModalLabel">Cashier Settings</h4>
+            </div>
+             
+            </ng-template>
+
+            <app-cashier-settings></app-cashier-settings>
+
+            </p-dialog>
+
+
+
+         
+
+            <p-dialog
+            header="Ticket Settings"
+            [(visible)]="tvisible"
+            [style]="{ width: '70vw' }"
+          >
+            <ng-template pTemplate="header">
+
+                <div class="d-flex">
+                <a   class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+                                
+                <h4 class="modal-title ml-10" id="myLargeModalLabel">Ticket Settings</h4>
+            </div>
+             
+            </ng-template>
+            <app-ticket-settings> </app-ticket-settings>
+
+            </p-dialog>
+
+
+
+
+
+            <p-dialog
+            header="Camera Settings"
+            [(visible)]="cameravisible"
+            [style]="{ width: '50vw' }"
+          >
+            <ng-template pTemplate="header">
+
+                <div class="d-flex">
+                <a   class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+                                
+                <h4 class="modal-title ml-10" id="myLargeModalLabel">Camera Settings</h4>
+            </div>
+             
+            </ng-template>
+
+            <app-camera-settings></app-camera-settings>
+            </p-dialog>
+
+
+<!--
+
+            <p-dialog
+            header="Add Money"
+            [(visible)]="pvisible"
+            [style]="{ width: '50vw' }"
+          >
+            <ng-template pTemplate="header">
+
+                <div class="d-flex">
+                <a   class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+                                
+                <h4 class="modal-title ml-10" id="myLargeModalLabel">Petty Cash Amount</h4>
+            </div>
+             
+            </ng-template>
+            </p-dialog>
+
+
+
+
+            <p-dialog
+            header="Add Money"
+            [(visible)]="pvisible"
+            [style]="{ width: '50vw' }"
+          >
+            <ng-template pTemplate="header">
+
+                <div class="d-flex">
+                <a   class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+                                
+                <h4 class="modal-title ml-10" id="myLargeModalLabel">Petty Cash Amount</h4>
+            </div>
+             
+            </ng-template>
+            </p-dialog>
+
+
+
+
+            <p-dialog
+            header="Add Money"
+            [(visible)]="pvisible"
+            [style]="{ width: '50vw' }"
+          >
+            <ng-template pTemplate="header">
+
+                <div class="d-flex">
+                <a   class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+                                
+                <h4 class="modal-title ml-10" id="myLargeModalLabel">Petty Cash Amount</h4>
+            </div>
+             
+            </ng-template>
+            </p-dialog>
+
+
+
+            <p-dialog
+            header="Add Money"
+            [(visible)]="pvisible"
+            [style]="{ width: '50vw' }"
+          >
+            <ng-template pTemplate="header">
+
+                <div class="d-flex">
+                <a   class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
+                                
+                <h4 class="modal-title ml-10" id="myLargeModalLabel">Petty Cash Amount</h4>
+            </div>
+             
+            </ng-template>
+            </p-dialog> -->

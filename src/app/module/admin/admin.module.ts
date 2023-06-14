@@ -7,17 +7,23 @@ import { PrimengModule } from '../shared/primeng/primeng.module';
 import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminLocationManagementComponent } from './admin-location-management/admin-location-management.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: AdminDashboardComponent
+  },
+  {
+    path: 'admin-location',
+    component: AdminLocationManagementComponent
   }
 ]
 
 @NgModule({
   declarations: [
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    AdminLocationManagementComponent
   ],
   imports: [
     CommonModule,

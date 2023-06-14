@@ -1,0 +1,273 @@
+<div class="content">
+
+    <!-- Start Content-->
+    <div class="container-fluid">
+
+        <!-- <div class="row mt-2">
+            <div class="col text-center">
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> New Ticket</button> 
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> Merge Ticket and Pay</button>
+            </div>
+            
+        </div> -->
+
+        <div class="bdcmb mt-2">
+            <div class="row">
+                <div class="col-sm-6 col-6">
+                    <h4 class="page-title">Location Management</h4>
+                </div>
+
+                <div class="col-sm-6 col-6">
+                    <div class="b-links">
+                        <a href="index.html">Home</a> / <a href="admin.html">Admin</a> / <a href="admin-location-management.html">Location Management</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-2">
+            <div class="col-md-2">
+                <h5>Total Users : 20</h5>
+            </div>
+
+            <div class="col-md-2">
+                <h5>Total Tickets : 1000</h5>
+            </div>
+
+            <div class="col-md-2">
+                <h5>Total Locations : 5</h5>
+            </div>
+
+            <div class="col-md-6 d-flex">
+                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search Locations">
+
+                <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Search"><i class="mdi mdi-cust mdi-magnify"></i></a>
+
+                <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Refresh"><i class="mdi mdi-cust mdi-refresh"></i></a>
+
+                <a (click) ="showLocation()" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location"><i class="mdi mdi-cust mdi-plus"></i></a>
+            </div>
+            
+        </div>  
+        <!-- end page title --> 
+
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <p-table [value]="location" [paginator]="true" [rows]="10"
+                        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [rowsPerPageOptions]="[10, 25, 50]" >
+
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Location Name</th>
+                                <th>User Count</th>
+                                <th>Total Tickets</th>
+                                <th>Available Tickets</th>
+                                <th>Action</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-admin>
+                            <tr>
+                                <td>{{ admin.locationName }}</td>
+                                <td>{{ admin.userCount }}</td>
+                                <td>{{ admin.totalTickets }}</td>
+                                <td>{{ admin.avlTickets }}</td>
+                                <td>
+                                    <a (click)="showLocationModel()" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
+
+                                    <a (click)="showModel()"  class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-account"></i> User Management</a>
+                        
+                                     </td>
+                            </tr>
+                        </ng-template>
+                        
+                    </p-table>
+
+
+
+
+
+                     
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div>
+        <!-- end row-->     
+        
+    </div> <!-- container -->
+
+</div> <!-- content -->
+
+
+
+<p-dialog
+header="Edit User"
+[(visible)]="visible"
+[style]="{ width: '80vw' }"
+>
+<ng-template pTemplate="header">
+    <div>
+        <a (click)="hideModel()" class="btn btn-primary btn-back" title="Back to New Regrade"><i class="mdi mdi-keyboard-backspace"></i></a>
+ 
+    </div>
+  
+</ng-template>
+
+<div class="row">
+<div class="col-sm-12">
+    
+    <form action="">
+        
+        <div class="row">
+            <div class="form-group col-sm-6 mb-2">
+                <label for="simpleinput" class="form-label w-100">First Name</label>
+                <input type="text" id="fistname" class="form-control" placeholder="First Name">
+            </div>
+
+            <div class="form-group col-sm-6 mb-2">
+                <label for="simpleinput" class="form-label w-100">Last Name</label>
+                <input type="text" id="lastname" class="form-control" placeholder="Last Name">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-6 mb-2">
+                <label for="simpleinput" class="form-label w-100">Select Role</label>
+                <select class="form-select" id="selectrole">
+                    <option>Administrator</option>
+                    <option>Cashier</option>
+                    <option>Scale</option>
+                    <option>Employee</option>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-6 mb-2">
+                <label for="simpleinput" class="form-label w-100">Username</label>
+                <input type="text" id="username" class="form-control" placeholder="Enter Username">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-6 mb-2">
+                <label for="simpleinput" class="form-label w-100">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Enter Your Password">
+            </div>
+
+            <div class="form-group col-sm-6 mb-2">
+                <label for="simpleinput" class="form-label w-100">Confirm Password</label>
+                <input type="password" id="confirmpassword" class="form-control" placeholder="Enter Your Password">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Mail ID</label>
+                <input type="email" id="mailid" class="form-control" placeholder="Enter Mail ID">
+            </div>
+        </div>
+
+        <a class="btn btn-primary btn-materials">Save</a>
+    </form>
+
+</div>
+</div> 
+
+</p-dialog>
+
+
+
+<p-dialog
+header="Edit Location"
+[(visible)]="locationVisble"
+[style]="{ width: '80vw' }"
+>
+<ng-template pTemplate="header">
+    <div class="d-flex">
+        <a (click)="hideLocationModel()" class="btn btn-primary btn-back" title="Back to Location"><i class="mdi mdi-keyboard-backspace"></i></a>
+        <h4 class="modal-title ml-10" id="myLargeModalLabel">Edit Location</h4>
+    </div>
+  
+</ng-template>
+
+<div class="row">
+    <div class="col-sm-12">
+        
+        <form action="">
+            
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Location Name</label>
+                <input type="text" id="locationname" class="form-control" value="California">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Set User Counts for Location</label>
+                <input type="text" id="usercount" class="form-control" value="10">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Set Employee Counts for Location</label>
+                <input type="text" id="employeecount" class="form-control" value="2314">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Ticket Limits</label>
+                <input type="text" id="employeecount" class="form-control" value="700">
+            </div>
+
+            <a class="btn btn-primary btn-materials">Save</a>
+        </form>
+
+    </div>
+</div> 
+</p-dialog>
+
+
+
+<p-dialog
+header="Add Location"
+[(visible)]="addlocationVisble"
+[style]="{ width: '80vw' }"
+>
+<ng-template pTemplate="header">
+    <div class="d-flex">
+        <a (click)="hideLocation()" class="btn btn-primary btn-back" title="Back to Location"><i class="mdi mdi-keyboard-backspace"></i></a>
+        <h4 class="modal-title ml-10" id="myLargeModalLabel">Add Location</h4>
+    </div>
+  
+</ng-template>
+
+<div class="row">
+    <div class="col-sm-12">
+        
+        <form action="">
+            
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Location Name</label>
+                <input type="text" id="locationname" class="form-control" placeholder="Location Name">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Set User Counts for Location</label>
+                <input type="text" id="usercount" class="form-control" placeholder="Enter Count">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Set Employee Counts for Location</label>
+                <input type="text" id="employeecount" class="form-control" placeholder="Enter Count">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Ticket Limits</label>
+                <input type="text" id="employeecount" class="form-control" placeholder="Enter Ticket Limit">
+            </div>
+
+            <a class="btn btn-primary btn-materials">Save</a>
+        </form>
+
+    </div>
+</div>   
+</p-dialog>
