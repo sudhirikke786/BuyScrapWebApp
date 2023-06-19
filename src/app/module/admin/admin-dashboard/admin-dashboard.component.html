@@ -52,6 +52,16 @@
                                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                             [rowsPerPageOptions]="[10, 25, 50]" >
 
+                                            <ng-template pTemplate="caption">
+
+                                                <div class="d-flex align-items-end search-box" style="display: flex; justify-content: right;">
+                                                    <div class="p-input-icon-left ml-auto">
+                                                        <i class="pi pi-search"></i>
+                                                        <span>Search: </span><input  pInputText type="text" placeholder="Search keyword" />
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                            
                                             <ng-template pTemplate="header">
                                                 <tr>
                                                     <th>First Name</th>

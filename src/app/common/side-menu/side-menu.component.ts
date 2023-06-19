@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./side-menu.component.scss']
 })
 export class SideMenuComponent {
-  organizationName: any = 'abc';
+  organizationName: any = localStorage.getItem('orgName');;
 
   menuList = [
       {

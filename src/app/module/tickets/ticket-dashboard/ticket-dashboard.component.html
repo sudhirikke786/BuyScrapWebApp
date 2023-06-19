@@ -50,7 +50,7 @@
                                         [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
                                         [rowsPerPageOptions]="[ 5, 10, 20, 50]" 
                                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                        [globalFilterFields]="['ticket.id', 'ticket.dateCreated', 'ticket.status', 'ticket.ticketAmount', 'ticket.seller']"
+                                        [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']"
                                         >
                                         <ng-template pTemplate="caption">
 
@@ -74,18 +74,18 @@
                                         </ng-template>
                                         <ng-template pTemplate="body" let-ticket>
                                             <tr>
-                                                <td>{{ ticket.id }}</td>
-                                                <td>{{ ticket.dateCreated }}</td>
+                                                <td>{{ ticket.rowId }}</td>
+                                                <td>{{ ticket.createdDate }}</td>
                                                 <td>{{ ticket.status }}</td>
                                                 <td>{{ ticket.ticketAmount }}</td>
-                                                <td>{{ ticket.seller }}</td>
+                                                <td>{{ ticket.customerName }}</td>
                                                 <td>{{ ticket.dateClosed }}</td>
                                                 <td>
                                                     <div class="d-flex no-wrap">
                                                         <a type="button" class="btn btn-grid btn-danger waves-effect waves-light me-1">
                                                             <i class="mdi mdi-trash-can-outline"></i> Void
                                                         </a> 
-                                                        <a routerLink = "/{{orgName}}/home/detail/{{ticket.id}}" class="btn btn-grid btn-success waves-effect waves-light">
+                                                        <a routerLink = "/{{orgName}}/home/detail/{{ticket.rowId}}" class="btn btn-grid btn-success waves-effect waves-light">
                                                             <i class="mdi mdi-eye"></i> Show
                                                         </a>
 

@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Pagination } from 'src/app/core/interfaces/common-interfaces';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-ticket-dashboard',
   templateUrl: './ticket-dashboard.component.html',
   styleUrls: ['./ticket-dashboard.component.scss']
 })
-export class TicketDashboardComponent {
+export class TicketDashboardComponent implements OnInit {
 
   selectedTickets = [];
-  orgName = 'abc';
+  orgName = localStorage.getItem('orgName');
 
   actionList = [{
     iconcode:'mdi-magnify',
@@ -67,114 +70,146 @@ export class TicketDashboardComponent {
   
   tickets = [
     {
-      id: '462',
-      dateCreated: '04/05/2023',
+      rowId: '462',
+      createdDate: '04/05/2023',
       status: 'OPEN',
       ticketAmount: '855.000',
-      seller: 'Alex Junior',
+      customerName: 'Alex Junior',
       dateClosed: '--/--/----'
     },
     {
-      id: '463',
-      dateCreated: '05/05/2023',
+      rowId: '463',
+      createdDate: '05/05/2023',
       status: 'Partially Paid',
       ticketAmount: '955.000',
-      seller: 'Jon Jones',
+      customerName: 'Jon Jones',
       dateClosed: '--/--/----'
     },
     {
-      id: '468',
-      dateCreated: '07/05/2023',
+      rowId: '468',
+      createdDate: '07/05/2023',
       status: 'OPEN',
       ticketAmount: '555.000',
-      seller: 'George Foreman',
+      customerName: 'George Foreman',
       dateClosed: '--/--/----'
     },
     {
-      id: '500',
-      dateCreated: '08/05/2023',
+      rowId: '500',
+      createdDate: '08/05/2023',
       status: 'OPEN',
       ticketAmount: '155.000',
-      seller: 'Mike Hussey',
+      customerName: 'Mike Hussey',
       dateClosed: '--/--/----'
     },
     {
-      id: '512',
-      dateCreated: '09/05/2023',
+      rowId: '512',
+      createdDate: '09/05/2023',
       status: 'Partially Paid',
       ticketAmount: '255.000',
-      seller: 'Alexander',
+      customerName: 'Alexander',
       dateClosed: '--/--/----'
     },
     {
-      id: '551',
-      dateCreated: '10/05/2023',
+      rowId: '551',
+      createdDate: '10/05/2023',
       status: 'Partially Paid',
       ticketAmount: '355.000',
-      seller: 'Robert Whittaker',
+      customerName: 'Robert Whittaker',
       dateClosed: '--/--/----'
     },
     {
-      id: '389',
-      dateCreated: '12/05/2023',
+      rowId: '389',
+      createdDate: '12/05/2023',
       status: 'OPEN',
       ticketAmount: '525.000',
-      seller: 'Dos Santos',
+      customerName: 'Dos Santos',
       dateClosed: '--/--/----'
     },
     {
-      id: '402',
-      dateCreated: '16/05/2023',
+      rowId: '402',
+      createdDate: '16/05/2023',
       status: 'OPEN',
       ticketAmount: '689.000',
-      seller: 'Floyd M',
+      customerName: 'Floyd M',
       dateClosed: '--/--/----'
     },
     {
-      id: '408',
-      dateCreated: '19/05/2023',
+      rowId: '408',
+      createdDate: '19/05/2023',
       status: 'OPEN',
       ticketAmount: '358.000',
-      seller: 'Manny P',
+      customerName: 'Manny P',
       dateClosed: '--/--/----'
     },
     {
-      id: '205',
-      dateCreated: '25/05/2023',
+      rowId: '205',
+      createdDate: '25/05/2023',
       status: 'OPEN',
       ticketAmount: '454.000',
-      seller: 'Mike Tyson',
+      customerName: 'Mike Tyson',
       dateClosed: '--/--/----'
     },
     {
-      id: '423',
-      dateCreated: '26/05/2023',
+      rowId: '423',
+      createdDate: '26/05/2023',
       status: 'OPEN',
       ticketAmount: '689.000',
-      seller: 'Floyd M',
+      customerName: 'Floyd M',
       dateClosed: '--/--/----'
     },
     {
-      id: '428',
-      dateCreated: '27/05/2023',
+      rowId: '428',
+      createdDate: '27/05/2023',
       status: 'OPEN',
       ticketAmount: '358.000',
-      seller: 'Manny P',
+      customerName: 'Manny P',
       dateClosed: '--/--/----'
     },
     {
-      id: '439',
-      dateCreated: '28/05/2023',
+      rowId: '439',
+      createdDate: '28/05/2023',
       status: 'OPEN',
       ticketAmount: '454.000',
-      seller: 'Mike Tyson',
+      customerName: 'Mike Tyson',
       dateClosed: '--/--/----'
     }
   ];
 
   visible: boolean = false;
   ticketvisible: boolean = false;
+  organizationName: any;
 
+  pagination: Pagination = {
+    Status: 'ALL',
+    PageNumber: 1,
+    RowOfPage: 1000,
+    LocationId: 1
+  }
+  
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private commonService: CommonService) { }
+
+  ngOnInit() {
+    this.organizationName = 'prodTest';
+    this.getAllTicketsDetails(this.pagination);
+  }
+
+  /**
+   * Get the data by calling WebAPI to fetch the details for organization login
+   */
+  getAllTicketsDetails(pagination: Pagination) {
+    this.commonService.getAllTicketsDetails(pagination)
+      .subscribe(data => {
+          console.log('getAllTicketsDetails :: ');
+          console.log(data);
+          this.tickets = data.body;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
 
   showMergeDialog(){
     this.visible = true;

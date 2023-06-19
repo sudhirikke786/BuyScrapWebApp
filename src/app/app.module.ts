@@ -14,6 +14,7 @@ import { FooterComponent } from './common/footer/footer.component';
 
 import { FormsModule } from '@angular/forms';
 import { PrimengModule } from './module/shared/primeng/primeng.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { PrimengModule } from './module/shared/primeng/primeng.module';
     AppRoutingModule,
     FormsModule,
     PrimengModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

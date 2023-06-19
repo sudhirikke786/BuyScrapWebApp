@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class SellersBuyersDashboardComponent {
 
-  orgName = 'abc';
+  orgName = localStorage.getItem('orgName');
   constructor(private router:Router){
 
   }

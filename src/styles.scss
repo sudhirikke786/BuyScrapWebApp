@@ -106,3 +106,24 @@
 .p-dialog .p-dialog-content{
     padding-top:1rem;
 }
+
+
+.p-paginator-rpp-options{
+    position:absolute !important;
+    top:0px;
+    left: 0px;
+  
+}
+.p-paginator .p-dropdown{
+    height: 30px;
+}
+
+.p-paginator-bottom{
+    display: flex !important;
+    justify-content: end !important;
+}
+
+
+.p-inputtext {
+    padding: 0.15rem 0.9rem !important;
+}
