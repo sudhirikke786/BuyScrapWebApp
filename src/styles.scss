@@ -108,12 +108,7 @@
 }
 
 
-.p-paginator-rpp-options{
-    position:absolute !important;
-    top:0px;
-    left: 0px;
-  
-}
+
 .p-paginator .p-dropdown{
     height: 30px;
 }
@@ -127,3 +122,27 @@
 .p-inputtext {
     padding: 0.15rem 0.9rem !important;
 }
+
+//Moz-style
+
+
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+   
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+   
+  ::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+
+  body{
+    overflow: hidden;
+  }
+  .content{
+    overflow: auto;
+    max-height: 100vh;
+  }

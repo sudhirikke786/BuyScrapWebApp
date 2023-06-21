@@ -3,11 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../core/services/common.service';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../core/interfaces/common-interfaces';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
-  styleUrls: ['./user-login.component.scss']
+  styleUrls: ['./user-login.component.scss'],
+  providers: [MessageService]
 })
 export class UserLoginComponent implements OnInit {
   
@@ -26,6 +28,7 @@ export class UserLoginComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private http:HttpClient,
+              private messageService: MessageService,
               private commonService: CommonService) { }
 
   ngOnInit() {
@@ -38,13 +41,11 @@ export class UserLoginComponent implements OnInit {
   }
   
   btnClick(): void {
-    alert(JSON.stringify(this.user));
     this.validateUser();
     // this.router.navigateByUrl(`/${this.organizationName}/home`);
   };
   
-  getIPAddress()
-  {
+  getIPAddress(){
     this.http.get("http://api.ipify.org/?format=json").subscribe((res:any)=>{
       this.user.macID = res.ip;
     });
@@ -56,6 +57,8 @@ export class UserLoginComponent implements OnInit {
   getOrgLocation() {
     this.commonService.getOrgLocation()
       .subscribe(data => {
+
+        
           console.log('getOrgLocation :: ');
           console.log(data);
           this.locations = data.body;
@@ -68,14 +71,15 @@ export class UserLoginComponent implements OnInit {
   
   validateUser() {  
 
-    this.commonService.validateUserCredentials(this.user)
-      .subscribe(data => {
+    this.commonService.validateUserCredentials(this.user).subscribe(data => {
           console.log('validateUserCredentials :: ');
           console.log(data);          
-          if (data.body.userdto.userName) {
+          if (data?.body.userdto.userName) {
             this.router.navigateByUrl(`/${this.organizationName}/home`);
           } else {
-            alert('Invalid User Credentials');
+            this.messageService.add({ severity: 'error', summary: 'error', detail: 'Invalid User Credentials' });
+
+        
           }
           
         },

@@ -7,11 +7,13 @@ import { takeUntil } from 'rxjs/operators';
 import { CommonService } from '../core/services/common.service';
 import { HttpClient } from '@angular/common/http';
 import { Organization } from '../core/interfaces/common-interfaces';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-organization-login',
   templateUrl: './organization-login.component.html',
-  styleUrls: ['./organization-login.component.scss']
+  styleUrls: ['./organization-login.component.scss'],
+  providers: [MessageService]
 })
 export class OrganizationLoginComponent implements OnInit {
 
@@ -24,6 +26,7 @@ export class OrganizationLoginComponent implements OnInit {
 
   constructor(private router: Router, 
               private http: HttpClient,
+              private messageService: MessageService,
               private commonService: CommonService) { }
 
   ngOnInit() {
@@ -72,11 +75,14 @@ export class OrganizationLoginComponent implements OnInit {
             }
             this.router.navigateByUrl(`${orgName}/user-login`);
           } else {
-            alert('Invalid organisation');
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Content' });
+
           }
         },
         (err: any) => {
-          this.errorMsg = 'Error occured';
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: err });
+
+          
         }
       );
   }

@@ -8,6 +8,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 
 import { OverlayModule } from 'primeng/overlay';
 import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [],
@@ -18,7 +19,8 @@ import { DialogModule } from 'primeng/dialog';
     DropdownModule,
     ButtonModule,
     OverlayModule,
-    DialogModule
+    DialogModule,
+    ToastModule
   ],
   exports:[
     InputTextModule,
@@ -27,7 +29,8 @@ import { DialogModule } from 'primeng/dialog';
     ButtonModule,
     OverlayModule,
     DialogModule,
-    MultiSelectModule
+    MultiSelectModule,
+    ToastModule
   ]
 })
 export class PrimengModule { }

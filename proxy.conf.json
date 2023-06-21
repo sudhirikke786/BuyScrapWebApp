@@ -1,0 +1,11 @@
+{
+    "/Locations": {
+      "target": "https://localhost:44385",
+      "secure": false
+    },
+    "/Organisations": {
+      "target": "https://localhost:44385",
+      "secure": false
+    }
+    
+  }

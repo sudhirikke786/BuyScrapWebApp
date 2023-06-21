@@ -27,8 +27,8 @@
 
         <div class="row mt-2">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
+                <div class="card px-1 py-2" id="htmlData">
+                    <div class="card-body px-1 py-2">
 
                         <div class="row">
                             <div class="col-sm-2">
@@ -57,7 +57,7 @@
 
                         <hr>
 
-                        <div class="row mt-3">
+                        <div class="row mt-1">
                             <div class="col-sm-4">
                                 <h4 class="title-plus-border">Particulars</h4>                                                
                             </div>
@@ -68,294 +68,52 @@
 
                             <div class="row">
                             <div class="col-sm-9">
+                                <div class="col-md-12">
+                                    <p-table #dt1 [value]="ticketObj" [paginator]="false" [rows]="10"
+                                        [showCurrentPageReport]="false" [tableStyle]="{ 'min-width': '300px','min-height':'300px' }"
+                                        [scrollable]="true" 
+                                        [scrollHeight]="cheight"
+                                        
+                                        >
+             
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width:14%">Material</th>
+                                                <th style="width:14%">Gross(M)</th>
+                                                <th style="width:14%">Tare</th>
+                                                <th style="width:14%">Net</th>
+                                                <th style="width:14%">Price</th>
+                                                <th style="width:14%">Amount</th>
+                                                <th style="width:18%">Action</th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-ticket>
+                                            <tr>
+                                                <td>{{ ticket.material }}</td>
+                                                <td>{{ ticket.gross  }}</td>
+                                                <td>{{ ticket.tare }}</td>
+                                                <td>{{ ticket.net }}</td>
+                                                <td>{{ ticket.price }}</td>
+                                                <td>{{ ticket.amount}}</td>
+                                                <td>
+                                                    <a class="btn print-btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
+<br/>    
+                                                    <a class="btn print-btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
+                                        
+                                              
+                                            </td>
+                                        </tr>
+                                        </ng-template>
+                                        
+                                        
+                                        
+                                    </p-table>
+                                </div>
 
-                                <table class="ticket-details-new-tbl">
-                                    <thead>
-                                    <tr>
-                                        <th>Material</th>
-                                        <th>Gross(M)</th>
-                                        <th>Tare</th>
-                                        <th>Net</th>
-                                        <th>Price</th>
-                                        <th>Amount</th>
-                                        <th>Image</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
 
-                                <tbody>
-                                    <tr>
-                                        <td>Aluminium Extrusion(Clean) <!--<br> 
-                                                 <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="checkmeout0">
-                                                    <label class="form-check-label" for="checkmeout0">Flag for COD</label>
-                                                </div> -->
-                                            </td>
-                                            <td>12.00</td>
-                                            <td>0.00</td>
-                                            <td>12.00</td>
-                                            <td>2.400</td>
-                                            <td>28.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
 
-                                    <tr>
-                                        <td>Lithosheet</td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Lithosheet</td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Lithosheet</td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Lithosheet</td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Lithosheet</td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Lithosheet</td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-                                    
-                                </tbody>
-
-                                </table>
-
-                                <!-- <table id="selection-datatable" class="table dt-responsive nowrap w-100">
-                                <thead>
-                                    <tr>
-                                        <th>Material</th>
-                                        <th>Gross(M)</th>
-                                        <th>Tare</th>
-                                        <th>Net</th>
-                                        <th>Price</th>
-                                        <th>Amount</th>
-                                        <th>Image</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                            
-                            
-                                <tbody>
-                                    <tr>
-                                        <td>Aluminium Extrusion(Clean) <br> 
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="checkmeout0">
-                                                    <label class="form-check-label" for="checkmeout0">Flag for COD</label>
-                                                </div>
-                                            </td>
-                                            <td>12.00</td>
-                                            <td>0.00</td>
-                                            <td>12.00</td>
-                                            <td>2.400</td>
-                                            <td>28.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Lithosheet <br> 
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="checkmeout0">
-                                                    <label class="form-check-label" for="checkmeout0">Flag for COD</label>
-                                                </div>
-                                            </td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Lithosheet <br> 
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="checkmeout0">
-                                                    <label class="form-check-label" for="checkmeout0">Flag for COD</label>
-                                                </div>
-                                            </td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Lithosheet <br> 
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="checkmeout0">
-                                                    <label class="form-check-label" for="checkmeout0">Flag for COD</label>
-                                                </div>
-                                            </td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Lithosheet <br> 
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="checkmeout0">
-                                                    <label class="form-check-label" for="checkmeout0">Flag for COD</label>
-                                                </div>
-                                            </td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Lithosheet <br> 
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="checkmeout0">
-                                                    <label class="form-check-label" for="checkmeout0">Flag for COD</label>
-                                                </div>
-                                            </td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Lithosheet <br> 
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="checkmeout0">
-                                                    <label class="form-check-label" for="checkmeout0">Flag for COD</label>
-                                                </div>
-                                            </td>
-                                            <td>16.00</td>
-                                            <td>0.00</td>
-                                            <td>16.00</td>
-                                            <td>2.800</td>
-                                            <td>25.800</td>
-                                            <td><img src="assets/images/custom/aluminium-extrusion.jpg" class="ticket-particulars-img"></td>
-                                            <td>
-                                                <a class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
-                                                
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                            </td>
-                                    </tr>
-                                    
-                                </tbody>
-                    </table> -->
+                               
+                          
 
                             </div>
 
@@ -370,18 +128,15 @@
                                       <li>
                                           <a id="showInnerDiv2" class="btn btn-primary btn-materials">Copper</a>
                                       </li>
+                                      <li>
+                                        <a id="showInnerDiv3" class="btn btn-primary btn-materials">Plastic</a>
+                                    </li>
+                                    
                                   </ul>
 
-                                  <ul class="materials-ul materials-ul-2">
-                                      <li>
-                                          <a id="showInnerDiv3" class="btn btn-primary btn-materials">eWaste</a>
-                                      </li>
-                                      <li>
-                                          <a id="showInnerDiv4" class="btn btn-primary btn-materials">Plastic</a>
-                                      </li>
-                                  </ul>
+                                 
 
-                                  <ul class="materials-ul materials-ul-3">
+                                  <!-- <ul class="materials-ul materials-ul-3">
                                       <li>
                                           <a id="showInnerDiv5" class="btn btn-primary btn-materials">Brass</a>
                                       </li>
@@ -397,7 +152,7 @@
                                       <li>
                                           <a id="showInnerDiv8" class="btn btn-primary btn-materials">Steel</a>
                                       </li>
-                                  </ul>
+                                  </ul> -->
                                   
                                 </div>
 
@@ -433,38 +188,12 @@
 
                                 </div>
 
-                                <div id="innerdiv2" style="display: none;">
-                                  <h1 class="btn-materials-2"><span><a id="backToMainBox2" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a></span> Main Material - Copper</h1>
-                                </div>
-
-                                <div id="innerdiv3" style="display: none;">
-                                  <h1 class="btn-materials-2"><span><a id="backToMainBox3" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a></span> Main Material - eWaste</h1>
-                                </div>
-
-                                <div id="innerdiv4" style="display: none;">
-                                  <h1 class="btn-materials-2"><span><a id="backToMainBox4" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a></span> Main Material - Plastic</h1>
-                                </div>
-
-                                <div id="innerdiv5" style="display: none;">
-                                  <h1 class="btn-materials-2"><span><a id="backToMainBox5" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a></span> Main Material - Brass</h1>
-                                </div>
-
-                                <div id="innerdiv6" style="display: none;">
-                                  <h1 class="btn-materials-2"><span><a id="backToMainBox6" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a></span> Main Material - CRV</h1>
-                                </div>
-
-                                <div id="innerdiv7" style="display: none;">
-                                  <h1 class="btn-materials-2"><span><a id="backToMainBox7" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a></span> Main Material - Iron</h1>
-                                </div>
-
-                                <div id="innerdiv8" style="display: none;">
-                                  <h1 class="btn-materials-2"><span><a id="backToMainBox8" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a></span> Main Material - Steel</h1>
-                                </div>
+                                
 
                             </div>
                         </div>
 
-                        <div class="row mt-3">
+                        <div class="row mt-1">
                             
                             <div class="col-sm-8">
                                 <p class="ticket-details-p"><b>Adjustment : -0.000</b></p>
@@ -515,7 +244,7 @@
 
                             <div class="col-sm-4 pay-print-box">
                                 <a href="#" class="btn btn-danger me-1">Pay Ticket</a>
-                                <a href="#" class="btn btn-primary">Printout</a>
+                                <a class="btn btn-primary" (click)="openPDF()">Printout</a>
                             </div>
 
                         </div>
