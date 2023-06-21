@@ -44,21 +44,14 @@
                 [value]="shipouts"
                 [paginator]="true"
                 [rows]="10"
+                [scrollable]="true" 
+                scrollHeight="50vh"
                 [showCurrentPageReport]="true"
                 [tableStyle]="{ 'min-width': '50rem' }"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 [rowsPerPageOptions]="[10, 25, 50]"
               >
-              <ng-template pTemplate="caption">
-
-                <div class="d-flex align-items-end search-box" style="display: flex; justify-content: right;">
-                    <div class="p-input-icon-left ml-auto">
-                        <i class="pi pi-search"></i>
-                        <span>Search: </span><input  pInputText type="text" placeholder="Search keyword" />
-                    </div>
-                </div>
-            </ng-template>
-            
+             
                 <ng-template pTemplate="header">
                   <tr>
                     <th>Bill of Landing</th>
@@ -155,18 +148,12 @@
     <p-table #dt1 [value]="newCustomer" [paginator]="true" [rows]="10"
     [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
     [rowsPerPageOptions]="[ 5, 10, 20, 50]" 
+    [scrollable]="true" 
+    scrollHeight="50vh"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [globalFilterFields]="['ticket.sellers', 'ticket.dLicense', 'ticket.licensePlat', 'ticket.address']"
     >
-    <ng-template pTemplate="caption">
-
-        <div class="d-flex align-items-end search-box" style="display: flex; justify-content: right;">
-            <div class="p-input-icon-left ml-auto">
-                <i class="pi pi-search"></i>
-                <span>Search: </span><input  pInputText type="text" placeholder="Search keyword" />
-            </div>
-        </div>
-    </ng-template>
+    
     <ng-template pTemplate="header">
         <tr>
             <th>Sellers</th>
