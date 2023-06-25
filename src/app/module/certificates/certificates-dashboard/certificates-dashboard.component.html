@@ -64,18 +64,23 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-certificate>
                   <tr>
-                    <td>{{ certificate.ticketID }}</td>
-                    <td>{{ certificate.dateCreated }}</td>
-                    <td>{{ certificate.ticketAmount }}</td>
-                    <td>{{ certificate.seller }}</td>
-                    <td>{{ certificate.dateClosed }}</td>
-                    <td>
-                      <a
-                        (click)="showModel()"
-                        class="btn btn-grid btn-success waves-effect waves-light"
-                        ><i class="mdi mdi-eye"></i> Show</a
-                      >
+                    <td>{{ certificate.rowId }}</td>
+                    <td>{{ certificate?.dateOpened | date: 'MM/dd/yyyy' }}</td>
+                    <td>{{ certificate?.ticketAmount }}</td>
+                    <td>{{ certificate.customerName }}</td>
+                    <td>{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>
+                    <td *ngIf="certificate?.dateClosed != null">
+					  <a (click)="showModel()" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-eye"></i> Show</a>
+
+                      <a href="" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-printer"></i> Print</a>
+
+                      <a href="" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-restore"></i> Restore</a> 
                     </td>
+                    <td *ngIf="certificate?.dateClosed == null">
+                      <a data-bs-target="" data-bs-toggle="modal" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-certificate"></i> COD</a>
+
+                      <a data-bs-target="" data-bs-toggle="modal" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-close"></i> Close</a>
+                  </td>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="paginatorleft">

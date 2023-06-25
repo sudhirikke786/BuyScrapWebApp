@@ -68,18 +68,18 @@
                                         </ng-template>
                                         <ng-template pTemplate="body" let-ticket>
                                             <tr>
-                                                <td>{{ ticket.rowId }}</td>
-                                                <td>{{ ticket.createdDate | date: 'dd/MM/yyyy hh:mm a'  }}</td>
-                                                <td>{{ ticket.status }}</td>
-                                                <td>{{ ticket.ticketAmount }}</td>
-                                                <td>{{ ticket.customerName }}</td>
-                                                <td>{{ ticket.dateClosed | date: 'dd/MM/yyyy hh:mm a'}}</td>
+                                                <td>{{ ticket?.rowId }}</td>
+                                                <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy hh:mm a'  }}</td>
+                                                <td>{{ ticket?.status }}</td>
+                                                <td>{{ ticket?.ticketAmount }}</td>
+                                                <td>{{ ticket?.customerName }}</td>
+                                                <td>{{ ticket?.dateClosed ? (ticket?.dateClosed  | date: 'MM/dd/yyyy hh:mm a') : ''}}</td>
                                                 <td>
                                                     <div class="d-flex no-wrap">
                                                         <a type="button" class="btn btn-grid btn-danger waves-effect waves-light me-1">
                                                             <i class="mdi mdi-trash-can-outline"></i> Void
                                                         </a> 
-                                                        <a routerLink = "/{{orgName}}/home/detail/{{ticket.rowId}}" class="btn btn-grid btn-success waves-effect waves-light">
+                                                        <a routerLink = "/{{orgName}}/home/detail/{{ticket.rowId}}/{{ticket.customerId}}" class="btn btn-grid btn-success waves-effect waves-light">
                                                             <i class="mdi mdi-eye"></i> Show
                                                         </a>
 

@@ -1,47 +1,163 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';  
+
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-ticket-detail',
   templateUrl: './ticket-detail.component.html',
   styleUrls: ['./ticket-detail.component.scss']
 })
-export class TicketDetailComponent {
+export class TicketDetailComponent implements OnInit {
   @ViewChild('htmlData') htmlData!: ElementRef;
   cheight= '20vh'
 
 
-  ticketObj = [{
-    material:'Aluminium Extrusion(Clean)',
-    gross:'122000',
-    tare:'222',
-    net:'3333',
-    price:3000,
-    amount:5000
-  },
-  {
-    material:'Aluminium Extrusion(Clean)',
-    gross:'122000',
-    tare:'222',
-    net:'3333',
-    price:3000,
-    amount:5000
-  },
-  {
-    material:'Aluminium Extrusion(Clean)',
-    gross:'122000',
-    tare:'222',
-    net:'3333',
-    price:3000,
-    amount:5000
-  }]
+  ticketObj:any;
+  organizationName: any;
+  sellerId: any;
+  ticketId: any;
+  locId: any;
+
+  customer: any;
+  totalNoOfMaterial: any;
+  totalGross: any;
+  totalTare: any;
+  totalNet: any;
+  totalAmount: any;
+
+  isEditModeOn = false;
+  materialList: any;
+  subMaterialList: any;
+  mainMaterialsVisible = true;
+  selectedMaterial = '';
+  
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private commonService: CommonService) { }
+
+  ngOnInit() {
+    this.organizationName = 'prodTest';
+    this.locId = 1;
+    this.route.params.subscribe((param)=>{
+      this.ticketId = param["ticketId"];
+      this.sellerId = param["customerId"];
+      this.getSellerById();
+      this.getTransactionsDetailsById();
+    });
+  }
+
+  
+  getSellerById() {
+    const paramObject = {
+      ID: this.sellerId,
+      LocationId: this.locId
+    };
+    this.commonService.getSellerById(paramObject)
+      .subscribe(data => {
+          console.log('getSellerById :: ');
+          console.log(data);
+          this.customer = data.body;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  
+  getTransactionsDetailsById() {
+    const paramObject = {
+      TicketId: this.ticketId,
+      locid: this.locId,
+      IsCOD: false,
+      IsCODDone: false
+    };
+    this.commonService.getTransactionsDetailsById(paramObject)
+      .subscribe(data => {
+          console.log('getTransactionsDetailsById :: ');
+          console.log(data);
+          this.ticketObj = data.body;
+          this.calculateTotal(this.ticketObj);
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  calculateTotal(tickets: any) {
+    this.totalNoOfMaterial = tickets.length;
+    this.totalGross = tickets.reduce(function (sum:any, tickets:any) {
+      return sum + tickets.gross;
+    }, 0);
+    this.totalTare = tickets.reduce(function (sum:any, tickets:any) {
+      return sum + tickets.tare;
+    }, 0);
+    this.totalNet = tickets.reduce(function (sum:any, tickets:any) {
+      return sum + tickets.net;
+    }, 0);
+    this.totalAmount = tickets.reduce(function (sum:any, tickets:any) {
+      return sum + tickets.amount;
+    }, 0);
+  }
+
+  editTicketDetails() {
+    this.isEditModeOn = true;    
+    this.getAllGroupMaterial();
+  }
+
+  getAllGroupMaterial() {
+    const paramObject = {
+      LocationId: this.locId
+    };
+    this.commonService.getAllGroupMaterial(paramObject)
+      .subscribe(data => {
+          console.log('getAllGroupMaterial :: ');
+          console.log(data);
+          this.materialList = data.body;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  backToMainMaterials() {
+    this.mainMaterialsVisible =  true;
+  }
+
+  getSubMaterials(materialId: any, selectedMaterial: any) {
+    this.mainMaterialsVisible =  false;
+    this.selectedMaterial = selectedMaterial;
+
+    const paramObject = {
+      MaterialID: materialId,
+      LocationId: this.locId
+    };
+    this.commonService.getAllSubMaterials(paramObject)
+      .subscribe(data => {
+          console.log('getAllSubMaterials :: ');
+          console.log(data);
+          this.subMaterialList = data.body;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
 
 
+  saveTicketDetails() {
+    this.isEditModeOn = false;
+  }
 
-  public openPDF(){
-
-
+  openPDF(){
+    alert('pdf ........');
+    this.isEditModeOn = false;
     let DATA: any = document.getElementById('htmlData');
     const _div = document.querySelectorAll('.p-button');
     const _removeHeight = document.querySelector('.mainbox-row');
@@ -94,12 +210,15 @@ export class TicketDetailComponent {
       _tableHeight.setAttribute('style', 'max-height:20vh');
       }
 
-      if( _print_remove){
+      if(_print_remove){
         _print_remove.setAttribute('style', 'display: block');
       }
 
       this.cheight = '20vh';
     });
+    if(_print_remove){
+      _print_remove.setAttribute('style', 'display: block');
+    }
   }
 
 

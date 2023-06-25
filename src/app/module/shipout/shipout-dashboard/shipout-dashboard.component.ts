@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-shipout-dashboard',
   templateUrl: './shipout-dashboard.component.html',
   styleUrls: ['./shipout-dashboard.component.scss']
 })
-export class ShipoutDashboardComponent {
+export class ShipoutDashboardComponent implements OnInit {
 
   actionList = [
     {
@@ -40,109 +43,69 @@ export class ShipoutDashboardComponent {
 
   
 
-  shipouts = [
-    {	
-      billOfLanding: '117',
-      dateCreated: '05/11/2023',
-      carrier: '',
-      totalNet: '22.00',
-      buyer: 'MetalBuyers USA'
-    },
-    {	
-      billOfLanding: '119',
-      dateCreated: '08/05/2023',
-      carrier: '',
-      totalNet: '22.00',
-      buyer: 'MetalBuyers USA'
-    },
-    {	
-      billOfLanding: '116',
-      dateCreated: '25/12/2023',
-      carrier: '',
-      totalNet: '22.00',
-      buyer: 'MetalBuyers USA'
-    },
-    {	
-      billOfLanding: '115',
-      dateCreated: '03/10/2023',
-      carrier: '',
-      totalNet: '152.00',
-      buyer: 'Tata Model'
-    },
-    {	
-      billOfLanding: '120',
-      dateCreated: '09/09/2023',
-      carrier: '',
-      totalNet: '22.00',
-      buyer: 'MetalBuyers USA'
-    },
-    {	
-      billOfLanding: '121',
-      dateCreated: '19/10/2023',
-      carrier: '',
-      totalNet: '35.00',
-      buyer: 'Monster Cable INC'
-    },
-    {	
-      billOfLanding: '122',
-      dateCreated: '14/08/2023',
-      carrier: '',
-      totalNet: '45.00',
-      buyer: 'MetalBuyers USA'
-    },
-    {	
-      billOfLanding: '123',
-      dateCreated: '30/10/2023',
-      carrier: '',
-      totalNet: '82.00',
-      buyer: 'MetalBuyers USA'
-    },
-    {	
-      billOfLanding: '152',
-      dateCreated: '31/02/2023',
-      carrier: '',
-      totalNet: '95.00',
-      buyer: 'Monster Cable INC'
-    },
-    {	
-      billOfLanding: '125',
-      dateCreated: '26/10/2023',
-      carrier: '',
-      totalNet: '105.00',
-      buyer: 'MetalBuyers USA'
-    },
-    {	
-      billOfLanding: '128',
-      dateCreated: '28/04/2023',
-      carrier: '',
-      totalNet: '520.00',
-      buyer: 'MetalBuyers USA'
-    },
-    {	
-      billOfLanding: '110',
-      dateCreated: '24/11/2023',
-      carrier: '',
-      totalNet: '22.00',
-      buyer: 'Monster Cable INC'
-    }
-  ];
-
-  newCustomer = [{
-   sellers : '202',
-   dLicense :'2-----',
-   licensePlat:'kksjkdksjd',
-   address:'sllsdlsd'
-  }]
+  shipouts: any;
+  sellers: any;
 
   visible = false;
   custVisible=  false;
+  orgName: any;
+  locId: any;  
+  
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private commonService: CommonService) { }
 
-
-  showDialog() {
-    this.visible =  true;
+  ngOnInit() {
+    this.orgName = localStorage.getItem('orgName');
+    this.locId = 1;
+    this.getAllShipOutDetails();
   }
 
-  showCustomerModel(){
+  getAllShipOutDetails() {   
+
+    const pagination = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId
+    }
+
+    this.commonService.getAllShipOutDetails(pagination)
+      .subscribe(data => {
+          console.log('getAllShipOutDetails :: ');
+          console.log(data);
+          this.shipouts = data.body;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+  
+  getAllsellersDetails() {
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId
+    };
+    this.commonService.getAllsellersDetails(paramObject)
+      .subscribe(data => {
+          console.log('getAllsellersDetails :: ');
+          console.log(data);
+          this.sellers = data.body;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  showDialog() {    
+    this.visible =  true;
+    this.getAllsellersDetails();
+  }
+
+  showCustomerModel(sellerId: any){
+    alert(sellerId);
     this.custVisible = true;
   }
   closeDriver(){

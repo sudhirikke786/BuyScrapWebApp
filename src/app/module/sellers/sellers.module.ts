@@ -21,7 +21,7 @@ export const routes: Routes = [
     component:AddSellersComponent
   },
   {
-    path:'view-sellers/:id',
+    path:'view-sellers/:sellerId',
     component:SellersBuyersDetailsComponent
   }
 ]

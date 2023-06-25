@@ -71,10 +71,42 @@ export class CommonService {
 
   getOrgLocation(): Observable<any> {
     return this.callAPI('https://localhost:44385/Locations/GetAllLocatoins', 'GET', null, 'ProdTest');
-  }  
+  }
 
   getAllTicketsDetails(pagination: any): Observable<any> {
     return this.callAPI('https://localhost:44385/Tickets/GetAllTicketsDetails', 'GET', pagination, 'ProdTest');
+  }
+
+  getAllsellersDetails(pagination: any): Observable<any> {
+    return this.callAPI('https://localhost:44385/Sellerss/GetAllsellersDetails', 'GET', pagination, 'ProdTest');
+  }
+
+  getSellerById(paramObj: any): Observable<any> {
+    return this.callAPI('https://localhost:44385/Sellerss/GetSellerById', 'GET', paramObj, 'ProdTest');
+  }
+
+  getTransactionsDetailsById(paramObj: any): Observable<any> {
+    return this.callAPI('https://localhost:44385/TransactionMasters/GetTransactionsDetailsById', 'GET', paramObj, 'ProdTest');
+  }
+
+  getAllGroupMaterial(paramObj: any): Observable<any> {
+    return this.callAPI('https://localhost:44385/Materialss/GetAllGroupMaterial', 'GET', paramObj, 'ProdTest');
+  }
+
+  getAllSubMaterials(paramObj: any): Observable<any> {
+    return this.callAPI('https://localhost:44385/Materialss/GetAllSubMaterials', 'GET', paramObj, 'ProdTest');
+  }
+
+  getAllShipOutDetails(pagination: any): Observable<any> {
+    return this.callAPI('https://localhost:44385/ShipOuts/GetAllShipOutDetails', 'GET', pagination, 'ProdTest');
+  }
+
+  getShipOutDetailsByID(paramObj: any): Observable<any> {
+    return this.callAPI('https://localhost:44385/ShipOuts/GetShipOutDetailsByID', 'GET', paramObj, 'ProdTest');
+  }
+
+  getAllCODTickets(pagination: any): Observable<any> {
+    return this.callAPI('https://localhost:44385/Tickets/GetAllCODTickets', 'GET', pagination, 'ProdTest');
   }
     
 }

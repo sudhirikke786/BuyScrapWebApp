@@ -132,7 +132,7 @@ i.material-icons {
 
 /* ============================ Materials Box ================================ */
 #mainbox, #innerdiv1, #innerdiv2, #innerdiv3, #innerdiv4, #innerdiv5, #innerdiv6, #innerdiv7, #innerdiv8 {
-  box-shadow: 0px 0px 3px grey; padding: 10px; margin: 10px; background: #f1f1f1; text-align: center;
+  box-shadow: 0px 0px 3px grey; padding: 5px; margin: 5px; background: #f1f1f1; text-align: center;
 }
 /* ============================ Materials Box ================================ */
 
@@ -698,7 +698,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .ticket-summary-div{margin-top:20px !important;}
 .color-green{color: green;}
 .materials-heading{font-weight: 500; color: #343a40; text-align: center;}
-.btn-materials-2{font-weight: 500; color: #343a40; font-size: 18px;}
+.btn-materials-2{font-weight: 500; color: #343a40; font-size: 18px; padding-top: 5px;}
 .ticket-details-p{margin-bottom: 0;}
 .btn-back{padding:2px 8px !important;}
 .btn-materials-inner{margin-bottom: 10px; width: 84px; padding: 5px !important;}
@@ -708,7 +708,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 }
 .numpad-heading-tbl h4{margin-left:10px;}
 .numpad-heading-btn{margin-left:10px;}
-.title-plus-border{border-bottom: 1px solid #dee2e6; padding-bottom: 5px; margin-bottom: 10px;}
+.title-plus-border{border-bottom: 1px solid #dee2e6; padding-bottom: 5px; margin-bottom: 5px;}
 .title-plus-border:after{content: ""; display: block; border-bottom: 1px solid #02659d; width: 25%; position: relative; bottom: -6px;}
 .seller-view-tbl{width: 100%;}
 .ticket-details-tbl{width: 100%;}
@@ -718,7 +718,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .mainbox-row{background:#f5f5f5; text-align: center; padding: 10px; box-shadow: 0px 0px 3px grey;}
 .ticket-details-new-tbl{width:100%;}
 .ticket-details-new-tbl tr{border-bottom:1px solid #dee2e6;}
-.ticket-details-new-tbl tr td{padding: 5px;}
+/* .ticket-details-new-tbl tr td{padding: 5px;} */
 .materials-name-edit-ul{padding-left:0; margin-bottom: 0; text-align: center; display: flex; align-items: center; justify-content: center;}
 .materials-name-edit-ul li{list-style: none; display: inline-block; margin: 0 5px;}
 .materials-name-edit-ul li h4{font-size: 16px; line-height: 22px;}
@@ -805,6 +805,19 @@ hr{margin: 10px 0 !important;}
 .get-started-btn{text-align: center;}
 .plan-selected{box-shadow: 0px 0px 5px green; background: #eefbdd;}
 .field-spn{font-weight:bold;}
+.flt-right{float:right !important;}
+.over-flow{height:450px !important; overflow-y: auto !important;}
+.over-flow-150{height:150px !important; overflow-y: auto !important;}
+.over-flow-200{height:200px !important; overflow-y: auto !important;}
+.over-flow-250{height:250px !important; overflow-y: auto !important;}
+.over-flow-300{height:300px !important; overflow-y: auto !important;}
+.dt-insidebox {
+        height: 300px; /* Adjust the height as needed */
+        overflow: auto;
+}
+.card-body{padding-top: 10px !important; padding-bottom: 10px !important;}
+.card{margin-bottom: 10px !important;}
+.footer{height: 40px !important;}
 
 @media only screen and (min-width:576px){
 .pay-print-box{margin-top: 55px !important; text-align: right;}

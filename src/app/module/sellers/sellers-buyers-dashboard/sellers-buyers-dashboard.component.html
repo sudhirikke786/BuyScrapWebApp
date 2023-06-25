@@ -58,12 +58,12 @@
                                             </ng-template>
                                             <ng-template pTemplate="body" let-seller>
                                                 <tr>
-                                                    <td>{{ seller.sellerName }}</td>
-                                                    <td>{{ seller.drivingLicense }}</td>
-                                                    <td>{{ seller.address }}</td>
+                                                    <td>{{ seller.fullName }}</td>
+                                                    <td>{{ seller.driverLicenseNumber }}</td>
+                                                    <td>{{ seller.streetAddress }}</td>
                                                     <td>
-                                                        <a href="seller-view.html" type="button" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i> Show</a> 
-                                                        <a routerLink = "/{{orgName}}/sellers-buyers/view-sellers/{{seller?.sellerId}}" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
+                                                        <a routerLink = "/{{organizationName}}/sellers-buyers/view-sellers/{{seller?.rowId}}" type="button" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i> Show</a> 
+                                                        <a routerLink = "/{{organizationName}}/sellers-buyers/view-sellers/{{seller?.rowId}}" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
                                                         <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
 													</td>
                                                 </tr>

@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-sellers-buyers-dashboard',
   templateUrl: './sellers-buyers-dashboard.component.html',
   styleUrls: ['./sellers-buyers-dashboard.component.scss']
 })
-export class SellersBuyersDashboardComponent {
-
-  orgName = localStorage.getItem('orgName');
-  constructor(private router:Router){
-
-  }
+export class SellersBuyersDashboardComponent implements OnInit {
+  
+  organizationName: any;
+  locId: any;
 
   actionList = [
     {
@@ -28,131 +28,36 @@ export class SellersBuyersDashboardComponent {
     }
   ];
 
-  sellers = [
-    {
-      sellerId: '1',
-      sellerName: 'Alex Sample Jr',
-      drivingLicense: '',
-      dob: '31/08/1988',
-      address: '12345 Main Street',
-      licensePlateNumber: '',
-      vehicleColour: '',
-      createdOn: '05/12/2022',
-      createdBy: 'Satywan Shinde'
-    },
-    {
-      sellerId: '2',
-      sellerName: 'Alexa M',
-      drivingLicense: '',
-      dob: '31/08/1988',
-      address: '12345 Main Street',
-      licensePlateNumber: '',
-      vehicleColour: '',
-      createdOn: '05/12/2022',
-      createdBy: 'Satywan Shinde'
-    },
-    {
-      sellerId: '3',
-      sellerName: 'Brandy M',
-      drivingLicense: '',
-      dob: '31/08/1988',
-      address: '12345 Main Street',
-      licensePlateNumber: '',
-      vehicleColour: '',
-      createdOn: '05/12/2022',
-      createdBy: 'Satywan Shinde'
-    },
-    {
-      sellerId: '4',
-      sellerName: 'Dexter',
-      drivingLicense: '',
-      dob: '31/08/1988',
-      address: '12345 Main Street',
-      licensePlateNumber: '',
-      vehicleColour: '',
-      createdOn: '05/12/2022',
-      createdBy: 'Satywan Shinde'
-    },
-    {
-      sellerId: '5',
-      sellerName: 'Felix',
-      drivingLicense: '',
-      dob: '31/08/1988',
-      address: '12345 Main Street',
-      licensePlateNumber: '',
-      vehicleColour: '',
-      createdOn: '05/12/2022',
-      createdBy: 'Satywan Shinde'
-    },
-    {
-      sellerId: '6',
-      sellerName: 'Grame Smith',
-      drivingLicense: '',
-      dob: '31/08/1988',
-      address: '12345 Main Street',
-      licensePlateNumber: '',
-      vehicleColour: '',
-      createdOn: '05/12/2022',
-      createdBy: 'Satywan Shinde'
-    },
-    {
-      sellerId: '7',
-      sellerName: 'Junior King',
-      drivingLicense: '',
-      dob: '31/08/1988',
-      address: '12345 Main Street',
-      licensePlateNumber: '',
-      vehicleColour: '',
-      createdOn: '05/12/2022',
-      createdBy: 'Satywan Shinde'
-    },
-    {
-      sellerId: '8',
-      sellerName: 'Justin J',
-      drivingLicense: '',
-      dob: '31/08/1988',
-      address: '12345 Main Street',
-      licensePlateNumber: '',
-      vehicleColour: '',
-      createdOn: '05/12/2022',
-      createdBy: 'Satywan Shinde'
-    },
-    {
-      sellerId: '9',
-      sellerName: 'Rocky B',
-      drivingLicense: '',
-      dob: '31/08/1988',
-      address: '12345 Main Street',
-      licensePlateNumber: '',
-      vehicleColour: '',
-      createdOn: '05/12/2022',
-      createdBy: 'Satywan Shinde'
-    },
-    {
-      sellerId: '10',
-      sellerName: 'Sasha Brooks',
-      drivingLicense: '',
-      dob: '31/08/1988',
-      address: '12345 Main Street',
-      licensePlateNumber: '',
-      vehicleColour: '',
-      createdOn: '05/12/2022',
-      createdBy: 'Satywan Shinde'
-    },
-    {
-      sellerId: '11',
-      sellerName: 'Alex Smith',
-      drivingLicense: '',
-      dob: '31/08/1988',
-      address: '12345 Main Street',
-      licensePlateNumber: '',
-      vehicleColour: '',
-      createdOn: '05/12/2022',
-      createdBy: 'Satywan Shinde'
-    }	
-  ];
+  sellers: any;
+  
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private commonService: CommonService) { }
 
+  ngOnInit() {
+    this.organizationName = localStorage.getItem('orgName');
+    this.locId = 1;
+    this.getAllsellersDetails();
+  }
 
+  
+  getAllsellersDetails() {
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId
+    };
+    this.commonService.getAllsellersDetails(paramObject)
+      .subscribe(data => {
+          console.log('getAllsellersDetails :: ');
+          console.log(data);
+          this.sellers = data.body;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
 
   getAction(actionCode:any){
 

@@ -15,7 +15,7 @@ export const routes: Routes = [
     component:TicketDashboardComponent
   },
   {
-    path:'detail/:ticketId',
+    path:'detail/:ticketId/:customerId',
     component:TicketDetailComponent
   }
 ]

@@ -46,7 +46,7 @@ export class OrganizationLoginComponent implements OnInit {
    * Get the data by calling WebAPI to fetch the details for organization login
    */
   validateOrganization() {
-    alert(JSON.stringify(this.org) + " :: " + this.isChecked);
+
     const requestObj = {
       organisationName: this.org.orgName,
       orgKey: 'vvzHznEnIic='

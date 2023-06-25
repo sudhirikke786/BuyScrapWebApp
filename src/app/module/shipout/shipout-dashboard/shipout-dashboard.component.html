@@ -64,14 +64,14 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-shipout>
                   <tr>
-                    <td>{{ shipout.billOfLanding }}</td>
-                    <td>{{ shipout.dateCreated }}</td>
+                    <td>{{ shipout.rowId }}</td>
+                    <td>{{ shipout.createdDate | date: 'MM/dd/yyyy' }}</td>
                     <td>{{ shipout.carrier }}</td>
                     <td>{{ shipout.totalNet }}</td>
-                    <td>{{ shipout.buyer }}</td>
+                    <td>{{ shipout.customerName }}</td>
                     <td>
                       <a
-                       [routerLink]="['/abc/ship-out/details', shipout.billOfLanding]"
+                       routerLink="/{{orgName}}/ship-out/details/{{shipout.rowId}}"
                        routerLinkActive="router-link-active"
                         type="button"
                         class="btn btn-grid btn-success waves-effect waves-light"
@@ -145,49 +145,36 @@
   </div>
   <div class="row mt-3">
 
-    <p-table #dt1 [value]="newCustomer" [paginator]="true" [rows]="10"
+    <p-table #dt1 [value]="sellers" [paginator]="true" [rows]="10"
     [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
     [rowsPerPageOptions]="[ 5, 10, 20, 50]" 
     [scrollable]="true" 
     scrollHeight="50vh"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [globalFilterFields]="['ticket.sellers', 'ticket.dLicense', 'ticket.licensePlat', 'ticket.address']"
-    >
-    
-    <ng-template pTemplate="header">
-        <tr>
-            <th>Sellers</th>
-            <th>Driver's License</th>
-            <th>License Plate</th>
-            <th>Addres</th>
-         
-            <th>Action</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-ticket>
-        <tr>
-            <td>{{ ticket.sellers }}</td>
-            <td>{{ ticket.dLicense }}</td>
-            <td>{{ ticket.licensePlate }}</td>
-            <td>{{ ticket.address}}</td>
-    
-            <td>
-                <a (click)="showCustomerModel()" class="btn btn-primary">Select</a>
-        </td>
-    </tr>
-    </ng-template>
-    
-    
-    
-</p-table>
-
-
-
-
-
-
-
-   
+    [globalFilterFields]="['seller.sellers', 'seller.dLicense', 'seller.licensePlat', 'seller.address']"
+    >    
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Sellers</th>
+              <th>Driver's License</th>
+              <th>License Plate</th>
+              <th>Addres</th>         
+              <th>Action</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-seller>
+          <tr>
+            <td>{{ seller?.fullName }}</td>
+            <td>{{ seller?.driverLicenseNumber }}</td>
+            <td>{{ seller?.licensePlateNumber }}</td>
+            <td>{{ seller?.streetAddress }}</td>
+      
+              <td>
+                  <a (click)="showCustomerModel(seller?.rowId)" class="btn btn-primary">Select</a>
+          </td>
+      </tr>
+      </ng-template>
+    </p-table>   
   </div>
 </p-dialog>
 

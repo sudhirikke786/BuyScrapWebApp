@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-certificates-dashboard',
   templateUrl: './certificates-dashboard.component.html',
   styleUrls: ['./certificates-dashboard.component.scss']
 })
-export class CertificatesDashboardComponent {
+export class CertificatesDashboardComponent implements OnInit {
 
   actionList = [
     {
@@ -18,7 +21,7 @@ export class CertificatesDashboardComponent {
     }
   ];
 
-  certificates = [
+  certificates1 = [
     {
       ticketID: '463',
       dateCreated: '04/10/2022',
@@ -73,6 +76,42 @@ export class CertificatesDashboardComponent {
   visible = false;
   cvisible = false;
   ivisible =  false;
+  
+  organizationName: any;
+  locId: any;
+
+  
+  certificates: any;
+  
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private commonService: CommonService) { }
+
+  ngOnInit() {
+    this.organizationName = localStorage.getItem('orgName');
+    this.locId = 1;
+    this.getAllCODTickets();
+  }
+
+  
+  getAllCODTickets() {
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId
+    };
+    this.commonService.getAllCODTickets(paramObject)
+      .subscribe(data => {
+          console.log('getAllCODTickets :: ');
+          console.log(data);
+          this.certificates = data.body;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
   showModel(){
     this.visible = true;
   }

@@ -35,16 +35,16 @@
                             <div class="col-sm-12">
                                 <table class="seller-view-tbl">
                                     <tr>
-                                        <td>Business - MetalBuyers USA</td>
-                                        <td>Address - 12345 Main Street</td>
-                                        <td>Driver - Nick</td>
-                                        <td>DL# - 000001</td>
+                                        <td>Business - {{shipout.customerName}}</td>
+                                        <td>Address - {{shipout.streetAddress}}</td>
+                                        <td>Driver - {{shipout.driverName}}</td>
+                                        <td>DL# - {{shipout.rowId}}</td>
                                     </tr>
 
                                     <tr>
-                                        <td>Truck - 883</td>
+                                        <td>Truck - {{shipout.truck}}</td>
                                         <td>Vehicle Colour - </td>
-                                        <td>Created on : <label>05/12/2022</label></td>
+                                        <td>Created on : <label>{{shipout.createdDate | date: 'MM/dd/yyyy'}}</label></td>
                                         <td>By <label>Sanket Yoshi</label></td>
                                     </tr>
                                 </table>

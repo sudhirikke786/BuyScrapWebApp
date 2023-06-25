@@ -2,15 +2,6 @@
 
     <!-- Start Content-->
     <div class="container-fluid">
-
-        <!-- <div class="row mt-2">
-            <div class="col text-center">
-                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> New Ticket</button> 
-                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> Merge Ticket and Pay</button>
-            </div>
-            
-        </div> -->
-
         <div class="bdcmb mt-2">
             <div class="row">
                 <div class="col-sm-6 col-6">
@@ -32,22 +23,22 @@
 
                         <div class="row">
                             <div class="col-sm-3">
-                                <img src="assets/images/custom/driving-license.png" class="dl-img">
+                                <img src="{{seller?.profilePic}}" class="dl-img">
                             </div>
 
                             <div class="col-sm-9">
                                 <table class="seller-view-tbl">
                                     <tr>
-                                        <td>Alex Sample Jr</td>
-                                        <td>DL# - </td>
-                                        <td>DOB - 31/08/1988</td>
-                                        <td>Address - 12345 Main Street</td>
+                                        <td>{{seller?.fullName}}</td>
+                                        <td>DL# - {{seller?.driverLicenseNumber}}</td>
+                                        <td>DOB - {{seller?.dob  | date: 'MM/dd/yyyy'}}</td>
+                                        <td>Address - {{seller?.streetAddress}}</td>
                                     </tr>
 
                                     <tr>
-                                        <td>License Plate Number - </td>
-                                        <td>Vehicle Colour - </td>
-                                        <td>Created on : <label>05/12/2022</label></td>
+                                        <td>License Plate Number - {{seller?.licensePlateNumber}}</td>
+                                        <td>Vehicle Colour - {{seller?.vehicleColor}}</td>
+                                        <td>Created on : <label>{{seller?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
                                         <td>By <label>Sanket Yoshi</label></td>
                                     </tr>
                                 </table>
@@ -56,9 +47,17 @@
 
                         <hr>
 
-                        <div class="row mt-3">
-                            <table id="selection-datatable" class="table dt-responsive nowrap w-100">
-                                <thead>
+                        <div class="row mt-3 dt-responsive nowrap w-100">
+                            <p-table #dt1 [value]="tickets" [paginator]="true" [rows]="10"
+                                [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                                [rowsPerPageOptions]="[ 5, 10, 20, 50]" 
+                                [scrollable]="true" 
+                                scrollHeight="50vh"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']"
+                                >
+     
+                                <ng-template pTemplate="header">
                                     <tr>
                                         <th>Ticket ID</th>
                                         <th>Date Created</th>
@@ -67,21 +66,21 @@
                                         <th>Customer</th>
                                         <th>Date Closed</th>
                                     </tr>
-                                </thead>
-                                        
-                                        
-                                <tbody>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-ticket>
                                     <tr>
-                                        <td>555</td>
-                                        <td>05/10/2023</td>
-                                        <td>Open</td>
-                                        <td>33.00</td>
-                                        <td>Alex Sample Jr</td>
-                                        <td>--/--/----</td>
+                                        <td>{{ ticket?.rowId }}</td>
+                                        <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy hh:mm a'  }}</td>
+                                        <td>{{ ticket?.status }}</td>
+                                        <td>{{ ticket?.ticketAmount }}</td>
+                                        <td>{{ ticket?.customerName }}</td>
+                                        <td>{{ ticket?.dateClosed ? (ticket?.dateClosed  | date: 'MM/dd/yyyy hh:mm a') : ''}}</td>
                                     </tr>
-                                                                                                
-                                </tbody>
-                            </table>
+                                </ng-template>
+                                
+                                
+                                
+                            </p-table>
                         </div>
                     
                     </div> <!-- end card body-->
