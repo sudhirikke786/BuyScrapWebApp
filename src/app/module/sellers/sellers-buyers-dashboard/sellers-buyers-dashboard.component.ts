@@ -51,7 +51,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
       .subscribe(data => {
           console.log('getAllsellersDetails :: ');
           console.log(data);
-          this.sellers = data.body;
+          this.sellers = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';

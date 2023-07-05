@@ -50,7 +50,7 @@ export class SellersBuyersDetailsComponent implements OnInit {
       .subscribe(data => {
           console.log('getSellerById :: ');
           console.log(data);
-          this.seller = data.body;
+          this.seller = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -63,7 +63,7 @@ export class SellersBuyersDetailsComponent implements OnInit {
       .subscribe(data => {
           console.log('getAllTicketsDetails :: ');
           console.log(data);
-          this.tickets = data.body;
+          this.tickets = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';

@@ -10,7 +10,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 })
 export class TicketDashboardComponent implements OnInit {
 
-  selectedTickets = [];
+  selectedTickets: any;
   orgName = localStorage.getItem('orgName');
 
   actionList = [{
@@ -67,6 +67,11 @@ export class TicketDashboardComponent implements OnInit {
     {name: 'Paid', code: 'Paid'},
     {name: 'Voided', code: 'Voided'}
   ];
+
+  
+  defaultSelectedTicketsTypes =  [
+    {name: 'Open', code: 'Open'}
+  ];
   
   tickets: any;
 
@@ -74,10 +79,12 @@ export class TicketDashboardComponent implements OnInit {
   ticketvisible: boolean = false;
   organizationName: any;
 
-  pagination: Pagination = {
+  pagination: any = {
+    SerachText: '',
+    SearchOrder: 'TicketId',
     Status: 'ALL',
     PageNumber: 1,
-    RowOfPage: 1000,
+    RowOfPage: 100,
     LocationId: 1
   }
   
@@ -86,6 +93,7 @@ export class TicketDashboardComponent implements OnInit {
     private commonService: CommonService) { }
 
   ngOnInit() {
+    this.selectedTickets = this.defaultSelectedTicketsTypes;
     this.organizationName = 'prodTest';
     this.getAllTicketsDetails(this.pagination);
   }
@@ -98,7 +106,7 @@ export class TicketDashboardComponent implements OnInit {
       .subscribe(data => {
           console.log('getAllTicketsDetails :: ');
           console.log(data);
-          this.tickets = data.body;
+          this.tickets = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -107,16 +115,33 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   showMergeDialog(){
-    this.visible = true;
+    this.ticketvisible = true;
   }
 
   AddMergeDialog(){
-    this.ticketvisible = true;
+    this.visible = true;
+  }
+
+  searchTickets() {
+    console.log('selectedTickets :: ' + JSON.stringify(this.selectedTickets));
+    let selectedStatus = '';
+    this.selectedTickets.forEach(function(item: any) {
+      selectedStatus += item.name + ',';
+    });
+    selectedStatus = selectedStatus.substring(0,selectedStatus.length-1);
+    this.pagination.Status = selectedStatus;
+    this.getAllTicketsDetails(this.pagination);
   }
 
   getAction(actionCode:any){
 
     switch (actionCode?.iconcode) {
+      case 'mdi-magnify':
+        this.searchTickets();
+        break;
+      case 'mdi-refresh':
+        this.showMergeDialog();
+        break;
       case 'mdi-ticket':
         this.AddMergeDialog();
         break;

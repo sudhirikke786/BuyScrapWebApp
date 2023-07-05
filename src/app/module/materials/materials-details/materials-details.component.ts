@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
-  selector: 'app-materials-dashboard',
-  templateUrl: './materials-dashboard.component.html',
-  styleUrls: ['./materials-dashboard.component.scss']
+  selector: 'app-materials-details',
+  templateUrl: './materials-details.component.html',
+  styleUrls: ['./materials-details.component.scss']
 })
-export class MaterialsDashboardComponent implements OnInit {
+export class MaterialsDetailsComponent implements OnInit {
 
   actionList = [
     {
@@ -21,10 +21,6 @@ export class MaterialsDashboardComponent implements OnInit {
     {
       iconcode:'mdi-plus',
       title:'Add Materials'
-    },
-    {
-      iconcode:'mdi-currency-usd',
-      title:'Quick Price Update'
     }
   ];
 
@@ -44,24 +40,34 @@ export class MaterialsDashboardComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
-    this.getAllGroupMaterial();
+    this.route.params.subscribe((param)=>{
+      if (param['materialId']) {
+        this.getSubMaterials(param['materialId']);
+      } else {
+        alert('Required material id')
+      }
+    });
   }
 
-  getAllGroupMaterial() {
+  getSubMaterials(materialId: any) {
+    this.mainMaterialsVisible =  false;
+
     const paramObject = {
+      MaterialID: materialId,
       LocationId: this.locId
     };
-    this.commonService.getAllGroupMaterial(paramObject)
+    this.commonService.getAllSubMaterials(paramObject)
       .subscribe(data => {
-          console.log('getAllGroupMaterial :: ');
+          console.log('getAllSubMaterials :: ');
           console.log(data);
-          this.materialList = data.body.data;
+          this.subMaterialList = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
       );
   }
+
   
   editMainMaterial(materialId?: any){
     // alert(materialId);

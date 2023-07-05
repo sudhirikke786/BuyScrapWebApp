@@ -66,8 +66,8 @@ export class OrganizationLoginComponent implements OnInit {
       .subscribe(data => {
           console.log('data :: ');
           console.log(data);
-          if (data.body.organisationName) {
-            const orgName = data.body.organisationName;
+          if (data.body.data.organisationName) {
+            const orgName = data.body.data.organisationName;
             if (this.isChecked) {
               localStorage.setItem('orgName',orgName)
             } else {

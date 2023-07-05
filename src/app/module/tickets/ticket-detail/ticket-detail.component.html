@@ -31,7 +31,7 @@
 
                                 <div class="row">
                                    <div class="col-sm-6">
-                                        <h4>Ticket# - {{ticketId}}</h4>
+                                        <h4 class="ticket-number">Ticket# - 463</h4>
                                    </div>
 
                                    <div class="col-sm-6">
@@ -44,15 +44,15 @@
                                 <table class="seller-view-tbl">
                                     <tbody><tr>
                                         <td>{{customer?.fullName}}</td>
-                                        <td>DL# - {{customer?.driverLicenseNumber}}</td>
-                                        <td>License Plate - </td>
-                                        <td>Address - {{customer?.streetAddress}}</td>
+                                        <td>Address : {{customer?.streetAddress}}</td>
+                                        <td>Created on : <label>{{customer?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
+                                        <td>Time : {{customer?.createdDate  | date: 'hh:mm a'}}</td>
                                     </tr>
 
                                     <tr>
-                                        <td>License Plate Number - </td>
+                                        <td>DL# - {{customer?.driverLicenseNumber}}</td>
                                         <td>Dealer Type - None</td>
-                                        <td>Created on : <label>{{customer?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
+                                        <td>License Plate # :</td>
                                         <td>By <label>Sanket Yoshi</label></td>
                                     </tr>
                                 </tbody></table>
@@ -71,17 +71,16 @@
                         </div>
 
                         <div class="row">
-                            <div [ngClass]="{ 'col-sm-9 over-flow-150': isEditModeOn, 'col-sm-12 over-flow-150': !isEditModeOn}">
+                            <div [ngClass]="divClass">
                                 <p-table #dt1 [value]="ticketObj" [paginator]="false" [rows]="10"
                                     [showCurrentPageReport]="false"
                                     [scrollable]="true" 
-                                    [scrollHeight]="cheight"
                                     
                                     >
          
                                     <ng-template pTemplate="header">
                                         <tr>
-                                            <th>Material</th>
+                                            <th style="width: 25%;">Material</th>
                                             <th>Gross(M)</th>
                                             <th>Tare</th>
                                             <th>Net</th>
@@ -93,20 +92,24 @@
                                     </ng-template>
                                     <ng-template pTemplate="body" let-ticket>
                                         <tr>
-                                            <td>{{ ticket.materialName }}</td>
+                                            <td style="width: 25%;">{{ ticket.materialName }}</td>
                                             <td>{{ ticket.gross  }}</td>
                                             <td>{{ ticket.tare }}</td>
                                             <td>{{ ticket.net }}</td>
                                             <td>{{ ticket.price }}</td>
                                             <td>{{ ticket.amount}}</td>
                                             <td>
-                                                <img src="{{ticket.imagePath}}" 
-                                                class="ticket-particulars-img">
+                                                <img src="{{ticket.imagePath}}" class="ticket-particulars-img">
                                             </td>
                                             <td *ngIf="isEditModeOn">
-                                                <a data-bs-toggle="modal" data-bs-target="#capture-image" class="btn btn-grid btn-primary waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a> 
+                                                <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editItem(ticket.localRowId)"
+                                                class="btn btn-grid btn-primary waves-effect waves-light me-1">
+                                                    <i class="mdi mdi-pencil"></i> Edit
+                                                </a> 
                                                 
-                                                <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
+                                                <a class="btn btn-grid btn-danger waves-effect waves-light">
+                                                    <i class="mdi mdi-trash-can-outline"></i> Delete
+                                                </a>
                                             </td>
                                         </tr>
                                     </ng-template>
@@ -120,21 +123,25 @@
                             </div>
 
                             <div class="col-sm-3" *ngIf="isEditModeOn" >
-                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row over-flow-150">
+                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row over-flow-200">
                                   <h4 class="materials-heading">Materials</h4>
 
                                   <ul class="materials-ul materials-ul-1">
                                     
                                     <ng-container  *ngFor="let item of materialList" >
                                         <li>
-                                            <a id="showInnerDiv1" class="btn btn-primary btn-materials" (click)="getSubMaterials(item.rowId, item.groupName)">{{item.groupName}}</a>
+                                            <a id="showInnerDiv1" class="btn btn-primary btn-materials" 
+                                            pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
+                                            (click)="getSubMaterials(item.rowId, item.groupName)">
+                                                {{item.groupName}}
+                                            </a>
                                         </li>
                                     </ng-container>
                                   </ul>
                                   
                                 </div>
 
-                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row over-flow-150">
+                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row over-flow-200">
                                   <h1 class="btn-materials-2">
                                     <span>
                                         <a id="backToMainBox1" class="btn btn-primary btn-back" (click)="backToMainMaterials()"><i class="mdi mdi-keyboard-backspace"></i></a>
@@ -145,7 +152,9 @@
                                   <ul class="materials-ul">
                                     <ng-container  *ngFor="let item of subMaterialList" >
                                         <li>
-                                            <a data-bs-toggle="modal" data-bs-target="#capture-image" class="btn btn-primary btn-materials-inner">{{item.materialName}}</a>
+                                            <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="addItem(item.rowId, item.materialName)"
+                                            pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
+                                            class="btn btn-primary btn-materials-inner">{{item.materialName}}</a>
                                         </li>
                                     </ng-container>                                     
                                   </ul>
@@ -204,12 +213,12 @@
                             </div>
 
                             <div *ngIf="!isEditModeOn" class="col-sm-4 pay-print-box">
-                                <a href="#" class="btn btn-danger">Pay Ticket</a>
+                                <a href="#" class="btn btn-danger me-1">Pay Ticket</a>
                                 <a class="btn btn-primary" (click)="openPDF()">Printout</a>
                             </div>
 
                             <div *ngIf="isEditModeOn" class="col-sm-4 pay-print-box">
-                                <a data-bs-target="#adjustments-modal" data-bs-toggle="modal" href="#" class="btn btn-danger">Adjustments(Deductions)</a>
+                                <a data-bs-target="#adjustments-modal" data-bs-toggle="modal" href="#" class="btn btn-danger me-1">Adjustments(Deductions)</a>
                                 <a class="btn btn-primary" (click)="saveTicketDetails()">Save</a>
                             </div>
 
@@ -232,3 +241,128 @@
     </div> <!-- container -->
 
 </div>
+
+
+<p-dialog [header]="modalHeader" [(visible)]="editItemVisible" [style]="{width: '80vw'}">
+        
+    <div class="row">
+                                
+        <div class="col-md-12">
+            <div *ngIf="!editItemCloseImageCapture; else elsepart;" id="camera-div" class="camera-div">
+                <label for="cameraSelect"><b>Select a camera :</b></label>
+                <select id="cameraSelect" onchange="selectCamera()">
+                    <option value="">Select a camera</option>
+                <option value="cd857abbf36b2b1511ae171f1778ffb3cc19c0240e6accda93c40162dc3e0dd1">HP HD Camera (05c8:0397)</option></select>
+                <a class="btn btn-primary" onclick="captureImage()">Capture Image</a>
+                <br><br>
+                <!-- <video id="videoElement" width="640" height="480" autoplay></video> -->
+                <br><br>
+                <canvas id="canvasElement" style="display:none;"></canvas>
+                <img id="capturedImage" style="display:none;">
+                <br><br>
+                <label for="fileUpload"><b>Upload an image :</b></label>
+                <input type="file" id="fileUpload">
+                <br>
+                <br>
+
+                <a href="#" id="save-image-btn" class="btn btn-primary">Save Image</a>
+                <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage()">Close</a>
+            </div>
+            <ng-template #elsepart>
+            <div id="numpad-div" class="numpad-div" style="display: block;">
+                <table class="numpad-heading-tbl">
+                    <tbody><tr>
+                        <td>
+                            <button id="back-btn" class="btn btn-primary btn-back" (click)="backToCapturedImage()">
+                                <i class="mdi mdi-keyboard-backspace"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <h4>Aluminium Extrusion(Clean)</h4>
+                        </td>
+                        <td>
+                            <a id="backToMainBox9" class="btn btn-primary numpad-heading-btn" data-bs-dismiss="modal">Change Item</a>
+                        </td>
+                        <td>
+                            <a id="back-btnss" class="btn btn-primary numpad-heading-btn">Capture Image</a>
+                        </td>
+                    </tr>
+                </tbody></table>
+
+                <div class="row mt-3">
+                
+                    <div class="col-sm-6 mb-2">
+                        <div class="input-container">
+                          <label for="gross">Gross:</label>
+                          <input type="text" id="gross" tabindex="1" placeholder="Enter Gross Weight" required="">
+                        </div>
+
+                        <div class="input-container">
+                          <label for="tare">Tare:</label>
+                          <input type="text" id="tare" tabindex="2" placeholder="Enter Tare Weight" required="">
+                        </div>
+
+                        <div class="input-container">
+                          <label for="net">Net:</label>
+                          <input type="text" id="net" tabindex="3" placeholder="Enter Net Weight" required="">
+                        </div>
+
+                        <div class="input-container">
+                          <label for="price">Price:</label>
+                          <input type="text" id="price" tabindex="4" placeholder="Enter Final Price" required="">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="num-pad">
+                          <div class="row">
+                            <button class="num-btn">1</button>
+                            <button class="num-btn">2</button>
+                            <button class="num-btn">3</button>
+                          </div>
+                          <div class="row">
+                            <button class="num-btn">4</button>
+                            <button class="num-btn">5</button>
+                            <button class="num-btn">6</button>
+                          </div>
+                          <div class="row">
+                            <button class="num-btn">7</button>
+                            <button class="num-btn">8</button>
+                            <button class="num-btn">9</button>
+                          </div>
+                          <div class="row">
+                            <button class="num-btn">0</button>
+                            <button class="num-btn">00</button>
+                            <button class="num-btn">.</button>
+                          </div>
+                          <div class="row">
+                            <button class="clear-btn">Clear</button>
+                            <button class="delete-btn">Delete</button>
+                            <button class="enter-btn">Enter</button>
+                          </div>
+                          <div class="row text-center">
+                            <button class="notes-btn">Notes</button>
+                          </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="notes-modal" class="modal">
+                     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                      <div class="modal-content">
+                        <span class="close">×</span>
+                        <label for="notes">Enter notes:</label>
+                        <textarea id="notes" rows="4"></textarea>
+                        <button class="save-btn">Save</button>
+                      </div>
+                     </div>
+                </div>
+
+
+            </div>
+            </ng-template>
+        </div>
+
+    </div>
+</p-dialog>

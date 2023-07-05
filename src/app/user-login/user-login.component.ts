@@ -61,7 +61,7 @@ export class UserLoginComponent implements OnInit {
         
           console.log('getOrgLocation :: ');
           console.log(data);
-          this.locations = data.body;
+          this.locations = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';

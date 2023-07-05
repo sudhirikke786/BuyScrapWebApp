@@ -7,17 +7,23 @@ import { PrimengModule } from '../shared/primeng/primeng.module';
 import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 
 import { MaterialsDashboardComponent } from './materials-dashboard/materials-dashboard.component';
+import { MaterialsDetailsComponent } from './materials-details/materials-details.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: MaterialsDashboardComponent
+  },
+  {
+    path:'detail/:materialId',
+    component: MaterialsDetailsComponent
   }
 ]
 
 @NgModule({
   declarations: [
-    MaterialsDashboardComponent
+    MaterialsDashboardComponent,
+    MaterialsDetailsComponent
   ],
   imports: [
     CommonModule,

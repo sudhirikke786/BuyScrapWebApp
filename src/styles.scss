@@ -51,6 +51,9 @@
    font-size: 14px;
     padding: 0.4rem 0.3rem !important;
     color: #6c757d;
+    // white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .search-box {

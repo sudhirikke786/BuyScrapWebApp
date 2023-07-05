@@ -15,6 +15,7 @@ import { FooterComponent } from './common/footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { PrimengModule } from './module/shared/primeng/primeng.module';
 import { HttpClientModule } from '@angular/common/http';
+import { FourColumnPipe } from './core/pipe/four-column.pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
     SideMenuComponent,
     SiteLayoutComponent,
     FooterComponent,
-    
+    FourColumnPipe,    
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 
 import { Observable, of, EMPTY, throwError, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -62,51 +63,51 @@ export class CommonService {
   }
 
   validateOrgCredentials(requestObj: any): Observable<any> {
-    return this.callAPI('https://localhost:44385/Organisations/ValidateCredentials', 'POST' , requestObj);
+    return this.callAPI(environment.baseUrl + '/Organisations/ValidateCredentials', 'POST' , requestObj);
   }
 
   validateUserCredentials(requestObj: any): Observable<any> {
-    return this.callAPI('https://localhost:44385/Users/UserAuthentication', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Users/UserAuthentication', 'POST', requestObj, 'ProdTest');
   }
 
   getOrgLocation(): Observable<any> {
-    return this.callAPI('https://localhost:44385/Locations/GetAllLocatoins', 'GET', null, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Locations/GetAllLocatoins', 'GET', null, 'ProdTest');
   }
 
   getAllTicketsDetails(pagination: any): Observable<any> {
-    return this.callAPI('https://localhost:44385/Tickets/GetAllTicketsDetails', 'GET', pagination, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsDetails', 'GET', pagination, 'ProdTest');
   }
 
   getAllsellersDetails(pagination: any): Observable<any> {
-    return this.callAPI('https://localhost:44385/Sellerss/GetAllsellersDetails', 'GET', pagination, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Sellerss/GetAllsellersDetails', 'GET', pagination, 'ProdTest');
   }
 
   getSellerById(paramObj: any): Observable<any> {
-    return this.callAPI('https://localhost:44385/Sellerss/GetSellerById', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Sellerss/GetSellerById', 'GET', paramObj, 'ProdTest');
   }
 
   getTransactionsDetailsById(paramObj: any): Observable<any> {
-    return this.callAPI('https://localhost:44385/TransactionMasters/GetTransactionsDetailsById', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/TransactionMasters/GetTransactionsDetailsById', 'GET', paramObj, 'ProdTest');
   }
 
   getAllGroupMaterial(paramObj: any): Observable<any> {
-    return this.callAPI('https://localhost:44385/Materialss/GetAllGroupMaterial', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Materialss/GetAllGroupMaterial', 'GET', paramObj, 'ProdTest');
   }
 
   getAllSubMaterials(paramObj: any): Observable<any> {
-    return this.callAPI('https://localhost:44385/Materialss/GetAllSubMaterials', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterials', 'GET', paramObj, 'ProdTest');
   }
 
   getAllShipOutDetails(pagination: any): Observable<any> {
-    return this.callAPI('https://localhost:44385/ShipOuts/GetAllShipOutDetails', 'GET', pagination, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/ShipOuts/GetAllShipOutDetails', 'GET', pagination, 'ProdTest');
   }
 
   getShipOutDetailsByID(paramObj: any): Observable<any> {
-    return this.callAPI('https://localhost:44385/ShipOuts/GetShipOutDetailsByID', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/ShipOuts/GetShipOutDetailsByID', 'GET', paramObj, 'ProdTest');
   }
 
   getAllCODTickets(pagination: any): Observable<any> {
-    return this.callAPI('https://localhost:44385/Tickets/GetAllCODTickets', 'GET', pagination, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllCODTickets', 'GET', pagination, 'ProdTest');
   }
     
 }

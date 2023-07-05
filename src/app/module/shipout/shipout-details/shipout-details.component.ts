@@ -39,7 +39,7 @@ export class ShipoutDetailsComponent implements OnInit {
       .subscribe(data => {
           console.log('getShipOutDetailsByID :: ');
           console.log(data);
-          this.shipout = data.body;
+          this.shipout = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';

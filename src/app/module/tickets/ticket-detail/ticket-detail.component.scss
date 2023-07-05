@@ -3,10 +3,21 @@ h4{
 }
 
 .mainbox-row{
-    max-height: 110px;
+    // max-height: 110px;
     overflow: auto;
 }
 
 .materials-ul{
-    display: inline-grid;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: stretch;
+    align-items: center;
+}
+
+li {
+    flex: 1;
+    height: 100%;
+    a {
+        height: 70px;
+    }
 }

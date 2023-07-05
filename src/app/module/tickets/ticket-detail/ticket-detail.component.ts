@@ -13,7 +13,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 })
 export class TicketDetailComponent implements OnInit {
   @ViewChild('htmlData') htmlData!: ElementRef;
-  cheight= '20vh'
+  cheight= '50vh'
 
 
   ticketObj:any;
@@ -30,10 +30,14 @@ export class TicketDetailComponent implements OnInit {
   totalAmount: any;
 
   isEditModeOn = false;
+  divClass = 'col-sm-12 over-flow-200';
   materialList: any;
   subMaterialList: any;
   mainMaterialsVisible = true;
   selectedMaterial = '';
+  editItemVisible = false;
+  editItemCloseImageCapture = false;
+  modalHeader = '';
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -60,7 +64,7 @@ export class TicketDetailComponent implements OnInit {
       .subscribe(data => {
           console.log('getSellerById :: ');
           console.log(data);
-          this.customer = data.body;
+          this.customer = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -80,7 +84,7 @@ export class TicketDetailComponent implements OnInit {
       .subscribe(data => {
           console.log('getTransactionsDetailsById :: ');
           console.log(data);
-          this.ticketObj = data.body;
+          this.ticketObj = data.body.data;
           this.calculateTotal(this.ticketObj);
         },
         (err: any) => {
@@ -106,7 +110,8 @@ export class TicketDetailComponent implements OnInit {
   }
 
   editTicketDetails() {
-    this.isEditModeOn = true;    
+    this.isEditModeOn = true;
+    this.divClass = 'col-sm-9 over-flow-200';
     this.getAllGroupMaterial();
   }
 
@@ -118,7 +123,7 @@ export class TicketDetailComponent implements OnInit {
       .subscribe(data => {
           console.log('getAllGroupMaterial :: ');
           console.log(data);
-          this.materialList = data.body;
+          this.materialList = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -142,7 +147,7 @@ export class TicketDetailComponent implements OnInit {
       .subscribe(data => {
           console.log('getAllSubMaterials :: ');
           console.log(data);
-          this.subMaterialList = data.body;
+          this.subMaterialList = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -153,6 +158,26 @@ export class TicketDetailComponent implements OnInit {
 
   saveTicketDetails() {
     this.isEditModeOn = false;
+    this.divClass = 'col-sm-12 over-flow-200';
+  }
+
+  addItem(materialId: any, materialName: any) {
+    this.modalHeader = 'Add Item Details';
+    this.editItemVisible = true;
+    this.editItemCloseImageCapture = false;
+  }
+
+  editItem(rowId: any) {
+    this.modalHeader = 'Edit Item Details';
+    this.editItemVisible = true;
+    this.editItemCloseImageCapture = false;
+  }
+
+  closeCapturedImage() {
+    this.editItemCloseImageCapture = true;
+  }
+  backToCapturedImage() {
+    this.editItemCloseImageCapture = false;
   }
 
   openPDF(){
@@ -214,7 +239,7 @@ export class TicketDetailComponent implements OnInit {
         _print_remove.setAttribute('style', 'display: block');
       }
 
-      this.cheight = '20vh';
+      this.cheight = '50vh';
     });
     if(_print_remove){
       _print_remove.setAttribute('style', 'display: block');

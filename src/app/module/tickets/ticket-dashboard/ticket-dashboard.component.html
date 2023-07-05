@@ -13,9 +13,9 @@
         <div class="row mt-2">
             <div class="col-md-3">
                 <p-multiSelect class="col-2" [options]="ticketsTypes"  [style]="{'minWidth':'100%'}"
-                [(ngModel)]="selectedTickets" [maxSelectedLabels]="3" [resetFilterOnHide]="false" defaultLabel="You can choose  ..." 
-                optionLabel="name" display="chip"></p-multiSelect>
-
+                [(ngModel)]="selectedTickets" [resetFilterOnHide]="false" defaultLabel="You can choose  ..." 
+                optionLabel="name" display="chip">
+                </p-multiSelect>
             </div>
             <div class="col-md-3">
                 <select class="form-control" id="example-select">
@@ -50,7 +50,7 @@
                                         [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
                                         [rowsPerPageOptions]="[ 5, 10, 20, 50]" 
                                         [scrollable]="true" 
-                                        scrollHeight="50vh"
+                                        scrollHeight="66vh"
                                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                         [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']"
                                         >

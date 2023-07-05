@@ -104,7 +104,7 @@ export class CertificatesDashboardComponent implements OnInit {
       .subscribe(data => {
           console.log('getAllCODTickets :: ');
           console.log(data);
-          this.certificates = data.body;
+          this.certificates = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
