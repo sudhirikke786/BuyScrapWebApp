@@ -3,7 +3,7 @@
 .box {
   display: block;
 /*  min-width: 300px;*/
-  height: 184px;
+  height: 132px;
 /*  margin: 10px;*/
   background-color: white;
   border-radius: 5px;
@@ -68,10 +68,11 @@
 }
 
 .js--image-preview {
-  height: 110px;
+  height: 60px;
   width: 100%;
   position: relative;
   overflow: hidden;
+  
   background-color: white;
   background-position: center center;
   background-repeat: no-repeat;
@@ -83,7 +84,7 @@
   position: relative;
   font-size: 3em;
   color: #e6e6e6;
-  top: calc(50% - 3rem);
+  top: calc(90% - 3rem);
   left: calc(50% - 3rem);
   z-index: 0;
 }
@@ -130,9 +131,10 @@ i.material-icons {
 }
 /* ============================ Upload Images ================================ */
 
+
 /* ============================ Materials Box ================================ */
 #mainbox, #innerdiv1, #innerdiv2, #innerdiv3, #innerdiv4, #innerdiv5, #innerdiv6, #innerdiv7, #innerdiv8 {
-  box-shadow: 0px 0px 3px grey; padding: 5px; margin: 5px; background: #f1f1f1; text-align: center;
+  box-shadow: 0px 0px 3px grey; padding: 0px; margin: 0px; background: #f1f1f1; text-align: center;
 }
 /* ============================ Materials Box ================================ */
 
@@ -155,7 +157,7 @@ i.material-icons {
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  font-size: 16px;
+  font-size: 12px;
   width: 80%;
 }
 
@@ -251,7 +253,7 @@ i.material-icons {
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  font-size: 16px;
+  font-size: 12px;
   width: 100%;
   resize: none;
   margin-bottom: 10px;
@@ -263,7 +265,7 @@ i.material-icons {
   border: none;
   border-radius: 5px;
   padding: 10px;
-  font-size: 16px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -672,7 +674,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .btn-block{display: block; width: 100%;}
 .btn-success{background:green !important;}
 .btn-spl{font-size: 16px !important;}
-.btn-grid{padding:3px 10px !important;}
+.btn-grid{padding:2px 10px !important;}
 .btn-danger{background:#c90303 !important;}
 .btn-square-less-padd{padding:2px 8px !important;}
 .mdi-cust{font-size: 20px;}
@@ -682,46 +684,46 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .mdi-white-color{color:#fff;}
 .mdi-cust-upload{font-size:25px;}
 .upload-a{cursor:pointer;}
-.seller-view-tbl tr td{border:1px solid #dee2e6; padding:5px;}
+.seller-view-tbl tr td{border:1px solid #dee2e6; padding:2px 5px;}
 .ticket-details-tbl tr td{border:1px solid #dee2e6; padding:5px;}
 .ticket-details-tbl th{border:1px solid #dee2e6; padding:5px;}
 .dl-img{height:80px;}
 .menu-item .active .menu-links-text{color:yellow;}
 .b-links a{color:#fff;}
 .bdcmb{background: #02659d; padding: 0 10px; box-shadow: 0px 0px 3px grey;}
-.b-links{margin-top: 8px; float: right; color:#fff;}
-.page-title{color:#fff;}
+.b-links{margin-top: 4px; float: right; color:#fff;}
+.page-title{color:#fff; font-size: 17px;}
 .form-floating>label{top: -9px !important;}
 .form-floating>.form-control{height: calc(2.5rem + 2px) !important;}
 .small-img{height:30px; margin-right: 5px;}
 .app-version{position: absolute; bottom:10px;}
-.ticket-summary-div{margin-top:20px !important;}
+.ticket-summary-div{margin-top:5px !important;}
 .color-green{color: green;}
 .materials-heading{font-weight: 500; color: #343a40; text-align: center;}
 .btn-materials-2{font-weight: 500; color: #343a40; font-size: 18px; padding-top: 5px;}
 .ticket-details-p{margin-bottom: 0;}
 .btn-back{padding:2px 8px !important;}
 .btn-materials-inner{margin-bottom: 10px; width: 84px; padding: 5px !important;}
-.ticket-particulars-img{height:40px;}
+.ticket-particulars-img{height:30px;}
 #numpad-div {
   display: none;
 }
 .numpad-heading-tbl h4{margin-left:10px;}
 .numpad-heading-btn{margin-left:10px;}
-.title-plus-border{border-bottom: 1px solid #dee2e6; padding-bottom: 5px; margin-bottom: 5px;}
+.title-plus-border{border-bottom: 1px solid #dee2e6; padding-bottom: 5px; margin-bottom: 5px; font-size: 17px;}
 .title-plus-border:after{content: ""; display: block; border-bottom: 1px solid #02659d; width: 25%; position: relative; bottom: -6px;}
 .seller-view-tbl{width: 100%;}
 .ticket-details-tbl{width: 100%;}
 .materials-ul li{text-decoration: none; display: inline-block;}
-.btn-materials{margin-bottom: 10px; width: 84px; padding: 5px !important;}
+.btn-materials{margin-bottom: 10px; padding: 5px !important;}
 .materials-ul{margin-bottom: 0; padding-left: 0;}
 .mainbox-row{background:#f5f5f5; text-align: center; padding: 10px; box-shadow: 0px 0px 3px grey;}
 .ticket-details-new-tbl{width:100%;}
 .ticket-details-new-tbl tr{border-bottom:1px solid #dee2e6;}
-/* .ticket-details-new-tbl tr td{padding: 5px;} */
+/*.ticket-details-new-tbl tr td{padding: 5px;}*/
 .materials-name-edit-ul{padding-left:0; margin-bottom: 0; text-align: center; display: flex; align-items: center; justify-content: center;}
 .materials-name-edit-ul li{list-style: none; display: inline-block; margin: 0 5px;}
-.materials-name-edit-ul li h4{font-size: 16px; line-height: 22px;}
+.materials-name-edit-ul li h4{font-size: 12px; line-height: 22px;}
 .materials-pg-boxes img{width:100%; padding: 10px 10px 0 10px;}
 .materials-pg-boxes{background: #f5f5f5; box-shadow: 0px 0px 3px grey; border-radius: 10px; margin-bottom: 20px; position: relative;}
 .btn-materials-pg{border:1px solid grey !important; color: #02659d !important; padding: 2px 5px !important;}
@@ -730,7 +732,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .adjustment-name-edit-ul{padding-left:0; margin-bottom: 0; text-align: center; display: flex; align-items: center; justify-content: center;}
 .adjustment-name-edit-ul li{list-style: none; display: inline-block; margin: 0 5px;}
 .btn-adjustment-pg{border:1px solid grey !important; color: #02659d !important; padding: 2px 5px !important;}
-.adjustment-name-edit-ul li h4{font-size: 16px; line-height: 22px;}
+.adjustment-name-edit-ul li h4{font-size: 12px; line-height: 22px;}
 .btn-back-2{margin-right: 10px;}
 .img-responsive{width:100%;}
 .pd-imgs{background:#f5f5f5; padding:10px; border:1px solid transparent;}
@@ -744,6 +746,8 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .money-button-green{background:green;}
 .money-button-blue{background:#02659d;}
 .report-button{padding:10px; color:#fff; width: 100%; display: block; background: #3ba3fd; font-weight: 600; font-size: 20px;}
+/*.report-button{padding:10px; color:#fff; width: 100%; display: block; background: #209303; font-weight: 600; font-size: 20px;}*/
+.void-button{padding:10px; color:#fff; width: 100%; display: block; background: #209303; font-weight: 600; font-size: 20px;}
 .settings-button{padding:10px; color:#fff; width: 100%; display: block; background: #3ba3fd; font-weight: 600; font-size: 20px;}
 .cashier-settings-table{width: 100%;}
 .cs-td-1{width:80%;}
@@ -753,7 +757,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .form-wizard-header{background:#f5f5f5 !important;}
 .form-wizard-submit{color: #ffffff; display: inline-block; min-width: 100px; min-width: 120px; padding: 10px; text-align: center;}
 .btn-primary-bsa-orange{background-color: #008000 !important; border-color: #008000 !important; color:#fff !important;}
-hr{margin: 10px 0 !important;}
+hr{margin: 7px 0 !important;}
 .pricing-box{box-shadow: 0px 0px 5px grey; padding: 0; text-align: center; border-top-left-radius: 20px; border-top-right-radius: 20px; cursor: pointer;}
 .pricing-plan-name{margin-bottom: 3px; background: #02659d; color:#fff; margin-top: 0; padding: 12px; font-size: 22px; border-top-left-radius: 20px; border-top-right-radius: 20px;}
 .pricing-plan-price{font-size: 22px; display: flex; justify-content: center;}
@@ -781,8 +785,8 @@ hr{margin: 10px 0 !important;}
 .lbl-radio{cursor: pointer; width: 100%;}
 .addon-price-calculation{font-size: 20px;}
 .summary-sub-heading{font-size: 13px; font-style: italic; text-align: left; display: block;}
-.summary-h4{margin:0; font-size: 16px; text-align: left; line-height: 22px;}
-.summary-h4-2{margin:0; font-size: 16px; text-align: right; line-height: 22px;}
+.summary-h4{margin:0; font-size: 12px; text-align: left; line-height: 22px;}
+.summary-h4-2{margin:0; font-size: 12px; text-align: right; line-height: 22px;}
 .summary-total-h4{margin:0; font-size: 18px; text-align: left; line-height: 22px;}
 .summary-total-h4-2{margin:0; font-size: 18px; text-align: right; line-height: 22px;}
 .summary-tbl-td-1{padding-right: 10px; width: 60%;}
@@ -811,6 +815,7 @@ hr{margin: 10px 0 !important;}
 .over-flow-200{height:200px !important; overflow-y: auto !important;}
 .over-flow-250{height:250px !important; overflow-y: auto !important;}
 .over-flow-300{height:300px !important; overflow-y: auto !important;}
+.over-flow-500{height:500px !important; overflow-y: auto !important;}
 .dt-insidebox {
         height: 300px; /* Adjust the height as needed */
         overflow: auto;
@@ -818,6 +823,40 @@ hr{margin: 10px 0 !important;}
 .card-body{padding-top: 10px !important; padding-bottom: 10px !important;}
 .card{margin-bottom: 10px !important;}
 .footer{height: 40px !important;}
+.ticket-number{font-size:17px;}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{margin: 5px 0 !important;}
+.ticket-edit{position: relative; top:-5px;}
+table.dataTable td{color:#333333;}
+.form-control{color:#333333 !important;}
+.footer{color:#333333 !important;}
+.footer .footer-links a{color:#333333 !important;}
+table td{color: #333333;}
+.modal-content label{color: #333333;}
+.dd-label{width:20%; margin-bottom: 0 !important; margin-right: 10px !important;}
+.flex-center{align-items: center;}
+.form-label{color:#333333 !important;}
+
+body{font-size: 12px !important;}
+.menu .menu-item .menu-link > .menu-text{font-size: 12px !important;}
+table.dataTable tbody tr td{font-size: 12px !important;}
+tqable td{font-size: 12px !important;}
+a{font-size: 12px !important;}
+.form-control{font-size: 12px !important; padding: 5px !important;}
+select option{font-size: 12px !important;}
+select optgroup option{font-size: 12px !important;}
+.btn-primary{font-size: 12px !important; padding: 3px 10px !important; display: inline-flex !important; align-items: center;}
+.btn-danger{font-size: 12px !important; padding: 3px 10px !important; display: inline-flex !important; align-items: center;}
+.btn-success{font-size: 12px !important; padding: 3px 10px !important; display: inline-flex !important; align-items: center;}
+.modal-content label{font-size: 12px !important; display: flex; align-items: center;}
+h4{font-size: 15px !important;}
+.table .mdi{margin-right: 4px;}
+.btn-blue{background: #02659d;}
+.void-tbl tr td{border:1px solid #dee2e6;}
+.void-tbl{width:100%; text-align: center;}
+
+
+
+
 
 @media only screen and (min-width:576px){
 .pay-print-box{margin-top: 55px !important; text-align: right;}
@@ -829,8 +868,7 @@ hr{margin: 10px 0 !important;}
 .pay-print-box{margin-top:20px !important; text-align: center;}
 .pricing-steps-heading{margin-top: 20px;}
 .addon-price-calculation{margin-top: 10px;}
-.mt-mob-20{margin-top:20px !important;}
-.mt-mob-10{margin-top:10px !important;}
+
 }
 
 @media only screen and (max-width:768px){
@@ -841,16 +879,19 @@ hr{margin: 10px 0 !important;}
 .topbar-menu{padding-left:0 !important;}
 .form-group{margin-top:15px !important;}
 .pricing-plan-name{font-size: 20px;}
+.mt-mob-20{margin-top:20px !important;}
+.mt-mob-10{margin-top:10px !important;}
 }
 
 @media only screen and (min-width:768px){
-.table>:not(caption)>*>*{padding:5px !important;}
+.table>:not(caption)>*>*{padding:3px !important;}
 .balance-bar-desktop{display:block;}
 .balance-bar-mobile{display:none;}
-.btn-materials{margin-bottom: 10px; width: 84px; padding: 5px !important;}
+.btn-materials{margin-bottom: 10px; padding: 5px !important;}
 }
 
 @media only screen and (max-width:991px){
 .ticket-details-tbl{display: block; overflow-x: auto; white-space: nowrap;}
 .ticket-details-new-tbl{display: block; overflow-x: auto; white-space: nowrap;}
+.dl-img{height:auto; width: 100%;}
 }

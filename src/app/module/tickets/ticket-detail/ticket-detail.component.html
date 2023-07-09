@@ -249,22 +249,21 @@
                                 
         <div class="col-md-12">
             <div *ngIf="!editItemCloseImageCapture; else elsepart;" id="camera-div" class="camera-div">
-                <label for="cameraSelect"><b>Select a camera :</b></label>
-                <select id="cameraSelect" onchange="selectCamera()">
-                    <option value="">Select a camera</option>
-                <option value="cd857abbf36b2b1511ae171f1778ffb3cc19c0240e6accda93c40162dc3e0dd1">HP HD Camera (05c8:0397)</option></select>
-                <a class="btn btn-primary" onclick="captureImage()">Capture Image</a>
-                <br><br>
-                <!-- <video id="videoElement" width="640" height="480" autoplay></video> -->
-                <br><br>
-                <canvas id="canvasElement" style="display:none;"></canvas>
-                <img id="capturedImage" style="display:none;">
-                <br><br>
+                <div style="border: 1px solid black;">
+                    <div class="col-sm-6" style="border: 1px solid black;  display:inline-block;">
+                        <app-camera (getPicture)="handleImage($event)"></app-camera>
+                    </div>
+                    <div class="col-sm-6" style="border: 1px solid black;  display:inline-block;">
+                        <div *ngIf="imageUrl">
+                            <img [src]="imageUrl" style="height: 150px; width: 300px;"/>
+                        </div>
+                    </div>
+                </div>
+                <br>
                 <label for="fileUpload"><b>Upload an image :</b></label>
-                <input type="file" id="fileUpload">
+                <input #inputFile type="file" (change)="onFileChanged($event)">
                 <br>
                 <br>
-
                 <a href="#" id="save-image-btn" class="btn btn-primary">Save Image</a>
                 <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage()">Close</a>
             </div>

@@ -67,7 +67,7 @@ export class MaterialsDashboardComponent implements OnInit {
     // alert(materialId);
   }
 
-  showDialog(){
+  showDialog(materialId?: any){
     this.visible = true;
   }
   showBulkDialog(){

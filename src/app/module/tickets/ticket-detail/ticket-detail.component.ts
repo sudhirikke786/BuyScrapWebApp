@@ -5,6 +5,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';  
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { WebcamImage } from 'ngx-webcam';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -13,6 +14,9 @@ import { CommonService } from 'src/app/core/services/common.service';
 })
 export class TicketDetailComponent implements OnInit {
   @ViewChild('htmlData') htmlData!: ElementRef;
+  @ViewChild('inputFile')
+  myInputVariable!: ElementRef;
+  
   cheight= '50vh'
 
 
@@ -38,6 +42,9 @@ export class TicketDetailComponent implements OnInit {
   editItemVisible = false;
   editItemCloseImageCapture = false;
   modalHeader = '';
+  
+  webcamImage: WebcamImage | undefined;
+  imageUrl: any;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -165,12 +172,14 @@ export class TicketDetailComponent implements OnInit {
     this.modalHeader = 'Add Item Details';
     this.editItemVisible = true;
     this.editItemCloseImageCapture = false;
+    this.imageUrl = null;
   }
 
   editItem(rowId: any) {
     this.modalHeader = 'Edit Item Details';
     this.editItemVisible = true;
     this.editItemCloseImageCapture = false;
+    this.imageUrl = null;
   }
 
   closeCapturedImage() {
@@ -178,6 +187,28 @@ export class TicketDetailComponent implements OnInit {
   }
   backToCapturedImage() {
     this.editItemCloseImageCapture = false;
+  }
+
+  handleImage(webcamImage: WebcamImage) {
+    this.webcamImage = webcamImage;
+    this.imageUrl = webcamImage.imageAsDataUrl;
+    this.myInputVariable.nativeElement.value = '';
+  }  
+  
+  onFileChanged(event: any) {
+    this.imageUrl = null;
+    this.webcamImage = undefined;
+    const file = event.target.files[0];
+    console.log('file  :: ' + JSON.stringify(file));
+    let reader = new FileReader();
+    if (event.target.files && event.target.files[0]) {
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imageUrl = reader.result;
+      }       
+    }
+    // Clear the input
+    // event.target.value = null;
   }
 
   openPDF(){

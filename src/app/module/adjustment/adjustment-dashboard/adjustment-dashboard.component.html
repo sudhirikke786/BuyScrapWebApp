@@ -36,91 +36,17 @@
 
                         <div class="row mt-2">
                             <div class="col-12">
-                                <div class="card">
+                                <div class="card custom-height">
                                     <div class="card-body">
 
                                         <div class="row">
                                             
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-3" *ngFor="let item of materialList">
                                                 <div class="adjustment-pg-boxes">
-                                                    <img src="assets/images/custom/adjustment/cod.jpg">
+                                                    <img src="assets/images/custom/adjustment/Default-Adjustment.png">
                                                     <ul class="adjustment-name-edit-ul">
-                                                        <li><h4>COD</h4></li>
-                                                        <li><a (click)="showDialog('Edit Adjustment')" class="btn btn-adjustment-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div class="adjustment-pg-boxes">
-                                                    <img src="assets/images/custom/adjustment/error.jpg">
-                                                    <ul class="adjustment-name-edit-ul">
-                                                        <li><h4>Error</h4></li>
-                                                        <li><a (click)="showDialog('Edit Adjustment')" class="btn btn-adjustment-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div class="adjustment-pg-boxes">
-                                                    <img src="assets/images/custom/adjustment/fuel-surcharge.jpg">
-                                                    <ul class="adjustment-name-edit-ul">
-                                                        <li><h4>Fuel Surcharge</h4></li>
-                                                        <li><a (click)="showDialog('Edit Adjustment')" class="btn btn-adjustment-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div class="adjustment-pg-boxes">
-                                                    <img src="assets/images/custom/adjustment/labour-cost.jpg">
-                                                    <ul class="adjustment-name-edit-ul">
-                                                        <li><h4>Labor Cost</h4></li>
-                                                        <li><a (click)="showDialog('Edit Adjustment')" class="btn btn-adjustment-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="row">
-
-                                            <div class="col-sm-3">
-                                                <div class="adjustment-pg-boxes">
-                                                    <img src="assets/images/custom/adjustment/new-data.jpg">
-                                                    <ul class="adjustment-name-edit-ul">
-                                                        <li><h4>New Data</h4></li>
-                                                        <li><a (click)="showDialog()" class="btn btn-adjustment-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div class="adjustment-pg-boxes">
-                                                    <img src="assets/images/custom/adjustment/recycling.jpg">
-                                                    <ul class="adjustment-name-edit-ul">
-                                                        <li><h4>Recycling</h4></li>
-                                                        <li><a (click)="showDialog('Edit Adjustment')" class="btn btn-adjustment-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div class="adjustment-pg-boxes">
-                                                    <img src="assets/images/custom/adjustment/transportation-cost.jpg">
-                                                    <ul class="adjustment-name-edit-ul">
-                                                        <li><h4>Transportation Cost</h4></li>
-                                                        <li><a (click)="showDialog('Edit Adjustment')" class="btn btn-adjustment-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div class="adjustment-pg-boxes">
-                                                    <img src="assets/images/custom/adjustment/garbage-wood-palet-disposal.jpg">
-                                                    <ul class="adjustment-name-edit-ul">
-                                                        <li><h4>Garbage Wood Pallet Disposal</h4></li>
-                                                        <li><a (click)="showDialog('Edit Adjustment')" class="btn btn-adjustment-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
+                                                        <li>{{item.adjustmentName}}</li>
+                                                        <li><a (click)="showDialog()" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
                                                     </ul>
                                                 </div>
                                             </div>

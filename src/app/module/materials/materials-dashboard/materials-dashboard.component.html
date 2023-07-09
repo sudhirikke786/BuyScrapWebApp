@@ -46,8 +46,8 @@
                                                         <img src="assets/images/custom/materials/Default-Scrap-Material.png">
                                                     </a>
                                                     <ul class="materials-name-edit-ul">
-                                                        <li><h4>{{item.groupName}}</h4></li>
-                                                        <li><a (click)="showDialog()" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
+                                                        <li>{{item.groupName}}</li>
+                                                        <li><a (click)="showDialog(item.rowId)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
                                                     </ul>
                                                 </div>
                                             </div>

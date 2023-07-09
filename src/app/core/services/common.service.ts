@@ -96,6 +96,10 @@ export class CommonService {
 
   getAllSubMaterials(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterials', 'GET', paramObj, 'ProdTest');
+  }  
+
+  GetAllAdjustmentType(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Adjustments/GetAllAdjustmentType', 'GET', paramObj, 'ProdTest');
   }
 
   getAllShipOutDetails(pagination: any): Observable<any> {
