@@ -87,7 +87,7 @@ export class CommonService {
   }
 
   getTransactionsDetailsById(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/TransactionMasters/GetTransactionsDetailsById', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/TransactionMasters/GetTicketMaterialsDetailsByTicketId', 'GET', paramObj, 'ProdTest');
   }
 
   getAllGroupMaterial(paramObj: any): Observable<any> {

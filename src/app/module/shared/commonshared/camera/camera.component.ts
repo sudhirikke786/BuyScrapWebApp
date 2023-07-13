@@ -11,6 +11,7 @@ export class CameraComponent implements OnInit {
   @Output() getPicture = new EventEmitter<WebcamImage>();
   showWebcam = false;
   isCameraExist = true;
+  allMediaDevices: any;
 
   errors: WebcamInitError[] = [];
 
@@ -25,6 +26,7 @@ export class CameraComponent implements OnInit {
   ngOnInit(): void {
     WebcamUtil.getAvailableVideoInputs().then(
       (mediaDevices: MediaDeviceInfo[]) => {
+        this.allMediaDevices = mediaDevices;
         console.log('mediaDevices' + JSON.stringify(mediaDevices));
         this.isCameraExist = mediaDevices && mediaDevices.length > 0;
       }
@@ -44,6 +46,7 @@ export class CameraComponent implements OnInit {
   }
 
   changeWebCame(directionOrDeviceId: boolean | string) {
+    console.log('directionOrDeviceId' + JSON.stringify(directionOrDeviceId));
     this.nextWebcam.next(directionOrDeviceId);
   }
 

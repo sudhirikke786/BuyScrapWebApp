@@ -669,7 +669,7 @@ body.authentication-bg{background-color: #F5F5F5 !important;}
 .dash-icons{height:22px; margin-right: 8px;}
 .menu-links-text{color:#fff; margin-left: 0px;}
 html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .menu > .menu-item:hover > .menu-link::after{width:295px !important; --ct-leftbar-width: 295px !important;}
-.menu .menu-item .menu-link{padding:10px 5px !important;}
+.menu .menu-item .menu-link{padding:5px 5px !important;}
 .form-control{appearance: auto !important;}
 .btn-block{display: block; width: 100%;}
 .btn-success{background:green !important;}
