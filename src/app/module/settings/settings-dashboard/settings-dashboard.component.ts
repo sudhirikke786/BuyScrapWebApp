@@ -1,18 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-settings-dashboard',
   templateUrl: './settings-dashboard.component.html',
   styleUrls: ['./settings-dashboard.component.scss']
 })
-export class SettingsDashboardComponent {
-
+export class SettingsDashboardComponent implements OnInit {
 
   pvisible = false;
   mpVisible = false;
   cvisible =  false;
   tvisible = false;
   cameravisible = false;
+
+  orgName: any;
+  locId: any;
+  
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private commonService: CommonService) { }
+
+  ngOnInit() {
+    this.orgName = localStorage.getItem('orgName');
+    this.locId = 1;
+  }
 
   hidePSettingsmodel(){
     this.pvisible = false

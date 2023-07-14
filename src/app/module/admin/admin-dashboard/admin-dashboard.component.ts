@@ -1,16 +1,13 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss']
 })
-export class AdminDashboardComponent {
-
-  constructor(private router:Router){
-
-  }
+export class AdminDashboardComponent implements OnInit {
 
   actionList = [
     {
@@ -71,6 +68,17 @@ export class AdminDashboardComponent {
 
   visible = false;
 
+  orgName: any;
+  locId: any;
+  
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private commonService: CommonService) { }
+
+  ngOnInit() {
+    this.orgName = localStorage.getItem('orgName');
+    this.locId = 1;
+  }
 
   showModel(){
     this.visible =  true;

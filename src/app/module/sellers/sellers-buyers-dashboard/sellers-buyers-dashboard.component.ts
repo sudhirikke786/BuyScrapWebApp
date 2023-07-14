@@ -10,7 +10,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 })
 export class SellersBuyersDashboardComponent implements OnInit {
   
-  organizationName: any;
+  orgName: any;
   locId: any;
 
   actionList = [
@@ -35,7 +35,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
     private commonService: CommonService) { }
 
   ngOnInit() {
-    this.organizationName = localStorage.getItem('orgName');
+    this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
     this.getAllsellersDetails();
   }

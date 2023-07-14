@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-regrade-dashboard',
   templateUrl: './regrade-dashboard.component.html',
   styleUrls: ['./regrade-dashboard.component.scss'],
 })
-export class RegradeDashboardComponent {
+export class RegradeDashboardComponent implements OnInit {
   actionList = [
     {
       iconcode: 'mdi-magnify',
@@ -87,6 +89,19 @@ export class RegradeDashboardComponent {
   visible: boolean = false;
   ShowmodelRegrate: boolean = false;
   poupRegrate = false;
+  
+  orgName: any;
+  locId: any;
+  
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private commonService: CommonService) { }
+
+  ngOnInit() {
+    this.orgName = localStorage.getItem('orgName');
+    this.locId = 1;
+  }
+  
   showDialog() {
     this.visible = true;
   }

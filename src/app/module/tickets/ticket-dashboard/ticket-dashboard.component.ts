@@ -11,7 +11,6 @@ import { CommonService } from 'src/app/core/services/common.service';
 export class TicketDashboardComponent implements OnInit {
 
   selectedTickets: any;
-  orgName = localStorage.getItem('orgName');
 
   actionList = [{
     iconcode:'mdi-magnify',
@@ -77,7 +76,8 @@ export class TicketDashboardComponent implements OnInit {
 
   visible: boolean = false;
   ticketvisible: boolean = false;
-  organizationName: any;
+  orgName: any;
+  locId: any;
 
   pagination: any = {
     SerachText: '',
@@ -94,7 +94,8 @@ export class TicketDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.selectedTickets = this.defaultSelectedTicketsTypes;
-    this.organizationName = 'prodTest';
+    this.orgName = localStorage.getItem('orgName');
+    this.locId = 1;
     this.getAllTicketsDetails(this.pagination);
   }
 

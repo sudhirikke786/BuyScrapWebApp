@@ -17,7 +17,7 @@
 
                                 <div class="col-sm-6 col-6">
                                     <div class="b-links">
-                                        <a href="index.html">Home</a> / <a href="materials.html">Materials</a>
+                                        <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/materials">Materials</a>
                                     </div>
                                 </div>
                             </div>
@@ -63,77 +63,7 @@
 
                 </div> <!-- content -->
 
-            
-
-                <!--  Add Materials Modal Popup -->
-                <div class="modal fade" id="add-materials" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="myLargeModalLabel">Add Materials</h4>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                
-                                <div class="row">
-                                
-                                    <div class="col-sm-12">
-                                        <form action="">
-                                        
-                                        <div class="form-group col-sm-12 mb-2">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="productname" placeholder="Product Name">
-                                                <label for="floatingInput">Product Name</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-sm-12 mb-2">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="description" placeholder="Description">
-                                                <label for="floatingInput">Description</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-sm-12 mb-2">
-                                            <label for="example-select" class="form-label">Units of Measure</label>
-                                            <select class="form-select" id="example-select">
-                                                <option>Lb</option>
-                                                <option>Kg</option>
-                                                <option>Ounce</option>
-                                                <option>Gram</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-sm-12 mb-2">
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="checkmeout0">
-                                                <label class="form-check-label" for="checkmeout0">IsCRV</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-sm-12 mb-2">
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="checkmeout0">
-                                                <label class="form-check-label" for="checkmeout0">Enable</label>
-                                            </div>
-                                        </div>
-
-                                        <a class="btn btn-primary btn-materials">Save</a>
-
-                                        </form>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div>
-                <!--  Add Materials Modal Popup -->
-
-
             </div>
-
 
 
           <p-dialog
@@ -215,20 +145,16 @@
                 <div class="form-group col-sm-12 mb-2">
                     
                     <label for="example-select" class="form-label">Select Material</label>
-                    <select class="form-select" id="myselection">
-                        <option>Select Option</option>
-                        <option value="One">Aluminium</option>
-                        <option value="Two">Brass</option>
-                        <option value="Three">Copper</option>
-                        <option value="Four">CRV</option>
-                        <option value="Five">eWaste</option>
-                        <option value="Six">Iron</option>
-                        <option value="Seven">Plastic</option>
-                        <option value="Eight">Steel</option>
+                    <select class="form-select" formControlName="groupId"
+                    (change)="onMaterialChange($event)">
+                        <option *ngFor="let option of materialListCopy; let i = index"
+                        [value]="option.rowId">
+                            {{ option.groupName }}
+                        </option>
                     </select>
 
                     <!--  Aluminium Div -->
-                    <div id="showOne" class="myDiv">
+                    <div class="myDiv">
                         <table class="ticket-details-tbl">
                             <thead>
                                 <tr><th>Material Name</th>
@@ -236,188 +162,18 @@
                             </tr></thead>
 
                             <tbody> 
-                                <tr>
-                                    <td>Aluminium 1</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Aluminium 2</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>                                                     
+                                <ng-container *ngFor="let item of subMaterialList">
+                                    <tr>
+                                        <td hidden>{{item.rowId}}</td>
+                                        <td>{{item.materialName}}</td>
+                                        <td><input type="text" class="form-control" id="value" value="{{item.scrapPrice}}"></td>
+                                    </tr> 
+                                </ng-container>                                                    
                             </tbody>
                             
                         </table>
                     </div>
                     <!--  Aluminium Div -->
-
-                    <!--  Brass Div -->
-                    <div id="showTwo" class="myDiv">
-                        <table class="ticket-details-tbl">
-                            <thead>
-                                <tr><th>Material Name</th>
-                                <th>Scrap Price</th>
-                            </tr></thead>
-
-                            <tbody> 
-                                <tr>
-                                    <td>Brass 1</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Brass 2</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>                                                     
-                            </tbody>
-                            
-                        </table>
-                    </div>
-                    <!--  Brass Div -->
-
-                    <!--  Copper Div -->
-                    <div id="showThree" class="myDiv">
-                        <table class="ticket-details-tbl">
-                            <thead>
-                                <tr><th>Material Name</th>
-                                <th>Scrap Price</th>
-                            </tr></thead>
-
-                            <tbody> 
-                                <tr>
-                                    <td>Copper 1</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Copper 2</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>                                                     
-                            </tbody>
-                            
-                        </table>
-                    </div>
-                    <!--  Copper Div -->
-
-                    <!--  CRV Div -->
-                    <div id="showFour" class="myDiv">
-                        <table class="ticket-details-tbl">
-                            <thead>
-                                <tr><th>Material Name</th>
-                                <th>Scrap Price</th>
-                            </tr></thead>
-
-                            <tbody> 
-                                <tr>
-                                    <td>CRV 1</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>
-
-                                <tr>
-                                    <td>CRV 2</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>                                                     
-                            </tbody>
-                            
-                        </table>
-                    </div>
-                    <!--  CRV Div -->
-
-                    <!--  eWaste Div -->
-                    <div id="showFive" class="myDiv">
-                        <table class="ticket-details-tbl">
-                            <thead>
-                                <tr><th>Material Name</th>
-                                <th>Scrap Price</th>
-                            </tr></thead>
-
-                            <tbody> 
-                                <tr>
-                                    <td>eWaste 1</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>
-
-                                <tr>
-                                    <td>eWaste 2</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>                                                     
-                            </tbody>
-                            
-                        </table>
-                    </div>
-                    <!--  eWaste Div -->
-
-                    <!--  Iron Div -->
-                    <div id="showSix" class="myDiv">
-                        <table class="ticket-details-tbl">
-                            <thead>
-                                <tr><th>Material Name</th>
-                                <th>Scrap Price</th>
-                            </tr></thead>
-
-                            <tbody> 
-                                <tr>
-                                    <td>Iron 1</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Iron 2</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>                                                     
-                            </tbody>
-                            
-                        </table>
-                    </div>
-                    <!--  Iron Div -->
-
-                    <!--  Plastic Div -->
-                    <div id="showSeven" class="myDiv">
-                        <table class="ticket-details-tbl">
-                            <thead>
-                                <tr><th>Material Name</th>
-                                <th>Scrap Price</th>
-                            </tr></thead>
-
-                            <tbody> 
-                                <tr>
-                                    <td>Plastic 1</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Plastic 2</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>                                                     
-                            </tbody>
-                            
-                        </table>
-                    </div>
-                    <!--  Plastic Div -->
-
-                    <!--  Steel Div -->
-                    <div id="showEight" class="myDiv">
-                        <table class="ticket-details-tbl">
-                            <thead>
-                                <tr><th>Material Name</th>
-                                <th>Scrap Price</th>
-                            </tr></thead>
-
-                            <tbody> 
-                                <tr>
-                                    <td>Steel 1</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Steel 2</td>
-                                    <td><input type="text" class="form-control" id="value" value="1.4500"></td>
-                                </tr>                                                     
-                            </tbody>
-                            
-                        </table>
-                    </div>
-                    <!--  Steel Div -->
 
                 </div>
 

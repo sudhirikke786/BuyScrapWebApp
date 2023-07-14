@@ -77,7 +77,7 @@ export class CertificatesDashboardComponent implements OnInit {
   cvisible = false;
   ivisible =  false;
   
-  organizationName: any;
+  orgName: any;
   locId: any;
 
   
@@ -88,7 +88,7 @@ export class CertificatesDashboardComponent implements OnInit {
     private commonService: CommonService) { }
 
   ngOnInit() {
-    this.organizationName = localStorage.getItem('orgName');
+    this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
     this.getAllCODTickets();
   }

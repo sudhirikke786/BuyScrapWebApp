@@ -21,7 +21,7 @@ export class TicketDetailComponent implements OnInit {
 
 
   ticketObj:any;
-  organizationName: any;
+  orgName: any;
   sellerId: any;
   ticketId: any;
   locId: any;
@@ -51,7 +51,7 @@ export class TicketDetailComponent implements OnInit {
     private commonService: CommonService) { }
 
   ngOnInit() {
-    this.organizationName = 'prodTest';
+    this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
     this.route.params.subscribe((param)=>{
       this.ticketId = param["ticketId"];

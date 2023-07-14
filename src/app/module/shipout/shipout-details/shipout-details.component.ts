@@ -12,7 +12,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 export class ShipoutDetailsComponent implements OnInit {
 
   
-  organizationName: any;
+  orgName: any;
   locId = 1;
   shipoutId: any;
   shipout: any;
@@ -22,7 +22,7 @@ export class ShipoutDetailsComponent implements OnInit {
     private commonService: CommonService) { }
 
   ngOnInit() {
-    this.organizationName = 'prodTest';
+    this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
     this.route.params.subscribe((param)=>{
       this.shipoutId = param["shipoutId"];

@@ -58,8 +58,10 @@ export class MaterialsDashboardComponent implements OnInit {
   orgName: any;
   locId: any;
   materialList: any;
+  materialListCopy: any;
   subMaterialList: any;
   mainMaterialsVisible = true;
+  defaultSelectedMaterial: any;
   
   constructor(private route: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -96,6 +98,7 @@ export class MaterialsDashboardComponent implements OnInit {
           console.log('getAllGroupMaterial :: ');
           console.log(data);
           this.materialList = data.body.data;
+          this.materialListCopy = JSON.parse(JSON.stringify(this.materialList));  
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -147,6 +150,30 @@ export class MaterialsDashboardComponent implements OnInit {
 
   showBulkDialog(){
     this.bulkvisible = true;
+  }
+  
+  onMaterialChange(value: any) {
+    const selectedMaterialId = value.target.value;
+    this.getSubMaterials(selectedMaterialId);
+  }
+
+  getSubMaterials(materialId: any) {
+    this.mainMaterialsVisible =  false;
+
+    const paramObject = {
+      MaterialID: materialId,
+      LocationId: this.locId
+    };
+    this.commonService.getAllSubMaterials(paramObject)
+      .subscribe(data => {
+          console.log('getAllSubMaterials :: ');
+          console.log(data);
+          this.subMaterialList = data.body.data;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
   }
 
   getAction(actionCode:any){

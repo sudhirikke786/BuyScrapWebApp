@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-admin-location-management',
   templateUrl: './admin-location-management.component.html',
   styleUrls: ['./admin-location-management.component.scss']
 })
-export class AdminLocationManagementComponent {
+export class AdminLocationManagementComponent implements OnInit {
 
 
   visible =  false;
@@ -34,6 +36,17 @@ export class AdminLocationManagementComponent {
   locationVisble: boolean = false;
   addlocationVisble: boolean = false;
 
+  orgName: any;
+  locId: any;
+  
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private commonService: CommonService) { }
+
+  ngOnInit() {
+    this.orgName = localStorage.getItem('orgName');
+    this.locId = 1;
+  }
 
   hideModel(){
     this.visible = false;

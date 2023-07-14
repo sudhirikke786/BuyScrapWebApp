@@ -28,6 +28,8 @@ export class MaterialsDetailsComponent implements OnInit {
   
   isEditModeOn = false;
   materialData: any;
+  subMaterials = '';
+  searchTerm = '';
 
   unitOfMeasure =  [
     {name: 'Lb', value: 1},
@@ -40,11 +42,26 @@ export class MaterialsDetailsComponent implements OnInit {
 
   form: FormGroup = this.formBuilder.group({
     rowId: 0,
-    groupName: ['', Validators.required],
+    createdBy: 0,
+    createdDate: '',
+    updatedBy: 0,
+    updatedDate: '',
+    groupId: 0,
     description: '',
-    uomId: 1,
+    materialName: '',
+    marketPrice: 0,
+    scrapPrice: 0,
+    dealerPrice1: 0,
+    dealerPrice2: 0,
+    dealerPrice3: 0,
+    availableStock: 0,
     isEnable: false,
-    isCRV: false
+    uomId: 1,
+    uom: 'Lb',
+    locID: 0,
+    isHold: false,
+    isCRV: false,
+    holdDays: 0
   });
 
   visible: boolean = false;
@@ -52,8 +69,10 @@ export class MaterialsDetailsComponent implements OnInit {
 
   orgName: any;
   locId: any;
+  defaultMaterialId: any;
   materialList: any;
   subMaterialList: any;
+  subMaterialListCopy: any;
   mainMaterialsVisible = true;
   
   constructor(private route: ActivatedRoute,
@@ -67,25 +86,53 @@ export class MaterialsDetailsComponent implements OnInit {
     
     this.form = this.formBuilder.group({
       rowId: 0,
-      groupName: ['', Validators.required],
-      description: '',
-      uomId: 1,
-      isEnable: false,
-      isCRV: false,
       createdBy: 0,
       createdDate: '',
       updatedBy: 0,
       updatedDate: Date.now(),
-      locID: this.locId
+      groupId: 0,
+      description: '',
+      materialName: '',
+      marketPrice: 0,
+      scrapPrice: 0,
+      dealerPrice1: 0,
+      dealerPrice2: 0,
+      dealerPrice3: 0,
+      availableStock: 0,
+      isEnable: false,
+      uomId: 1,
+      uom: 'Lb',
+      locID: 0,
+      isHold: false,
+      isCRV: false,
+      holdDays: 0
     });
 
     this.route.params.subscribe((param)=>{
       if (param['materialId']) {
+        this.defaultMaterialId = param['materialId'];
         this.getSubMaterials(param['materialId']);
       } else {
         alert('Required material id')
       }
     });
+    this.getAllGroupMaterial();
+  }
+
+  getAllGroupMaterial() {
+    const paramObject = {
+      LocationId: this.locId
+    };
+    this.commonService.getAllGroupMaterial(paramObject)
+      .subscribe(data => {
+          console.log('getAllGroupMaterial :: ');
+          console.log(data);
+          this.materialList = data.body.data;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
   }
 
   getSubMaterials(materialId: any) {
@@ -100,6 +147,7 @@ export class MaterialsDetailsComponent implements OnInit {
           console.log('getAllSubMaterials :: ');
           console.log(data);
           this.subMaterialList = data.body.data;
+          this.subMaterialListCopy = { ...this.subMaterialList };
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -107,6 +155,14 @@ export class MaterialsDetailsComponent implements OnInit {
       );
   }
 
+  search(): void {
+    let term = this.searchTerm;
+    console.log(' searchTerm :: ' + term);
+    this.subMaterialList = this.subMaterialListCopy.filter(function(item: any) {
+        console.log(' item :: ' + item);
+        return item.materialName.indexOf(term) >= 0;
+    }); 
+}
   showDialog(materialData?: any){
     if (materialData) {
       this.isEditModeOn = true;
@@ -118,11 +174,26 @@ export class MaterialsDetailsComponent implements OnInit {
 
       this.form = this.formBuilder.group({
         rowId: 0,
-        groupName: ['', Validators.required],
+        createdBy: 0,
+        createdDate: '',
+        updatedBy: 0,
+        updatedDate: Date.now(),
+        groupId: this.defaultMaterialId,
         description: '',
-        uomId: 1,
+        materialName: '',
+        marketPrice: 0,
+        scrapPrice: 0,
+        dealerPrice1: 0,
+        dealerPrice2: 0,
+        dealerPrice3: 0,
+        availableStock: 0,
         isEnable: false,
-        isCRV: false
+        uomId: 1,
+        uom: 'Lb',
+        locID: 0,
+        isHold: false,
+        isCRV: false,
+        holdDays: 0
       });
 
     }
@@ -148,7 +219,7 @@ export class MaterialsDetailsComponent implements OnInit {
     alert(JSON.stringify(returnedTarget));
 
   }
-  
+
   showBulkDialog(){
     this.bulkvisible = true;
   }

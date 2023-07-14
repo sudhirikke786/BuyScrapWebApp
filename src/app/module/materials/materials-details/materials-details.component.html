@@ -17,7 +17,7 @@
 
                                 <div class="col-sm-6 col-6">
                                     <div class="b-links">
-                                        <a href="index.html">Home</a> / <a href="materials.html">Materials</a> / <a href="materials.html">Sub Materials</a>
+                                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/materials">Materials</a> / <a href="javscript:void()" routerLink="/{{orgName}}/materials/detail/{{defaultMaterialId}}">Sub Materials</a>
                                     </div>
                                 </div>
                             </div>
@@ -25,12 +25,12 @@
                         
                         <div class="row mt-2">
                             <div class="col-md-6 d-flex">
-                                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search Sub Materials">
+                                <input type="text" id="example-palaceholder" class="form-control"
+                                 placeholder="Search Sub Materials" [(ngModel)] = "searchTerm" (ngModelChange) = "search()">
                             </div>
                             <div class="col-md-6"> 
                                 <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
-                            </div>
-                            
+                            </div>                            
                         </div>  
                         <!-- end page title --> 
 
@@ -61,7 +61,7 @@
                                                     </ul>
                                                     <ul class="materials-name-edit-ul">
                                                         <li>Scrap Price - {{item.scrapPrice}}</li>
-                                                        <li><a (click)="showDialog()" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
+                                                        <li><a (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -84,7 +84,7 @@
 
 
             <p-dialog
-                [header]="isEditModeOn == true? 'Edit Material' : 'Add Material'"
+                [header]="isEditModeOn == true? 'Edit Sub-Material' : 'Add Sub-Material'"
                 [(visible)]="visible"
                 [style]="{ width: '60vw' }"
             >
@@ -96,20 +96,20 @@
                                 <div class="form-group col-sm-6 mb-2">
                                     <div class="form-floating">
                                         <label hidden formControlName="rowId">0</label>
-                                        <input formControlName="groupName" type="text" class="form-control">
+                                        <input formControlName="materialName" type="text" class="form-control">
                                         <label for="floatingInput">Product Name</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-6 mb-2">
                                     <div class="form-floating">                                        
-                                        <select class="form-select" formControlName="uomId">
-                                            <option *ngFor="let option of unitOfMeasure"
-                                            [value]="option.value">
-                                                {{ option.name }}
+                                        <select class="form-select" formControlName="groupId">
+                                            <option *ngFor="let option of materialList"
+                                            [value]="option.rowId">
+                                                {{ option.groupName }}
                                             </option>
                                         </select>
-                                        <label for="floatingInput">Units of Measure</label>
+                                        <label for="floatingInput">Product Group</label>
                                     </div>
                                     <!-- <label for="example-select" class="form-label">Units of Measure</label> -->
                                 </div>
@@ -125,13 +125,13 @@
                             <div class="row">
                                 <div class="form-group col-sm-4 mb-2">
                                     <div class="form-floating">
-                                        <input formControlName="groupName" type="text" class="form-control">
+                                        <input formControlName="marketPrice" type="text" class="form-control">
                                         <label for="floatingInput">Market Price</label>
                                     </div>
                                 </div>
                                 <div class="form-group col-sm-4 mb-2">
                                     <div class="form-floating">
-                                        <input formControlName="groupName" type="text" class="form-control">
+                                        <input formControlName="scrapPrice" type="text" class="form-control">
                                         <label for="floatingInput">Scrap Price</label>
                                     </div>
                                 </div>
@@ -143,19 +143,19 @@
                             <div class="row">
                                 <div class="form-group col-sm-4 mb-2">
                                     <div class="form-floating">
-                                        <input formControlName="groupName" type="text" class="form-control">
+                                        <input formControlName="dealerPrice1" type="text" class="form-control">
                                         <label for="floatingInput">Dealer 1 Percentage</label>
                                     </div>
                                 </div>
                                 <div class="form-group col-sm-4 mb-2">
                                     <div class="form-floating">
-                                        <input formControlName="groupName" type="text" class="form-control">
+                                        <input formControlName="dealerPrice2" type="text" class="form-control">
                                         <label for="floatingInput">Dealer 2 Percentage</label>
                                     </div>
                                 </div>
                                 <div class="form-group col-sm-4 mb-2">
                                     <div class="form-floating">
-                                        <input formControlName="groupName" type="text" class="form-control">
+                                        <input formControlName="dealerPrice3" type="text" class="form-control">
                                         <label for="floatingInput">Dealer 3 Percentage</label>
                                     </div>
                                 </div>
@@ -164,8 +164,8 @@
                             <div class="row">
                                 <div class="form-group col-sm-4 mb-2">
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="isCRV"  formControlName="isCRV">
-                                        <label class="form-check-label" for="isCRV">Payment Hold</label>
+                                        <input type="checkbox" class="form-check-input" id="isHold"  formControlName="isHold">
+                                        <label class="form-check-label" for="isHold">Payment Hold</label>
                                     </div>
                                 </div>                                
                                 <div class="form-group col-sm-4 mb-2">

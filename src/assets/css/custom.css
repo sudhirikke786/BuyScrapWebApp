@@ -273,7 +273,7 @@ i.material-icons {
 
 /* ============================ Dropdown Div Show Hide CSS ================================ */
 .myDiv{
-	display:none;
+	  /* display:none; */
     margin-top:15px;
 }  
 
