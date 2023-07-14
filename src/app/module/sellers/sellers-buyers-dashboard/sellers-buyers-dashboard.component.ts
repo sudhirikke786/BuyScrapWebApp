@@ -63,7 +63,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-plus':
-        this.router.navigateByUrl(`ProdTest/sellers-buyers/add-sellers`)
+        this.router.navigateByUrl(`${this.orgName}/sellers-buyers/add-seller`)
         break;
       case 'mdi-merge':
      

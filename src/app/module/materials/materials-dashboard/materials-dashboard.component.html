@@ -140,12 +140,12 @@
           <div class="row">
                                 
             <div class="col-sm-12">
-                <form action="">
+                <form #bulkEdit action="">
                 
                 <div class="form-group col-sm-12 mb-2">
                     
                     <label for="example-select" class="form-label">Select Material</label>
-                    <select class="form-select" formControlName="groupId"
+                    <select class="form-select" [(ngModel)]="defaultSelectedMaterial"
                     (change)="onMaterialChange($event)">
                         <option *ngFor="let option of materialListCopy; let i = index"
                         [value]="option.rowId">

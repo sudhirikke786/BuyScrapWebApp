@@ -17,11 +17,15 @@ export const routes: Routes = [
     component: SellersBuyersDashboardComponent
   },
   {
-    path:'add-sellers',
+    path:'add-seller',
     component:AddSellersComponent
   },
   {
-    path:'view-sellers/:sellerId',
+    path:'edit-seller/:sellerId',
+    component:AddSellersComponent
+  },
+  {
+    path:'view-seller/:sellerId',
     component:SellersBuyersDetailsComponent
   }
 ]

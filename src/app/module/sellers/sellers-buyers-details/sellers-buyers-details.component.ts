@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Pagination } from 'src/app/core/interfaces/common-interfaces';
 
 import { CommonService } from 'src/app/core/services/common.service';
 
@@ -18,14 +17,6 @@ export class SellersBuyersDetailsComponent implements OnInit {
   sellerId: any;
   seller: any;
   tickets: any;
-
-  
-  pagination: Pagination = {
-    Status: 'ALL',
-    PageNumber: 1,
-    RowOfPage: 5,
-    LocationId: this.locId
-  }
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -36,8 +27,8 @@ export class SellersBuyersDetailsComponent implements OnInit {
     this.locId = 1;
     this.route.params.subscribe((param)=>{
       this.sellerId = param["sellerId"];
-      this.getSellerById();
-      this.getAllTicketsDetails(this.pagination);
+      this.getSellerById();      
+      this.getAllTicketsBySellerId();
     });
   }
   
@@ -58,10 +49,14 @@ export class SellersBuyersDetailsComponent implements OnInit {
       );
   }
 
-  getAllTicketsDetails(pagination: Pagination) {
-    this.commonService.getAllTicketsDetails(pagination)
+  getAllTicketsBySellerId() {    
+    const paramObj: any = {
+      SellerId: this.sellerId,
+      LocationId: this.locId
+    }
+    this.commonService.getAllTicketsBySellerId(paramObj)
       .subscribe(data => {
-          console.log('getAllTicketsDetails :: ');
+          console.log('getAllTicketsBySellerId :: ');
           console.log(data);
           this.tickets = data.body.data;
         },

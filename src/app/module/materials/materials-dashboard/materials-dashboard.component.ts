@@ -61,7 +61,7 @@ export class MaterialsDashboardComponent implements OnInit {
   materialListCopy: any;
   subMaterialList: any;
   mainMaterialsVisible = true;
-  defaultSelectedMaterial: any;
+  defaultSelectedMaterial: any = 1;
   
   constructor(private route: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -98,7 +98,10 @@ export class MaterialsDashboardComponent implements OnInit {
           console.log('getAllGroupMaterial :: ');
           console.log(data);
           this.materialList = data.body.data;
-          this.materialListCopy = JSON.parse(JSON.stringify(this.materialList));  
+          this.materialListCopy = JSON.parse(JSON.stringify(this.materialList)); 
+          console.log('materialListCopy :: ');
+          console.log(this.materialListCopy); 
+          this.defaultSelectedMaterial = this.materialListCopy[0].rowId;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';

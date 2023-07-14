@@ -129,6 +129,18 @@
 
 //Moz-style
 
+.body{
+    overflow: hidden !important;
+    height: 100% !important;
+}
+.footer{
+    position:fixed !important;
+    left:25px !important;
+}
+.p-paginator .p-paginator-pages .p-paginator-page{
+    min-width: 1.5rem;
+    height: 1.5rem;
+}
 
   ::-webkit-scrollbar {
     width: 0.5rem;
@@ -141,12 +153,4 @@
   ::-webkit-scrollbar-thumb {
     background-color: darkgrey;
     outline: 1px solid slategrey;
-  }
-
-  body{
-    overflow: hidden;
-  }
-  .content{
-    overflow: auto;
-    max-height: 100vh;
   }

@@ -126,7 +126,7 @@
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row over-flow-200">
                                   <h4 class="materials-heading">Materials</h4>
 
-                                  <ul class="materials-ul materials-ul-1">
+                                  <ul class="main-ul">
                                     
                                     <ng-container  *ngFor="let item of materialList" >
                                         <li>
@@ -149,7 +149,7 @@
                                      Main Material - {{selectedMaterial}}
                                 </h1>
                      
-                                  <ul class="materials-ul">
+                                  <ul class="main-ul">
                                     <ng-container  *ngFor="let item of subMaterialList" >
                                         <li>
                                             <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="addItem(item.rowId, item.materialName)"

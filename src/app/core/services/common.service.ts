@@ -78,6 +78,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsDetails', 'GET', pagination, 'ProdTest');
   }
 
+  getAllTicketsBySellerId(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsBySellerId', 'GET', paramObj, 'ProdTest');
+  }
+
   getAllsellersDetails(pagination: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Sellerss/GetAllsellersDetails', 'GET', pagination, 'ProdTest');
   }
