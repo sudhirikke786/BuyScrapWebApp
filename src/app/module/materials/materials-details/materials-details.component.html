@@ -53,11 +53,11 @@
                                             </div>
                                         </ng-container>
                                         <ng-container *ngIf="!mainMaterialsVisible" >
-                                            <div class="col-sm-3" *ngFor="let item of subMaterialList">
+                                            <div class="col-sm-2" *ngFor="let item of subMaterialList">
                                                 <div class="materials-pg-boxes">
                                                     <img src="assets/images/custom/materials/Default-Scrap-Material.png">
                                                     <ul class="materials-name-edit-ul">
-                                                        <li>{{item.materialName}}</li>
+                                                        <li><b>{{item.materialName}}</b></li>
                                                     </ul>
                                                     <ul class="materials-name-edit-ul">
                                                         <li>Scrap Price - {{item.scrapPrice}}</li>

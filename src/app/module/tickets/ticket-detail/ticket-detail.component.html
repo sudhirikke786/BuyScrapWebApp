@@ -31,7 +31,7 @@
 
                                 <div class="row">
                                    <div class="col-sm-6">
-                                        <h4 class="ticket-number">Ticket# - 463</h4>
+                                        <h4 class="ticket-number">Ticket# - {{ticketId}}</h4>
                                    </div>
 
                                    <div class="col-sm-6">
@@ -102,7 +102,7 @@
                                                 <img src="{{ticket.imagePath}}" class="ticket-particulars-img">
                                             </td>
                                             <td *ngIf="isEditModeOn">
-                                                <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editItem(ticket.localRowId)"
+                                                <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editItem(ticket)"
                                                 class="btn btn-grid btn-primary waves-effect waves-light me-1">
                                                     <i class="mdi mdi-pencil"></i> Edit
                                                 </a> 
@@ -132,7 +132,7 @@
                                         <li>
                                             <a id="showInnerDiv1" class="btn btn-primary btn-materials" 
                                             pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
-                                            (click)="getSubMaterials(item.rowId, item.groupName)">
+                                            (click)="getSubMaterials(item.rowId, item.groupName, false)">
                                                 {{item.groupName}}
                                             </a>
                                         </li>
@@ -189,7 +189,7 @@
                                             <td>{{totalTare}}</td>
                                             <td>{{totalNet}}</td>
                                             <td>---</td>
-                                            <td>{{totalAmount}}</td>
+                                            <td>{{totalAmount | number : '1.3-3'}}</td>
                                             <td>---</td>
                                         </tr>                                                     
                                     </tbody>
@@ -250,21 +250,12 @@
         <div class="col-md-12">
             <div *ngIf="!editItemCloseImageCapture; else elsepart;" id="camera-div" class="camera-div">
                 <div style="border: 1px solid black;">
-                    <div class="col-sm-6" style="border: 1px solid black;  display:inline-block;">
+                    <div class="col-sm-12" style="border: 1px solid black;  display:inline-block;">
                         <app-camera (getPicture)="handleImage($event)"></app-camera>
-                    </div>
-                    <div class="col-sm-6" style="border: 1px solid black;  display:inline-block;">
-                        <div *ngIf="imageUrl">
-                            <img [src]="imageUrl" style="height: 150px; width: 300px;"/>
-                        </div>
                     </div>
                 </div>
                 <br>
-                <label for="fileUpload"><b>Upload an image :</b></label>
-                <input #inputFile type="file" (change)="onFileChanged($event)">
-                <br>
-                <br>
-                <a href="#" id="save-image-btn" class="btn btn-primary">Save Image</a>
+                <a href="#" id="save-image-btn" class="btn btn-primary me-1">Save Image</a>
                 <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage()">Close</a>
             </div>
             <ng-template #elsepart>
@@ -277,42 +268,82 @@
                             </button>
                         </td>
                         <td>
-                            <h4>Aluminium Extrusion(Clean)</h4>
+                            <h4>{{itemGroupName}} ==> {{itemMaterialName}}</h4>
                         </td>
                         <td>
-                            <a id="backToMainBox9" class="btn btn-primary numpad-heading-btn" data-bs-dismiss="modal">Change Item</a>
+                            <a id="backToMainBox9" class="btn btn-primary numpad-heading-btn" data-bs-dismiss="modal" (click)="clickOnChangeItem()">Change Item</a>
                         </td>
                         <td>
-                            <a id="back-btnss" class="btn btn-primary numpad-heading-btn">Capture Image</a>
+                            <a id="back-btnss" class="btn btn-primary numpad-heading-btn" (click)="backToCapturedImage()">Capture Image</a>
                         </td>
                     </tr>
                 </tbody></table>
 
                 <div class="row mt-3">
                 
-                    <div class="col-sm-6 mb-2">
+                    <div [ngClass]="isChangeItemOn ? 'col-sm-4 mb-2' : 'col-sm-6 mb-2' " *ngIf="isChangeItemOn" >
+                        <div *ngIf="changeItemMaterialsVisible" id="mainbox" class="mainbox-row over-flow-200">
+                            <h4 class="materials-heading">Materials</h4>
+
+                            <ul class="main-ul">
+                            
+                            <ng-container  *ngFor="let item of materialList" >
+                                <li>
+                                    <a id="showInnerDiv1" class="btn btn-primary btn-materials" 
+                                    pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
+                                    (click)="getSubMaterials(item.rowId, item.groupName, true)">
+                                        {{item.groupName}}
+                                    </a>
+                                </li>
+                            </ng-container>
+                            </ul>
+                            
+                        </div>
+
+                        <div *ngIf="!changeItemMaterialsVisible" id="innerdiv1" class="mainbox-row over-flow-200">
+                            <h1 class="btn-materials-2">
+                            <span>
+                                <a id="backToMainBox1" class="btn btn-primary btn-back" (click)="backToChangeItemMainMaterials()"><i class="mdi mdi-keyboard-backspace me-1"></i></a>
+                            </span>
+                                Main Material - {{selectedMaterial}}
+                        </h1>
+                
+                            <ul class="main-ul">
+                            <ng-container  *ngFor="let item of subMaterialList" >
+                                <li>
+                                    <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="updateExistingItem(item.rowId, item.materialName, selectedMaterial)"
+                                    pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
+                                    class="btn btn-primary btn-materials-inner">{{item.materialName}}</a>
+                                </li>
+                            </ng-container>                                     
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <div [ngClass]="isChangeItemOn ? 'col-sm-4 mb-2' : 'col-sm-6 mb-2' " >
                         <div class="input-container">
                           <label for="gross">Gross:</label>
-                          <input type="text" id="gross" tabindex="1" placeholder="Enter Gross Weight" required="">
+                          <input type="text" id="gross" [(ngModel)]="itemGross" tabindex="1" placeholder="Enter Gross Weight" required="">
                         </div>
 
                         <div class="input-container">
                           <label for="tare">Tare:</label>
-                          <input type="text" id="tare" tabindex="2" placeholder="Enter Tare Weight" required="">
+                          <input type="text" id="tare" [(ngModel)]="itemTare" tabindex="2" placeholder="Enter Tare Weight" required="">
                         </div>
 
                         <div class="input-container">
                           <label for="net">Net:</label>
-                          <input type="text" id="net" tabindex="3" placeholder="Enter Net Weight" required="">
+                          <input type="text" id="net" value = "{{itemGross - itemTare}}" tabindex="3" placeholder="Enter Net Weight" required="">
                         </div>
 
                         <div class="input-container">
                           <label for="price">Price:</label>
-                          <input type="text" id="price" tabindex="4" placeholder="Enter Final Price" required="">
+                          <input type="text" id="price" [(ngModel)]="itemPrice" tabindex="4" placeholder="Enter Final Price" required="">
                         </div>
                     </div>
 
-                    <div class="col-sm-6">
+                    <div [ngClass]="isChangeItemOn ? 'col-sm-4' : 'col-sm-6' " >
                         <div class="num-pad">
                           <div class="row">
                             <button class="num-btn">1</button>
@@ -337,7 +368,7 @@
                           <div class="row">
                             <button class="clear-btn">Clear</button>
                             <button class="delete-btn">Delete</button>
-                            <button class="enter-btn">Enter</button>
+                            <button class="enter-btn" (click)="updateExistingItemDataResponse()">Enter</button>
                           </div>
                           <div class="row text-center">
                             <button class="notes-btn">Notes</button>

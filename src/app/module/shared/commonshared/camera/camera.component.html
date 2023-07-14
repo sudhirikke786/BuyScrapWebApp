@@ -1,28 +1,49 @@
 <div *ngIf="isCameraExist; else noCameraExist">
+  <div class="row">                                
+    <div class="col-sm-6">
+      
+      <label for="cameraSelect"><b>Select a camera :</b></label>
+      <select [(ngModel)]="selectedCamera" (change)="changeWebCame(selectedCamera)">
+          <option value="">Select a camera</option>            
+          <option *ngFor="let option of allMediaDevices" [value]="option.deviceId"> {{ option.label }} </option>
+          <!-- <option value="cd857abbf36b2b1511ae171f1778ffb3cc19c0240e6accda93c40162dc3e0dd1">HP HD Camera (05c8:0397)</option> -->
+      </select>
+      <a class="btn btn-primary me-1" (click)="takeSnapshot()">Capture Image</a>
+      <button hidden class="button" (click)="changeWebCame(true)">T</button>      
+      <a class="btn btn-primary" (click)="onOffWebCame()">{{showWebcam ? 'Stop' : 'Start' }} Capture</a> 
+    </div>                      
+    <div class="col-sm-6">      
+      <label for="fileUpload"><b>Upload an image :</b></label>
+      <input #inputFile type="file" (change)="onFileChanged($event)">
+    </div>
+  </div>
+  <div class="row">                                
+    <div class="col-sm-6">
+      <div class="over-flow-300 image-center">
+        <webcam
+          [height]="250"
+          [width]="500"
+          [trigger]="triggerObservable"
+          (imageCapture)="handleImage($event)"
+          *ngIf="showWebcam"
+          [switchCamera]="nextWebcamObservable"
+        ></webcam>
+      </div>      
+    </div>                      
+    <div class="col-sm-6">
+      <div class="over-flow-300 image-center">
+        <div *ngIf="imageUrl">
+          <img [src]="imageUrl" style="height: 250px; width: 300px;"/>
+        </div>
+      </div>      
+    </div>
+  </div>
+
     <div>
       <div class="btn-group">
-        <label for="cameraSelect"><b>Select a camera :</b></label>
-        <select id="cameraSelect" onchange="selectCamera()">
-            <option value="">Select a camera</option>            
-            <option *ngFor="let option of allMediaDevices" [value]="option.deviceId"> {{ option.label }} </option>
-            <!-- <option value="cd857abbf36b2b1511ae171f1778ffb3cc19c0240e6accda93c40162dc3e0dd1">HP HD Camera (05c8:0397)</option> -->
-        </select>
-        <a class="btn btn-primary" (click)="takeSnapshot()">Capture Image</a>
-        <button class="button" (click)="changeWebCame(true)">
-          T
-        </button>        
-        <button class="button" (click)="onOffWebCame()">S</button>
       </div>
       <br />
       <br />
-      <webcam
-        [height]="250"
-        [width]="500"
-        [trigger]="triggerObservable"
-        (imageCapture)="handleImage($event)"
-        *ngIf="showWebcam"
-        [switchCamera]="nextWebcamObservable"
-      ></webcam>
     </div>
   
     <div *ngIf="errors.length > 0">
@@ -31,7 +52,7 @@
         <li>{{ error | json }}</li>
       </ul>
     </div>
-  </div>
+</div>
   
-  <ng-template #noCameraExist> Camera device not available </ng-template>
+<ng-template #noCameraExist> Camera device not available </ng-template>
   

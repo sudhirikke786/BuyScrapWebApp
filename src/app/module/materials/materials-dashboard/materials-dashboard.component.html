@@ -40,13 +40,13 @@
                                     <div class="card-body">
                                         <div class="row">
 
-                                            <div class="col-sm-3" *ngFor="let item of materialList">
+                                            <div class="col-sm-2" *ngFor="let item of materialList">
                                                 <div class="materials-pg-boxes">
                                                     <a routerLink = "/{{orgName}}/materials/detail/{{item.rowId}}">
-                                                        <img src="assets/images/custom/materials/Default-Scrap-Material.png">
+                                                        <img src="{{item.imagePath}}" (error)="this.changeSource($event);" />
                                                     </a>
                                                     <ul class="materials-name-edit-ul">
-                                                        <li>{{item.groupName}}</li>
+                                                        <li><b>{{item.groupName}}</b></li>
                                                         <li><a (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
                                                     </ul>
                                                 </div>

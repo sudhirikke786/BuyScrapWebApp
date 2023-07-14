@@ -62,6 +62,7 @@ export class MaterialsDashboardComponent implements OnInit {
   subMaterialList: any;
   mainMaterialsVisible = true;
   defaultSelectedMaterial: any = 1;
+  defaultImage = 'assets/images/custom/materials/Default-Scrap-Material.png';
   
   constructor(private route: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -89,6 +90,10 @@ export class MaterialsDashboardComponent implements OnInit {
     this.getAllGroupMaterial();
   }
 
+  changeSource(event: any) {      
+      event.target.src = this.defaultImage;
+  }
+
   getAllGroupMaterial() {
     const paramObject = {
       LocationId: this.locId
@@ -98,6 +103,10 @@ export class MaterialsDashboardComponent implements OnInit {
           console.log('getAllGroupMaterial :: ');
           console.log(data);
           this.materialList = data.body.data;
+          this.materialList.map((i: any) => { 
+            i["imagePath"] = `assets/images/custom/materials/${i["groupName"]?.split(" ")[0]?.split("/")[0]?.toLowerCase()}.jpg`;
+          });
+          // this.materialList = JSON.parse(JSON.stringify(this.materialList));
           this.materialListCopy = JSON.parse(JSON.stringify(this.materialList)); 
           console.log('materialListCopy :: ');
           console.log(this.materialListCopy); 

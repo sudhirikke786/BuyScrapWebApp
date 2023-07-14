@@ -4,6 +4,7 @@ import { WebcamModule } from 'ngx-webcam';
 
 import { ActionbarComponent } from './actionbar/actionbar.component';
 import { CameraComponent } from './camera/camera.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -14,6 +15,7 @@ import { CameraComponent } from './camera/camera.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     WebcamModule
   ],
   exports:[

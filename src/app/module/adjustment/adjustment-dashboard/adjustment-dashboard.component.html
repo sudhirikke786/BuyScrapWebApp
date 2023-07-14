@@ -41,11 +41,11 @@
 
                                         <div class="row">
                                             
-                                            <div class="col-sm-3" *ngFor="let item of materialList">
+                                            <div class="col-sm-2" *ngFor="let item of materialList">
                                                 <div class="adjustment-pg-boxes">
                                                     <img src="assets/images/custom/adjustment/Default-Adjustment.png">
                                                     <ul class="adjustment-name-edit-ul">
-                                                        <li>{{item.adjustmentName}}</li>
+                                                        <li><b>{{item.adjustmentName}}</b></li>
                                                         <li><a (click)="showDialog()" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
                                                     </ul>
                                                 </div>

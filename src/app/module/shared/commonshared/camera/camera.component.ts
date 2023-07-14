@@ -8,10 +8,14 @@ import { Observable, Subject } from 'rxjs';
   styleUrls: ['./camera.component.scss']
 })
 export class CameraComponent implements OnInit {
-  @Output() getPicture = new EventEmitter<WebcamImage>();
+  @Output() getPicture = new EventEmitter<string>();
   showWebcam = false;
   isCameraExist = true;
   allMediaDevices: any;
+  
+  webcamImage: WebcamImage | undefined;
+  selectedCamera: any = '';
+  imageUrl: any;
 
   errors: WebcamInitError[] = [];
 
@@ -38,21 +42,29 @@ export class CameraComponent implements OnInit {
   }
 
   onOffWebCame() {
-    this.showWebcam = !this.showWebcam;
+    if (this.selectedCamera != '') {
+      this.showWebcam = !this.showWebcam;
+    }
   }
 
   handleInitError(error: WebcamInitError) {
     this.errors.push(error);
   }
 
-  changeWebCame(directionOrDeviceId: boolean | string) {
-    console.log('directionOrDeviceId' + JSON.stringify(directionOrDeviceId));
-    this.nextWebcam.next(directionOrDeviceId);
+  changeWebCame(directionOrDeviceId: boolean | string) {    
+    if (this.selectedCamera != '') {
+      console.log('directionOrDeviceId' + JSON.stringify(directionOrDeviceId));
+      this.nextWebcam.next(directionOrDeviceId);
+      this.showWebcam = true;
+    } else {      
+      this.showWebcam = false;
+    }
   }
 
   handleImage(webcamImage: WebcamImage) {
-    this.getPicture.emit(webcamImage);
-    // this.showWebcam = false;
+    this.webcamImage = webcamImage;
+    this.imageUrl = webcamImage.imageAsDataUrl;
+    this.getPicture.emit(this.imageUrl);
   }
 
   get triggerObservable(): Observable<void> {
@@ -61,5 +73,21 @@ export class CameraComponent implements OnInit {
 
   get nextWebcamObservable(): Observable<boolean | string> {
     return this.nextWebcam.asObservable();
+  }
+  
+  
+  onFileChanged(event: any) {
+    this.imageUrl = null;
+    const file = event.target.files[0];
+    console.log('file  :: ' + JSON.stringify(file));
+    let reader = new FileReader();
+    if (event.target.files && event.target.files[0]) {
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imageUrl = reader.result;
+      }       
+    }
+    // Clear the input
+    // event.target.value = null;
   }
 }

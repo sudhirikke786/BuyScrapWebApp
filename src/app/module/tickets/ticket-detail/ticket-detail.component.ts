@@ -38,6 +38,7 @@ export class TicketDetailComponent implements OnInit {
   materialList: any;
   subMaterialList: any;
   mainMaterialsVisible = true;
+  changeItemMaterialsVisible = true;
   selectedMaterial = '';
   editItemVisible = false;
   editItemCloseImageCapture = false;
@@ -45,6 +46,20 @@ export class TicketDetailComponent implements OnInit {
   
   webcamImage: WebcamImage | undefined;
   imageUrl: any;
+  isChangeItemOn = false;
+
+  
+  itemRowId: number = 0;
+  itemGroupName: string = '';
+  itemMaterialName: string = '';
+  itemMaterialId: number = 0;
+  itemGross: number = 0;
+  itemTare: number = 0;
+  itemNet: number = 0;
+  itemPrice: number = 0;
+  itemImagePath: string = '';
+  itemCodNote: string = '';
+
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -142,8 +157,12 @@ export class TicketDetailComponent implements OnInit {
     this.mainMaterialsVisible =  true;
   }
 
-  getSubMaterials(materialId: any, selectedMaterial: any) {
-    this.mainMaterialsVisible =  false;
+  getSubMaterials(materialId: any, selectedMaterial: any, isChangeItemMode: any) {
+    if (isChangeItemMode) {
+      this.changeItemMaterialsVisible =  false;
+    } else {
+      this.mainMaterialsVisible =  false;
+    }
     this.selectedMaterial = selectedMaterial;
 
     const paramObject = {
@@ -175,40 +194,104 @@ export class TicketDetailComponent implements OnInit {
     this.imageUrl = null;
   }
 
-  editItem(rowId: any) {
+  editItem(rowData: any) {
     this.modalHeader = 'Edit Item Details';
     this.editItemVisible = true;
     this.editItemCloseImageCapture = false;
-    this.imageUrl = null;
+
+    this.itemRowId = rowData.rowId;
+    this.itemGroupName = rowData.groupName;
+    this.itemMaterialName = rowData.materialName;
+    this.itemMaterialId = rowData.materialId;
+    this.itemGross = rowData.gross;
+    this.itemTare = rowData.tare;
+    this.itemNet = rowData.net;
+    this.itemPrice = rowData.price;
+    this.itemImagePath = rowData.imagePath;
+    this.itemCodNote = rowData.codNote;
+    
+    
+    this.imageUrl = (this.itemImagePath ? this.itemImagePath : null);    
+
   }
 
+  calculateNet() {
+    this.itemNet = this.itemGross - this.itemTare;
+  }
   closeCapturedImage() {
     this.editItemCloseImageCapture = true;
   }
   backToCapturedImage() {
     this.editItemCloseImageCapture = false;
+    this.isChangeItemOn = false;
   }
 
-  handleImage(webcamImage: WebcamImage) {
-    this.webcamImage = webcamImage;
-    this.imageUrl = webcamImage.imageAsDataUrl;
-    this.myInputVariable.nativeElement.value = '';
+  handleImage(imageUrl: string) {
+    this.imageUrl = imageUrl;
   }  
-  
-  onFileChanged(event: any) {
-    this.imageUrl = null;
-    this.webcamImage = undefined;
-    const file = event.target.files[0];
-    console.log('file  :: ' + JSON.stringify(file));
-    let reader = new FileReader();
-    if (event.target.files && event.target.files[0]) {
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.imageUrl = reader.result;
-      }       
-    }
-    // Clear the input
-    // event.target.value = null;
+
+  clickOnChangeItem() {
+    this.isChangeItemOn = true;
+  }
+
+  updateExistingItem(materialId: any, materialName: string, selectedMaterial: string) {
+    this.isChangeItemOn = false;
+    this.itemMaterialId = materialId;
+    this.itemGroupName = selectedMaterial;
+    this.itemMaterialName = materialName;
+  }
+
+  backToChangeItemMainMaterials() {
+    this.changeItemMaterialsVisible =  true;
+  }
+
+  updateExistingItemDataResponse() {
+    
+    this.editItemVisible = false;
+    
+    this.ticketObj.forEach((rowData: any) => {
+      if (this.itemRowId === rowData.rowId) {
+        console.log("found " + rowData.rowId);     
+        // rowData.rowId = this.itemRowId;
+        rowData.groupName = this.itemGroupName;
+        rowData.materialName = this.itemMaterialName;
+        rowData.materialId = this.itemMaterialId;
+        rowData.gross = this.itemGross;
+        rowData.tare = this.itemTare;
+        rowData.net = this.itemGross - this.itemTare ;
+        rowData.price = this.itemPrice;
+        rowData.amount = this.itemPrice * (this.itemGross - this.itemTare);
+        rowData.imagePath = this.itemImagePath;
+        rowData.codNote = this.itemCodNote;
+      }
+    });
+
+
+    console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
+
+    // this.ticketObj = this.ticketObj.filter( (obj: any) => {
+    //     return this.itemRowId === obj.rowId;   
+    // }).map((rowData: any) => {
+    //   console.log("found " + rowData.rowId);     
+    //   // rowData.rowId = this.itemRowId;
+    //   rowData.groupName = this.itemGroupName;
+    //   rowData.materialName = this.itemMaterialName;
+    //   rowData.materialId = this.itemMaterialId;
+    //   rowData.gross = this.itemGross;
+    //   rowData.tare = this.itemTare;
+    //   rowData.net = this.itemGross - this.itemTare ;
+    //   rowData.price = this.itemPrice;
+    //   rowData.imagePath = this.itemImagePath;
+    //   rowData.codNote = this.itemCodNote;
+    //   return rowData; 
+    // });
+
+    // alert(JSON.stringify(this.ticketObj));
+
+    
+    this.calculateTotal(this.ticketObj);
+    this.backToChangeItemMainMaterials();
+
   }
 
   openPDF(){
