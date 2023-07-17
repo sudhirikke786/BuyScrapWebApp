@@ -815,6 +815,7 @@
  .over-flow-200{height:200px !important; overflow-y: auto !important;}
  .over-flow-250{height:250px !important; overflow-y: auto !important;}
  .over-flow-300{height:300px !important; overflow-y: auto !important;}
+ .over-flow-350{height:350px !important; overflow-y: auto !important;}
  .over-flow-500{height:500px !important; overflow-y: auto !important;}
  .dt-insidebox {
   height: 300px; /* Adjust the height as needed */
@@ -859,13 +860,14 @@
  
  
  @media only screen and (min-width:576px){
- .pay-print-box{margin-top: 55px !important; text-align: right;}
+ .pay-print-box{margin-top: -30px !important; text-align: right;}
+ .adjustment-deduction-box{margin-top: -30px !important; text-align: center;}
  }
  
  @media only screen and (max-width:576px){
  .box{margin-bottom:20px; }
  .mainbox-row{margin-top:20px;}
- .pay-print-box{margin-top:20px !important; text-align: center;}
+ /* .pay-print-box{margin-top:20px !important; text-align: center;} */
  .pricing-steps-heading{margin-top: 20px;}
  .addon-price-calculation{margin-top: 10px;}
  

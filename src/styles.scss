@@ -52,9 +52,15 @@
    font-size: 12px;
     padding: 0.4rem 0.3rem !important;
     color: #6c757d;
+    border: none !important;
+
     // white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.p-datatable .p-datatable-tbody > tr {
+    border-bottom: 1px solid #dee2e6 !important;
+    // border-top: none !important;
 }
 
 .search-box {

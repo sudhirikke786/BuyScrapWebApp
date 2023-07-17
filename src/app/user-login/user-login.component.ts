@@ -24,6 +24,7 @@ export class UserLoginComponent implements OnInit {
     isActive: true,
     isConfirm: true
   };
+  locationId: number = 0;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -57,11 +58,10 @@ export class UserLoginComponent implements OnInit {
   getOrgLocation() {
     this.commonService.getOrgLocation()
       .subscribe(data => {
-
-        
           console.log('getOrgLocation :: ');
           console.log(data);
           this.locations = data.body.data;
+          this.locationId =  this.locations[0].rowId;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';

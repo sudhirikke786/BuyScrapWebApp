@@ -45,11 +45,11 @@
                 <div class="card custom-height">
                     <div class="card-body">
 
-                        <form action="">
+                        <form [formGroup]="sellerForm">
                             <div class="row">
                                 <div class="form-group col-sm-6 d-flex flex-center">
                                     <label for="example-select" class="form-label dd-label">Select Type</label>
-                                    <select class="form-select" id="example-select">
+                                    <select formControlName="sellerType" class="form-select" id="example-select">
                                         <option>Personal</option>
                                         <option>Business</option>
                                     </select>
@@ -57,8 +57,8 @@
 
                                 <div class="form-group col-sm-6">
                                     <div class="flt-right">
-                                        <a href="#" class="btn btn-success me-1">Save</a>
-                                        <a href="#" class="btn btn-primary">Print</a>
+                                        <button class="btn btn-success me-1" (click)="onSubmit()">{{ sellerId==0 ? 'Save' : 'Update'}}</button>
+                                        <button type="button" class="btn btn-primary">Print</button>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                                     <div class="box">
                                         <div class="js--image-preview"></div>
                                         <ul class="upload-options-ul">
-                                                <li><a href="#" data-bs-toggle="modal" data-bs-target="#image-capture"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="uploadPicture('1')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
                                                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
                                                 <li><a href="#"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                        
@@ -80,7 +80,7 @@
                                     <div class="box">
                                         <div class="js--image-preview"></div>
                                         <ul class="upload-options-ul">
-                                                <li><a href="#" data-bs-toggle="modal" data-bs-target="#image-capture"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="uploadPicture('2')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
                                                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
                                                 <li><a href="#"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                        
@@ -90,7 +90,7 @@
                                     <div class="box">
                                         <div class="js--image-preview"></div>
                                         <ul class="upload-options-ul">
-                                                <li><a href="#" data-bs-toggle="modal" data-bs-target="#image-capture"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="uploadPicture('3')" ><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
                                                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
                                                 <li><a href="#"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                        
@@ -100,7 +100,7 @@
                                     <div class="box">
                                         <div class="js--image-preview"></div>
                                         <ul class="upload-options-ul">
-                                                <li><a href="#" data-bs-toggle="modal" data-bs-target="#image-capture"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="uploadPicture('4')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
                                                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
                                                 <li><a href="#"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                        
@@ -115,28 +115,28 @@
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="firstname" placeholder="First Name">
+                                        <input type="text" formControlName="firstName" class="form-control" id="firstname" placeholder="First Name">
                                         <label for="floatingInput">First Name</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="middlename" placeholder="Middle Name">
+                                        <input type="text"  formControlName="middleName" class="form-control" id="middlename" placeholder="Middle Name">
                                         <label for="floatingInput">Middle Name</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="lastname" placeholder="Last Name">
+                                        <input type="text" class="form-control" formControlName="lastName" id="lastname" placeholder="Last Name">
                                         <label for="floatingInput">Last Name</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="date" class="form-control" id="birthdate" placeholder="Date of Birth">
+                                        <input type="date" class="form-control" formControlName="dob" id="birthdate" placeholder="Date of Birth">
                                         <label for="floatingInput">Date of Birth</label>
                                     </div>
                                 </div>
@@ -146,28 +146,28 @@
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="streetaddress" placeholder="Street Address">
+                                        <input type="text" class="form-control" formControlName="streetAddress" id="streetaddress" placeholder="Street Address">
                                         <label for="floatingInput">Street Address</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="city" placeholder="City">
+                                        <input type="text" class="form-control" formControlName="city" id="city" placeholder="City">
                                         <label for="floatingInput">City</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="state" placeholder="State">
+                                        <input type="text" class="form-control" formControlName="state" id="state" placeholder="State">
                                         <label for="floatingInput">State</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="zipcode" placeholder="Zip Code">
+                                        <input type="text" class="form-control" formControlName="zipCode" id="zipcode" placeholder="Zip Code">
                                         <label for="floatingInput">Zip Code</label>
                                     </div>
                                 </div>
@@ -177,28 +177,28 @@
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="idlicensenumber" placeholder="ID/License Number">
+                                        <input type="text" class="form-control" formControlName="idnumber" id="idlicensenumber" placeholder="ID/License Number">
                                         <label for="floatingInput">ID/License Number</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="expirationdate" placeholder="Expiration Date">
+                                        <input type="text" class="form-control" formControlName="expiryDate" id="expirationdate" placeholder="Expiration Date">
                                         <label for="floatingInput">Expiration Date</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="class" placeholder="Class">
+                                        <input type="text" class="form-control" formControlName="class" id="class" placeholder="Class">
                                         <label for="floatingInput">Class</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="vehiclemake" placeholder="Vehicle Make">
+                                        <input type="text" class="form-control"  formControlName="vehicleType" id="vehiclemake" placeholder="Vehicle Make">
                                         <label for="floatingInput">Vehicle Make</label>
                                     </div>
                                 </div>
@@ -208,28 +208,28 @@
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="vehiclecolour" placeholder="Vehicle Colour">
+                                        <input type="text" class="form-control" formControlName="vehicleColor" id="vehiclecolour" placeholder="Vehicle Colour">
                                         <label for="floatingInput">Vehicle Colour</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="licenseplatenumber" placeholder="License Plate Number">
+                                        <input type="text" class="form-control" formControlName="licensePlateNumber" id="licenseplatenumber" placeholder="License Plate Number">
                                         <label for="floatingInput">License Plate Number</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="vehicleidno" placeholder="Vehicle Identification No.">
+                                        <input type="text" class="form-control" formControlName="vehicleName" id="vehicleidno" placeholder="Vehicle Identification No.">
                                         <label for="floatingInput">Vehicle Identification No.</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="vehiclemodel" placeholder="Vehicle Model">
+                                        <input type="text" class="form-control" formControlName="vehicleModel" id="vehiclemodel" placeholder="Vehicle Model">
                                         <label for="floatingInput">Vehicle Model</label>
                                     </div>
                                 </div>
@@ -240,21 +240,21 @@
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="cellnumber" placeholder="Cell Number">
+                                        <input type="text" class="form-control"  formControlName="cellNumber" id="cellnumber" placeholder="Cell Number">
                                         <label for="floatingInput">Cell Number</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="emailid" placeholder="Email ID">
+                                        <input type="text" class="form-control" formControlName="emailId" id="emailid" placeholder="Email ID">
                                         <label for="floatingInput">Email ID</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <select class="form-select" id="example-select">
-                                        <option>Choose Dealer's Type</option>
+                                    <select class="form-select" id="example-select" formControlName="dealerType">
+                                        <option value="">Choose Dealer's Type</option>
                                         <option>Dealer 1</option>
                                         <option>Dealer 2</option>
                                         <option>Dealer 3</option>
@@ -262,8 +262,8 @@
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <select class="form-select" id="example-select">
-                                        <option>Gender</option>
+                                    <select class="form-select" id="example-select" formControlName="gender">
+                                        <option value="">Gender</option>
                                         <option>Male</option>
                                         <option>Female</option>
                                     </select>
@@ -288,3 +288,28 @@
     </div> <!-- container -->
 
 </div> 
+
+
+
+<p-dialog [header]="'Edit Image'"  (onHide)="cancel()"   [(visible)]="editItemVisible" [style]="{width: '70vw'}">
+        
+    <div class="row">
+                                
+        <div class="col-md-12">
+            <div id="camera-div" class="camera-div">
+                <div style="border: 1px solid black;">
+                    <div class="col-sm-12" style="border: 1px solid black;  display:inline-block;">
+                        <app-camera *ngIf="isWebcam"  (getPicture)="handleImage($event)"></app-camera>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <a href="#" id="save-image-btn" class="btn btn-primary me-1">Save Image</a>
+                    <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">Close</a>
+             
+                </div>
+          </div>
+           
+        </div>
+
+    </div>
+</p-dialog>

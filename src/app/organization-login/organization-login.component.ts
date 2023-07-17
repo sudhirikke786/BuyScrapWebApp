@@ -80,7 +80,10 @@ export class OrganizationLoginComponent implements OnInit {
           }
         },
         (err: any) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: err });
+          alert('1111');
+          
+          this.messageService.add({ severity: 'success', summary: 'Error', detail: 'Message Content' });
+          // this.messageService.add({ severity: 'error', summary: 'Error', detail: err });
 
           
         }

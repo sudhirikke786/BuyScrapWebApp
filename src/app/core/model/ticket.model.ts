@@ -1,0 +1,37 @@
+export class Ticket {
+    private rowId: number = 0;
+    private createdBy: number = 0;
+    private createdDate: any;
+    private updatedBy: number = 0;
+    private updatedDate: any;
+    private customerId: number = 0;
+    private ticketId: number = 0;
+    private status: string = 'OPEN';
+    private amount: number = 0.000;
+    private balanceAmount: number = 0.000;
+    private roundingAmount: number = 0.000;
+    private ticketAmount: number = 0.000;
+    private paidAmount: number = 0.000;
+    private dateOpened: any;
+    private dateClosed: any;
+    private customerName: string = '';
+    private user: any;
+    private adjustmentAmount: number = 0.000;
+    private adjustmentNote: string = '';
+    private locID: number = 0;
+    private holdAmount: any;
+    private voidBy: number = 0;
+    private parentTicketID: any;
+    private voidFlag: any;
+    private flagCustomer: boolean = false;
+    private isParent: boolean = false;
+    private isSelected: boolean = false;
+    private voidReason: string = '';
+    private voidDate: any;
+    private isCOD: boolean = false;
+    private isCODDone: boolean = false;
+    private codDoneDate: any;
+    private codDescription: any;
+    private sellerSignature: any;
+    private lstttransactionMasterDTO: any;
+}

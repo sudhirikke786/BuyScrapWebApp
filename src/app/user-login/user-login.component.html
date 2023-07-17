@@ -47,21 +47,9 @@
                             <div class="form-group mb-3">
                                 <label for="emailaddress" class="dark-color">Select Location</label>
                                 <div class="input-group input-group-merge">
-                                    <select class="form-control" id="example-select" name="location" [(ngModel)]="user.locID">
+                                    <select class="form-control" id="example-select" name="location" [(ngModel)]="locationId">
                                         <option [value]="0" [selected]="true">-- Select State --</option>
                                         <option *ngFor="let option of locations" [value]="option.rowId"> {{ option.locationName }} </option>
-                                        <!-- <option>California</option>
-                                        <option>Texas</option>
-                                        <option>Florida</option>
-                                        <option>Ohio</option>
-                                        <option>Alaska</option>
-                                        <option>Georgia</option>
-                                        <option>Virginia</option>
-                                        <option>Washington</option>
-                                        <option>New Jersey</option>
-                                        <option>Arizona</option>
-                                        <option>Colorado</option>
-                                        <option>New York</option> -->
                                     </select>
 
                                 </div>

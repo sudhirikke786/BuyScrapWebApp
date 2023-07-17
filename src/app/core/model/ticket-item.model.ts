@@ -1,0 +1,32 @@
+export class TicketItem {
+    private localRowId: number = 0;
+    private isCODupdated: boolean = false;
+    private rowId: number = 0;
+    private createdBy: number = 0;
+    private createdDate: any;
+    private updatedBy: number = 0;
+    private updatedDate: any;
+    private count: number = 0.00;
+    private gross: number = 0.00;
+    private tare: number = 0.00;
+    private net: number = 0.00;
+    private price: number = 0.00;
+    private amount: number = 0.00;
+    private ticketID: number = 0;
+    private transactionDate: any;
+    private materialName: string = '';
+    private groupName: string = '';
+    private materialId: number = 0.00;
+    private imagePath: string = '';
+    private materialNote: string = '';
+    private codNote: string = '';
+    private isHold: boolean = false;
+    private dealerPrice: any = null;
+    private isAdjusmentSet: any = null;
+    private concatAdjustments: string = '';
+    private isCOD: any = null;
+    private isCODDone: any = null;
+    private isCRV: boolean = false;
+    private codDescription: string = '';
+    private codImagePath: string = '';
+}

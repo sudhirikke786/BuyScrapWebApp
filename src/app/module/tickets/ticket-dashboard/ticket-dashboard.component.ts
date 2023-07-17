@@ -29,23 +29,21 @@ export class TicketDashboardComponent implements OnInit {
     title:'Merge Ticket and Pay'
   },
   
-  ]
+  ];
   
-
   newTicketList = [{
-    iconcode:'mdi-magnify',
-    title:'Search'
-  },
-  {
-    iconcode:'mdi-refresh',
-    title:'Refresh'
-  },
-  {
-    iconcode:'mdi-account',
-    title:'New Customer'
-  }
-  
-  ]
+      iconcode:'mdi-magnify',
+      title:'Search'
+    },
+    {
+      iconcode:'mdi-refresh',
+      title:'Refresh'
+    },
+    {
+      iconcode:'mdi-account',
+      title:'New Customer'
+    }  
+  ];
 
   mergeTicketlist = [{
     iconcode:'mdi-magnify',
@@ -56,33 +54,62 @@ export class TicketDashboardComponent implements OnInit {
     title:'Refresh'
   }
   
-  ]
+  ];
 
   ticketsTypes =  [
-    {name: 'All', code: 'All'},
-    {name: 'Open', code: 'Open'},
+    {name: 'ALL', code: 'ALL'},
+    {name: 'OPEN', code: 'OPEN'},
     {name: 'Partially Paid', code: 'Partially Paid'},
-    {name: 'On Hold', code: 'On Hold'},
-    {name: 'Paid', code: 'Paid'},
-    {name: 'Voided', code: 'Voided'}
+    {name: 'ON HOLD', code: 'ON HOLD'},
+    {name: 'PAID', code: 'PAID'},
+    {name: 'VOIDED', code: 'VOIDED'}
   ];
 
   
   defaultSelectedTicketsTypes =  [
-    {name: 'Open', code: 'Open'}
+    {name: 'OPEN', code: 'OPEN'},
+    {name: 'Partially Paid', code: 'Partially Paid'},
+    {name: 'ON HOLD', code: 'ON HOLD'}
   ];
   
   tickets: any;
+  childTickets: any;
+  sellerTickets: any;
+  sellers: any;
+  selectedSellerTickets: any;
 
-  visible: boolean = false;
+  dialogPopupVisible: boolean = false;
+  newTicketVisible: boolean = false;
   ticketvisible: boolean = false;
+  mergeTicketVisible: boolean = false;
+  paymentVisible: boolean = false;
+
+  cashSectionVisible: boolean = true;
+  checkSectionVisible: boolean = false;
+  electronicPaymentSectionVisible: boolean = false;
+
+  searchSellerInput: any = '';
+
+  payAmount: any;
+  checkNumber: any;
+  paymentType: any;
+  checkDate: any;
+
   orgName: any;
   locId: any;
+  
+
+  parentTicketIDVisible = false;
+  isParentTicketVisible = false;
+  parentTicketId = '';
+  isParent = false;
+  searchOrder = 'All';
+  serachText = '';
 
   pagination: any = {
     SerachText: '',
     SearchOrder: 'TicketId',
-    Status: 'ALL',
+    Status: this.defaultSelectedTicketsTypes.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(','),
     PageNumber: 1,
     RowOfPage: 100,
     LocationId: 1
@@ -96,6 +123,8 @@ export class TicketDashboardComponent implements OnInit {
     this.selectedTickets = this.defaultSelectedTicketsTypes;
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
+    const result = this.selectedTickets.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(',');
+    this.pagination.Status = result;
     this.getAllTicketsDetails(this.pagination);
   }
 
@@ -115,24 +144,205 @@ export class TicketDashboardComponent implements OnInit {
       );
   }
 
-  showMergeDialog(){
-    this.ticketvisible = true;
+  refreshData() {    
+    this.selectedTickets = this.defaultSelectedTicketsTypes;
+    this.serachText = '';
+    this.searchOrder = 'All';
+    const result = this.selectedTickets.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(',');
+    this.pagination.Status = result;
+    this.pagination.SerachText = this.serachText,
+    this.pagination.SearchOrder = this.searchOrder,
+    this.getAllTicketsDetails(this.pagination);
   }
 
-  AddMergeDialog(){
-    this.visible = true;
+  showMergeDialog() {
+    this.dialogPopupVisible = true;
+    this.newTicketVisible = false;
+    this.ticketvisible = true;
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId
+    };
+    this.getAllsellersDetails(paramObject);
+  }
+
+  addNewTicket() {
+    this.dialogPopupVisible = true;
+    this.newTicketVisible = true;
+    this.ticketvisible = false;
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId
+    };
+    this.getAllsellersDetails(paramObject);
+  }
+  
+  getAllsellersDetails(paramObject: any) {
+    this.commonService.getAllsellersDetails(paramObject)
+      .subscribe(data => {
+          console.log('getAllsellersDetails :: ');
+          console.log(data);
+          this.sellers = data.body.data;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
   }
 
   searchTickets() {
     console.log('selectedTickets :: ' + JSON.stringify(this.selectedTickets));
-    let selectedStatus = '';
-    this.selectedTickets.forEach(function(item: any) {
-      selectedStatus += item.name + ',';
-    });
-    selectedStatus = selectedStatus.substring(0,selectedStatus.length-1);
-    this.pagination.Status = selectedStatus;
+    const result = this.selectedTickets.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(',');
+    this.pagination.Status = result;
+    this.pagination.SerachText = this.serachText,
+    this.pagination.SearchOrder = this.searchOrder,
     this.getAllTicketsDetails(this.pagination);
   }
+
+  addRemoveStatus(event: any) {
+    console.log('Change Multiselect :: ');
+    console.log(event);
+    if (event.itemValue.name === 'ALL') {
+      if (event.originalEvent) {
+        this.selectedTickets = this.ticketsTypes;
+      } else {
+        this.selectedTickets = this.defaultSelectedTicketsTypes;
+      }
+    }
+    this.searchTickets();
+  }
+
+  closeChildTicketMessage() {
+    this.parentTicketIDVisible = false;
+  }
+
+  clickOnSeller(sellerId: any) {    
+    if (this.newTicketVisible == true) {      
+      this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${sellerId}`);
+    } else if (this.ticketvisible == true) {
+      this.mergeTicketVisible = true;
+      this.getAllTicketsBySellerId(sellerId);
+    }
+
+  }
+  // routerLink = "/{{orgName}}/home/detail/{{ticket.rowId}}/{{ticket.customerId}}" 
+
+  showTicketDetails(ticketData: any) {
+    this.parentTicketId = ticketData.parentTicketID;
+    this.isParent = ticketData.isParent;
+    if (this.parentTicketId) {
+      this.parentTicketIDVisible = true;
+      this.isParentTicketVisible = false;
+    } else if (this.isParent) {
+      this.getAllTicketsByParentID(ticketData.rowId);
+      this.parentTicketIDVisible = false;
+      this.isParentTicketVisible = true;
+    } else {
+      this.parentTicketIDVisible = false;
+      this.router.navigateByUrl(`/${this.orgName}/home/detail/${ticketData.rowId}/${ticketData.customerId}`);
+    }
+
+  }
+
+  getAllTicketsByParentID(parentTicketID: string) {
+    const paramObject = {
+      TicketID: parentTicketID
+    };
+    this.commonService.getAllTicketsByParentID(paramObject)
+      .subscribe(data => {
+          console.log('getAllTicketsByParentID :: ');
+          console.log(data);
+          this.childTickets = data.body.data;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  getAllTicketsBySellerId(sellerId: any) {    
+    const paramObj: any = {
+      SellerId: sellerId,
+      LocationId: this.locId
+    }
+    this.commonService.getAllTicketsBySellerId(paramObj)
+      .subscribe(data => {
+          console.log('getAllTicketsBySellerId :: ');
+          console.log(data);
+          this.sellerTickets = data.body.data;
+          this.sellerTickets = this.sellerTickets.filter( (obj: any) => {
+              return obj.status === 'OPEN';   
+          }).sort((a:any, b:any) => (a.title > b.title) ? 1 : -1);
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  closeMergeAndPayTickets() {    
+    this.mergeTicketVisible = false;
+  }
+
+  mergeAndPaySelectedTickets() {    
+    // this.mergeTicketVisible = false;
+    this.paymentVisible = true;
+  }
+
+  processCash() {
+    this.cashSectionVisible = true;
+    this.checkSectionVisible = false;
+    this.electronicPaymentSectionVisible = false;
+  }
+
+  processCheck() {
+    this.cashSectionVisible = false;
+    this.checkSectionVisible = true;
+    this.electronicPaymentSectionVisible = false;
+    
+  }
+
+  processElectronicPayment() {
+    this.cashSectionVisible = false;
+    this.checkSectionVisible = false;
+    this.electronicPaymentSectionVisible = true;    
+  }
+  
+  payTickets() {
+
+  }
+
+
+  /** Seller pop up actions start */
+
+  searchSeller() {
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId,
+      SerachText: this.searchSellerInput
+    };
+    this.getAllsellersDetails(paramObject);
+
+  }
+
+  refreshSellerData() {
+    this.searchSellerInput = '';
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId
+    };
+    this.getAllsellersDetails(paramObject);
+  }
+
+  addNewSeller() {    
+    this.router.navigateByUrl(`${this.orgName}/sellers-buyers/add-seller`)
+  }  
+  /** Seller pop up actions end */
+
 
   getAction(actionCode:any){
 
@@ -141,10 +351,10 @@ export class TicketDashboardComponent implements OnInit {
         this.searchTickets();
         break;
       case 'mdi-refresh':
-        this.showMergeDialog();
+        this.refreshData();
         break;
       case 'mdi-ticket':
-        this.AddMergeDialog();
+        this.addNewTicket();
         break;
       case 'mdi-merge':
         this.showMergeDialog();
@@ -153,6 +363,24 @@ export class TicketDashboardComponent implements OnInit {
         break;
     }
 
+  
+  }
+
+  getSellerAction(actionCode:any){
+
+    switch (actionCode?.iconcode) {
+      case 'mdi-magnify':
+        this.searchSeller();
+        break;
+      case 'mdi-refresh':
+        this.refreshSellerData();
+        break;
+      case 'mdi-account':
+        this.addNewSeller();
+        break;
+      default:
+        break;
+    }
   
   }
 

@@ -26,15 +26,18 @@ export class TicketDetailComponent implements OnInit {
   ticketId: any;
   locId: any;
 
+  ticketData:any = {};
   customer: any;
   totalNoOfMaterial: any;
   totalGross: any;
   totalTare: any;
   totalNet: any;
   totalAmount: any;
+  totalAdjustment: any;
+  totalActualAmount: any;
+  totalRoundingAmount: any;
 
   isEditModeOn = false;
-  divClass = 'col-sm-12 over-flow-200';
   materialList: any;
   subMaterialList: any;
   mainMaterialsVisible = true;
@@ -60,6 +63,8 @@ export class TicketDetailComponent implements OnInit {
   itemImagePath: string = '';
   itemCodNote: string = '';
 
+  addEditAdjustmentVisible = false;
+  modalAdjustmentHeader = 'Add Adjustment';
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -72,10 +77,50 @@ export class TicketDetailComponent implements OnInit {
       this.ticketId = param["ticketId"];
       this.sellerId = param["customerId"];
       this.getSellerById();
-      this.getTransactionsDetailsById();
+      if (parseInt(this.ticketId)) {
+        this.getTransactionsDetailsById();
+        this.getAllTicketsDetails();
+      } else {
+        this.ticketId = 'NEW TICKET';
+        this.ticketData['createdDate'] = "2023-06-18T16:08:33.54";
+        this.ticketData['status'] = 'NEW TICKET';
+        this.ticketData['paidAmount'] = 0;
+        this.ticketData['balanceAmount'] = 0;
+
+        this.ticketObj = {};
+        
+        this.totalNoOfMaterial = 0;
+        this.totalGross = 0;
+        this.totalTare = 0;
+        this.totalNet = 0;
+        this.totalRoundingAmount = 0;
+        this.totalAmount = 0;
+        this.totalActualAmount = 0;
+        this.editTicketDetails();
+      }
     });
   }
 
+  
+  getAllTicketsDetails() {
+    const paramObject = {
+      LocationId: this.locId,
+      SerachText: this.ticketId,
+      SearchOrder: 'TicketId', 
+      PageNumber: 1, 
+      RowOfPage: 10
+    };
+    this.commonService.getAllTicketsDetails(paramObject)
+      .subscribe(data => {
+          console.log('getAllTicketsDetails for ticketId :: ');
+          console.log(data);
+          this.ticketData = data.body.data[0];
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
   
   getSellerById() {
     const paramObject = {
@@ -126,14 +171,19 @@ export class TicketDetailComponent implements OnInit {
     this.totalNet = tickets.reduce(function (sum:any, tickets:any) {
       return sum + tickets.net;
     }, 0);
-    this.totalAmount = tickets.reduce(function (sum:any, tickets:any) {
-      return sum + tickets.amount;
+    this.totalActualAmount = tickets.reduce(function (sum:any, tickets:any) {
+      return sum + (tickets.isAdjusmentSet? tickets.amount * -1 : tickets.amount);
+    }, 0);
+
+    this.totalAmount = Math.round(this.totalActualAmount);
+    this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
+    this.totalAdjustment = tickets.reduce(function (sum:any, tickets:any) {
+      return sum + (tickets.isAdjusmentSet? tickets.amount * -1 : 0);
     }, 0);
   }
 
   editTicketDetails() {
     this.isEditModeOn = true;
-    this.divClass = 'col-sm-9 over-flow-200';
     this.getAllGroupMaterial();
   }
 
@@ -184,14 +234,38 @@ export class TicketDetailComponent implements OnInit {
 
   saveTicketDetails() {
     this.isEditModeOn = false;
-    this.divClass = 'col-sm-12 over-flow-200';
+    console.log("updated ticketData :: " + JSON.stringify(this.ticketData));
+    console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
+    
+    this.ticketData.lstttransactionMasterDTO = this.ticketObj;
+    
+    console.log("Final ticketData :: " + JSON.stringify(this.ticketData));
+
   }
 
-  addItem(materialId: any, materialName: any) {
+  cancelEditTicket() {
+    if (this.ticketId != 'NEW TICKET') {
+      this.isEditModeOn = false;
+    } else {
+      this.router.navigateByUrl(`${this.orgName}/home`);
+    }    
+  }
+
+  addItem(materialId: any, materialName: any, selectedMaterial: string) {
     this.modalHeader = 'Add Item Details';
     this.editItemVisible = true;
     this.editItemCloseImageCapture = false;
     this.imageUrl = null;
+    this.itemMaterialId = materialId;
+    this.itemGroupName = selectedMaterial;
+    this.itemMaterialName = materialName;
+  }  
+
+  updateExistingItem(materialId: any, materialName: string, selectedMaterial: string) {
+    this.isChangeItemOn = false;
+    this.itemMaterialId = materialId;
+    this.itemGroupName = selectedMaterial;
+    this.itemMaterialName = materialName;
   }
 
   editItem(rowData: any) {
@@ -232,13 +306,6 @@ export class TicketDetailComponent implements OnInit {
 
   clickOnChangeItem() {
     this.isChangeItemOn = true;
-  }
-
-  updateExistingItem(materialId: any, materialName: string, selectedMaterial: string) {
-    this.isChangeItemOn = false;
-    this.itemMaterialId = materialId;
-    this.itemGroupName = selectedMaterial;
-    this.itemMaterialName = materialName;
   }
 
   backToChangeItemMainMaterials() {
@@ -292,6 +359,19 @@ export class TicketDetailComponent implements OnInit {
     this.calculateTotal(this.ticketObj);
     this.backToChangeItemMainMaterials();
 
+  }
+
+  addAdjustments() {
+    this.addEditAdjustmentVisible = true;
+  }
+
+  getPromoStyles(ticket: any) {
+    if (ticket.codNote == ''  && ticket.materialNote == '' ) {
+      return {
+        'border-bottom': '1px solid black'
+      };
+    } 
+    return { 'border-bottom': 'none !important' }
   }
 
   openPDF(){

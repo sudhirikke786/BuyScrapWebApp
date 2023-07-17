@@ -74,8 +74,12 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Locations/GetAllLocatoins', 'GET', null, 'ProdTest');
   }
 
-  getAllTicketsDetails(pagination: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsDetails', 'GET', pagination, 'ProdTest');
+  getAllTicketsDetails(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsDetails', 'GET', paramObj, 'ProdTest');
+  }
+
+  getAllTicketsByParentID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsByParentID', 'GET', paramObj, 'ProdTest');
   }
 
   getAllTicketsBySellerId(paramObj: any): Observable<any> {
@@ -90,6 +94,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Sellerss/GetSellerById', 'GET', paramObj, 'ProdTest');
   }
 
+  addSeller(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Sellerss/InsertSellerDTO', 'POST', requestObj, 'ProdTest');
+  }
+  
   getTransactionsDetailsById(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/TransactionMasters/GetTicketMaterialsDetailsByTicketId', 'GET', paramObj, 'ProdTest');
   }

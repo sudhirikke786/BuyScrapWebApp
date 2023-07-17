@@ -14,22 +14,22 @@
             <div class="col-md-3">
                 <p-multiSelect class="col-2" [options]="ticketsTypes"  [style]="{'minWidth':'100%'}"
                 [(ngModel)]="selectedTickets" [resetFilterOnHide]="false" defaultLabel="You can choose  ..." 
-                optionLabel="name" display="chip">
+                optionLabel="name" display="chip" (onChange)="addRemoveStatus($event)">
                 </p-multiSelect>
             </div>
             <div class="col-md-3">
-                <select class="form-control" id="example-select">
-                    <option>All</option>
-                    <option>Ticket ID</option>
-                    <option>Date Created : Latest</option>
-                    <option>Date Created : Oldest</option>
-                    <option>Low Ticket Amount</option>
-                    <option>High Ticket Amount</option>
-                    <option>Status</option>
+                <select class="form-control" id="example-select" [(ngModel)]="searchOrder">
+                    <option value="All">All</option>
+                    <option value="TicketId">Ticket ID</option>
+                    <option value="DateCreatedLatest">Date Created : Latest</option>
+                    <option value="DateCreatedOldest">Date Created : Oldest</option>
+                    <option value="LowTicketAmount">Low Ticket Amount</option>
+                    <option value="HighTicketAmount">High Ticket Amount</option>
+                    <option value="Status">Status</option>
                 </select>
             </div>
             <div class="col-md-3">
-                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search">
+                <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText" placeholder="Search">
             </div>
             <div class="col-md-3">
                <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
@@ -71,7 +71,7 @@
                                                 <td>{{ ticket?.rowId }}</td>
                                                 <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy hh:mm a'  }}</td>
                                                 <td>{{ ticket?.status }}</td>
-                                                <td>{{ ticket?.ticketAmount }}</td>
+                                                <td>{{ ticket?.ticketAmount | number : '1.3-3' }}</td>
                                                 <td>{{ ticket?.customerName }}</td>
                                                 <td>{{ ticket?.dateClosed ? (ticket?.dateClosed  | date: 'MM/dd/yyyy hh:mm a') : ''}}</td>
                                                 <td>
@@ -79,12 +79,12 @@
                                                         <a type="button" class="btn btn-grid btn-danger waves-effect waves-light me-1">
                                                             <i class="mdi mdi-trash-can-outline"></i> Void
                                                         </a> 
-                                                        <a routerLink = "/{{orgName}}/home/detail/{{ticket.rowId}}/{{ticket.customerId}}" class="btn btn-grid btn-success waves-effect waves-light">
+                                                        <a class="btn btn-grid btn-success waves-effect waves-light" (click)="showTicketDetails(ticket)">
                                                             <i class="mdi mdi-eye"></i> Show
                                                         </a>
 
-                                                </div>
-                                            </td>
+                                                    </div>
+                                                </td>
                                         </tr>
                                         </ng-template>
                                         
@@ -104,149 +104,200 @@
 
     </div> <!-- content -->
 
-    <p-dialog header="New Ticket" [(visible)]="visible" [style]="{width: '80vw'}">
+    <p-dialog [modal]="true" [header]="newTicketVisible ? 'New Ticket' : ( ticketvisible ? 'Merge Ticket and Pay' : '' )" 
+        [(visible)]="dialogPopupVisible" [style]="{width: '70vw'}">
         
         <div class="row">
                                 
             <div class="col-md-6">
-                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search for Sellers, Address, License and License Plate">
+                <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control" placeholder="Search for Sellers, Address, License and License Plate">
             </div>
             <div class="col-md-6">
-
-                <app-actionbar (iconAction)="getAction($event)"  [actions]="newTicketList"></app-actionbar>
-
-                <!-- <a class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Search"><i class="mdi mdi-cust mdi-magnify"></i></a> 
-
-                <a class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Refresh"><i class="mdi mdi-cust mdi-refresh"></i></a>
-
-                <a href="seller-add.html" class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="New Customer"><i class="mdi mdi-cust mdi-account"></i></a>
-            -->
+                <app-actionbar (iconAction)="getSellerAction($event)"  [actions]="newTicketList"></app-actionbar>
             </div> 
 
         </div>
 
         <div class="row mt-3">
+            
+            <p-table [value]="sellers"  [scrollable]="true" 
+                scrollHeight="40vh" [paginator]="true" [rows]="10"
+                [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10, 25, 50]" >
 
-            <table id="dt-new-ticket" class="table dt-responsive nowrap w-100">
-                        <thead>
-                            <tr>
-                                <th>Sellers</th>
-                                <th>Driver's License</th>
-                                <th>License Plate</th>
-                                <th>Address</th>
-                            </tr>
-                        </thead>
+               
+                
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Seller</th>
+                        <th>Driver's License</th>
+                        <th>Address</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-seller>
+                    <tr (click)="clickOnSeller(seller.rowId)">
+                        <td>{{ seller.fullName }}</td>
+                        <td>{{ seller.driverLicenseNumber }}</td>
+                        <td>{{ seller.streetAddress }}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="paginatorleft">
+                    <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
+                    </p-button>
+                </ng-template>
+                <ng-template pTemplate="paginatorright">
+                    <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
+                    </p-button>
+                </ng-template>
+            </p-table>
+
+        </div>
+    </p-dialog>
+    
+
+    <p-dialog [modal]="true" header="Child Ticket" [(visible)]="parentTicketIDVisible" [style]="{ width: '30vw' }">
+        <p>
+            Selected Ticket is child ticket of {{parentTicketId}}. Please select parent ticket to perform action on the same.
+        </p>
+        <ng-template pTemplate="footer">
+            <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeChildTicketMessage()">OK</a>
+        </ng-template>
+    </p-dialog>
+    
+
+    <p-dialog [modal]="true" header="Child Ticket" [(visible)]="isParentTicketVisible" [style]="{ width: '70vw' }">
+        <div class="row">
+            <div class="col-md-12">
+                <p-table #dt1 [value]="childTickets" [paginator]="true" [rows]="10"
+                    [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                    [rowsPerPageOptions]="[ 5, 10, 20, 50]" 
+                    [scrollable]="true" 
+                    scrollHeight="80vh"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    >
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Ticket ID</th>
+                            <th>Date Created</th>
+                            <th>Status</th>
+                            <th>Ticket Amount</th>
+                            <th>Seller</th>
+                            <th>Date Closed</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-childTicket>
+                        <tr>
+                            <td>{{ childTicket?.rowId }}</td>
+                            <td>{{ childTicket?.createdDate | date: 'MM/dd/yyyy hh:mm a'  }}</td>
+                            <td>{{ childTicket?.status }}</td>
+                            <td>{{ childTicket?.ticketAmount | number : '1.3-3' }}</td>
+                            <td>{{ childTicket?.customerName }}</td>
+                            <td>{{ childTicket?.dateClosed ? (childTicket?.dateClosed  | date: 'MM/dd/yyyy hh:mm a') : ''}}</td>
+                        </tr>
+                    </ng-template>
                     
                     
-                        <tbody>
-                            <tr>
-                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Alex Jr</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>12345 Main Street</td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Tommy J</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>32154 Main Street</td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Pat Jones</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>321, New York Street</td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> John D</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>453, KLM road</td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Kate Paul</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>1452, New Street</td>
-                            </tr>
-                            
-                        </tbody>
-            </table>
+                    
+                </p-table>
+            </div>
 
         </div>
     </p-dialog>
 
 
-    <p-dialog header="Merge Ticket and Pay" [(visible)]="ticketvisible" [style]="{width: '80vw'}">
-        
+    <p-dialog [modal]="true" header="Select Tickets For Merge" [(visible)]="mergeTicketVisible" [style]="{ width: '70vw' }">
         <div class="row">
-                                
-            <div class="col-md-6">
-                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search for Sellers, Address, License and License Plate">
+            <div class="col-md-12">
+                <p-table #dt1 [value]="sellerTickets" [paginator]="false"
+                    [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                    [scrollable]="true" 
+                    scrollHeight="50vh"
+                    [(selection)]="selectedSellerTickets"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    >
+
+                    <ng-template pTemplate="header">
+                        <tr>                            
+                            <th><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+                            <th>Ticket ID</th>
+                            <th>Date Created</th>
+                            <th>Ticket Amount</th>
+                            <th>Seller</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-sellerTicket>
+                        <tr>
+                            <td>
+                                <p-tableCheckbox [value]="sellerTicket">
+                                </p-tableCheckbox>
+                            </td>
+                            <td>{{ sellerTicket?.rowId }}</td>
+                            <td>{{ sellerTicket?.createdDate | date: 'MM/dd/yyyy hh:mm a'  }}</td>
+                            <td>{{ sellerTicket?.balanceAmount | number : '1.3-3' }}</td>
+                            <td>{{ sellerTicket?.customerName }}</td>
+                        </tr>
+                    </ng-template>
+                    
+                </p-table>
             </div>
-            <div class="col-md-6">
-                
-                <app-actionbar (iconAction)="getAction($event)"  [actions]="mergeTicketlist"></app-actionbar>
+        </div>        
+        <ng-template pTemplate="footer">
+            <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Close" (click)="closeMergeAndPayTickets()">Close</a>
+            <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="mergeAndPaySelectedTickets()">Merge And Pay Selected Tickets</a>
+        </ng-template>
+        
+    </p-dialog>
 
+    
+    <p-dialog [modal]="true" header="Pay Tickets" [(visible)]="paymentVisible" [style]="{ width: '30vw' }">
+        <div class="row">
+
+            <div class="col-sm-12">
+                <h4>Total Amount - 0.0000</h4>
+                <div class="payment-main-box mt-2">
+                    <button type="button" [ngClass]="cashSectionVisible? 'btn btn-primary active-button me-1' : 'btn btn-primary me-1'" 
+                    (click)="processCash()"> Cash </button> 
+                    <button type="button" [ngClass]="checkSectionVisible? 'btn btn-primary active-button me-1' : 'btn btn-primary me-1'" 
+                    (click)="processCheck()"> Check </button>
+                    <button type="button" [ngClass]="electronicPaymentSectionVisible? 'btn btn-primary active-button me-1' : 'btn btn-primary me-1'"  
+                    (click)="processElectronicPayment()"> Electronic Payment</button>
+
+                    <div id="cheque-box" class="">
+                        <div class="row">
+                            <div class="form-group col-sm-6 mt-15">
+                                <input type="text" id="cashamount" placeholder="0.000" class="form-control" [(ngModel)]="payAmount">
+                            </div>
+
+                            <div *ngIf="checkSectionVisible" class="form-group col-sm-6 mt-15">
+                                <input type="text" id="chequenumber" placeholder="Check Number" class="form-control" [(ngModel)]="checkNumber">
+                            </div>
+
+                            <div *ngIf="electronicPaymentSectionVisible" class="form-group col-sm-6 mt-15">
+                                <input type="text" id="paymentType" placeholder="Payment type" class="form-control" [(ngModel)]="paymentType">
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="checkSectionVisible">
+                            <div class="form-group col-sm-6 mt-15">
+                                <input type="date" id="cheque-date" class="form-control" [(ngModel)]="checkDate">
+                            </div>
+                        </div>
+                        
+
+                        <div class="row" *ngIf="checkSectionVisible">
+                            <div class="form-group col-sm-6 mt-15">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-6 mt-15">
+                                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl me-1" (click)="payTickets()"> Pay Tickets </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-        </div>
-
-        <div class="row mt-3">
-
-            <table id="dt-merge-ticket" class="table dt-responsive nowrap w-100">
-                        <thead>
-                            <tr>
-                                <th>Sellers</th>
-                                <th>Driver's License</th>
-                                <th>License Plate</th>
-                                <th>Address</th>
-                            </tr>
-                        </thead>
-                    
-                    
-                        <tbody>
-                            <tr>
-                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Alex Jr</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>12345 Main Street</td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Tommy J</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>32154 Main Street</td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Pat Jones</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>321, New York Street</td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> John D</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>453, KLM road</td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="assets/images/custom/driving-license.png" class="small-img"> Kate Paul</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>1452, New Street</td>
-                            </tr>
-                            
-                        </tbody>
-            </table>
-
+            </div>
         </div>
     </p-dialog>
