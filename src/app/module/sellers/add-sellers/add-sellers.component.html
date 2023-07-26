@@ -3,38 +3,15 @@
     <!-- Start Content-->
     <div class="container-fluid">
 
-        <!-- <div class="row mt-2">
-            <div class="col text-center">
-                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> New Ticket</button> 
-                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> Merge Ticket and Pay</button>
-            </div>
-            
-        </div> -->
-        
-        <!-- <div class="row mt-2">
-            <div class="col-md-6 d-flex">
-                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search for Sellers, Address, License and License Plate">
-            </div>
-            <div class="col-md-6"> 
-                <button type="button" class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Search"><i class="mdi mdi-cust mdi-magnify"></i></button>
-
-                <button type="button" class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Refresh"><i class="mdi mdi-cust mdi-refresh"></i></button>
-
-                <button type="button" class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Add Seller"><i class="mdi mdi-cust mdi-plus"></i></button>
-            </div>
-            
-        </div>   -->
-        <!-- end page title --> 
-
         <div class="bdcmb mt-2">
             <div class="row">
                 <div class="col-sm-6 col-6">
-                    <h4 class="page-title">Add Seller</h4>
+                    <h4 class="page-title">{{ sellerId == 0 ? 'Add Seller' : 'Edit Seller'}}</h4>
                 </div>
 
                 <div class="col-sm-6 col-6">
                     <div class="b-links">
-                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/sellers-buyers">Sellers Buyers</a> / <a href="javscript:void()" routerLink="/{{orgName}}/sellers-buyers/add-seller">Add Seller</a>
+                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/sellers-buyers">Sellers Buyers</a> / <a href="javscript:void()" routerLink="/{{orgName}}/sellers-buyers/add-seller">{{ sellerId == 0 ? 'Add Seller' : 'Edit Seller'}}</a>
                     </div>
                 </div>
             </div>
@@ -49,7 +26,8 @@
                             <div class="row">
                                 <div class="form-group col-sm-6 d-flex flex-center">
                                     <label for="example-select" class="form-label dd-label">Select Type</label>
-                                    <select formControlName="sellerType" class="form-select" id="example-select">
+                                    <select formControlName="sellerType" class="form-select" id="example-select"
+                                    (change)="changeSellerType()">
                                         <option>Personal</option>
                                         <option>Business</option>
                                     </select>
@@ -57,28 +35,28 @@
 
                                 <div class="form-group col-sm-6">
                                     <div class="flt-right">
-                                        <button class="btn btn-success me-1" (click)="onSubmit()">{{ sellerId==0 ? 'Save' : 'Update'}}</button>
+                                        <button class="btn btn-success me-1" (click)="onSubmit()">{{ sellerId == 0 ? 'Save' : 'Update'}}</button>
                                         <button type="button" class="btn btn-primary">Print</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-2">
+                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
 
                                 <h4>Personal Identification Images</h4>
 
                                 <div class="col-sm-3">
-                                    <div class="box">
-                                        <div class="js--image-preview"></div>
+                                    <div class="box div-small">
+                                        <img [src]="idscanImage" class="dl-img1">
                                         <ul class="upload-options-ul">
-                                                <li><a href="javascript:void()" (click)="uploadPicture('1')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
-                                                <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                                <li><a href="#"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
-                                        </ul>                                                        
+                                            <li><a href="javascript:void()" (click)="uploadPicture('1')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
+                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
+                                            <li><a href="#"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
+                                        </ul>                                                       
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="box">
-                                        <div class="js--image-preview"></div>
+                                    <div class="box div-small">
+                                        <img [src]="idsignatureImage" class="dl-img1">
                                         <ul class="upload-options-ul">
                                                 <li><a href="javascript:void()" (click)="uploadPicture('2')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
                                                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
@@ -87,8 +65,8 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="box">
-                                        <div class="js--image-preview"></div>
+                                    <div class="box div-small">
+                                        <img [src]="idfaceShotImage" class="dl-img1">
                                         <ul class="upload-options-ul">
                                                 <li><a href="javascript:void()" (click)="uploadPicture('3')" ><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
                                                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
@@ -97,8 +75,8 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="box">
-                                        <div class="js--image-preview"></div>
+                                    <div class="box div-small">
+                                        <img [src]="fingerPrints" class="dl-img1">
                                         <ul class="upload-options-ul">
                                                 <li><a href="javascript:void()" (click)="uploadPicture('4')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
                                                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
@@ -110,34 +88,45 @@
 
                             <hr>
 
-                            <div class="row mt-2">
+                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
                                 <h4>Personal Information</h4>
 
-                                <div class="form-group col-sm-3">
+                                <div class="form-group col-sm-3 mt-1">
                                     <div class="form-floating">
                                         <input type="text" formControlName="firstName" class="form-control" id="firstname" placeholder="First Name">
                                         <label for="floatingInput">First Name</label>
                                     </div>
                                 </div>
 
-                                <div class="form-group col-sm-3">
+                                <div class="form-group col-sm-3 mt-1">
                                     <div class="form-floating">
                                         <input type="text"  formControlName="middleName" class="form-control" id="middlename" placeholder="Middle Name">
                                         <label for="floatingInput">Middle Name</label>
                                     </div>
                                 </div>
 
-                                <div class="form-group col-sm-3">
+                                <div class="form-group col-sm-3 mt-1">
                                     <div class="form-floating">
                                         <input type="text" class="form-control" formControlName="lastName" id="lastname" placeholder="Last Name">
                                         <label for="floatingInput">Last Name</label>
                                     </div>
                                 </div>
 
-                                <div class="form-group col-sm-3">
+                                <div class="form-group col-sm-3 mt-1">
                                     <div class="form-floating">
                                         <input type="date" class="form-control" formControlName="dob" id="birthdate" placeholder="Date of Birth">
                                         <label for="floatingInput">Date of Birth</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
+                                <h4>Business Information</h4>
+
+                                <div class="form-group col-sm-6 mt-1">
+                                    <div class="form-floating">
+                                        <input type="text" formControlName="fullName" class="form-control" id="fullName" placeholder="Business Name">
+                                        <label for="floatingInput">Business Name</label>
                                     </div>
                                 </div>
                             </div>
@@ -173,11 +162,11 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-2">
+                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="idnumber" id="idlicensenumber" placeholder="ID/License Number">
+                                        <input type="text" class="form-control" formControlName="driverLicenseNumber" id="driverLicenseNumber" placeholder="ID/License Number">
                                         <label for="floatingInput">ID/License Number</label>
                                     </div>
                                 </div>
@@ -197,14 +186,23 @@
                                 </div>
 
                                 <div class="form-group col-sm-3">
+                                    <select class="form-select" id="example-select" formControlName="gender">
+                                        <option value="">Gender</option>
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">   
+
+                                <div class="form-group col-sm-3">
                                     <div class="form-floating">
                                         <input type="text" class="form-control"  formControlName="vehicleType" id="vehiclemake" placeholder="Vehicle Make">
                                         <label for="floatingInput">Vehicle Make</label>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row mt-2">    
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
@@ -227,16 +225,23 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group col-sm-3">
+                            </div>
+
+                            <div class="row mt-2">
+
+                                <div class="form-group col-sm-3" *ngIf="this.sellerType == 'Personal'">
                                     <div class="form-floating">
                                         <input type="text" class="form-control" formControlName="vehicleModel" id="vehiclemodel" placeholder="Vehicle Model">
                                         <label for="floatingInput">Vehicle Model</label>
                                     </div>
                                 </div>
 
-                            </div>
-
-                            <div class="row mt-2">
+                                <div class="form-group col-sm-3" *ngIf="this.sellerType == 'Business'">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  formControlName="idnumber" id="taxIdNumber" placeholder="Tax ID Number">
+                                        <label for="floatingInput">Tax ID Number</label>
+                                    </div>
+                                </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
@@ -258,14 +263,6 @@
                                         <option>Dealer 1</option>
                                         <option>Dealer 2</option>
                                         <option>Dealer 3</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-sm-3">
-                                    <select class="form-select" id="example-select" formControlName="gender">
-                                        <option value="">Gender</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
                                     </select>
                                 </div>
                             </div>
@@ -291,7 +288,7 @@
 
 
 
-<p-dialog [header]="'Edit Image'"  (onHide)="cancel()"   [(visible)]="editItemVisible" [style]="{width: '70vw'}">
+<p-dialog [header]="'Edit Image'"  (onHide)="cancel()"   [(visible)]="cameraVisible" [style]="{width: '70vw'}">
         
     <div class="row">
                                 
@@ -303,8 +300,8 @@
                     </div>
                 </div>
                 <div class="mt-2">
-                    <a href="#" id="save-image-btn" class="btn btn-primary me-1">Save Image</a>
-                    <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">Close</a>
+                    <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage()">Save Image</a>
+                    <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeImageCapture()">Close</a>
              
                 </div>
           </div>

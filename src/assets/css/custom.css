@@ -3,7 +3,7 @@
 .box {
   display: block;
  /* min-width: 300px;*/
-  height: 132px;
+  /* height: 132px; */
  /* margin: 10px;*/
   background-color: white;
   border-radius: 5px;
@@ -680,7 +680,8 @@
  .mdi-cust{font-size: 20px;}
  .upload-all{display: flex; justify-content: center; align-items: center; flex-direction: column;}
  .upload-options-ul li{display:inline; margin-right: 10px;}
- .upload-options-ul{background: #02659d; position: relative; bottom: -36px; text-align: center; padding-left: 0; height: 48px;}
+ /*.upload-options-ul{background: #02659d; position: relative; bottom: -36px; text-align: center; padding-left: 0; height: 48px;}*/
+.upload-options-ul{background: #02659d; position: relative; text-align: center; padding-left: 0; margin-bottom: 0 !important;}
  .mdi-white-color{color:#fff;}
  .mdi-cust-upload{font-size:25px;}
  .upload-a{cursor:pointer;}

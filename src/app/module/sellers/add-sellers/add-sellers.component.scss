@@ -1,4 +1,20 @@
 .custom-height {
     max-height: calc(100vh - 150px);
     overflow: auto;
+    height: calc(100vh - 150px);
+}
+
+.dl-img1 {
+    height: 80px;
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.div-small {
+    width: 70% !important;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }

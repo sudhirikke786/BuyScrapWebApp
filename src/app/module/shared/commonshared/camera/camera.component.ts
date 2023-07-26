@@ -85,6 +85,7 @@ export class CameraComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = () => {
         this.imageUrl = reader.result;
+        this.getPicture.emit(this.imageUrl);
       }       
     }
     // Clear the input
