@@ -845,7 +845,7 @@
  .form-control{font-size: 12px !important;}
  select option{font-size: 12px !important;}
  select optgroup option{font-size: 12px !important;}
- .btn-primary{font-size: 12px !important; padding: 3px 10px !important; display: inline-flex !important; align-items: center;}
+ .btn-primary{font-size: 12px !important; padding: 3px 10px !important;  align-items: center;}
  .btn-danger{font-size: 12px !important; padding: 3px 10px !important; display: inline-flex !important; align-items: center;}
  .btn-success{font-size: 12px !important; padding: 3px 10px !important; display: inline-flex !important; align-items: center;}
  .modal-content label{font-size: 12px !important; display: flex; align-items: center;}
