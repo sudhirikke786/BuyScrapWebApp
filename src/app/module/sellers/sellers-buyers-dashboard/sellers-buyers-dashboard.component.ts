@@ -29,6 +29,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
   ];
 
   sellers: any;
+  searchSellerInput: any = '';
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -37,16 +38,16 @@ export class SellersBuyersDashboardComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
-    this.getAllsellersDetails();
-  }
-
-  
-  getAllsellersDetails() {
     const paramObject = {
       PageNumber: 1,
       RowOfPage: 1000,
       LocationId: this.locId
     };
+    this.getAllsellersDetails(paramObject);
+  }
+
+  
+  getAllsellersDetails(paramObject: any) {
     this.commonService.getAllsellersDetails(paramObject)
       .subscribe(data => {
           console.log('getAllsellersDetails :: ');
@@ -59,19 +60,52 @@ export class SellersBuyersDashboardComponent implements OnInit {
       );
   }
 
-  getAction(actionCode:any){
+  
 
+  /** Seller pop up actions start */
+
+  searchSeller() {
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId,
+      SerachText: this.searchSellerInput
+    };
+    this.getAllsellersDetails(paramObject);
+
+  }
+
+  refreshSellerData() {
+    this.searchSellerInput = '';
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId
+    };
+    this.getAllsellersDetails(paramObject);
+  }
+
+  addNewSeller() {    
+    this.router.navigateByUrl(`${this.orgName}/sellers-buyers/add-seller`)
+  }  
+  /** Seller pop up actions end */
+
+
+  getAction(actionCode:any){
+    
     switch (actionCode?.iconcode) {
-      case 'mdi-plus':
-        this.router.navigateByUrl(`${this.orgName}/sellers-buyers/add-seller`)
+      case 'mdi-magnify':
+        this.searchSeller();
         break;
-      case 'mdi-merge':
-     
+      case 'mdi-refresh':
+        this.refreshSellerData();
+        break;
+      case 'mdi-plus':
+        this.addNewSeller();
         break;
       default:
         break;
     }
-
   
   }
   

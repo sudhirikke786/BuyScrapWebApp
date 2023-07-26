@@ -13,15 +13,16 @@ export class AddSellersComponent implements OnInit {
 
   orgName: any;
   locId = 1;
-  editItemVisible = false;
+  cameraVisible = false;
   imageUrl: any;
   sellerForm!: FormGroup;
   sellerId: any = 0;
+  sellerType: string = 'Personal';
 
-  idscanImage:any;
-  idsignatureImage:any;
-  idfaceShotImage:any;
-  fingerPrints:any;
+  idscanImage:any = 'assets/images/custom/id_scan.png';
+  idsignatureImage:any = 'assets/images/custom/id_signature.png';
+  idfaceShotImage:any = 'assets/images/custom/id_face.png';
+  fingerPrints:any = 'assets/images/custom/id_fingerprint.png';
   type: any;
   isWebcam = false;
 
@@ -30,10 +31,13 @@ export class AddSellersComponent implements OnInit {
     private fb: FormBuilder,
     private commonService: CommonService) { 
 
-
       this.route.params.subscribe((param)=>{
-        this.sellerId = param["sellerId"];
-        this.getSellerById();      
+        if (param["sellerId"]) {
+          this.sellerId = param["sellerId"];
+          this.getSellerById(); 
+        } else {
+          this.sellerId = 0;
+        }    
       });
       
     }
@@ -48,9 +52,10 @@ export class AddSellersComponent implements OnInit {
 
     this.sellerForm = this.fb.group({
        firstName : [],
-       sellerType:[],
+       sellerType:[this.sellerType],
        middleName : [],
        lastName : [],
+       fullName: [],
        dob : [],
        profilePic : [],
        streetAddress : [],
@@ -100,12 +105,16 @@ export class AddSellersComponent implements OnInit {
     const dateObject = new Date(this.sellerForm?.value?.dob);
     const _dob = dateObject.toISOString();
 
-    const reqObj = {...{"idscanImage": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/ID/2a876e28-a70c-4f97-b6b7-cba51bf6f40a.jpeg",
-    "idsignatureImage": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/Signature/2048474f-ff79-4413-a38b-0ba601b6e9c7.png",
-    "idfaceShotImage": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/Face/1e719c79-9da4-4f35-91b3-d3332e3a6b47.jpeg",
-    "fingerPrints": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/FingurePrint/add101ae-7dc7-4fc8-b488-09d41138fbe1.png",
-    "driverLicenseNumber": "GH54E45",
-    "drivingLicenseExpiryDate": "2003-07-03T03:13:18.659Z"},...this.sellerForm.value,...{dob:_dob, rowId: parseInt(this.sellerId), createdBy: 2, updatedBy: 2}}
+    const reqObj = {
+      ...{"idscanImage": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/ID/2a876e28-a70c-4f97-b6b7-cba51bf6f40a.jpeg",
+      "idsignatureImage": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/Signature/2048474f-ff79-4413-a38b-0ba601b6e9c7.png",
+      "idfaceShotImage": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/Face/1e719c79-9da4-4f35-91b3-d3332e3a6b47.jpeg",
+      "fingerPrints": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/FingurePrint/add101ae-7dc7-4fc8-b488-09d41138fbe1.png",
+      "driverLicenseNumber": "GH54E45",
+      "drivingLicenseExpiryDate": "2003-07-03T03:13:18.659Z"},
+      ...this.sellerForm.value,
+      ...{dob:_dob, rowId: parseInt(this.sellerId), createdBy: 2, updatedBy: 2}
+    }
     console.log(reqObj);
     this.commonService.addSeller(reqObj).subscribe(data =>{
       console.log("insert");
@@ -124,6 +133,7 @@ export class AddSellersComponent implements OnInit {
      firstName: obj.firstName,
      middleName: obj.middleName,
      lastName: obj.lastName,
+     fullName: obj.fullName,
      dob: _dob,
      profilePic: obj.profilePic,
      streetAddress: obj.streetAddress,
@@ -151,32 +161,46 @@ export class AddSellersComponent implements OnInit {
 
   }
 
-
   uploadPicture(selectionType:any) {
-
     this.isWebcam = true;
     this.type =  selectionType
-    this.editItemVisible = true;
+    this.cameraVisible = true;
   }
 
   cancel() {
     this.isWebcam = false
-  }
- 
+  } 
 
   handleImage(imageUrl: string) {
-    if(this.type=='1') {
-      this.idscanImage = imageUrl;
-    }else if(this.type=="2"){
-      this.idsignatureImage = imageUrl;
-    }else if(this.type=="3"){
-      this.idfaceShotImage = imageUrl;
-    }else {
-      this.fingerPrints = imageUrl;
-    }
-    console.log(this.idscanImage,this.idsignatureImage,this.idfaceShotImage,this.fingerPrints)
-
+    // alert(imageUrl);
+    this.imageUrl = imageUrl;
   }
   
+  SaveImage() {
+    if(this.type=='1') {
+      this.idscanImage = this.imageUrl;
+    }else if(this.type=="2"){
+      this.idsignatureImage = this.imageUrl;
+    }else if(this.type=="3"){
+      this.idfaceShotImage = this.imageUrl;
+    }else {
+      this.fingerPrints = this.imageUrl;
+    }
+    this.imageUrl = null;
+    this.cameraVisible = false;
+    console.log(this.idscanImage,this.idsignatureImage,this.idfaceShotImage,this.fingerPrints);
+  }
+
+  closeImageCapture() {
+    this.imageUrl = null;
+    this.cameraVisible = false;
+  }
+  changeSellerType() {
+    if (this.sellerForm.get('sellerType')?.value) {
+      this.sellerType = this.sellerForm.get('sellerType')?.value;
+    } else {
+      this.sellerType = 'Personal';
+    }
+  }
 
 }

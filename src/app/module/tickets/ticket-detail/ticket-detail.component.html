@@ -111,8 +111,8 @@
                                                         <td>{{ ticket.gross  }}</td>
                                                         <td>{{ ticket.tare }}</td>
                                                         <td>{{ ticket.net }}</td>
-                                                        <td>{{ ticket.price }}</td>
-                                                        <td>{{ ticket.amount}}</td>
+                                                        <td>{{ ticket.price | number : '1.3-3'}}</td>
+                                                        <td>{{ ticket.amount | number : '1.3-3'}}</td>
                                                     </ng-template>
                                                     <td>
                                                         <img src="{{ticket.imagePath}}" class="ticket-particulars-img">
@@ -128,7 +128,7 @@
                                                         </a>
                                                     </td>
                                                 </tr>
-                                                <tr *ngIf="ticket.codNote != '' || ticket.materialNote != ''"
+                                                <!-- <tr *ngIf="ticket.codNote != '' || ticket.materialNote != ''"
                                                 [ngClass]="(ticket.codNote == '' && ticket.materialNote == '')? 'border-hide' : 'border-show'">
                                                     <td class="cod-item">
                                                         {{ ticket.codNote }}
@@ -136,7 +136,7 @@
                                                     <td colspan="7">
                                                         {{ ticket.materialNote }}
                                                     </td>
-                                                </tr>
+                                                </tr> -->
                                             </ng-template>
                                             
                                         </p-table>
@@ -182,11 +182,11 @@
                                     <div class="col-sm-8">    
                                         <div class="row ticket-summary-div">
                                             <div class="col-sm-4">
-                                                <b>Paid Amount - {{ticketData?.paidAmount | number : '1.3-3'}}</b>
+                                                <b>Paid Amount  {{ticketData?.paidAmount | number : '1.3-3'}}</b>
                                             </div>
 
                                             <div class="col-sm-4">
-                                                <b>Balance Amount - {{ticketData?.balanceAmount | number : '1.3-3'}}</b>
+                                                <b>Balance Amount  {{totalAmount - ticketData?.paidAmount | number : '1.3-3'}}</b>
                                             </div>   
 
                                         </div>
@@ -234,7 +234,7 @@
                                     <ul class="main-ul">
                                       <ng-container  *ngFor="let item of subMaterialList" >
                                           <li>
-                                              <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="addItem(item.rowId, item.materialName, selectedMaterial)"
+                                              <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
                                               pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
                                               class="btn btn-primary btn-materials-inner">{{item.materialName}}</a>
                                           </li>
@@ -325,7 +325,7 @@
                             <ul class="main-ul">
                             <ng-container  *ngFor="let item of subMaterialList" >
                                 <li>
-                                    <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="updateExistingItem(item.rowId, item.materialName, selectedMaterial)"
+                                    <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="updateExistingItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
                                     pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
                                     class="btn btn-primary btn-materials-inner">{{item.materialName}}</a>
                                 </li>
@@ -454,3 +454,7 @@
     </div>
     
 </p-dialog>
+
+
+
+<p-toast></p-toast>

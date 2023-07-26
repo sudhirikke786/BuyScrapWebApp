@@ -25,7 +25,7 @@
                         
                         <div class="row mt-2">
                             <div class="col-md-6 d-flex">
-                                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search for Sellers, Address, License and License Plate">
+                                <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control" placeholder="Search for Sellers, Address, License and License Plate">
                             </div>
                             <div class="col-md-6"> 
                                 <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
