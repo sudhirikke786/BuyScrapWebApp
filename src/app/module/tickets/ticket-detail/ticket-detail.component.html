@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="row">
-                            <div [ngClass]="!isEditModeOn? 'col-sm-12' : 'col-sm-9'">
+                            <div [ngClass]="!isEditModeOn && !showCalculator? 'col-sm-12' : 'col-sm-9'">
                                 
                                 <div class="row">
                                     <div class="over-flow-250">
@@ -203,7 +203,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-3" *ngIf="isEditModeOn" >
+                            <div class="col-sm-3" *ngIf="isEditModeOn && !showCalculator" >
                                 
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row over-flow-350">
                                     <h4 class="materials-heading">Materials</h4>
@@ -241,6 +241,12 @@
                                       </ng-container>                                     
                                     </ul>
   
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3 position-relative" *ngIf="showCalculator">
+                                <div style="position: absolute;top:-32px">
+                                    <app-price-calculator [titleName]="selectedMaterial"></app-price-calculator>
                                 </div>
                             </div>
                         </div>

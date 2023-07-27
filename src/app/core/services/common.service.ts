@@ -27,7 +27,8 @@ export class CommonService {
     if (clientName) {
       httpHeader = new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
-        'ClientName': clientName
+        'ClientName': clientName,
+        "Authorization": "Bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNzIiwicm9sZSI6IkFkbWluaXN0cmF0b3IiLCJuYmYiOjE2OTA0ODYyNzMsImV4cCI6MTY5MDQ4ODA3MywiaWF0IjoxNjkwNDg2MjczfQ.EjHEqkgA3CDAvwPWEnq2hjAlnwNckDmg29jVVOBhhgw'
       });
     }
 

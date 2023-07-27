@@ -5,22 +5,26 @@ import { WebcamModule } from 'ngx-webcam';
 import { ActionbarComponent } from './actionbar/actionbar.component';
 import { CameraComponent } from './camera/camera.component';
 import { FormsModule } from '@angular/forms';
-
+import { PriceCalculatorComponent } from './price-calculator/price-calculator.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @NgModule({
   declarations: [
     ActionbarComponent,
-    CameraComponent
+    CameraComponent,
+    PriceCalculatorComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    WebcamModule
+    WebcamModule,
+    TooltipModule
   ],
   exports:[
     ActionbarComponent,
-    CameraComponent
+    CameraComponent,
+    PriceCalculatorComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
