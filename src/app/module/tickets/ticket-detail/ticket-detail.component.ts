@@ -19,7 +19,7 @@ import { Ticket } from 'src/app/core/model/ticket.model';
 export class TicketDetailComponent implements OnInit {
   @ViewChild('htmlData') htmlData!: ElementRef;
 
-  showCalculator = false;
+  showCalculator = true;
   @ViewChild('inputFile')
   myInputVariable!: ElementRef;
   

@@ -48,7 +48,15 @@
             <label for="gross">Gross:</label>
         </div>
         <div class="col-md-9">
-            <input type="text" #inputBox1 tabindex="0" [(ngModel)]="grossInput" (focus)="focusedInput = 'inputBox1'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+            <div class="input-group">
+                <input type="text" placeholder="Enter Gross Weight" #inputBox1 tabindex="0" [(ngModel)]="grossInput" (focus)="focusedInput = 'inputBox1'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+                <div class="input-group-append" *ngIf="grossInput">
+                  <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="grossInput =''">
+                    <i class="bi bi-x"></i>
+                  </button>
+                </div>
+              </div>
+           
         </div>
     </div>
 
@@ -58,7 +66,14 @@
             <label for="Tare">Tare:</label>
         </div>
         <div class="col-md-9">
-            <input type="text" #inputBox2  tabindex="1" [(ngModel)]="tareInput"  (focus)="focusedInput = 'inputBox2'"  id="Tare" class="form-control  h-30 mb-1 ps-0">
+            <div class="input-group">
+                <input type="text" placeholder="Enter Tare Weight" #inputBox2 tabindex="0" [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+                <div class="input-group-append" *ngIf="tareInput">
+                  <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="tareInput =''">
+                    <i class="bi bi-x"></i>
+                  </button>
+                </div>
+              </div>
         </div>
     </div>
     <div class="row">
@@ -66,7 +81,14 @@
             <label for="Net">Net:</label>
         </div>
         <div class="col-md-9">
-            <input type="text" #inputBox3 tabindex="2" [(ngModel)]="netInput" (focus)="focusedInput = 'inputBox3'"   id="Net" class="form-control  h-30 mb-1 ps-0">
+            <div class="input-group">
+                <input type="text" placeholder="Net Weight" #inputBox3 tabindex="0" [(ngModel)]="netInput" (focus)="focusedInput = 'inputBox3'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+                <div class="input-group-append" *ngIf="netInput">
+                  <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="netInput =''">
+                    <i class="bi bi-x"></i>
+                  </button>
+                </div>
+              </div>
         </div>
     </div>
     <div class="row">
@@ -74,7 +96,14 @@
             <label for="Price">Price:</label>
         </div>
         <div class="col-md-9">
-            <input type="text" #inputBox4 tabindex="3" [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox4'"   id="Price" class="form-control  h-30 mb-1 ps-0">
+            <div class="input-group">
+                <input type="text" #inputBox4 tabindex="0" [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox4'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+                <div class="input-group-append" *ngIf="priceInput">
+                  <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="priceInput =''">
+                    <i class="bi bi-x"></i>
+                  </button>
+                </div>
+              </div>
         </div>
     </div>
 
@@ -95,7 +124,7 @@
     <button class="btn-cal" (click)="appendNumber(9)">9</button>
     <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
     <button class="btn-cal" (click)="appendNumber(0)">0</button>
-    <button class="btn-cal" (click)="appendNumber(00)">00</button>
+    <button class="btn-cal" (click)="appendNumber('00')">00</button>
     <button class="btn-cal" (click)="appendNumber('.')">.</button>
 
 
