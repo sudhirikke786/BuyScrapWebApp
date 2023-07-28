@@ -19,7 +19,7 @@ import { Ticket } from 'src/app/core/model/ticket.model';
 export class TicketDetailComponent implements OnInit {
   @ViewChild('htmlData') htmlData!: ElementRef;
 
-  showCalculator = true;
+  showCalculator = false;
   @ViewChild('inputFile')
   myInputVariable!: ElementRef;
   
@@ -329,6 +329,7 @@ export class TicketDetailComponent implements OnInit {
   editItem(rowData: any) {
     this.modalHeader = 'Edit Item Details';
     this.editItemVisible = true;
+    
     this.editItemCloseImageCapture = false;
     this.itemLeveloperationPerform = 'Edit';
 
@@ -353,6 +354,7 @@ export class TicketDetailComponent implements OnInit {
     this.itemNet = this.itemGross - this.itemTare;
   }
   closeCapturedImage() {
+    this.editItemVisible = false;
     this.editItemCloseImageCapture = true;
   }
   backToCapturedImage() {
@@ -371,6 +373,16 @@ export class TicketDetailComponent implements OnInit {
   backToChangeItemMainMaterials() {
     this.changeItemMaterialsVisible =  true;
   }
+
+  calculation(rowData:any){
+    this.editItemCloseImageCapture = false;
+    this.itemGross = rowData.gross;
+    this.itemTare = rowData.tare;
+    this.itemNet = rowData.net;
+    this.itemPrice = rowData.price;
+    this.updateExistingItemDataResponse();
+  }
+
 
   updateExistingItemDataResponse() {
     

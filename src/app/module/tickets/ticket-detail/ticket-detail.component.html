@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="row">
-                            <div [ngClass]="!isEditModeOn && !showCalculator? 'col-sm-12' : 'col-sm-9'">
+                            <div [ngClass]="!isEditModeOn && !editItemCloseImageCapture? 'col-sm-12' : 'col-sm-9'">
                                 
                                 <div class="row">
                                     <div class="over-flow-250">
@@ -203,7 +203,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-3" *ngIf="isEditModeOn && !showCalculator" >
+                            <div class="col-sm-3" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row over-flow-350">
                                     <h4 class="materials-heading">Materials</h4>
@@ -244,9 +244,9 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-3 position-relative" *ngIf="showCalculator">
+                            <div class="col-sm-3 position-relative" *ngIf="editItemCloseImageCapture">
                                 <div style="position: absolute;top:-32px">
-                                    <app-price-calculator [titleName]="selectedMaterial"></app-price-calculator>
+                                    <app-price-calculator (calculateObj)="calculation($event)" [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemNet" [itemGross]="itemNet" [titleName]="selectedMaterial"></app-price-calculator>
                                 </div>
                             </div>
                         </div>
@@ -268,7 +268,7 @@
     <div class="row">
                                 
         <div class="col-md-12">
-            <div *ngIf="!editItemCloseImageCapture; else elsepart;" id="camera-div" class="camera-div">
+            <div id="camera-div" class="camera-div">
                 <div style="border: 1px solid black;">
                     <div class="col-sm-12" style="border: 1px solid black;  display:inline-block;">
                         <app-camera (getPicture)="handleImage($event)"></app-camera>
@@ -278,7 +278,7 @@
                 <a id="save-image-btn" class="btn btn-primary me-1" (click)="closeCapturedImage()">Save Image</a>
                 <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage()">Close</a>
             </div>
-            <ng-template #elsepart>
+            <!-- <ng-template #elsepart>
             <div id="numpad-div" class="numpad-div" style="display: block;">
                 <table class="numpad-heading-tbl">
                     <tbody><tr>
@@ -411,7 +411,7 @@
 
 
             </div>
-            </ng-template>
+            </ng-template> -->
         </div>
 
     </div>

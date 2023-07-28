@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-price-calculator',
   templateUrl: './price-calculator.component.html',
   styleUrls: ['./price-calculator.component.scss']
 })
-export class PriceCalculatorComponent implements OnInit, AfterViewInit {
+export class PriceCalculatorComponent implements OnInit, AfterViewInit ,OnChanges {
 
   @ViewChild('inputBox1') inputBox1: ElementRef | undefined;
   @ViewChild('inputBox2') inputBox2: ElementRef | undefined;
@@ -14,10 +14,18 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   @Input() titleName = 'Motors/Motores ==> Aluminum Motors (Clean/Limpios)';
 
-  grossInput:any ='';
-  tareInput:any ='';
-  netInput:any ='';
-  priceInput:any ='';
+
+  @Input() itemGross: number = 0;
+  @Input()  itemTare: number = 0;
+  @Input()  itemNet: number = 0;
+  @Input()  itemPrice: number = 0;
+
+  @Output() calculateObj = new EventEmitter<any>();
+
+  grossInput:any =0;
+  tareInput:any =0;
+  netInput:any =0;
+  priceInput:any =0;
   focusedInput: string | null = null;
 
   constructor(private renderer: Renderer2) {
@@ -26,10 +34,22 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
+  
     if (this.inputBox1) {
       this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
     }
 
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    if(changes){
+      this.grossInput = changes['itemGross'].currentValue;
+      this.tareInput =changes['itemTare'].currentValue;
+      this.netInput = changes['itemNet'].currentValue;
+      this.priceInput = changes['itemPrice'].currentValue;
+    }
+    
   }
 
   ngAfterViewInit(): void {
@@ -112,7 +132,13 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   }
 
   enter() {
-
+    const obj = {
+      itemGross :this.grossInput,
+      itemTare:this.tareInput,
+      itemNet:this.netInput,
+      itemPrice:this.priceInput
+    }
+    this.calculateObj.emit(obj);
   }
 
 
