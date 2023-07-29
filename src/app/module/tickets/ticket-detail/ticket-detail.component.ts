@@ -68,6 +68,7 @@ export class TicketDetailComponent implements OnInit {
   itemNet: number = 0;
   itemPrice: number = 0;
   itemImagePath: string = '';
+  materialNote: string = '';
   itemCodNote: string = '';
   itemLeveloperationPerform: string = '';
   localRowIdCounter: number = 0;
@@ -315,6 +316,8 @@ export class TicketDetailComponent implements OnInit {
     this.itemMaterialName = materialName;
     this.itemPrice = scrapPrice;
     this.itemLeveloperationPerform = 'Add';
+    this.itemCodNote = '';    
+    this.materialNote = '';
   }  
 
   updateExistingItem(materialId: any, materialName: string, selectedMaterial: string, scrapPrice: any) {
@@ -343,8 +346,8 @@ export class TicketDetailComponent implements OnInit {
     this.itemNet = rowData.net;
     this.itemPrice = rowData.price;
     this.itemImagePath = rowData.imagePath;
-    this.itemCodNote = rowData.codNote;
-    
+    this.itemCodNote = rowData.codNote;    
+    this.materialNote = rowData.materialNote;
     
     this.imageUrl = (this.itemImagePath ? this.itemImagePath : null);    
 
@@ -375,11 +378,14 @@ export class TicketDetailComponent implements OnInit {
   }
 
   calculation(rowData:any){
+    alert('11111' + JSON.stringify(rowData));
     this.editItemCloseImageCapture = false;
-    this.itemGross = rowData.gross;
-    this.itemTare = rowData.tare;
-    this.itemNet = rowData.net;
-    this.itemPrice = rowData.price;
+    this.mainMaterialsVisible = true;
+    this.itemGross = rowData.itemGross;
+    this.itemTare = rowData.itemTare;
+    this.itemNet = this.itemGross - this.itemTare;
+    this.itemPrice = rowData.itemPrice;
+    this.materialNote = rowData.materialNote;
     this.updateExistingItemDataResponse();
   }
 
@@ -402,7 +408,8 @@ export class TicketDetailComponent implements OnInit {
       rowData.price = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
       rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
       rowData.imagePath = this.itemImagePath;
-      rowData.codNote = this.itemCodNote;
+      rowData.codNote = '';
+      rowData.materialNote = this.materialNote;
 
       
       rowData.createdBy = 6;
@@ -429,7 +436,8 @@ export class TicketDetailComponent implements OnInit {
           rowData.price = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
           rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
           rowData.imagePath = this.itemImagePath;
-          rowData.codNote = this.itemCodNote;
+          rowData.codNote = this.itemCodNote;          
+          rowData.materialNote = this.materialNote;
 
           // TO DO:: does not required. need to verify
           rowData.createdBy = 6;

@@ -1,24 +1,26 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-price-calculator',
   templateUrl: './price-calculator.component.html',
   styleUrls: ['./price-calculator.component.scss']
 })
-export class PriceCalculatorComponent implements OnInit, AfterViewInit ,OnChanges {
+export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   @ViewChild('inputBox1') inputBox1: ElementRef | undefined;
   @ViewChild('inputBox2') inputBox2: ElementRef | undefined;
   @ViewChild('inputBox3') inputBox3: ElementRef | undefined;
   @ViewChild('inputBox4') inputBox4: ElementRef | undefined;
 
-  @Input() titleName = 'Motors/Motores ==> Aluminum Motors (Clean/Limpios)';
+  @Input() materialNote = '';
+  @Input() itemGroupName = 'Motors/Motores';
+  @Input() itemMaterialName = 'Aluminum Motors (Clean/Limpios)';
 
 
   @Input() itemGross: number = 0;
-  @Input()  itemTare: number = 0;
-  @Input()  itemNet: number = 0;
-  @Input()  itemPrice: number = 0;
+  @Input() itemTare: number = 0;
+  @Input() itemNet: number = 0;
+  @Input() itemPrice: number = 0;
 
   @Output() calculateObj = new EventEmitter<any>();
 
@@ -27,6 +29,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit ,OnChange
   netInput:any =0;
   priceInput:any =0;
   focusedInput: string | null = null;
+  addNoteSectionVisible = false;
 
   constructor(private renderer: Renderer2) {
 
@@ -35,22 +38,26 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit ,OnChange
 
   ngOnInit(): void {
   
+    this.grossInput = this.itemGross;
+    this.tareInput = this.itemTare;
+    this.netInput = this.grossInput - this.tareInput;
+    this.priceInput = this.itemPrice;
     if (this.inputBox1) {
       this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
     }
 
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  // ngOnChanges(changes: SimpleChanges): void {
 
-    if(changes){
-      this.grossInput = changes['itemGross'].currentValue;
-      this.tareInput =changes['itemTare'].currentValue;
-      this.netInput = changes['itemNet'].currentValue;
-      this.priceInput = changes['itemPrice'].currentValue;
-    }
+  //   if(changes){
+  //     this.grossInput = changes['itemGross'].currentValue;
+  //     this.tareInput =changes['itemTare'].currentValue;
+  //     this.netInput = this.grossInput - this.tareInput;
+  //     this.priceInput = changes['itemPrice'].currentValue;
+  //   }
     
-  }
+  // }
 
   ngAfterViewInit(): void {
 
@@ -128,15 +135,25 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit ,OnChange
   }
 
   note() {
+    this.addNoteSectionVisible = true;
+  }
 
+  addEditNote() {   
+    // alert(this.materialNote); 
+    this.addNoteSectionVisible = false;
+  }
+
+  deleteNote() {
+    this.addNoteSectionVisible = false;
   }
 
   enter() {
     const obj = {
-      itemGross :this.grossInput,
-      itemTare:this.tareInput,
-      itemNet:this.netInput,
-      itemPrice:this.priceInput
+      itemGross: this.grossInput,
+      itemTare: this.tareInput,
+      itemNet: this.grossInput - this.tareInput,
+      itemPrice: this.priceInput,
+      materialNote: this.materialNote
     }
     this.calculateObj.emit(obj);
   }

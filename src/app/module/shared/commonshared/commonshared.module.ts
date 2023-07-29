@@ -7,6 +7,7 @@ import { CameraComponent } from './camera/camera.component';
 import { FormsModule } from '@angular/forms';
 import { PriceCalculatorComponent } from './price-calculator/price-calculator.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { PrimengModule } from '../primeng/primeng.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { TooltipModule } from 'primeng/tooltip';
     CommonModule,
     FormsModule,
     WebcamModule,
-    TooltipModule
+    TooltipModule,
+    PrimengModule
   ],
   exports:[
     ActionbarComponent,

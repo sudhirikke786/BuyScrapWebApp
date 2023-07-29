@@ -245,7 +245,9 @@
 
                             <div class="col-sm-3 position-relative" *ngIf="editItemCloseImageCapture">
                                 <div style="position: absolute;top:-32px">
-                                    <app-price-calculator (calculateObj)="calculation($event)" [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemNet" [itemGross]="itemNet" [titleName]="selectedMaterial"></app-price-calculator>
+                                    <app-price-calculator (calculateObj)="calculation($event)" [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
+                                        [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote">
+                                    </app-price-calculator>
                                 </div>
                             </div>
                         </div>
