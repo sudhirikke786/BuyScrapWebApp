@@ -53,15 +53,33 @@
     padding: 0.4rem 0.3rem !important;
     color: #6c757d;
     border: none !important;
-
+  
     // white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.p-datatable .p-datatable-tbody > tr {
-    border-bottom: 1px solid #dee2e6 !important;
-    // border-top: none !important;
+
+.p-datatable .p-datatable-tbody > tr{
+    border-top: 1px solid #ccc;
 }
+
+
+// .ticket-table .p-datatable .p-datatable-tbody > tr {
+  
+//    border-top: none !important;
+//    border-bottom: none !important;
+//     // border-top: none !important;
+// }
+
+.ticket-table .no-border-tr{
+    border-top: none !important;
+}
+.ticket-table .border-tr{
+    border-top: 1px solid #ccc !important;
+    border-bottom: 1px solid #ccc !important;
+}
+
+
 
 .search-box {
     span{

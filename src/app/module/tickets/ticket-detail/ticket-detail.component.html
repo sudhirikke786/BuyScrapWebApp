@@ -79,7 +79,7 @@
                                 
                                 <div class="row">
                                     <div class="over-flow-250">
-                                        <p-table #dt1 [value]="ticketObj" [paginator]="false" [rows]="10"
+                                        <p-table class="ticket-table" #dt1 [value]="ticketObj" [paginator]="false" [rows]="10"
                                             [showCurrentPageReport]="false"
                                             [scrollable]="true" 
                                             >
@@ -97,7 +97,7 @@
                                                 </tr>
                                             </ng-template>
                                             <ng-template pTemplate="body" let-ticket>
-                                                <tr [ngClass]="(ticket.codNote != '' || ticket.materialNote != '')? 'border-hide' : 'border-show'">
+                                                <tr class="border-tr" [ngClass]="{'border-tr': ticket.codNote == '' || ticket.materialNote ==''}" >
                                                     <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
                                                         <td class="cod-item" style="width: 25%;">{{ ticket.materialName }}</td>
                                                         <td class="cod-item"></td>
@@ -128,15 +128,14 @@
                                                         </a>
                                                     </td>
                                                 </tr>
-                                                <!-- <tr *ngIf="ticket.codNote != '' || ticket.materialNote != ''"
-                                                [ngClass]="(ticket.codNote == '' && ticket.materialNote == '')? 'border-hide' : 'border-show'">
+                                                <tr [ngClass]="{'no-border-tr': ticket.codNote != '' || ticket.materialNote !=''}"  *ngIf="ticket.codNote != '' || ticket.materialNote != ''">
                                                     <td class="cod-item">
                                                         {{ ticket.codNote }}
                                                     </td>                                                    
                                                     <td colspan="7">
                                                         {{ ticket.materialNote }}
                                                     </td>
-                                                </tr> -->
+                                                </tr>
                                             </ng-template>
                                             
                                         </p-table>
