@@ -42,6 +42,8 @@ export class UserLoginComponent implements OnInit {
   }
   
   btnClick(): void {
+    alert('11111111111111');
+    this.user.locID =  1;
     this.validateUser();
     // this.router.navigateByUrl(`/${this.organizationName}/home`);
   };
@@ -74,7 +76,10 @@ export class UserLoginComponent implements OnInit {
     this.commonService.validateUserCredentials(this.user).subscribe(data => {
           console.log('validateUserCredentials :: ');
           console.log(data);          
-          if (data?.body.userdto.userName) {
+          if (data?.body.token && data?.body.userdto.userName) {
+            const userFullName = data?.body.userdto.firstName + ' ' + data?.body.userdto.lastName;
+            localStorage.setItem('userFullName', userFullName);
+            localStorage.setItem('token', data?.body.token);
             this.router.navigateByUrl(`/${this.organizationName}/home`);
           } else {
             this.messageService.add({ severity: 'error', summary: 'error', detail: 'Invalid User Credentials' });

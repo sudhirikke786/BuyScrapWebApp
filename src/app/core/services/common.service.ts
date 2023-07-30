@@ -28,7 +28,7 @@ export class CommonService {
       httpHeader = new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
         'ClientName': clientName,
-        "Authorization": "Bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNzIiwicm9sZSI6IkFkbWluaXN0cmF0b3IiLCJuYmYiOjE2OTA3MjA1MTYsImV4cCI6MTY5MDcyMjMxNiwiaWF0IjoxNjkwNzIwNTE2fQ.o58wmnHKmSy16Z8jNYZeKyDPoxm3tZF6wNX82o7hR3k'
+        "Authorization": "Bearer " + localStorage.getItem('token')
       });
     }
 
@@ -73,6 +73,18 @@ export class CommonService {
 
   getOrgLocation(): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Locations/GetAllLocatoins', 'GET', null, 'ProdTest');
+  }
+
+  getCashdrawerdetails(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashdrawerdetails', 'GET', paramObj, 'ProdTest');
+  }
+
+  getCashDrawerAmountDTO(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashDrawerAmountDTO', 'GET', paramObj, 'ProdTest');
+  }
+
+  getCashDrawerAmountAndPaidTicketCount(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashDrawerAmountAndPaidTicketCount', 'GET', paramObj, 'ProdTest');
   }
 
   getAllTicketsDetails(paramObj: any): Observable<any> {
