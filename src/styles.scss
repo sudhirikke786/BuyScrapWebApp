@@ -182,3 +182,7 @@
   .p-paginator-left-content{
     flex:auto;
   }
+
+  .serverside-paginator .p-paginator{
+    justify-content: end !important;
+  }

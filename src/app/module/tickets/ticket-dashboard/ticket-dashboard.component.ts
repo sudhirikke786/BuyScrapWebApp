@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pagination } from 'src/app/core/interfaces/common-interfaces';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -11,6 +11,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 export class TicketDashboardComponent implements OnInit {
 
   selectedTickets: any;
+ 
 
   actionList = [{
     iconcode:'mdi-magnify',
@@ -111,10 +112,16 @@ export class TicketDashboardComponent implements OnInit {
     SearchOrder: 'TicketId',
     Status: this.defaultSelectedTicketsTypes.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(','),
     PageNumber: 1,
-    RowOfPage: 100,
-    LocationId: 1
+    RowOfPage: 10,
+    LocationId: 1,
+    first : 0, 
   }
-  
+
+  currentPage = 1;
+  pageSize = 10;
+  first = 0;
+  last = 0;
+  pageTotal = 0;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private commonService: CommonService) { }
@@ -128,15 +135,32 @@ export class TicketDashboardComponent implements OnInit {
     this.getAllTicketsDetails(this.pagination);
   }
 
+
+  onPageChange(event: any) {
+    this.currentPage = event.first / event.rows + 1;
+    this.first = event.first ;
+    let pagObj = {
+      PageNumber: this.currentPage,
+      RowOfPage: this.pageSize,
+    }
+    this.pagination = {...this.pagination,...pagObj};
+    this.getAllTicketsDetails(this.pagination);
+  }
+
+
   /**
    * Get the data by calling WebAPI to fetch the details for organization login
    */
   getAllTicketsDetails(pagination: Pagination) {
+    console.log(this.pagination);
     this.commonService.getAllTicketsDetails(pagination)
       .subscribe(data => {
           console.log('getAllTicketsDetails :: ');
           console.log(data);
           this.tickets = data.body.data;
+          this.pageTotal =  data?.body?.totalRecord
+          this.last = data?.body?.totalIndex;
+       
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -198,6 +222,8 @@ export class TicketDashboardComponent implements OnInit {
     this.pagination.Status = result;
     this.pagination.SerachText = this.serachText,
     this.pagination.SearchOrder = this.searchOrder,
+    this.pagination.currentPage = 1;
+
     this.getAllTicketsDetails(this.pagination);
   }
 
@@ -320,7 +346,7 @@ export class TicketDashboardComponent implements OnInit {
   searchSeller() {
     const paramObject = {
       PageNumber: 1,
-      RowOfPage: 1000,
+      RowOfPage: 10,
       LocationId: this.locId,
       SerachText: this.searchSellerInput
     };
@@ -332,7 +358,7 @@ export class TicketDashboardComponent implements OnInit {
     this.searchSellerInput = '';
     const paramObject = {
       PageNumber: 1,
-      RowOfPage: 1000,
+      RowOfPage: 10,
       LocationId: this.locId
     };
     this.getAllsellersDetails(paramObject);

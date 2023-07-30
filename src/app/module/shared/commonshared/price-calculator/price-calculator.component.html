@@ -1,133 +1,116 @@
-<!-- <div class="container">
-    <div class="row avatar-container">
-      <div class="col text-center">
-        <img src="/assets/images/custom/id_scan.png"   alt="Avatar" class="avatar">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col mt-1 d-flex justify-content-center">
-        <button type="button" class="btn btn-primary mx-2">Change Item</button>
-        <button type="button" class="btn btn-danger mx-2">Capture Image</button>
-       <div class="custom-file btn btn-primary">
-            <input type="file" class="custom-file-input" id="customFile" accept=".jpg, .jpeg, .png">
-            <label class="custom-file-label" for="customFile">Capture File</label>
-          </div> 
-      </div>
-    </div>
-  </div> -->
-<!-- 
-  <div class="image-container">
-    <img src="/assets/images/custom/id_scan.png" alt="Image" class="img-fluid">
-    <div class="overlay">
-        <button type="button" class="btn btn-primary mx-2">Change Item</button>
-        <button type="button" class="btn btn-danger mx-2">Capture Image</button>
-    </div>
-  </div> -->
-
-  <div class="container px-0 py-0">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="image-card">
-          <div class="image-container">
-            <img src="/assets/images/custom/id_scan.png" alt="Image" class="img-fluid">
-          </div>
-          <div class="content-container">
-            <button type="button" class="btn btn-primary mb-1">Change Item</button>
-            <button type="button" class="btn btn-danger">Capture Img</button>
-          </div>
+<div class="card">
+<div class="card-body px-1 py-1">
+  
+<div class="container px-0 py-0">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="image-card">
+        <div class="image-container">
+          <img src="/assets/images/custom/id_scan.png" alt="Image" class="img-fluid">
+        </div>
+        <div class="content-container">
+          <button type="button" class="btn btn-primary mb-1">Change Item</button>
+          <button type="button" class="btn btn-danger">Capture Img</button>
         </div>
       </div>
-    </div>
-    <div class="row">
-        <div class="col text-truncate"   pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom" >{{itemGroupName}}</div>
     </div>
   </div>
+  <div class="row">
+      <div class="col-12"   >
+        <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom" > {{itemGroupName}} - {{itemMaterialName}}</div>
+       
+      
+      </div>
+  </div>
+</div>
 <div class="container px-0 py-0">
-    <div class="row">
-        <div class="col-md-3">
-            <label for="gross">Gross:</label>
-        </div>
-        <div class="col-md-9">
-            <div class="input-group">
-                <input type="text" placeholder="Enter Gross Weight" #inputBox1 tabindex="0" [(ngModel)]="grossInput" (focus)="focusedInput = 'inputBox1'"   id="gross" class="form-control  h-30 mb-1 ps-0">
-                <div class="input-group-append" *ngIf="grossInput">
-                  <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="grossInput ='0'">
-                    <i class="bi bi-x"></i>
-                  </button>
-                </div>
+  <div class="row">
+      <div class="col-md-3">
+          <label for="gross">Gross:</label>
+      </div>
+      <div class="col-md-9">
+          <div class="input-group">
+              <input type="text" placeholder="Enter Gross Weight" #inputBox1 tabindex="0" [(ngModel)]="grossInput" (focus)="focusedInput = 'inputBox1'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+              <div class="input-group-append" *ngIf="grossInput">
+                <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="grossInput ='0'">
+                  <i class="bi bi-x"></i>
+                </button>
               </div>
-           
-        </div>
-    </div>
-
-    <!-- Add more rows for additional input boxes -->
-    <div class="row">
-        <div class="col-md-3">
-            <label for="Tare">Tare:</label>
-        </div>
-        <div class="col-md-9">
-            <div class="input-group">
-                <input type="text" placeholder="Enter Tare Weight" #inputBox2 tabindex="0" [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'"   id="gross" class="form-control  h-30 mb-1 ps-0">
-                <div class="input-group-append" *ngIf="tareInput">
-                  <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="tareInput ='0'">
-                    <i class="bi bi-x"></i>
-                  </button>
-                </div>
-              </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <label for="Net">Net:</label>
-        </div>
-        <div class="col-md-9">
-            <div class="input-group">
-                <input type="text" readonly placeholder="Net Weight" #inputBox3 tabindex="0" [(ngModel)]="netInput" value = "{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox3'"   id="gross" class="form-control  h-30 mb-1 ps-0">
-                <!-- <div class="input-group-append" *ngIf="netInput">
-                  <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="netInput =''">
-                    <i class="bi bi-x"></i>
-                  </button>
-                </div> -->
-              </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <label for="Price">Price:</label>
-        </div>
-        <div class="col-md-9">
-            <div class="input-group">
-                <input type="text" #inputBox4 tabindex="0" [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox4'"   id="gross" class="form-control  h-30 mb-1 ps-0">
-                <div class="input-group-append" *ngIf="priceInput">
-                  <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="priceInput ='0'">
-                    <i class="bi bi-x"></i>
-                  </button>
-                </div>
             </div>
-        </div>
-    </div>
+         
+      </div>
+  </div>
 
-    <!-- Add more rows as needed for additional input boxes -->
+  <!-- Add more rows for additional input boxes -->
+  <div class="row">
+      <div class="col-md-3">
+          <label for="Tare">Tare:</label>
+      </div>
+      <div class="col-md-9">
+          <div class="input-group">
+              <input type="text" placeholder="Enter Tare Weight" #inputBox2 tabindex="0" [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+              <div class="input-group-append" *ngIf="tareInput">
+                <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="tareInput ='0'">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-md-3">
+          <label for="Net">Net:</label>
+      </div>
+      <div class="col-md-9">
+          <div class="input-group">
+              <input type="text" readonly placeholder="Net Weight" #inputBox3 tabindex="0" [(ngModel)]="netInput" value = "{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox3'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+              <!-- <div class="input-group-append" *ngIf="netInput">
+                <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="netInput =''">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div> -->
+            </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-md-3">
+          <label for="Price">Price:</label>
+      </div>
+      <div class="col-md-9">
+          <div class="input-group">
+              <input type="text" #inputBox4 tabindex="0" [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox4'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+              <div class="input-group-append" *ngIf="priceInput">
+                <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="priceInput ='0'">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Add more rows as needed for additional input boxes -->
 </div>
 
 <div class="calculator">
-    <button class="btn-cal" (click)="appendNumber(1)">1</button>
-    <button class="btn-cal" (click)="appendNumber(2)">2</button>
-    <button class="btn-cal" (click)="appendNumber(3)">3</button>
-    <button class="btn-cal btn-danger" (click)="deleteCharacter()">Del</button>
-    <button class="btn-cal " (click)="appendNumber(4)">4</button>
-    <button class="btn-cal" (click)="appendNumber(5)">5</button>
-    <button class="btn-cal" (click)="appendNumber(6)">6</button>
-    <button class="btn-cal" (click)="note()">Notes</button>
-    <button class="btn-cal" (click)="appendNumber(7)">7</button>
-    <button class="btn-cal" (click)="appendNumber(8)">8</button>
-    <button class="btn-cal" (click)="appendNumber(9)">9</button>
-    <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
-    <button class="btn-cal" (click)="appendNumber(0)">0</button>
-    <button class="btn-cal" (click)="appendNumber('00')">00</button>
-    <button class="btn-cal" (click)="appendNumber('.')">.</button>
+  <button class="btn-cal" (click)="appendNumber(1)">1</button>
+  <button class="btn-cal" (click)="appendNumber(2)">2</button>
+  <button class="btn-cal" (click)="appendNumber(3)">3</button>
+  <button class="btn-cal btn-danger" (click)="deleteCharacter()">Del</button>
+  <button class="btn-cal " (click)="appendNumber(4)">4</button>
+  <button class="btn-cal" (click)="appendNumber(5)">5</button>
+  <button class="btn-cal" (click)="appendNumber(6)">6</button>
+  <button class="btn-cal" (click)="note()">Notes</button>
+  <button class="btn-cal" (click)="appendNumber(7)">7</button>
+  <button class="btn-cal" (click)="appendNumber(8)">8</button>
+  <button class="btn-cal" (click)="appendNumber(9)">9</button>
+  <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
+  <button class="btn-cal" (click)="appendNumber(0)">0</button>
+  <button class="btn-cal" (click)="appendNumber('00')">00</button>
+  <button class="btn-cal" (click)="appendNumber('.')">.</button>
 
 
+</div>
+</div>
 </div>
 
 

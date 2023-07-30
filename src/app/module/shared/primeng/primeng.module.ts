@@ -10,6 +10,7 @@ import { OverlayModule } from 'primeng/overlay';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
   declarations: [],
@@ -22,7 +23,8 @@ import { TooltipModule } from 'primeng/tooltip';
     OverlayModule,
     DialogModule,
     ToastModule,
-    TooltipModule
+    TooltipModule,
+    PaginatorModule
   ],
   exports:[
     InputTextModule,
@@ -33,7 +35,8 @@ import { TooltipModule } from 'primeng/tooltip';
     DialogModule,
     MultiSelectModule,
     ToastModule,
-    TooltipModule
+    TooltipModule,
+    PaginatorModule
   ]
 })
 export class PrimengModule { }

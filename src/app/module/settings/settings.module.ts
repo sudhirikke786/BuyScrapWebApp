@@ -12,6 +12,7 @@ import { CashierSettingsComponent } from './cashier-settings/cashier-settings.co
 import { TicketSettingsComponent } from './ticket-settings/ticket-settings.component';
 import { CameraSettingsComponent } from './camera-settings/camera-settings.component';
 import { SystemPerfComponent } from './system-perf/system-perf.component';
+import { MessageService } from 'primeng/api';
 
 
 
@@ -37,8 +38,10 @@ export const routes: Routes = [{
     RouterModule.forChild(routes),
     CommonsharedModule,
     FormsModule,
+  
     ReactiveFormsModule,
 
-  ]
+  ],
+  providers: [MessageService],
 })
 export class SettingsModule { }

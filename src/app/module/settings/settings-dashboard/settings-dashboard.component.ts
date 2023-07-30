@@ -17,6 +17,7 @@ export class SettingsDashboardComponent implements OnInit {
 
   orgName: any;
   locId: any;
+  systemprefVisible = false;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -65,6 +66,16 @@ export class SettingsDashboardComponent implements OnInit {
 
   hidescrapModel(){
       this.cameravisible = false;
+  }
+
+
+
+  showSytemPerf(){
+    this.systemprefVisible = true;
+  }
+
+  hideSytemPerf(){
+    this.systemprefVisible = false;
   }
 
 

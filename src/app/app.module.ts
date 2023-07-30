@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FourColumnPipe } from './core/pipe/four-column.pipe';
 import { CommonsharedModule } from './module/shared/commonshared/commonshared.module';
 import { PrimengModule } from './module/shared/primeng/primeng.module';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { PrimengModule } from './module/shared/primeng/primeng.module';
     BrowserAnimationsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

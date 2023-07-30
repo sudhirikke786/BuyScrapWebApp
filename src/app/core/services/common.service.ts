@@ -28,7 +28,7 @@ export class CommonService {
       httpHeader = new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
         'ClientName': clientName,
-        "Authorization": "Bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNzIiwicm9sZSI6IkFkbWluaXN0cmF0b3IiLCJuYmYiOjE2OTA1MTY5NjUsImV4cCI6MTY5MDUxODc2NSwiaWF0IjoxNjkwNTE2OTY1fQ.GKozk0hwC2T8-K0P2pblANVoNDLCe-cXYbHpAen9rjA'
+        "Authorization": "Bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNzIiwicm9sZSI6IkFkbWluaXN0cmF0b3IiLCJuYmYiOjE2OTA3MjA1MTYsImV4cCI6MTY5MDcyMjMxNiwiaWF0IjoxNjkwNzIwNTE2fQ.o58wmnHKmSy16Z8jNYZeKyDPoxm3tZF6wNX82o7hR3k'
       });
     }
 
@@ -130,5 +130,26 @@ export class CommonService {
   getAllCODTickets(pagination: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllCODTickets', 'GET', pagination, 'ProdTest');
   }
+
+  /** settings page */
+
+  getAllSettingsTicketDetails(paramObj: any){
+    return this.callAPI(environment.baseUrl + '/Settingss/GetAllTicketDetails', 'GET', paramObj, 'ProdTest');
+  }
+
+  InsertUpdateTicketSettings(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Settingss/InsertUpdateTicketSettings', 'POST', requestObj, 'ProdTest');
+  }
+
+  GetSystemPreferencesValue(paramObj: any){
+    return this.callAPI(environment.baseUrl + '/SystemPreferences/GetSystemPreferencesValue', 'GET', paramObj, 'ProdTest');
+  }
+  
+  InsertUpdateSystemPreferences(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/SystemPreferences/InsertUpdateSystemPreferences', 'POST', requestObj, 'ProdTest');
+  }
+  
+
+
     
 }

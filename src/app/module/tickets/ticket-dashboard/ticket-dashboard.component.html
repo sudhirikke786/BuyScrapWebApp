@@ -46,12 +46,12 @@
                         <div id="selection-datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p-table #dt1 [value]="tickets" [paginator]="true" [rows]="10"
-                                        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-                                        [rowsPerPageOptions]="[ 5, 10, 20, 50]" 
+                                    <p-table #dt1 [value]="tickets"
+                                        [paginator]="false" 
+                                        [rows]="pageSize"
+                                        [tableStyle]="{ 'min-width': '50rem' }"
                                         [scrollable]="true" 
                                         scrollHeight="60vh"
-                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                         [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']"
                                         >
              
@@ -91,6 +91,10 @@
                                         
                                         
                                     </p-table>
+                                  <div *ngIf="tickets?.length > 0">
+                                    <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+                                  </div>
+                                  
                                 </div>
 
                             </div>

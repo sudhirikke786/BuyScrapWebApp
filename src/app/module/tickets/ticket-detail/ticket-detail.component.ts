@@ -73,6 +73,12 @@ export class TicketDetailComponent implements OnInit {
   itemLeveloperationPerform: string = '';
   localRowIdCounter: number = 0;
 
+
+  totalRecords = 0;
+  currentPage = 1;
+  pageSize = 10;
+
+
   addEditAdjustmentVisible = false;
   modalAdjustmentHeader = 'Add Adjustment';
   
@@ -129,12 +135,20 @@ export class TicketDetailComponent implements OnInit {
           console.log('getAllTicketsDetails for ticketId :: ');
           console.log(data);
           this.ticketData = data.body.data[0];
+          this.totalRecords =  data.totalRecords;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
       );
   }
+  
+  onPageChange(event: any) {
+    this.currentPage = event.first / event.rows + 1;
+    this.getAllTicketsDetails();
+  }
+
+
   
   getSellerById() {
     const paramObject = {
