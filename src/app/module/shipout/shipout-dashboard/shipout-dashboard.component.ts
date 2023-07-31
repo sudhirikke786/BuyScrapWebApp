@@ -105,7 +105,7 @@ export class ShipoutDashboardComponent implements OnInit {
   }
 
   showCustomerModel(sellerId: any){
-    alert(sellerId);
+    // alert(sellerId);
     this.custVisible = true;
   }
   closeDriver(){
