@@ -4,6 +4,7 @@ import { CommonService } from '../core/services/common.service';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../core/interfaces/common-interfaces';
 import { MessageService } from 'primeng/api';
+import { StorageService } from '../core/services/storage.service';
 
 @Component({
   selector: 'app-user-login',
@@ -19,7 +20,7 @@ export class UserLoginComponent implements OnInit {
   user: User = {
     userName: '',
     password: '',
-    locID: 0,
+    locID: 1,
     macID: '',    
     isActive: true,
     isConfirm: true
@@ -29,6 +30,7 @@ export class UserLoginComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private http:HttpClient,
+              private localService:StorageService,
               private messageService: MessageService,
               private commonService: CommonService) { }
 
@@ -48,7 +50,7 @@ export class UserLoginComponent implements OnInit {
   
   getIPAddress(){
     this.http.get("http://api.ipify.org/?format=json").subscribe((res:any)=>{
-      this.user.macID = res.ip;
+      this.user.macID = '131312236';
     });
   }
 
@@ -72,14 +74,12 @@ export class UserLoginComponent implements OnInit {
   validateUser() {  
 
     this.commonService.validateUserCredentials(this.user).subscribe(data => {
-          console.log('validateUserCredentials :: ');
-          console.log(data);          
+         
+          this.localService.setLocalStorage('userObj',data?.body);       
           if (data?.body.userdto.userName) {
             this.router.navigateByUrl(`/${this.organizationName}/home`);
           } else {
             this.messageService.add({ severity: 'error', summary: 'error', detail: 'Invalid User Credentials' });
-
-        
           }
           
         },

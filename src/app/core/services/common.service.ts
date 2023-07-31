@@ -6,6 +6,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Observable, of, EMPTY, throwError, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { StorageService } from './storage.service';
 
 
 @Injectable({
@@ -16,19 +17,21 @@ export class CommonService {
   
   configJson: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private localService:StorageService) { }
 
   /* GET: get the data for type ahead select dropdown based on key passed*/
-  callAPI(path: string, method: string, requestObj?: any, clientName?: string): Observable<any> {
+    callAPI(path: string, method: string, requestObj?: any, clientName?: string): Observable<any> {
     let httpHeader = new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'
     });
 
+    const userToken = this.localService.getLocalStorage('userObj');
+    
     if (clientName) {
       httpHeader = new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
         'ClientName': clientName,
-        "Authorization": "Bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNzIiwicm9sZSI6IkFkbWluaXN0cmF0b3IiLCJuYmYiOjE2OTA3MjA1MTYsImV4cCI6MTY5MDcyMjMxNiwiaWF0IjoxNjkwNzIwNTE2fQ.o58wmnHKmSy16Z8jNYZeKyDPoxm3tZF6wNX82o7hR3k'
+        "Authorization": "Bearer " + userToken?.token
       });
     }
 
