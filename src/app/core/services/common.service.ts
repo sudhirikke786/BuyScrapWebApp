@@ -26,7 +26,7 @@ export class CommonService {
     });
 
     const userToken = this.localService.getLocalStorage('userObj');
-    
+
     if (clientName) {
       httpHeader = new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
@@ -76,6 +76,18 @@ export class CommonService {
 
   getOrgLocation(): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Locations/GetAllLocatoins', 'GET', null, 'ProdTest');
+  }
+
+  getCashdrawerdetails(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashdrawerdetails', 'GET', paramObj, 'ProdTest');
+  }
+
+  getCashDrawerAmountDTO(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashDrawerAmountDTO', 'GET', paramObj, 'ProdTest');
+  }
+
+  getCashDrawerAmountAndPaidTicketCount(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashDrawerAmountAndPaidTicketCount', 'GET', paramObj, 'ProdTest');
   }
 
   getAllTicketsDetails(paramObj: any): Observable<any> {

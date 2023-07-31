@@ -44,6 +44,8 @@ export class UserLoginComponent implements OnInit {
   }
   
   btnClick(): void {
+    alert('11111111111111');
+    this.user.locID =  1;
     this.validateUser();
     // this.router.navigateByUrl(`/${this.organizationName}/home`);
   };
@@ -75,8 +77,8 @@ export class UserLoginComponent implements OnInit {
 
     this.commonService.validateUserCredentials(this.user).subscribe(data => {
          
-          this.localService.setLocalStorage('userObj',data?.body);       
-          if (data?.body.userdto.userName) {
+          if (data?.body.token && data?.body.userdto.userName) {
+            this.localService.setLocalStorage('userObj',data?.body);       
             this.router.navigateByUrl(`/${this.organizationName}/home`);
           } else {
             this.messageService.add({ severity: 'error', summary: 'error', detail: 'Invalid User Credentials' });
