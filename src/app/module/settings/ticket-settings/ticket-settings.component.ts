@@ -68,7 +68,7 @@ export class TicketSettingsComponent implements OnInit {
     const reqObj = {...userInfo,...obj};
 
     this.commonService.InsertUpdateTicketSettings(reqObj).subscribe((res) =>{
-     alert('updated')
+    //  alert('updated')
       //this.msgService.showSuccess('Successfully Updated')
     },(error)=>{
       

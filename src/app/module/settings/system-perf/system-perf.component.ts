@@ -91,7 +91,7 @@ export class SystemPerfComponent implements OnInit {
     this.commonService.InsertUpdateSystemPreferences(reqObj).subscribe((res) =>{
       this.getSystemPreferencesValue();
       this.visible = false;
-      alert('updated')
+      // alert('updated')
       //this.msgService.showSuccess('Successfully Updated')
     },(error)=>{
       

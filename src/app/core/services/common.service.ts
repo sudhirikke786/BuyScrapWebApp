@@ -90,6 +90,14 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashDrawerAmountAndPaidTicketCount', 'GET', paramObj, 'ProdTest');
   }
 
+  insertUpdateCashDrawerTransactions(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/InsertUpdateCashDrawerTransactions', 'POST', requestObj, 'ProdTest');
+  }
+
+  insertCashDrawerDetails(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/InsertCashDrawerDetails', 'POST', requestObj, 'ProdTest');
+  }
+
   getAllTicketsDetails(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsDetails', 'GET', paramObj, 'ProdTest');
   }

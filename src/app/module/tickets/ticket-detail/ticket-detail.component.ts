@@ -392,7 +392,6 @@ export class TicketDetailComponent implements OnInit {
   }
 
   calculation(rowData:any){
-    alert('11111' + JSON.stringify(rowData));
     this.editItemCloseImageCapture = false;
     this.mainMaterialsVisible = true;
     this.itemGross = rowData.itemGross;

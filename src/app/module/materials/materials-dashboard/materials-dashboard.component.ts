@@ -144,8 +144,8 @@ export class MaterialsDashboardComponent implements OnInit {
   get f() { return this.form.controls; }
 
   onSubmit(materialData: any) {
-    alert(JSON.stringify(materialData));
-    alert(JSON.stringify(this.form.value));
+    // alert(JSON.stringify(materialData));
+    // alert(JSON.stringify(this.form.value));
     this.submitted = true;
     
     if (this.form.invalid) {
@@ -156,7 +156,7 @@ export class MaterialsDashboardComponent implements OnInit {
     const source = this.form.value;
 
     const returnedTarget = Object.assign(target, source);
-    alert(JSON.stringify(returnedTarget));
+    // alert(JSON.stringify(returnedTarget));
 
   }
 

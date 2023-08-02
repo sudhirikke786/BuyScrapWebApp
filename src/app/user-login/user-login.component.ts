@@ -44,7 +44,6 @@ export class UserLoginComponent implements OnInit {
   }
   
   btnClick(): void {
-    alert('11111111111111');
     this.user.locID =  1;
     this.validateUser();
     // this.router.navigateByUrl(`/${this.organizationName}/home`);

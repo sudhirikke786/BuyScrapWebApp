@@ -367,6 +367,12 @@ export class TicketDashboardComponent implements OnInit {
   addNewSeller() {    
     this.router.navigateByUrl(`${this.orgName}/sellers-buyers/add-seller`)
   }  
+  
+  onRightClick(event: any, ticket: any) {
+    // alert('333333333333' + JSON.stringify(ticket));
+    // Your code here
+    return false;   // Add return false
+ }
   /** Seller pop up actions end */
 
 
