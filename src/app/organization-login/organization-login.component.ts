@@ -49,19 +49,9 @@ export class OrganizationLoginComponent implements OnInit {
 
     const requestObj = {
       organisationName: this.org.orgName,
-      orgKey: 'vvzHznEnIic='
+      orgKey: '12345'
     };
-    // const requestObj = {
-    //   organisationName: 'ProdTest',
-    //   orgKey: 'vvzHznEnIic='
-    // };
-    // this.http.post<any>('https://localhost:44385/Organisations/ValidateCredentials', requestObj).subscribe(data => {
-    //   console.log('data :: ');
-    //   console.log(data);
-    //   const orgName = 'abc';
-    //   this.router.navigateByUrl(`${orgName}/user-login`);
-    // });
-
+ 
     this.commonService.validateOrgCredentials(requestObj)
       .subscribe(data => {
           console.log('data :: ');
