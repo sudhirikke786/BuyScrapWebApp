@@ -82,7 +82,7 @@ export class HeaderComponent implements OnInit {
           // this.dataService.cashDrawerAmountDTO(data);
           this.cashDrawerBalanceAmount = data.body.data.amount;
           if (data.body.data.status === 'CLOSED') {
-            this.isReopenRegister = false;
+            this.isReopenRegister = true;
           } else {
             this.isReopenRegister = false;
           }
