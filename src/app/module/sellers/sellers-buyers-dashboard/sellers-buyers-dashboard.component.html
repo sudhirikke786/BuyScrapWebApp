@@ -41,10 +41,9 @@
 
                                         
                                         <p-table [value]="sellers"  [scrollable]="true" 
-                                        scrollHeight="50vh" [paginator]="true" [rows]="10"
-                                            [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                            [rowsPerPageOptions]="[10, 25, 50]" >
+                                        scrollHeight="50vh" [paginator]="false" [rows]="10"
+                                            [showCurrentPageReport]="false" [tableStyle]="{ 'min-width': '50rem' }"
+                                            >
 
                                            
                                             
@@ -77,6 +76,11 @@
                                                 </p-button>
                                             </ng-template>
                                         </p-table>
+
+                                        <div *ngIf="sellers?.length > 0">
+                                            <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+                                          </div>
+                                          
                                     
                                     </div> <!-- end card body-->
                                 </div> <!-- end card -->

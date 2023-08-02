@@ -30,6 +30,13 @@ export class SellersBuyersDashboardComponent implements OnInit {
 
   sellers: any;
   searchSellerInput: any = '';
+
+  currentPage = 1;
+  pageSize = 10;
+  first = 0;
+  last = 0;
+  pageTotal = 0;
+
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -40,7 +47,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
     this.locId = 1;
     const paramObject = {
       PageNumber: 1,
-      RowOfPage: 1000,
+      RowOfPage: 10,
       LocationId: this.locId
     };
     this.getAllsellersDetails(paramObject);
@@ -53,6 +60,8 @@ export class SellersBuyersDashboardComponent implements OnInit {
           console.log('getAllsellersDetails :: ');
           console.log(data);
           this.sellers = data.body.data;
+          this.pageTotal =  data?.body?.totalRecord
+          this.last = data?.body?.totalIndex;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -60,6 +69,18 @@ export class SellersBuyersDashboardComponent implements OnInit {
       );
   }
 
+
+  onPageChange(event: any) {
+    this.currentPage = event.first / event.rows + 1;
+    this.first = event.first ;
+    let pagObj = {
+      PageNumber: this.currentPage,
+      RowOfPage: this.pageSize,
+      LocationId: this.locId
+    }
+   // this.pagination = {...this.pagination,...pagObj};
+    this.getAllsellersDetails(pagObj);
+  }
   
 
   /** Seller pop up actions start */
