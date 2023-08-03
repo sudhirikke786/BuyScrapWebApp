@@ -85,6 +85,7 @@ export class TicketDetailComponent implements OnInit {
   addEditAdjustmentVisible = false;
   modalAdjustmentHeader = 'Add Adjustment';
   selectedRowObj: any;
+  confrimVisible = false;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -104,10 +105,8 @@ export class TicketDetailComponent implements OnInit {
 
 
   onContextMenu(event: MouseEvent ,obj:any) {
-
     this.selectedRowObj =  obj;
     this.isCodeRequired = (obj.codNote != '' || obj.materialNote !='');
-
     event.preventDefault();
   }
   removeCode(){
@@ -284,6 +283,10 @@ export class TicketDetailComponent implements OnInit {
   }
 
 
+  confirmSave() {
+    this.confrimVisible = true;
+  }
+
   saveTicketDetails() {
     
     if (this.ticketId != 0) {
@@ -319,8 +322,10 @@ export class TicketDetailComponent implements OnInit {
     
     this.commonService.insertUpdateTickets(this.ticketData).subscribe(data =>{    
       console.log(data); 
+
+      this.confirmSave();
       // alert('Ticket Inserted/ updated successfully');
-      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
+     // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       
       this.cancelEditTicket();
     },(error: any) =>{  
