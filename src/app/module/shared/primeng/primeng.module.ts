@@ -11,6 +11,9 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+
 
 @NgModule({
   declarations: [],
@@ -33,10 +36,12 @@ import { PaginatorModule } from 'primeng/paginator';
     ButtonModule,
     OverlayModule,
     DialogModule,
+    OverlayPanelModule,
     MultiSelectModule,
     ToastModule,
     TooltipModule,
-    PaginatorModule
+    PaginatorModule,
+    ContextMenuModule
   ]
 })
 export class PrimengModule { }

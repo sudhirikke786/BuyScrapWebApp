@@ -77,10 +77,14 @@ export class TicketDetailComponent implements OnInit {
   totalRecords = 0;
   currentPage = 1;
   pageSize = 10;
+  isCodeRequired = false;
+
+
 
 
   addEditAdjustmentVisible = false;
   modalAdjustmentHeader = 'Add Adjustment';
+  selectedRowObj: any;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -97,6 +101,23 @@ export class TicketDetailComponent implements OnInit {
       this.processDataBasedOnTicketId();
     });
   }
+
+
+  onContextMenu(event: MouseEvent ,obj:any) {
+
+    this.selectedRowObj =  obj;
+    this.isCodeRequired = (obj.codNote != '' || obj.materialNote !='');
+
+    event.preventDefault();
+  }
+  removeCode(){
+    // remove the Data from Table
+  }
+
+  addNote(){
+    // add the Data from Table
+  }
+
   
   private processDataBasedOnTicketId() {
     if (parseInt(this.ticketId)) {
@@ -179,7 +200,10 @@ export class TicketDetailComponent implements OnInit {
       .subscribe(data => {
           console.log('getTransactionsDetailsById :: ');
           console.log(data);
-          this.ticketObj = data.body.data;
+          this.ticketObj = data.body.data.map((item:any) => {
+            item.isSelected = false;
+            return item
+          } );;
           this.calculateTotal(this.ticketObj);
         },
         (err: any) => {
