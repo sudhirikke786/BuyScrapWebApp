@@ -11,10 +11,11 @@
                     
                 </div> -->
         <div class="row mt-2">
-            <div class="col-md-3">
-                <p-multiSelect class="col-2" [options]="ticketsTypes" [style]="{'minWidth':'100%'}"
-                    [(ngModel)]="selectedTickets" [resetFilterOnHide]="false" defaultLabel="You can choose  ..."
+            <div class="col-md-3" style="width:300px">
+                <p-multiSelect [class.fixed-multiselect]="true"   [options]="ticketsTypes" [style]="{'minWidth':'100%'}"
+                    [(ngModel)]="selectedTickets"  [maxSelectedLabels]="maxItem" defaultLabel="You can choose  ..."
                     optionLabel="name" display="chip" (onChange)="addRemoveStatus($event)">
+                
                 </p-multiSelect>
             </div>
             <div class="col-md-3">

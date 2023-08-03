@@ -101,25 +101,31 @@
 .p-multiselect-panel .p-multiselect-header{
     display: none;
 }
-.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
-    background-color: #5897fb;
-    color: #fff;
+// .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
+//     background-color: #5897fb;
+//     color: #fff;
 
-}
-.p-multiselect-panel .p-multiselect-items .p-multiselect-item .p-checkbox{
-    display: none;
-}
+// }
+// .p-multiselect-panel .p-multiselect-items .p-multiselect-item .p-checkbox{
+//     display: none;
+// }
+
+
 .p-multiselect.p-multiselect-chip .p-multiselect-token {
    
     border: 1px solid #aaa;
     border-radius: 4px;
     cursor: default;
-    float: left;
+   
     margin-right: 5px;
     margin-top: 5px;
     padding: 0 5px;
     background-color: #0176B8 !important;
 }
+.p-multiselect{
+    display: flex !important;
+}
+
 
 .p-paginator .p-paginator-current{
     position:absolute;

@@ -6,3 +6,9 @@
 .active-button {
     background-color: green !important;
 }
+
+.fixed-multiselect {
+    height: 100px !important;
+    width: 100px !important;; /* Adjust the height to your desired value */
+    overflow-y: auto;
+  }

@@ -99,7 +99,7 @@ export class TicketDashboardComponent implements OnInit {
   orgName: any;
   locId: any;
   
-
+  maxItem = 2;
   parentTicketIDVisible = false;
   isParentTicketVisible = false;
   parentTicketId = '';
