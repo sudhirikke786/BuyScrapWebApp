@@ -180,7 +180,7 @@
                                             </ng-template>
                                             
                                         </p-table>
-                                        <p-overlayPanel #op>
+                                        <p-overlayPanel class="overlay-button" #op>
                                             <button class="btn btn-danger" *ngIf="isCodeRequired" (click)="op.hide();removeCode()">CODE Remove</button>
                                             <button class="btn btn-primary" *ngIf="!isCodeRequired" (click)="op.hide();addNote()"> COD Required</button>
                                         </p-overlayPanel>
@@ -435,7 +435,7 @@
                             <button class="delete-btn">Delete</button>
                             <button class="enter-btn" (click)="updateExistingItemDataResponse()">Enter</button>
                           </div>
-                          <div class="row text-center">
+                          <div class="row ">
                             <button class="notes-btn">Notes</button>
                           </div>
                         </div>
@@ -506,19 +506,21 @@
     
 </p-dialog>
 
-<p-dialog header="Header" [modal]="true" [(visible)]="confrimVisible" [style]="{ width: '40vw' }">
+<p-dialog header="Header" [modal]="true" [(visible)]="confrimVisible" [style]="{ width: '50vw' }">
     <ng-template pTemplate="header">
         <span class="text-xl font-bold text-success" style="font-size: 24px;"> Ticket Saved Successfully</span>
     </ng-template>
     <div class="text-center  mb-2 mt-2">
         <span class="text-xl font-bold text-info text-center" style="font-size: 14px;"> Please select Option</span>  
     </div>
-    <div class="d-flex equal-h">
-        <div> <button class="btn btn-info equal-h me-2">Pay Amount without printing</button></div>
-        <div><button class="btn btn-danger equal-h me-2">Print and Save</button></div>
-        <div><button class="btn btn-secondary equal-h me-2">Pay Amount and Print </button></div>
-        <div><button class="btn btn-success equal-h me-2">Close and Save</button></div>
+    <div class="d-flex justify-content-center">
+        <div> <button class="btn btn-info justify-content-center  equal-h me-2">Pay Amount without printing</button></div>
+        <div><button class="btn btn-danger justify-content-center   equal-h me-2">Print and Save</button></div>
+        <div><button class="btn btn-secondary justify-content-center  equal-h me-2">Pay Amount and Print </button></div>
+    </div>
 
+    <div class="d-flex justify-content-center mt-2">
+        <div><button class="btn btn-success justify-content-center equal-h me-2">Close and Save</button></div>
     </div>
     
 </p-dialog>
