@@ -172,7 +172,46 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/SystemPreferences/InsertUpdateSystemPreferences', 'POST', requestObj, 'ProdTest');
   }
   
+  /** Reports */
 
+  getDailyTicketsReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllTicketsForDailyReport', 'GET', paramObj, 'ProdTest');
+  }
 
+  getSingleTicketReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllTicketsDetails', 'GET', paramObj, 'ProdTest');
+  }
+
+  getInventoryReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllInventoryReport', 'GET', paramObj, 'ProdTest');
+  }
+
+  getCashDrawerReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetCashDrawerReportDataShow', 'GET', paramObj, 'ProdTest');
+  }
+
+  getCustomerReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllSellersofReport', 'GET', paramObj, 'ProdTest');
+  }
+
+  getMaterialReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetMaterialReport', 'GET', paramObj, 'ProdTest');
+  }
+
+  getSubMaterialsReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetSubMaterialsbyTicketDetails', 'GET', paramObj, 'ProdTest');
+  }
+
+  getVoidTicketReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetVoidTicketData', 'GET', paramObj, 'ProdTest');
+  }
+
+  getPaymentReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetPaymentReportRpt', 'GET', paramObj, 'ProdTest');
+  }
+
+  getAccountingReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetAccountReport', 'GET', paramObj, 'ProdTest');
+  }
     
 }

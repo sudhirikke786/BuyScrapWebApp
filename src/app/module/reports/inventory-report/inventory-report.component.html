@@ -1,0 +1,117 @@
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+                  <!-- Start Content-->
+                  <div class="container-fluid">
+                    <div class="bdcmb mt-2">
+                      <div class="row">
+                        <div class="col-sm-6 col-6">
+                            <h4 class="page-title">Inventory Report</h4>
+                        </div>
+
+                        <div class="col-sm-6 col-6">
+                            <div class="b-links">
+                                <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/reports">Reports</a> / <a href="javscript:void()" routerLink="/{{orgName}}/reports/inventory-report" >Inventory Report</a>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+              
+                    <div class="row mt-2">
+                      <div class="col-md-5 d-flex">
+                        <input type="text" id="example-palaceholder" class="form-control mr-10" placeholder="Search by Ticket No.">
+
+                        <input type="text" id="example-palaceholder" class="form-control" placeholder="Search by Seller">
+                      </div>
+                      <div class="col-md-5 d-flex">
+                        <label class="mr-10">From Date</label>
+                        <input type="date" id="fromdate" class="form-control mr-10">
+
+                        <label class="mr-10">To Date</label>
+                        <input type="date" id="todate" class="form-control">
+                      </div>  
+                      <div class="col-md-2">
+                        <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
+                      </div>
+                    </div>
+                    <!-- end page title -->
+              
+                    <div class="row mt-2">
+                      <div class="col-12">
+                        <div class="card">
+                          <div class="card-body">
+                            <p-table
+                              [value]="reportData"
+                              [paginator]="true"
+                              [rows]="10"
+                              [scrollable]="true" 
+                              scrollHeight="50vh"
+                              [showCurrentPageReport]="true"
+                              [tableStyle]="{ 'min-width': '50rem' }"
+                              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                              [rowsPerPageOptions]="[10, 25, 50]"
+                            >
+                           
+                              <ng-template pTemplate="header">
+                                <tr>
+                                  <th>Ticket Id</th>
+                                  <th>Total Amount</th>
+                                  <th>Date Opened</th>
+                                  <th>Type</th>
+                                </tr>
+                              </ng-template>
+                              <ng-template pTemplate="body" let-rowData>
+                                <tr>
+                                  <td>{{ rowData.ticketId }}</td>
+                                  <td>{{ rowData.totalAmount | number : '1.3-3' }}</td>
+                                  <td>{{ rowData.dateOpened | date: 'MM/dd/yyyy' }}</td>
+                                  <td>{{ rowData.types }}</td>
+                                </tr>
+                              </ng-template>
+                              <ng-template pTemplate="paginatorleft">
+                                <p-button
+                                  type="button"
+                                  icon="pi pi-plus"
+                                  styleClass="p-button-text"
+                                >
+                                </p-button>
+                              </ng-template>
+                              <ng-template pTemplate="paginatorright">
+                                <p-button
+                                  type="button"
+                                  icon="pi pi-cloud"
+                                  styleClass="p-button-text"
+                                >
+                                </p-button>
+                              </ng-template>
+                            </p-table>
+                          </div>
+                          <!-- end card body-->
+                        </div>
+                        <!-- end card -->
+                      </div>
+                      <!-- end col-->
+                    </div>
+                    <!-- end row-->
+                  </div>
+                  <!-- container -->
+                </div>
+                <!-- content -->
+              
+                <!-- Footer Start -->
+              
+                <!--  New Ship Out Modal Popup -->
+              
+                <!--  New Ship Out Modal Popup -->
+              
+                <!--  Select New Driver Modal Popup -->
+              
+                <!--  Select New Driver Modal Popup -->
+              </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
