@@ -56,17 +56,19 @@
                               <ng-template pTemplate="header">
                                 <tr>
                                   <th>Ticket Id</th>
-                                  <th>Total Amount</th>
-                                  <th>Date Opened</th>
+                                  <th>Check Date</th>
+                                  <th>Amount</th>
                                   <th>Type</th>
+                                  <th>Check Number</th>
                                 </tr>
                               </ng-template>
                               <ng-template pTemplate="body" let-rowData>
                                 <tr>
-                                  <td>{{ rowData.ticketId }}</td>
-                                  <td>{{ rowData.totalAmount | number : '1.3-3' }}</td>
-                                  <td>{{ rowData.dateOpened | date: 'MM/dd/yyyy' }}</td>
-                                  <td>{{ rowData.types }}</td>
+                                  <td>{{ rowData.TicketId }}</td>
+                                  <td>{{ rowData.CheckDate | date: 'MM/dd/yyyy' }}</td>
+                                  <td>{{ rowData.Amount | number : '1.3-3' }}</td>
+                                  <td>{{ rowData.Type }}</td>
+                                  <td>{{ typeOf(rowData.CheckNumber) === 'object' ? '' : rowData.CheckNumber }}</td>
                                 </tr>
                               </ng-template>
                               <ng-template pTemplate="paginatorleft">

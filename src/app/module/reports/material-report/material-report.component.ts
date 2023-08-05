@@ -43,10 +43,10 @@ export class MaterialReportComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
-    this.getAccountingReport();
+    this.getMaterialReport();
   }
 
-  getAccountingReport() {   
+  getMaterialReport() {   
 
     const param = {
       LocationId: this.locId,
@@ -54,9 +54,9 @@ export class MaterialReportComponent implements OnInit {
       Todate: '04-08-2023'
     }
 
-    this.commonService.getAccountingReport(param)
+    this.commonService.getMaterialReport(param)
       .subscribe(data => {
-          console.log('getAccountingReport :: ');
+          console.log('getMaterialReport :: ');
           console.log(data);
           this.reportData = data.body.data;
         },
@@ -71,10 +71,10 @@ export class MaterialReportComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.getAccountingReport();
+        this.getMaterialReport();
         break;
       case 'mdi-refresh':
-        this.getAccountingReport();
+        this.getMaterialReport();
         break;
       default:
         break;

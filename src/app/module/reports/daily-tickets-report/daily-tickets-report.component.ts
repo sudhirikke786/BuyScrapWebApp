@@ -43,10 +43,10 @@ export class DailyTicketsReportComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
-    this.getAccountingReport();
+    this.getDailyTicketsReport();
   }
 
-  getAccountingReport() {   
+  getDailyTicketsReport() {   
 
     const param = {
       LocationId: this.locId,
@@ -54,9 +54,9 @@ export class DailyTicketsReportComponent implements OnInit {
       Todate: '04-08-2023'
     }
 
-    this.commonService.getAccountingReport(param)
+    this.commonService.getDailyTicketsReport(param)
       .subscribe(data => {
-          console.log('getAccountingReport :: ');
+          console.log('getDailyTicketsReport :: ');
           console.log(data);
           this.reportData = data.body.data;
         },
@@ -71,10 +71,10 @@ export class DailyTicketsReportComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.getAccountingReport();
+        this.getDailyTicketsReport();
         break;
       case 'mdi-refresh':
-        this.getAccountingReport();
+        this.getDailyTicketsReport();
         break;
       default:
         break;

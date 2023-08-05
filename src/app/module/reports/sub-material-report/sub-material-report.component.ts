@@ -43,20 +43,21 @@ export class SubMaterialReportComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
-    this.getAccountingReport();
+    this.getSubMaterialsReport();
   }
 
-  getAccountingReport() {   
+  getSubMaterialsReport() {   
 
     const param = {
+      SubMaterialId: 0,
       LocationId: this.locId,
       FromDate: '04-08-2022',
       Todate: '04-08-2023'
     }
 
-    this.commonService.getAccountingReport(param)
+    this.commonService.getSubMaterialsReport(param)
       .subscribe(data => {
-          console.log('getAccountingReport :: ');
+          console.log('getSubMaterialsReport :: ');
           console.log(data);
           this.reportData = data.body.data;
         },
@@ -71,10 +72,10 @@ export class SubMaterialReportComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.getAccountingReport();
+        this.getSubMaterialsReport();
         break;
       case 'mdi-refresh':
-        this.getAccountingReport();
+        this.getSubMaterialsReport();
         break;
       default:
         break;

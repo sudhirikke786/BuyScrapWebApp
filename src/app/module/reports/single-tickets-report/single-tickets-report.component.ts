@@ -43,20 +43,23 @@ export class SingleTicketsReportComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
-    this.getAccountingReport();
+    this.getSingleTicketReport();
   }
 
-  getAccountingReport() {   
+  getSingleTicketReport() {   
 
     const param = {
+      TicketId:0,
       LocationId: this.locId,
+      TicketSettingsId:0,
       FromDate: '04-08-2022',
-      Todate: '04-08-2023'
+      Todate: '04-08-2023',
+      SellerName: ''
     }
 
-    this.commonService.getAccountingReport(param)
+    this.commonService.getSingleTicketReport(param)
       .subscribe(data => {
-          console.log('getAccountingReport :: ');
+          console.log('getSingleTicketReport :: ');
           console.log(data);
           this.reportData = data.body.data;
         },
@@ -71,10 +74,10 @@ export class SingleTicketsReportComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.getAccountingReport();
+        this.getSingleTicketReport();
         break;
       case 'mdi-refresh':
-        this.getAccountingReport();
+        this.getSingleTicketReport();
         break;
       default:
         break;

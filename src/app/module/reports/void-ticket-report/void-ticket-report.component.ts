@@ -43,10 +43,10 @@ export class VoidTicketReportComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
-    this.getAccountingReport();
+    this.getVoidTicketReport();
   }
 
-  getAccountingReport() {   
+  getVoidTicketReport() {   
 
     const param = {
       LocationId: this.locId,
@@ -54,9 +54,9 @@ export class VoidTicketReportComponent implements OnInit {
       Todate: '04-08-2023'
     }
 
-    this.commonService.getAccountingReport(param)
+    this.commonService.getVoidTicketReport(param)
       .subscribe(data => {
-          console.log('getAccountingReport :: ');
+          console.log('getVoidTicketReport :: ');
           console.log(data);
           this.reportData = data.body.data;
         },
@@ -71,10 +71,10 @@ export class VoidTicketReportComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.getAccountingReport();
+        this.getVoidTicketReport();
         break;
       case 'mdi-refresh':
-        this.getAccountingReport();
+        this.getVoidTicketReport();
         break;
       default:
         break;

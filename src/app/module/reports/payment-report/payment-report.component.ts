@@ -43,22 +43,23 @@ export class PaymentReportComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
-    this.getAccountingReport();
+    this.getPaymentReport();
   }
 
-  getAccountingReport() {   
+  getPaymentReport() {   
 
     const param = {
       LocationId: this.locId,
+      Type:'Cash and Check',
       FromDate: '04-08-2022',
       Todate: '04-08-2023'
     }
 
-    this.commonService.getAccountingReport(param)
+    this.commonService.getPaymentReport(param)
       .subscribe(data => {
-          console.log('getAccountingReport :: ');
+          console.log('getPaymentReport :: ');
           console.log(data);
-          this.reportData = data.body.data;
+          this.reportData = data.body.data[0].rows;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -66,15 +67,18 @@ export class PaymentReportComponent implements OnInit {
       );
   }
 
+  typeOf(value: any) {
+    return typeof value;
+  }
 
   getAction(actionCode:any){
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.getAccountingReport();
+        this.getPaymentReport();
         break;
       case 'mdi-refresh':
-        this.getAccountingReport();
+        this.getPaymentReport();
         break;
       default:
         break;

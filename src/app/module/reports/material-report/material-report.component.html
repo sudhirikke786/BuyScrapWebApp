@@ -52,18 +52,20 @@
                            
                               <ng-template pTemplate="header">
                                 <tr>
-                                  <th>Ticket Id</th>
-                                  <th>Total Amount</th>
-                                  <th>Date Opened</th>
-                                  <th>Type</th>
+                                  <th>Product</th>
+                                  <th>Net</th>
+                                  <th>Scrap</th>
+                                  <th>Ticket Cnt</th>
+                                  <th>Ticket Amount</th>
                                 </tr>
                               </ng-template>
                               <ng-template pTemplate="body" let-rowData>
                                 <tr>
-                                  <td>{{ rowData.ticketId }}</td>
-                                  <td>{{ rowData.totalAmount | number : '1.3-3' }}</td>
-                                  <td>{{ rowData.dateOpened | date: 'MM/dd/yyyy' }}</td>
-                                  <td>{{ rowData.types }}</td>
+                                  <td>{{ rowData.materialName }}</td>
+                                  <td>{{ rowData.net | number : '1.3-3' }}</td>
+                                  <td>{{ rowData.scrap | number : '1.3-3' }}</td>
+                                  <td>{{ rowData.ticketCount }}</td>
+                                  <td>{{ rowData.total | number : '1.3-3' }}</td>
                                 </tr>
                               </ng-template>
                               <ng-template pTemplate="paginatorleft">

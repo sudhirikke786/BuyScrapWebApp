@@ -57,18 +57,22 @@
                            
                               <ng-template pTemplate="header">
                                 <tr>
-                                  <th>Ticket Id</th>
-                                  <th>Total Amount</th>
-                                  <th>Date Opened</th>
-                                  <th>Type</th>
+                                  <th>Material Name</th>
+                                  <th>Before</th>
+                                  <th>In</th>
+                                  <th>Left on Date</th>
+                                  <th>Regrad Stock</th>
+                                  <th>Today's Stock</th>
                                 </tr>
                               </ng-template>
                               <ng-template pTemplate="body" let-rowData>
                                 <tr>
-                                  <td>{{ rowData.ticketId }}</td>
-                                  <td>{{ rowData.totalAmount | number : '1.3-3' }}</td>
-                                  <td>{{ rowData.dateOpened | date: 'MM/dd/yyyy' }}</td>
-                                  <td>{{ rowData.types }}</td>
+                                  <td>{{ rowData.subMaterialName }}</td>
+                                  <td>{{ rowData.before | number : '1.3-3' }}</td>
+                                  <td>{{ rowData.in | number : '1.3-3' }}</td>
+                                  <td>{{ rowData.leftOnDate }}</td>
+                                  <td>{{ rowData.regradeNet }}</td>
+                                  <td>{{ rowData.stock }}</td>
                                 </tr>
                               </ng-template>
                               <ng-template pTemplate="paginatorleft">

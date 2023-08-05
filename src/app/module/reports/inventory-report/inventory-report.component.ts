@@ -43,20 +43,22 @@ export class InventoryReportComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
-    this.getAccountingReport();
+    this.getInventoryReport();
   }
 
-  getAccountingReport() {   
+  getInventoryReport() {   
 
     const param = {
       LocationId: this.locId,
       FromDate: '04-08-2022',
-      Todate: '04-08-2023'
+      Todate: '04-08-2023',
+      MaterialID:0,
+      SubMaterialID:0
     }
 
-    this.commonService.getAccountingReport(param)
+    this.commonService.getInventoryReport(param)
       .subscribe(data => {
-          console.log('getAccountingReport :: ');
+          console.log('getInventoryReport :: ');
           console.log(data);
           this.reportData = data.body.data;
         },
@@ -71,10 +73,10 @@ export class InventoryReportComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.getAccountingReport();
+        this.getInventoryReport();
         break;
       case 'mdi-refresh':
-        this.getAccountingReport();
+        this.getInventoryReport();
         break;
       default:
         break;
