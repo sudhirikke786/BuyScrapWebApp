@@ -79,13 +79,17 @@ export class TicketDetailComponent implements OnInit {
   pageSize = 10;
   isCodeRequired = false;
 
+  /**Print out Variable */
+  activeSection = -1;
 
+  selectedCheckDate:any =  new Date();
 
 
   addEditAdjustmentVisible = false;
   modalAdjustmentHeader = 'Add Adjustment';
   selectedRowObj: any;
   confrimVisible = false;
+  paymentVisible = false;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -101,6 +105,8 @@ export class TicketDetailComponent implements OnInit {
       this.getSellerById();
       this.processDataBasedOnTicketId();
     });
+
+    
   }
 
 
@@ -117,6 +123,23 @@ export class TicketDetailComponent implements OnInit {
     // add the Data from Table
   }
 
+  showPayment(){
+    this.paymentVisible =  true;
+  }
+
+
+  showSection(num:number) {
+    this.activeSection =  num;
+    const _date = (new Date()).toISOString().substring(0,10);
+    this.selectedCheckDate = this.formatDate(_date);
+
+   }
+
+   formatDate(date: string): string {
+    const [year, month, day] = date.split('-');
+    return `${day}-${month}-${year}`;
+  }
+  
   
   private processDataBasedOnTicketId() {
     if (parseInt(this.ticketId)) {
