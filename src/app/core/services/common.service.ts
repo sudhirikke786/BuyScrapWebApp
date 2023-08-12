@@ -134,12 +134,24 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Materialss/GetAllGroupMaterial', 'GET', paramObj, 'ProdTest');
   }
 
+  insertUpdateGroupMaterials(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Materialss/InsertUpdateGroupMaterials', 'POST', requestObj, 'ProdTest');
+  }
+
   getAllSubMaterials(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterials', 'GET', paramObj, 'ProdTest');
   }  
 
+  insertUpdateMaterials(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Materialss/InsertUpdateMaterials', 'POST', requestObj, 'ProdTest');
+  }
+
   GetAllAdjustmentType(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Adjustments/GetAllAdjustmentType', 'GET', paramObj, 'ProdTest');
+  }
+
+  insertUpdateGroupAdjustment(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Adjustments/InsertUpdateGroupAdjustment', 'POST', requestObj, 'ProdTest');
   }
 
   getAllShipOutDetails(pagination: any): Observable<any> {
