@@ -26,10 +26,10 @@
                       </div>
                       <div class="col-md-6 d-flex">
                         <label class="mr-10">From Date</label>
-                        <input type="date" id="fromdate" class="form-control mr-10">
+                        <input type="date" id="fromDate" [(ngModel)]="fromDate" name="fromDate" class="form-control mr-10">
 
                         <label class="mr-10">To Date</label>
-                        <input type="date" id="todate" class="form-control">
+                        <input type="date" id="toDate" [(ngModel)]="toDate" name="toDate" class="form-control">
                       </div>  
                       <div class="col-md-3">
                         <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
@@ -43,15 +43,11 @@
                           <div class="card-body">
                             <p-table
                               [value]="reportData"
-                              [paginator]="true"
                               [rows]="10"
                               [scrollable]="true" 
-                              scrollHeight="50vh"
+                              scrollHeight="65vh"
                               [showCurrentPageReport]="true"
-                              [tableStyle]="{ 'min-width': '50rem' }"
-                              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                              [rowsPerPageOptions]="[10, 25, 50]"
-                            >
+                              [tableStyle]="{ 'min-width': '50rem' }" >
                            
                               <ng-template pTemplate="header">
                                 <tr>
@@ -70,22 +66,6 @@
                                   <td>{{ rowData.Type }}</td>
                                   <td>{{ typeOf(rowData.CheckNumber) === 'object' ? '' : rowData.CheckNumber }}</td>
                                 </tr>
-                              </ng-template>
-                              <ng-template pTemplate="paginatorleft">
-                                <p-button
-                                  type="button"
-                                  icon="pi pi-plus"
-                                  styleClass="p-button-text"
-                                >
-                                </p-button>
-                              </ng-template>
-                              <ng-template pTemplate="paginatorright">
-                                <p-button
-                                  type="button"
-                                  icon="pi pi-cloud"
-                                  styleClass="p-button-text"
-                                >
-                                </p-button>
                               </ng-template>
                             </p-table>
                           </div>

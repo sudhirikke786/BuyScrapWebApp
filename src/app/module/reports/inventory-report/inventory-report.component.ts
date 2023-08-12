@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
@@ -35,23 +36,36 @@ export class InventoryReportComponent implements OnInit {
   reportData: any;
   orgName: any;
   locId: any;  
+  fromDate: any;
+  toDate: any;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
+    private datePipe: DatePipe,
     private commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
+    this.setDefaultDate();
     this.getInventoryReport();
+  }
+
+  setDefaultDate() {
+    let defaultDate = new Date();
+    defaultDate.setMonth(defaultDate.getMonth() - 1);
+    console.log(defaultDate);
+    this.fromDate = this.datePipe.transform(defaultDate, 'yyyy-MM-dd');
+    this.toDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    console.log(this.fromDate);
   }
 
   getInventoryReport() {   
 
     const param = {
       LocationId: this.locId,
-      FromDate: '04-08-2022',
-      Todate: '04-08-2023',
+      FromDate: this.fromDate,
+      Todate: this.toDate,
       MaterialID:0,
       SubMaterialID:0
     }
@@ -76,6 +90,7 @@ export class InventoryReportComponent implements OnInit {
         this.getInventoryReport();
         break;
       case 'mdi-refresh':
+        this.setDefaultDate();
         this.getInventoryReport();
         break;
       default:
