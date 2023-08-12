@@ -266,6 +266,7 @@ export class CashdrawerDashboardComponent implements OnInit {
       // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       
       this.hideCloseRegister();
+      this.hideReopenRegister();
     },(error: any) =>{  
       console.log(error);  
       alert('Error!!! Cash Drawer Detail not saved..');

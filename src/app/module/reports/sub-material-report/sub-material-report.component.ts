@@ -38,6 +38,10 @@ export class SubMaterialReportComponent implements OnInit {
   locId: any;  
   fromDate: any;
   toDate: any;
+  materialList: any;
+  subMaterialList: any;
+  defaultSelectedMaterial: any = 0;
+  defaultSelectedSubMaterial: any = 0;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -48,12 +52,13 @@ export class SubMaterialReportComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
     this.setDefaultDate();
+    this.getAllGroupMaterial();
     this.getSubMaterialsReport();
   }
 
   setDefaultDate() {
     let defaultDate = new Date();
-    defaultDate.setMonth(defaultDate.getMonth() - 1);
+    defaultDate.setDate(defaultDate.getDate() - 3);
     console.log(defaultDate);
     this.fromDate = this.datePipe.transform(defaultDate, 'yyyy-MM-dd');
     this.toDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -63,7 +68,7 @@ export class SubMaterialReportComponent implements OnInit {
   getSubMaterialsReport() {   
 
     const param = {
-      SubMaterialId: 0,
+      SubMaterialId: this.defaultSelectedSubMaterial,
       LocationId: this.locId,
       FromDate: this.fromDate,
       Todate: this.toDate
@@ -80,6 +85,51 @@ export class SubMaterialReportComponent implements OnInit {
         }
       );
   }
+
+  getAllGroupMaterial() {
+    const paramObject = {
+      LocationId: this.locId
+    };
+    this.commonService.getAllGroupMaterial(paramObject)
+      .subscribe(data => {
+          console.log('getAllGroupMaterial :: ');
+          console.log(data);
+          this.materialList = data.body.data;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+  
+  onMaterialChange(value: any) {
+    if (value.target.value == 0 ) {
+      this.defaultSelectedSubMaterial = 0;
+      this.subMaterialList = null;
+    } else {
+      const selectedMaterialId = value.target.value;
+      this.getSubMaterials(selectedMaterialId);
+    }
+  }
+
+  getSubMaterials(materialId: any) {
+
+    const paramObject = {
+      MaterialID: materialId,
+      LocationId: this.locId
+    };
+    this.commonService.getAllSubMaterials(paramObject)
+      .subscribe(data => {
+          console.log('getAllSubMaterials :: ');
+          console.log(data);
+          this.subMaterialList = data.body.data;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
 
 
   getAction(actionCode:any){

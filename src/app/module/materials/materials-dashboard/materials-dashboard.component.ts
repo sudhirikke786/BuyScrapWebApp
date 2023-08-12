@@ -111,6 +111,12 @@ export class MaterialsDashboardComponent implements OnInit {
           console.log('materialListCopy :: ');
           console.log(this.materialListCopy); 
           this.defaultSelectedMaterial = this.materialListCopy[0].rowId;
+          const $event = {
+            target: {
+              value: this.defaultSelectedMaterial
+            }
+          }
+          this.onMaterialChange($event);
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';

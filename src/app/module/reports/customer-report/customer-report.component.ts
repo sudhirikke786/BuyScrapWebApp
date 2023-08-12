@@ -38,6 +38,7 @@ export class CustomerReportComponent implements OnInit {
   locId: any;  
   fromDate: any;
   toDate: any;
+  sellerName: string = '';
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -66,7 +67,7 @@ export class CustomerReportComponent implements OnInit {
       LocationId: this.locId,
       FromDate: this.fromDate,
       Todate: this.toDate,
-      SearchText: ''
+      SearchText: this.sellerName
     }
 
     this.commonService.getCustomerReport(param)
