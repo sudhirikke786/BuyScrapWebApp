@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import jsPDF from 'jspdf';
@@ -77,22 +78,26 @@ export class TicketDetailComponent implements OnInit {
   totalRecords = 0;
   currentPage = 1;
   pageSize = 10;
-  isCodeRequired = false;
+  isCODRequired = false;
 
   /**Print out Variable */
-  activeSection = -1;
+  activeSection: string = '';
 
-  selectedCheckDate:any =  new Date();
+  payAmount: number = 0;
+  selectedCheckDate: any;
+  checkNumber: string = '';
+  ePaymentType: string = '';
 
 
   addEditAdjustmentVisible = false;
   modalAdjustmentHeader = 'Add Adjustment';
   selectedRowObj: any;
-  confrimVisible = false;
+  saveConfirmVisible = false;
   paymentVisible = false;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
+    private datePipe: DatePipe,
     private messageService: MessageService,
     private commonService: CommonService) { }
 
@@ -112,39 +117,38 @@ export class TicketDetailComponent implements OnInit {
 
   onContextMenu(event: MouseEvent ,obj:any) {
     this.selectedRowObj =  obj;
-    this.isCodeRequired = (obj.codNote != '' || obj.materialNote !='');
+    this.isCODRequired = (obj.codNote != '');
     event.preventDefault();
-  }
-  removeCode(){
-    // remove the Data from Table
   }
 
   addNote(){
     // add the Data from Table
+    this.itemLocalRowId = this.selectedRowObj.localRowId;
+    this.updateTicketObjectForCOD('Flagged for COD');
   }
 
-  showPayment(){
-    this.paymentVisible =  true;
+  removeCode(){
+    // remove the Data from Table
+    this.itemLocalRowId = this.selectedRowObj.localRowId;
+    this.updateTicketObjectForCOD('');
   }
 
+  private updateTicketObjectForCOD(itemCodNote: any) {
+    this.ticketObj.forEach((rowData: any) => {
+      if (this.itemLocalRowId === rowData.localRowId) {
+        console.log("found " + rowData.rowId);
+        rowData.codNote = itemCodNote;
+        rowData.isCOD = itemCodNote != '' ? true : false;
 
-  showSection(num:number) {
-    this.activeSection =  num;
-    const _date = (new Date()).toISOString().substring(0,10);
-    this.selectedCheckDate = this.formatDate(_date);
-
-   }
-
-   showPaymentButton(){
-    this.paymentVisible = true;
-    this.confrimVisible = false;
-   }
-
-   formatDate(date: string): string {
-    const [year, month, day] = date.split('-');
-    return `${day}-${month}-${year}`;
+        // TO DO:: does not required. need to verify
+        rowData.createdBy = 6;
+        rowData.createdDate = '2023-07-17T10:00:17.557';
+        rowData.updatedBy = 6;
+        rowData.updatedDate = '2023-07-17T10:00:17.557';
+        rowData.transactionDate = '2023-07-17T10:00:17.557';
+      }
+    });
   }
-  
   
   private processDataBasedOnTicketId() {
     if (parseInt(this.ticketId)) {
@@ -312,13 +316,72 @@ export class TicketDetailComponent implements OnInit {
 
 
   confirmSave() {
-    this.confrimVisible = true;
+    this.saveConfirmVisible = true;
   }
 
-  saveTicketDetails() {
+  showPayment(){
+    this.paymentVisible =  true;
+    this.payAmount = this.totalAmount - this.ticketData?.paidAmount;
+    this.showSection('Cash');
+  }
+
+
+  showSection(paymentType: string) {
+    this.activeSection =  paymentType;
+    this.selectedCheckDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.checkNumber = '';
+    this.ePaymentType = '';
+  }  
+
+  payAndSave(activeSection: string) {
+    // alert(this.selectedCheckDate);
+    // alert(this.payAmount);
+    // alert(this.checkNumber);
+    // alert(this.ePaymentType);
+
+    const transactionObj = {
+      rowId: 0,
+      createdBy: 6,
+      createdDate: '2023-07-17T10:00:17.557',
+      updatedBy: 6,
+      updatedDate: '2023-07-17T10:00:17.557',
+      ticketId: parseInt(this.ticketId),
+      type: activeSection,
+      amount: parseFloat(this.payAmount.toString()),
+      checkNumber: this.checkNumber,
+      barCode: '',
+      guid: '',
+      dateClosed: '2023-07-17T10:00:17.557',
+      checkDate: '2023-07-17T10:00:17.557'
+    }
+
+    
+    this.commonService.insertTicketTransactions(transactionObj).subscribe(data =>{    
+      console.log(data); 
+      console.log('Ticket transaction successfully');     
+      this.saveTicketDetails(this.payAmount);
+    },(error: any) =>{  
+      this.saveTicketDetails(0);
+      console.log(error);  
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+    });
+    this.paymentVisible =  false;
+    this.saveConfirmVisible = false;
+  }
+
+  saveTicketDetails(paidAmount: number) {
+    let ticketStatus = 'OPEN';
+    if (paidAmount > 0 && paidAmount == this.totalAmount) {
+      ticketStatus = 'PAID';
+    } else if (paidAmount > 0 && paidAmount != this.totalAmount) {
+      ticketStatus = 'Partially Paid';
+    }
     
     if (this.ticketId != 0) {
-      this.isEditModeOn = false;      
+      this.isEditModeOn = false;
+      this.ticketData.status = ticketStatus;
+      this.ticketData.amount = parseFloat(this.totalAmount.toFixed(3));  
+      this.ticketData.paidAmount = parseFloat(paidAmount.toString());   
       this.ticketData.lstttransactionMasterDTO = this.ticketObj;
     } else {
       const newTicket = new Ticket();     
@@ -329,12 +392,12 @@ export class TicketDetailComponent implements OnInit {
       newTicket.updatedDate = '2023-07-17T10:00:17.557';
       newTicket.customerId = parseFloat(this.sellerId);
       newTicket.ticketId = 0;
-      newTicket.status = 'OPEN';
+      newTicket.status = ticketStatus;
       newTicket.amount = parseFloat(this.totalAmount.toFixed(3));
       newTicket.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
       newTicket.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
       newTicket.ticketAmount = parseFloat(this.totalActualAmount.toFixed(3));
-      newTicket.paidAmount = 0;
+      newTicket.paidAmount = parseFloat(paidAmount.toString());
       newTicket.dateOpened = '2023-07-17T10:00:17.557';
       newTicket.dateClosed = '2023-07-17T10:00:17.557';
       newTicket.customerName = this.customer?.fullName;
@@ -351,10 +414,10 @@ export class TicketDetailComponent implements OnInit {
     this.commonService.insertUpdateTickets(this.ticketData).subscribe(data =>{    
       console.log(data); 
 
-      this.confirmSave();
+      // this.confirmSave();
       // alert('Ticket Inserted/ updated successfully');
      // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
-      
+      this.saveConfirmVisible = false;
       this.cancelEditTicket();
     },(error: any) =>{  
       console.log(error);  
