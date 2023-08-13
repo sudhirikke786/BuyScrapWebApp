@@ -12,3 +12,19 @@
     width: 100px !important;; /* Adjust the height to your desired value */
     overflow-y: auto;
   }
+
+  .equal-h{
+    width: 160px;
+    height: 60px;
+  }
+
+  .table{
+     vertical-align: top;
+     tr {
+        border-bottom: 1px solid #ccc;
+     } 
+  }
+
+  .w-110 {
+    width: 110px;
+  }

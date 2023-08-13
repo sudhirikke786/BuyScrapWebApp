@@ -135,6 +135,11 @@ export class TicketDetailComponent implements OnInit {
 
    }
 
+   showPaymentButton(){
+    this.paymentVisible = true;
+    this.confrimVisible = false;
+   }
+
    formatDate(date: string): string {
     const [year, month, day] = date.split('-');
     return `${day}-${month}-${year}`;

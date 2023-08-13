@@ -45,10 +45,10 @@
                                                     <a routerLink = "/{{orgName}}/materials/{{item.rowId}}">
                                                         <img src="assets/images/custom/materials/Default-Scrap-Material.png">
                                                     </a>
-                                                    <ul class="materials-name-edit-ul">
-                                                        <li><h4>{{item.groupName}}</h4></li>
-                                                        <li><a (click)="showDialog()" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
-                                                    </ul>
+                                                    <div class="d-flex justify-content-between">
+                                                        <h4>{{item.groupName}}</h4>
+                                                        <a (click)="showDialog()" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </ng-container>

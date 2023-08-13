@@ -35,6 +35,15 @@ export class CameraComponent implements OnInit {
         this.isCameraExist = mediaDevices && mediaDevices.length > 0;
       }
     );
+
+
+
+    // (async () => {   
+    //   await navigator.mediaDevices.getUserMedia({audio: true, video: true});   
+    //   let devices = await navigator.mediaDevices.enumerateDevices(); 
+
+    //   console.log(devices); 
+    // })();
   }
 
   takeSnapshot(): void {

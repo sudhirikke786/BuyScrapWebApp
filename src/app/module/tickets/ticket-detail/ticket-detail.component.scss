@@ -38,6 +38,19 @@ h4{
   }
 
   .equal-h{
-    width: 180px;
+    width: 160px;
     height: 60px;
+  }
+
+
+  .button-container {
+    display: flex;
+  }
+  
+
+  @media (max-width: 1024px) {
+    .equal-h{
+      width: 114px;
+      height: 60px;
+    }
   }

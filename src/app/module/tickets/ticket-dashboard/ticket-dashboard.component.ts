@@ -107,6 +107,11 @@ export class TicketDashboardComponent implements OnInit {
   searchOrder = 'All';
   serachText = '';
 
+  showVoid = false;
+  showOpen = false;
+  showPartially = false;
+
+
   pagination: any = {
     SerachText: '',
     SearchOrder: 'TicketId',
@@ -122,6 +127,7 @@ export class TicketDashboardComponent implements OnInit {
   first = 0;
   last = 0;
   pageTotal = 0;
+  tiketSelectedObj: any;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private commonService: CommonService) { }
@@ -166,6 +172,27 @@ export class TicketDashboardComponent implements OnInit {
           // this.errorMsg = 'Error occured';
         }
       );
+  }
+
+  showCodeCopy(obj:any){
+    this.showVoid =  true;
+    this.tiketSelectedObj = obj;
+  }
+
+  showVoidCancel(){
+
+    console.log(this.tiketSelectedObj);
+    if(this.tiketSelectedObj?.status?.toLowerCase() === 'open'){
+      this.showOpen = true;
+    }else if(this.tiketSelectedObj.status.toLowerCase()==='partially paid'){
+      this.showPartially = true;
+    }
+
+   
+  }
+
+  showVoidCopy(){
+
   }
 
   refreshData() {    
