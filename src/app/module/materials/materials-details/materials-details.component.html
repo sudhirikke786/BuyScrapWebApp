@@ -40,31 +40,42 @@
                                     <div class="card-body">
                                         <div class="row">
                                         <ng-container *ngIf="mainMaterialsVisible" >
-                                            <div class="col-sm-3" *ngFor="let item of materialList">
-                                                <div class="materials-pg-boxes">
-                                                    <a routerLink = "/{{orgName}}/materials/{{item.rowId}}">
-                                                        <img src="assets/images/custom/materials/Default-Scrap-Material.png">
-                                                    </a>
-                                                    <div class="d-flex justify-content-between">
-                                                        <h4>{{item.groupName}}</h4>
-                                                        <a (click)="showDialog()" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a>
-                                                    </div>
-                                                </div>
+                                             <div class="img-grid">
+                                               
+                                                <ng-container *ngFor="let item of materialList" >
+                                                    <div class="materials-pg-boxes">
+                                                        <a routerLink = "/{{orgName}}/materials/{{item.rowId}}">
+                                                            <img src="assets/images/custom/materials/Default-Scrap-Material.png">
+                                                        </a>
+                                                        <div class="d-flex justify-content-between px-1 py-1">
+                                                            <h4>{{item.groupName}}</h4>
+                                                            <a (click)="showDialog()" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a>
+                                                        </div>
+                                                    </div>  
+                                                </ng-container>
+
                                             </div>
+                                            
                                         </ng-container>
                                         <ng-container *ngIf="!mainMaterialsVisible" >
-                                            <div class="col-sm-2" *ngFor="let item of subMaterialList">
-                                                <div class="materials-pg-boxes">
-                                                    <img src="assets/images/custom/materials/Default-Scrap-Material.png">
-                                                    <ul class="materials-name-edit-ul">
-                                                        <li><b>{{item.materialName}}</b></li>
-                                                    </ul>
-                                                    <ul class="materials-name-edit-ul">
-                                                        <li>Scrap Price - {{item.scrapPrice}}</li>
-                                                        <li><a (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
-                                                    </ul>
-                                                </div>
+                                            <div class="img-grid">
+                                                <ng-container *ngFor="let item of subMaterialList" >
+                                                    <div class="materials-pg-boxes">
+                                                        <img src="assets/images/custom/materials/Default-Scrap-Material.png">
+                                                        <ul class="materials-name-edit-ul">
+                                                            <li><b>{{item.materialName}}</b></li>
+                                                        </ul>
+                                                        <ul class="materials-name-edit-ul">
+                                                            <li>Scrap Price - {{item.scrapPrice}}</li>
+                                                            <li><a (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                </ng-container>
+
+
                                             </div>
+                                            
                                         </ng-container>
                                         </div>
                                     </div> <!-- end card body-->
