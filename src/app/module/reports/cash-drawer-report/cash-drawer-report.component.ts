@@ -52,12 +52,8 @@ export class CashDrawerReportComponent implements OnInit {
   }
 
   setDefaultDate() {
-    let defaultDate = new Date();
-    defaultDate.setMonth(defaultDate.getMonth() - 1);
-    console.log(defaultDate);
-    this.fromDate = this.datePipe.transform(defaultDate, 'yyyy-MM-dd');
+    this.fromDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.toDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    console.log(this.fromDate);
   }
 
   getCashDrawerReport() {   

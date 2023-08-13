@@ -89,7 +89,7 @@ export class MaterialsDetailsComponent implements OnInit {
       createdBy: 0,
       createdDate: '',
       updatedBy: 0,
-      updatedDate: Date.now(),
+      updatedDate: '2023-07-17T10:00:17.557',
       groupId: 0,
       description: '',
       materialName: '',
@@ -177,7 +177,7 @@ export class MaterialsDetailsComponent implements OnInit {
         createdBy: 0,
         createdDate: '',
         updatedBy: 0,
-        updatedDate: Date.now(),
+        updatedDate: '2023-07-17T10:00:17.557',
         groupId: this.defaultMaterialId,
         description: '',
         materialName: '',
@@ -217,6 +217,20 @@ export class MaterialsDetailsComponent implements OnInit {
 
     const returnedTarget = Object.assign(target, source);
     // alert(JSON.stringify(returnedTarget));
+    
+    this.commonService.insertUpdateMaterials(returnedTarget).subscribe(data =>{    
+      console.log(data); 
+
+      this.isEditModeOn = false;
+      this.materialData = null;
+      this.visible = false;      
+      alert('Sub Material data Inserted/ updated successfully');
+      
+      this.getSubMaterials(this.defaultMaterialId);
+    },(error: any) =>{  
+      console.log(error);  
+      // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+    });
 
   }
 

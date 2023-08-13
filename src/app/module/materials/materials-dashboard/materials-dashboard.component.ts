@@ -83,7 +83,7 @@ export class MaterialsDashboardComponent implements OnInit {
       createdBy: 0,
       createdDate: '',
       updatedBy: 0,
-      updatedDate: Date.now(),
+      updatedDate: '2023-07-17T10:00:17.557',
       locID: this.locId
     });
 
@@ -111,6 +111,12 @@ export class MaterialsDashboardComponent implements OnInit {
           console.log('materialListCopy :: ');
           console.log(this.materialListCopy); 
           this.defaultSelectedMaterial = this.materialListCopy[0].rowId;
+          const $event = {
+            target: {
+              value: this.defaultSelectedMaterial
+            }
+          }
+          this.onMaterialChange($event);
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -133,7 +139,12 @@ export class MaterialsDashboardComponent implements OnInit {
         description: '',
         uomId: 1,
         isEnable: false,
-        isCRV: false
+        isCRV: false,
+        createdBy: 6,
+        createdDate: '2023-07-17T10:00:17.557',
+        updatedBy: 6,
+        updatedDate: '2023-07-17T10:00:17.557',
+        locID: this.locId
       });
 
     }
@@ -157,6 +168,20 @@ export class MaterialsDashboardComponent implements OnInit {
 
     const returnedTarget = Object.assign(target, source);
     // alert(JSON.stringify(returnedTarget));
+    
+    this.commonService.insertUpdateGroupMaterials(returnedTarget).subscribe(data =>{    
+      console.log(data); 
+
+      this.isEditModeOn = false;
+      this.materialData = null;
+      this.visible = false;      
+      alert('Material data Inserted/ updated successfully');
+      
+      this.getAllGroupMaterial();
+    },(error: any) =>{  
+      console.log(error);  
+      // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+    });
 
   }
 

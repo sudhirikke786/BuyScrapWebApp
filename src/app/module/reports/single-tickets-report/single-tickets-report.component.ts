@@ -38,6 +38,8 @@ export class SingleTicketsReportComponent implements OnInit {
   locId: any;  
   fromDate: any;
   toDate: any;
+  ticketNumber: any = 0;
+  sellerName: string = '';
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -53,7 +55,7 @@ export class SingleTicketsReportComponent implements OnInit {
 
   setDefaultDate() {
     let defaultDate = new Date();
-    defaultDate.setMonth(defaultDate.getMonth() - 1);
+    defaultDate.setDate(defaultDate.getDate() - 3);
     console.log(defaultDate);
     this.fromDate = this.datePipe.transform(defaultDate, 'yyyy-MM-dd');
     this.toDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -63,12 +65,12 @@ export class SingleTicketsReportComponent implements OnInit {
   getSingleTicketReport() {   
 
     const param = {
-      TicketId:0,
+      TicketId: this.ticketNumber,
       LocationId: this.locId,
       TicketSettingsId:0,
       FromDate: this.fromDate,
       Todate: this.toDate,
-      SellerName: ''
+      SellerName: this.sellerName
     }
 
     this.commonService.getSingleTicketReport(param)

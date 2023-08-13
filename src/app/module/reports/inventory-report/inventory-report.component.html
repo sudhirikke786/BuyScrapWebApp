@@ -22,9 +22,22 @@
               
                     <div class="row mt-2">
                       <div class="col-md-5 d-flex">
-                        <input type="text" id="example-palaceholder" class="form-control mr-10" placeholder="Search by Ticket No.">
+                        <select class="form-control me-1" id="defaultSelectedMaterial" name="defaultSelectedMaterial" [(ngModel)]="defaultSelectedMaterial"
+                            (change)="onMaterialChange($event)">
+                            <option [value]="0" [selected]="true">-- Select Material --</option>
+                            <option *ngFor="let option of materialList; let i = index"
+                            [value]="option.rowId">
+                                {{ option.groupName }}
+                            </option>
+                        </select>
 
-                        <input type="text" id="example-palaceholder" class="form-control" placeholder="Search by Seller">
+                        <select class="form-control" id="defaultSelectedSubMaterial" name="defaultSelectedSubMaterial" [(ngModel)]="defaultSelectedSubMaterial">
+                            <option [value]="0" [selected]="true">-- Select Sub-Material --</option>
+                            <option *ngFor="let option of subMaterialList; let i = index"
+                            [value]="option.rowId">
+                                {{ option.materialName }}
+                            </option>
+                        </select>
                       </div>
                       <div class="col-md-5 d-flex">
                         <label class="mr-10">From Date</label>

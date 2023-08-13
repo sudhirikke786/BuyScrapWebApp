@@ -146,8 +146,8 @@
                 
                 <div class="form-group col-sm-12 mb-2">
                     
-                    <label for="example-select" class="form-label">Select Material</label>
-                    <select class="form-select" [(ngModel)]="defaultSelectedMaterial"
+                    <label for="defaultSelectedMaterial" class="form-label">Select Material</label>
+                    <select class="form-control" id="defaultSelectedMaterial" name="defaultSelectedMaterial" [(ngModel)]="defaultSelectedMaterial"
                     (change)="onMaterialChange($event)">
                         <option *ngFor="let option of materialListCopy; let i = index"
                         [value]="option.rowId">

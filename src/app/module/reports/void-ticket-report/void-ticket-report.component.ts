@@ -53,7 +53,7 @@ export class VoidTicketReportComponent implements OnInit {
 
   setDefaultDate() {
     let defaultDate = new Date();
-    defaultDate.setMonth(defaultDate.getMonth() - 1);
+    defaultDate.setDate(defaultDate.getDate() - 7);
     console.log(defaultDate);
     this.fromDate = this.datePipe.transform(defaultDate, 'yyyy-MM-dd');
     this.toDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
