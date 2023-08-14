@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
     private commonService: CommonService) { }
 
   ngOnInit() {
-    this.locId = 1;
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     
     this.userFullName = localStorage.getItem('userFullName');
 
@@ -144,7 +144,7 @@ export class HeaderComponent implements OnInit {
     newCashDrawerdetail.updatedBy = 6;
     newCashDrawerdetail.updatedDate = '2023-07-17T10:00:17.557';
     newCashDrawerdetail.currentDate = '2023-07-17T10:00:17.557';
-    newCashDrawerdetail.locID = 1;
+    newCashDrawerdetail.locID = this.commonService.getProbablyNumberFromLocalStorage('locId');
     
     console.log("Final CashDrawerTransaction :: " + JSON.stringify(newCashDrawerdetail));
     

@@ -44,7 +44,8 @@ export class UserLoginComponent implements OnInit {
   }
   
   btnClick(): void {
-    this.user.locID =  1;
+    this.user.locID =  this.locationId;
+    this.localService.setLocalStorage('locId', this.locationId); 
     this.validateUser();
     // this.router.navigateByUrl(`/${this.organizationName}/home`);
   };
@@ -72,8 +73,7 @@ export class UserLoginComponent implements OnInit {
       );
   }
   
-  validateUser() {  
-
+  validateUser() { 
     this.commonService.validateUserCredentials(this.user).subscribe(data => {
          
           if (data?.body.token && data?.body.userdto.userName) {

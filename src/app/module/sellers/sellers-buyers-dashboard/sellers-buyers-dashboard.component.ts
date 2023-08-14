@@ -44,7 +44,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
-    this.locId = 1;
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     const paramObject = {
       PageNumber: 1,
       RowOfPage: 10,

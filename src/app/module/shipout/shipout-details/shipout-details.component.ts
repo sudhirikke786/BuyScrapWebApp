@@ -13,7 +13,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
   
   orgName: any;
-  locId = 1;
+  locId:any;
   shipoutId: any;
   shipout: any;
   
@@ -23,7 +23,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
-    this.locId = 1;
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.route.params.subscribe((param)=>{
       this.shipoutId = param["shipoutId"];
       this.getShipOutDetailsByID();

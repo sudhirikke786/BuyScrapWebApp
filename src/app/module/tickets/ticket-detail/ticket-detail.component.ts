@@ -103,7 +103,7 @@ export class TicketDetailComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
-    this.locId = 1;
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.route.params.subscribe((param)=>{
       this.ticketId = param["ticketId"];
       this.sellerId = param["customerId"];
@@ -339,6 +339,13 @@ export class TicketDetailComponent implements OnInit {
     // alert(this.checkNumber);
     // alert(this.ePaymentType);
 
+    
+    if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.ticketData?.paidAmount)) {
+      alert('Please enter valid amount!!!');
+      return;
+    }
+    // return;
+
     const transactionObj = {
       rowId: 0,
       createdBy: 6,
@@ -355,7 +362,6 @@ export class TicketDetailComponent implements OnInit {
       checkDate: '2023-07-17T10:00:17.557'
     }
 
-    
     this.commonService.insertTicketTransactions(transactionObj).subscribe(data =>{    
       console.log(data); 
       console.log('Ticket transaction successfully');     
@@ -370,14 +376,19 @@ export class TicketDetailComponent implements OnInit {
   }
 
   saveTicketDetails(paidAmount: number) {
+    // alert(paidAmount);
+    // alert(this.totalAmount);
     let ticketStatus = 'OPEN';
     if (paidAmount > 0 && paidAmount == this.totalAmount) {
       ticketStatus = 'PAID';
-    } else if (paidAmount > 0 && paidAmount != this.totalAmount) {
-      ticketStatus = 'Partially Paid';
     }
     
     if (this.ticketId != 0) {
+      if (paidAmount > 0 && paidAmount == (this.totalAmount - this.ticketData?.paidAmount)) {
+        ticketStatus = 'PAID';
+      } else if (paidAmount > 0 && paidAmount != this.totalAmount) {
+        ticketStatus = 'Partially Paid';
+      }      
       this.isEditModeOn = false;
       this.ticketData.status = ticketStatus;
       this.ticketData.amount = parseFloat(this.totalAmount.toFixed(3));  

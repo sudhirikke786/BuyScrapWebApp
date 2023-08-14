@@ -66,6 +66,11 @@ export class CommonService {
     return null; //throwError(error);
   }
 
+  getProbablyNumberFromLocalStorage(key: any) {
+    var val = localStorage.getItem(key);
+    return (val==null || isNaN(+val)) ? val  : +val;
+  }
+
   validateOrgCredentials(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Organisations/ValidateCredentials', 'POST' , requestObj);
   }

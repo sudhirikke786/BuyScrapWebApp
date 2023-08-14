@@ -25,7 +25,7 @@ export class TicketSettingsComponent implements OnInit {
   getAllTicketDetails(){
 
     let reqObj = {
-      LocationId: 1,
+      LocationId: localStorage.getItem('locId')
     }
   
     this.commonService.getAllSettingsTicketDetails(reqObj).subscribe((res) =>{

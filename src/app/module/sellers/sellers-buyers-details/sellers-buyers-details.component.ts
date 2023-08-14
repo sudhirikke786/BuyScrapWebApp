@@ -10,10 +10,8 @@ import { CommonService } from 'src/app/core/services/common.service';
 })
 export class SellersBuyersDetailsComponent implements OnInit {
 
-
-  
   orgName: any;
-  locId = 1;
+  locId: any;
   sellerId: any;
   seller: any;
   tickets: any;
@@ -24,7 +22,7 @@ export class SellersBuyersDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
-    this.locId = 1;
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.route.params.subscribe((param)=>{
       this.sellerId = param["sellerId"];
       this.getSellerById();      

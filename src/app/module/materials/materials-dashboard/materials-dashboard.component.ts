@@ -71,7 +71,7 @@ export class MaterialsDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
-    this.locId = 1;
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
 
     this.form = this.formBuilder.group({
       rowId: 0,

@@ -118,7 +118,7 @@ export class TicketDashboardComponent implements OnInit {
     Status: this.defaultSelectedTicketsTypes.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(','),
     PageNumber: 1,
     RowOfPage: 10,
-    LocationId: 1,
+    LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
     first : 0, 
   }
 
@@ -135,7 +135,7 @@ export class TicketDashboardComponent implements OnInit {
   ngOnInit() {
     this.selectedTickets = this.defaultSelectedTicketsTypes;
     this.orgName = localStorage.getItem('orgName');
-    this.locId = 1;
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     const result = this.selectedTickets.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(',');
     this.pagination.Status = result;
     this.getAllTicketsDetails(this.pagination);

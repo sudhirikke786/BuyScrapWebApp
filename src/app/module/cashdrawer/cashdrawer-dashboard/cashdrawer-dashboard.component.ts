@@ -41,7 +41,7 @@ export class CashdrawerDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
-    this.locId = 1;
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     
     const paramObject = {
       LocationId: this.locId
@@ -256,7 +256,7 @@ export class CashdrawerDashboardComponent implements OnInit {
     newCashDrawerdetail.updatedBy = 6;
     newCashDrawerdetail.updatedDate = '2023-07-17T10:00:17.557';
     newCashDrawerdetail.currentDate = '2023-07-17T10:00:17.557';
-    newCashDrawerdetail.locID = 1;
+    newCashDrawerdetail.locID = this.commonService.getProbablyNumberFromLocalStorage('locId');
     
     console.log("Final CashDrawerTransaction :: " + JSON.stringify(newCashDrawerdetail));
     
