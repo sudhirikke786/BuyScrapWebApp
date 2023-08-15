@@ -25,7 +25,7 @@ export class SettingsDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
-    this.locId = 1;
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
   }
 
   hidePSettingsmodel(){

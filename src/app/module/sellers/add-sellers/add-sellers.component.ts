@@ -12,7 +12,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 export class AddSellersComponent implements OnInit {
 
   orgName: any;
-  locId = 1;
+  locId: any;
   cameraVisible = false;
   imageUrl: any;
   sellerForm!: FormGroup;
@@ -44,7 +44,7 @@ export class AddSellersComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
-    this.locId = 1;
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.createSellerForm();
   }
 

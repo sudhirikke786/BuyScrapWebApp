@@ -106,6 +106,7 @@ export class AdminDashboardComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = 1;
     this.createUserForm()
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
   }
 
   showModel(){

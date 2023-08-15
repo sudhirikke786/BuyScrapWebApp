@@ -66,6 +66,11 @@ export class CommonService {
     return null; //throwError(error);
   }
 
+  getProbablyNumberFromLocalStorage(key: any) {
+    var val = localStorage.getItem(key);
+    return (val==null || isNaN(+val)) ? val  : +val;
+  }
+
   validateOrgCredentials(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Organisations/ValidateCredentials', 'POST' , requestObj);
   }
@@ -108,6 +113,10 @@ export class CommonService {
 
   insertUpdateTickets(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/InsertUpdateTickets', 'POST', requestObj, 'ProdTest');
+  }
+
+  insertTicketTransactions(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/InsertTicketTransactions', 'POST', requestObj, 'ProdTest');
   }
 
   getAllTicketsBySellerId(paramObj: any): Observable<any> {
