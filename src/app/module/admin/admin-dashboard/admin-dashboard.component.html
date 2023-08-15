@@ -60,7 +60,9 @@
                                                     <th>First Name</th>
                                                     <th>Last Name</th>
                                                     <th>Username</th>
-                                                    <th>User Permission</th>
+                                                    <th>User Role</th>
+                                                    <th>Mobile No</th>
+                                                    <th>Email</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </ng-template>
@@ -69,21 +71,16 @@
                                                     <td>{{ admin.firstName }}</td>
                                                     <td>{{ admin.lastName }}</td>
                                                     <td>{{ admin.username }}</td>
-                                                    <td>{{ admin.userPermission }}</td>
+                                                    <td>{{ admin.role }}</td>
+                                                    <td>{{ admin.mobileNumber }}</td>
+                                                    <td>{{ admin.emailID }}</td>
                                                     <td>
-                                                        <a (click)="showModel()" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
-                                                        <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
+                                                        <a (click)="showModel(admin,'update')" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
+                                                        <a (click)="deletUser(admin)"class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
                                                     </td>
                                                 </tr>
                                             </ng-template>
-                                            <ng-template pTemplate="paginatorleft">
-                                                <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
-                                                </p-button>
-                                            </ng-template>
-                                            <ng-template pTemplate="paginatorright">
-                                                <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
-                                                </p-button>
-                                            </ng-template>
+                                            
                                         </p-table>
                                     
                                     </div> <!-- end card body-->
@@ -108,7 +105,7 @@
 
 
             <p-dialog
-            header="Add User"
+            [header]="title"
             [(visible)]="visible"
             [style]="{ width: '80vw' }"
           >
@@ -117,7 +114,7 @@
           <div class="row">
             <div class="col-sm-12">
                 
-                <form [formGroup]="userForm" (ngSubmit)="submitForm()">
+                <form [formGroup]="userForm">
                                             
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
@@ -137,15 +134,13 @@
 
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100" [ngClass]="{'border-danger': f.role.touched && f.role?.invalid}">Select Role <span class="text-danger">*</span></label>
-                            <select formControlName="role" class="form-select" id="selectrole">
-                                <option value="" selected>Select Role</option>
-                                <option>Administrator</option>
-                                <option>Cashier</option>
-                                <option>Scale</option>
-                                <option>Employee</option>
+                            <label for="simpleinput" class="form-label w-100" [ngClass]="{'border-danger': f.roleId.touched && f.role?.invalid}">Select Role <span class="text-danger">*</span></label>
+                            <select formControlName="roleId" class="form-select" id="selectrole">
+                                <option disabled value="null">Select Role</option>
+                                <option *ngFor="let item of roleList" [value]="item?.rowId">{{item?.role}}</option>
+                               
                             </select>
-                            <app-form-error-message msg="Role Name is required" *ngIf="isSubmit && userForm?.get('role')?.errors?.required"></app-form-error-message>
+                            <app-form-error-message msg="Role Name is required" *ngIf="isSubmit && userForm?.get('roleId')?.errors?.required"></app-form-error-message>
 
                         </div>
 
@@ -160,7 +155,7 @@
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Password <span class="text-danger">*</span></label>
-                            <input formControlName="password" type="password"  id="password" class="form-control"  [ngClass]="{'border-danger': isSubmit && f.password?.invalid}" placeholder="Enter Your Password">
+                            <input formControlName="password" type="password"  id="password" class="form-control" [attr.disabled]="title == 'Add User' ? false : true"  [ngClass]="{'border-danger': isSubmit && f.password?.invalid}" placeholder="Enter Your Password">
                             
                              <app-form-error-message msg="Password is required" *ngIf="isSubmit && userForm?.get('password')?.errors?.required"></app-form-error-message>
 
@@ -168,7 +163,7 @@
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Confirm Password <span class="text-danger">*</span> </label>
-                            <input type="password" formControlName="confirmPassword" id="confirmpassword" class="form-control " [ngClass]="{'border-danger': isSubmit && f.confirmPassword?.invalid}" placeholder="Enter Your Password">
+                            <input type="password" formControlName="confirmPassword" id="confirmpassword" class="form-control " [attr.disabled]="title == 'Add User' ? false : true" [ngClass]="{'border-danger': isSubmit && f.confirmPassword?.invalid}" placeholder="Enter Your Password">
                            
 
                             <div *ngIf="isSubmit &&  f.confirmPassword?.invalid">
@@ -195,7 +190,7 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-primary btn-materials" (click)="submitForm()">Save</button>
+                    <button class="btn btn-primary btn-materials" (click)="submitForm()">{{title == 'Add User' ? 'Save' : 'Update'}}</button>
                 </form>
 
 
@@ -203,3 +198,5 @@
         </div> 
 
         </p-dialog>
+
+        <p-toast></p-toast>

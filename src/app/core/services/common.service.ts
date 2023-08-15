@@ -234,5 +234,23 @@ export class CommonService {
   getAccountingReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Reports/GetAccountReport', 'GET', paramObj, 'ProdTest');
   }
+
+  /** Admin API */
+
+  GetAllUsers(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Users/GetAllUsers', 'GET', paramObj, 'ProdTest');
+  }
+
+  GetAllUsersRoles(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Users/GetAllUsersRoles', 'GET', paramObj, 'ProdTest');
+  }
+
+  InsertUpdateUserDTO(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Users/InsertUpdateUserDTO', 'POST', requestObj, 'ProdTest');
+  }
+
+  DeleteUserDTO(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Users/DeleteUserDTO', 'POST', requestObj, 'ProdTest');
+  }
     
 }
