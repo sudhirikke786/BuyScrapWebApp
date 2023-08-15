@@ -309,6 +309,23 @@ html[data-topbar-color="dark"] .navbar-custom .logo-box .logo-dark {
 html[data-bs-theme="dark"] #light-dark-mode .ri-moon-line::before {
   content: "\f1bf";
 }
+
+.fix-body{
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
+@media (max-width: 767px) {
+.fix-body{
+  overflow:auto !important;
+  height: auto  !important;
+}
+.content-page .content{
+  padding: 0px !important;
+}
+}
+
+
 .button-toggle-menu {
   border: none;
   color: var(--ct-topbar-item-color);

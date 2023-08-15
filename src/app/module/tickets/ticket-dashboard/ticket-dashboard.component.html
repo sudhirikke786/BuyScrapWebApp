@@ -11,14 +11,14 @@
                     
                 </div> -->
         <div class="row mt-2">
-            <div class="col-md-3" style="width:300px">
+            <div class="col-sm-3 mb-1">
                 <p-multiSelect [class.fixed-multiselect]="true"   [options]="ticketsTypes" [style]="{'minWidth':'100%'}"
                     [(ngModel)]="selectedTickets"  [maxSelectedLabels]="maxItem" defaultLabel="You can choose  ..."
                     optionLabel="name" display="chip" (onChange)="addRemoveStatus($event)">
                 
                 </p-multiSelect>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-3 mb-1">
                 <select class="form-control" id="example-select" [(ngModel)]="searchOrder">
                     <option value="All">All</option>
                     <option value="TicketId">Ticket ID</option>
@@ -29,11 +29,11 @@
                     <option value="Status">Status</option>
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-3 mb-1">
                 <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText"
                     placeholder="Search">
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-3 mb-1">
                 <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
             </div>
 
@@ -114,7 +114,7 @@
 
     <p-dialog [modal]="true"
         [header]="newTicketVisible ? 'New Ticket' : ( ticketvisible ? 'Merge Ticket and Pay' : '' )"
-        [(visible)]="dialogPopupVisible" [style]="{width: '70vw'}">
+        [(visible)]="dialogPopupVisible" [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
 
         <div class="row">
 
@@ -165,7 +165,7 @@
     </p-dialog>
 
 
-    <p-dialog [modal]="true" header="Child Ticket" [(visible)]="parentTicketIDVisible" [style]="{ width: '30vw' }">
+    <p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Child Ticket" [(visible)]="parentTicketIDVisible" [style]="{ width: '30vw' }">
         <p>
             Selected Ticket is child ticket of {{parentTicketId}}. Please select parent ticket to perform action on the
             same.
@@ -177,7 +177,7 @@
     </p-dialog>
 
 
-    <p-dialog [modal]="true" header="Child Ticket" [(visible)]="isParentTicketVisible" [style]="{ width: '70vw' }">
+    <p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Child Ticket" [(visible)]="isParentTicketVisible" [style]="{ width: '70vw' }">
         <div class="row">
             <div class="col-md-12">
                 <p-table #dt1 [value]="childTickets" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
@@ -215,7 +215,7 @@
     </p-dialog>
 
 
-    <p-dialog [modal]="true" header="Select Tickets For Merge" [(visible)]="mergeTicketVisible"
+    <p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Select Tickets For Merge" [(visible)]="mergeTicketVisible"
         [style]="{ width: '70vw' }">
         <div class="row">
             <div class="col-md-12">
@@ -259,7 +259,7 @@
     </p-dialog>
 
 
-    <p-dialog [modal]="true" header="Pay Tickets" [(visible)]="paymentVisible" [style]="{ width: '30vw' }">
+    <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" header="Pay Tickets" [(visible)]="paymentVisible" [style]="{ width: '30vw' }">
         <div class="row">
 
             <div class="col-sm-12">
@@ -319,7 +319,7 @@
 
 
 
-    <p-dialog [modal]="true" header="Void Options" [(visible)]="showVoid"
+    <p-dialog  [breakpoints]="{'767px': '100vw'}" [modal]="true" header="Void Options" [(visible)]="showVoid"
     [style]="{ width: '40vw' }">
     
     <div class="d-flex justify-content-center">
@@ -334,7 +334,7 @@
 
     </p-dialog>
 
-    <p-dialog [modal]="true" header="Void Options" [(visible)]="showOpen"
+    <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" header="Void Options" [(visible)]="showOpen"
     [style]="{ width: '40vw' }">
     
     <div class="row">
@@ -391,7 +391,7 @@
 
 
 
-    <p-dialog [modal]="true" header="Void ticket" [(visible)]="showPartially"
+    <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" header="Void ticket" [(visible)]="showPartially"
     [style]="{ width: '40vw' }">
     
     <div class="row">

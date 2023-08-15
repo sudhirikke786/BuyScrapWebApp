@@ -814,7 +814,7 @@
  .over-flow{height:450px !important; overflow-y: auto !important;}
  .over-flow-150{height:150px !important; overflow-y: auto !important;}
  .over-flow-200{height:200px !important; overflow-y: auto !important;}
- .over-flow-250{height:250px !important; overflow-y: auto !important;}
+ .over-flow-250{max-height:250px !important; overflow-y: auto !important;}
  .over-flow-300{height:300px !important; overflow-y: auto !important;}
  .over-flow-350{height:350px !important; overflow-y: auto !important;}
  .over-flow-500{height:500px !important; overflow-y: auto !important;}

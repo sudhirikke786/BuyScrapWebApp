@@ -47,7 +47,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         
-                                        <p-table [value]="admins"  [scrollable]="true" 
+                                        <p-table [value]="admins"  [scrollable]="true"   responsiveLayout="scroll" 
                                         scrollHeight="50vh" [paginator]="true" [rows]="10"
                                             [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
                                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -97,161 +97,7 @@
                 </div> <!-- content -->
 
 
-                <!--  Add New User Modal Popup -->
-                <div class="modal fade" id="add-new-user" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <a  data-bs-dismiss="modal" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                                <h4 class="modal-title ml-10" id="myLargeModalLabel">Add User</h4>
-
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        
-                                        <form action="">
-                                            
-                                            <div class="row">
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">First Name</label>
-                                                    <input type="text" id="fistname" class="form-control" placeholder="First Name">
-                                                </div>
-
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Last Name</label>
-                                                    <input type="text" id="lastname" class="form-control" placeholder="Last Name">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Select Role</label>
-                                                    <select class="form-select" id="selectrole">
-                                                        <option>Administrator</option>
-                                                        <option>Cashier</option>
-                                                        <option>Scale</option>
-                                                        <option>Employee</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Username</label>
-                                                    <input type="text" id="username" class="form-control" placeholder="Enter Username">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Password</label>
-                                                    <input type="password" id="password" class="form-control" placeholder="Enter Your Password">
-                                                </div>
-
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Confirm Password</label>
-                                                    <input type="password" id="confirmpassword" class="form-control" placeholder="Enter Your Password">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-12 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Mail ID</label>
-                                                    <input type="email" id="mailid" class="form-control" placeholder="Enter Mail ID">
-                                                </div>
-                                            </div>
-
-                                            <a class="btn btn-primary btn-materials">Save</a>
-                                        </form>
-
-                                    </div>
-                                </div>                        
-
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div>
-                <!--  Add New User Modal Popup -->
-
-                <!--  Edit User Modal Popup -->
-                <div class="modal fade" id="edit-user" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <a  data-bs-dismiss="modal" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                                <h4 class="modal-title ml-10" id="myLargeModalLabel">Edit User</h4>
-
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        
-                                        <form action="">
-                                            
-                                            <div class="row">
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">First Name</label>
-                                                    <input type="text" id="fistname" class="form-control" value="Sanket">
-                                                </div>
-
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Last Name</label>
-                                                    <input type="text" id="lastname" class="form-control" value="Yoshi">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Select Role</label>
-                                                    <select class="form-select" id="selectrole">
-                                                        <option selected>Administrator</option>
-                                                        <option>Cashier</option>
-                                                        <option>Scale</option>
-                                                        <option>Employee</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Username</label>
-                                                    <input type="text" id="username" class="form-control" value="sankety">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Password</label>
-                                                    <input type="password" id="password" class="form-control" value="sanket">
-                                                </div>
-
-                                                <div class="form-group col-sm-6 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Confirm Password</label>
-                                                    <input type="password" id="confirmpassword" class="form-control" value="sanket">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-12 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">Mail ID</label>
-                                                    <input type="email" id="mailid" class="form-control" value="wpfdevelopers87@gmail.com">
-                                                </div>
-                                            </div>
-
-                                            <a class="btn btn-primary btn-materials">Save</a>
-                                        </form>
-
-                                    </div>
-                                </div>                        
-
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div>
-                <!--  Edit User Modal Popup -->
+             
 
             </div>
 
@@ -271,58 +117,87 @@
           <div class="row">
             <div class="col-sm-12">
                 
-                <form action="">
-                    
+                <form [formGroup]="userForm" (ngSubmit)="submitForm()">
+                                            
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">First Name</label>
-                            <input type="text" id="fistname" class="form-control" placeholder="First Name">
+                            <label for="simpleinput" class="form-label w-100" >First Name<span class="text-danger">*</span></label>
+                            <input type="text" formControlName="firstName" id="fistname" class="form-control" [ngClass]="{'border-danger': isSubmit &&  f.firstName.invalid }"  placeholder="First Name">
+                            <app-form-error-message msg=" Name is required" *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.required)"></app-form-error-message>
+                            <app-form-error-message [msg]="patternMsg?.alphabetPattern[1]" *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.pattern)"></app-form-error-message>
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Last Name</label>
-                            <input type="text" id="lastname" class="form-control" placeholder="Last Name">
+                            <label for="simpleinput" class="form-label w-100">Last Name <span class="text-danger">*</span></label>
+                            <input type="text" formControlName="lastName" id="lastname" class="form-control" placeholder="Last Name" [ngClass]="{'border-danger': isSubmit &&  f.lastName.invalid}">
+                            <app-form-error-message msg="Last Name is required" *ngIf="(isSubmit && userForm?.get('lastName')?.errors?.required)"></app-form-error-message>
+
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Select Role</label>
-                            <select class="form-select" id="selectrole">
+                            <label for="simpleinput" class="form-label w-100" [ngClass]="{'border-danger': f.role.touched && f.role?.invalid}">Select Role <span class="text-danger">*</span></label>
+                            <select formControlName="role" class="form-select" id="selectrole">
+                                <option value="" selected>Select Role</option>
                                 <option>Administrator</option>
                                 <option>Cashier</option>
                                 <option>Scale</option>
                                 <option>Employee</option>
                             </select>
+                            <app-form-error-message msg="Role Name is required" *ngIf="isSubmit && userForm?.get('role')?.errors?.required"></app-form-error-message>
+
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Username</label>
-                            <input type="text" id="username" class="form-control" placeholder="Enter Username">
+                            <label for="simpleinput" class="form-label w-100">Username <span class="text-danger">*</span></label>
+                            <input type="text" formControlName="userName" id="username" class="form-control" [ngClass]="{'border-danger': isSubmit && f.userName?.invalid}" placeholder="Enter Username">
+                            <app-form-error-message msg="UserName Name is required" *ngIf="isSubmit && userForm?.get('userName')?.errors?.required"></app-form-error-message>
+
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Password</label>
-                            <input type="password" id="password" class="form-control" placeholder="Enter Your Password">
+                            <label for="simpleinput" class="form-label w-100">Password <span class="text-danger">*</span></label>
+                            <input formControlName="password" type="password"  id="password" class="form-control"  [ngClass]="{'border-danger': isSubmit && f.password?.invalid}" placeholder="Enter Your Password">
+                            
+                             <app-form-error-message msg="Password is required" *ngIf="isSubmit && userForm?.get('password')?.errors?.required"></app-form-error-message>
+
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Confirm Password</label>
-                            <input type="password" id="confirmpassword" class="form-control" placeholder="Enter Your Password">
+                            <label for="simpleinput" class="form-label w-100">Confirm Password <span class="text-danger">*</span> </label>
+                            <input type="password" formControlName="confirmPassword" id="confirmpassword" class="form-control " [ngClass]="{'border-danger': isSubmit && f.confirmPassword?.invalid}" placeholder="Enter Your Password">
+                           
+
+                            <div *ngIf="isSubmit &&  f.confirmPassword?.invalid">
+                                <app-form-error-message msg="Confirm Password is required" *ngIf="isSubmit && userForm?.get('confirmPassword')?.errors?.required"></app-form-error-message>
+                                <app-form-error-message msg="Password and Confirm Password must be match." *ngIf="userForm?.get('confirmPassword')?.errors?.confirmedValidator"></app-form-error-message>
+                               
+                            </div>
+                            
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-sm-12 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Mail ID</label>
-                            <input type="email" id="mailid" class="form-control" placeholder="Enter Mail ID">
+                        <div class="form-group col-sm-6 mb-2">
+                            <label for="simpleinput" class="form-label w-100">Mobile No <span class="text-danger">*</span></label>
+                            <input formControlName="mobileNumber" type="mobileNumber" id="mobileNumber" class="form-control" [ngClass]="{'border-danger': isSubmit && f.mobileNumber?.invalid}"  placeholder="Enter Mobile No">
+                            <app-form-error-message msg="Mobile Number is required" *ngIf="isSubmit && userForm?.get('mobileNumber')?.errors?.required"></app-form-error-message>
+
+                       </div>
+                        <div class="form-group col-sm-6 mb-2">
+                            <label for="simpleinput" class="form-label w-100">Mail ID <span class="text-danger">*</span></label>
+                            <input formControlName="emailID" type="email" id="mailid" class="form-control" [ngClass]="{'border-danger': isSubmit &&  f.emailID?.invalid}" placeholder="Enter Mail ID">
+                            <app-form-error-message msg="Email is required" *ngIf="isSubmit && userForm?.get('emailID')?.errors?.required"></app-form-error-message>
+
                         </div>
                     </div>
 
-                    <a class="btn btn-primary btn-materials">Save</a>
+                    <button class="btn btn-primary btn-materials" (click)="submitForm()">Save</button>
                 </form>
+
 
             </div>
         </div> 

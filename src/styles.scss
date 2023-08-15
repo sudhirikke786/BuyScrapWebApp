@@ -197,14 +197,61 @@
   overlay padding
   */
 
-  .overlay-button{
-    
-  }
-
-  .p-overlaypanel{
-    
-  }
+  
   .p-overlaypanel .p-overlaypanel-content{
     padding: 2px !important;
   
   }
+
+  @media (max-width: 767px) {
+    /* Styles for mobile devices */
+    html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu {
+        display: none !important;
+    }
+
+    .p-paginator .p-paginator-current{
+        position: relative;
+
+    }
+
+    .fix-body{
+        overflow:auto;
+        height: auto;
+    }
+
+    .balance-details-ul{
+        position: absolute;
+        top:5%;
+        right:27%;
+    }
+
+    .footer{
+        top: 10px !important;
+        position: absolute !important;
+    }
+
+    
+      ::-webkit-scrollbar {
+        width: 0.2rem !important;
+      }
+       
+      ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      }
+       
+      ::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        outline: 1px solid slategrey;
+      }
+
+      .over-flow-300{
+        height: 100% !important;
+        width: 100% !important;
+      }
+
+    
+    .equal-h {
+        width: 100px;
+        height: 60px;
+    }
+}

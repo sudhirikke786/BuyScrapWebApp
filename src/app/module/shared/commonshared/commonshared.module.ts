@@ -8,25 +8,28 @@ import { FormsModule } from '@angular/forms';
 import { PriceCalculatorComponent } from './price-calculator/price-calculator.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { PrimengModule } from '../primeng/primeng.module';
+import { FormErrorMessageComponent } from './form-error-message/form-error-message.component';
 
 
 @NgModule({
   declarations: [
     ActionbarComponent,
     CameraComponent,
-    PriceCalculatorComponent
+    PriceCalculatorComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     WebcamModule,
     TooltipModule,
-    PrimengModule
+    PrimengModule,
+    FormErrorMessageComponent
   ],
   exports:[
     ActionbarComponent,
     CameraComponent,
-    PriceCalculatorComponent
+    PriceCalculatorComponent,
+    FormErrorMessageComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

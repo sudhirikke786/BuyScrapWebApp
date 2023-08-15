@@ -114,7 +114,7 @@
 </div>
 
 
-<p-dialog [modal]="true" header="Add Note" [(visible)]="addNoteSectionVisible" [style]="{ width: '30vw' }">
+<p-dialog [modal]="true" header="Add Note" [(visible)]="addNoteSectionVisible" [style]="{ width: '30vw' }" [breakpoints]="{'767px': '100vw'}">
   <div>
     <div class="input-group">
       <textarea id="materialNote" [(ngModel)]="materialNote" rows="4" cols="50" class="form-control">

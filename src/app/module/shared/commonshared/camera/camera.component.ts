@@ -73,7 +73,10 @@ export class CameraComponent implements OnInit {
   handleImage(webcamImage: WebcamImage) {
     this.webcamImage = webcamImage;
     this.imageUrl = webcamImage.imageAsDataUrl;
+   
     this.getPicture.emit(this.imageUrl);
+
+    
   }
 
   get triggerObservable(): Observable<void> {

@@ -65,10 +65,10 @@
                                                         <ul class="materials-name-edit-ul">
                                                             <li><b>{{item.materialName}}</b></li>
                                                         </ul>
-                                                        <ul class="materials-name-edit-ul">
-                                                            <li>Scrap Price - {{item.scrapPrice}}</li>
-                                                            <li><a (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
-                                                        </ul>
+                                                        <div class="d-flex justify-content-between px-2 py-1">
+                                                            <div>Scrap Price - {{item.scrapPrice}}</div>
+                                                            <div><a (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></div>
+                                                        </div>
                                                     </div>
 
                                                 </ng-container>
@@ -98,6 +98,7 @@
                 [header]="isEditModeOn == true? 'Edit Sub-Material' : 'Add Sub-Material'"
                 [(visible)]="visible"
                 [style]="{ width: '60vw' }"
+                [breakpoints]="{'767px': '100vw'}"
             >
                 <div class="row">
                                     

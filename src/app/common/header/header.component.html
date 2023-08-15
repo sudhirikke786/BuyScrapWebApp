@@ -141,6 +141,7 @@
             header="Reopen Register"
             [(visible)]="isReopenRegister" [closable]="false"
             [style]="{ width: '40vw' }"
+            [breakpoints]="{'767px': '100vw'}"
           >
             <ng-template pTemplate="header">
                 <div class="d-flex">
@@ -258,6 +259,7 @@
         <p-dialog [modal]="true" 
             [(visible)]="closeRegisterWithDiffernceVisible" [closable]="false"
             [style]="{ width: '30vw' }"
+            [breakpoints]="{'767px': '100vw'}"
           >
           <ng-template pTemplate="header">
                 <a (click)="closeRegisterWithDiffernceVisible = false" data-bs-dismiss="modal" class="btn btn-primary btn-back"><i class="mdi mdi-keyboard-backspace"></i></a>
