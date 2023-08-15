@@ -21,7 +21,7 @@
                     </div>
               
                     <div class="row mt-2">
-                      <div class="col-md-5 d-flex">
+                      <div class="col-sm-5 d-flex mb-2">
                         <select class="form-control me-1" id="defaultSelectedMaterial" name="defaultSelectedMaterial" [(ngModel)]="defaultSelectedMaterial"
                             (change)="onMaterialChange($event)">
                             <option [value]="0" [selected]="true">-- Select Material --</option>
@@ -39,14 +39,14 @@
                             </option>
                         </select>
                       </div>
-                      <div class="col-md-5 d-flex">
+                      <div class="col-sm-5 d-flex mb-2">
                         <label class="mr-10">From Date</label>
                         <input type="date" id="fromDate" [(ngModel)]="fromDate" name="fromDate" class="form-control mr-10">
 
                         <label class="mr-10">To Date</label>
                         <input type="date" id="toDate" [(ngModel)]="toDate" name="toDate" class="form-control">
                       </div>  
-                      <div class="col-md-2">
+                      <div class="col-sm-2 mb-2">
                         <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
                       </div>
                     </div>

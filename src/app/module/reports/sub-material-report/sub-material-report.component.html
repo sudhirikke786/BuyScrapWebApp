@@ -39,21 +39,21 @@
                             </option>
                         </select>                        
                       </div>
-                      <div class="col-md-5 d-flex">
+                      <div class="col-sm-5 d-flex mb-1">
                         <label class="mr-10">From Date</label>
                         <input type="date" id="fromDate" [(ngModel)]="fromDate" name="fromDate" class="form-control mr-10">
 
                         <label class="mr-10">To Date</label>
                         <input type="date" id="toDate" [(ngModel)]="toDate" name="toDate" class="form-control">
                       </div>  
-                      <div class="col-md-2">
+                      <div class="col-sm-2 mb-1">
                         <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
                       </div>
                     </div>
                     <!-- end page title -->
               
                     <div class="row mt-2">
-                      <div class="col-12">
+                      <div class="col-sm-12">
                         <div class="card">
                           <div class="card-body">
                             <p-table
