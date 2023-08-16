@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -6,6 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./side-menu.component.scss']
 })
 export class SideMenuComponent {
+
+  constructor(public commonService:CommonService){
+
+  }
   organizationName: any = localStorage.getItem('orgName');;
 
   menuList = [

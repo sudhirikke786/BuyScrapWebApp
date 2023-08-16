@@ -64,14 +64,22 @@
 
                                     </div>
                                 </div>
-                                <p class="text-muted mb-0">Admin Head</p>
+                              
                             </div>
 
                             <!--- Menu -->
                             <ul class="menu">
                                 <ng-container *ngFor="let item of menuList">
-                                    <li class="menu-item">
+                                    <li class="menu-item d-none d-md-block">
                                         <a href="javscript:void()" routerLink="/{{organizationName}}{{item.url}}"
+                                            routerLinkActive="active" class="menu-link">,
+                                            <span class="menu-icon"><img src="{{item.icon}}" class="dash-icons"></span>
+                                            <span class="menu-text menu-links-text">{{item.title}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item d-sm-block d-md-none">
+                                        <a href="javscript:void()" (click)="commonService.showHidePanel()" routerLink="/{{organizationName}}{{item.url}}"
                                             routerLinkActive="active" class="menu-link">,
                                             <span class="menu-icon"><img src="{{item.icon}}" class="dash-icons"></span>
                                             <span class="menu-text menu-links-text">{{item.title}}</span>

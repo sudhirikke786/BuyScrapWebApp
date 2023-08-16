@@ -10,11 +10,11 @@
     gap: 20px;
 }
 
-@media (max-width: 767px) {
-    .img-grid {
+// @media (max-width: 767px) {
+//     .img-grid {
       
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+//         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
       
-      }
+//       }
 
-  }
+//   }

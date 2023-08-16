@@ -45,9 +45,9 @@
                                                     <a routerLink = "/{{orgName}}/materials/detail/{{item.rowId}}">
                                                         <img src="{{item.imagePath}}" (error)="this.changeSource($event);" />
                                                     </a>
-                                                    <div class="d-flex justify-content-between px-1 py-1">
-                                                        <b>{{item.groupName}}</b>
-                                                        <a (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a>
+                                                    <div class="d-flex  justify-content-between px-1 py-1">
+                                                        <div>{{item.groupName}}</div>
+                                                        <div (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light cursor-pointer"><i class="mdi mdi-pencil"></i> Edit</div>
                                                     </div>
                                                 </div>
                                             </ng-container>

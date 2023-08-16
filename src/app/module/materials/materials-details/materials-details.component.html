@@ -47,9 +47,9 @@
                                                         <a routerLink = "/{{orgName}}/materials/{{item.rowId}}">
                                                             <img src="assets/images/custom/materials/Default-Scrap-Material.png">
                                                         </a>
-                                                        <div class="d-flex justify-content-between px-1 py-1">
-                                                            <h4>{{item.groupName}}</h4>
-                                                            <a (click)="showDialog()" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a>
+                                                        <div class="d-flex flex-wrap justify-content-between px-1 py-1">
+                                                            <div>{{item.groupName}}</div>
+                                                            <div (click)="showDialog()" class="btn btn-materials-pg waves-effect waves-light cursor-pointer"><i class="mdi mdi-pencil"></i> Edit</div>
                                                         </div>
                                                     </div>  
                                                 </ng-container>

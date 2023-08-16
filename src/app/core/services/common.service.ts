@@ -66,6 +66,23 @@ export class CommonService {
     return null; //throwError(error);
   }
 
+   showHidePanel(){
+    const htmlAttr = document.querySelector('html');
+    if(htmlAttr){
+      const _datasidenav = htmlAttr.getAttribute('data-sidenav-size');
+      if(_datasidenav=='condensed'){
+        // sidebar-enable
+        //
+        htmlAttr.setAttribute('data-sidenav-size', 'default');
+        htmlAttr.classList.add('menuitem-active')
+      }else{
+        htmlAttr.setAttribute('data-sidenav-size', 'condensed');
+        htmlAttr.classList.add('menuitem-active sidebar-enable')
+      }
+    }
+  
+  }
+
   getProbablyNumberFromLocalStorage(key: any) {
     var val = localStorage.getItem(key);
     return (val==null || isNaN(+val)) ? val  : +val;

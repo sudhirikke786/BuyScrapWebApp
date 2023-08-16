@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CashDrawer } from 'src/app/core/model/cash-drawer.model';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DataService } from 'src/app/core/services/data.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-header',
@@ -22,16 +23,19 @@ export class HeaderComponent implements OnInit {
   closeRegisterWithDiffernceVisible = false;
   closeRegisterWithDiffernceExplaination = '';
   differntOpeningAmount: number = 0.00;
+  mobileName: any;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private dataService: DataService,
-    private commonService: CommonService) { }
+    private stroarge:StorageService,
+    public commonService: CommonService) { }
 
   ngOnInit() {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     
-    this.userFullName = localStorage.getItem('userFullName');
+    this.userFullName = this.stroarge.getLocalStorage('userObj').userdto?.firstName;
+    this.mobileName = this.userFullName?.split(" ").map((name :any) => name.charAt(0).toUpperCase()).join("");
 
     const paramObject = {
       LocationId: this.locId
@@ -192,21 +196,21 @@ export class HeaderComponent implements OnInit {
     this.closeRegisterWithDiffernceVisible = false;
   }
   
-  showHidePanel(){
-    const htmlAttr = document.querySelector('html');
-    if(htmlAttr){
-      const _datasidenav = htmlAttr.getAttribute('data-sidenav-size');
-      if(_datasidenav=='condensed'){
-        // sidebar-enable
-        //
-        htmlAttr.setAttribute('data-sidenav-size', 'default');
-        htmlAttr.classList.add('menuitem-active')
-      }else{
-        htmlAttr.setAttribute('data-sidenav-size', 'condensed');
-        htmlAttr.classList.add('menuitem-active sidebar-enable')
-      }
-    }
+  // showHidePanel(){
+  //   const htmlAttr = document.querySelector('html');
+  //   if(htmlAttr){
+  //     const _datasidenav = htmlAttr.getAttribute('data-sidenav-size');
+  //     if(_datasidenav=='condensed'){
+  //       // sidebar-enable
+  //       //
+  //       htmlAttr.setAttribute('data-sidenav-size', 'default');
+  //       htmlAttr.classList.add('menuitem-active')
+  //     }else{
+  //       htmlAttr.setAttribute('data-sidenav-size', 'condensed');
+  //       htmlAttr.classList.add('menuitem-active sidebar-enable')
+  //     }
+  //   }
   
-  }
+  // }
    
 }

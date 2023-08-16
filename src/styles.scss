@@ -203,6 +203,11 @@
   
   }
 
+    .calc {
+        position: absolute;
+        top:-32px
+    }
+
   @media (max-width: 767px) {
     /* Styles for mobile devices */
     html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu {
@@ -270,5 +275,14 @@
     
         right: 20px;
         top: -3px;
+    }
+
+    .balance-details-ul {
+        line-height: 44px !important;
+    }
+    
+    .calc {
+        position: relative;
+        top:10px
     }
 }
