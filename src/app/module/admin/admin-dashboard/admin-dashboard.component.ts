@@ -113,7 +113,7 @@ export class AdminDashboardComponent implements OnInit {
   
     if (this.userForm.valid) {
       this.isSubmit = false;
-      const maxRoleID = this.admins.map((item:any) => Number(item?.rowId)).sort((a,b) => b - a)[0];
+      const maxRoleID = this.admins.map((item:any) => Number(item?.rowId))
       console.log(maxRoleID);
       const req = {
         "createdBy": 1,
@@ -123,8 +123,10 @@ export class AdminDashboardComponent implements OnInit {
         "tempOTP": "1234",
         "isActive": true,
         "macID": "",
-        "rowId": this.editObj?.rowId ?? maxRoleID + 1,
-        "roleId":Number(this.userForm.value.roleId),
+        "rowId": this.editObj?.rowId ?? 0,
+        "roleId": Number(this.userForm.value.roleId),
+        "role":this.roleList.filter((item:any) => item.roleId == this.userForm.value.roleId)[0],
+        "locID":this.locId,
         "isConfirm": true,
       }
       const userObj = {...this.userForm.value,...req}
