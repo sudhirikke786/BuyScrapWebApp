@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RegexPattern } from 'src/app/core/pattern/regex-patterns';
 import { CommonService } from 'src/app/core/services/common.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-location-management',
@@ -38,6 +41,7 @@ export class AdminLocationManagementComponent implements OnInit {
 
   orgName: any;
   locId: any;
+  locationObj: any;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -45,6 +49,8 @@ export class AdminLocationManagementComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+    this.getLocations();
+
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
   }
 
@@ -72,6 +78,11 @@ export class AdminLocationManagementComponent implements OnInit {
     this.addlocationVisble =  true;
   }
 
+  getLocations(){
+    this.commonService.GetLocations({RowId:1}).subscribe((res) =>{
+      this.locationObj =  res?.body?.data;
+    })
+  }
   
 
 }

@@ -252,5 +252,17 @@ export class CommonService {
   DeleteUserDTO(requestObj:any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Users/DeleteUserDTO', 'POST', requestObj, 'ProdTest');
   }
+
+  GetLocations(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Locations/GetLocations', 'GET', paramObj, 'ProdTest');
+  }
+  GetAllLocatoins(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Locations/GetAllLocatoins', 'GET', paramObj, 'ProdTest');
+  }
+
+  InsertUpdateLocationDTO(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Locations/InsertUpdateLocationDTO', 'POST', requestObj, 'ProdTest');
+  }
+
     
 }
