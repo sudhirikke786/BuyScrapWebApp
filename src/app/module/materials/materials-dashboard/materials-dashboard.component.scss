@@ -7,6 +7,14 @@
 .img-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
+    gap: 20px;
+}
+
+@media (max-width: 767px) {
+    .img-grid {
+      
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      
+      }
+
   }
-  

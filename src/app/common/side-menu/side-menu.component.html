@@ -1,91 +1,110 @@
-            
-    <!-- ========== Menu ========== -->
-    <div class="app-menu menuitem-active">  
+<!-- ========== Menu ========== -->
+<div class="app-menu menuitem-active">
 
-        <!-- Brand Logo -->
-        <div class="logo-box">
-            <!-- Brand Logo Light -->
-            <a class="logo-light">
-                <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="BUYSCRAPAPP Logo" class="logo-lg">
-                <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="BUYSCRAPAPP Logo" class="logo-sm">
-            </a>
+    <!-- Brand Logo -->
+    <div class="logo-box">
+        <!-- Brand Logo Light -->
+        <a class="logo-light">
+            <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="BUYSCRAPAPP Logo" class="logo-lg">
+            <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="BUYSCRAPAPP Logo" class="logo-sm">
+        </a>
 
-            <!-- Brand Logo Dark -->
-            <a class="logo-dark">
-                <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="BUYSCRAPAPP Logo" class="logo-lg">
-                <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="BUYSCRAPAPP Logo" class="logo-sm">
-            </a>
-            <span class="pro-user-name ml-1 color-white"></span>
-        </div>
+        <!-- Brand Logo Dark -->
+        <a class="logo-dark">
+            <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="BUYSCRAPAPP Logo" class="logo-lg">
+            <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="BUYSCRAPAPP Logo" class="logo-sm">
+        </a>
+        <span class="pro-user-name ml-1 color-white"></span>
+    </div>
 
-        <!-- menu-left -->
-        <div class="scrollbar show h-100" data-simplebar="init">
-            <div class="simplebar-wrapper" style="margin: 0px;">
-                <div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
+    <!-- menu-left -->
+    <div class="scrollbar show h-100" data-simplebar="init">
+        <div class="simplebar-wrapper" style="margin: 0px;">
+            <div class="simplebar-height-auto-observer-wrapper">
+                <div class="simplebar-height-auto-observer"></div>
+            </div>
+            <div class="simplebar-mask">
+                <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content"
+                        style="height: 100%; overflow: hidden scroll;">
+                        <div class="simplebar-content" style="padding: 0px;">
 
-            <!-- User box -->
-            <div class="user-box text-center">
-                <img src="/assets/images/users/user-1.jpg" alt="user-img" title="Mat Helme" class="rounded-circle avatar-md">
-                <div class="dropdown">
-                    <a href="javascript: void(0);" class="dropdown-toggle h5 mb-1 d-block" data-bs-toggle="dropdown">Geneva Kennedy</a>
-                    <div class="dropdown-menu user-pro-dropdown">
+                            <!-- User box -->
+                            <div class="user-box text-center">
+                                <img src="/assets/images/users/user-1.jpg" alt="user-img" title="Mat Helme"
+                                    class="rounded-circle avatar-md">
+                                <div class="dropdown">
+                                    <a href="javascript: void(0);" class="dropdown-toggle h5 mb-1 d-block"
+                                        data-bs-toggle="dropdown">Geneva Kennedy</a>
+                                    <div class="dropdown-menu user-pro-dropdown">
 
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="fe-user me-1"></i>
-                            <span>My Account</span>
-                        </a>
+                                        <!-- item-->
+                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                            <i class="fe-user me-1"></i>
+                                            <span>My Account</span>
+                                        </a>
 
-                        <!-- item-->
-                        <a href="settings.html" class="dropdown-item notify-item">
-                            <i class="fe-settings me-1"></i>
-                            <span>Settings</span>
-                        </a>
+                                        <!-- item-->
+                                        <a href="settings.html" class="dropdown-item notify-item">
+                                            <i class="fe-settings me-1"></i>
+                                            <span>Settings</span>
+                                        </a>
 
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="fe-lock me-1"></i>
-                            <span>Lock Screen</span>
-                        </a>
+                                        <!-- item-->
+                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                            <i class="fe-lock me-1"></i>
+                                            <span>Lock Screen</span>
+                                        </a>
 
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="fe-log-out me-1"></i>
-                            <span>Logout</span>
-                        </a>
+                                        <!-- item-->
+                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                            <i class="fe-log-out me-1"></i>
+                                            <span>Logout</span>
+                                        </a>
 
+                                    </div>
+                                </div>
+                                <p class="text-muted mb-0">Admin Head</p>
+                            </div>
+
+                            <!--- Menu -->
+                            <ul class="menu">
+                                <ng-container *ngFor="let item of menuList">
+                                    <li class="menu-item">
+                                        <a href="javscript:void()" routerLink="/{{organizationName}}{{item.url}}"
+                                            routerLinkActive="active" class="menu-link">,
+                                            <span class="menu-icon"><img src="{{item.icon}}" class="dash-icons"></span>
+                                            <span class="menu-text menu-links-text">{{item.title}}</span>
+                                        </a>
+                                    </li>
+
+                                </ng-container>
+
+
+
+
+                                <li class="menu-item app-version">
+                                    <a class="menu-link">
+                                        <span class="menu-text menu-links-text">App Version - 2.17</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                            <!--- End Menu -->
+                            <div class="clearfix"></div>
+                        </div>
                     </div>
                 </div>
-                <p class="text-muted mb-0">Admin Head</p>
             </div>
-
-            <!--- Menu -->
-            <ul class="menu">
-                <ng-container  *ngFor="let item of menuList" >
-                    <li class="menu-item" >
-                        <a href="javscript:void()" routerLink = "/{{organizationName}}{{item.url}}" routerLinkActive="active"  class="menu-link">,
-                            <span class="menu-icon"><img src="{{item.icon}}" class="dash-icons"></span>
-                            <span class="menu-text menu-links-text">{{item.title}}</span>
-                        </a>
-                    </li>
-
-                </ng-container>
-                
-
-                
-
-                <li class="menu-item app-version">
-                    <a class="menu-link">
-                        <span class="menu-text menu-links-text">App Version - 2.17</span>
-                    </a>
-                </li>
-                
-            </ul> 
-            <!--- End Menu -->
-            <div class="clearfix"></div>
-        </div></div></div></div><div class="simplebar-placeholder" style="width: auto; height: 486px;"></div>
-    </div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar simplebar-visible" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar simplebar-visible" style="height: 39px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
+            <div class="simplebar-placeholder" style="width: auto; height: 486px;"></div>
+        </div>
+        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+            <div class="simplebar-scrollbar simplebar-visible" style="width: 0px; display: none;"></div>
+        </div>
+        <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+            <div class="simplebar-scrollbar simplebar-visible"
+                style="height: 39px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+        </div>
     </div>
-    <!-- ========== Left menu End ========== -->
-
-    
+</div>
+<!-- ========== Left menu End ========== -->
