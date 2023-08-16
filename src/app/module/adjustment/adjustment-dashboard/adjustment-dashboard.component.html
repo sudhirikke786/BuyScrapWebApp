@@ -40,16 +40,23 @@
                                     <div class="card-body">
 
                                         <div class="row">
+                                            <div class="img-grid ">
+
                                             
-                                            <div class="col-sm-2" *ngFor="let item of adjustmentList">
-                                                <div class="adjustment-pg-boxes">
-                                                    <img src="assets/images/custom/adjustment/Default-Adjustment.png">
-                                                    <ul class="adjustment-name-edit-ul">
-                                                        <li><b>{{item.adjustmentName}}</b></li>
-                                                        <li><a (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                             <ng-container  *ngFor="let item of adjustmentList">
+                                               
+                                                    <div class="adjustment-pg-boxes">
+                                                        <img src="assets/images/custom/adjustment/Default-Adjustment.png">
+                                                        <div class="d-flex justify-content-between  px-1 py-1">
+                                                            <div><b>{{item.adjustmentName}}</b></div>
+                                                            <div><a (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></div>
+                                                        </div>
+                                                    </div>
+                                               
+                                            </ng-container>
+                                        </div>
+                                            
+                                         
 
                                         </div>
                                     
