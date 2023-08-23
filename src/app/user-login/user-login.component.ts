@@ -44,7 +44,7 @@ export class UserLoginComponent implements OnInit {
   }
   
   btnClick(): void {
-    this.user.locID =  this.locationId;
+    this.user.locID =  Number(this.locationId);
     this.localService.setLocalStorage('locId', this.locationId); 
     this.validateUser();
     // this.router.navigateByUrl(`/${this.organizationName}/home`);

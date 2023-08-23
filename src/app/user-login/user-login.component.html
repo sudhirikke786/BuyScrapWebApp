@@ -24,10 +24,10 @@
                             <h4 class="mb-2 mt-3">Sign in to your account</h4>
                         </div>
 
-                        <form #f="ngForm" class="mt-3">
+                        <form #f="ngForm" class="mt-3" (ngSubmit)="btnClick()">
 
                             <div class="form-group mb-3">
-                                <label for="username" class="dark-color">Username</label>
+                                <label required for="username" class="dark-color">Username</label>
                                 <input class="form-control" placeholder="Enter Username" type="text" name="username" [(ngModel)]="user.userName" />
                             </div>
 
@@ -35,7 +35,7 @@
                                 <label for="emailaddress" class="dark-color">Password</label>
                                 <div class="input-group input-group-merge">
                                     
-                                    <input type="password" id="password" class="form-control" name="password"
+                                    <input required type="password" id="password" class="form-control" name="password"
                                     placeholder="Enter your Password" [(ngModel)]="user.password">
                                     <div class="input-group-append" data-password="false">
                                         <div class="input-group-text">
@@ -48,7 +48,7 @@
                             <div class="form-group mb-3">
                                 <label for="locationId" class="dark-color">Select Location</label>
                                 <div class="input-group input-group-merge">
-                                    <select class="form-control" id="locationId" name="locationId" [(ngModel)]="locationId">
+                                    <select required class="form-control" id="locationId" name="locationId" [(ngModel)]="locationId">
                                         <option [value]="0" [selected]="true">-- Select State --</option>
                                         <option *ngFor="let option of locations" [value]="option.rowId"> {{ option.locationName }} </option>
                                     </select>
@@ -58,13 +58,13 @@
 
                             <div class="form-group mb-3">
                                 <div class="custom-control custom-checkbox custom-checkbox d-flex align-item-center">
-                                    <input type="checkbox" class="custom-control-input" id="checkbox-signin" checked="">
+                                    <input   type="checkbox" class="custom-control-input" id="checkbox-signin" checked="">
                                     <label class="custom-control-label ms-1" for="checkbox-signin">Remember me</label>
                                 </div>
                             </div>
 
                             <div class="form-group mb-2 text-center">
-                                <button (click)="btnClick();" class="px-1 py-1 btn-primary-bsa btn btn-primary btn-block h-30" type="submit"> Login </button>
+                                <button type="submit"  class="px-1 py-1 btn-primary-bsa btn btn-primary btn-block h-30" type="submit"> Login </button>
                             </div>
 
                         </form>

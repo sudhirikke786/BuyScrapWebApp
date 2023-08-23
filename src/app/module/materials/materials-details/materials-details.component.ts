@@ -147,7 +147,7 @@ export class MaterialsDetailsComponent implements OnInit {
           console.log('getAllSubMaterials :: ');
           console.log(data);
           this.subMaterialList = data.body.data;
-          this.subMaterialListCopy = { ...this.subMaterialList };
+          this.subMaterialListCopy = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -158,7 +158,7 @@ export class MaterialsDetailsComponent implements OnInit {
   search(): void {
     let term = this.searchTerm;
     console.log(' searchTerm :: ' + term);
-    this.subMaterialList = this.subMaterialListCopy.filter(function(item: any) {
+    this.subMaterialList = this.subMaterialListCopy[0].filter(function(item: any) {
         console.log(' item :: ' + item);
         return item.materialName.indexOf(term) >= 0;
     }); 
@@ -237,6 +237,22 @@ export class MaterialsDetailsComponent implements OnInit {
   showBulkDialog(){
     this.bulkvisible = true;
   }
+
+
+  searchMetarial(inputData:any) : void {
+   
+    const res = inputData.target.value.trim();
+    if(res.length > 0){
+      this.subMaterialList = this.subMaterialListCopy.filter((item:any) => {
+       const dt = item.materialName.toLocaleLowerCase().includes( res.toLocaleLowerCase());
+       return dt;
+      })
+    }else{
+      this.subMaterialList = this.subMaterialListCopy;
+    }
+
+  }
+
 
   getAction(actionCode:any){
 

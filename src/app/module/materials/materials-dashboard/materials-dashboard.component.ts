@@ -90,6 +90,21 @@ export class MaterialsDashboardComponent implements OnInit {
     this.getAllGroupMaterial();
   }
 
+
+  searchMetarial(inputData:any){
+   
+    const res = inputData.target.value.trim();
+    if(res.length > 0){
+      this.materialList = this.materialListCopy.filter((item:any) => {
+       const dt = item.groupName.toLocaleLowerCase().includes( res.toLocaleLowerCase());
+       return dt;
+      })
+    }else{
+      this.materialList = this.materialListCopy;
+    }
+
+  }
+
   changeSource(event: any) {      
       event.target.src = this.defaultImage;
   }
