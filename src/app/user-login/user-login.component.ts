@@ -102,15 +102,22 @@ export class UserLoginComponent implements OnInit {
     const req = {...this.loginForm.value,locID:Number(this.loginForm.value.locID)};
     this.commonService.validateUserCredentials(req).subscribe(data => {
       this.localService.setLocalStorage('locId',Number(this.loginForm.value.locID)); 
-          if (data?.body.token && data?.body.userdto.userName) {
+          if (data?.body.token!='' && data?.body.userdto.userName) {
             this.localService.setLocalStorage('userObj',data?.body);       
             this.router.navigateByUrl(`/${this.organizationName}/home`);
           } else {
-            this.messageService.add({ severity: 'error', summary: 'error', detail: 'Invalid User Credentials' });
+            try {
+              this.messageService.add({ severity: 'error', summary: 'error', detail: 'Invalid User Credentials' });
+
+            } catch (error) {
+              
+            }
           }
           
         },
         (err: any) => {
+          this.messageService.add({ severity: 'error', summary: 'error', detail: 'Invalid User Credentials' });
+        
           this.errorMsg = 'Error occured';
         }
       );

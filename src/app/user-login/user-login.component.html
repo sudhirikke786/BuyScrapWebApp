@@ -29,6 +29,8 @@
                             <div class="form-group mb-3">
                                 <label required for="username" class="dark-color">Username</label>
                                 <input class="form-control" placeholder="Enter Username" type="text" name="username" formControlName="userName" />
+                                <app-form-error-message msg="Username is required" *ngIf="(isSubmit && loginForm?.get('userName')?.errors?.required)"></app-form-error-message>
+                            
                             </div>
 
                             <div class="form-group mb-3">

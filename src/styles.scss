@@ -214,8 +214,12 @@
                 position: absolute;
                 top:5%;
                 right:10%;
+            }  
+            
+            .fix-body{
+                overflow:auto !important;
+                height: auto !important;
             }
-           
         
  }
 
