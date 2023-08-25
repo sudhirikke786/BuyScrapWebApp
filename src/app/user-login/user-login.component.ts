@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../core/interfaces/common-interfaces';
 import { MessageService } from 'primeng/api';
 import { StorageService } from '../core/services/storage.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-user-login',
@@ -13,6 +14,8 @@ import { StorageService } from '../core/services/storage.service';
   providers: [MessageService]
 })
 export class UserLoginComponent implements OnInit {
+
+  loginForm!: FormGroup
   
   organizationName: any;
   locations: any;
@@ -26,11 +29,14 @@ export class UserLoginComponent implements OnInit {
     isConfirm: true
   };
   locationId: number = 0;
+  inputType: string  = 'password';
+  isSubmit: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private http:HttpClient,
               private localService:StorageService,
+              private fb:FormBuilder,
               private messageService: MessageService,
               private commonService: CommonService) { }
 
@@ -41,14 +47,28 @@ export class UserLoginComponent implements OnInit {
       this.organizationName = param["orgName"] || 'prodTest';
       this.getOrgLocation();
     });
+
+
+    this.loginForm = this.fb.group({
+      userName: '',
+      password: '',
+      locID: null,
+      isActive: true,
+      isConfirm: true
+    })
   }
   
   btnClick(): void {
-    this.user.locID =  Number(this.locationId);
-    this.localService.setLocalStorage('locId', this.locationId); 
+  
+  //  this.localService.setLocalStorage('locId', this.locationId); 
     this.validateUser();
+    
     // this.router.navigateByUrl(`/${this.organizationName}/home`);
   };
+
+  changeInput() {
+    this.inputType = this.inputType == 'password' ? 'text' : 'password';
+  }
   
   getIPAddress(){
     this.http.get("http://api.ipify.org/?format=json").subscribe((res:any)=>{
@@ -65,7 +85,7 @@ export class UserLoginComponent implements OnInit {
           console.log('getOrgLocation :: ');
           console.log(data);
           this.locations = data.body.data;
-          this.locationId =  this.locations[0].rowId;
+       //   this.locationId =  this.locations[0].rowId;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -74,8 +94,14 @@ export class UserLoginComponent implements OnInit {
   }
   
   validateUser() { 
-    this.commonService.validateUserCredentials(this.user).subscribe(data => {
-         
+    this.isSubmit =  false;
+    if(this.loginForm.invalid){
+      this.isSubmit =  true;
+      return false;
+    }
+    const req = {...this.loginForm.value,locID:Number(this.loginForm.value.locID)};
+    this.commonService.validateUserCredentials(req).subscribe(data => {
+      this.localService.setLocalStorage('locId',Number(this.loginForm.value.locID)); 
           if (data?.body.token && data?.body.userdto.userName) {
             this.localService.setLocalStorage('userObj',data?.body);       
             this.router.navigateByUrl(`/${this.organizationName}/home`);

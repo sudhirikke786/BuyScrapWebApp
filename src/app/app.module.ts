@@ -12,7 +12,7 @@ import { SiteLayoutComponent } from './common/site-layout/site-layout.component'
 import { FooterComponent } from './common/footer/footer.component';
 
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FourColumnPipe } from './core/pipe/four-column.pipe';
 import { CommonsharedModule } from './module/shared/commonshared/commonshared.module';
@@ -37,7 +37,8 @@ import { MessageService } from 'primeng/api';
     CommonsharedModule,
     PrimengModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],

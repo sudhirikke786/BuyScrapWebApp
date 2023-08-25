@@ -1,8 +1,8 @@
 <div class="account-pages account-pages-bsa">
     <div class="container">
-        <div class="row d-flex justify-content-center align-item-center" style="margin-top:65px">
-          <div class="d-flex justify-content-center">
-            <div class="col-md-8 col-lg-6 col-xl-5">
+        <div class="row d-flex justify-content-center align-item-center login-class" style="margin-top:65px">
+          <div class="d-flex justify-content-center login-inner">
+            <div class="col-md-8 col-lg-6 col-sm-12">
                 <div class="card bg-pattern">
 
                     <div class="card-body p-4">
@@ -24,22 +24,22 @@
                             <h4 class="mb-2 mt-3">Sign in to your account</h4>
                         </div>
 
-                        <form #f="ngForm" class="mt-3" (ngSubmit)="btnClick()">
+                        <form [formGroup]="loginForm" class="mt-3" >
 
                             <div class="form-group mb-3">
                                 <label required for="username" class="dark-color">Username</label>
-                                <input class="form-control" placeholder="Enter Username" type="text" name="username" [(ngModel)]="user.userName" />
+                                <input class="form-control" placeholder="Enter Username" type="text" name="username" formControlName="userName" />
                             </div>
 
                             <div class="form-group mb-3">
                                 <label for="emailaddress" class="dark-color">Password</label>
                                 <div class="input-group input-group-merge">
                                     
-                                    <input required type="password" id="password" class="form-control" name="password"
-                                    placeholder="Enter your Password" [(ngModel)]="user.password">
-                                    <div class="input-group-append" data-password="false">
+                                    <input required [type]="inputType" id="password" class="form-control" name="password"
+                                    placeholder="Enter your Password" formControlName="password" >
+                                    <div class="input-group-append">
                                         <div class="input-group-text">
-                                            <span class="bi bi-eye"></span>
+                                            <a  (click)="$event.preventDefault();changeInput()"><span class="bi bi-eye" ></span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -47,9 +47,9 @@
 
                             <div class="form-group mb-3">
                                 <label for="locationId" class="dark-color">Select Location</label>
-                                <div class="input-group input-group-merge">
-                                    <select required class="form-control" id="locationId" name="locationId" [(ngModel)]="locationId">
-                                        <option [value]="0" [selected]="true">-- Select State --</option>
+                                <div class="input-group input-group-merge" >
+                                    <select required class="form-control" formControlName="locID" id="locationId" name="locationId" >
+                                        <option value="null" [selected]="true">-- Select State --</option>
                                         <option *ngFor="let option of locations" [value]="option.rowId"> {{ option.locationName }} </option>
                                     </select>
 
@@ -64,7 +64,7 @@
                             </div>
 
                             <div class="form-group mb-2 text-center">
-                                <button type="submit"  class="px-1 py-1 btn-primary-bsa btn btn-primary btn-block h-30" type="submit"> Login </button>
+                                <button type="submit" [disabled]="loginForm.invalid" class="px-1 py-1 btn-primary-bsa btn btn-primary btn-block h-30" type="submit" (click)="validateUser()"> Login </button>
                             </div>
 
                         </form>

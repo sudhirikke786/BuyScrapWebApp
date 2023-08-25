@@ -208,7 +208,18 @@
         top:-32px
     }
 
-  @media (max-width: 767px) {
+    @media (max-width: 767px){
+     
+            .balance-details-ul{
+                position: absolute;
+                top:5%;
+                right:10%;
+            }
+           
+        
+ }
+
+  @media (max-width: 1024px) {
     /* Styles for mobile devices */
     html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu {
         display: none !important;
@@ -224,11 +235,7 @@
         height: auto;
     }
 
-    .balance-details-ul{
-        position: absolute;
-        top:5%;
-        right:27%;
-    }
+  
 
     .footer{
         top: 10px !important;
