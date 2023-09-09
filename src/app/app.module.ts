@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -13,11 +13,13 @@ import { FooterComponent } from './common/footer/footer.component';
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FourColumnPipe } from './core/pipe/four-column.pipe';
 import { CommonsharedModule } from './module/shared/commonshared/commonshared.module';
 import { PrimengModule } from './module/shared/primeng/primeng.module';
 import { MessageService } from 'primeng/api';
+import { AuthInterceptor } from './core/interceptors/http-interceptor';
+import { GlobalErrorHandlerService } from './core/services/global-error-handler.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,17 @@ import { MessageService } from 'primeng/api';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [MessageService],
+  providers: [
+    MessageService,  
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor ,
+      multi: true
+    },
+    { provide: ErrorHandler, 
+      useClass: GlobalErrorHandlerService
+    }
+  ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

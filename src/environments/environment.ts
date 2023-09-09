@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://3.15.226.165/BSAAPI'
+  baseUrl: 'http://api.buyscrapapp.com'
   // TO DO :: We will be going to add here constant variable/path used through out the application.
 
 };

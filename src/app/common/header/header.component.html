@@ -19,7 +19,7 @@
                     </div>
 
                     <!-- Sidebar Menu Toggle Button -->
-                    <button class="button-toggle-menu" (click)="commonService.showHidePanel()">
+                    <button class="button-toggle-menu" (click)="commonService.showHidePanel('open')">
                         <i class="mdi mdi-menu"></i>
                     </button>
                 </div>
@@ -83,7 +83,7 @@
                             <div class="dropdown-divider"></div>
 
                             <!-- item-->
-                            <a href="login.html" class="dropdown-item notify-item">
+                            <a href="javascript:void(0);" (click)="backToUserLogin()" class="dropdown-item notify-item">
                                 <i class="fe-log-out"></i>
                                 <span>Logout</span>
                             </a>

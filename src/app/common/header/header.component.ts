@@ -195,6 +195,13 @@ export class HeaderComponent implements OnInit {
     this.differntOpeningAmount = 0;    
     this.closeRegisterWithDiffernceVisible = false;
   }
+
+  backToUserLogin() {
+    const orgName = localStorage.getItem('orgName');
+    localStorage.removeItem('userObj');
+    localStorage.removeItem('locId');
+    this.router.navigateByUrl(`${orgName}/user-login`);
+  }
   
   // showHidePanel(){
   //   const htmlAttr = document.querySelector('html');

@@ -147,7 +147,7 @@ export class TicketDashboardComponent implements OnInit {
     this.first = event.first ;
     let pagObj = {
       PageNumber: this.currentPage,
-      RowOfPage: this.pageSize,
+      RowOfPage: event.rows,
     }
     this.pagination = {...this.pagination,...pagObj};
     this.getAllTicketsDetails(this.pagination);

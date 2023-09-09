@@ -25,13 +25,13 @@ export class CommonService {
         'Content-Type': 'application/json; charset=utf-8'
     });
 
-    const userToken = this.localService.getLocalStorage('userObj');
+    // const userToken = this.localService.getLocalStorage('userObj');
 
     if (clientName) {
       httpHeader = new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
-        'ClientName': clientName,
-        "Authorization": "Bearer " + userToken?.token
+        'ClientName': clientName //,
+        // "Authorization": "Bearer " + userToken?.token
       });
     }
 
@@ -66,11 +66,11 @@ export class CommonService {
     return null; //throwError(error);
   }
 
-   showHidePanel(){
+   showHidePanel(menuStatus: string){
     const htmlAttr = document.querySelector('html');
     if(htmlAttr){
-      const _datasidenav = htmlAttr.getAttribute('data-sidenav-size');
-      if(_datasidenav=='condensed'){
+      // const _datasidenav = htmlAttr.getAttribute('data-sidenav-size');
+      if(menuStatus=='open'){
         // sidebar-enable
         //
         htmlAttr.setAttribute('data-sidenav-size', 'default');

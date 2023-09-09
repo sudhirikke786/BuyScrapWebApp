@@ -69,6 +69,11 @@ export class UserLoginComponent implements OnInit {
   changeInput() {
     this.inputType = this.inputType == 'password' ? 'text' : 'password';
   }
+
+  backToOrgLogin() {
+    localStorage.clear();
+    this.router.navigateByUrl(`/organization-login`);
+  }
   
   getIPAddress(){
     this.http.get("http://api.ipify.org/?format=json").subscribe((res:any)=>{
@@ -86,6 +91,8 @@ export class UserLoginComponent implements OnInit {
           console.log(data);
           this.locations = data.body.data;
        //   this.locationId =  this.locations[0].rowId;
+          this.user.locID = this.locations[0].rowId;
+          this.loginForm.patchValue(this.user)
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -106,12 +113,8 @@ export class UserLoginComponent implements OnInit {
             this.localService.setLocalStorage('userObj',data?.body);       
             this.router.navigateByUrl(`/${this.organizationName}/home`);
           } else {
-            try {
-              this.messageService.add({ severity: 'error', summary: 'error', detail: 'Invalid User Credentials' });
-
-            } catch (error) {
-              
-            }
+            alert('Invalid User Credentials.');
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials or No user found.' });
           }
           
         },

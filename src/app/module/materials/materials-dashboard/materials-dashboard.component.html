@@ -43,7 +43,8 @@
                                             <ng-container  *ngFor="let item of materialList">
                                                 <div class="materials-pg-boxes">
                                                     <a routerLink = "/{{orgName}}/materials/detail/{{item.rowId}}">
-                                                        <img src="{{item.imagePath}}" (error)="this.changeSource($event);" />
+                                                        <!-- <img src="{{item.imagePath}}" (error)="this.changeSource($event);" /> -->
+                                                        <img src="assets/images/custom/materials/Default-Scrap-Material.png">
                                                     </a>
                                                     <div class="d-flex  justify-content-between px-1 py-1">
                                                         <div>{{item.groupName}}</div>

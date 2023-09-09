@@ -23,6 +23,7 @@ export class OrganizationLoginComponent implements OnInit {
     password: ''
   };
   isChecked = true;
+  inputType: string  = 'password';
 
   constructor(private router: Router, 
               private http: HttpClient,
@@ -49,7 +50,7 @@ export class OrganizationLoginComponent implements OnInit {
 
     const requestObj = {
       organisationName: this.org.orgName,
-      orgKey: '12345'
+      orgKey: this.org.password
     };
  
     this.commonService.validateOrgCredentials(requestObj)
@@ -65,18 +66,22 @@ export class OrganizationLoginComponent implements OnInit {
             }
             this.router.navigateByUrl(`${orgName}/user-login`);
           } else {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Content' });
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials or No user found.' });
 
           }
         },
         (err: any) => {
           
-          this.messageService.add({ severity: 'success', summary: 'Error', detail: 'Message Content' });
+          this.messageService.add({ severity: 'success', summary: 'Error', detail: 'Invalid credentials.' });
           // this.messageService.add({ severity: 'error', summary: 'Error', detail: err });
 
           
         }
       );
+  }
+
+  changeInput() {
+    this.inputType = this.inputType == 'password' ? 'text' : 'password';
   }
 
   

@@ -34,11 +34,11 @@
                             <div class="form-group mb-3">
                                 <label for="orgkey" class="dark-color">Organization Key</label>
                                 <div class="input-group input-group-merge">
-                                    <input type="text" id="orgkey" name="orgkey" class="form-control" 
+                                    <input required [type]="inputType" id="orgkey" name="orgkey" class="form-control" 
                                     placeholder="Enter your Organization Key" [(ngModel)]="org.password" >
                                     <div class="input-group-append" data-password="false">
                                         <div class="input-group-text">
-                                            <span class="bi bi-eye"></span>
+                                            <a  (click)="$event.preventDefault();changeInput()"><span class="bi bi-eye" ></span></a>
                                         </div>
                                     </div>
                                 </div>
