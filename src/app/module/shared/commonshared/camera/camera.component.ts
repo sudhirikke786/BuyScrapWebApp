@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, AfterViewInit, Output } from '@angular/core';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 
@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs';
   templateUrl: './camera.component.html',
   styleUrls: ['./camera.component.scss']
 })
-export class CameraComponent implements OnInit {
+export class CameraComponent implements AfterViewInit {
   @Output() getPicture = new EventEmitter<string>();
   showWebcam = false;
   isCameraExist = true;
@@ -27,23 +27,28 @@ export class CameraComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    WebcamUtil.getAvailableVideoInputs().then(
-      (mediaDevices: MediaDeviceInfo[]) => {
-        this.allMediaDevices = mediaDevices;
-        console.log('mediaDevices' + JSON.stringify(mediaDevices));
-        this.isCameraExist = mediaDevices && mediaDevices.length > 0;
-      }
-    );
+  ngAfterViewInit(): void {
+    // WebcamUtil.getAvailableVideoInputs().then(
+    //   (mediaDevices: MediaDeviceInfo[]) => {
+    //     this.allMediaDevices = mediaDevices;
+    //     console.log('mediaDevices' + JSON.stringify(mediaDevices));
+    //     this.isCameraExist = mediaDevices && mediaDevices.length > 0;
+    //   }
+    // );
 
+    // devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput")
 
-
-    // (async () => {   
-    //   await navigator.mediaDevices.getUserMedia({audio: true, video: true});   
-    //   let devices = await navigator.mediaDevices.enumerateDevices(); 
-
-    //   console.log(devices); 
-    // })();
+    navigator.mediaDevices.getUserMedia({video: true}); 
+    (async () => {     
+      let devices = await navigator.mediaDevices.enumerateDevices(); 
+      console.log('mediaDevices 1111111111111');
+      console.log(devices); 
+      console.log('mediaDevices 2222222222222222');
+      this.allMediaDevices = devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput");
+      console.log('mediaDevices' + JSON.stringify(this.allMediaDevices));
+      this.isCameraExist = this.allMediaDevices && this.allMediaDevices.length > 0;
+      this.showWebcam = false;
+    })();
   }
 
   takeSnapshot(): void {

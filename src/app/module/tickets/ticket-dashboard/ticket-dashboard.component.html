@@ -42,7 +42,7 @@
 
         <div class="row mt-2">
             <div class="col-12">
-                <div class="card" style="height:calc(100vh - 250px)">
+                <div class="card" style="height:calc(100vh - 160px)">
                     <div class="card-body">
 
                       
@@ -203,7 +203,7 @@
                             <td>{{ childTicket?.rowId }}</td>
                             <td>{{ childTicket?.createdDate | date: 'MM/dd/yyyy hh:mm a' }}</td>
                             <td>{{ childTicket?.status }}</td>
-                            <td>{{ childTicket?.ticketAmount | number : '1.3-3' }}</td>
+                            <td>{{ childTicket?.amount | number : '1.3-3' }}</td>
                             <td>{{ childTicket?.customerName }}</td>
                             <td>{{ childTicket?.dateClosed ? (childTicket?.dateClosed | date: 'MM/dd/yyyy hh:mm a') :
                                 ''}}</td>
