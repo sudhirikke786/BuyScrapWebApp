@@ -48,7 +48,7 @@
                 [showCurrentPageReport]="true"
                 [tableStyle]="{ 'min-width': '50rem' }"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [rowsPerPageOptions]="[10, 25, 50]"
+                [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions"
               >
              
                 <ng-template pTemplate="header">
@@ -146,7 +146,7 @@
 
     <p-table #dt1 [value]="sellers" [paginator]="true" [rows]="10"
     [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-    [rowsPerPageOptions]="[ 5, 10, 20, 50]" 
+    [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions" 
     [scrollable]="true" 
     scrollHeight="50vh"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"

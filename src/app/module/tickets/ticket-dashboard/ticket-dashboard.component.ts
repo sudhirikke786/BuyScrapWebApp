@@ -130,7 +130,7 @@ export class TicketDashboardComponent implements OnInit {
   tiketSelectedObj: any;
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private commonService: CommonService) { }
+    public commonService: CommonService) { }
 
   ngOnInit() {
     this.selectedTickets = this.defaultSelectedTicketsTypes;

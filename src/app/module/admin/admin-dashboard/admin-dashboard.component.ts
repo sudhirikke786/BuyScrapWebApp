@@ -63,7 +63,7 @@ export class AdminDashboardComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private messageService: MessageService,
-    private commonService: CommonService) { }
+    public commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');

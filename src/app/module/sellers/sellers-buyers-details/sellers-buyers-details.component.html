@@ -50,7 +50,7 @@
                         <div class="row mt-3 dt-responsive nowrap w-100">
                             <p-table #dt1 [value]="tickets" [paginator]="true" [rows]="10"
                                 [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-                                [rowsPerPageOptions]="[ 5, 10, 20, 50]" 
+                                [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions"
                                 [scrollable]="true" 
                                 scrollHeight="50vh"
                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"

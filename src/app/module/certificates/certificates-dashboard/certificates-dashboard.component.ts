@@ -82,10 +82,10 @@ export class CertificatesDashboardComponent implements OnInit {
 
   
   certificates: any;
-  
+
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private commonService: CommonService) { }
+    public commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');

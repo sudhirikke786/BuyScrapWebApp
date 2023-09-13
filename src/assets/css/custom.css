@@ -746,7 +746,18 @@
  .money-button-red{background:#ec5756;}
  .money-button-green{background:green;}
  .money-button-blue{background:#02659d;}
- .report-button{padding:10px; color:#fff; width: 100%; display: block; background: #3ba3fd; font-weight: 600; font-size: 20px;}
+ .report-button{
+  color: #fff;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  background: #3ba3fd;
+  font-weight: 600;
+  font-size: 25px !important;
+  justify-content: center;
+  padding: 5px;
+  align-items: center;
+}
  /*.report-button{padding:10px; color:#fff; width: 100%; display: block; background: #209303; font-weight: 600; font-size: 20px;}*/
  .void-button{padding:10px; color:#fff; width: 100%; display: block; background: #209303; font-weight: 600; font-size: 20px;}
  .settings-button{padding:10px; color:#fff; width: 100%; display: block; background: #3ba3fd; font-weight: 600; font-size: 20px;}

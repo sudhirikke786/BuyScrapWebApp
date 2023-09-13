@@ -43,7 +43,7 @@
                                         scrollHeight="50vh" [paginator]="true" [rows]="10"
                                             [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
                                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                            [rowsPerPageOptions]="[10, 25, 50]" >
+                                            [rowsPerPageOptions]="commonService.tableConfig.pageOptions" >
 
                                            
                                             <ng-template pTemplate="header">

@@ -44,7 +44,7 @@
 .p-datatable .p-datatable-thead > tr > th{
     background-color: #fff !important;
     padding: 0.5rem 0.3rem !important;
-    font-size: 12px;
+    font-size: 14px;
     color: #6c757d;
 }
 .p-datatable .p-datatable-tbody > tr > td {
@@ -223,10 +223,13 @@
         
  }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1180px) {
     /* Styles for mobile devices */
     html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu {
         display: none !important;
+    }
+    .p-paginator{
+        padding: 0px !important;
     }
 
     .p-paginator .p-paginator-current{
@@ -242,7 +245,9 @@
   
 
     .footer{
-        top: 10px !important;
+        bottom: 10px !important;
+        width: 100%;
+        left:0px !important;
         position: absolute !important;
     }
 
@@ -270,6 +275,9 @@
         width: 100px;
         height: 60px;
     }
+    .main-ul{
+        display: block;
+      }
 
     .box{
         width: 100% !important;
@@ -298,5 +306,9 @@
     }
     .mdi-cust{
         font-size: 12px !important;
+    }
+
+    .div-small{
+    width: 100% !important;
     }
 }

@@ -18,7 +18,7 @@ export class SellersBuyersDetailsComponent implements OnInit {
   
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private commonService: CommonService) { }
+    public commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');

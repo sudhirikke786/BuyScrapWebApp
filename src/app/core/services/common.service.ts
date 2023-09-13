@@ -16,6 +16,9 @@ export class CommonService {
 
   
   configJson: any;
+  dataTableConfig:any  = {
+    pageOptions:[10, 25, 50,100]
+  }
 
   constructor(private http: HttpClient,private localService:StorageService) { }
 
@@ -62,15 +65,20 @@ export class CommonService {
     return new Observable<any>(x => x.next(null));
   }
 
+  get tableConfig(){
+    return this.dataTableConfig
+  }
+
   private handleError(error: HttpErrorResponse) {
     return null; //throwError(error);
   }
 
    showHidePanel(menuStatus: string){
+    
     const htmlAttr = document.querySelector('html');
     if(htmlAttr){
-      // const _datasidenav = htmlAttr.getAttribute('data-sidenav-size');
-      if(menuStatus=='open'){
+       const _datasidenav = htmlAttr.getAttribute('data-sidenav-size');
+      if(_datasidenav=='condensed'){
         // sidebar-enable
         //
         htmlAttr.setAttribute('data-sidenav-size', 'default');

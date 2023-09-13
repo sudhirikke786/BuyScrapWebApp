@@ -3,10 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true,
+  production: false,
   baseUrl: 'https://app.buyscrapapp.com/api'
   // TO DO :: We will be going to add here constant variable/path used through out the application.
-
 };
 
 /*

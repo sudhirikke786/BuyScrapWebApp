@@ -14,7 +14,7 @@ export class SystemPerfComponent implements OnInit {
   editObj: any;
   copyObj: any;
   searchValue = '';
-  constructor(private commonService: CommonService,private formBuilder: FormBuilder){
+  constructor(public commonService: CommonService,private formBuilder: FormBuilder){
 
   }
 

@@ -71,7 +71,7 @@
                                         </p-table>
 
                                         <div *ngIf="sellers?.length > 0">
-                                            <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+                                            <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator>
                                           </div>
                                           
                                     
