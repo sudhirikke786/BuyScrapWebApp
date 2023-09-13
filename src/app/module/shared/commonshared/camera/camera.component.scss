@@ -1,20 +1,24 @@
-.image-center {
+.snap-container {
+    margin-top: 16px;
+    margin-bottom: 16px;
     text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.img-profile{
-    width: 420px;
-    height: 290px;
-    // img {
-    //     transform: scaleX(-1);
-    //     -webkit-transform: scaleX(-1); /* For older versions of Safari */
-    // }
-}
-
-// .video-element {
-//     transform: scaleX(-1);
-//     -webkit-transform: scaleX(-1); /* For older versions of Safari */
-//   }
+  }
+  
+  .list-unstyled {
+    list-style: none;
+  }
+  
+  .list-unstyled li {
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .show {
+    display: block;
+  }
+  
+  .hide {
+    display: none;
+  }
+  
