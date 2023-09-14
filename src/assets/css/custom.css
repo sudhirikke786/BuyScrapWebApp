@@ -742,23 +742,23 @@
  .btn-display-block{display: block;}
  .certificates-img{min-width:55px;}
  .bg-light-grey{background:#f5f5f5; padding: 5px 10px;}
- .money-button{padding:10px; color:#fff; width: 100%; display: block;}
+ /* .money-button{padding:10px; color:#fff; width: 100%; display: block;} */
+ .money-button{padding:10px; color:#fff; width: 100%; display: block; font-weight: 600; font-size: 18px !important;}
  .money-button-red{background:#ec5756;}
  .money-button-green{background:green;}
  .money-button-blue{background:#02659d;}
- .report-button{
+ /* .report-button{
   color: #fff;
   width: 100%;
   height: 100px;
   display: flex;
   background: #3ba3fd;
   font-weight: 600;
-  font-size: 25px !important;
+  font-size: 20px !important;
   justify-content: center;
-  padding: 5px;
   align-items: center;
-}
- /*.report-button{padding:10px; color:#fff; width: 100%; display: block; background: #209303; font-weight: 600; font-size: 20px;}*/
+} */
+ .report-button{padding:10px; color:#fff; width: 100%; display: block; background: #3ba3fd; font-weight: 600; font-size: 18px !important;}
  .void-button{padding:10px; color:#fff; width: 100%; display: block; background: #209303; font-weight: 600; font-size: 20px;}
  .settings-button{padding:10px; color:#fff; width: 100%; display: block; background: #3ba3fd; font-weight: 600; font-size: 20px;}
  .cashier-settings-table{width: 100%;}
