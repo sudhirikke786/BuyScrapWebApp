@@ -42,7 +42,7 @@
 
         <div class="row mt-2">
             <div class="col-12">
-                <div class="card" style="height:calc(100vh - 200px)">
+                <div class="card" style="height:calc(100vh - 160px)">
                     <div class="card-body">
 
                       
@@ -50,7 +50,7 @@
                                 <div class="col-sm-12">
                                     <p-table #dt1 [value]="tickets" [paginator]="false" [rows]="pageSize"
                                         [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" 
-                                        scrollHeight="calc(100vh - 350px)"
+                                        scrollHeight="calc(100vh - 250px)"
                                         [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']">
                                         <ng-template pTemplate="header">
                                             <tr>

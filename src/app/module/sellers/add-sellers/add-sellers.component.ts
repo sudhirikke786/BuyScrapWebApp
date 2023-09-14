@@ -31,6 +31,8 @@ export class AddSellersComponent implements OnInit {
     private fb: FormBuilder,
     private commonService: CommonService) { 
 
+      this.orgName = localStorage.getItem('orgName');
+      this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
       this.route.params.subscribe((param)=>{
         if (param["sellerId"]) {
           this.sellerId = param["sellerId"];
@@ -43,8 +45,6 @@ export class AddSellersComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.orgName = localStorage.getItem('orgName');
-    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.createSellerForm();
   }
 

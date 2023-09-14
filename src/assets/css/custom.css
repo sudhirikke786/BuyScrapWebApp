@@ -662,7 +662,7 @@
  #sidebar-menu>ul>li>a{color: #ffffff !important;}
  .fa-t{font-size: 10px !important;}
  .balance-details-ul{line-height:60px;}
- .balance-details-ul li{display: inline-block; margin-right:10px; color: #ffffff;}
+ .balance-details-ul li{display: inline-block; margin-right:10px; color: #ffffff; font-size: 16px;}
  .select2-container--default .select2-selection--multiple .select2-selection__choice{background-color: #0176B8 !important;}
  .dark-color{color:#333333;}
  .color-white{color: #ffffff !important;}
