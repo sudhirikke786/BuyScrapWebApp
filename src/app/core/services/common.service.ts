@@ -73,12 +73,12 @@ export class CommonService {
     return null; //throwError(error);
   }
 
-   showHidePanel(menuStatus: string){
+  showHidePanel(menuStatus: string){
     
     const htmlAttr = document.querySelector('html');
     if(htmlAttr){
        const _datasidenav = htmlAttr.getAttribute('data-sidenav-size');
-      if(_datasidenav=='condensed'){
+      if(menuStatus=='open'){
         // sidebar-enable
         //
         htmlAttr.setAttribute('data-sidenav-size', 'default');
@@ -90,6 +90,7 @@ export class CommonService {
     }
   
   }
+
 
   getProbablyNumberFromLocalStorage(key: any) {
     var val = localStorage.getItem(key);
