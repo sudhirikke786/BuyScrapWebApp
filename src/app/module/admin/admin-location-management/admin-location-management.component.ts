@@ -185,7 +185,7 @@ export class AdminLocationManagementComponent implements OnInit {
         "rowId": 0,
         "roleId": Number(this.userForm.value.roleId),
         "role":this.roleList.filter((item:any) => item.roleId == this.userForm.value.roleId)[0],
-        "locID":this.locId,
+        "locID":this.editObj.rowId,
         "isConfirm": true,
       }
       const userObj = {...this.userForm.value,...req}

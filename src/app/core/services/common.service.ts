@@ -19,7 +19,8 @@ export class CommonService {
   dataTableConfig:any  = {
     pageOptions:[10, 25, 50,100]
   }
-
+  
+  private _status = true;
   constructor(private http: HttpClient,private localService:StorageService) { }
 
   /* GET: get the data for type ahead select dropdown based on key passed*/
@@ -73,12 +74,12 @@ export class CommonService {
     return null; //throwError(error);
   }
 
-  showHidePanel(menuStatus: string){
-    
+  showHidePanel(menuStatus: boolean = false){
+    this._status =  menuStatus
     const htmlAttr = document.querySelector('html');
     if(htmlAttr){
        const _datasidenav = htmlAttr.getAttribute('data-sidenav-size');
-      if(menuStatus=='open'){
+      if(this._status){
         // sidebar-enable
         //
         htmlAttr.setAttribute('data-sidenav-size', 'default');

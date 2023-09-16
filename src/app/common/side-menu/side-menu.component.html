@@ -71,7 +71,7 @@
                             <ul class="menu">
                                 <ng-container *ngFor="let item of menuList">
                                     <li class="menu-item d-none d-md-block">
-                                        <a href="javscript:void()" (click)="commonService.showHidePanel('close')" routerLink="/{{organizationName}}{{item.url}}"
+                                        <a href="javscript:void()" (click)="commonService.showHidePanel(false)" routerLink="/{{organizationName}}{{item.url}}"
                                             routerLinkActive="active" class="menu-link">,
                                             <span class="menu-icon"><img src="{{item.icon}}" class="dash-icons"></span>
                                             <span class="menu-text menu-links-text">{{item.title}}</span>
@@ -79,7 +79,7 @@
                                     </li>
 
                                     <li class="menu-item d-sm-block d-md-none">
-                                        <a href="javscript:void()" (click)="commonService.showHidePanel('close')" routerLink="/{{organizationName}}{{item.url}}"
+                                        <a href="javscript:void()" (click)="commonService.showHidePanel(false)" routerLink="/{{organizationName}}{{item.url}}"
                                             routerLinkActive="active" class="menu-link">,
                                             <span class="menu-icon"><img src="{{item.icon}}" class="dash-icons"></span>
                                             <span class="menu-text menu-links-text">{{item.title}}</span>
