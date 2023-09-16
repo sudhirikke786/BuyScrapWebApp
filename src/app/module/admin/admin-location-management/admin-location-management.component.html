@@ -26,15 +26,15 @@
         </div>
         
         <div class="row mt-2">
-            <div class="col-md-2">
+            <div class="col-sm-2 col-xs-6">
                 <h5>Total Users : {{locationObj?.userCount}}</h5>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-sm-2 col-xs-6">
                 <h5>Total Tickets :  {{locationObj?.availableTickets}}</h5>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-sm-2">
                 <h5>Total Locations :  {{locationObj?.userCount}}</h5>
             </div>
 
@@ -45,7 +45,7 @@
 
                 <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Refresh"><i class="mdi mdi-cust mdi-refresh"></i></a>
 
-                <a (click) ="showLocation()" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location"><i class="mdi mdi-cust mdi-plus"></i></a>
+                <a (click)="addpoupOpen()" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location"><i class="mdi mdi-cust mdi-plus"></i></a>
             </div>
             
         </div>  
@@ -56,11 +56,13 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <p-table [value]="location"  [scrollable]="true" 
+                        <p-table [value]="locObj"  [scrollable]="true" 
                         scrollHeight="50vh" [paginator]="true" [rows]="10"
                         [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        [rowsPerPageOptions]="[10, 25, 50]" >
+                        [rowsPerPageOptions]="commonService.tableConfig.pageOptions" 
+                        [loading]="loading"
+                        >
 
                        
                         
@@ -73,16 +75,18 @@
                                 <th>Action</th>
                             </tr>
                         </ng-template>
+
+                        
                         <ng-template pTemplate="body" let-admin>
                             <tr>
                                 <td>{{ admin.locationName }}</td>
                                 <td>{{ admin.userCount }}</td>
                                 <td>{{ admin.totalTickets }}</td>
-                                <td>{{ admin.avlTickets }}</td>
+                                <td>{{ admin.availableTickets }}</td>
                                 <td>
-                                    <a (click)="showLocationModel()" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
+                                    <a (click)="editPopupOpen(admin)" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
 
-                                    <a (click)="showModel()"  class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-account"></i> User Management</a>
+                                    <a (click)="showUserModel(admin)"  class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-account"></i> User Management</a>
                         
                                      </td>
                             </tr>
@@ -105,93 +109,114 @@
 
 </div> <!-- content -->
 
-
-
+<ng-container *ngIf="visible">
 <p-dialog
-header="Edit User"
+header="Add User"
 [(visible)]="visible"
-[style]="{ width: '80vw' }"
->
-<ng-template pTemplate="header">
-    <div>
-        <a (click)="hideModel()" class="btn btn-primary btn-back" title="Back to New Regrade"><i class="mdi mdi-keyboard-backspace"></i></a>
- 
-    </div>
-  
-</ng-template>
+[style]="{ width: '80vw' }">
+
 
 <div class="row">
 <div class="col-sm-12">
     
-    <form action="">
-        
+    <form [formGroup]="userForm">
+                                
         <div class="row">
             <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">First Name</label>
-                <input type="text" id="fistname" class="form-control" placeholder="First Name">
+                <label for="simpleinput" class="form-label w-100" >First Name<span class="text-danger">*</span></label>
+                <input type="text" formControlName="firstName" id="fistname" class="form-control" [ngClass]="{'border-danger': isSubmit &&  f.firstName.invalid }"  placeholder="First Name">
+                <app-form-error-message msg=" Name is required" *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.required)"></app-form-error-message>
+                <app-form-error-message [msg]="patternMsg?.alphabetPattern[1]" *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.pattern)"></app-form-error-message>
             </div>
 
             <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Last Name</label>
-                <input type="text" id="lastname" class="form-control" placeholder="Last Name">
+                <label for="simpleinput" class="form-label w-100">Last Name <span class="text-danger">*</span></label>
+                <input type="text" formControlName="lastName" id="lastname" class="form-control" placeholder="Last Name" [ngClass]="{'border-danger': isSubmit &&  f.lastName.invalid}">
+                <app-form-error-message msg="Last Name is required" *ngIf="(isSubmit && userForm?.get('lastName')?.errors?.required)"></app-form-error-message>
+
             </div>
         </div>
 
         <div class="row">
             <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Select Role</label>
-                <select class="form-select" id="selectrole">
-                    <option>Administrator</option>
-                    <option>Cashier</option>
-                    <option>Scale</option>
-                    <option>Employee</option>
+                <label for="simpleinput" class="form-label w-100" [ngClass]="{'border-danger': f.roleId.touched && f.role?.invalid}">Select Role <span class="text-danger">*</span></label>
+                <select formControlName="roleId" class="form-select" id="selectrole">
+                    <option disabled value="null">Select Role</option>
+                    <option *ngFor="let item of roleList" [value]="item?.rowId">{{item?.role}}</option>
+                   
                 </select>
+                <app-form-error-message msg="Role Name is required" *ngIf="isSubmit && userForm?.get('roleId')?.errors?.required"></app-form-error-message>
+
             </div>
 
             <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Username</label>
-                <input type="text" id="username" class="form-control" placeholder="Enter Username">
+                <label for="simpleinput" class="form-label w-100">Username <span class="text-danger">*</span></label>
+                <input type="text" formControlName="userName" id="username" class="form-control" [ngClass]="{'border-danger': isSubmit && f.userName?.invalid}" placeholder="Enter Username">
+                <app-form-error-message msg="UserName Name is required" *ngIf="isSubmit && userForm?.get('userName')?.errors?.required"></app-form-error-message>
+
             </div>
         </div>
 
         <div class="row">
             <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Password</label>
-                <input type="password" id="password" class="form-control" placeholder="Enter Your Password">
+                <label for="simpleinput" class="form-label w-100">Password <span class="text-danger">*</span></label>
+                <input formControlName="password" type="password"  id="password" class="form-control"  [ngClass]="{'border-danger': isSubmit && f.password?.invalid}" placeholder="Enter Your Password">
+                
+                 <app-form-error-message msg="Password is required" *ngIf="isSubmit && userForm?.get('password')?.errors?.required"></app-form-error-message>
+
             </div>
 
             <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Confirm Password</label>
-                <input type="password" id="confirmpassword" class="form-control" placeholder="Enter Your Password">
+                <label for="simpleinput" class="form-label w-100">Confirm Password <span class="text-danger">*</span> </label>
+                <input type="password" formControlName="confirmPassword" id="confirmpassword" class="form-control "  [ngClass]="{'border-danger': isSubmit && f.confirmPassword?.invalid}" placeholder="Enter Your Password">
+               
+
+                <div *ngIf="isSubmit &&  f.confirmPassword?.invalid">
+                    <app-form-error-message msg="Confirm Password is required" *ngIf="isSubmit && userForm?.get('confirmPassword')?.errors?.required"></app-form-error-message>
+                    <app-form-error-message msg="Password and Confirm Password must be match." *ngIf="userForm?.get('confirmPassword')?.errors?.confirmedValidator"></app-form-error-message>
+                   
+                </div>
+                
             </div>
         </div>
 
         <div class="row">
-            <div class="form-group col-sm-12 mb-2">
-                <label for="simpleinput" class="form-label w-100">Mail ID</label>
-                <input type="email" id="mailid" class="form-control" placeholder="Enter Mail ID">
+            <div class="form-group col-sm-6 mb-2">
+                <label for="simpleinput" class="form-label w-100">Mobile No <span class="text-danger">*</span></label>
+                <input formControlName="mobileNumber" type="mobileNumber" id="mobileNumber" class="form-control" [ngClass]="{'border-danger': isSubmit && f.mobileNumber?.invalid}"  placeholder="Enter Mobile No">
+                <app-form-error-message msg="Mobile Number is required" *ngIf="isSubmit && userForm?.get('mobileNumber')?.errors?.required"></app-form-error-message>
+
+           </div>
+            <div class="form-group col-sm-6 mb-2">
+                <label for="simpleinput" class="form-label w-100">Mail ID <span class="text-danger">*</span></label>
+                <input formControlName="emailID" type="email" id="mailid" class="form-control" [ngClass]="{'border-danger': isSubmit &&  f.emailID?.invalid}" placeholder="Enter Mail ID">
+                <app-form-error-message msg="Email is required" *ngIf="isSubmit && userForm?.get('emailID')?.errors?.required"></app-form-error-message>
+
             </div>
         </div>
 
-        <a class="btn btn-primary btn-materials">Save</a>
+        <button class="btn btn-primary btn-materials" (click)="submitForm()">Save</button>
     </form>
+
 
 </div>
 </div> 
 
 </p-dialog>
+</ng-container>
+
 
 
 
 <p-dialog
-header="Edit Location"
+[header]="actionType"
 [(visible)]="locationVisble"
 [style]="{ width: '80vw' }"
 >
 <ng-template pTemplate="header">
     <div class="d-flex">
         <a (click)="hideLocationModel()" class="btn btn-primary btn-back" title="Back to Location"><i class="mdi mdi-keyboard-backspace"></i></a>
-        <h4 class="modal-title ml-10" id="myLargeModalLabel">Edit Location</h4>
+        <h4 class="modal-title ml-10" id="myLargeModalLabel">{{actionType + ' Locations'}}</h4>
     </div>
   
 </ng-template>
@@ -199,37 +224,43 @@ header="Edit Location"
 <div class="row">
     <div class="col-sm-12">
         
-        <form action="">
+        <form  [formGroup]="locationForm">
             
             <div class="form-group col-sm-12 mb-2">
                 <label for="simpleinput" class="form-label w-100">Location Name</label>
-                <input type="text" id="locationname" class="form-control" value="California">
+                <input type="text" id="locationname" class="form-control" formControlName="locationName">
             </div>
 
             <div class="form-group col-sm-12 mb-2">
                 <label for="simpleinput" class="form-label w-100">Set User Counts for Location</label>
-                <input type="text" id="usercount" class="form-control" value="10">
+                <input type="number" min="0" id="usercount" class="form-control" formControlName="userCount">
             </div>
 
             <div class="form-group col-sm-12 mb-2">
                 <label for="simpleinput" class="form-label w-100">Set Employee Counts for Location</label>
-                <input type="text" id="employeecount" class="form-control" value="2314">
+                <input type="number" min="0" id="employeecount" class="form-control" formControlName="employeeCount">
             </div>
 
             <div class="form-group col-sm-12 mb-2">
                 <label for="simpleinput" class="form-label w-100">Ticket Limits</label>
-                <input type="text" id="employeecount" class="form-control" value="700">
+                <input type="number" min="0" id="employeecount" class="form-control" formControlName="ticketLimit">
             </div>
 
-            <a class="btn btn-primary btn-materials">Save</a>
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Available Tickets</label>
+                <input type="number" min="0"  class="form-control" formControlName="availableTickets">
+            </div>
+
+            <a class="btn btn-primary btn-materials" (click)="submitLocation()">{{ actionType == 'Add' ? 'Save' : 'Update' }}</a>
         </form>
 
     </div>
 </div> 
 </p-dialog>
 
+<p-toast></p-toast>
 
-
+<!-- 
 <p-dialog
 header="Add Location"
 [(visible)]="addlocationVisble"
@@ -273,4 +304,4 @@ header="Add Location"
 
     </div>
 </div>   
-</p-dialog>
+</p-dialog> -->

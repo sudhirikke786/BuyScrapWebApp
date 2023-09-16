@@ -82,6 +82,7 @@ export class CertificatesDashboardComponent implements OnInit {
 
   
   certificates: any;
+  certificatesImages: any;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -112,8 +113,31 @@ export class CertificatesDashboardComponent implements OnInit {
       );
   }
 
+
+  getCODImagesbyID(obj:any){
+    this.showModel();
+    const paramObject = {
+      TicketID:obj?.rowId
+    }
+    this.certificatesImages = [];
+    this.commonService.GetCODImagesbyID(paramObject)
+      .subscribe(data => {
+        
+          this.certificatesImages = data.body.data;
+          console.log(this.certificatesImages);
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
   showModel(){
     this.visible = true;
+  }
+
+  handleImage($event:any){
+
   }
 
   showCaptureModel(){

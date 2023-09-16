@@ -25,10 +25,10 @@ export class HeaderComponent implements OnInit {
   closeRegisterWithDiffernceExplaination = '';
   differntOpeningAmount: number = 0.00;
   mobileName: any;
-
+  cashAmount:any;
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private dataService: DataService,
+    public dataService: DataService,
     private stroarge:StorageService,
     public commonService: CommonService) { }
 
@@ -44,6 +44,9 @@ export class HeaderComponent implements OnInit {
     };
     this.getCashDrawerAmountAndPaidTicketCount(paramObject);
     this.getCashdrawerdetails(paramObject);
+      this.dataService.getCashDrawerAmountDTO().subscribe((amount:any) =>{
+        this.cashAmount = amount;
+     });
     this.getCashDrawerAmountDTO(paramObject);
   }
   
@@ -87,6 +90,8 @@ export class HeaderComponent implements OnInit {
           console.log(data);
           // this.dataService.cashDrawerAmountDTO(data);
           this.cashDrawerBalanceAmount = data.body.data.amount;
+          this.dataService.setCashDrawerAmountDTO(this.cashDrawerBalanceAmount)
+
           if (data.body.data.status === 'CLOSED') {
             this.isReopenRegister = true;
           } else {

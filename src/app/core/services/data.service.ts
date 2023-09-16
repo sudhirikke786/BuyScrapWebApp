@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,7 +9,10 @@ export class DataService {
 
   private _cashDrawerDetail: any;
   private _cashDrawerAmountAndPaidTicketCount: any;
-  private _cashDrawerAmountDTO: any;
+  // _cashDrawerAmountDTO: any;
+ 
+  private _cashDrawerAmountDTO = new BehaviorSubject<any>(0);
+  private _cashDrawerAmountDTO$ = this._cashDrawerAmountDTO.asObservable();
 
   set cashDrawerDetail(val: any) {
     this._cashDrawerDetail = val;
@@ -27,12 +30,12 @@ export class DataService {
     return this._cashDrawerAmountAndPaidTicketCount;
   }
   
-  set cashDrawerAmountDTO(val: any) {
-    this._cashDrawerAmountDTO = val;
+  setCashDrawerAmountDTO(val: any) {
+    this._cashDrawerAmountDTO.next(val);
   }
 
-  get cashDrawerAmountDTO() {
-    return this._cashDrawerAmountDTO;
+  getCashDrawerAmountDTO() {
+    return this._cashDrawerAmountDTO$;
   }
 
 }

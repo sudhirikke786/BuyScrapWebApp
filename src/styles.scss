@@ -193,20 +193,25 @@
     justify-content: end !important;
   }
 
+  .btn.disabled, .btn:disabled, fieldset:disabled .btn{
+    background-color: #ccc !important;
+    border: transparent !important;
+  }
+
   /**
   overlay padding
   */
 
-  
-  .p-overlaypanel .p-overlaypanel-content{
-    padding: 2px !important;
-  
-  }
 
-    .calc {
-        position: absolute;
-        top:-32px
-    }
+.p-overlaypanel .p-overlaypanel-content{
+padding: 2px !important;
+
+}
+
+.calc {
+    position: absolute;
+    top:-32px
+}
 
     @media (max-width: 767px){
      

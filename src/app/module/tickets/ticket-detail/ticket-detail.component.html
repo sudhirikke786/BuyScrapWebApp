@@ -24,7 +24,7 @@
 
                         <div class="row">
                             <div class="col-sm-2">
-                                <img src="assets/images/custom/driving-license.png" class="dl-img">
+                                <img src="{{customer?.profilePic}}" class="dl-img">
                             </div>
 
                             <div class="col-sm-10">
@@ -55,9 +55,9 @@
 
                                     <tr>
                                         <td>DL# - {{customer?.driverLicenseNumber}}</td>
-                                        <td>Dealer Type - None</td>
-                                        <td>License Plate # :</td>
-                                        <td>By <label>Sanket Yoshi</label></td>
+                                        <td>Dealer Type - {{customer?.dealerType}}</td>
+                                        <td>License Plate # :{{customer?.driverLicenseNumber}}</td>
+                                        <td>By <label>{{customer?.customerName}}</label></td>
                                     </tr>
                                 </tbody></table>
                             </div>
@@ -308,7 +308,9 @@
 </div>
 
 
-<p-dialog [header]="modalHeader" [(visible)]="editItemVisible" [style]="{width: '80vw'}"
+<ng-container *ngIf="editItemVisible">
+
+    <p-dialog [header]="modalHeader" [(visible)]="editItemVisible" [style]="{width: '80vw'}"
  [breakpoints]="{'767px': '100vw'}">
         
     <div class="row">
@@ -463,49 +465,54 @@
     </div>
 </p-dialog>
 
+</ng-container>
 
-<p-dialog [header]="modalAdjustmentHeader" [(visible)]="addEditAdjustmentVisible" [style]="{width: '80vw'}" [breakpoints]="{'767px': '100vw'}">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="form-group col-sm-12 mb-2 d-flex">
-                <label for="simpleinput" class="form-label">Adjustment Amount</label>
-                <input type="text" id="adjustmentamount" class="form-control" placeholder="Enter Amount">
-            </div>
-
-            <div class="form-group col-sm-12 mb-2 d-flex">
-                <label for="simpleinput" class="form-label">Adjustment Note</label>
-                <input type="text" id="adjustmentnote" class="form-control" placeholder="Add Note">
-            </div>
-
-            <div class="form-group col-sm-12 mb-2 d-flex">
-                <label for="example-select" class="form-label">Select Adjustment</label>
-                <select class="form-select" id="example-select">
-                    <option>Certified Destruction Cost</option>
-                    <option>eWaste Processing</option>
-                    <option>Freight Cost</option>
-                    <option>Garbage Wood Pallet Disposal</option>
-                    <option>Garbage mixed in load</option>
-                    <option>Labor/Sorting</option>
-                    <option>Pallet/Container Weight</option>
-                    <option>Plastic</option>
-                    <option>Ticket Note</option>
-                </select>
-            </div>
-            <div class="form-group col-sm-12 mb-2">
-                <label for="example-select" class="form-label">Capture Image</label>
-                <div style="border: 1px solid black;">
-                    <div class="col-sm-12" style="border: 1px solid black;  display:inline-block;">
-                        <app-camera (getPicture)="handleImage($event)"></app-camera>
-                    </div>
+<ng-container  *ngIf="addEditAdjustmentVisible">
+    <p-dialog [header]="modalAdjustmentHeader" [(visible)]="addEditAdjustmentVisible" [style]="{width: '80vw'}" [breakpoints]="{'767px': '100vw'}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group col-sm-12 mb-2 d-flex">
+                    <label for="simpleinput" class="form-label">Adjustment Amount</label>
+                    <input type="text" id="adjustmentamount" class="form-control" placeholder="Enter Amount">
                 </div>
-                <br>
-                <a id="save-image-btn" class="btn btn-primary me-1" (click)="closeCapturedImage()">Save Image</a>
-                <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage()">Close</a>
+    
+                <div class="form-group col-sm-12 mb-2 d-flex">
+                    <label for="simpleinput" class="form-label">Adjustment Note</label>
+                    <input type="text" id="adjustmentnote" class="form-control" placeholder="Add Note">
+                </div>
+    
+                <div class="form-group col-sm-12 mb-2 d-flex">
+                    <label for="example-select" class="form-label">Select Adjustment</label>
+                    <select class="form-select" id="example-select">
+                        <option>Certified Destruction Cost</option>
+                        <option>eWaste Processing</option>
+                        <option>Freight Cost</option>
+                        <option>Garbage Wood Pallet Disposal</option>
+                        <option>Garbage mixed in load</option>
+                        <option>Labor/Sorting</option>
+                        <option>Pallet/Container Weight</option>
+                        <option>Plastic</option>
+                        <option>Ticket Note</option>
+                    </select>
+                </div>
+                <div class="form-group col-sm-12 mb-2">
+                    <label for="example-select" class="form-label">Capture Image</label>
+                    <div style="border: 1px solid black;">
+                        <div class="col-sm-12" style="border: 1px solid black;  display:inline-block;">
+                            <app-camera (getPicture)="handleImage($event)"></app-camera>
+                        </div>
+                    </div>
+                    <br>
+                    <a id="save-image-btn" class="btn btn-primary me-1" (click)="closeCapturedImage()">Save Image</a>
+                    <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage()">Close</a>
+                </div>
             </div>
         </div>
-    </div>
+        
+    </p-dialog>
     
-</p-dialog>
+</ng-container>
+
 
 <p-dialog header="Header" [breakpoints]="{'767px': '100vw'}" [modal]="true" [(visible)]="saveConfirmVisible" [style]="{ width: '50vw' }">
     <ng-template pTemplate="header">

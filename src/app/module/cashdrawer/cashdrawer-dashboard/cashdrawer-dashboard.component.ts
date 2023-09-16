@@ -89,6 +89,7 @@ export class CashdrawerDashboardComponent implements OnInit {
           console.log(data);
           // this.dataService.cashDrawerAmountDTO(data);
           this.cashDrawerBalanceAmount = data.body.data.amount;
+          this.dataService.setCashDrawerAmountDTO(this.cashDrawerBalanceAmount);
           this.cashDrawerStatus = data.body.data.status;
         },
         (err: any) => {

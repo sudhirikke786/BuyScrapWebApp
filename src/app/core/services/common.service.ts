@@ -282,6 +282,11 @@ export class CommonService {
   GetLocations(paramObj: any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Locations/GetLocations', 'GET', paramObj, 'ProdTest');
   }
+
+  
+  GetCODImagesbyID(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Tickets/GetCODImagesbyID', 'GET', paramObj, 'ProdTest');
+  }
   GetAllLocatoins(paramObj: any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Locations/GetAllLocatoins', 'GET', paramObj, 'ProdTest');
   }
