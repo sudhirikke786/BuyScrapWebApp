@@ -13,7 +13,11 @@ export class AddSellersComponent implements OnInit {
 
   orgName: any;
   locId: any;
+  locationName: any;
   cameraVisible = false;
+  showImage = false;
+  showImageHeader = 'Show image';
+  selectedImageUrl: any;
   imageUrl: any;
   sellerForm!: FormGroup;
   sellerId: any = 0;
@@ -33,6 +37,7 @@ export class AddSellersComponent implements OnInit {
 
       this.orgName = localStorage.getItem('orgName');
       this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+      this.locationName = localStorage.getItem('locationName');
       this.route.params.subscribe((param)=>{
         if (param["sellerId"]) {
           this.sellerId = param["sellerId"];
@@ -106,15 +111,18 @@ export class AddSellersComponent implements OnInit {
     const _dob = dateObject.toISOString();
 
     const reqObj = {
-      ...{"idscanImage": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/ID/2a876e28-a70c-4f97-b6b7-cba51bf6f40a.jpeg",
-      "idsignatureImage": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/Signature/2048474f-ff79-4413-a38b-0ba601b6e9c7.png",
-      "idfaceShotImage": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/Face/1e719c79-9da4-4f35-91b3-d3332e3a6b47.jpeg",
-      "fingerPrints": "https://prodbuyscrapapp.s3-us-west-1.amazonaws.com/CalWest Recycling/Hayward California/FingurePrint/add101ae-7dc7-4fc8-b488-09d41138fbe1.png",
-      "driverLicenseNumber": "GH54E45",
-      "drivingLicenseExpiryDate": "2003-07-03T03:13:18.659Z"},
+      ...{
+        "idscanImage": this.idscanImage.includes('images/custom/id_scan.png') ? null : this.idscanImage,
+        "idsignatureImage": this.idsignatureImage.includes('images/custom/id_signature.png') ? null : this.idsignatureImage,
+        "idfaceShotImage": this.idfaceShotImage.includes('images/custom/id_face.png') ? null : this.idfaceShotImage,
+        "fingerPrints": this.fingerPrints.includes('images/custom/id_fingerprint.png') ? null : this.fingerPrints,
+        "driverLicenseNumber": "GH54E45",
+        "drivingLicenseExpiryDate": "2003-07-03T03:13:18.659Z"
+      },
       ...this.sellerForm.value,
       ...{dob:_dob, rowId: parseInt(this.sellerId), createdBy: 2, updatedBy: 2}
     }
+
     console.log(reqObj);
     this.commonService.addSeller(reqObj).subscribe(data =>{
       console.log("insert");
@@ -155,9 +163,13 @@ export class AddSellersComponent implements OnInit {
      vehicleModel: obj.vehicleModel,
      emailId: obj.emailId,
      cellNumber: obj.cellNumber,
-     sellerType: obj.sellerType,
-
-    })
+     sellerType: obj.sellerType
+    });
+    
+    this.idscanImage = obj.idscanImage == '' ? 'assets/images/custom/id_scan.png' : obj.idscanImage;
+    this.idsignatureImage = obj.idsignatureImage == '' ? 'assets/images/custom/id_signature.png' : obj.idsignatureImage;
+    this.idfaceShotImage = obj.idfaceShotImage == '' ? 'assets/images/custom/id_face.png' : obj.idfaceShotImage;
+    this.fingerPrints = obj.fingerPrints == '' ? 'assets/images/custom/id_fingerprint.png' : obj.fingerPrints;
 
   }
 
@@ -165,6 +177,37 @@ export class AddSellersComponent implements OnInit {
     this.isWebcam = true;
     this.type =  selectionType
     this.cameraVisible = true;
+  }
+
+  removeImage(selectionType:any) {
+    if(selectionType=='2') {
+      this.idscanImage = 'assets/images/custom/id_scan.png';
+    } else if(selectionType=="3") {
+      this.idsignatureImage = 'assets/images/custom/id_signature.png';
+    } else if(selectionType=="4") {
+      this.idfaceShotImage = 'assets/images/custom/id_face.png';
+    } else if(selectionType=="5") {
+      this.fingerPrints = 'assets/images/custom/id_fingerprint.png';
+    }
+  }
+
+  showSelectedImage(imageUrl: string, selectionType:any) {
+    this.selectedImageUrl = imageUrl;
+    this.showImage = true;
+    if(selectionType=='2') {
+      this.showImageHeader = 'Show id image';
+    } else if(selectionType=="3") {
+      this.showImageHeader = 'Show signature image';
+    } else if(selectionType=="4") {
+      this.showImageHeader = 'Show face image';
+    } else if(selectionType=="5") {
+      this.showImageHeader = 'Show fingerprint image';
+    }
+  }
+
+  cancelImage() {
+    this.showImage = false;
+    this.isWebcam = false
   }
 
   cancel() {
@@ -177,18 +220,35 @@ export class AddSellersComponent implements OnInit {
   }
   
   SaveImage() {
-    if(this.type=='1') {
-      this.idscanImage = this.imageUrl;
-    }else if(this.type=="2"){
-      this.idsignatureImage = this.imageUrl;
-    }else if(this.type=="3"){
-      this.idfaceShotImage = this.imageUrl;
-    }else {
-      this.fingerPrints = this.imageUrl;
-    }
+    
+    const requestObj = {
+      base64Data: this.imageUrl.split(';base64,')[1],
+      organisationName: this.orgName,
+      locationName: this.locationName,
+      imagetype: parseInt(this.type)
+    };
+    
+    this.commonService.FileUploadFromWeb(requestObj).subscribe((res:any) =>{
+      console.log('Image url path :: {}', res.body.data);
+      console.log(res.body.data);
+      this.imageUrl = res.body.data;
+      if(this.type=='2') {
+        this.idscanImage = this.imageUrl;
+      } else if(this.type=="3") {
+        this.idsignatureImage = this.imageUrl;
+      } else if(this.type=="4") {
+        this.idfaceShotImage = this.imageUrl;
+      } else if(this.type=="5") {
+        this.fingerPrints = this.imageUrl;
+      }
+      console.log("22222222222222222222222222", this.idscanImage,this.idsignatureImage,this.idfaceShotImage,this.fingerPrints);
+    })
+
     this.imageUrl = null;
     this.cameraVisible = false;
-    console.log(this.idscanImage,this.idsignatureImage,this.idfaceShotImage,this.fingerPrints);
+    
+
+    console.log("1111111111111111111111111111", this.idscanImage,this.idsignatureImage,this.idfaceShotImage,this.fingerPrints);
   }
 
   closeImageCapture() {

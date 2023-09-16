@@ -290,5 +290,9 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Locations/InsertUpdateLocationDTO', 'POST', requestObj, 'ProdTest');
   }
 
+  FileUploadFromWeb(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/AWS/FileUploadFromWeb', 'POST', requestObj, 'ProdTest');
+  }
+
     
 }

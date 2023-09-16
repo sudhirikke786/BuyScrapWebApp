@@ -12,6 +12,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 })
 export class HeaderComponent implements OnInit {
 
+  orgName: any;
   locId: any;
   cashDrawerbalance: number = 0.00;
   paidTicketCount: number = 0;
@@ -32,6 +33,7 @@ export class HeaderComponent implements OnInit {
     public commonService: CommonService) { }
 
   ngOnInit() {
+    this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     
     this.userFullName = this.stroarge.getLocalStorage('userObj').userdto?.firstName;

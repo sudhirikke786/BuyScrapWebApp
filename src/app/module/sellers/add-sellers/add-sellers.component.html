@@ -48,9 +48,9 @@
                                     <div class="box div-small">
                                         <img [src]="idscanImage" class="dl-img1">
                                         <ul class="upload-options-ul">
-                                            <li><a href="javascript:void()" (click)="uploadPicture('1')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                            <li><a href="#"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
+                                            <li><a href="javascript:void()" (click)="uploadPicture('2')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
+                                            <li><a href="javascript:void()" (click)="showSelectedImage(idscanImage, '2')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
+                                            <li><a href="javascript:void()" (click)="removeImage('2')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                       
                                     </div>
                                 </div>
@@ -58,9 +58,9 @@
                                     <div class="box div-small">
                                         <img [src]="idsignatureImage" class="dl-img1">
                                         <ul class="upload-options-ul">
-                                                <li><a href="javascript:void()" (click)="uploadPicture('2')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
-                                                <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                                <li><a href="#"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="uploadPicture('3')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="showSelectedImage(idsignatureImage, '3')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="removeImage('3')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                        
                                     </div>
                                 </div>
@@ -68,9 +68,9 @@
                                     <div class="box div-small">
                                         <img [src]="idfaceShotImage" class="dl-img1">
                                         <ul class="upload-options-ul">
-                                                <li><a href="javascript:void()" (click)="uploadPicture('3')" ><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
-                                                <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                                <li><a href="#"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="uploadPicture('4')" ><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="showSelectedImage(idfaceShotImage, '4')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="removeImage('4')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                        
                                     </div>
                                 </div>
@@ -78,9 +78,9 @@
                                     <div class="box div-small">
                                         <img [src]="fingerPrints" class="dl-img1">
                                         <ul class="upload-options-ul">
-                                                <li><a href="javascript:void()" (click)="uploadPicture('4')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
-                                                <li><a href="#" data-bs-toggle="modal" data-bs-target="#showimg"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                                <li><a href="#"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="uploadPicture('5')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="showSelectedImage(fingerPrints, '5')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="removeImage('5')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                        
                                     </div>
                                 </div>
@@ -308,5 +308,11 @@
            
         </div>
 
+    </div>
+</p-dialog>
+<p-dialog [header]="showImageHeader" (onHide)="cancelImage()"   [(visible)]="showImage">
+        
+    <div class="over-flow-300 image-center img-profile">                                
+        <img [src]="selectedImageUrl" style="height: 100%; width: 100%;">
     </div>
 </p-dialog>

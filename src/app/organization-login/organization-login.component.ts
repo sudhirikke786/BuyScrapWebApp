@@ -39,8 +39,6 @@ export class OrganizationLoginComponent implements OnInit {
 
   btnClick(): void {
     this.validateOrganization();
-    //   const orgName = 'abc';
-    //   this.router.navigateByUrl(`${orgName}/user-login`);
   };
 
   /**

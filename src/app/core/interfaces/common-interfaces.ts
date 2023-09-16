@@ -14,6 +14,7 @@ export interface User {
   userName: string;
   password: string;
   locID: number;
+  locationName: string;
   macID: string;
   isActive: boolean;
   isConfirm: boolean;

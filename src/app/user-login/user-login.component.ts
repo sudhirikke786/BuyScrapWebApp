@@ -24,6 +24,7 @@ export class UserLoginComponent implements OnInit {
     userName: '',
     password: '',
     locID: 1,
+    locationName: '',
     macID: '',    
     isActive: true,
     isConfirm: true
@@ -53,6 +54,7 @@ export class UserLoginComponent implements OnInit {
       userName: '',
       password: '',
       locID: null,
+      locationName: '',
       isActive: true,
       isConfirm: true
     })
@@ -92,6 +94,7 @@ export class UserLoginComponent implements OnInit {
           this.locations = data.body.data;
        //   this.locationId =  this.locations[0].rowId;
           this.user.locID = this.locations[0].rowId;
+          this.user.locationName = this.locations[0].locationName;
           this.loginForm.patchValue(this.user)
         },
         (err: any) => {
@@ -105,10 +108,12 @@ export class UserLoginComponent implements OnInit {
     if(this.loginForm.invalid){
       this.isSubmit =  true;
       return false;
-    }
+    }    
+    const locationName = this.loginForm.value.locationName;
     const req = {...this.loginForm.value,locID:Number(this.loginForm.value.locID)};
     this.commonService.validateUserCredentials(req).subscribe(data => {
       this.localService.setLocalStorage('locId',Number(this.loginForm.value.locID)); 
+      localStorage.setItem('locationName',locationName)
           if (data?.body.token!='' && data?.body.userdto.userName) {
             this.localService.setLocalStorage('userObj',data?.body);       
             this.router.navigateByUrl(`/${this.organizationName}/home`);

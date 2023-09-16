@@ -67,12 +67,11 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
-    this.locId = 1;
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.createUserForm()
     this.title = 'Add User';
     this.getAllUsers();
     this.getAllUsersRoles();
-    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
   }
 
   showModel(adminObj?:any,openBy = 'add'){
@@ -168,7 +167,7 @@ export class AdminDashboardComponent implements OnInit {
         this.showModel();
         break;
         case 'mdi-map-marker':
-         this.router.navigateByUrl('/abc/admin/admin-location')
+         this.router.navigateByUrl(`${this.orgName}/admin/admin-location`)
        break;
       default:
         break;
