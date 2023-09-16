@@ -75,7 +75,9 @@ export class CommonService {
   }
 
   showHidePanel(menuStatus: boolean = false){
-    this._status =  menuStatus
+      this._status =   !this._status;
+    
+   
     const htmlAttr = document.querySelector('html');
     if(htmlAttr){
        const _datasidenav = htmlAttr.getAttribute('data-sidenav-size');
