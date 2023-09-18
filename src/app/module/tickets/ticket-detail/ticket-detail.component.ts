@@ -35,6 +35,7 @@ export class TicketDetailComponent implements OnInit {
 
   ticketData:any = {};
   customer: any;
+  user: any;
   totalNoOfMaterial: any;
   totalGross: any;
   totalTare: any;
@@ -188,11 +189,23 @@ export class TicketDetailComponent implements OnInit {
           console.log(data);
           this.ticketData = data.body.data[0];
           this.totalRecords =  data.totalRecords;
+          const userId = data.body.data[0].createdBy;
+          this.getAllUsers(userId);
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
       );
+  }
+
+  getAllUsers(userId: any){
+    const reqObj = {
+      LocationId: this.locId,
+      UserID: parseInt(userId)
+    }
+    this.commonService.GetAllUsers(reqObj).subscribe((res) =>{
+      this.user =  res?.body?.data[0];     
+    })
   }
   
   onPageChange(event: any) {
@@ -444,6 +457,7 @@ export class TicketDetailComponent implements OnInit {
     if (this.ticketId && this.ticketId != 0) {
       console.log('11111');
       this.isEditModeOn = false;
+      this.editItemCloseImageCapture = false;
       this.processDataBasedOnTicketId();
     } else {
       console.log('222222');

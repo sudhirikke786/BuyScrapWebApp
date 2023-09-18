@@ -140,6 +140,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsByParentID', 'GET', paramObj, 'ProdTest');
   }
 
+  getAllTicketsTransactionsByTicketId(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsTransactionsByTicketId', 'GET', paramObj, 'ProdTest');
+  }
+
   insertUpdateTickets(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/InsertUpdateTickets', 'POST', requestObj, 'ProdTest');
   }

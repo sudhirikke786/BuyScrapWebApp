@@ -155,7 +155,7 @@
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Password <span class="text-danger">*</span></label>
-                            <input formControlName="password" type="password"  id="password" class="form-control" [attr.disabled]="title == 'Add User' ? false : true"  [ngClass]="{'border-danger': isSubmit && f.password?.invalid}" placeholder="Enter Your Password">
+                            <input formControlName="password" type="password"  id="password" class="form-control" [ngClass]="{'border-danger': isSubmit && f.password?.invalid}" placeholder="Enter Your Password">
                             
                              <app-form-error-message msg="Password is required" *ngIf="isSubmit && userForm?.get('password')?.errors?.required"></app-form-error-message>
 
@@ -163,7 +163,7 @@
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Confirm Password <span class="text-danger">*</span> </label>
-                            <input type="password" formControlName="confirmPassword" id="confirmpassword" class="form-control " [attr.disabled]="title == 'Add User' ? false : true" [ngClass]="{'border-danger': isSubmit && f.confirmPassword?.invalid}" placeholder="Enter Your Password">
+                            <input type="password" formControlName="confirmPassword" id="confirmpassword" class="form-control " [ngClass]="{'border-danger': isSubmit && f.confirmPassword?.invalid}" placeholder="Enter Your Password">
                            
 
                             <div *ngIf="isSubmit &&  f.confirmPassword?.invalid">

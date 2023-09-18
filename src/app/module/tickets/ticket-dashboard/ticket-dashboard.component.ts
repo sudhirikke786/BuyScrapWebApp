@@ -75,6 +75,7 @@ export class TicketDashboardComponent implements OnInit {
   
   tickets: any;
   childTickets: any;
+  ticketsTransactions: any;
   sellerTickets: any;
   sellers: any;
   selectedSellerTickets: any;
@@ -174,21 +175,56 @@ export class TicketDashboardComponent implements OnInit {
       );
   }
 
-  showCodeCopy(obj:any){
+  showVoideCancelCopy(ticketData:any){
+    this.tiketSelectedObj = ticketData;
+    this.parentTicketId = ticketData.parentTicketID;
+    this.isParent = ticketData.isParent;
+    if (this.parentTicketId) {
+      this.parentTicketIDVisible = true;
+      this.isParentTicketVisible = false;
+    } else if (this.isParent) {
+      this.getAllTicketsByParentID(ticketData.rowId);
+      this.parentTicketIDVisible = false;
+      this.isParentTicketVisible = true;
+    } else {
+      this.showVoid =  true;
+
+    }
+
+  }
+
+  showVoideForPartiallyPaid(ticketData:any){
+    this.tiketSelectedObj = ticketData;
     this.showVoid =  true;
-    this.tiketSelectedObj = obj;
   }
 
   showVoidCancel(){
-
     console.log(this.tiketSelectedObj);
-    if(this.tiketSelectedObj?.status?.toLowerCase() === 'open'){
+    if (this.tiketSelectedObj?.status?.toLowerCase() === 'open') {
       this.showOpen = true;
-    }else if(this.tiketSelectedObj.status.toLowerCase()==='partially paid'){
+    } else if (this.tiketSelectedObj.status.toLowerCase()==='partially paid' || 
+               this.tiketSelectedObj.status.toLowerCase()==='paid') {
       this.showPartially = true;
-    }
+      const param = {
+        TicketId: this.tiketSelectedObj?.rowId
+      }
+      this.getAllTicketsTransactionsByTicketId(param);
+    } 
 
-   
+  }
+
+  getAllTicketsTransactionsByTicketId(paramObj: any) {
+    console.log(paramObj);
+    this.commonService.getAllTicketsTransactionsByTicketId(paramObj)
+      .subscribe(data => {
+          console.log('getAllTicketsTransactionsByTicketId :: ');
+          console.log(data);
+          this.ticketsTransactions = data.body.data;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
   }
 
   showVoidCopy(){

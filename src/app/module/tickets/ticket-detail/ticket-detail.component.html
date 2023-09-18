@@ -57,7 +57,7 @@
                                         <td>DL# - {{customer?.driverLicenseNumber}}</td>
                                         <td>Dealer Type - {{customer?.dealerType}}</td>
                                         <td>License Plate # :{{customer?.driverLicenseNumber}}</td>
-                                        <td>By <label>{{customer?.customerName}}</label></td>
+                                        <td>By <label>{{user?.firstName}} {{user?.lastName}}</label></td>
                                     </tr>
                                 </tbody></table>
                             </div>
@@ -78,7 +78,7 @@
                             <div [ngClass]="!isEditModeOn && !editItemCloseImageCapture? 'col-sm-12' : 'col-sm-9'">
                                 
                                 <div class="row">
-                                    <div style="max-height: 30vh;overflow-y: scroll;height: 100%;">
+                                    <div style="overflow-y: scroll;height:calc(100vh - 425px);">
                                         <p-table class="ticket-table" #dt1 [value]="ticketObj" 
                                             [paginator]="false" 
                                             [rows]="10"
@@ -189,7 +189,7 @@
                                 
                                 <div class="row">
                                     <div style="position: absolute; bottom: 10px; right: 5px; left: 5px;"  [style.width]="!isEditModeOn && !editItemCloseImageCapture? '98%' : '75%'">
-                                        <div class="row">
+                                        <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
                                                 <p class="ticket-details-p"><b>Adjustment : {{totalAdjustment | number : '1.3-3'}}</b></p>
         
@@ -283,7 +283,7 @@
                                     
                                 </div>
   
-                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row over-flow-350">
+                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row" style="height:calc(100vh - 300px)">
                                     <h1 class="btn-materials-2">
                                       <span>
                                           <a id="backToMainBox1" class="btn btn-primary btn-back" (click)="backToMainMaterials()"><i class="mdi mdi-keyboard-backspace"></i></a>
@@ -304,7 +304,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-3 position-relative" *ngIf="editItemCloseImageCapture">
+                            <div class="col-sm-3 position-relative" *ngIf="isEditModeOn && editItemCloseImageCapture">
                                 <div class="calc">
                                     <app-price-calculator (calculateObj)="calculation($event)" [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
                                         [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote">

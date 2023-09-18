@@ -70,11 +70,11 @@
                                 <ng-template pTemplate="body" let-ticket>
                                     <tr>
                                         <td>{{ ticket?.rowId }}</td>
-                                        <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy hh:mm a'  }}</td>
+                                        <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy'  }}</td>
                                         <td>{{ ticket?.status }}</td>
                                         <td>{{ ticket?.ticketAmount }}</td>
                                         <td>{{ ticket?.customerName }}</td>
-                                        <td>{{ ticket?.dateClosed ? (ticket?.dateClosed  | date: 'MM/dd/yyyy hh:mm a') : ''}}</td>
+                                        <td>{{ ticket?.dateClosed ? (ticket?.dateClosed  | date: 'MM/dd/yyyy') : ''}}</td>
                                     </tr>
                                 </ng-template>
                                 
