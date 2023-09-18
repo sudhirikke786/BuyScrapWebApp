@@ -20,7 +20,7 @@
         <div class="row mt-2">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body" style="height:calc(100vh - 200px)">
+                    <div class="card-body" style="height:calc(100vh - 147px)">
 
                         <div class="row">
                             <div class="col-sm-2">
@@ -188,79 +188,84 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <p class="ticket-details-p"><b>Adjustment : {{totalAdjustment | number : '1.3-3'}}</b></p>
-
-                                        <p class="ticket-details-p"><b>Total LBS</b></p>
-
-                                        <table class="ticket-details-tbl">
-                                            <thead>
-                                                <tr><th>Material</th>
-                                                <th>Gross(M)</th>
-                                                <th>Tare</th>
-                                                <th>Net</th>
-                                                <th>Rounding</th>
-                                                <th>Amount</th>
-                                                <th>Actual Amount</th>
-                                            </tr></thead>
-
-                                            <tbody> 
-                                                <tr>
-                                                    <td>{{totalNoOfMaterial}}</td>
-                                                    <td>{{totalGross}}</td>
-                                                    <td>{{totalTare}}</td>
-                                                    <td>{{totalNet}}</td>
-                                                    <td>{{totalRoundingAmount | number : '1.3-3'}}</td>
-                                                    <td>{{totalAmount | number : '1.3-3'}}</td>
-                                                    <td>{{totalActualAmount | number : '1.3-3'}}</td>
-                                                </tr>                                                     
-                                            </tbody>
-                                            
-                                        </table>
-                                    </div>
-                                
-                                </div>
-                                
-                                <div class="row mt-2">   
-                                    <div class="col-md-5 col-lg-4 col-sm-6">    
-                                 
-                                            <div class="ticket-summary-div d-flex justify-content-between align-item-center">
-                                                <div>
-                                                    <b>Paid Amount  {{ticketData?.paidAmount | number : '1.3-3'}}</b>
-                                                </div>
-    
-                                                <div>
-                                                    <b>Balance Amount  {{totalAmount - ticketData?.paidAmount | number : '1.3-3'}}</b>
-                                                </div> 
+                                    <div style="position: absolute; bottom: 10px; right: 5px; left: 5px;">
+                                        <div class="row">
+                                            <div class="col-sm-12 px-10 py-10">
+                                                <p class="ticket-details-p"><b>Adjustment : {{totalAdjustment | number : '1.3-3'}}</b></p>
+        
+                                                <p class="ticket-details-p"><b>Total LBS</b></p>
+        
+                                                <table class="ticket-details-tbl">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 12%;">Material</th>
+                                                            <th style="width: 12%;">Gross(M)</th>
+                                                            <th style="width: 12%;">Tare</th>
+                                                            <th style="width: 12%;">Net</th>
+                                                            <th style="width: 12%;">Rounding</th>
+                                                            <th style="width: 20%;">Amount</th>
+                                                            <th style="width: 20%;">Actual Amount1</th>
+                                                    </tr></thead>
+        
+                                                    <tbody> 
+                                                        <tr>
+                                                            <td>{{totalNoOfMaterial}}</td>
+                                                            <td>{{totalGross}}</td>
+                                                            <td>{{totalTare}}</td>
+                                                            <td>{{totalNet}}</td>
+                                                            <td>{{totalRoundingAmount | number : '1.3-3'}}</td>
+                                                            <td>{{totalAmount | number : '1.3-3'}}</td>
+                                                            <td>{{totalActualAmount | number : '1.3-3'}}</td>
+                                                        </tr>                                                     
+                                                    </tbody>
+                                                    
+                                                </table>
                                             </div>
-                                           
-
                                         
-                                    </div>
-
-                                    <div class="col-md-7 col-lg-8 col-sm-6">    
-                                        <div class="d-flex justify-content-end">
+                                        </div>
+                                        
+                                        <div class="row mt-2">   
+                                            <div class="col-md-5 col-lg-6 col-sm-6">    
                                          
-
-                                            <div *ngIf="!isEditModeOn" class="pay-print-box">
-                                                <a *ngIf="ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid'" class="btn btn-danger me-1" (click)="showPayment()">Pay Ticket</a>
-                                                <a class="btn btn-primary">Printout</a>
-                                            </div>        
-
-                                            <div *ngIf="isEditModeOn" class="adjustment-deduction-box">
-                                                <a data-bs-target="#adjustments-modal" data-bs-toggle="modal" 
-                                                class="btn btn-danger me-1" (click)="addAdjustments()">Adjustments(Deductions)</a>
+                                                    <div class="ticket-summary-div d-flex justify-content-between align-item-center">
+                                                        <div>
+                                                            <b>Paid Amount  {{ticketData?.paidAmount | number : '1.3-3'}}</b>
+                                                        </div>
+            
+                                                        <div>
+                                                            <b>Balance Amount  {{totalAmount - ticketData?.paidAmount | number : '1.3-3'}}</b>
+                                                        </div> 
+                                                    </div>
+                                                   
+        
+                                                
                                             </div>
+        
+                                            <div class="col-md-7 col-lg-6 col-sm-6">    
+                                                <div class="d-flex justify-content-end">
+                                                 
+        
+                                                    <div *ngIf="!isEditModeOn" class="pay-print-box">
+                                                        <a *ngIf="ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid'" class="btn btn-danger me-1" (click)="showPayment()">Pay Ticket</a>
+                                                        <a class="btn btn-primary">Printout</a>
+                                                    </div>        
+        
+                                                    <div *ngIf="isEditModeOn" class="adjustment-deduction-box">
+                                                        <a data-bs-target="#adjustments-modal" data-bs-toggle="modal" 
+                                                        class="btn btn-danger me-1" (click)="addAdjustments()">Adjustments(Deductions)</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                                   
+        
+                                          
                                         </div>
                                     </div>
-                                                           
-
-                                  
                                 </div>
                             </div>
                             <div class="col-sm-3" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
-                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 350px)">
+                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 300px)">
                                     <h4 class="materials-heading">Materials</h4>
   
                                     <ul class="main-ul">
