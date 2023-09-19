@@ -29,13 +29,18 @@ export class CommonService {
         'Content-Type': 'application/json; charset=utf-8'
     });
 
-    // const userToken = this.localService.getLocalStorage('userObj');
+    // const userToken = this.localService.getLocalStorage('orgName');
+    const organizationName = '' || localStorage.getItem('orgName');
 
     if (clientName) {
       httpHeader = new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
-        'ClientName': clientName //,
-        // "Authorization": "Bearer " + userToken?.token
+        'ClientName': clientName
+      });
+    } else if (organizationName) {
+      httpHeader = new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8',
+        'ClientName': organizationName
       });
     }
 
@@ -105,205 +110,205 @@ export class CommonService {
   }
 
   validateUserCredentials(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Users/UserAuthentication', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Users/UserAuthentication', 'POST', requestObj);
   }
 
   getOrgLocation(): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Locations/GetAllLocatoins', 'GET', null, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Locations/GetAllLocatoins', 'GET', null);
   }
 
   getCashdrawerdetails(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashdrawerdetails', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashdrawerdetails', 'GET', paramObj);
   }
 
   getCashDrawerAmountDTO(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashDrawerAmountDTO', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashDrawerAmountDTO', 'GET', paramObj);
   }
 
   getCashDrawerAmountAndPaidTicketCount(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashDrawerAmountAndPaidTicketCount', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashDrawerAmountAndPaidTicketCount', 'GET', paramObj);
   }
 
   insertUpdateCashDrawerTransactions(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/CashDrawers/InsertUpdateCashDrawerTransactions', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/CashDrawers/InsertUpdateCashDrawerTransactions', 'POST', requestObj);
   }
 
   insertCashDrawerDetails(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/CashDrawers/InsertCashDrawerDetails', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/CashDrawers/InsertCashDrawerDetails', 'POST', requestObj);
   }
 
   getAllTicketsDetails(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsDetails', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsDetails', 'GET', paramObj);
   }
 
   getAllTicketsByParentID(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsByParentID', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsByParentID', 'GET', paramObj);
   }
 
   getAllTicketsTransactionsByTicketId(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsTransactionsByTicketId', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsTransactionsByTicketId', 'GET', paramObj);
   }
 
   insertUpdateTickets(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Tickets/InsertUpdateTickets', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Tickets/InsertUpdateTickets', 'POST', requestObj);
   }
 
   insertTicketTransactions(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Tickets/InsertTicketTransactions', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Tickets/InsertTicketTransactions', 'POST', requestObj);
   }
 
   getAllTicketsBySellerId(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsBySellerId', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsBySellerId', 'GET', paramObj);
   }
 
   getAllsellersDetails(pagination: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Sellerss/GetAllsellersDetails', 'GET', pagination, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Sellerss/GetAllsellersDetails', 'GET', pagination);
   }
 
   getSellerById(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Sellerss/GetSellerById', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Sellerss/GetSellerById', 'GET', paramObj);
   }
 
   addSeller(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Sellerss/InsertSellerDTO', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Sellerss/InsertSellerDTO', 'POST', requestObj);
   }
   
   getTransactionsDetailsById(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/TransactionMasters/GetTicketMaterialsDetailsByTicketId', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/TransactionMasters/GetTicketMaterialsDetailsByTicketId', 'GET', paramObj);
   }
 
   getAllGroupMaterial(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Materialss/GetAllGroupMaterial', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Materialss/GetAllGroupMaterial', 'GET', paramObj);
   }
 
   insertUpdateGroupMaterials(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Materialss/InsertUpdateGroupMaterials', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Materialss/InsertUpdateGroupMaterials', 'POST', requestObj);
   }
 
   getAllSubMaterials(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterials', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterials', 'GET', paramObj);
   }  
 
   insertUpdateMaterials(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Materialss/InsertUpdateMaterials', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Materialss/InsertUpdateMaterials', 'POST', requestObj);
   }
 
   GetAllAdjustmentType(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Adjustments/GetAllAdjustmentType', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Adjustments/GetAllAdjustmentType', 'GET', paramObj);
   }
 
   insertUpdateGroupAdjustment(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Adjustments/InsertUpdateGroupAdjustment', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Adjustments/InsertUpdateGroupAdjustment', 'POST', requestObj);
   }
 
   getAllShipOutDetails(pagination: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/ShipOuts/GetAllShipOutDetails', 'GET', pagination, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/ShipOuts/GetAllShipOutDetails', 'GET', pagination);
   }
 
   getShipOutDetailsByID(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/ShipOuts/GetShipOutDetailsByID', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/ShipOuts/GetShipOutDetailsByID', 'GET', paramObj);
   }
 
   getAllCODTickets(pagination: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Tickets/GetAllCODTickets', 'GET', pagination, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllCODTickets', 'GET', pagination);
   }
 
   /** settings page */
 
   getAllSettingsTicketDetails(paramObj: any){
-    return this.callAPI(environment.baseUrl + '/Settingss/GetAllTicketDetails', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Settingss/GetAllTicketDetails', 'GET', paramObj);
   }
 
   InsertUpdateTicketSettings(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Settingss/InsertUpdateTicketSettings', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Settingss/InsertUpdateTicketSettings', 'POST', requestObj);
   }
 
   GetSystemPreferencesValue(paramObj: any){
-    return this.callAPI(environment.baseUrl + '/SystemPreferences/GetSystemPreferencesValue', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/SystemPreferences/GetSystemPreferencesValue', 'GET', paramObj);
   }
   
   InsertUpdateSystemPreferences(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/SystemPreferences/InsertUpdateSystemPreferences', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/SystemPreferences/InsertUpdateSystemPreferences', 'POST', requestObj);
   }
   
   /** Reports */
 
   getDailyTicketsReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Reports/GetAllTicketsForDailyReport', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllTicketsForDailyReport', 'GET', paramObj);
   }
 
   getSingleTicketReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Reports/GetAllTicketsDetails', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllTicketsDetails', 'GET', paramObj);
   }
 
   getInventoryReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Reports/GetAllInventoryReport', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllInventoryReport', 'GET', paramObj);
   }
 
   getCashDrawerReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Reports/GetCashDrawerReportDataShow', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Reports/GetCashDrawerReportDataShow', 'GET', paramObj);
   }
 
   getCustomerReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Reports/GetAllSellersofReport', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllSellersofReport', 'GET', paramObj);
   }
 
   getMaterialReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Reports/GetMaterialReport', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Reports/GetMaterialReport', 'GET', paramObj);
   }
 
   getSubMaterialsReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Reports/GetSubMaterialsbyTicketDetails', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Reports/GetSubMaterialsbyTicketDetails', 'GET', paramObj);
   }
 
   getVoidTicketReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Reports/GetVoidTicketData', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Reports/GetVoidTicketData', 'GET', paramObj);
   }
 
   getPaymentReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Reports/GetPaymentReportRpt', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Reports/GetPaymentReportRpt', 'GET', paramObj);
   }
 
   getAccountingReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Reports/GetAccountReport', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Reports/GetAccountReport', 'GET', paramObj);
   }
 
   /** Admin API */
 
   GetAllUsers(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Users/GetAllUsers', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Users/GetAllUsers', 'GET', paramObj);
   }
 
   GetAllUsersRoles(paramObj: any): Observable<any>{
-    return this.callAPI(environment.baseUrl + '/Users/GetAllUsersRoles', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Users/GetAllUsersRoles', 'GET', paramObj);
   }
 
   InsertUpdateUserDTO(requestObj:any): Observable<any>{
-    return this.callAPI(environment.baseUrl + '/Users/InsertUpdateUserDTO', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Users/InsertUpdateUserDTO', 'POST', requestObj);
   }
 
   DeleteUserDTO(requestObj:any): Observable<any>{
-    return this.callAPI(environment.baseUrl + '/Users/DeleteUserDTO', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Users/DeleteUserDTO', 'POST', requestObj);
   }
 
   GetLocations(paramObj: any): Observable<any>{
-    return this.callAPI(environment.baseUrl + '/Locations/GetLocations', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Locations/GetLocations', 'GET', paramObj);
   }
 
   
   GetCODImagesbyID(paramObj: any): Observable<any>{
-    return this.callAPI(environment.baseUrl + '/Tickets/GetCODImagesbyID', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Tickets/GetCODImagesbyID', 'GET', paramObj);
   }
   GetAllLocatoins(paramObj: any): Observable<any>{
-    return this.callAPI(environment.baseUrl + '/Locations/GetAllLocatoins', 'GET', paramObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Locations/GetAllLocatoins', 'GET', paramObj);
   }
 
   InsertUpdateLocationDTO(requestObj:any): Observable<any>{
-    return this.callAPI(environment.baseUrl + '/Locations/InsertUpdateLocationDTO', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/Locations/InsertUpdateLocationDTO', 'POST', requestObj);
   }
 
   FileUploadFromWeb(requestObj:any): Observable<any>{
-    return this.callAPI(environment.baseUrl + '/AWS/FileUploadFromWeb', 'POST', requestObj, 'ProdTest');
+    return this.callAPI(environment.baseUrl + '/AWS/FileUploadFromWeb', 'POST', requestObj);
   }
 
     
