@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { RowGroupHeader } from 'primeng/table';
 import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-add-sellers',
   templateUrl: './add-sellers.component.html',
-  styleUrls: ['./add-sellers.component.scss']
+  styleUrls: ['./add-sellers.component.scss'],
+  providers: [MessageService]
+
 })
 export class AddSellersComponent implements OnInit {
 
@@ -33,6 +36,7 @@ export class AddSellersComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
+    private messageService: MessageService,
     private commonService: CommonService) { 
 
       this.orgName = localStorage.getItem('orgName');
@@ -75,6 +79,7 @@ export class AddSellersComponent implements OnInit {
        vehicleType : [],
        vehicleName : [],
        licensePlateNumber : [],
+       driverLicenseNumber:'',
        locID : [this.locId],
        role : [],
        userName : [],
@@ -108,24 +113,30 @@ export class AddSellersComponent implements OnInit {
 
   onSubmit() {
     const dateObject = new Date(this.sellerForm?.value?.dob);
+    const ExpDate =  new Date(this.sellerForm.value.expiryDate);
     const _dob = dateObject.toISOString();
-
+    const expDate = ExpDate.toISOString();
     const reqObj = {
       ...{
         "idscanImage": this.idscanImage.includes('images/custom/id_scan.png') ? null : this.idscanImage,
         "idsignatureImage": this.idsignatureImage.includes('images/custom/id_signature.png') ? null : this.idsignatureImage,
         "idfaceShotImage": this.idfaceShotImage.includes('images/custom/id_face.png') ? null : this.idfaceShotImage,
         "fingerPrints": this.fingerPrints.includes('images/custom/id_fingerprint.png') ? null : this.fingerPrints,
-        "driverLicenseNumber": "GH54E45",
-        "drivingLicenseExpiryDate": "2003-07-03T03:13:18.659Z"
       },
       ...this.sellerForm.value,
-      ...{dob:_dob, rowId: parseInt(this.sellerId), createdBy: 2, updatedBy: 2}
+      ...{dob:_dob, rowId: parseInt(this.sellerId),expiryDate:expDate, drivingLicenseExpiryDate:expDate, createdBy: 2, updatedBy: 2}
     }
 
     console.log(reqObj);
     this.commonService.addSeller(reqObj).subscribe(data =>{
-      console.log("insert");
+      if(this.sellerId > 0){
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller updated Successfully' });
+        this.router.navigateByUrl(`/${this.orgName}/sellers-buyers`);
+      }else{
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller added Successfully' });
+        this.router.navigateByUrl(`/${this.orgName}/sellers-buyers`);
+      }
+     
     },(error: any) =>{
       console.log(error);
     })
@@ -134,7 +145,9 @@ export class AddSellersComponent implements OnInit {
   }
 
   editSellerForm(obj:any) {
-    let _dob = new Date(obj.dob);
+
+
+
     //const dob = date.toLocaleDateString().substring(0,10)
 
     this.sellerForm.patchValue({
@@ -142,14 +155,14 @@ export class AddSellersComponent implements OnInit {
      middleName: obj.middleName,
      lastName: obj.lastName,
      fullName: obj.fullName,
-     dob: _dob,
+     dob: this.formatDate(obj?.dob),
      profilePic: obj.profilePic,
      streetAddress: obj.streetAddress,
      city: obj.city,
      state: obj.state,
      zipCode: obj.zipCode,
      idnumber: obj.idnumber,
-     expiryDate: obj.expiryDate,
+     expiryDate: this.formatDate(obj.expiryDate),
      class: obj.class,
      gender: obj.gender,
      vehicleColor: obj.vehicleColor,
@@ -171,6 +184,16 @@ export class AddSellersComponent implements OnInit {
     this.idfaceShotImage = obj.idfaceShotImage == '' ? 'assets/images/custom/id_face.png' : obj.idfaceShotImage;
     this.fingerPrints = obj.fingerPrints == '' ? 'assets/images/custom/id_fingerprint.png' : obj.fingerPrints;
 
+  }
+
+  private formatDate(date:any) {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
   }
 
   uploadPicture(selectionType:any) {
@@ -262,5 +285,8 @@ export class AddSellersComponent implements OnInit {
       this.sellerType = 'Personal';
     }
   }
+
+
+
 
 }

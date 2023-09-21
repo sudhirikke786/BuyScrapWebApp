@@ -13,7 +13,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [],
@@ -27,7 +27,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     DialogModule,
     ToastModule,
     TooltipModule,
-    PaginatorModule
+    PaginatorModule,
+    ConfirmDialogModule
   ],
   exports:[
     InputTextModule,
@@ -41,7 +42,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     ToastModule,
     TooltipModule,
     PaginatorModule,
-    ContextMenuModule
+    ContextMenuModule,
+    ConfirmDialogModule
   ]
 })
 export class PrimengModule { }
