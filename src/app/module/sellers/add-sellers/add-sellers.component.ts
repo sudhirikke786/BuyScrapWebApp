@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { RowGroupHeader } from 'primeng/table';
+import { MessageService,ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-add-sellers',
   templateUrl: './add-sellers.component.html',
   styleUrls: ['./add-sellers.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService,ConfirmationService]
 
 })
 export class AddSellersComponent implements OnInit {
@@ -37,6 +36,7 @@ export class AddSellersComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private messageService: MessageService,
+    private confirmationService: ConfirmationService,
     private commonService: CommonService) { 
 
       this.orgName = localStorage.getItem('orgName');
@@ -90,6 +90,24 @@ export class AddSellersComponent implements OnInit {
     })
 
 
+  }
+
+  showConfirmation(pos:any) {
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: 'Are you sure you want to delete?',
+      accept: () => {
+        // Action to take when the user clicks "Yes" or "OK"
+        console.log('Confirmed');
+        this.removeImage(pos)
+        // Add your logic here
+      },
+      reject: () => {
+        // Action to take when the user clicks "No" or "Cancel"
+        console.log('Rejected');
+        // Add your logic here
+      },
+    });
   }
 
   getSellerById() {

@@ -50,7 +50,7 @@
                                         <ul class="upload-options-ul">
                                             <li><a href="javascript:void()" (click)="uploadPicture('2')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
                                             <li><a href="javascript:void()" (click)="showSelectedImage(idscanImage, '2')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                            <li><a href="javascript:void()" (click)="removeImage('2')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
+                                            <li><a href="javascript:void()" (click)="showConfirmation('2')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                       
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@
                                         <ul class="upload-options-ul">
                                                 <li><a href="javascript:void()" (click)="uploadPicture('3')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
                                                 <li><a href="javascript:void()" (click)="showSelectedImage(idsignatureImage, '3')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                                <li><a href="javascript:void()" (click)="removeImage('3')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="showConfirmation('3')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                        
                                     </div>
                                 </div>
@@ -70,7 +70,7 @@
                                         <ul class="upload-options-ul">
                                                 <li><a href="javascript:void()" (click)="uploadPicture('4')" ><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
                                                 <li><a href="javascript:void()" (click)="showSelectedImage(idfaceShotImage, '4')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                                <li><a href="javascript:void()" (click)="removeImage('4')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="showConfirmation('4')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                        
                                     </div>
                                 </div>
@@ -80,7 +80,7 @@
                                         <ul class="upload-options-ul">
                                                 <li><a href="javascript:void()" (click)="uploadPicture('5')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
                                                 <li><a href="javascript:void()" (click)="showSelectedImage(fingerPrints, '5')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                                <li><a href="javascript:void()" (click)="removeImage('5')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="showConfirmation('5')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
                                         </ul>                                                        
                                     </div>
                                 </div>
@@ -319,6 +319,7 @@
 
 <p-toast></p-toast>
 
+<p-confirmDialog></p-confirmDialog>
 
 <!-- <p-confirmDialog  [style]="{width: '50vw'}">
     <ng-template pTemplate="header">
