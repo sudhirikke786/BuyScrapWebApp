@@ -196,6 +196,10 @@ export class AddSellersComponent implements OnInit {
      cellNumber: obj.cellNumber,
      sellerType: obj.sellerType
     });
+
+    if(obj.sellerType){
+      this.sellerType =  obj.sellerType;
+    }
     
     this.idscanImage = obj.idscanImage == '' ? 'assets/images/custom/id_scan.png' : obj.idscanImage;
     this.idsignatureImage = obj.idsignatureImage == '' ? 'assets/images/custom/id_signature.png' : obj.idsignatureImage;
