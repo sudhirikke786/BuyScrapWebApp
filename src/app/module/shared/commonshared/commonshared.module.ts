@@ -9,6 +9,8 @@ import { PriceCalculatorComponent } from './price-calculator/price-calculator.co
 import { TooltipModule } from 'primeng/tooltip';
 import { PrimengModule } from '../primeng/primeng.module';
 import { FormErrorMessageComponent } from './form-error-message/form-error-message.component';
+import { SignaturePadComponent } from './signature-pad/signature-pad.component';
+import { ThumbFingerComponent } from './thumb-finger/thumb-finger.component';
 
 
 @NgModule({
@@ -16,6 +18,8 @@ import { FormErrorMessageComponent } from './form-error-message/form-error-messa
     ActionbarComponent,
     CameraComponent,
     PriceCalculatorComponent,
+    SignaturePadComponent,
+    ThumbFingerComponent
   ],
   imports: [
     CommonModule,
@@ -23,13 +27,16 @@ import { FormErrorMessageComponent } from './form-error-message/form-error-messa
     WebcamModule,
     TooltipModule,
     PrimengModule,
-    FormErrorMessageComponent
+    FormErrorMessageComponent,
+   
   ],
   exports:[
     ActionbarComponent,
     CameraComponent,
     PriceCalculatorComponent,
-    FormErrorMessageComponent
+    FormErrorMessageComponent,
+    SignaturePadComponent,
+    ThumbFingerComponent 
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

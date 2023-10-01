@@ -11,7 +11,10 @@
 
                 <div class="col-sm-6 col-6">
                     <div class="b-links">
-                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/sellers-buyers">Sellers Buyers</a> / <a href="javscript:void()" routerLink="/{{orgName}}/sellers-buyers/add-seller">{{ sellerId == 0 ? 'Add Seller' : 'Edit Seller'}}</a>
+                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/sellers-buyers">Sellers
+                            Buyers</a> / <a href="javscript:void()"
+                            routerLink="/{{orgName}}/sellers-buyers/add-seller">{{ sellerId == 0 ? 'Add Seller' : 'Edit
+                            Seller'}}</a>
                     </div>
                 </div>
             </div>
@@ -27,7 +30,7 @@
                                 <div class="form-group col-sm-6 d-flex flex-center">
                                     <label for="example-select" class="form-label dd-label">Select Type</label>
                                     <select formControlName="sellerType" class="form-select" id="example-select"
-                                    (change)="changeSellerType()">
+                                        (change)="changeSellerType()">
                                         <option>Personal</option>
                                         <option>Business</option>
                                     </select>
@@ -35,7 +38,8 @@
 
                                 <div class="form-group col-sm-6">
                                     <div class="flt-right">
-                                        <button class="btn btn-success me-1" (click)="onSubmit()">{{ sellerId == 0 ? 'Save' : 'Update'}}</button>
+                                        <button class="btn btn-success me-1" (click)="onSubmit()">{{ sellerId == 0 ?
+                                            'Save' : 'Update'}}</button>
                                         <button type="button" class="btn btn-primary">Print</button>
                                     </div>
                                 </div>
@@ -48,40 +52,71 @@
                                     <div class="box div-small">
                                         <img [src]="idscanImage" class="dl-img1">
                                         <ul class="upload-options-ul">
-                                            <li><a href="javascript:void()" (click)="uploadPicture('2')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
-                                            <li><a href="javascript:void()" (click)="showSelectedImage(idscanImage, '2')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                            <li><a href="javascript:void()" (click)="showConfirmation('2')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
-                                        </ul>                                                       
+                                            <li><a href="javascript:void()" (click)="uploadPicture('2','Capture Image')"><i
+                                                        class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()"
+                                                    (click)="showSelectedImage(idscanImage, '2')"><i
+                                                        class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()" (click)="showConfirmation('2')"><i
+                                                        class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="box div-small">
                                         <img [src]="idsignatureImage" class="dl-img1">
                                         <ul class="upload-options-ul">
-                                                <li><a href="javascript:void()" (click)="uploadPicture('3')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
-                                                <li><a href="javascript:void()" (click)="showSelectedImage(idsignatureImage, '3')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                                <li><a href="javascript:void()" (click)="showConfirmation('3')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
-                                        </ul>                                                        
+                                            <li><a href="javascript:void()" (click)="uploadPicture('3','Using Signature Pad')"><i
+                                                        class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()"
+                                                    (click)="showSelectedImage(idsignatureImage, '3')"><i
+                                                        class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()" (click)="showConfirmation('3')"><i
+                                                        class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="box div-small">
                                         <img [src]="idfaceShotImage" class="dl-img1">
                                         <ul class="upload-options-ul">
-                                                <li><a href="javascript:void()" (click)="uploadPicture('4')" ><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
-                                                <li><a href="javascript:void()" (click)="showSelectedImage(idfaceShotImage, '4')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                                <li><a href="javascript:void()" (click)="showConfirmation('4')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
-                                        </ul>                                                        
+                                            <li><a href="javascript:void()" (click)="uploadPicture('4','Capture Image')"><i
+                                                        class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()"
+                                                    (click)="showSelectedImage(idfaceShotImage, '4')"><i
+                                                        class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()" (click)="showConfirmation('4')"><i
+                                                        class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="box div-small" >
-                                        <img *ngIf="imagePath" [src]="'data:image/jpg;base64,' + imagePath?.BMPBase64 " class="dl-img1">
+                                    <div class="box div-small">
+                                        <img *ngIf="!imagePath" [src]="fingerPrints"
+                                            class="dl-img1">
+                                            <img *ngIf="imagePath" [src]="'data:image/jpg;base64,' + imagePath?.BMPBase64 "
+                                            class="dl-img1">
                                         <ul class="upload-options-ul">
-                                                <li><a href="javascript:void()" (click)="uploadPicture('5')"><i class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
-                                                <li><a href="javascript:void()" (click)="showSelectedImage(fingerPrints, '5')"><i class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
-                                                <li><a href="javascript:void()" (click)="showConfirmation('5')"><i class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
-                                        </ul>                                                        
+                                            <li><a href="javascript:void()" (click)="uploadPicture('5','Using Biomatric')"><i
+                                                        class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()"
+                                                    (click)="showSelectedImage(fingerPrints, '5')"><i
+                                                        class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()" (click)="showConfirmation('5')"><i
+                                                        class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -93,28 +128,32 @@
 
                                 <div class="form-group col-sm-3 mt-1">
                                     <div class="form-floating">
-                                        <input type="text" formControlName="firstName" class="form-control" id="firstname" placeholder="First Name">
+                                        <input type="text" formControlName="firstName" class="form-control"
+                                            id="firstname" placeholder="First Name">
                                         <label for="floatingInput">First Name</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3 mt-1">
                                     <div class="form-floating">
-                                        <input type="text"  formControlName="middleName" class="form-control" id="middlename" placeholder="Middle Name">
+                                        <input type="text" formControlName="middleName" class="form-control"
+                                            id="middlename" placeholder="Middle Name">
                                         <label for="floatingInput">Middle Name</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3 mt-1">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="lastName" id="lastname" placeholder="Last Name">
+                                        <input type="text" class="form-control" formControlName="lastName" id="lastname"
+                                            placeholder="Last Name">
                                         <label for="floatingInput">Last Name</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3 mt-1">
                                     <div class="form-floating">
-                                        <input type="date" class="form-control" formControlName="dob" id="birthdate" placeholder="Date of Birth">
+                                        <input type="date" class="form-control" formControlName="dob" id="birthdate"
+                                            placeholder="Date of Birth">
                                         <label for="floatingInput">Date of Birth</label>
                                     </div>
                                 </div>
@@ -125,7 +164,8 @@
 
                                 <div class="form-group col-sm-6 mt-1">
                                     <div class="form-floating">
-                                        <input type="text" formControlName="firstName" class="form-control" id="bfirstName" placeholder="Business Name">
+                                        <input type="text" formControlName="firstName" class="form-control"
+                                            id="bfirstName" placeholder="Business Name">
                                         <label for="floatingInput">Business Name</label>
                                     </div>
                                 </div>
@@ -135,28 +175,32 @@
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="streetAddress" id="streetaddress" placeholder="Street Address">
+                                        <input type="text" class="form-control" formControlName="streetAddress"
+                                            id="streetaddress" placeholder="Street Address">
                                         <label for="floatingInput">Street Address</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="city" id="city" placeholder="City">
+                                        <input type="text" class="form-control" formControlName="city" id="city"
+                                            placeholder="City">
                                         <label for="floatingInput">City</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="state" id="state" placeholder="State">
+                                        <input type="text" class="form-control" formControlName="state" id="state"
+                                            placeholder="State">
                                         <label for="floatingInput">State</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="zipCode" id="zipcode" placeholder="Zip Code">
+                                        <input type="text" class="form-control" formControlName="zipCode" id="zipcode"
+                                            placeholder="Zip Code">
                                         <label for="floatingInput">Zip Code</label>
                                     </div>
                                 </div>
@@ -166,21 +210,24 @@
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="driverLicenseNumber" id="driverLicenseNumber" placeholder="ID/License Number">
+                                        <input type="text" class="form-control" formControlName="driverLicenseNumber"
+                                            id="driverLicenseNumber" placeholder="ID/License Number">
                                         <label for="floatingInput">ID/License Number</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="date" class="form-control" formControlName="expiryDate" id="expiryDate" placeholder="Expiration Date">
+                                        <input type="date" class="form-control" formControlName="expiryDate"
+                                            id="expiryDate" placeholder="Expiration Date">
                                         <label for="floatingInput">Expiration Date</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="class" id="class" placeholder="Class">
+                                        <input type="text" class="form-control" formControlName="class" id="class"
+                                            placeholder="Class">
                                         <label for="floatingInput">Class</label>
                                     </div>
                                 </div>
@@ -195,32 +242,36 @@
 
                             </div>
 
-                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">   
+                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control"  formControlName="vehicleType" id="vehiclemake" placeholder="Vehicle Make">
+                                        <input type="text" class="form-control" formControlName="vehicleType"
+                                            id="vehiclemake" placeholder="Vehicle Make">
                                         <label for="floatingInput">Vehicle Make</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="vehicleColor" id="vehiclecolour" placeholder="Vehicle Colour">
+                                        <input type="text" class="form-control" formControlName="vehicleColor"
+                                            id="vehiclecolour" placeholder="Vehicle Colour">
                                         <label for="floatingInput">Vehicle Colour</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="licensePlateNumber" id="licenseplatenumber" placeholder="License Plate Number">
+                                        <input type="text" class="form-control" formControlName="licensePlateNumber"
+                                            id="licenseplatenumber" placeholder="License Plate Number">
                                         <label for="floatingInput">License Plate Number</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="vehicleName" id="vehicleidno" placeholder="Vehicle Identification No.">
+                                        <input type="text" class="form-control" formControlName="vehicleName"
+                                            id="vehicleidno" placeholder="Vehicle Identification No.">
                                         <label for="floatingInput">Vehicle Identification No.</label>
                                     </div>
                                 </div>
@@ -231,28 +282,32 @@
 
                                 <div class="form-group col-sm-3" *ngIf="this.sellerType == 'Personal'">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="vehicleModel" id="vehiclemodel" placeholder="Vehicle Model">
+                                        <input type="text" class="form-control" formControlName="vehicleModel"
+                                            id="vehiclemodel" placeholder="Vehicle Model">
                                         <label for="floatingInput">Vehicle Model</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3" *ngIf="this.sellerType == 'Business'">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control"  formControlName="idnumber" id="taxIdNumber" placeholder="Tax ID Number">
+                                        <input type="text" class="form-control" formControlName="idnumber"
+                                            id="taxIdNumber" placeholder="Tax ID Number">
                                         <label for="floatingInput">Tax ID Number</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control"  formControlName="cellNumber" id="cellnumber" placeholder="Cell Number">
+                                        <input type="text" class="form-control" formControlName="cellNumber"
+                                            id="cellnumber" placeholder="Cell Number">
                                         <label for="floatingInput">Cell Number</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-sm-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" formControlName="emailId" id="emailid" placeholder="Email ID">
+                                        <input type="text" class="form-control" formControlName="emailId" id="emailid"
+                                            placeholder="Email ID">
                                         <label for="floatingInput">Email ID</label>
                                     </div>
                                 </div>
@@ -275,44 +330,91 @@
                             </div> -->
 
                         </form>
-                    
+
                     </div> <!-- end card body-->
                 </div> <!-- end card -->
             </div><!-- end col-->
         </div>
-        <!-- end row-->     
-        
+        <!-- end row-->
+
     </div> <!-- container -->
 
-</div> 
+</div>
 
 
 
-<p-dialog [header]="'Edit Image'" [breakpoints]="{'767px': '100vw'}"  (onHide)="cancel()"   [(visible)]="cameraVisible" [style]="{width: '70vw'}">
-        
+<p-dialog [header]="'Edit Image'" [breakpoints]="{'767px': '100vw'}" (onHide)="cancel()" [(visible)]="cameraVisible"
+    [style]="{width: '70vw'}">
+
     <div class="row">
-                                
+
         <div class="col-md-12">
-            <div id="camera-div" class="camera-div">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" [(ngModel)]="captureType" name="radio" id=""
+                    value="Using Biomatric">
+                <label class="form-check-label" for="biomatric">Using Biomatric</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" [(ngModel)]="captureType" name="radio" id=""
+                    value="Using Signature Pad">
+                <label class="form-check-label" for="signature">Using Signature Pad</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" [(ngModel)]="captureType" name="radio" id=""
+                    value="Capture Image">
+                <label class="form-check-label" for="capture">Capture Image</label>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div id="camera-div" class="camera-div" *ngIf="captureType=='Capture Image'">
+
                 <div style="border: 1px solid black;">
                     <div class="col-sm-12" style="border: 1px solid black;  display:inline-block;">
-                        <app-camera *ngIf="isWebcam"  (getPicture)="handleImage($event)"></app-camera>
+                        <app-camera  (getPicture)="handleImage($event)"></app-camera>
                     </div>
                 </div>
-                <div class="mt-2">
-                    <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage()">Save Image</a>
-                    <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeImageCapture()">Close</a>
-             
-                </div>
-          </div>
-           
+
+            </div>
         </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div *ngIf="captureType=='Using Biomatric'">
+                <!-- " -->
+                <app-thumb-finger (getBiomatric)="setBiomatric($event)"></app-thumb-finger>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div *ngIf="captureType=='Using Signature Pad'">
+                <!-- " -->
+                <app-signature-pad (setSignature)="setSignature($event)"></app-signature-pad>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage()">Save Image</a>
+        <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeImageCapture()">Close</a>
 
     </div>
+
+
 </p-dialog>
-<p-dialog [header]="showImageHeader" (onHide)="cancelImage()"   [(visible)]="showImage">
-        
-    <div class="over-flow-300 image-center img-profile">                                
+<p-dialog [header]="showImageHeader" (onHide)="cancelImage()" [(visible)]="showImage">
+
+    <div class="over-flow-300 image-center img-profile">
         <img [src]="selectedImageUrl" style="height: 100%; width: 100%;">
     </div>
 </p-dialog>

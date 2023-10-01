@@ -1,0 +1,7 @@
+<div class="col">
+    <div class="over-flow-300 image-center">
+      <div *ngIf="imagePath" class="img-profile">
+        <img *ngIf="imagePath" [src]="'data:image/jpg;base64,' + imagePath?.BMPBase64 " class="dl-img1">
+      </div>
+    </div>      
+  </div>
