@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import SignaturePad from 'signature_pad';
 
 declare var SetTabletState: any;
@@ -6,94 +6,115 @@ declare var SetDisplayXSize: any;
 declare var SetDisplayYSize: any;
 declare var SetJustifyMode: any;
 declare var ClearTablet: any;
-declare var ClearTablet: any;
-declare var GetSigString:any;
-declare var SetSigCompressionMode:any;
-declare var SetImageXSize:any;
-declare var SetImageYSize:any;
-declare var NumberOfTabletPoints:any;
-declare var SetImagePenWidth:any;
-declare var GetSigImageB64:any;
-declare var SigImageCallback:any;
-var tmr:any;
+declare var GetSigString: any;
+declare var SetSigCompressionMode: any;
+declare var SetImageXSize: any;
+declare var SetImageYSize: any;
+declare var NumberOfTabletPoints: any;
+declare var SetImagePenWidth: any;
+declare var GetSigImageB64: any;
+declare var SigImageCallback: any;
+var tmr: any;
 
 @Component({
   selector: 'app-pen-signature',
- 
+
   templateUrl: './pen-signature.component.html',
   styleUrls: ['./pen-signature.component.scss']
 })
 export class PenSignatureComponent implements OnInit {
-  @ViewChild('canvas', { static: true }) canvas!: ElementRef;
+  @ViewChild('canvasmanual', { static: true }) canvasmanual!: ElementRef;
+  @ViewChild('canvaspen', { static: true }) canvaspen!: ElementRef;
   signatureNeeded!: boolean;
   signaturePad!: SignaturePad;
 
-  @Output() setSignature = new EventEmitter<any>();
-  signatureImg: any = '';
-  singPen: boolean = false;
+  @Input() signpad = '';
   
+
+  @Output() setSignature = new EventEmitter<any>();
+  signatureImg: any ;
+  singPen: boolean = false;
+
   ngOnInit() {
-    this.signaturePad = new SignaturePad(this.canvas.nativeElement);
+    if(this.signpad =='manual'){
+      this.singPen = false;
+      this.signaturePad = new SignaturePad(this.canvasmanual.nativeElement);
+    }else{
+      this.singPen = true;
+      this.onSign();
+    }
+ 
   }
 
- onSign(){
-   this.signatureNeeded = true
-   this.singPen = true
-      var ctx = this.canvas.nativeElement.getContext('2d');
-      SetDisplayXSize( 500 );
-      SetDisplayYSize( 100 );
+  onSign() {
+
+      var ctx = this.canvaspen.nativeElement.getContext('2d');
+      SetDisplayXSize(250);
+      SetDisplayYSize(100);
       SetTabletState(0, tmr);
       SetJustifyMode(0);
       ClearTablet();
-      if(tmr == null)
-      {
+      if (tmr == null) {
         tmr = SetTabletState(1, ctx, 50);
       }
-      else
-      {
+      else {
         SetTabletState(0, tmr);
         tmr = null;
         tmr = SetTabletState(1, ctx, 50);
       }
    
+
+   
+
   }
 
-saveDone(){
-  this.signatureImg = '';
-  if(this.singPen){
-    
+  saveDone() {
+   
+    if (this.singPen) {
       this.onDone();
-  }else{
-    this.savePad();
+    } else {
+      this.savePad();
+    }
   }
-}
- 
 
 
- onDone() {
-    if(NumberOfTabletPoints() == 0)
-    {
+
+  onDone() {
+    this.signatureNeeded = true;
+    if (NumberOfTabletPoints() == 0) {
       alert("Please sign before continuing");
     }
-    else
-    {
+    else {
       SetTabletState(0, tmr);
       //RETURN TOPAZ-FORMAT SIGSTRING
       SetSigCompressionMode(1);
       //this returns the signature in Topaz's own format, with biometric information
-
-
+    
+  
+      // this.signatureImg =`data:image/png;base64,${imagPath}`;
       //RETURN BMP BYTE ARRAY CONVERTED TO BASE64 STRING
-      SetImageXSize(500);
+      SetImageXSize(250);
       SetImageYSize(100);
       SetImagePenWidth(5);
-      this.signatureImg = GetSigImageB64(SigImageCallback);
-     // this.setSignature.emit(this.signatureImg)
+     // GetSigImageB64(this.sigImageCallback);
+    
+      GetSigImageB64((str:any) => {
+        console.log(str)
+        const  data = str;
+        this.signatureImg = data;
+        console.log(this.signatureImg)
+        this.signatureNeeded = true;
+        this.setSignature.emit('data:image/jpg;base64,'+this.signatureImg);
+      });
+      
+      
     }
   }
 
+   
+
   startDrawing(event: Event) {
-    this.singPen =  false
+    this.singPen = false
     // works in device not in browser
   }
 
@@ -103,8 +124,19 @@ saveDone(){
 
 
   clearPad() {
+   
     this.signatureImg = '';
+ 
+    if(this.signpad =='manual'){
     this.signaturePad.clear();
+    }else{
+      this.signatureImg = '';
+      this.onSign();
+      //this.canvaspen.nativeElement.value = ''; 
+      
+   
+    }
+
   }
 
   savePad() {
@@ -114,12 +146,12 @@ saveDone(){
     this.setSignature.emit(this.signatureImg)
     this.signatureNeeded = this.signaturePad.isEmpty();
     if (!this.signatureNeeded) {
-      this.signatureNeeded = false;
+      this.signatureNeeded = true;
     }
   }
 
 
-  
+
 
 
 

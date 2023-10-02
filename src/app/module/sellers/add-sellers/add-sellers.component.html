@@ -349,17 +349,24 @@
     <div class="row">
 
         <div class="col-md-12">
-            <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline" *ngIf="type=='5'">
                 <input class="form-check-input" type="radio" [(ngModel)]="captureType" name="radio" id=""
                     value="Using Biomatric">
                 <label class="form-check-label" for="biomatric">Using Biomatric</label>
             </div>
-            <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline" *ngIf="type=='3'">
                 <input class="form-check-input" type="radio" [(ngModel)]="captureType" name="radio" id=""
                     value="Using Signature Pad">
                 <label class="form-check-label" for="signature">Using Signature Pad</label>
             </div>
-            <div class="form-check form-check-inline">
+
+            <div class="form-check form-check-inline" *ngIf="type=='3'">
+                <input class="form-check-input" type="radio" [(ngModel)]="captureType" name="radio" id=""
+                    value="Using Sign">
+                <label class="form-check-label" for="sign">Sign</label>
+            </div>
+
+            <div class="form-check form-check-inline" *ngIf="type=='2' || type=='4'">
                 <input class="form-check-input" type="radio" [(ngModel)]="captureType" name="radio" id=""
                     value="Capture Image">
                 <label class="form-check-label" for="capture">Capture Image</label>
@@ -400,7 +407,18 @@
             <div *ngIf="captureType=='Using Signature Pad'">
                 <!-- " -->
                 <!-- <app-pen-signature></app-pen-signature> -->
-                <app-pen-signature (setSignature)="setSignature($event)"></app-pen-signature>
+                <app-pen-signature [signpad]="'pen'" (setSignature)="setSignature($event)"></app-pen-signature>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div *ngIf="captureType=='Using Sign'">
+                <!-- " -->
+                <!-- <app-pen-signature></app-pen-signature> -->
+                <app-pen-signature [signpad]="'manual'" (setSignature)="setSignature($event)"></app-pen-signature>
             </div>
         </div>
     </div>

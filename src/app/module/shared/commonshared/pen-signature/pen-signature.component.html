@@ -2,17 +2,24 @@
 <div class="row">
 
     <div class="col-sm-6">
-        <div class="broder border-secoudary" style="border: 1px solid;height: 200px;">
-            <canvas #canvas width="400" height="200"  (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
+        <div class="broder border-secoudary" style="border: 1px solid;min-height: 200px;max-height: 200px;overflow-x: auto;" [ngStyle]="{display:signpad=='manual' ? 'block':'none'}">
+            
+            <canvas #canvasmanual width="400" height="200"  (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
+        </div>
+
+        <div class="broder border-secoudary" style="border: 1px solid;;max-height: 200px;overflow-y: auto;" [ngStyle]="{display:signpad=='pen' ? 'block':'none'}">
+           
+            <canvas #canvaspen width="400" height="200"></canvas>
         </div>
         
     </div>
 
     <div class="col-sm-6">
-        <div class="broder border-secoudary" style="border: 1px solid;height: 200px;">
-        <div *ngIf="signatureNeeded === false">
-            <p>Signature in Base64Encoded Format</p>
-            <img *ngIf="signatureImg!=''" src="{{ signatureImg }}" alt="" srcset="" />
+        <div class="broder border-secoudary" style="border: 1px solid;min-height: 200px;max-height: 200px;overflow-x: auto;">
+        <div >
+          
+            <img  *ngIf="signatureNeeded && signpad=='pen' && signatureImg" [src]="'data:image/jpg;base64,' + signatureImg" class="dl-img1">
+            <img  *ngIf="signatureNeeded && signpad=='manual' && signatureImg" [src]="signatureImg" class="dl-img1">
         </div>
         </div> 
     </div>
@@ -21,8 +28,8 @@
 
 
 <div class="mt-2 mb-2">
-    <a id="save-image-btn" class="btn btn-primary me-1" (click)="onSign()">Sign Pad</a>
-    <a class="btn btn-secoundary ms-1" data-bs-dismiss="modal" aria-label="Close" (click)="savePad()">Click to Done</a>
+    <a id="save-image-btn" class="btn btn-primary me-1" *ngIf="signpad=='manual'" (click)="savePad()">Done</a>
+    <a id="save-image-btn" class="btn btn-primary me-1" *ngIf="signpad=='pen'" (click)="onDone()">Done</a>
     <a id="save-image-btn" class="btn btn-primary me-1" (click)="clearPad()">Clear</a>
 </div>
 
