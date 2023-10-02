@@ -399,7 +399,8 @@
         <div class="col-md-12">
             <div *ngIf="captureType=='Using Signature Pad'">
                 <!-- " -->
-                <app-signature-pad (setSignature)="setSignature($event)"></app-signature-pad>
+                <!-- <app-pen-signature></app-pen-signature> -->
+                <app-pen-signature (setSignature)="setSignature($event)"></app-pen-signature>
             </div>
         </div>
     </div>

@@ -1,0 +1,31 @@
+
+<div class="row">
+
+    <div class="col-sm-6">
+        <div class="broder border-secoudary" style="border: 1px solid;height: 200px;">
+            <canvas #canvas width="400" height="200"  (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
+        </div>
+        
+    </div>
+
+    <div class="col-sm-6">
+        <div class="broder border-secoudary" style="border: 1px solid;height: 200px;">
+        <div *ngIf="signatureNeeded === false">
+            <p>Signature in Base64Encoded Format</p>
+            <img *ngIf="signatureImg!=''" src="{{ signatureImg }}" alt="" srcset="" />
+        </div>
+        </div> 
+    </div>
+
+</div>
+
+
+<div class="mt-2 mb-2">
+    <a id="save-image-btn" class="btn btn-primary me-1" (click)="onSign()">Sign Pad</a>
+    <a class="btn btn-secoundary ms-1" data-bs-dismiss="modal" aria-label="Close" (click)="savePad()">Click to Done</a>
+    <a id="save-image-btn" class="btn btn-primary me-1" (click)="clearPad()">Clear</a>
+</div>
+
+
+
+

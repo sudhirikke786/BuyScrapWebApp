@@ -11,6 +11,7 @@ import { PrimengModule } from '../primeng/primeng.module';
 import { FormErrorMessageComponent } from './form-error-message/form-error-message.component';
 import { SignaturePadComponent } from './signature-pad/signature-pad.component';
 import { ThumbFingerComponent } from './thumb-finger/thumb-finger.component';
+import { PenSignatureComponent } from './pen-signature/pen-signature.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ThumbFingerComponent } from './thumb-finger/thumb-finger.component';
     CameraComponent,
     PriceCalculatorComponent,
     SignaturePadComponent,
-    ThumbFingerComponent
+    ThumbFingerComponent,
+    PenSignatureComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,8 @@ import { ThumbFingerComponent } from './thumb-finger/thumb-finger.component';
     PriceCalculatorComponent,
     FormErrorMessageComponent,
     SignaturePadComponent,
-    ThumbFingerComponent 
+    ThumbFingerComponent,
+    PenSignatureComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
