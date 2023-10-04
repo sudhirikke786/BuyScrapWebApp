@@ -32,6 +32,7 @@ export class TicketDetailComponent implements OnInit {
   sellerId: any;
   ticketId: any;
   locId: any;
+  locationName: any;
 
   ticketData:any = {};
   customer: any;
@@ -69,7 +70,7 @@ export class TicketDetailComponent implements OnInit {
   itemTare: number = 0;
   itemNet: number = 0;
   itemPrice: number = 0;
-  itemImagePath: string = '';
+  itemImagePath: string = 'assets/images/custom/id_scan.png';
   materialNote: string = '';
   itemCodNote: string = '';
   itemLeveloperationPerform: string = '';
@@ -105,6 +106,7 @@ export class TicketDetailComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.locationName = localStorage.getItem('locationName');
     this.route.params.subscribe((param)=>{
       this.ticketId = param["ticketId"];
       this.sellerId = param["customerId"];
@@ -525,8 +527,32 @@ export class TicketDetailComponent implements OnInit {
   }
 
   handleImage(imageUrl: string) {
+    // alert(imageUrl);
     this.imageUrl = imageUrl;
   }  
+  
+  SaveImage() {
+    
+    let  requestObj:any = {
+    
+      organisationName: this.orgName,
+      locationName: this.locationName,
+      imagetype: 1,
+      base64Data: this.imageUrl.split(';base64,')[1]
+    };
+    
+    this.itemImagePath = this.imageUrl;
+    
+    this.commonService.FileUploadFromWeb(requestObj).subscribe((res:any) =>{
+      console.log('Image url path :: {}', res.body.data);
+      console.log(res.body.data);
+      this.imageUrl = res.body.data;
+      this.itemImagePath = this.imageUrl;
+    })
+
+    this.imageUrl = null;
+    this.closeCapturedImage();
+  }
 
   clickOnChangeItem() {
     this.isChangeItemOn = true;

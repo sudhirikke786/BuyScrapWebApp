@@ -307,7 +307,7 @@
                             <div class="col-sm-3 position-relative" *ngIf="isEditModeOn && editItemCloseImageCapture">
                                 <div class="calc">
                                     <app-price-calculator (calculateObj)="calculation($event)" [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
-                                        [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote">
+                                        [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath">
                                     </app-price-calculator>
                                 </div>
                             </div>
@@ -340,7 +340,7 @@
                     </div>
                 </div>
                 <br>
-                <a id="save-image-btn" class="btn btn-primary me-1" (click)="closeCapturedImage()">Save Image</a>
+                <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage()">Save Image</a>
                 <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage()">Close</a>
             </div>
             <!-- <ng-template #elsepart>
@@ -520,7 +520,7 @@
                         </div>
                     </div>
                     <br>
-                    <a id="save-image-btn" class="btn btn-primary me-1" (click)="closeCapturedImage()">Save Image</a>
+                    <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage()">Save Image</a>
                     <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage()">Close</a>
                 </div>
             </div>

@@ -15,6 +15,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   @Input() materialNote = '';
   @Input() itemGroupName = 'Motors/Motores';
   @Input() itemMaterialName = 'Aluminum Motors (Clean/Limpios)';
+  @Input() itemImagePath = 'assets/images/custom/id_scan.png';
 
 
   @Input() itemGross: number = 0;
@@ -29,7 +30,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   netInput:any =0;
   priceInput:any =0;
   focusedInput: string | null = null;
-  addNoteSectionVisible = false;
+  addNoteSectionVisible = false;  
 
   constructor(private renderer: Renderer2) {
 

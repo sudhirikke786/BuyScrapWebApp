@@ -301,17 +301,17 @@ export class AddSellersComponent implements OnInit {
       requestObj['base64Data'] =  this.imageUrl.split(';base64,')[1];
 
     } else if(this.type=="3") {
-    
-      
-      requestObj['base64Data'] =  this.idsignatureImage.split(';base64,')[1];
+      this.idsignatureImage = this.imageUrl;
+      requestObj['base64Data'] =  this.imageUrl.split(';base64,')[1];
 
     } else if(this.type=="4") {
       this.idfaceShotImage = this.imageUrl;
       requestObj['base64Data'] =  this.imageUrl.split(';base64,')[1];
 
     } else if(this.type=="5") {
-      this.fingerPrints = this.imagePath;
-      requestObj['base64Data'] =  this.imagePath;
+      this.fingerPrints = this.imageUrl;
+      requestObj['base64Data'] =  this.imageUrl;
+      
     }
 
    
@@ -354,12 +354,14 @@ export class AddSellersComponent implements OnInit {
 
 
   setBiomatric($event:any){
-    this.imagePath = $event;
+    // alert($event);
+    this.imageUrl = $event;
   }
 
   
   setSignature($event:any){
-    this.idsignatureImage= $event;
+    // alert($event);
+    this.imageUrl= $event;
   }
 
 
