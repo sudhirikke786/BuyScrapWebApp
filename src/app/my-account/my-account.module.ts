@@ -5,14 +5,20 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { PrimengModule } from '../module/shared/primeng/primeng.module';
 
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { ViewCartComponent } from './view-cart/view-cart.component';
 
 export const routes: Routes = [{
-  path:'subscription',
-  component:SubscriptionComponent
+  path: 'subscription',
+  component: SubscriptionComponent
 },
 {
-  path:'change-password',
-  component:ChangePasswordComponent
+  path: 'view-cart',
+  component:ViewCartComponent
+},
+{
+  path: 'change-password',
+  component: ChangePasswordComponent
 },
 
 ]
@@ -21,11 +27,13 @@ export const routes: Routes = [{
 @NgModule({
   declarations: [
     SubscriptionComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    ViewCartComponent,
   ],
   imports: [
     CommonModule,
     PrimengModule,
+    FormsModule,
     RouterModule.forChild(routes)
   ]
 })

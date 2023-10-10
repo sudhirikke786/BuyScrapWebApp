@@ -5,12 +5,6 @@
   "projects": {
     "BuyScrapWebApp": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss",
-          "standalone": true
-        }
-      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",

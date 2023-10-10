@@ -39,7 +39,7 @@
 
         <div class="row mt-2">
             <div class="col-12">
-                <div class="card">
+                <div class="card custom-height">
                     <div class="card-body">
 
                         <div class="row">
@@ -85,7 +85,13 @@
                                             </tr>
                                         </table>
 
-                                        <a href="" target="_blank" class="btn btn-primary-bsa-orange mt-15">SELECTED</a>
+                                        <a href="javacript:void(0)"  class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappLite.selected==false"  (click)="addCart(buyScrappLite,true);buyScrappLite.selected=true">SELECT PLAN</a>
+                                        <a href="javacript:void(0)"  class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappLite.selected==true"  (click)="removeCartItem(buyScrappLite);buyScrappLite.selected=false">SELECTED</a>
+
+
+                                       
+                                           
+                                        
 
                                         <!-- <p class="info-p">Free 30 day trial</p> -->
                                     </div>
@@ -133,8 +139,9 @@
                                                 <td>VIN scanning & title for buying scrap vehicles</td>
                                             </tr>
                                         </table>
-
-                                        <a href="" target="_blank" class="btn btn-primary-bsa-orange mt-15">SELECT PLAN</a>
+                                     
+                                        <a href="javacript:void(0)" class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappPlus.selected==false" (click)="addCart(buyScrappPlus,true);buyScrappPlus.selected=true">SELECT PLAN</a>
+                                        <a href="javacript:void(0)"  class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappPlus.selected==true"  (click)="removeCartItem(buyScrappPlus);buyScrappPlus.selected=false">SELECTED</a>
 
                                         <!-- <p class="info-p">30 Days Money Back Guarantee</p> -->
                                     </div>
@@ -150,7 +157,7 @@
                                     
                                     <div class="addons-heading">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input checkbox-addons" id="checkmeout0">
+                                            
                                             <label class="form-check-label lbl-addons-heading" for="checkmeout0">Add Extra Monthly Tickets</label>
                                         </div>
                                     </div> 
@@ -161,7 +168,7 @@
                                             <tr>
                                                 <td class="addons-td-1">
                                                     <div class="form-check form-check-success div-addons">
-                                                        <input class="form-check-input radio-addons" type="radio" name="flexRadioDefault" id="addonradio">
+                                                        <input class="form-check-input radio-addons"  (click)="monthlyPlan({name:'Add Monthly Tickets',price:30,quantity:1})"  type="radio" name="flexRadioDefault" id="addonradio">
                                                     </div>
                                                 </td>
                                                 <td>
@@ -173,11 +180,11 @@
                                             <tr>
                                                 <td class="addons-td-1">
                                                     <div class="form-check form-check-success div-addons">
-                                                        <input class="form-check-input radio-addons" type="radio" name="flexRadioDefault" id="addonradio2">
+                                                        <input class="form-check-input radio-addons" (click)="monthlyPlan({name:'+2000 tickets/month',price:75,quantity:1})"   type="radio" name="flexRadioDefault" id="addonradio2">
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <label for="addonradio2" class="lbl-radio"><p class="addons-features-content">+2000 tickets/mo (add $75)</p>
+                                                    <label for="addonradio2" class="lbl-radio"><p class="addons-features-content">+2000 tickets/month (add $75)</p>
                                                     <span class="addons-features-content-sub">(Adds approx. 100 extra tix per day)</span></label>
                                                 </td>
                                             </tr>
@@ -185,11 +192,11 @@
                                             <tr>
                                                 <td class="addons-td-1">
                                                     <div class="form-check form-check-success div-addons">
-                                                        <input class="form-check-input radio-addons" type="radio" name="flexRadioDefault" id="addonradio3">
+                                                        <input class="form-check-input radio-addons" (click)="monthlyPlan({name:'+5000 tickets/month',price:150,quantity:1})"   type="radio" name="flexRadioDefault" id="addonradio3">
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <label for="addonradio3" class="lbl-radio"><p class="addons-features-content">+5000 tickets/mo (add $150)</p>
+                                                    <label for="addonradio3" class="lbl-radio"><p class="addons-features-content">+5000 tickets/month (add $150)</p>
                                                     <span class="addons-features-content-sub">(Adds approx. 200 extra tix per day)</span></label>
                                                 </td>
                                             </tr>
@@ -197,7 +204,7 @@
                                             <tr>
                                                 <td class="addons-td-1">
                                                     <div class="form-check form-check-success div-addons">
-                                                        <input class="form-check-input radio-addons" type="radio" name="flexRadioDefault" id="addonradio4">
+                                                        <input class="form-check-input radio-addons" (click)="monthlyPlan({name:'+10,000 tickets/month',price:250,quantity:1})"  type="radio" name="flexRadioDefault" id="addonradio4">
                                                     </div>
                                                 </td>
                                                 <td>
@@ -220,8 +227,8 @@
                                     
                                     <div class="addons-heading">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input checkbox-addons" id="checkmeout2">
-                                            <label class="form-check-label lbl-addons-heading" for="checkmeout2">Add User Logins</label><br>
+                                            <input type="checkbox" (click)="addUser(userPlan)" class="form-check-input checkbox-addons" id="checkmeout2">
+                                            <label class="form-check-label lbl-addons-heading" for="checkmeout2" >Add User Logins</label><br>
                                             <span>$15/month per user</span>
                                         </div>
                                     </div> 
@@ -236,9 +243,9 @@
                                             <div class="col-sm-6">
                                                 <div class="plus-minus-box">
                                                     <div class="number">
-                                                        <span class="minus">-</span>
-                                                        <input type="text" value="1"/>
-                                                        <span class="plus">+</span>
+                                                        <span class="minus" (click)="subUserQuantity()">-</span>
+                                                        <input type="text" [value]="userPlan.quantity"/>
+                                                        <span class="plus" (click)="addUserQuantity()">+</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -246,7 +253,7 @@
                                             <div class="col-sm-6">
                                                 <div class="addon-price-calculation">
                                                     <label>
-                                                        Total - <span class="total-amount">$30</span>
+                                                        Total - <span class="total-amount">${{userPlan.price * userPlan.quantity }}</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -262,7 +269,7 @@
                                     
                                     <div class="addons-heading">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input checkbox-addons" id="checkbox-location">
+                                            <input type="checkbox" (click)="addItemLocation(locationPlan)" class="form-check-input checkbox-addons" id="checkbox-location">
                                             <label class="form-check-label lbl-addons-heading" for="checkbox-location">Add Locations</label><br>
                                             <span>$15/month</span>
                                         </div>
@@ -278,9 +285,9 @@
                                             <div class="col-sm-6">
                                                 <div class="plus-minus-box">
                                                     <div class="number">
-                                                        <span class="minus">-</span>
-                                                        <input type="text" value="1"/>
-                                                        <span class="plus">+</span>
+                                                        <span class="minus" (click)="sublocationQuantity()">-</span>
+                                                        <input type="text" [value]="this.locationPlan.quantity"/>
+                                                        <span class="plus" (click)="addlocationQuantity()">+</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -288,7 +295,7 @@
                                             <div class="col-sm-6">
                                                 <div class="addon-price-calculation">
                                                     <label>
-                                                        Total - <span class="total-amount">$15</span>
+                                                        Total - <span class="total-amount">${{locationPlan.price * locationPlan.quantity }}</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -305,7 +312,8 @@
 
                 <div class="row mt-20">
                     <div class="col-sm-12">
-                        <a href="" data-bs-target="#get-started" data-bs-toggle="modal" class="btn btn-primary-bsa-get-started">SAVE</a> 
+                       
+                        <button  class="btn btn-primary-bsa-get-started" [attr.disabled]="!cartService.getCartItems().length ? true : null"   (click)="proccedCart()">Procced to Cart</button> 
                     </div>
                 </div>
                     
