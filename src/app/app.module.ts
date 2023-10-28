@@ -20,6 +20,8 @@ import { PrimengModule } from './module/shared/primeng/primeng.module';
 import { MessageService } from 'primeng/api';
 import { AuthInterceptor } from './core/interceptors/http-interceptor';
 import { GlobalErrorHandlerService } from './core/services/global-error-handler.service';
+import { PrintTicketComponent } from './print-ticket/print-ticket.component';
+import { ErrorComponent } from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { GlobalErrorHandlerService } from './core/services/global-error-handler.
     SideMenuComponent,
     SiteLayoutComponent,
     FooterComponent,
-    FourColumnPipe,    
+    FourColumnPipe,
+    PrintTicketComponent,
+    ErrorComponent,    
   ],
   imports: [
     BrowserModule,

@@ -3,6 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { SiteLayoutComponent } from './common/site-layout/site-layout.component';
 import { OrganizationLoginComponent } from './organization-login/organization-login.component';
 import { UserLoginComponent } from './user-login/user-login.component';
+import { PrintTicketComponent } from './print-ticket/print-ticket.component';
+import { ErrorComponent } from './error/error.component';
+import { RoleGuard } from './core/guard/role.guard';
 
 const routes: Routes = [
   { 
@@ -13,6 +16,14 @@ const routes: Routes = [
   { 
     path: 'organization-login', 
     component: OrganizationLoginComponent
+  },
+  {
+    path:'print-layout',
+    component:PrintTicketComponent
+  },
+  {
+    path:'error',
+    component:ErrorComponent
   },
   { 
     path: ':orgName/user-login', 
@@ -25,55 +36,81 @@ const routes: Routes = [
         { 
           path: '', 
           loadChildren:() => import('./module/tickets/tickets.module').then(m => m.TicketsModule),
-          pathMatch: 'full'
+          pathMatch: 'full',
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator']},
         },
         { 
           path: 'home', 
-          loadChildren:() => import('./module/tickets/tickets.module').then(m => m.TicketsModule)
+          loadChildren:() => import('./module/tickets/tickets.module').then(m => m.TicketsModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator']},
         },
         {
           path:'sellers-buyers',
-          loadChildren:() => import('./module/sellers/sellers.module').then(m => m.SellersModule)
+          loadChildren:() => import('./module/sellers/sellers.module').then(m => m.SellersModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator']},
         },
         {
           path:'ship-out',
-          loadChildren:() => import('./module/shipout/shipout.module').then(m => m.ShipoutModule)
+          loadChildren:() => import('./module/shipout/shipout.module').then(m => m.ShipoutModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator']},
         },
         {
           path:'materials',
-          loadChildren:() => import('./module/materials/materials.module').then(m => m.MaterialsModule)
+          loadChildren:() => import('./module/materials/materials.module').then(m => m.MaterialsModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator']},
         },
         {
           path:'adjustment',
-          loadChildren:() => import('./module/adjustment/adjustment.module').then(m => m.AdjustmentModule)
+          loadChildren:() => import('./module/adjustment/adjustment.module').then(m => m.AdjustmentModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator']},
         },
         {
           path:'regrade',
-          loadChildren:() => import('./module/regrade/regrade.module').then(m => m.RegradeModule)
+          loadChildren:() => import('./module/regrade/regrade.module').then(m => m.RegradeModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator']},
         },
         {
           path:'certificates',
-          loadChildren:() => import('./module/certificates/certificates.module').then(m => m.CertificatesModule)
+          loadChildren:() => import('./module/certificates/certificates.module').then(m => m.CertificatesModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator']},
         },
         {
           path:'cash-drawer',
-          loadChildren:() => import('./module/cashdrawer/cashdrawer.module').then(m => m.CashdrawerModule)
+          loadChildren:() => import('./module/cashdrawer/cashdrawer.module').then(m => m.CashdrawerModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator']},
         },
         {
           path:'reports',
-          loadChildren:() => import('./module/reports/reports.module').then(m => m.ReportsModule)
+          loadChildren:() => import('./module/reports/reports.module').then(m => m.ReportsModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator']},
         },
         {
           path:'admin',
-          loadChildren:() => import('./module/admin/admin.module').then(m => m.AdminModule)
+          loadChildren:() => import('./module/admin/admin.module').then(m => m.AdminModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator']},
         },
         {
           path:'my-account',
-          loadChildren:() => import('./my-account/my-account.module').then(m => m.MyAccountModule)
+          loadChildren:() => import('./my-account/my-account.module').then(m => m.MyAccountModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['user']},
         },
         {
           path:'settings',
-          loadChildren:() => import('./module/settings/settings.module').then(m => m.SettingsModule)
+          loadChildren:() => import('./module/settings/settings.module').then(m => m.SettingsModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['user']},
         }
       ]
   }

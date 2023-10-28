@@ -6,6 +6,7 @@ import {map, tap, catchError, share} from 'rxjs/operators';
 
 
 import { CommonService } from './common.service';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class AuthService {
   public currentToken: string = '';
 
   constructor(private http: HttpClient,
+              private localStorage:StorageService,
               public commonService: CommonService) {
     // this.configJson = commonService.getConfigJson();
   }
@@ -144,5 +146,14 @@ export class AuthService {
   getTokenData() {
     return this.tokenData ? this.tokenData.access_token : '';
   }
+
+
+  hasRoleActive(roleName:string):boolean{
+     const userObj =  this.localStorage.getLocalStorage('userObj');
+     return userObj?.userdto?.role?.includes(roleName);
+  }
+
+
+
 
 }

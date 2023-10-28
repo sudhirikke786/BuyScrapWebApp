@@ -9,12 +9,14 @@ import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 import { SellersBuyersDashboardComponent } from './sellers-buyers-dashboard/sellers-buyers-dashboard.component';
 import { SellersBuyersDetailsComponent } from './sellers-buyers-details/sellers-buyers-details.component';
 import { AddSellersComponent } from './add-sellers/add-sellers.component';
+import { RoleGuard } from 'src/app/core/guard/role.guard';
 
 
 export const routes: Routes = [
   {
     path: '',
-    component: SellersBuyersDashboardComponent
+    component: SellersBuyersDashboardComponent,
+   
   },
   {
     path:'add-seller',
