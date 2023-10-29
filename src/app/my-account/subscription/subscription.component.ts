@@ -45,8 +45,9 @@ export class SubscriptionComponent implements OnInit {
     console.log(params);
     params.selected = false;
     if (this.cartService.isPlanExist(params)) {
-      alert('Plan alreday Exist');
+      this.removeCartItem(params);
     } else {
+
       this.cartService.addToCart({ ...params, 'selected': isSelected })
     }
 

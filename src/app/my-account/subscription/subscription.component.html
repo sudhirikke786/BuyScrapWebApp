@@ -85,8 +85,8 @@
                                             </tr>
                                         </table>
 
-                                        <a href="javacript:void(0)"  class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappLite.selected==false"  (click)="addCart(buyScrappLite,true);buyScrappLite.selected=true">SELECT PLAN</a>
-                                        <a href="javacript:void(0)"  class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappLite.selected==true"  (click)="removeCartItem(buyScrappLite);buyScrappLite.selected=false">SELECTED</a>
+                                        <button class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappLite.selected==false"  (click)="addCart(buyScrappLite,true);buyScrappLite.selected=true;buyScrappPlus.selected=false">SELECT PLAN</button>
+                                        <button class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappLite.selected==true"  (click)="removeCartItem(buyScrappLite);buyScrappLite.selected=false">SELECTED</button>
 
 
                                        
@@ -140,8 +140,8 @@
                                             </tr>
                                         </table>
                                      
-                                        <a href="javacript:void(0)" class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappPlus.selected==false" (click)="addCart(buyScrappPlus,true);buyScrappPlus.selected=true">SELECT PLAN</a>
-                                        <a href="javacript:void(0)"  class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappPlus.selected==true"  (click)="removeCartItem(buyScrappPlus);buyScrappPlus.selected=false">SELECTED</a>
+                                        <button  class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappPlus.selected==false" (click)="addCart(buyScrappPlus,true);buyScrappPlus.selected=true;buyScrappLite.selected=false">SELECT PLAN</button>
+                                        <button  class="btn btn-primary-bsa-orange mt-15" *ngIf="buyScrappPlus.selected==true"  (click)="removeCartItem(buyScrappPlus);buyScrappPlus.selected=false">SELECTED</button>
 
                                         <!-- <p class="info-p">30 Days Money Back Guarantee</p> -->
                                     </div>

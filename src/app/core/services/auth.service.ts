@@ -150,7 +150,7 @@ export class AuthService {
 
   hasRoleActive(roleName:string):boolean{
      const userObj =  this.localStorage.getLocalStorage('userObj');
-     return userObj?.userdto?.role?.includes(roleName);
+     return roleName.includes(userObj?.userdto?.role);
   }
 
 
