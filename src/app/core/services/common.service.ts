@@ -311,5 +311,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/AWS/FileUploadFromWeb', 'POST', requestObj);
   }
 
+
+
+  getFileData(url: string) {
+    return this.http.get(url, { responseType: 'arraybuffer' });
+  }
     
 }

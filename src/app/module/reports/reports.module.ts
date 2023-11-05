@@ -17,6 +17,7 @@ import { SubMaterialReportComponent } from './sub-material-report/sub-material-r
 import { VoidTicketReportComponent } from './void-ticket-report/void-ticket-report.component';
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { AccountingReportComponent } from './accounting-report/accounting-report.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 export const routes: Routes = [
   {
@@ -83,6 +84,7 @@ export const routes: Routes = [
     CommonModule,
     FormsModule,
     CommonsharedModule,
+    NgxExtendedPdfViewerModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     PrimengModule

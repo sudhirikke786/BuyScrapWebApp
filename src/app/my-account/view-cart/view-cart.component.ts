@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { CartService } from 'src/app/core/services/cart.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
@@ -18,6 +19,7 @@ export class ViewCartComponent {
   stripeAPIKey: any = 'pk_test_51NyqSvSEJISOhUbDfdtjYyaSRTMi2lEmnNt7IHJWhkgF5xPT8XOJdS2qUDPqiPG6FV8hWcxwvAZDp8PMLYaAbroI00NbpxxMV8';
   constructor(
     private localService:StorageService,
+    private authService:AuthService,
     public cartService:CartService,
     private commonService: CommonService) { }
     
@@ -51,7 +53,7 @@ export class ViewCartComponent {
 
   --------------------------------------------*/
 
-  makePayment(amount: any) {
+  makePayment() {
 
     const paymentHandler = (<any>window).StripeCheckout.configure({
 
@@ -71,11 +73,11 @@ export class ViewCartComponent {
 
     paymentHandler.open({
 
-      name: 'Kisanpwr1@gmail.com',
+      name: this.authService.currentUserInfo().emailID,
 
       description: "Plan Ans Subscription",
 
-      amount: amount
+      amount: this.cartService.getTotal() * 100,
 
     });
 

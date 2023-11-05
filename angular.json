@@ -23,8 +23,14 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/web.config"
+              "src/web.config",
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-extended-pdf-viewer/assets/",
+                "output": "/assets/"
+              }
             ],
+            
             "styles": [
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
@@ -32,7 +38,8 @@
               "src/assets/css/app.min.css",
               "src/assets/css/bootstrap.min.css",
               "src/assets/css/custom.css",
-              "src/assets/css/icons.min.css"
+              "src/assets/css/icons.min.css",
+             
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"

@@ -75,6 +75,10 @@
                       </div>
                       <!-- end col-->
                     </div>
+
+
+
+                   
                     <!-- end row-->
                   </div>
                   <!-- container -->
@@ -95,3 +99,18 @@
             <!-- ============================================================== -->
             <!-- End Page content -->
             <!-- ============================================================== -->
+
+            <p-dialog header="Payment Report" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
+
+              <div class="row" >
+                <div style="height: 500px;" *ngIf="showDownload">
+                
+                  <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
+
+                </div>
+
+              </div>
+            
+           </p-dialog>
+          
+

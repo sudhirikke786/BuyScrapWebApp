@@ -154,6 +154,16 @@ export class AuthService {
   }
 
 
+  userCurrentRole(){
+    const userObj =  this.localStorage.getLocalStorage('userObj');
+    return userObj?.userdto?.role;
+  }
+
+  currentUserInfo(){
+    const userObj =  this.localStorage.getLocalStorage('userObj');
+    return userObj?.userdto ?? null;
+  }
+
 
 
 }

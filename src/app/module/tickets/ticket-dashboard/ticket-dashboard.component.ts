@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pagination } from 'src/app/core/interfaces/common-interfaces';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
@@ -24,11 +25,7 @@ export class TicketDashboardComponent implements OnInit {
   {
     iconcode:'mdi-ticket',
     title:'New Ticket'
-  },
-  {
-    iconcode:'mdi-merge',
-    title:'Merge Ticket and Pay'
-  },
+  }
   
   ];
   
@@ -129,11 +126,24 @@ export class TicketDashboardComponent implements OnInit {
   last = 0;
   pageTotal = 0;
   tiketSelectedObj: any;
+  currentRole: any;
   constructor(private route: ActivatedRoute,
     private router: Router,
+    private authService:AuthService,
     public commonService: CommonService) { }
 
   ngOnInit() {
+    this.currentRole = this.authService.userCurrentRole();
+
+    // ['Administrator','Scale','Cashier']
+    if(['Administrator','Cashier'].includes(this.currentRole)){
+      this.actionList.unshift(
+        {
+          iconcode:'mdi-merge',
+          title:'Merge Ticket and Pay'
+        })
+    }
+
     this.selectedTickets = this.defaultSelectedTicketsTypes;
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
