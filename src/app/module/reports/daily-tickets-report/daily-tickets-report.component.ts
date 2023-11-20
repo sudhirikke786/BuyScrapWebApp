@@ -19,7 +19,13 @@ export class DailyTicketsReportComponent implements OnInit {
     {
       iconcode:'mdi-refresh',
       title:'Refresh'
-    }
+    },
+    {
+      iconcode: 'mdi-download',
+      title: 'Download'
+    }	  
+		
+
   ];
 
    newButtonList = [
@@ -38,7 +44,8 @@ export class DailyTicketsReportComponent implements OnInit {
   locId: any;
   fromDate: any;
   toDate: any;  
-  
+  fileDataObj:any;	
+  showDownload:boolean=false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -87,6 +94,10 @@ export class DailyTicketsReportComponent implements OnInit {
         this.setDefaultDate();
         this.getDailyTicketsReport();
         break;
+        case 'mdi-download':
+          console.log(this.fileDataObj);
+          this.showDownload = true;
+         break;
       default:
         break;
     }  

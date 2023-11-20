@@ -13,32 +13,38 @@ export class VoidTicketReportComponent implements OnInit {
 
   actionList = [
     {
-      iconcode:'mdi-magnify',
-      title:'Search'
+      iconcode: 'mdi-magnify',
+      title: 'Search'
     },
     {
-      iconcode:'mdi-refresh',
-      title:'Refresh'
+      iconcode: 'mdi-refresh',
+      title: 'Refresh'
+    },
+    {
+      iconcode: 'mdi-download',
+      title: 'Download'
     }
   ];
 
-   newButtonList = [
+  newButtonList = [
     {
-      iconcode:'mdi-magnify',
-      title:'Search'
+      iconcode: 'mdi-magnify',
+      title: 'Search'
     },
     {
-      iconcode:'mdi-refresh',
-      title:'Refresh'
+      iconcode: 'mdi-refresh',
+      title: 'Refresh'
     }
   ];
 
   reportData: any;
   orgName: any;
-  locId: any; 
+  locId: any;
   fromDate: any;
-  toDate: any; 
-  
+  toDate: any;
+  fileDataObj: any;
+  showDownload = false;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -60,7 +66,7 @@ export class VoidTicketReportComponent implements OnInit {
     console.log(this.fromDate);
   }
 
-  getVoidTicketReport() {   
+  getVoidTicketReport() {
 
     const param = {
       LocationId: this.locId,
@@ -70,10 +76,10 @@ export class VoidTicketReportComponent implements OnInit {
 
     this.commonService.getVoidTicketReport(param)
       .subscribe(data => {
-          console.log('getVoidTicketReport :: ');
-          console.log(data);
-          this.reportData = data.body.data;
-        },
+        console.log('getVoidTicketReport :: ');
+        console.log(data);
+        this.reportData = data.body.data;
+      },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
@@ -81,7 +87,7 @@ export class VoidTicketReportComponent implements OnInit {
   }
 
 
-  getAction(actionCode:any){
+  getAction(actionCode: any) {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
@@ -91,9 +97,13 @@ export class VoidTicketReportComponent implements OnInit {
         this.setDefaultDate();
         this.getVoidTicketReport();
         break;
+      case 'mdi-download':
+        console.log(this.fileDataObj);
+        this.showDownload = true;
+        break;
       default:
         break;
-    }  
+    }
   }
 
 }

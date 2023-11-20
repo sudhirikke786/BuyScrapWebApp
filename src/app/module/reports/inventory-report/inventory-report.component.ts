@@ -13,36 +13,41 @@ export class InventoryReportComponent implements OnInit {
 
   actionList = [
     {
-      iconcode:'mdi-magnify',
-      title:'Search'
+      iconcode: 'mdi-magnify',
+      title: 'Search'
     },
     {
-      iconcode:'mdi-refresh',
-      title:'Refresh'
+      iconcode: 'mdi-refresh',
+      title: 'Refresh'
+    },
+    {
+      iconcode: 'mdi-download',
+      title: 'Download'
     }
   ];
 
-   newButtonList = [
+  newButtonList = [
     {
-      iconcode:'mdi-magnify',
-      title:'Search'
+      iconcode: 'mdi-magnify',
+      title: 'Search'
     },
     {
-      iconcode:'mdi-refresh',
-      title:'Refresh'
+      iconcode: 'mdi-refresh',
+      title: 'Refresh'
     }
   ];
 
   reportData: any;
   orgName: any;
-  locId: any;  
+  locId: any;
   fromDate: any;
   toDate: any;
   materialList: any;
   subMaterialList: any;
   defaultSelectedMaterial: any = 0;
   defaultSelectedSubMaterial: any = 0;
-  
+  fileDataObj: any;
+  showDownload = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -61,7 +66,7 @@ export class InventoryReportComponent implements OnInit {
     this.toDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   }
 
-  getInventoryReport() {   
+  getInventoryReport() {
 
     const param = {
       LocationId: this.locId,
@@ -73,10 +78,10 @@ export class InventoryReportComponent implements OnInit {
 
     this.commonService.getInventoryReport(param)
       .subscribe(data => {
-          console.log('getInventoryReport :: ');
-          console.log(data);
-          this.reportData = data.body.data;
-        },
+        console.log('getInventoryReport :: ');
+        console.log(data);
+        this.reportData = data.body.data;
+      },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
@@ -89,18 +94,18 @@ export class InventoryReportComponent implements OnInit {
     };
     this.commonService.getAllGroupMaterial(paramObject)
       .subscribe(data => {
-          console.log('getAllGroupMaterial :: ');
-          console.log(data);
-          this.materialList = data.body.data;
-        },
+        console.log('getAllGroupMaterial :: ');
+        console.log(data);
+        this.materialList = data.body.data;
+      },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
       );
   }
-  
+
   onMaterialChange(value: any) {
-    if (value.target.value == 0 ) {
+    if (value.target.value == 0) {
       this.defaultSelectedSubMaterial = 0;
       this.subMaterialList = null;
     } else {
@@ -117,10 +122,10 @@ export class InventoryReportComponent implements OnInit {
     };
     this.commonService.getAllSubMaterials(paramObject)
       .subscribe(data => {
-          console.log('getAllSubMaterials :: ');
-          console.log(data);
-          this.subMaterialList = data.body.data;
-        },
+        console.log('getAllSubMaterials :: ');
+        console.log(data);
+        this.subMaterialList = data.body.data;
+      },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
@@ -128,7 +133,7 @@ export class InventoryReportComponent implements OnInit {
   }
 
 
-  getAction(actionCode:any){
+  getAction(actionCode: any) {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
@@ -138,9 +143,13 @@ export class InventoryReportComponent implements OnInit {
         this.setDefaultDate();
         this.getInventoryReport();
         break;
+      case 'mdi-download':
+        console.log(this.fileDataObj);
+        this.showDownload = true;
+        break;
       default:
         break;
-    }  
+    }
   }
 
 }

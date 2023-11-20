@@ -14,12 +14,19 @@ export class CustomerReportComponent implements OnInit {
   actionList = [
     {
       iconcode:'mdi-magnify',
-      title:'Search'
+      title:'Search',
+      isDisable:false,
     },
     {
       iconcode:'mdi-refresh',
-      title:'Refresh'
-    }
+      title:'Refresh',
+      isDisable:false,
+    },
+    {
+      iconcode: 'mdi-download',
+      title: 'Download',
+      isDisable:true,
+    },
   ];
 
    newButtonList = [
@@ -39,7 +46,9 @@ export class CustomerReportComponent implements OnInit {
   fromDate: any;
   toDate: any;
   sellerName: string = '';
-  
+  fileDataObj:any;
+  showDownload=false;
+  customerObj: any;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -82,6 +91,33 @@ export class CustomerReportComponent implements OnInit {
       );
   }
 
+  // (onRowSelect)="onRowSelect($event)" (onRowClick)="onRowClick($event)"
+
+  onRowSelect(event: any) {
+    // Handle row selection
+    //this.customerObj = event?.data;
+    console.log('Selected Row:', event?.data);
+    this.actionList =  this.actionList.map((item) => {
+      if(item.iconcode=='mdi-download'){
+        item.isDisable = false;
+      }
+      return item
+    })
+  }
+  onRowUnselect(event: any) {
+    // Handle row selection
+    //this.customerObj = event?.data;
+    console.log('Selected Row:', event?.data);
+    this.actionList =  this.actionList.map((item) => {
+      if(item.iconcode=='mdi-download'){
+        item.isDisable = true;
+      }
+      return item
+    })
+  }
+
+ 
+
 
   getAction(actionCode:any){
 
@@ -92,6 +128,9 @@ export class CustomerReportComponent implements OnInit {
       case 'mdi-refresh':
         this.setDefaultDate();
         this.getCustomerReport();
+        break;
+      case 'mdi-download':
+        this.showDownload = true;
         break;
       default:
         break;

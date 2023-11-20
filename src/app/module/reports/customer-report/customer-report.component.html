@@ -46,6 +46,10 @@
                               [rows]="10"
                               [scrollable]="true" 
                               scrollHeight="65vh"
+                              selectionMode="single"
+                              [(selection)]="customerObj"
+                              (onRowSelect)="onRowSelect($event)"
+                              (onRowUnselect)="onRowUnselect($event)"
                               [showCurrentPageReport]="true"
                               [tableStyle]="{ 'min-width': '50rem' }" >
                            
@@ -58,7 +62,7 @@
                                 </tr>
                               </ng-template>
                               <ng-template pTemplate="body" let-rowData>
-                                <tr>
+                                <tr [pSelectableRow]="rowData">
                                   <td>{{ rowData.fullName }}</td>
                                   <td>{{ rowData.driverLicenseNumber }}</td>
                                   <td>{{ rowData.licensePlateNumber }}</td>
@@ -92,3 +96,15 @@
             <!-- ============================================================== -->
             <!-- End Page content -->
             <!-- ============================================================== -->
+
+
+            <p-dialog header="Accounting Report" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
+
+              <div class="row" >
+                <div style="height: 500px;" *ngIf="showDownload">
+                
+                  <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
+
+                </div>
+
+              </div>

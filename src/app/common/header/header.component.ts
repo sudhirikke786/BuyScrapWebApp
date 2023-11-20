@@ -209,6 +209,23 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('locId');
     this.router.navigateByUrl(`${orgName}/user-login`);
   }
+
+  toggleFullscreen() {
+    const element = document.documentElement;
+
+    if (document.fullscreenElement) {
+      // If the page is already in fullscreen, exit fullscreen
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    } else {
+      // If the page is not in fullscreen, request fullscreen
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      }
+    }
+  }
+  
   
   // showHidePanel(){
   //   const htmlAttr = document.querySelector('html');

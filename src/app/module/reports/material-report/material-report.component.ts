@@ -13,32 +13,37 @@ export class MaterialReportComponent implements OnInit {
 
   actionList = [
     {
-      iconcode:'mdi-magnify',
-      title:'Search'
+      iconcode: 'mdi-magnify',
+      title: 'Search'
     },
     {
-      iconcode:'mdi-refresh',
-      title:'Refresh'
+      iconcode: 'mdi-refresh',
+      title: 'Refresh'
+    },
+    {
+      iconcode: 'mdi-download',
+      title: 'Download'
     }
   ];
 
-   newButtonList = [
+  newButtonList = [
     {
-      iconcode:'mdi-magnify',
-      title:'Search'
+      iconcode: 'mdi-magnify',
+      title: 'Search'
     },
     {
-      iconcode:'mdi-refresh',
-      title:'Refresh'
+      iconcode: 'mdi-refresh',
+      title: 'Refresh'
     }
   ];
 
   reportData: any;
   orgName: any;
-  locId: any;  
+  locId: any;
   fromDate: any;
   toDate: any;
-  
+  fileDataObj: any;
+  showDownload = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -56,7 +61,7 @@ export class MaterialReportComponent implements OnInit {
     this.toDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   }
 
-  getMaterialReport() {   
+  getMaterialReport() {
 
     const param = {
       LocationId: this.locId,
@@ -66,10 +71,10 @@ export class MaterialReportComponent implements OnInit {
 
     this.commonService.getMaterialReport(param)
       .subscribe(data => {
-          console.log('getMaterialReport :: ');
-          console.log(data);
-          this.reportData = data.body.data;
-        },
+        console.log('getMaterialReport :: ');
+        console.log(data);
+        this.reportData = data.body.data;
+      },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
@@ -77,7 +82,7 @@ export class MaterialReportComponent implements OnInit {
   }
 
 
-  getAction(actionCode:any){
+  getAction(actionCode: any) {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
@@ -87,9 +92,13 @@ export class MaterialReportComponent implements OnInit {
         this.setDefaultDate();
         this.getMaterialReport();
         break;
+      case 'mdi-download':
+        console.log(this.fileDataObj);
+        this.showDownload = true;
+        break;
       default:
         break;
-    }  
+    }
   }
 
 }

@@ -108,10 +108,7 @@ export class ViewCartComponent {
     }
     
     return templateString;
-    
-    
-    
-    
+  
     
   }
 
@@ -130,8 +127,6 @@ export class ViewCartComponent {
     if (!window.document.getElementById('stripe-script')) {
 
       const script = window.document.createElement('script');
-
-
 
       script.id = 'stripe-script';
 

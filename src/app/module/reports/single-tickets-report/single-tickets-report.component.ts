@@ -13,34 +13,40 @@ export class SingleTicketsReportComponent implements OnInit {
 
   actionList = [
     {
-      iconcode:'mdi-magnify',
-      title:'Search'
+      iconcode: 'mdi-magnify',
+      title: 'Search'
     },
     {
-      iconcode:'mdi-refresh',
-      title:'Refresh'
+      iconcode: 'mdi-refresh',
+      title: 'Refresh'
+    },
+    {
+      iconcode: 'mdi-download',
+      title: 'Download'
     }
   ];
 
-   newButtonList = [
+  newButtonList = [
     {
-      iconcode:'mdi-magnify',
-      title:'Search'
+      iconcode: 'mdi-magnify',
+      title: 'Search'
     },
     {
-      iconcode:'mdi-refresh',
-      title:'Refresh'
+      iconcode: 'mdi-refresh',
+      title: 'Refresh'
     }
   ];
 
   reportData: any;
   orgName: any;
-  locId: any;  
+  locId: any;
   fromDate: any;
   toDate: any;
   ticketNumber: any = 0;
   sellerName: string = '';
-  
+  fileDataObj: any;
+  showDownload = false;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -62,12 +68,12 @@ export class SingleTicketsReportComponent implements OnInit {
     console.log(this.fromDate);
   }
 
-  getSingleTicketReport() {   
+  getSingleTicketReport() {
 
     const param = {
       TicketId: this.ticketNumber,
       LocationId: this.locId,
-      TicketSettingsId:0,
+      TicketSettingsId: 0,
       FromDate: this.fromDate,
       Todate: this.toDate,
       SellerName: this.sellerName
@@ -75,10 +81,10 @@ export class SingleTicketsReportComponent implements OnInit {
 
     this.commonService.getSingleTicketReport(param)
       .subscribe(data => {
-          console.log('getSingleTicketReport :: ');
-          console.log(data);
-          this.reportData = data.body.data;
-        },
+        console.log('getSingleTicketReport :: ');
+        console.log(data);
+        this.reportData = data.body.data;
+      },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
@@ -86,7 +92,7 @@ export class SingleTicketsReportComponent implements OnInit {
   }
 
 
-  getAction(actionCode:any){
+  getAction(actionCode: any) {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
@@ -96,9 +102,13 @@ export class SingleTicketsReportComponent implements OnInit {
         this.setDefaultDate();
         this.getSingleTicketReport();
         break;
+      case 'mdi-download':
+        console.log(this.fileDataObj);
+        this.showDownload = true;
+        break;
       default:
         break;
-    }  
+    }
   }
 
 }
