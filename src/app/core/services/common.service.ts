@@ -79,23 +79,43 @@ export class CommonService {
     return null; //throwError(error);
   }
 
-  showHidePanel(menuStatus: boolean = false){
-      this._status =   !this._status;
+  showHidePanel(menuStatus:any){
+    
     
    
-    const htmlAttr = document.querySelector('html');
-    if(htmlAttr){
-       const _datasidenav = htmlAttr.getAttribute('data-sidenav-size');
-      if(this._status){
-        // sidebar-enable
-        //
-        htmlAttr.setAttribute('data-sidenav-size', 'default');
-        htmlAttr.classList.add('menuitem-active')
-      }else{
-        htmlAttr.setAttribute('data-sidenav-size', 'condensed');
-        htmlAttr.classList.add('menuitem-active sidebar-enable')
+    let htmlAttr = document.querySelector('html');
+    
+
+    const htmlElement = document.documentElement;
+
+    // Get the value of the data-sidenav-size attribute
+    const sidenavSize = htmlElement.getAttribute('data-sidenav-size');
+
+    // Check the value and add your condition
+
+    if(menuStatus=='header'){
+      if (sidenavSize === 'condensed') {
+      
+        htmlAttr?.setAttribute('data-sidenav-size', 'default');
+        // Code to run when data-sidenav-size is 'condensed'
+        console.log('Sidenav size is condensed');
+      } else if (sidenavSize === 'default') {
+        htmlAttr?.setAttribute('data-sidenav-size', 'condensed');
+      } else {
+        // Code for other values, or handle as needed
+        htmlAttr?.setAttribute('data-sidenav-size', 'default');
       }
+  
+    }else{
+      htmlAttr?.setAttribute('data-sidenav-size', 'condensed');
     }
+  
+
+    // if(htmlAttr){
+    //   htmlAttr.setAttribute('data-sidenav-size', menuStatus);
+
+    // }
+   
   
   }
 

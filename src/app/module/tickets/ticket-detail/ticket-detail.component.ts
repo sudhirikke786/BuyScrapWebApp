@@ -24,7 +24,11 @@ export class TicketDetailComponent implements OnInit {
   @ViewChild('inputFile')
   myInputVariable!: ElementRef;
   
-  cheight= '50vh'
+  cheight= '50vh';
+
+  isHoldTrue : boolean = false;
+
+  selectedHoldAmount= 'Pay Total Amount'
 
 
   ticketObj:any = [];
@@ -192,6 +196,7 @@ export class TicketDetailComponent implements OnInit {
           this.ticketData = data.body.data[0];
           this.totalRecords =  data.totalRecords;
           const userId = data.body.data[0].createdBy;
+       
           this.getAllUsers(userId);
         },
         (err: any) => {
@@ -249,7 +254,10 @@ export class TicketDetailComponent implements OnInit {
           this.ticketObj = data.body.data.map((item:any) => {
             item.isSelected = false;
             return item
-          } );;
+          } );
+
+          this.isHoldTrue = data.body.data[0].isHold;
+
           this.calculateTotal(this.ticketObj);
         },
         (err: any) => {
