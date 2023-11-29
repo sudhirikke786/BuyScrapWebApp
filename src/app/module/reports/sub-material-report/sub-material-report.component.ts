@@ -92,6 +92,28 @@ export class SubMaterialReportComponent implements OnInit {
       );
   }
 
+  generateSubMaterialsReport() {
+
+    const param = {
+      SubMaterialId: this.defaultSelectedSubMaterial,
+      LocationId: this.locId,
+      FromDate: this.fromDate,
+      Todate: this.toDate
+    }
+
+    this.commonService.generateSubMaterialsReport(param)
+      .subscribe(data => {
+        console.log('generateSubMaterialsReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showDownload = true;
+      },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
   getAllGroupMaterial() {
     const paramObject = {
       LocationId: this.locId
@@ -149,8 +171,7 @@ export class SubMaterialReportComponent implements OnInit {
         this.getSubMaterialsReport();
         break;
       case 'mdi-download':
-        console.log(this.fileDataObj);
-        this.showDownload = true;
+        this.generateSubMaterialsReport();
         break;
       default:
         break;

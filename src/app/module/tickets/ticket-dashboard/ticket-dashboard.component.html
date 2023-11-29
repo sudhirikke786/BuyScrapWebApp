@@ -74,10 +74,14 @@
                                                 <td>
                                                     <div class="d-flex no-wrap">
                                                         <ng-container *ngIf="currentRole!== 'Scale'">
-                                                            <a type="button" (click)="showVoideCancelCopy(ticket)"
-                                                            class="btn btn-grid btn-danger waves-effect waves-light me-1">
-                                                            <i class="mdi mdi-trash-can-outline"></i> Void
-                                                         </a>
+                                                            <a *ngIf="ticket?.status !== 'VOIDED'" type="button" (click)="showVoideCancelCopy(ticket)"
+                                                                class="btn btn-grid btn-danger waves-effect waves-light me-1">
+                                                                <i class="mdi mdi-trash-can-outline"></i> Void
+                                                            </a>
+                                                            <a *ngIf="ticket?.status == 'VOIDED'" type="button" (click)="showRestoreTicket(ticket)"
+                                                                class="btn btn-grid btn-success waves-effect waves-light me-1">
+                                                                <i class="mdi mdi-restore"></i> Restore
+                                                            </a>
 
                                                         </ng-container>
                                                        
@@ -349,8 +353,8 @@
 
     </p-dialog>
 
-    <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" header="Void Options" [(visible)]="showPartially"
-    [style]="{ width: '40vw' }">
+    <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" [header]="isVoidOrRestore == 'Void' ? 'Void Ticket' : 'Restore Ticket'"
+    [(visible)]="showVoidDialogBox" [style]="{ width: '40vw' }">
     
     <div class="row">
         <div class="col-12">
@@ -358,8 +362,8 @@
             <form class="d-flex">
                 <div class="col">
                     <div class="mb-3 d-flex" style="align-items: center;">
-                        <label for="" class="form-label mb-0">Please enter reason</label>
-                        <input type="text" plcaceholder="Enter reason" name="resion" id="resion" class="col ms-2 form-control" placeholder="" aria-describedby="helpId">
+                        <label for="" class="form-label mb-0">Please enter reason</label>                        
+                        <input type="text" id="voidReason" name="voidReason" [(ngModel)]="voidReason" class="form-control" placeholder="Enter reason">
                     </div>
                 </div>
             </form>
@@ -367,7 +371,7 @@
 
         </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="showPartially" >
 
         <div class="col-12">
             <div class="card">
@@ -398,11 +402,22 @@
           
         </div>
     </div>
+    <div class="row" *ngIf="showOpen" >
+
+        <div class="col-12">
+
+            <div class="alert alert-success" role="alert">
+                       
+                No transactions found
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="d-flex justify-content-end mt-2">
-            <button class="btn w-110 btn-success justify-content-center  me-2">Void</button>
-            <button class="btn w-110  btn-danger justify-content-center" (click)="showPartially=false">Close</button>
+            <button class="btn w-110 btn-success justify-content-center  me-2" *ngIf="isVoidOrRestore == 'Void'" (click)="voidTicket()">Void</button>
+            <button class="btn w-110 btn-success justify-content-center  me-2" *ngIf="isVoidOrRestore !== 'Void'" (click)="restoreTicket()">Restore</button>
+            <button class="btn w-110  btn-danger justify-content-center" (click)="showVoidDialogBox=false">Close</button>
           </div>
      
     </div>
@@ -413,7 +428,7 @@
 
 
 
-    <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" header="Void ticket" [(visible)]="showOpen"
+    <!-- <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" header="Void ticket" [(visible)]="showOpen"
     [style]="{ width: '40vw' }">
     
     <div class="row">
@@ -423,7 +438,7 @@
                 <div class="col">
                     <div class="mb-3 d-flex" style="align-items: center;">
                         <label for="" class="form-label mb-0">Please enter reason</label>
-                        <input type="text" plcaceholder="Enter reason" name="resion" id="resion" class="col ms-2 form-control" placeholder="" aria-describedby="helpId">
+                        <input type="text" plcaceholder="Enter reason" name="voidReason" id="voidReason" class="col ms-2 form-control" placeholder="" aria-describedby="helpId">
                     </div>
                 </div>
             </form>
@@ -444,13 +459,13 @@
 
     <div class="row">
         <div class="d-flex justify-content-end mt-2">
-            <button class="btn btn-success justify-content-center  me-2 w-110">Void</button>
+            <button class="btn btn-success justify-content-center  me-2 w-110" (click)="voidTicket()">Void</button>
             <button class="btn btn-danger justify-content-center w-110" (click)="showOpen=false">Close</button>
           </div>
      
     </div>
 
      
-    </p-dialog>
+    </p-dialog> -->
 
 

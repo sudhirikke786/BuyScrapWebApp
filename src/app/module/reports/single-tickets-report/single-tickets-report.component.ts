@@ -91,6 +91,26 @@ export class SingleTicketsReportComponent implements OnInit {
       );
   }
 
+  generateSingleTicketReport() {
+
+    const param = {
+      TicketId: 3093,
+      LocationId: this.locId
+    }
+
+    this.commonService.generateSingleTicketReport(param)
+      .subscribe(data => {
+        console.log('generateSingleTicketReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showDownload = true;
+      },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
 
   getAction(actionCode: any) {
 
@@ -103,8 +123,7 @@ export class SingleTicketsReportComponent implements OnInit {
         this.getSingleTicketReport();
         break;
       case 'mdi-download':
-        console.log(this.fileDataObj);
-        this.showDownload = true;
+        this.generateSingleTicketReport();
         break;
       default:
         break;

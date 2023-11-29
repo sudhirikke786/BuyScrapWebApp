@@ -86,6 +86,27 @@ export class VoidTicketReportComponent implements OnInit {
       );
   }
 
+  generateVoidTicketReport() {
+
+    const param = {
+      LocationId: this.locId,
+      FromDate: this.fromDate,
+      Todate: this.toDate
+    }
+
+    this.commonService.generateVoidTicketReport(param)
+      .subscribe(data => {
+        console.log('generateVoidTicketReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showDownload = true;
+      },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
 
   getAction(actionCode: any) {
 
@@ -98,8 +119,7 @@ export class VoidTicketReportComponent implements OnInit {
         this.getVoidTicketReport();
         break;
       case 'mdi-download':
-        console.log(this.fileDataObj);
-        this.showDownload = true;
+        this.generateVoidTicketReport();
         break;
       default:
         break;

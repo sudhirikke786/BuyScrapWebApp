@@ -181,6 +181,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsBySellerId', 'GET', paramObj);
   }
 
+  RestoreVoidTickets(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/RestoreVoidTickets', 'POST', requestObj);
+  }
+
   getAllsellersDetails(pagination: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Sellerss/GetAllsellersDetails', 'GET', pagination);
   }
@@ -290,6 +294,49 @@ export class CommonService {
   }
 
   getAccountingReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetAccountReport', 'GET', paramObj);
+  }
+
+
+  /** Pdf Reports */
+
+  generateDailyTicketsReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetAllTicketsForDailyReport', 'GET', paramObj);
+  }
+
+  generateSingleTicketReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetTransactionsTicketReceipt', 'GET', paramObj);
+  }
+
+  generateInventoryReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetAllInventoryReport', 'GET', paramObj);
+  }
+
+  generateCashDrawerReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetCashDrawerReportData', 'GET', paramObj);
+  }
+
+  generateCustomerReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetCustomerData', 'GET', paramObj);
+  }
+
+  generateMaterialReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetMaterialReportData', 'GET', paramObj);
+  }
+
+  generateSubMaterialsReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetSubMaterialReport', 'GET', paramObj);
+  }
+
+  generateVoidTicketReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetVoidTicketDataReport', 'GET', paramObj);
+  }
+
+  generatePaymentReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetPaymentReportRpt', 'GET', paramObj);
+  }
+
+  generateAccountingReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Reports/GetAccountReport', 'GET', paramObj);
   }
 

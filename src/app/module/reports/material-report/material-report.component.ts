@@ -81,6 +81,27 @@ export class MaterialReportComponent implements OnInit {
       );
   }
 
+  generateMaterialReport() {
+
+    const param = {
+      LocationId: this.locId,
+      FromDate: this.fromDate,
+      Todate: this.toDate
+    }
+
+    this.commonService.generateMaterialReport(param)
+      .subscribe(data => {
+        console.log('generateMaterialReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showDownload = true;
+      },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
 
   getAction(actionCode: any) {
 
@@ -93,8 +114,7 @@ export class MaterialReportComponent implements OnInit {
         this.getMaterialReport();
         break;
       case 'mdi-download':
-        console.log(this.fileDataObj);
-        this.showDownload = true;
+        this.generateMaterialReport();
         break;
       default:
         break;

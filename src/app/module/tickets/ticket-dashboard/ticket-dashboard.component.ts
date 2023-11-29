@@ -108,6 +108,9 @@ export class TicketDashboardComponent implements OnInit {
   showVoid = false;
   showOpen = false;
   showPartially = false;
+  showVoidDialogBox = false;
+  voidReason: any = '';
+  isVoidOrRestore: any = ''; 
 
 
   pagination: any = {
@@ -210,17 +213,23 @@ export class TicketDashboardComponent implements OnInit {
 
   showVoidCancel(){
     console.log(this.tiketSelectedObj);
-    if (this.tiketSelectedObj?.status?.toLowerCase() === 'open') {
-      this.showOpen = true;
-    } else if (this.tiketSelectedObj.status.toLowerCase()==='partially paid' || 
-               this.tiketSelectedObj.status.toLowerCase()==='paid') {
-      this.showPartially = true;
-      const param = {
-        TicketId: this.tiketSelectedObj?.rowId
-      }
-      this.getAllTicketsTransactionsByTicketId(param);
-    } 
+    this.isVoidOrRestore = 'Void';
+    this.getTicketTransactions();
+  }
 
+  showRestoreTicket(ticketData:any) {
+    console.log("Restore Ticket :: " + ticketData);
+    this.tiketSelectedObj = ticketData;
+    this.isVoidOrRestore = 'Restore';
+    this.getTicketTransactions();
+  }
+
+  getTicketTransactions() {
+    this.showVoidDialogBox = true;
+    const param = {
+      TicketId: this.tiketSelectedObj?.rowId
+    };
+    this.getAllTicketsTransactionsByTicketId(param);
   }
 
   getAllTicketsTransactionsByTicketId(paramObj: any) {
@@ -229,7 +238,14 @@ export class TicketDashboardComponent implements OnInit {
       .subscribe(data => {
           console.log('getAllTicketsTransactionsByTicketId :: ');
           console.log(data);
-          this.ticketsTransactions = data.body.data;
+          if (data.body.data.length > 0) {
+            this.ticketsTransactions = data.body.data;
+            this.showPartially = true;
+            this.showOpen = false;
+          } else {
+            this.showPartially = false;
+            this.showOpen = true;
+          }
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -239,6 +255,56 @@ export class TicketDashboardComponent implements OnInit {
 
   showVoidCopy(){
 
+  }
+
+  voidTicket() {
+    // alert(this.voidReason);
+    console.log("Void Ticket :: " + this.voidReason);
+    
+    console.log(this.tiketSelectedObj);
+
+    this.tiketSelectedObj['VoidReason'] = this.voidReason;
+    this.tiketSelectedObj['VoidFlag'] = true;
+    this.tiketSelectedObj['VoidBy'] = 6;
+    this.tiketSelectedObj['VoidDate'] = '2023-07-17T10:00:17.557';
+    this.tiketSelectedObj['Status'] = 'VOIDED';
+    
+    console.log("Final ticketData :: " + JSON.stringify(this.tiketSelectedObj));
+    
+    this.commonService.insertUpdateTickets(this.tiketSelectedObj).subscribe(data =>{    
+      console.log(data);
+      this.refreshData();
+      this.voidReason = '';
+      this.showOpen = false;
+      this.showPartially = false;
+      this.showVoidDialogBox = false;
+    },(error: any) =>{  
+      console.log(error);  
+      // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+    });
+    
+  }
+
+  restoreTicket() {    
+    alert('Restore Ticket :: ' + this.voidReason);
+
+    this.tiketSelectedObj['VoidReason'] = this.voidReason;
+    this.tiketSelectedObj['CreatedBy'] = 6;
+    this.tiketSelectedObj['CreatedDate'] = '2023-07-17T10:00:17.557';
+    
+    console.log("Restore ticketData :: " + JSON.stringify(this.tiketSelectedObj));
+    
+    this.commonService.RestoreVoidTickets(this.tiketSelectedObj).subscribe(data =>{    
+      console.log(data);
+      this.refreshData();
+      this.voidReason = '';
+      this.showOpen = false;
+      this.showPartially = false;
+      this.showVoidDialogBox = false;
+    },(error: any) =>{  
+      console.log(error);  
+      // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+    });
   }
 
   refreshData() {    

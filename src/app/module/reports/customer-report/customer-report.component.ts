@@ -49,6 +49,7 @@ export class CustomerReportComponent implements OnInit {
   fileDataObj:any;
   showDownload=false;
   customerObj: any;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -63,7 +64,7 @@ export class CustomerReportComponent implements OnInit {
 
   setDefaultDate() {
     let defaultDate = new Date();
-    defaultDate.setMonth(defaultDate.getMonth() - 1);
+    defaultDate.setFullYear(defaultDate.getFullYear() - 100);
     console.log(defaultDate);
     this.fromDate = this.datePipe.transform(defaultDate, 'yyyy-MM-dd');
     this.toDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -95,7 +96,7 @@ export class CustomerReportComponent implements OnInit {
 
   onRowSelect(event: any) {
     // Handle row selection
-    //this.customerObj = event?.data;
+    this.customerObj = event?.data;
     console.log('Selected Row:', event?.data);
     this.actionList =  this.actionList.map((item) => {
       if(item.iconcode=='mdi-download'){
@@ -116,6 +117,29 @@ export class CustomerReportComponent implements OnInit {
     })
   }
 
+  generateCustomerReport() {
+
+    const param = {
+      LocationId: this.locId,
+      SellerId: 7,
+      FromDate: "2021-11-22",
+      Todate: "2023-11-22"
+    }
+
+    this.commonService.generateCustomerReport(param)
+      .subscribe(data => {
+        console.log('generateCustomerReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        // console.log(this.fileDataObj);
+        this.showDownload = true;
+      },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
  
 
 
@@ -130,7 +154,7 @@ export class CustomerReportComponent implements OnInit {
         this.getCustomerReport();
         break;
       case 'mdi-download':
-        this.showDownload = true;
+        this.generateCustomerReport();
         break;
       default:
         break;

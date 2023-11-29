@@ -81,6 +81,27 @@ export class CashDrawerReportComponent implements OnInit {
       );
   }
 
+  generateCashDrawerReport() {
+
+    const param = {
+      LocId: this.locId,
+      FromDate: this.fromDate,
+      Todate: this.toDate
+    }
+
+    this.commonService.generateCashDrawerReport(param)
+      .subscribe(data => {
+        console.log('generateCashDrawerReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showDownload = true;
+      },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
 
   getAction(actionCode: any) {
 
@@ -93,8 +114,7 @@ export class CashDrawerReportComponent implements OnInit {
         this.getCashDrawerReport();
         break;
       case 'mdi-download':
-        console.log(this.fileDataObj);
-        this.showDownload = true;
+        this.generateCashDrawerReport();
         break;
       default:
         break;
