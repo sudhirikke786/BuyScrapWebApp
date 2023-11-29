@@ -286,7 +286,7 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   restoreTicket() {    
-    alert('Restore Ticket :: ' + this.voidReason);
+    // alert('Restore Ticket :: ' + this.voidReason);
 
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
     this.tiketSelectedObj['CreatedBy'] = 6;
