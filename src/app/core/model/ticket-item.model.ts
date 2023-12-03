@@ -17,13 +17,13 @@ export class TicketItem {
      materialName: string = '';
      groupName: string = '';
      materialId: number = 0.00;
-     imagePath: string = '';
-     materialNote: string = '';
-     codNote: string = '';
+     imagePath: any = null;
+     materialNote: any = null;
+     codNote: any = null;
      isHold: boolean = false;
      dealerPrice: any = null;
      isAdjusmentSet: any = null;
-     concatAdjustments: string = '';
+     concatAdjustments: any = null;
      isCOD: any = null;
      isCODDone: any = null;
      isCRV: boolean = false;

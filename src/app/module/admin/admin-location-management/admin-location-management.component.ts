@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+
 import { RegexPattern } from 'src/app/core/pattern/regex-patterns';
 import { CommonService } from 'src/app/core/services/common.service';
 import { MessageService } from 'primeng/api';
@@ -138,14 +140,15 @@ export class AdminLocationManagementComponent implements OnInit {
 
   }
   submitLocation(){
+    const datePipe = new DatePipe('en-US');
 
     const formObj =  this.locationForm.value;
     const reqObj = {
       "rowId": this.actionType == 'Add' ? 0 : this.editObj?.rowId,
       "createdBy": 6,
-      "createdDate": "2023-08-12T22:04:31.3",
+      "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "updatedBy": 6,
-      "updatedDate": "2023-08-12T22:04:31.3",
+      "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "locationName":formObj.locationName,
       "isActive": true,
       "userCount":formObj.userCount,
@@ -167,6 +170,7 @@ export class AdminLocationManagementComponent implements OnInit {
 
 
   submitForm() {
+    const datePipe = new DatePipe('en-US');
     console.log('Form submitted:', this.userForm);
     this.isSubmit = true;
   
@@ -176,9 +180,9 @@ export class AdminLocationManagementComponent implements OnInit {
       
       const req = {
         "createdBy": 1,
-        "createdDate": "2023-06-29T01:55:08.541Z",
+        "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         "updatedBy": 1,
-        "updatedDate": "2023-06-29T01:55:08.541Z",
+        "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         "tempOTP": "1234",
         "isActive": true,
         "macID": "",

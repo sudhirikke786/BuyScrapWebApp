@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -90,13 +92,14 @@ export class MaterialsDetailsComponent implements OnInit {
     
     this.currentRole = this.authService.userCurrentRole();
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    const datePipe = new DatePipe('en-US');
     
     this.form = this.formBuilder.group({
       rowId: 0,
       createdBy: 0,
-      createdDate: '',
+      createdDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       updatedBy: 0,
-      updatedDate: '2023-07-17T10:00:17.557',
+      updatedDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       groupId: 0,
       description: '',
       materialName: '',
@@ -214,15 +217,16 @@ enablePriceItem(){
     
       this.form.patchValue(materialData)
     } else {
+      const datePipe = new DatePipe('en-US');
       this.isEditModeOn = false;
       this.materialData = null;
 
       this.form = this.formBuilder.group({
         rowId: 0,
         createdBy: 0,
-        createdDate: '',
+        createdDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         updatedBy: 0,
-        updatedDate: '2023-07-17T10:00:17.557',
+        updatedDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         groupId: this.defaultMaterialId,
         description: '',
         materialName: '',

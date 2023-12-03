@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+
 import { CashDrawer } from 'src/app/core/model/cash-drawer.model';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DataService } from 'src/app/core/services/data.service';
@@ -148,13 +150,13 @@ export class HeaderComponent implements OnInit {
   }
 
   saveRegister(newCashDrawerdetail: any) {
-    
+    const datePipe = new DatePipe('en-US');
     newCashDrawerdetail.rowId = 0;
     newCashDrawerdetail.createdBy = 6;
-    newCashDrawerdetail.createdDate = '2023-07-17T10:00:17.557';
+    newCashDrawerdetail.createdDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.updatedBy = 6;
-    newCashDrawerdetail.updatedDate = '2023-07-17T10:00:17.557';
-    newCashDrawerdetail.currentDate = '2023-07-17T10:00:17.557';
+    newCashDrawerdetail.updatedDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+    newCashDrawerdetail.currentDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.locID = this.commonService.getProbablyNumberFromLocalStorage('locId');
     
     console.log("Final CashDrawerTransaction :: " + JSON.stringify(newCashDrawerdetail));

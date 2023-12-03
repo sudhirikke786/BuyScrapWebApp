@@ -307,7 +307,7 @@
                             <div class="col-sm-3 position-relative" *ngIf="isEditModeOn && editItemCloseImageCapture">
                                 <div class="calc">
                                     <app-price-calculator (calculateObj)="calculation($event)" [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
-                                        [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath">
+                                        [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
                                     </app-price-calculator>
                                 </div>
                             </div>
@@ -490,26 +490,21 @@
             <div class="col-sm-12">
                 <div class="form-group col-sm-12 mb-2 d-flex">
                     <label for="simpleinput" class="form-label">Adjustment Amount</label>
-                    <input type="text" id="adjustmentamount" class="form-control" placeholder="Enter Amount">
+                    <input type="text" id="adjustmentAmount" name="adjustmentAmount" [(ngModel)]="adjustmentAmount" class="form-control" placeholder="Enter Amount">
                 </div>
     
                 <div class="form-group col-sm-12 mb-2 d-flex">
                     <label for="simpleinput" class="form-label">Adjustment Note</label>
-                    <input type="text" id="adjustmentnote" class="form-control" placeholder="Add Note">
+                    <input type="text" id="adjustmentNote" name="adjustmentNote" [(ngModel)]="adjustmentNote" class="form-control" placeholder="Add Note">
                 </div>
     
                 <div class="form-group col-sm-12 mb-2 d-flex">
                     <label for="example-select" class="form-label">Select Adjustment</label>
-                    <select class="form-select" id="example-select">
-                        <option>Certified Destruction Cost</option>
-                        <option>eWaste Processing</option>
-                        <option>Freight Cost</option>
-                        <option>Garbage Wood Pallet Disposal</option>
-                        <option>Garbage mixed in load</option>
-                        <option>Labor/Sorting</option>
-                        <option>Pallet/Container Weight</option>
-                        <option>Plastic</option>
-                        <option>Ticket Note</option>
+                    <select class="form-control" id="selectedAdjustment" name="selectedAdjustment" 
+                    [(ngModel)]="selectedAdjustment" (change)="onAdjustmentChange($event)">
+                        <option *ngFor="let item of adjustmentList" [value]="item?.adjustmentName">
+                            {{item?.adjustmentName}}
+                        </option>
                     </select>
                 </div>
                 <div class="form-group col-sm-12 mb-2">
@@ -520,8 +515,8 @@
                         </div>
                     </div>
                     <br>
-                    <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage()">Save Image</a>
-                    <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage()">Close</a>
+                    <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveAdjustment()">Save Adjustment</a>
+                    <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeAdjustment()">Close</a>
                 </div>
             </div>
         </div>

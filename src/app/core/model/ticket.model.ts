@@ -17,7 +17,7 @@ export class Ticket {
     customerName: string = '';
     user: any;
     adjustmentAmount: number = 0.000;
-    adjustmentNote: string = '';
+    adjustmentNote: any;
     locID: number = 0;
     holdAmount: any;
     voidBy: number = 0;
@@ -26,7 +26,7 @@ export class Ticket {
     flagCustomer: boolean = false;
     isParent: boolean = false;
     isSelected: boolean = false;
-    voidReason: string = '';
+    voidReason: any;
     voidDate: any;
     isCOD: boolean = false;
     isCODDone: boolean = false;

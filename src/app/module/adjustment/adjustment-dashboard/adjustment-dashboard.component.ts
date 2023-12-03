@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -28,6 +30,7 @@ export class AdjustmentDashboardComponent implements OnInit {
 
   isEditModeOn = false;
   adjustmentData: any;
+  datePipe: DatePipe = new DatePipe('en-US');
 
   orgName: any;
   locId: any;
@@ -39,9 +42,9 @@ export class AdjustmentDashboardComponent implements OnInit {
     description: '',
     isEnable: false,
     createdBy: 0,
-    createdDate: '',
+    createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
     updatedBy: 0,
-    updatedDate: '2023-07-17T10:00:17.557',
+    updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
     locID: 0
   });
   
@@ -72,9 +75,9 @@ export class AdjustmentDashboardComponent implements OnInit {
       description: '',
       isEnable: false,
       createdBy: 0,
-      createdDate: '',
+      createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       updatedBy: 0,
-      updatedDate: '2023-07-17T10:00:17.557',
+      updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       locID: this.locId
     });
 
@@ -114,9 +117,9 @@ export class AdjustmentDashboardComponent implements OnInit {
         description: '',
         isEnable: false,
         createdBy: 6,
-        createdDate: '2023-07-17T10:00:17.557',
+        createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         updatedBy: 6,
-        updatedDate: '2023-07-17T10:00:17.557',
+        updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         locID: this.locId
       });
 

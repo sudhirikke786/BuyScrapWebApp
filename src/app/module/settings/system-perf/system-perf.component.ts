@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+
 import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
@@ -76,13 +78,14 @@ export class SystemPerfComponent implements OnInit {
 
 
   saveForm(){
+    const datePipe = new DatePipe('en-US');
 
     const obj = this.systemPerfForm.value;
     const sysInfo = {
       "createdBy": 1,
       "updatedBy": 7,
-      "createdDate": "2021-04-05T14:26:56.84",
-      "updatedDate": "2023-06-20T08:44:05.543",
+      "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+      "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "rowId": this.editObj?.rowId,
     }
 

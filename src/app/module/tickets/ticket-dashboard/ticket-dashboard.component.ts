@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+
 import { Pagination } from 'src/app/core/interfaces/common-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -258,6 +260,7 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   voidTicket() {
+    const datePipe = new DatePipe('en-US');
     // alert(this.voidReason);
     console.log("Void Ticket :: " + this.voidReason);
     
@@ -266,7 +269,7 @@ export class TicketDashboardComponent implements OnInit {
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
     this.tiketSelectedObj['VoidFlag'] = true;
     this.tiketSelectedObj['VoidBy'] = 6;
-    this.tiketSelectedObj['VoidDate'] = '2023-07-17T10:00:17.557';
+    this.tiketSelectedObj['VoidDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     this.tiketSelectedObj['Status'] = 'VOIDED';
     
     console.log("Final ticketData :: " + JSON.stringify(this.tiketSelectedObj));
@@ -286,11 +289,12 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   restoreTicket() {    
+    const datePipe = new DatePipe('en-US');
     // alert('Restore Ticket :: ' + this.voidReason);
 
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
     this.tiketSelectedObj['CreatedBy'] = 6;
-    this.tiketSelectedObj['CreatedDate'] = '2023-07-17T10:00:17.557';
+    this.tiketSelectedObj['CreatedDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     
     console.log("Restore ticketData :: " + JSON.stringify(this.tiketSelectedObj));
     

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+
 import { RegexPattern } from 'src/app/core/pattern/regex-patterns';
 import { CommonService } from 'src/app/core/services/common.service';
 import { MessageService } from 'primeng/api';
@@ -107,6 +109,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   submitForm() {
+    const datePipe = new DatePipe('en-US');
     console.log('Form submitted:', this.userForm);
     this.isSubmit = true;
   
@@ -116,9 +119,9 @@ export class AdminDashboardComponent implements OnInit {
       console.log(maxRoleID);
       const req = {
         "createdBy": 1,
-        "createdDate": "2023-06-29T01:55:08.541Z",
+        "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         "updatedBy": 1,
-        "updatedDate": "2023-06-29T01:55:08.541Z",
+        "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         "tempOTP": "1234",
         "isActive": true,
         "macID": "",

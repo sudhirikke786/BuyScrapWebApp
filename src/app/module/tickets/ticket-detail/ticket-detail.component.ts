@@ -75,8 +75,9 @@ export class TicketDetailComponent implements OnInit {
   itemNet: number = 0;
   itemPrice: number = 0;
   itemImagePath: string = 'assets/images/custom/id_scan.png';
-  materialNote: string = '';
-  itemCodNote: string = '';
+  itemDefaultImagePath: string = 'assets/images/custom/id_scan.png';
+  materialNote: any = null;
+  itemCodNote: any = null;
   itemLeveloperationPerform: string = '';
   localRowIdCounter: number = 0;
 
@@ -97,6 +98,10 @@ export class TicketDetailComponent implements OnInit {
 
   addEditAdjustmentVisible = false;
   modalAdjustmentHeader = 'Add Adjustment';
+  adjustmentList: any;
+  adjustmentAmount = '';
+  adjustmentNote = '';
+  selectedAdjustment = 'Certified Destruction Cost ';
   selectedRowObj: any;
   saveConfirmVisible = false;
   paymentVisible = false;
@@ -116,6 +121,7 @@ export class TicketDetailComponent implements OnInit {
       this.sellerId = param["customerId"];
       this.getSellerById();
       this.processDataBasedOnTicketId();
+      this.GetAllAdjustmentType();
     });
 
     
@@ -128,7 +134,7 @@ export class TicketDetailComponent implements OnInit {
     event.preventDefault();
   }
 
-  addNote(){
+  addNote(){  
     // add the Data from Table
     this.itemLocalRowId = this.selectedRowObj.localRowId;
     this.updateTicketObjectForCOD('Flagged for COD');
@@ -148,11 +154,11 @@ export class TicketDetailComponent implements OnInit {
         rowData.isCOD = itemCodNote != '' ? true : false;
 
         // TO DO:: does not required. need to verify
-        rowData.createdBy = 6;
-        rowData.createdDate = '2023-07-17T10:00:17.557';
+        // rowData.createdBy = 6;
+        // rowData.createdDate = '2023-07-17T10:00:17.557';
         rowData.updatedBy = 6;
-        rowData.updatedDate = '2023-07-17T10:00:17.557';
-        rowData.transactionDate = '2023-07-17T10:00:17.557';
+        rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+        // rowData.transactionDate = '2023-07-17T10:00:17.557';
       }
     });
   }
@@ -163,7 +169,7 @@ export class TicketDetailComponent implements OnInit {
       this.getAllTicketsDetails();
     } else {
       this.ticketId = 0;
-      this.ticketData['createdDate'] = "2023-06-18T16:08:33.54";
+      this.ticketData['createdDate'] = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       this.ticketData['status'] = 'NEW TICKET';
       this.ticketData['paidAmount'] = 0;
       this.ticketData['balanceAmount'] = 0;
@@ -351,7 +357,7 @@ export class TicketDetailComponent implements OnInit {
 
   showSection(paymentType: string) {
     this.activeSection =  paymentType;
-    this.selectedCheckDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.selectedCheckDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     this.checkNumber = '';
     this.ePaymentType = '';
   }  
@@ -372,9 +378,9 @@ export class TicketDetailComponent implements OnInit {
     const transactionObj = {
       rowId: 0,
       createdBy: 6,
-      createdDate: '2023-07-17T10:00:17.557',
+      createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       updatedBy: 6,
-      updatedDate: '2023-07-17T10:00:17.557',
+      updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       ticketId: parseInt(this.ticketId),
       type: activeSection,
       amount: parseFloat(this.payAmount.toString()),
@@ -421,9 +427,9 @@ export class TicketDetailComponent implements OnInit {
       const newTicket = new Ticket();     
       newTicket.rowId = 0;
       newTicket.createdBy = 6;
-      newTicket.createdDate = '2023-07-17T10:00:17.557';
+      newTicket.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       newTicket.updatedBy = 6;
-      newTicket.updatedDate = '2023-07-17T10:00:17.557';
+      newTicket.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       newTicket.customerId = parseFloat(this.sellerId);
       newTicket.ticketId = 0;
       newTicket.status = ticketStatus;
@@ -432,8 +438,8 @@ export class TicketDetailComponent implements OnInit {
       newTicket.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
       newTicket.ticketAmount = parseFloat(this.totalActualAmount.toFixed(3));
       newTicket.paidAmount = parseFloat(paidAmount.toString());
-      newTicket.dateOpened = '2023-07-17T10:00:17.557';
-      newTicket.dateClosed = '2023-07-17T10:00:17.557';
+      newTicket.dateOpened = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      newTicket.dateClosed = null;
       newTicket.customerName = this.customer?.fullName;
       newTicket.adjustmentAmount = parseFloat(this.totalAdjustment.toFixed(3));
       newTicket.locID = this.locId;
@@ -486,7 +492,7 @@ export class TicketDetailComponent implements OnInit {
     this.itemPrice = scrapPrice;
     this.itemLeveloperationPerform = 'Add';
     this.itemCodNote = '';    
-    this.materialNote = '';
+    // this.materialNote = '';
   }  
 
   updateExistingItem(materialId: any, materialName: string, selectedMaterial: string, scrapPrice: any) {
@@ -499,26 +505,40 @@ export class TicketDetailComponent implements OnInit {
   }
 
   editItem(rowData: any) {
-    this.modalHeader = 'Edit Item Details';
-    this.editItemVisible = true;
     
-    this.editItemCloseImageCapture = false;
-    this.itemLeveloperationPerform = 'Edit';
+    if(rowData.isAdjusmentSet == true) {
+      this.addEditAdjustmentVisible = true;      
+      this.modalAdjustmentHeader = 'Edit Adjustment';
+      this.itemLeveloperationPerform = 'Edit';
+  
+      this.itemRowId = rowData.rowId;
+      this.itemLocalRowId = rowData.localRowId;
+      this.adjustmentAmount = rowData.price;
+      this.adjustmentNote = rowData.materialNote;
+      this.selectedAdjustment = rowData.concatAdjustments;
 
-    this.itemRowId = rowData.rowId;
-    this.itemLocalRowId = rowData.localRowId;
-    this.itemGroupName = rowData.groupName;
-    this.itemMaterialName = rowData.materialName;
-    this.itemMaterialId = rowData.materialId;
-    this.itemGross = rowData.gross;
-    this.itemTare = rowData.tare;
-    this.itemNet = rowData.net;
-    this.itemPrice = rowData.price;
-    this.itemImagePath = rowData.imagePath;
-    this.itemCodNote = rowData.codNote;    
-    this.materialNote = rowData.materialNote;
-    
-    this.imageUrl = (this.itemImagePath ? this.itemImagePath : null);    
+    } else {
+      this.modalHeader = 'Edit Item Details';
+      this.editItemVisible = true;
+      
+      this.editItemCloseImageCapture = false;
+      this.itemLeveloperationPerform = 'Edit';
+  
+      this.itemRowId = rowData.rowId;
+      this.itemLocalRowId = rowData.localRowId;
+      this.itemGroupName = rowData.groupName;
+      this.itemMaterialName = rowData.materialName;
+      this.itemMaterialId = rowData.materialId;
+      this.itemGross = rowData.gross;
+      this.itemTare = rowData.tare;
+      this.itemNet = rowData.net;
+      this.itemPrice = rowData.price;
+      this.itemImagePath = rowData.imagePath;
+      this.itemCodNote = rowData.codNote;    
+      this.materialNote = rowData.materialNote;
+      
+      this.imageUrl = (this.itemImagePath ? this.itemImagePath : 'assets/images/custom/id_scan.png');
+    }   
 
   }
 
@@ -599,16 +619,16 @@ export class TicketDetailComponent implements OnInit {
       rowData.net = rowData.gross - rowData.tare ;
       rowData.price = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
       rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
-      rowData.imagePath = this.itemImagePath;
+      rowData.imagePath = (this.itemImagePath.indexOf('assets/images')>=0 ? null : this.itemImagePath);
       rowData.codNote = '';
-      rowData.materialNote = this.materialNote;
+      rowData.materialNote = (this.materialNote ? null : this.materialNote);
 
       
       rowData.createdBy = 6;
-      rowData.createdDate = '2023-07-17T10:00:17.557';
+      rowData.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       rowData.updatedBy = 6;
-      rowData.updatedDate = '2023-07-17T10:00:17.557';
-      rowData.transactionDate = '2023-07-17T10:00:17.557';
+      rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
 
       this.ticketObj.push(rowData);
       // this.ticketObj = arr;
@@ -627,16 +647,14 @@ export class TicketDetailComponent implements OnInit {
           rowData.net = rowData.gross - rowData.tare ;
           rowData.price = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
           rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
-          rowData.imagePath = this.itemImagePath;
+          rowData.imagePath = (this.itemImagePath.indexOf('assets/images')>=0 ? null : this.itemImagePath);
           rowData.codNote = this.itemCodNote;          
-          rowData.materialNote = this.materialNote;
+          rowData.materialNote = (this.materialNote ? null : this.materialNote);
 
-          // TO DO:: does not required. need to verify
-          rowData.createdBy = 6;
-          rowData.createdDate = '2023-07-17T10:00:17.557';
+          // TO DO:: does not required. need to verify;
           rowData.updatedBy = 6;
-          rowData.updatedDate = '2023-07-17T10:00:17.557';
-          rowData.transactionDate = '2023-07-17T10:00:17.557';
+          rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+          rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
         }
       });
 
@@ -652,8 +670,100 @@ export class TicketDetailComponent implements OnInit {
 
   }
 
-  addAdjustments() {
+  addAdjustments() {    
+    this.modalAdjustmentHeader = 'Add Adjustment';
     this.addEditAdjustmentVisible = true;
+    this.itemLeveloperationPerform = 'Add';
+    this.adjustmentAmount = '';
+    this.adjustmentNote = '';
+    this.selectedAdjustment = 'Certified Destruction Cost ';
+  }
+
+  onAdjustmentChange(value: any) {
+    this.selectedAdjustment = value.target.value;
+    alert(this.selectedAdjustment);
+  }
+
+  GetAllAdjustmentType() {
+    const paramObject = {
+      LocationId: this.locId
+    };
+    this.commonService.GetAllAdjustmentType(paramObject)
+      .subscribe(data => {
+          console.log('GetAllAdjustmentType :: ');
+          console.log(data);
+          this.adjustmentList = data.body.data;
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  SaveAdjustment() {
+    this.addEditAdjustmentVisible = false;        
+    this.editItemVisible = false;
+
+    if (this.itemLeveloperationPerform === 'Add') {
+      // const arr = [];
+      const rowData = new TicketItem();   
+      rowData.rowId = 0;
+      rowData.localRowId = this.localRowIdCounter++;
+      rowData.materialName = rowData.concatAdjustments = this.selectedAdjustment;
+      rowData.materialNote = this.adjustmentNote; 
+      rowData.price = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
+      rowData.imagePath = '';
+      rowData.isCOD = 0;
+      rowData.isAdjusmentSet = true;
+      
+      rowData.createdBy = 6;
+      rowData.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      rowData.updatedBy = 6;
+      rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+
+      this.ticketObj.push(rowData);
+      // this.ticketObj = arr;
+
+    } else if (this.itemLeveloperationPerform === 'Edit') {   
+      alert(this.selectedAdjustment);
+
+      this.ticketObj.forEach((rowData: any) => {
+        if (this.itemLocalRowId === rowData.localRowId) {
+          console.log("found " + rowData.rowId);
+                    
+          alert(this.selectedAdjustment);
+          rowData.materialName = rowData.concatAdjustments = this.selectedAdjustment;
+          rowData.materialNote = this.adjustmentNote; 
+          rowData.price = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
+          rowData.imagePath = '';
+          rowData.isCOD = 0;
+          rowData.isAdjusmentSet = true;
+
+          // TO DO:: does not required. need to verify;
+          rowData.updatedBy = 6;
+          rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+          rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+        }
+      });
+
+    }
+
+    console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
+    
+    this.calculateTotal(this.ticketObj);
+    // this.backToChangeItemMainMaterials();
+    // this.backToMainMaterials();
+    // this.itemGross = 0;
+    // this.itemTare = 0;
+    this.adjustmentAmount = '';
+    this.adjustmentNote = '';
+    this.selectedAdjustment = 'Certified Destruction Cost ';
+
+  }
+
+  closeAdjustment() {
+    this.addEditAdjustmentVisible = false;
   }
 
   getPromoStyles(ticket: any) {

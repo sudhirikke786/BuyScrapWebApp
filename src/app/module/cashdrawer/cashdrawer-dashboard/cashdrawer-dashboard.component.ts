@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+
 import { CashDrawerTransaction } from 'src/app/core/model/cash-drawer-transaction.model';
 import { CashDrawer } from 'src/app/core/model/cash-drawer.model';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -116,13 +118,14 @@ export class CashdrawerDashboardComponent implements OnInit {
   }
 
   saveAddWithdrawMoneyAction() {
+    const datePipe = new DatePipe('en-US');
     // POST call
     const newCashDrawerTransaction = new CashDrawerTransaction();     
     newCashDrawerTransaction.rowId = 0;
     newCashDrawerTransaction.createdBy = 6;
-    newCashDrawerTransaction.createdDate = '2023-07-17T10:00:17.557';
+    newCashDrawerTransaction.createdDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerTransaction.updatedBy = 6;
-    newCashDrawerTransaction.updatedDate = '2023-07-17T10:00:17.557';
+    newCashDrawerTransaction.updatedDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerTransaction.amount = parseFloat(this.enterAmount.toString());
     newCashDrawerTransaction.reason = this.addReason;
     newCashDrawerTransaction.locID = this.locId;
@@ -250,13 +253,14 @@ export class CashdrawerDashboardComponent implements OnInit {
   }
 
   saveRegister(newCashDrawerdetail: any) {
+    const datePipe = new DatePipe('en-US');
     
     newCashDrawerdetail.rowId = 0;
     newCashDrawerdetail.createdBy = 6;
-    newCashDrawerdetail.createdDate = '2023-07-17T10:00:17.557';
+    newCashDrawerdetail.createdDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.updatedBy = 6;
-    newCashDrawerdetail.updatedDate = '2023-07-17T10:00:17.557';
-    newCashDrawerdetail.currentDate = '2023-07-17T10:00:17.557';
+    newCashDrawerdetail.updatedDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+    newCashDrawerdetail.currentDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.locID = this.commonService.getProbablyNumberFromLocalStorage('locId');
     
     console.log("Final CashDrawerTransaction :: " + JSON.stringify(newCashDrawerdetail));

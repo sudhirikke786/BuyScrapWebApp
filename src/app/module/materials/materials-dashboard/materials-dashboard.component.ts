@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/core/services/common.service';
 
@@ -72,6 +74,7 @@ export class MaterialsDashboardComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    const datePipe = new DatePipe('en-US');
 
     this.form = this.formBuilder.group({
       rowId: 0,
@@ -83,7 +86,7 @@ export class MaterialsDashboardComponent implements OnInit {
       createdBy: 0,
       createdDate: '',
       updatedBy: 0,
-      updatedDate: '2023-07-17T10:00:17.557',
+      updatedDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       locID: this.locId
     });
 
@@ -145,6 +148,7 @@ export class MaterialsDashboardComponent implements OnInit {
       this.materialData = materialData;
       this.form.patchValue(materialData)
     } else {
+      const datePipe = new DatePipe('en-US');
       this.isEditModeOn = false;
       this.materialData = null;
 
@@ -156,9 +160,9 @@ export class MaterialsDashboardComponent implements OnInit {
         isEnable: false,
         isCRV: false,
         createdBy: 6,
-        createdDate: '2023-07-17T10:00:17.557',
+        createdDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         updatedBy: 6,
-        updatedDate: '2023-07-17T10:00:17.557',
+        updatedDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         locID: this.locId
       });
 
