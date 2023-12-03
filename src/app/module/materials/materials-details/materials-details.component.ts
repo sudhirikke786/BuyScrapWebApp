@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/core/services/common.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-materials-details',
@@ -65,6 +66,7 @@ export class MaterialsDetailsComponent implements OnInit {
   });
 
   visible: boolean = false;
+  cashVisible: boolean = false;
   bulkvisible:boolean = false;
 
   orgName: any;
@@ -74,14 +76,19 @@ export class MaterialsDetailsComponent implements OnInit {
   subMaterialList: any;
   subMaterialListCopy: any;
   mainMaterialsVisible = true;
-  
+  currentRole:any;
+
+  systemPerfForm!:FormGroup;
   constructor(private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router,
+    private authService:AuthService,
     private commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+    
+    this.currentRole = this.authService.userCurrentRole();
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     
     this.form = this.formBuilder.group({
@@ -107,6 +114,12 @@ export class MaterialsDetailsComponent implements OnInit {
       isCRV: false,
       holdDays: 0
     });
+
+    this.systemPerfForm = this.formBuilder.group({
+      keys:'',
+      values:''
+      
+    })
 
     this.route.params.subscribe((param)=>{
       if (param['materialId']) {
@@ -163,10 +176,42 @@ export class MaterialsDetailsComponent implements OnInit {
         return item.materialName.indexOf(term) >= 0;
     }); 
 }
+
+enableCashier(){
+  this.cashVisible = true;
+ 
+}
+
+connectToUpdate(){
+
+  //Once Service give succee unable this
+ // this.enablePriceItem();
+}
+
+disablePriceItem(){
+  this.form.controls['marketPrice']?.disable();
+  this.form.controls['scrapPrice']?.disable();
+  this.form.controls['dealerPrice1']?.disable();
+  this.form.controls['dealerPrice2']?.disable();
+  this.form.controls['dealerPrice3']?.disable();
+}
+
+enablePriceItem(){
+  this.form.controls['marketPrice']?.enable();
+  this.form.controls['scrapPrice']?.enable();
+  this.form.controls['dealerPrice1']?.enable();
+  this.form.controls['dealerPrice2']?.enable();
+  this.form.controls['dealerPrice3']?.enable();
+}
   showDialog(materialData?: any){
     if (materialData) {
       this.isEditModeOn = true;
       this.materialData = materialData;
+      //scrapPrice,dealerPrice1,dealerPrice2,dealerPrice3
+      this.disablePriceItem();
+       
+    
+    
       this.form.patchValue(materialData)
     } else {
       this.isEditModeOn = false;
