@@ -30,7 +30,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6 mb-20">
+                            <div class="col-sm-6 mb-20" *ngIf="currentRole == 'Administrator'" >
                                 <div class="text-center">
                                     <a (click)="showMpVisible()" class="report-button">Material Price Key</a>
                                 </div>
@@ -38,13 +38,13 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-6 mb-20">
+                            <div class="col-sm-6 mb-20"  *ngIf="currentRole == 'Administrator'">
                                 <div class="text-center">
                                     <a (click)="cashierModel()" class="report-button">Cashier</a>
                                 </div>
                             </div>
 
-                            <div class="col-sm-6 mb-20">
+                            <div class="col-sm-6 mb-20"  *ngIf="currentRole == 'Administrator'">
                                 <div class="text-center">
                                     <a (click)="tiketModel()" class="report-button">Ticket</a>
                                 </div>
@@ -59,7 +59,7 @@
                             </div>
 
                             <div class="col-sm-6 mb-20">
-                                <div class="text-center">
+                                <div class="text-center" >
                                     <a href="" data-bs-target="#global-camera-settings" data-bs-toggle="modal"
                                         class="report-button">Global Setting</a>
                                 </div>
@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-6 mb-20">
+                            <div class="col-sm-6 mb-20" *ngIf="currentRole == 'Administrator'">
                                 <div class="text-center">
                                     <a href="javascript:void(0)" (click)="showSytemPerf()"  class="report-button">Sys Pref Setting</a>
                                 </div>
@@ -88,7 +88,7 @@
 
 
 
-<p-dialog header="Printer Settings" [breakpoints]="{'767px': '100vw'}" [(visible)]="pvisible" [style]="{ width: '80vw' }">
+<p-dialog header="Printer Settings" [breakpoints]="{'767px': '100vw'}" [(visible)]="pvisible" [style]="{ width: '50vw' }">
     <ng-template pTemplate="header">
 
         <div class="d-flex">
@@ -99,7 +99,7 @@
         </div>
     </ng-template>
 
-    <app-printer-type></app-printer-type>
+    <app-printer-type (close)="pvisible=false"></app-printer-type>
 
 
 

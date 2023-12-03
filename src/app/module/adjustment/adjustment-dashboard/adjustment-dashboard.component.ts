@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/core/services/common.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-adjustment-dashboard',
@@ -18,10 +19,6 @@ export class AdjustmentDashboardComponent implements OnInit {
     {
       iconcode:'mdi-refresh',
       title:'Refresh'
-    },
-    {
-      iconcode:'mdi-plus',
-      title:'Add Adjustment'
     }
   ];
 
@@ -35,7 +32,7 @@ export class AdjustmentDashboardComponent implements OnInit {
   orgName: any;
   locId: any;
   adjustmentList: any;
-
+  currentRole:any;
   form: FormGroup = this.formBuilder.group({
     rowId: 0,
     adjustmentName: ['', Validators.required],
@@ -51,10 +48,22 @@ export class AdjustmentDashboardComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router,
+    private authService:AuthService,
     private commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+
+    this.currentRole = this.authService.userCurrentRole();
+
+    if(['Administrator','Cashier'].includes(this.currentRole)){
+      this.actionList.unshift(
+        {
+          iconcode:'mdi-plus',
+          title:'Add Adjustment'
+        })
+    }
+
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
 
     this.form = this.formBuilder.group({

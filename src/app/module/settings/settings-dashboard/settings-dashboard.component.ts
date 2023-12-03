@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
@@ -18,13 +19,16 @@ export class SettingsDashboardComponent implements OnInit {
   orgName: any;
   locId: any;
   systemprefVisible = false;
-  
+  currentRole:any;
   constructor(private route: ActivatedRoute,
     private router: Router,
+    private authService:AuthService,
     private commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+    this.currentRole = this.authService.userCurrentRole();
+
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
   }
 
