@@ -64,7 +64,7 @@ export class CustomerReportComponent implements OnInit {
 
   setDefaultDate() {
     let defaultDate = new Date();
-    defaultDate.setFullYear(defaultDate.getFullYear() - 100);
+    defaultDate.setFullYear(defaultDate.getFullYear() - 10);
     console.log(defaultDate);
     this.fromDate = this.datePipe.transform(defaultDate, 'yyyy-MM-dd');
     this.toDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -121,9 +121,9 @@ export class CustomerReportComponent implements OnInit {
 
     const param = {
       LocationId: this.locId,
-      SellerId: 7,
-      FromDate: "2021-11-22",
-      Todate: "2023-11-22"
+      SellerId: this.customerObj.rowId,
+      FromDate: this.fromDate,
+      Todate: this.toDate
     }
 
     this.commonService.generateCustomerReport(param)

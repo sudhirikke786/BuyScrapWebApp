@@ -57,7 +57,7 @@
                               </ng-template>
                               <ng-template pTemplate="body" let-rowData>
                                 <tr>
-                                  <td>{{ rowData.currentDate | date: 'MM/dd/yyyy' }}</td>
+                                  <td>{{ rowData.opendate | date: 'MM/dd/yyyy' }}</td>
                                   <td>{{ rowData.openingBalance | number : '1.3-3' }}</td>
                                   <td>{{ rowData.iN_Amount | number : '1.3-3' }}</td>
                                   <td>{{ rowData.ouT_Amount | number : '1.3-3' }}</td>
@@ -93,7 +93,7 @@
             <!-- End Page content -->
             <!-- ============================================================== -->
 
-            <p-dialog header="Cas Drawer  Report" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
+            <p-dialog header="Cash Drawer Report" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
 
               <div class="row" >
                 <div style="height: 500px;" *ngIf="showDownload">
