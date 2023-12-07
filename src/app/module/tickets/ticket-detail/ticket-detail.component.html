@@ -246,8 +246,8 @@
                                                  
         
                                                     <div *ngIf="!isEditModeOn" class="pay-print-box">
-                                                        <a *ngIf="ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid'" class="btn btn-danger me-1" (click)="showPayment()">Pay Ticket</a>
-                                                        <a class="btn btn-primary">Printout</a>
+                                                        <a *ngIf="ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid'" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
+                                                        <a class="btn btn-primary" (click)="generateSingleTicketReport()">Printout</a>
                                                     </div>        
         
                                                     <div *ngIf="isEditModeOn" class="adjustment-deduction-box">
@@ -534,13 +534,13 @@
         <span class="text-xl font-bold text-info text-center" style="font-size: 14px;"> Please select Option</span>  
     </div>
     <div class="d-flex justify-content-center">
-        <div> <button class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment()">Pay Amount without printing</button></div>
-        <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveTicketDetails(0)">Print and Save</button></div>
-        <div><button class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment()">Pay Amount and Print </button></div>
+        <div> <button class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)">Pay Amount without printing</button></div>
+        <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveTicketDetails(0, true)">Print and Save</button></div>
+        <div><button class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)">Pay Amount and Print </button></div>
     </div>
 
     <div class="d-flex justify-content-center mt-2">
-        <div><button class="btn btn-success justify-content-center equal-h me-2" (click)="saveTicketDetails(0)">Close and Save</button></div>
+        <div><button class="btn btn-success justify-content-center equal-h me-2" (click)="saveTicketDetails(0, false)">Close and Save</button></div>
     </div>
     
 </p-dialog>
@@ -639,6 +639,13 @@
     
 </p-dialog>
 
+<p-dialog header="Ticket Receipt" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
+    <div class="row" >
+      <div style="height: 500px;" *ngIf="showDownload">                
+        <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
+      </div>
+    </div>
+  </p-dialog>
 
 
 <p-toast></p-toast>

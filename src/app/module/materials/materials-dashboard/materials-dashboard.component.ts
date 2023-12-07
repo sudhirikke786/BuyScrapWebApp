@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/core/services/common.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-materials-dashboard',
@@ -59,6 +60,7 @@ export class MaterialsDashboardComponent implements OnInit {
 
   orgName: any;
   locId: any;
+  logInUserId: any;
   materialList: any;
   materialListCopy: any;
   subMaterialList: any;
@@ -69,11 +71,13 @@ export class MaterialsDashboardComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router,
+    private stroarge:StorageService,
     private commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     const datePipe = new DatePipe('en-US');
 
     this.form = this.formBuilder.group({
@@ -83,9 +87,9 @@ export class MaterialsDashboardComponent implements OnInit {
       uomId: 1,
       isEnable: false,
       isCRV: false,
-      createdBy: 0,
+      createdBy: this.logInUserId,
       createdDate: '',
-      updatedBy: 0,
+      updatedBy: this.logInUserId,
       updatedDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       locID: this.locId
     });
@@ -159,9 +163,9 @@ export class MaterialsDashboardComponent implements OnInit {
         uomId: 1,
         isEnable: false,
         isCRV: false,
-        createdBy: 6,
+        createdBy: this.logInUserId,
         createdDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-        updatedBy: 6,
+        updatedBy: this.logInUserId,
         updatedDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         locID: this.locId
       });

@@ -96,7 +96,7 @@ export class SingleTicketsReportComponent implements OnInit {
     const param = {
       TicketId: 3093,
       LocationId: this.locId,
-      Type: 'A4Size'
+      Type: '4inch'
     }
 
     this.commonService.generateSingleTicketReport(param)

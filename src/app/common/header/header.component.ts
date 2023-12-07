@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   cashDrawerbalance: number = 0.00;
   paidTicketCount: number = 0;
   userFullName: any;
+  logInUserId: any;
   isReopenRegister: boolean = false;
   cashdrawerdetail: CashDrawer = new CashDrawer();
   totalAmount: number = 0.00;
@@ -39,6 +40,7 @@ export class HeaderComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     
     this.userFullName = this.stroarge.getLocalStorage('userObj').userdto?.firstName;
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.mobileName = this.userFullName?.split(" ").map((name :any) => name.charAt(0).toUpperCase()).join("");
 
     const paramObject = {
@@ -152,9 +154,9 @@ export class HeaderComponent implements OnInit {
   saveRegister(newCashDrawerdetail: any) {
     const datePipe = new DatePipe('en-US');
     newCashDrawerdetail.rowId = 0;
-    newCashDrawerdetail.createdBy = 6;
+    newCashDrawerdetail.createdBy = this.logInUserId;
     newCashDrawerdetail.createdDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-    newCashDrawerdetail.updatedBy = 6;
+    newCashDrawerdetail.updatedBy = this.logInUserId;
     newCashDrawerdetail.updatedDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.currentDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.locID = this.commonService.getProbablyNumberFromLocalStorage('locId');

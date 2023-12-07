@@ -8,6 +8,7 @@ import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 
 import { TicketDashboardComponent } from './ticket-dashboard/ticket-dashboard.component';
 import { TicketDetailComponent } from './ticket-detail/ticket-detail.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,7 @@ export const routes: Routes = [
     CommonsharedModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
+    NgxExtendedPdfViewerModule,
     PrimengModule
   ],
   providers: [DatePipe],

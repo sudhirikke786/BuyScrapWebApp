@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-materials-details',
@@ -73,6 +74,7 @@ export class MaterialsDetailsComponent implements OnInit {
 
   orgName: any;
   locId: any;
+  logInUserId: any;
   defaultMaterialId: any;
   materialList: any;
   subMaterialList: any;
@@ -85,6 +87,7 @@ export class MaterialsDetailsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService:AuthService,
+    private stroarge:StorageService,
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -92,13 +95,14 @@ export class MaterialsDetailsComponent implements OnInit {
     
     this.currentRole = this.authService.userCurrentRole();
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     const datePipe = new DatePipe('en-US');
     
     this.form = this.formBuilder.group({
       rowId: 0,
-      createdBy: 0,
+      createdBy: this.logInUserId,
       createdDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      updatedBy: 0,
+      updatedBy: this.logInUserId,
       updatedDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       groupId: 0,
       description: '',
@@ -223,9 +227,9 @@ enablePriceItem(){
 
       this.form = this.formBuilder.group({
         rowId: 0,
-        createdBy: 0,
+        createdBy: this.logInUserId,
         createdDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-        updatedBy: 0,
+        updatedBy: this.logInUserId,
         updatedDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         groupId: this.defaultMaterialId,
         description: '',

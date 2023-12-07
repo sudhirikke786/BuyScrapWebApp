@@ -10,6 +10,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { WebcamImage } from 'ngx-webcam';
 import { TicketItem } from 'src/app/core/model/ticket-item.model';
 import { Ticket } from 'src/app/core/model/ticket.model';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -36,6 +37,7 @@ export class TicketDetailComponent implements OnInit {
   sellerId: any;
   ticketId: any;
   locId: any;
+  logInUserId: any;
   locationName: any;
 
   ticketData:any = {};
@@ -105,16 +107,22 @@ export class TicketDetailComponent implements OnInit {
   selectedRowObj: any;
   saveConfirmVisible = false;
   paymentVisible = false;
+  isReceiptPrint = false;
+
+  fileDataObj: any;
+  showDownload = false;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
     private messageService: MessageService,
+    private stroarge:StorageService,
     private commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.route.params.subscribe((param)=>{
       this.ticketId = param["ticketId"];
@@ -154,11 +162,8 @@ export class TicketDetailComponent implements OnInit {
         rowData.isCOD = itemCodNote != '' ? true : false;
 
         // TO DO:: does not required. need to verify
-        // rowData.createdBy = 6;
-        // rowData.createdDate = '2023-07-17T10:00:17.557';
-        rowData.updatedBy = 6;
+        rowData.updatedBy = this.logInUserId;
         rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-        // rowData.transactionDate = '2023-07-17T10:00:17.557';
       }
     });
   }
@@ -348,7 +353,8 @@ export class TicketDetailComponent implements OnInit {
     this.saveConfirmVisible = true;
   }
 
-  showPayment(){
+  showPayment(isReceiptPrint: boolean){
+    this.isReceiptPrint = isReceiptPrint;
     this.paymentVisible =  true;
     this.payAmount = this.totalAmount - this.ticketData?.paidAmount;
     this.showSection('Cash');
@@ -377,9 +383,9 @@ export class TicketDetailComponent implements OnInit {
 
     const transactionObj = {
       rowId: 0,
-      createdBy: 6,
+      createdBy: this.logInUserId,
       createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      updatedBy: 6,
+      updatedBy: this.logInUserId,
       updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       ticketId: parseInt(this.ticketId),
       type: activeSection,
@@ -387,16 +393,17 @@ export class TicketDetailComponent implements OnInit {
       checkNumber: this.checkNumber,
       barCode: '',
       guid: '',
-      dateClosed: '2023-07-17T10:00:17.557',
-      checkDate: '2023-07-17T10:00:17.557'
+      dateClosed: null,
+      checkDate: null
     }
 
     this.commonService.insertTicketTransactions(transactionObj).subscribe(data =>{    
       console.log(data); 
       console.log('Ticket transaction successfully');     
-      this.saveTicketDetails(this.payAmount);
+      this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
+      this.isReceiptPrint = false;
     },(error: any) =>{  
-      this.saveTicketDetails(0);
+      this.saveTicketDetails(0, false);
       console.log(error);  
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
@@ -404,7 +411,7 @@ export class TicketDetailComponent implements OnInit {
     this.saveConfirmVisible = false;
   }
 
-  saveTicketDetails(paidAmount: number) {
+  saveTicketDetails(paidAmount: number, isReceiptPrint: boolean) {
     // alert(paidAmount);
     // alert(this.totalAmount);
     let ticketStatus = 'OPEN';
@@ -426,9 +433,9 @@ export class TicketDetailComponent implements OnInit {
     } else {
       const newTicket = new Ticket();     
       newTicket.rowId = 0;
-      newTicket.createdBy = 6;
+      newTicket.createdBy = this.logInUserId;
       newTicket.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      newTicket.updatedBy = 6;
+      newTicket.updatedBy = this.logInUserId;
       newTicket.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       newTicket.customerId = parseFloat(this.sellerId);
       newTicket.ticketId = 0;
@@ -459,6 +466,9 @@ export class TicketDetailComponent implements OnInit {
      // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       this.saveConfirmVisible = false;
       this.cancelEditTicket();
+      if (isReceiptPrint) {
+        this.generateSingleTicketReport();
+      }
     },(error: any) =>{  
       console.log(error);  
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
@@ -624,9 +634,9 @@ export class TicketDetailComponent implements OnInit {
       rowData.materialNote = (this.materialNote ? null : this.materialNote);
 
       
-      rowData.createdBy = 6;
+      rowData.createdBy = this.logInUserId;
       rowData.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      rowData.updatedBy = 6;
+      rowData.updatedBy = this.logInUserId;
       rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
 
@@ -652,7 +662,7 @@ export class TicketDetailComponent implements OnInit {
           rowData.materialNote = (this.materialNote ? null : this.materialNote);
 
           // TO DO:: does not required. need to verify;
-          rowData.updatedBy = 6;
+          rowData.updatedBy = this.logInUserId;
           rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
           rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
         }
@@ -716,9 +726,9 @@ export class TicketDetailComponent implements OnInit {
       rowData.isCOD = 0;
       rowData.isAdjusmentSet = true;
       
-      rowData.createdBy = 6;
+      rowData.createdBy = this.logInUserId;
       rowData.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      rowData.updatedBy = 6;
+      rowData.updatedBy = this.logInUserId;
       rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
 
@@ -741,7 +751,7 @@ export class TicketDetailComponent implements OnInit {
           rowData.isAdjusmentSet = true;
 
           // TO DO:: does not required. need to verify;
-          rowData.updatedBy = 6;
+          rowData.updatedBy = this.logInUserId;
           rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
           rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
         }
@@ -773,6 +783,28 @@ export class TicketDetailComponent implements OnInit {
       };
     } 
     return { 'border-bottom': 'none !important' }
+  }
+  
+
+  generateSingleTicketReport() {
+
+    const param = {
+      TicketId: this.ticketId,
+      LocationId: this.locId,
+      Type: 'A4Size' //localStorage.getItem('defaultPrintSize')
+    }
+
+    this.commonService.generateSingleTicketReport(param)
+      .subscribe(data => {
+        console.log('generateSingleTicketReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showDownload = true;
+      },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
   }
 
   openPDF(){

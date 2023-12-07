@@ -7,6 +7,7 @@ import { RegexPattern } from 'src/app/core/pattern/regex-patterns';
 import { CommonService } from 'src/app/core/services/common.service';
 import { MessageService } from 'primeng/api';
 import { ConfirmedValidator } from '../admin-dashboard/admin-dashboard.component';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-admin-location-management',
@@ -25,6 +26,7 @@ export class AdminLocationManagementComponent implements OnInit {
 
   orgName: any;
   locId: any;
+  logInUserId: any;
   locationObj: any;
   locObj: any;
   actionType = 'Add Location'
@@ -39,10 +41,12 @@ export class AdminLocationManagementComponent implements OnInit {
     private router: Router,
     private fb:FormBuilder,
     private messageService: MessageService,
+    private stroarge:StorageService,
     public commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.getLocations();
     this.getAllLocatoins();
     this.creatLocation();
@@ -145,9 +149,9 @@ export class AdminLocationManagementComponent implements OnInit {
     const formObj =  this.locationForm.value;
     const reqObj = {
       "rowId": this.actionType == 'Add' ? 0 : this.editObj?.rowId,
-      "createdBy": 6,
+      "createdBy": this.logInUserId,
       "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      "updatedBy": 6,
+      "updatedBy": this.logInUserId,
       "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "locationName":formObj.locationName,
       "isActive": true,
@@ -179,9 +183,9 @@ export class AdminLocationManagementComponent implements OnInit {
     
       
       const req = {
-        "createdBy": 1,
+        "createdBy": this.logInUserId,
         "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-        "updatedBy": 1,
+        "updatedBy": this.logInUserId,
         "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         "tempOTP": "1234",
         "isActive": true,

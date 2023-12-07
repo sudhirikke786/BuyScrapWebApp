@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-system-perf',
@@ -15,8 +16,11 @@ export class SystemPerfComponent implements OnInit {
   systemPerfForm !:FormGroup;
   editObj: any;
   copyObj: any;
+  logInUserId: any;
   searchValue = '';
-  constructor(public commonService: CommonService,private formBuilder: FormBuilder){
+  constructor(public commonService: CommonService,
+    private stroarge:StorageService,
+    private formBuilder: FormBuilder){
 
   }
 
@@ -40,6 +44,7 @@ export class SystemPerfComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.getSystemPreferencesValue();
   }
 
@@ -82,8 +87,8 @@ export class SystemPerfComponent implements OnInit {
 
     const obj = this.systemPerfForm.value;
     const sysInfo = {
-      "createdBy": 1,
-      "updatedBy": 7,
+      "createdBy": this.logInUserId,
+      "updatedBy": this.logInUserId,
       "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "rowId": this.editObj?.rowId,

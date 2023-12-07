@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 
 import { CommonService } from 'src/app/core/services/common.service';
 import { MessageServiceService } from 'src/app/core/services/message-service.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-ticket-settings',
@@ -13,13 +14,16 @@ import { MessageServiceService } from 'src/app/core/services/message-service.ser
 export class TicketSettingsComponent implements OnInit {
   ticketForm!: FormGroup;
   logo:any;
+  logInUserId: any;
   constructor(private formBuilder: FormBuilder,
+    private stroarge:StorageService,
     private commonService:CommonService,
    ){
 
   }
 
   ngOnInit(){
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.createForm();
     this.getAllTicketDetails();
   }
@@ -61,8 +65,8 @@ export class TicketSettingsComponent implements OnInit {
 
     const obj = this.ticketForm.value;
     const userInfo = {
-      "createdBy": 1,
-      "updatedBy": 7,
+      "createdBy": this.logInUserId,
+      "updatedBy": this.logInUserId,
       "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "rowId": 1,

@@ -12,7 +12,7 @@ export class SideMenuComponent {
   constructor(public commonService:CommonService,private authService: AuthService){
 
   }
-  organizationName: any = localStorage.getItem('orgName');;
+  organizationName: any = localStorage.getItem('orgName');
 
   menuList = [
       {

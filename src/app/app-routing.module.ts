@@ -110,7 +110,7 @@ const routes: Routes = [
           path:'settings',
           loadChildren:() => import('./module/settings/settings.module').then(m => m.SettingsModule),
           canActivate: [RoleGuard],
-          data: { requiredRole: ['Administrator','Cashier']},
+          data: { requiredRole: ['Administrator','Cashier','Scale']},
         }
       ]
   }

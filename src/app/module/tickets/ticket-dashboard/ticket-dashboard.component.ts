@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { Pagination } from 'src/app/core/interfaces/common-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-ticket-dashboard',
@@ -98,6 +99,7 @@ export class TicketDashboardComponent implements OnInit {
 
   orgName: any;
   locId: any;
+  logInUserId: any;
   
   maxItem = 2;
   parentTicketIDVisible = false;
@@ -135,6 +137,7 @@ export class TicketDashboardComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private authService:AuthService,
+    private stroarge:StorageService,
     public commonService: CommonService) { }
 
   ngOnInit() {
@@ -152,6 +155,7 @@ export class TicketDashboardComponent implements OnInit {
     this.selectedTickets = this.defaultSelectedTicketsTypes;
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     const result = this.selectedTickets.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(',');
     this.pagination.Status = result;
     this.getAllTicketsDetails(this.pagination);
@@ -268,7 +272,7 @@ export class TicketDashboardComponent implements OnInit {
 
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
     this.tiketSelectedObj['VoidFlag'] = true;
-    this.tiketSelectedObj['VoidBy'] = 6;
+    this.tiketSelectedObj['VoidBy'] = this.logInUserId;
     this.tiketSelectedObj['VoidDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     this.tiketSelectedObj['Status'] = 'VOIDED';
     
@@ -293,7 +297,7 @@ export class TicketDashboardComponent implements OnInit {
     // alert('Restore Ticket :: ' + this.voidReason);
 
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
-    this.tiketSelectedObj['CreatedBy'] = 6;
+    this.tiketSelectedObj['CreatedBy'] = this.logInUserId;
     this.tiketSelectedObj['CreatedDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     
     console.log("Restore ticketData :: " + JSON.stringify(this.tiketSelectedObj));

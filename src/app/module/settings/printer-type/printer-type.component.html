@@ -29,9 +29,10 @@
             <div class="row">
                 <div class="form-group col-sm-4 mb-2">
                     <label for="simpleinput" class="form-label w-100">Default Printer Type</label>
-                    <select class="form-select" id="example-select">
-                        <option>Receipt Printer</option>
-                        <option>A4 Printer</option>
+                    <select class="form-select" id="defaultReceiptPrinter" name="defaultReceiptPrinter" [(ngModel)]="defaultReceiptPrinter" >
+                        <option value="Normal">Receipt Printer</option>
+                        <option value="4inch">Receipt Printer 4 inch</option>
+                        <option value="A4Size">A4 Printer</option>
                     </select>
                 </div>
 

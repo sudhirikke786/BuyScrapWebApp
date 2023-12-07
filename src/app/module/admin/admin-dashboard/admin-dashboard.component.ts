@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { RegexPattern } from 'src/app/core/pattern/regex-patterns';
 import { CommonService } from 'src/app/core/services/common.service';
 import { MessageService } from 'primeng/api';
+import { StorageService } from 'src/app/core/services/storage.service';
 
     
 export function ConfirmedValidator(controlName: string, matchingControlName: string){
@@ -57,6 +58,7 @@ export class AdminDashboardComponent implements OnInit {
  
   orgName: any;
   locId: any;
+  logInUserId: any;
   isSubmit: boolean = false;
   title: string='Add User';
   editObj: any;
@@ -65,11 +67,13 @@ export class AdminDashboardComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private messageService: MessageService,
+    private stroarge:StorageService,
     public commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.createUserForm()
     this.title = 'Add User';
     this.getAllUsers();
@@ -117,10 +121,11 @@ export class AdminDashboardComponent implements OnInit {
       this.isSubmit = false;
       const maxRoleID = this.admins.map((item:any) => Number(item?.rowId))
       console.log(maxRoleID);
+
       const req = {
-        "createdBy": 1,
+        "createdBy": this.logInUserId,
         "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-        "updatedBy": 1,
+        "updatedBy": this.logInUserId,
         "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         "tempOTP": "1234",
         "isActive": true,

@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-adjustment-dashboard',
@@ -33,6 +34,7 @@ export class AdjustmentDashboardComponent implements OnInit {
   datePipe: DatePipe = new DatePipe('en-US');
 
   orgName: any;
+  logInUserId: any;
   locId: any;
   adjustmentList: any;
   currentRole:any;
@@ -52,10 +54,12 @@ export class AdjustmentDashboardComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService:AuthService,
+    private stroarge:StorageService,
     private commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
 
     this.currentRole = this.authService.userCurrentRole();
 
@@ -74,9 +78,9 @@ export class AdjustmentDashboardComponent implements OnInit {
       adjustmentName: ['', Validators.required],
       description: '',
       isEnable: false,
-      createdBy: 0,
+      createdBy: this.logInUserId,
       createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      updatedBy: 0,
+      updatedBy: this.logInUserId,
       updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       locID: this.locId
     });
@@ -116,9 +120,9 @@ export class AdjustmentDashboardComponent implements OnInit {
         adjustmentName: ['', Validators.required],
         description: '',
         isEnable: false,
-        createdBy: 6,
+        createdBy: this.logInUserId,
         createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-        updatedBy: 6,
+        updatedBy: this.logInUserId,
         updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         locID: this.locId
       });

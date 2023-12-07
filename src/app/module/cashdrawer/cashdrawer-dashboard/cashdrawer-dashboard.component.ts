@@ -6,6 +6,7 @@ import { CashDrawerTransaction } from 'src/app/core/model/cash-drawer-transactio
 import { CashDrawer } from 'src/app/core/model/cash-drawer.model';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DataService } from 'src/app/core/services/data.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-cashdrawer-dashboard',
@@ -23,6 +24,7 @@ export class CashdrawerDashboardComponent implements OnInit {
 
   orgName: any;
   locId: any;
+  logInUserId: any;
   cashDrawerbalance: number = 0.00;
   paidTicketCount: number = 0;
   
@@ -39,12 +41,14 @@ export class CashdrawerDashboardComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private commonService: CommonService,
+    private stroarge:StorageService,
     private dataService: DataService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
-    
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+        
     const paramObject = {
       LocationId: this.locId
     };
@@ -122,9 +126,9 @@ export class CashdrawerDashboardComponent implements OnInit {
     // POST call
     const newCashDrawerTransaction = new CashDrawerTransaction();     
     newCashDrawerTransaction.rowId = 0;
-    newCashDrawerTransaction.createdBy = 6;
+    newCashDrawerTransaction.createdBy = this.logInUserId;
     newCashDrawerTransaction.createdDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-    newCashDrawerTransaction.updatedBy = 6;
+    newCashDrawerTransaction.updatedBy = this.logInUserId;
     newCashDrawerTransaction.updatedDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerTransaction.amount = parseFloat(this.enterAmount.toString());
     newCashDrawerTransaction.reason = this.addReason;
@@ -256,9 +260,9 @@ export class CashdrawerDashboardComponent implements OnInit {
     const datePipe = new DatePipe('en-US');
     
     newCashDrawerdetail.rowId = 0;
-    newCashDrawerdetail.createdBy = 6;
+    newCashDrawerdetail.createdBy = this.logInUserId;
     newCashDrawerdetail.createdDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-    newCashDrawerdetail.updatedBy = 6;
+    newCashDrawerdetail.updatedBy = this.logInUserId;
     newCashDrawerdetail.updatedDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.currentDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.locID = this.commonService.getProbablyNumberFromLocalStorage('locId');
