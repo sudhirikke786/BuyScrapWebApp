@@ -50,6 +50,8 @@ export class ShipoutDashboardComponent implements OnInit {
   custVisible=  false;
   orgName: any;
   locId: any;  
+
+  showLoader =  false;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -62,6 +64,8 @@ export class ShipoutDashboardComponent implements OnInit {
   }
 
   getAllShipOutDetails() {   
+
+    this.showLoader = true;
 
     const pagination = {
       PageNumber: 1,
@@ -76,7 +80,11 @@ export class ShipoutDashboardComponent implements OnInit {
           this.shipouts = data.body.data;
         },
         (err: any) => {
+          this.showLoader = false;
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.showLoader = false;
         }
       );
   }

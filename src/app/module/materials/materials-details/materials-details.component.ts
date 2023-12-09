@@ -72,6 +72,8 @@ export class MaterialsDetailsComponent implements OnInit {
   cashVisible: boolean = false;
   bulkvisible:boolean = false;
 
+  showLoader = false;
+
   orgName: any;
   locId: any;
   logInUserId: any;
@@ -156,6 +158,7 @@ export class MaterialsDetailsComponent implements OnInit {
   }
 
   getSubMaterials(materialId: any) {
+    this.showLoader = true;
     this.mainMaterialsVisible =  false;
 
     const paramObject = {
@@ -171,6 +174,10 @@ export class MaterialsDetailsComponent implements OnInit {
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
+          this.showLoader = false;
+        },
+        () => {
+          this.showLoader = false;
         }
       );
   }

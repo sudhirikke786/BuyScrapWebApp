@@ -25,6 +25,7 @@ export class AdjustmentDashboardComponent implements OnInit {
     }
   ];
 
+  showLoader = false;
 
   visible: boolean = false;
   headerTitle: any = 'Add Adjustment';
@@ -89,6 +90,7 @@ export class AdjustmentDashboardComponent implements OnInit {
   }
 
   GetAllAdjustmentType() {
+    this.showLoader = true;
     const paramObject = {
       LocationId: this.locId
     };
@@ -100,6 +102,10 @@ export class AdjustmentDashboardComponent implements OnInit {
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
+          this.showLoader = false;
+        },
+        () => {
+          this.showLoader = false;
         }
       );
   }

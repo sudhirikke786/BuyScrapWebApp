@@ -2,7 +2,7 @@
             <!-- Start Page Content here -->
             <!-- ============================================================== -->
 
-            <div class="content-page">
+            <div class="content-page" *ngIf="!showLoader">
                 <div class="content">
                   <!-- Start Content-->
                   <div class="container-fluid">
@@ -87,6 +87,13 @@
                 <!--  Select New Driver Modal Popup -->
               
                 <!--  Select New Driver Modal Popup -->
+              </div>
+
+              <div class="content" *ngIf="showLoader">
+
+                <app-page-loader type="ftable"></app-page-loader>
+              
+                
               </div>
 
             <!-- ============================================================== -->

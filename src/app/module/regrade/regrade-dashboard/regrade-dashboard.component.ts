@@ -75,6 +75,8 @@ export class RegradeDashboardComponent implements OnInit {
     },
   ];
 
+  showLoader = false;
+
   regreateList = [
     {
       iconcode: 'mdi-magnify',

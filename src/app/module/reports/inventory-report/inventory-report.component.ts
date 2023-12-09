@@ -48,6 +48,7 @@ export class InventoryReportComponent implements OnInit {
   defaultSelectedSubMaterial: any = 0;
   fileDataObj: any;
   showDownload = false;
+  showLoader = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -75,6 +76,7 @@ export class InventoryReportComponent implements OnInit {
       MaterialID: this.defaultSelectedMaterial,
       SubMaterialID: this.defaultSelectedSubMaterial
     }
+    this.showLoader = true;
 
     this.commonService.getInventoryReport(param)
       .subscribe(data => {
@@ -83,7 +85,11 @@ export class InventoryReportComponent implements OnInit {
         this.reportData = data.body.data;
       },
         (err: any) => {
+          this.showLoader = false;
           // this.errorMsg = 'Error occured';
+        },
+        () =>{
+          this.showLoader = false;
         }
       );
   }
@@ -120,6 +126,7 @@ export class InventoryReportComponent implements OnInit {
       MaterialID: materialId,
       LocationId: this.locId
     };
+    this.showLoader = true;
     this.commonService.getAllSubMaterials(paramObject)
       .subscribe(data => {
         console.log('getAllSubMaterials :: ');
@@ -127,7 +134,11 @@ export class InventoryReportComponent implements OnInit {
         this.subMaterialList = data.body.data;
       },
         (err: any) => {
+          this.showLoader = false;
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.showLoader = false;
         }
       );
   }

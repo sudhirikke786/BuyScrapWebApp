@@ -44,6 +44,7 @@ export class MaterialReportComponent implements OnInit {
   toDate: any;
   fileDataObj: any;
   showDownload = false;
+  showLoader = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -62,7 +63,7 @@ export class MaterialReportComponent implements OnInit {
   }
 
   getMaterialReport() {
-
+    this.showLoader =  true;
     const param = {
       LocationId: this.locId,
       FromDate: this.fromDate,
@@ -76,7 +77,11 @@ export class MaterialReportComponent implements OnInit {
         this.reportData = data.body.data;
       },
         (err: any) => {
+          this.showLoader =  false;
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.showLoader =  false;
         }
       );
   }
@@ -88,6 +93,7 @@ export class MaterialReportComponent implements OnInit {
       FromDate: this.fromDate,
       Todate: this.toDate
     }
+    this.showLoader =  true;
 
     this.commonService.generateMaterialReport(param)
       .subscribe(data => {
@@ -98,6 +104,10 @@ export class MaterialReportComponent implements OnInit {
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
+          this.showLoader =  false;
+        },
+        () => {
+          this.showLoader =  false;
         }
       );
   }

@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" *ngIf="!showLoader">
 
     <!-- Start Content-->
     <div class="container-fluid">
@@ -118,7 +118,7 @@
                                     </div> -->
 
                                     <div class="col-sm-4">
-                                        <a href="#" class="btn btn-primary">Print</a>
+                                        <a href="javscript:void(0)" class="btn btn-primary">Print</a>
                                     </div>
                                 </div>
                     
@@ -132,3 +132,7 @@
     </div> <!-- container -->
 
 </div> 
+
+<div class="content" *ngIf="showLoader">
+    <app-page-loader type="ftable"></app-page-loader>
+</div>

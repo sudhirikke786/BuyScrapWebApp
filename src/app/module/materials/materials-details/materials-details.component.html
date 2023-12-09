@@ -2,7 +2,7 @@
             <!-- Start Page Content here -->
             <!-- ============================================================== -->
 
-            <div class="content-page">
+            <div class="content-page"  *ngIf="!showLoader">
 
                 <div class="content">
 
@@ -91,8 +91,10 @@
             </div>
 
 
-
-
+            <div class="content" *ngIf="showLoader">
+                <app-page-loader type="image"></app-page-loader>
+            </div>
+     
 
             <p-dialog
                 [header]="isEditModeOn == true? 'Edit Sub-Material' : 'Add Sub-Material'"

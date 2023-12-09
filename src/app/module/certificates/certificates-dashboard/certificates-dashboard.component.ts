@@ -76,6 +76,8 @@ export class CertificatesDashboardComponent implements OnInit {
   visible = false;
   cvisible = false;
   ivisible =  false;
+
+  showLoader = false;
   
   orgName: any;
   locId: any;
@@ -83,6 +85,8 @@ export class CertificatesDashboardComponent implements OnInit {
   
   certificates: any;
   certificatesImages: any;
+
+  certificateLoader = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -101,6 +105,7 @@ export class CertificatesDashboardComponent implements OnInit {
       RowOfPage: 1000,
       LocationId: this.locId
     };
+    this.showLoader = true;
     this.commonService.getAllCODTickets(paramObject)
       .subscribe(data => {
           console.log('getAllCODTickets :: ');
@@ -108,7 +113,11 @@ export class CertificatesDashboardComponent implements OnInit {
           this.certificates = data.body.data;
         },
         (err: any) => {
+          this.showLoader = false;
           // this.errorMsg = 'Error occured';
+        },
+        () =>  {
+          this.showLoader = false;
         }
       );
   }
@@ -116,6 +125,7 @@ export class CertificatesDashboardComponent implements OnInit {
 
   getCODImagesbyID(obj:any){
     this.showModel();
+    this.certificateLoader = true;
     const paramObject = {
       TicketID:obj?.rowId
     }
@@ -124,10 +134,14 @@ export class CertificatesDashboardComponent implements OnInit {
       .subscribe(data => {
         
           this.certificatesImages = data.body.data;
-          console.log(this.certificatesImages);
+          
         },
         (err: any) => {
+          this.certificateLoader = false;
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.certificateLoader = false;
         }
       );
   }

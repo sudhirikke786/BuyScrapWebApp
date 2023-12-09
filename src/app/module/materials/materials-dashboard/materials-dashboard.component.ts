@@ -32,7 +32,7 @@ export class MaterialsDashboardComponent implements OnInit {
     }
   ];
 
-  
+  showLoader = false;
   isEditModeOn = false;
   materialData: any;
 
@@ -117,6 +117,7 @@ export class MaterialsDashboardComponent implements OnInit {
   }
 
   getAllGroupMaterial() {
+    this.showLoader = true;
     const paramObject = {
       LocationId: this.locId
     };
@@ -141,7 +142,11 @@ export class MaterialsDashboardComponent implements OnInit {
           this.onMaterialChange($event);
         },
         (err: any) => {
+          this.showLoader = false;
           // this.errorMsg = 'Error occured';
+        },
+        () =>{
+        this.showLoader = false;
         }
       );
   }

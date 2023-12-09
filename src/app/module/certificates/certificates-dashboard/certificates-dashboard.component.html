@@ -2,7 +2,7 @@
 <!-- Start Page Content here -->
 <!-- ============================================================== -->
 
-<div class="content-page">
+<div class="content-page" *ngIf="!showLoader">
   <div class="content">
     <!-- Start Content-->
     <div class="container-fluid">
@@ -69,9 +69,9 @@
                     <td>{{ certificate.customerName }}</td>
                     <td>{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>
                     <td *ngIf="certificate?.dateClosed != null">
-					  <a (click)="getCODImagesbyID(certificate)" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-eye"></i> Show</a>
+					          <a (click)="getCODImagesbyID(certificate)" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-eye"></i> Show</a>
 
-                      <a href="" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-printer"></i> Print</a>
+                      <a href="javascript:void()" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-printer"></i> Print</a>
 
                       <!-- <a href="" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-restore"></i> Restore</a>  -->
                     </td>
@@ -101,6 +101,18 @@
 
 
 </div>
+
+
+
+<div class="content" *ngIf="showLoader">
+
+  <app-page-loader type="ftable"></app-page-loader>
+
+  
+</div>
+
+
+
 
 <!-- ============================================================== -->
 <!-- End Page content -->
@@ -143,7 +155,7 @@
     </div>
   </div>
 
-  <div class="row pd-imgs-box mt-3">
+  <div class="row pd-imgs-box mt-3" *ngIf="!certificateLoader">
     <ng-container  *ngFor="let item of certificatesImages">
     <div class="col-sm-6">
       <div class="pd-imgs" tabindex="1">
@@ -152,6 +164,11 @@
     </div>
   </ng-container>
   
+  </div>
+
+  <div class="row pd-imgs-box mt-3" *ngIf="certificateLoader">
+   
+    <app-page-loader></app-page-loader>
   </div>
 
 

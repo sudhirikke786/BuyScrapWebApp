@@ -44,6 +44,8 @@ export class AccountingReportComponent implements OnInit {
   toDate: any;
   fileDataObj: any;
   showDownload: boolean = false;
+
+  showLoader = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -72,7 +74,7 @@ export class AccountingReportComponent implements OnInit {
       FromDate: this.fromDate,
       Todate: this.toDate
     }
-
+   this.showLoader =  true;
     this.commonService.getAccountingReport(param)
       .subscribe(data => {
         console.log('getAccountingReport :: ');
@@ -80,7 +82,12 @@ export class AccountingReportComponent implements OnInit {
         this.reportData = data.body.data;
       },
         (err: any) => {
+          this.showLoader =  false;
+
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.showLoader =  false;
         }
       );
   }
@@ -94,6 +101,8 @@ export class AccountingReportComponent implements OnInit {
       Todate: "2023-11-22"
     }
 
+    this.showLoader = true;
+
     this.commonService.generateCustomerReport(param)
       .subscribe(data => {
         console.log('generateCustomerReport :: ');
@@ -103,8 +112,14 @@ export class AccountingReportComponent implements OnInit {
         this.showDownload = true;
       },
         (err: any) => {
+          this.showLoader = false;
+
           // this.errorMsg = 'Error occured';
+        },
+        () =>{
+          this.showLoader = false;
         }
+      
       );
   }
 

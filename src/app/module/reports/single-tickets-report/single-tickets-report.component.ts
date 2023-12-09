@@ -47,6 +47,8 @@ export class SingleTicketsReportComponent implements OnInit {
   fileDataObj: any;
   showDownload = false;
 
+  showLoader = false;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -78,7 +80,7 @@ export class SingleTicketsReportComponent implements OnInit {
       Todate: this.toDate,
       SellerName: this.sellerName
     }
-
+    this.showLoader = true;
     this.commonService.getSingleTicketReport(param)
       .subscribe(data => {
         console.log('getSingleTicketReport :: ');
@@ -86,7 +88,12 @@ export class SingleTicketsReportComponent implements OnInit {
         this.reportData = data.body.data;
       },
         (err: any) => {
+          this.showLoader = false;
+
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.showLoader = false;
         }
       );
   }

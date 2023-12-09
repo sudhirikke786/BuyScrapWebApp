@@ -46,6 +46,7 @@ export class DailyTicketsReportComponent implements OnInit {
   toDate: any;  
   fileDataObj:any;	
   showDownload:boolean=false;
+  showLoader = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -70,6 +71,7 @@ export class DailyTicketsReportComponent implements OnInit {
       FromDate: this.fromDate,
       Todate: this.toDate
     }
+    this.showLoader =  true;
 
     this.commonService.getDailyTicketsReport(param)
       .subscribe(data => {
@@ -78,7 +80,11 @@ export class DailyTicketsReportComponent implements OnInit {
           this.reportData = data.body.data;
         },
         (err: any) => {
+          this.showLoader =  false;
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.showLoader =  false;
         }
       );
   }

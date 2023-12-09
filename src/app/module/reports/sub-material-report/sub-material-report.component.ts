@@ -48,6 +48,7 @@ export class SubMaterialReportComponent implements OnInit {
   defaultSelectedSubMaterial: any = 0;
   fileDataObj: any;
   showDownload = false;
+  showLoader  = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -79,6 +80,7 @@ export class SubMaterialReportComponent implements OnInit {
       FromDate: this.fromDate,
       Todate: this.toDate
     }
+    this.showLoader  = true; 
 
     this.commonService.getSubMaterialsReport(param)
       .subscribe(data => {
@@ -87,7 +89,11 @@ export class SubMaterialReportComponent implements OnInit {
         this.reportData = data.body.data;
       },
         (err: any) => {
+          this.showLoader  = false; 
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.showLoader  = false; 
         }
       );
   }

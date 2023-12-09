@@ -2,7 +2,7 @@
             <!-- Start Page Content here -->
             <!-- ============================================================== -->
 
-            <div class="content-page">
+            <div class="content-page"  *ngIf="!showLoader">
                 <div class="content">
                   <!-- Start Content-->
                   <div class="container-fluid">
@@ -112,6 +112,14 @@
             <!-- ============================================================== -->
             <!-- End Page content -->
             <!-- ============================================================== -->
+
+
+            <div class="content" *ngIf="showLoader">
+
+              <app-page-loader type="ftable"></app-page-loader>
+            
+              
+            </div>
 
 
             <p-dialog header="Inventory Report" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">

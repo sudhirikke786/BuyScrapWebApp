@@ -48,6 +48,7 @@ export class CustomerReportComponent implements OnInit {
   sellerName: string = '';
   fileDataObj:any;
   showDownload=false;
+  showLoader = false;
   customerObj: any;
 
   constructor(private route: ActivatedRoute,
@@ -79,6 +80,7 @@ export class CustomerReportComponent implements OnInit {
       Todate: this.toDate,
       SearchText: this.sellerName
     }
+    this.showLoader = true;
 
     this.commonService.getCustomerReport(param)
       .subscribe(data => {
@@ -87,7 +89,11 @@ export class CustomerReportComponent implements OnInit {
           this.reportData = data.body.data;
         },
         (err: any) => {
+          this.showLoader = false;
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.showLoader = false;
         }
       );
   }
@@ -125,6 +131,7 @@ export class CustomerReportComponent implements OnInit {
       FromDate: this.fromDate,
       Todate: this.toDate
     }
+    
 
     this.commonService.generateCustomerReport(param)
       .subscribe(data => {

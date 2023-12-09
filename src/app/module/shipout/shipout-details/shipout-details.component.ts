@@ -16,6 +16,7 @@ export class ShipoutDetailsComponent implements OnInit {
   locId:any;
   shipoutId: any;
   shipout: any;
+  showLoader = false;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -31,6 +32,9 @@ export class ShipoutDetailsComponent implements OnInit {
   }
   
   getShipOutDetailsByID() {
+
+    this.showLoader =  true;
+    
     const paramObject = {
       RowID: this.shipoutId,
       LocID: this.locId
@@ -42,7 +46,11 @@ export class ShipoutDetailsComponent implements OnInit {
           this.shipout = data.body.data;
         },
         (err: any) => {
+          this.showLoader =  false;
           // this.errorMsg = 'Error occured';
+        },
+        ()=>{
+          this.showLoader =  false;
         }
       );
   }

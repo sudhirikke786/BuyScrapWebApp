@@ -44,6 +44,7 @@ export class VoidTicketReportComponent implements OnInit {
   toDate: any;
   fileDataObj: any;
   showDownload = false;
+  showLoader =  false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -74,6 +75,8 @@ export class VoidTicketReportComponent implements OnInit {
       Todate: this.toDate
     }
 
+    this.showLoader =  true;
+
     this.commonService.getVoidTicketReport(param)
       .subscribe(data => {
         console.log('getVoidTicketReport :: ');
@@ -81,7 +84,13 @@ export class VoidTicketReportComponent implements OnInit {
         this.reportData = data.body.data;
       },
         (err: any) => {
+          this.showLoader =  false;
+
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.showLoader =  false;
+
         }
       );
   }
