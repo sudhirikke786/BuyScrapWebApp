@@ -103,8 +103,8 @@
                                             <ng-template pTemplate="body" let-ticket>
 
                                                 <ng-container *ngIf="isEditModeOn">
-                                                   
-                                                    <tr (contextmenu)="onContextMenu($event,ticket) ; op?.toggle($event)"    [ngClass]="{'border-tr': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
+                                                    <!-- (contextmenu)="onContextMenu($event,ticket) ; op?.toggle($event)"  -->
+                                                    <tr    [ngClass]="{'border-tr': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
                                                             <td class="cod-item" style="width: 25%;">{{ ticket.materialName }}</td>
                                                             <td class="cod-item"></td>
@@ -132,6 +132,12 @@
                                                             
                                                             <a class="btn btn-grid btn-danger waves-effect waves-light">
                                                                 <i class="mdi mdi-trash-can-outline"></i> Delete
+                                                            </a>
+                                                            <a *ngIf="ticket?.codNote != ''" (click)="removeCode(ticket)" class="btn btn-grid btn-danger waves-effect waves-light ms-1">
+                                                                <i class="mdi mdi-trash-can-outline "></i>Code 
+                                                            </a>
+                                                            <a  *ngIf="ticket?.codNote == ''" (click)="addNote(ticket)" class="btn btn-grid btn-primary waves-effect waves-light ms-1">
+                                                                <i class="mdi mdi-plus"></i>  CODE
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -182,10 +188,10 @@
                                             </ng-template>
                                             
                                         </p-table>
-                                        <p-overlayPanel class="overlay-button" #op>
+                                        <!-- <p-overlayPanel class="overlay-button" #op>
                                             <button class="btn btn-danger" *ngIf="isCODRequired" (click)="op.hide();removeCode()">COD Remove</button>
                                             <button class="btn btn-primary" *ngIf="!isCODRequired" (click)="op.hide();addNote()">COD Required</button>
-                                        </p-overlayPanel>
+                                        </p-overlayPanel> -->
                                     </div>
                                 </div>
                                 

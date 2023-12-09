@@ -142,14 +142,16 @@ export class TicketDetailComponent implements OnInit {
     event.preventDefault();
   }
 
-  addNote(){  
+  addNote(obj:any){  
+    this.selectedRowObj =  obj;
     // add the Data from Table
-    this.itemLocalRowId = this.selectedRowObj.localRowId;
+    this.itemLocalRowId = this.selectedRowObj?.localRowId;
     this.updateTicketObjectForCOD('Flagged for COD');
   }
 
-  removeCode(){
+  removeCode(obj:any){
     // remove the Data from Table
+    this.selectedRowObj =  obj;
     this.itemLocalRowId = this.selectedRowObj.localRowId;
     this.updateTicketObjectForCOD('');
   }
