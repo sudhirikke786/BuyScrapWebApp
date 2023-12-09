@@ -589,38 +589,75 @@
 </p-dialog>
 
 
-<p-dialog header="Header" [breakpoints]="{'1024px': '60vw','1080px': '70vw','767px': '100vw'}" [modal]="true" [(visible)]="paymentVisible">
+<p-dialog header="Header" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [modal]="true" [(visible)]="paymentVisible">
     <ng-template pTemplate="header">
-        <a href="#" class="btn btn-light">
+
+        <a  class="btn btn-primary btn-back" (click)="paymentVisible=false">
+            <i _ class="mdi mdi-keyboard-backspace">
+           Back
+        </i>
+     </a>
+        <!-- <a (click)="paymentVisible=false" class="btn btn-light">
             <span class="mr-2">&larr;</span> Back
-        </a>
+        </a> -->
     </ng-template>
 
-    <div class="row">
-        <div class="col-sm-12" *ngIf="isHoldTrue">
-            <div class="text-danger">
-                * Some items from transactions are in Hold
-            </div>
+    <div class="d-flex justify-content-start">
+        <div class="text-danger">
+            * Some items from transactions are in Hold
         </div>
-        <div class="col-sm-12 d-flex" *ngIf="isHoldTrue">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdamount" value="Pay Total Amount">
-                <label class="form-check-label" for="">Pay Total Amount</label>
-              </div>
-              <div class="form-check form-check-inline">
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <div> <div class="form-check equal-h  form-check-inline">
+            <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdamount" value="Pay Total Amount">
+            <label class="form-check-label" for="">Pay Total Amount</label>
+          </div></div>
+        <div>
+
+            <div class="form-check equal-h  form-check-inline">
                 <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="phamount" value="Partial Pay Amount">
                 <label class="form-check-label" for="">Partial Pay Amount <br>
                     (Exclude Hold Items Amount)
                 
                 </label>
               </div>
-              <div class="form-check form-check-inline">
+
+        </div>
+        <div>
+
+            <div class="form-check equal-h form-check-inline">
                 <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdallamount" value="Hold All Amount">
                 <label class="form-check-label" for="">Hold All Amount</label>
+              </div> 
+        </div>
+    </div>  
+
+    <!-- <div class="row">
+        <div class="col-sm-12" *ngIf="isHoldTrue">
+            <div class="text-danger">
+                * Some items from transactions are in Hold
+            </div>
+        </div>
+        <div class="col-sm-12 d-flex" *ngIf="isHoldTrue">
+            <div class="form-check equal-h  form-check-inline">
+                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdamount" value="Pay Total Amount">
+                <label class="form-check-label" for="">Pay Total Amount</label>
               </div>
+              <div class="form-check equal-h  form-check-inline">
+                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="phamount" value="Partial Pay Amount">
+                <label class="form-check-label" for="">Partial Pay Amount <br>
+                    (Exclude Hold Items Amount)
+                
+                </label>
+              </div>
+              <div class="form-check equal-h form-check-inline">
+                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdallamount" value="Hold All Amount">
+                <label class="form-check-label" for="">Hold All Amount</label>
+              </div> 
         </div>
 
-    </div>
+    </div> -->
     <div class="row">
         <div class="col-sm-12">
             <div class="d-flex justify-content-between  mb-2 mt-2">
