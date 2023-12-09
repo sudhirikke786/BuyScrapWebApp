@@ -82,7 +82,7 @@ export class AdminDashboardComponent implements OnInit {
 
   showModel(adminObj?:any,openBy = 'add'){
     this.visible =  true;
-   
+    this.title = 'Add User';
     if(adminObj && openBy!='add'){
       this.title = 'Edit User';
       this.editObj = adminObj;
