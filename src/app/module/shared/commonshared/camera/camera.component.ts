@@ -1,4 +1,4 @@
-import { Component, EventEmitter, AfterViewInit, Output } from '@angular/core';
+import { Component, EventEmitter, AfterViewInit, Output, OnDestroy } from '@angular/core';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 
@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs';
   templateUrl: './camera.component.html',
   styleUrls: ['./camera.component.scss']
 })
-export class CameraComponent implements AfterViewInit {
+export class CameraComponent implements AfterViewInit ,OnDestroy {
   @Output() getPicture = new EventEmitter<string>();
   showWebcam = false;
   isCameraExist = true;
@@ -50,6 +50,11 @@ export class CameraComponent implements AfterViewInit {
       this.showWebcam = false;
     })();
   }
+
+  ngOnDestroy() {
+    this.showWebcam = false;
+  }
+  
 
   takeSnapshot(): void {
     this.trigger.next();

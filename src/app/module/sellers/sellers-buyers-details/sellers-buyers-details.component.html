@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" *ngIf="sellerLoader">
 
     <!-- Start Content-->
     <div class="container-fluid">
@@ -93,3 +93,10 @@
     </div> <!-- container -->
 
 </div> <!-- content -->
+
+
+<div class="content" *ngIf="sellerLoader">
+         
+    <app-page-loader type="ftable"></app-page-loader>
+
+</div>

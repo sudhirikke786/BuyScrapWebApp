@@ -704,7 +704,15 @@
  .btn-materials-2{font-weight: 500; color: #343a40; font-size: 18px; padding-top: 5px;}
  .ticket-details-p{margin-bottom: 0;}
  .btn-back{padding:2px 8px !important;}
- .btn-materials-inner{margin-bottom: 10px; width: 84px; padding: 5px !important;}
+ .btn-materials-inner{
+  margin-bottom: 10px; 
+  width: 100%; padding: 5px !important; color: #fff;
+
+
+}
+.btn-materials-inner:hover{
+  color: #fff;
+}
  .ticket-particulars-img{height:30px;}
  #numpad-div {
   display: none;

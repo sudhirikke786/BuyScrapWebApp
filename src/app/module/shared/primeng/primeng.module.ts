@@ -14,6 +14,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [],
@@ -27,6 +28,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DialogModule,
     ToastModule,
     TooltipModule,
+    SkeletonModule,
     PaginatorModule,
     ConfirmDialogModule
   ],
@@ -42,6 +44,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ToastModule,
     TooltipModule,
     PaginatorModule,
+    SkeletonModule,
     ContextMenuModule,
     ConfirmDialogModule
   ]

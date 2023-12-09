@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" *ngIf="!isLoading">
 
     <!-- Start Content-->
     <div class="container-fluid fill-height-or-more">
@@ -51,6 +51,7 @@
                                     <p-table #dt1 [value]="tickets" [paginator]="false" [rows]="pageSize"
                                         [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" 
                                         scrollHeight="calc(100vh - 250px)"
+                                         [loading]="isLoading"
                                         [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']">
                                         <ng-template pTemplate="header">
                                             <tr>
@@ -123,11 +124,29 @@
       
     </div> <!-- content -->
 
+</div>
+
+<div class="content" *ngIf="isLoading">
+    <app-page-loader type="ftable"></app-page-loader>
+  </div>
+  
+
+
+
+
     <p-dialog [modal]="true"
         [header]="newTicketVisible ? 'New Ticket' : ( ticketvisible ? 'Merge Ticket and Pay' : '' )"
         [(visible)]="dialogPopupVisible" [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
 
-        <div class="row">
+
+        <div class="row" *ngIf="sellerLoader">
+         
+                <app-page-loader type="ftable"></app-page-loader>
+           
+        </div>
+
+
+        <div class="row" *ngIf="!sellerLoader">
 
             <div class="col-md-6">
                 <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control"
@@ -139,7 +158,7 @@
 
         </div>
 
-        <div class="row mt-3">
+        <div class="row mt-3"  *ngIf="!sellerLoader">
 
             <p-table [value]="sellers" [scrollable]="true" scrollHeight="40vh" [paginator]="true" [rows]="10"
                 [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
@@ -162,17 +181,11 @@
                         <td>{{ seller.streetAddress }}</td>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="paginatorleft">
-                    <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
-                    </p-button>
-                </ng-template>
-                <ng-template pTemplate="paginatorright">
-                    <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
-                    </p-button>
-                </ng-template>
+              
             </p-table>
-
         </div>
+
+     
     </p-dialog>
 
 
@@ -190,7 +203,7 @@
 
     <p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Child Ticket" [(visible)]="isParentTicketVisible" [style]="{ width: '70vw' }">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" *ngIf="!childTicketsLoader">
                 <p-table #dt1 [value]="childTickets" [paginator]="false" [rows]="10" [showCurrentPageReport]="true"
                     [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[ 5, 10, 20, 50]" [scrollable]="true"
                     scrollHeight="80vh" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
@@ -230,6 +243,10 @@
                 </p-table>
             </div>
 
+            <div class="col-md-12" *ngIf="childTicketsLoader">
+                <app-page-loader type="ftable"></app-page-loader>
+            </div>
+
         </div>
     </p-dialog>
 
@@ -237,7 +254,7 @@
     <p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Select Tickets For Merge" [(visible)]="mergeTicketVisible"
         [style]="{ width: '70vw' }">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" *ngIf="!sellerTicketsloader">
                 <p-table #dt1 [value]="sellerTickets" [paginator]="false" [showCurrentPageReport]="true"
                     [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" scrollHeight="50vh"
                     [(selection)]="selectedSellerTickets"
@@ -266,6 +283,10 @@
                     </ng-template>
 
                 </p-table>
+            </div>
+
+            <div class="col-md-12" *ngIf="sellerTicketsloader">
+                <app-page-loader type="table"></app-page-loader>
             </div>
         </div>
         <ng-template pTemplate="footer">
@@ -427,45 +448,5 @@
     </p-dialog>
 
 
-
-    <!-- <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" header="Void ticket" [(visible)]="showOpen"
-    [style]="{ width: '40vw' }">
-    
-    <div class="row">
-        <div class="col-12">
-            
-            <form class="d-flex">
-                <div class="col">
-                    <div class="mb-3 d-flex" style="align-items: center;">
-                        <label for="" class="form-label mb-0">Please enter reason</label>
-                        <input type="text" plcaceholder="Enter reason" name="voidReason" id="voidReason" class="col ms-2 form-control" placeholder="" aria-describedby="helpId">
-                    </div>
-                </div>
-            </form>
-          
-
-        </div>
-    </div>
-    <div class="row">
-
-        <div class="col-12">
-
-            <div class="alert alert-success" role="alert">
-                       
-                No transactions found
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="d-flex justify-content-end mt-2">
-            <button class="btn btn-success justify-content-center  me-2 w-110" (click)="voidTicket()">Void</button>
-            <button class="btn btn-danger justify-content-center w-110" (click)="showOpen=false">Close</button>
-          </div>
-     
-    </div>
-
-     
-    </p-dialog> -->
 
 

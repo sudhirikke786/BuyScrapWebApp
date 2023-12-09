@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" *ngIf="!showLoader">
 
     <!-- Start Content-->
     <div class="container-fluid">
@@ -44,14 +44,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
+                            <div class="row mt-2 img-personal" *ngIf="this.sellerType == 'Personal'">
 
                                 <h4>Personal Identification Images</h4>
+                                
 
                                 <div class="col-sm-3">
-                                    <div class="box div-small">
-                                        <img [src]="idscanImage" class="dl-img1">
-                                        <ul class="upload-options-ul">
+
+
+                                    <div class="card">
+                                        <div class="card-body  py-0 px-0">
+                                          <!-- Image Box -->
+                                          <div class="image-box">
+                                            <img [src]="idscanImage" class="dl-img1">
+                                          </div>
+                                          <ul class="upload-options-ul">
                                             <li><a href="javascript:void()" (click)="uploadPicture('2','Capture Image')"><i
                                                         class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a>
                                             </li>
@@ -63,10 +70,36 @@
                                                         class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a>
                                             </li>
                                         </ul>
-                                    </div>
+                                        </div>
+                                      </div>
+
+                                    
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="box div-small">
+                                    <div class="card">
+                                        <div class="card-body py-0 px-0">
+                                          <!-- Image Box -->
+                                          <div class="image-box">
+                                            <img [src]="idsignatureImage" class="dl-img1">
+                                          </div>
+                                          <ul class="upload-options-ul">
+                                            <li><a href="javascript:void()" (click)="uploadPicture('3','Using Signature Pad')"><i
+                                                        class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()"
+                                                    (click)="showSelectedImage(idsignatureImage, '3')"><i
+                                                        class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()" (click)="showConfirmation('3')"><i
+                                                        class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a>
+                                            </li>
+                                        </ul>
+                                        </div>
+                                      </div>
+
+
+
+                                    <!-- <div class=" div-small">
                                         <img [src]="idsignatureImage" class="dl-img1">
                                         <ul class="upload-options-ul">
                                             <li><a href="javascript:void()" (click)="uploadPicture('3','Using Signature Pad')"><i
@@ -80,10 +113,33 @@
                                                         class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="box div-small">
+
+                                    <div class="card">
+                                        <div class="card-body  py-0 px-0">
+                                          <!-- Image Box -->
+                                          <div class="image-box">
+                                            <img [src]="idfaceShotImage" class="dl-img1">
+                                          </div>
+                                          <ul class="upload-options-ul">
+                                            <li><a href="javascript:void()" (click)="uploadPicture('4','Capture Image')"><i
+                                                        class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()"
+                                                    (click)="showSelectedImage(idfaceShotImage, '4')"><i
+                                                        class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()" (click)="showConfirmation('4')"><i
+                                                        class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a>
+                                            </li>
+                                        </ul>
+                                        </div>
+                                      </div>
+
+
+                                    <!-- <div class="box div-small">
                                         <img [src]="idfaceShotImage" class="dl-img1">
                                         <ul class="upload-options-ul">
                                             <li><a href="javascript:void()" (click)="uploadPicture('4','Capture Image')"><i
@@ -97,10 +153,38 @@
                                                         class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="box div-small">
+
+
+                                    <div class="card">
+                                        <div class="card-body  py-0 px-0">
+                                          <!-- Image Box -->
+                                          <div class="image-box">
+                                            <img *ngIf="!imagePath" [src]="fingerPrints"
+                                            class="dl-img1">
+                                            <img *ngIf="imagePath" [src]="'data:image/jpg;base64,' + imagePath?.BMPBase64 "
+                                            class="dl-img1">
+                                           
+                                          </div>
+                                          <ul class="upload-options-ul">
+                                            <li><a href="javascript:void()" (click)="uploadPicture('5','Using Biomatric')"><i
+                                                        class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()"
+                                                    (click)="showSelectedImage(fingerPrints, '5')"><i
+                                                        class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a>
+                                            </li>
+                                            <li><a href="javascript:void()" (click)="showConfirmation('5')"><i
+                                                        class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a>
+                                            </li>
+                                        </ul>
+                                        </div>
+                                      </div>
+
+
+                                    <!-- <div class="box div-small">
                                         <img *ngIf="!imagePath" [src]="fingerPrints"
                                             class="dl-img1">
                                             <img *ngIf="imagePath" [src]="'data:image/jpg;base64,' + imagePath?.BMPBase64 "
@@ -117,7 +201,7 @@
                                                         class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
 
@@ -341,6 +425,13 @@
 
 </div>
 
+
+
+
+<div class="content" *ngIf="showLoader">
+
+    <app-page-loader type="ftable"></app-page-loader>
+</div>
 
 
 <p-dialog [header]="'Edit Image'" [breakpoints]="{'767px': '100vw'}" (onHide)="cancel()" [(visible)]="cameraVisible"

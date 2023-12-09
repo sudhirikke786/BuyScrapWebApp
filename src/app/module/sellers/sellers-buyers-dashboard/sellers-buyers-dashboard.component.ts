@@ -30,7 +30,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
 
   sellers: any;
   searchSellerInput: any = '';
-
+  sellerLoader:boolean = false;
   currentPage = 1;
   pageSize = 10;
   first = 0;
@@ -55,6 +55,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
 
   
   getAllsellersDetails(paramObject: any) {
+    this.sellerLoader =  true;
     this.commonService.getAllsellersDetails(paramObject)
       .subscribe(data => {
           console.log('getAllsellersDetails :: ');
@@ -65,6 +66,10 @@ export class SellersBuyersDashboardComponent implements OnInit {
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
+          this.sellerLoader =  false;
+        },
+        () =>{
+          this.sellerLoader =  false;
         }
       );
   }

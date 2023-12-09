@@ -30,6 +30,7 @@ export class AddSellersComponent implements OnInit {
   idsignatureImage:any = 'assets/images/custom/id_signature.png';
   idfaceShotImage:any = 'assets/images/custom/id_face.png';
   fingerPrints:any = 'assets/images/custom/id_fingerprint.png';
+  showLoader = false;
   type: any;
   isWebcam = false;
 
@@ -120,6 +121,7 @@ export class AddSellersComponent implements OnInit {
   }
 
   getSellerById() {
+    this.showLoader = true;
     const paramObject = {
       ID: this.sellerId,
       LocationId: this.locId
@@ -132,7 +134,11 @@ export class AddSellersComponent implements OnInit {
           this.editSellerForm(obj);
         },
         (err: any) => {
+          this.showLoader = false;
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.showLoader = false;
         }
       );
 

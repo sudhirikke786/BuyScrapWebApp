@@ -34,7 +34,8 @@ import { ErrorComponent } from './error/error.component';
     FooterComponent,
     FourColumnPipe,
     PrintTicketComponent,
-    ErrorComponent,    
+    ErrorComponent,
+    
   ],
   imports: [
     BrowserModule,

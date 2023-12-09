@@ -13,6 +13,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
   styleUrls: ['./ticket-dashboard.component.scss']
 })
 export class TicketDashboardComponent implements OnInit {
+  sellerTicketsloader :boolean = false;
 
   selectedTickets: any;
  
@@ -134,6 +135,9 @@ export class TicketDashboardComponent implements OnInit {
   pageTotal = 0;
   tiketSelectedObj: any;
   currentRole: any;
+  isLoading= false;
+  childTicketsLoader: boolean = false;
+  sellerLoader : boolean = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private authService:AuthService,
@@ -178,6 +182,7 @@ export class TicketDashboardComponent implements OnInit {
    * Get the data by calling WebAPI to fetch the details for organization login
    */
   getAllTicketsDetails(pagination: Pagination) {
+    this.isLoading = true;
     console.log(this.pagination);
     this.commonService.getAllTicketsDetails(pagination)
       .subscribe(data => {
@@ -189,7 +194,11 @@ export class TicketDashboardComponent implements OnInit {
        
         },
         (err: any) => {
+          this.isLoading = false;
           // this.errorMsg = 'Error occured';
+        },
+        () =>{
+          this.isLoading = false;
         }
       );
   }
@@ -351,6 +360,7 @@ export class TicketDashboardComponent implements OnInit {
   }
   
   getAllsellersDetails(paramObject: any) {
+    this.sellerLoader = true;
     this.commonService.getAllsellersDetails(paramObject)
       .subscribe(data => {
           console.log('getAllsellersDetails :: ');
@@ -359,6 +369,10 @@ export class TicketDashboardComponent implements OnInit {
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
+          this.sellerLoader = false;
+        },
+        ()=>{
+          this.sellerLoader = false;
         }
       );
   }
@@ -420,6 +434,10 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   getAllTicketsByParentID(parentTicketID: string) {
+
+
+    this.childTicketsLoader = true;
+
     const paramObject = {
       TicketID: parentTicketID
     };
@@ -430,12 +448,18 @@ export class TicketDashboardComponent implements OnInit {
           this.childTickets = data.body.data;
         },
         (err: any) => {
+          this.childTicketsLoader = false;
+
           // this.errorMsg = 'Error occured';
+        },
+        () =>{
+          this.childTicketsLoader = false;
         }
       );
   }
 
   getAllTicketsBySellerId(sellerId: any) {    
+    this.sellerTicketsloader = true; 
     const paramObj: any = {
       SellerId: sellerId,
       LocationId: this.locId
@@ -450,7 +474,11 @@ export class TicketDashboardComponent implements OnInit {
           }).sort((a:any, b:any) => (a.title > b.title) ? 1 : -1);
         },
         (err: any) => {
+          this.sellerTicketsloader = false;
           // this.errorMsg = 'Error occured';
+        },
+        ()=>{
+          this.sellerTicketsloader = false; 
         }
       );
   }

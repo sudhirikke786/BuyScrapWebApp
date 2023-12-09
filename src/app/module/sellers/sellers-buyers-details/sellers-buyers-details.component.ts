@@ -15,6 +15,8 @@ export class SellersBuyersDetailsComponent implements OnInit {
   sellerId: any;
   seller: any;
   tickets: any;
+
+  sellerLoader = false;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -31,6 +33,8 @@ export class SellersBuyersDetailsComponent implements OnInit {
   }
   
   getSellerById() {
+    this.sellerLoader = true;
+    
     const paramObject = {
       ID: this.sellerId,
       LocationId: this.locId
@@ -42,12 +46,15 @@ export class SellersBuyersDetailsComponent implements OnInit {
           this.seller = data.body.data;
         },
         (err: any) => {
+          this.sellerLoader = false;
           // this.errorMsg = 'Error occured';
         }
       );
   }
 
-  getAllTicketsBySellerId() {    
+  getAllTicketsBySellerId() {   
+    this.sellerLoader = true;
+ 
     const paramObj: any = {
       SellerId: this.sellerId,
       LocationId: this.locId
@@ -60,6 +67,10 @@ export class SellersBuyersDetailsComponent implements OnInit {
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
+          this.sellerLoader = false;
+        },
+        () =>{
+          this.sellerLoader = false;
         }
       );
   }
