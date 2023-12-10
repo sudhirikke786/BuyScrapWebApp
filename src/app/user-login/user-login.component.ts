@@ -43,12 +43,21 @@ export class UserLoginComponent implements OnInit {
 
   ngOnInit() {
     this.user.macID = "defaultMacId"
+
+    const userObjectExist = this.localService.getLocalStorage('userObj');
+    if(userObjectExist){
+      this.router.navigateByUrl(`/${this.organizationName}/home`);
+    }
     this.getIPAddress();
     this.route.params.subscribe((param)=>{ 
       this.organizationName = param["orgName"] || 'prodTest';
       this.getOrgLocation();
     });
+    if(userObjectExist){
+      this.router.navigateByUrl(`/${this.organizationName}/home`);
+    }
 
+  
 
     this.loginForm = this.fb.group({
       userName: '',

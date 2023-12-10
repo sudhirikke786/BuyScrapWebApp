@@ -81,15 +81,17 @@
 
     <div *ngSwitchCase="'image'">
 
-        <div class="row  mb-3 mt-3">
-            <div class="col-sm-3" *ngFor="let item of products">
-
-                <p-skeleton width="20rem"  height="10rem" styleClass="mb-2"></p-skeleton>
-                <div>
-                    <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
-                    <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
-                  
+        <div class="row mb-3 mt-3">
+            <div class="col-sm-2" *ngFor="let item of products">
+                <div class="me-2">
+                    <p-skeleton width="12rem"  height="10rem" styleClass="mb-2"></p-skeleton>
+                    <div>
+                        <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                        <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
+                      
+                    </div>
                 </div>
+              
             </div>
           
         </div>

@@ -175,7 +175,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-seller>
-                    <tr (click)="clickOnSeller(seller.rowId)">
+                    <tr (click)="clickOnSeller(seller.rowId)"  style="cursor: pointer;">
                         <td>{{ seller.fullName }}</td>
                         <td>{{ seller.driverLicenseNumber }}</td>
                         <td>{{ seller.streetAddress }}</td>

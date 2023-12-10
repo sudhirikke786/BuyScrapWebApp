@@ -386,6 +386,8 @@ export class TicketDetailComponent implements OnInit {
       alert('Please enter valid amount!!!');
       return;
     }
+
+    
     // return;
 
     const transactionObj = {
@@ -405,8 +407,7 @@ export class TicketDetailComponent implements OnInit {
     }
 
     this.commonService.insertTicketTransactions(transactionObj).subscribe(data =>{    
-      console.log(data); 
-      console.log('Ticket transaction successfully');     
+   
       this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
       this.isReceiptPrint = false;
     },(error: any) =>{  

@@ -30,8 +30,11 @@
                             <div class="col-sm-10">
 
                                 <div class="row">
-                                   <div class="col-sm-6">
-                                        <h4 class="ticket-number">Ticket# - {{ticketId}}</h4>
+                                   <div class="col-sm-6 d-flex">
+                                        <h4 class="ticket-number me-1">Ticket# - {{ticketId}}</h4>
+                                        <a href="javascript:void(0)" class="btn btn-grid btn-primary waves-effect waves-light ms-1 mb-1">
+                                            <i class="mdi mdi-plus"></i>  Code
+                                        </a>
                                    </div>
 
                                    <div class="col-sm-6">
@@ -133,12 +136,12 @@
                                                             <a class="btn btn-grid btn-danger waves-effect waves-light">
                                                                 <i class="mdi mdi-trash-can-outline"></i> Delete
                                                             </a>
-                                                            <a *ngIf="ticket?.codNote != ''" (click)="removeCode(ticket)" class="btn btn-grid btn-danger waves-effect waves-light ms-1">
+                                                            <!-- <a *ngIf="ticket?.codNote != ''" (click)="removeCode(ticket)" class="btn btn-grid btn-danger waves-effect waves-light ms-1">
                                                                 <i class="mdi mdi-trash-can-outline "></i>Code 
                                                             </a>
                                                             <a  *ngIf="ticket?.codNote == ''" (click)="addNote(ticket)" class="btn btn-grid btn-primary waves-effect waves-light ms-1">
                                                                 <i class="mdi mdi-plus"></i>  Code
-                                                            </a>
+                                                            </a> -->
                                                         </td>
                                                     </tr>
                                                     <tr [ngClass]="{'no-border-tr': ticket.codNote != '' || ticket.materialNote !=''}"  *ngIf="ticket.codNote != '' || ticket.materialNote != ''">
