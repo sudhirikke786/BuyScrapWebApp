@@ -110,7 +110,7 @@
 </div> <!-- content -->
 
 <ng-container *ngIf="visible">
-<p-dialog
+<p-dialog [modal]="true" 
 header="Add User"
 [(visible)]="visible"
 [style]="{ width: '80vw' }">
@@ -208,7 +208,7 @@ header="Add User"
 
 
 
-<p-dialog
+<p-dialog [modal]="true" 
 [header]="actionType"
 [(visible)]="locationVisble"
 [style]="{ width: '80vw' }"
@@ -261,7 +261,7 @@ header="Add User"
 <p-toast></p-toast>
 
 <!-- 
-<p-dialog
+<p-dialog [modal]="true" 
 header="Add Location"
 [(visible)]="addlocationVisble"
 [style]="{ width: '80vw' }"

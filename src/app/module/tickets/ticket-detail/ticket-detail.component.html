@@ -32,9 +32,9 @@
                                 <div class="row">
                                    <div class="col-sm-6 d-flex">
                                         <h4 class="ticket-number me-1">Ticket# - {{ticketId}}</h4>
-                                        <a href="javascript:void(0)" class="btn btn-grid btn-primary waves-effect waves-light ms-1 mb-1">
-                                            <i class="mdi mdi-plus"></i>  Code
-                                        </a>
+                                        <!-- <a href="javascript:void(0)" class="btn btn-grid btn-primary waves-effect waves-light ms-1 mb-1">
+                                            <i class="mdi mdi-plus"></i>  COD Required
+                                        </a> -->
                                    </div>
 
                                    <div class="col-sm-6">
@@ -373,7 +373,7 @@
 
 <ng-container *ngIf="editItemVisible">
 
-    <p-dialog [header]="modalHeader" [(visible)]="editItemVisible" [style]="{width: '80vw'}"
+    <p-dialog [modal]="true" [header]="modalHeader" [(visible)]="editItemVisible" [style]="{width: '80vw'}"
  [breakpoints]="{'767px': '100vw'}">
         
     <div class="row">
@@ -531,7 +531,7 @@
 </ng-container>
 
 <ng-container  *ngIf="addEditAdjustmentVisible">
-    <p-dialog [header]="modalAdjustmentHeader" [(visible)]="addEditAdjustmentVisible" [style]="{width: '80vw'}" [breakpoints]="{'767px': '100vw'}">
+    <p-dialog [modal]="true"  [header]="modalAdjustmentHeader" [(visible)]="addEditAdjustmentVisible" [style]="{width: '80vw'}" [breakpoints]="{'767px': '100vw'}">
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group col-sm-12 mb-2 d-flex">
@@ -572,7 +572,7 @@
 </ng-container>
 
 
-<p-dialog header="Header" [breakpoints]="{'1024px': '60vw', '1080px': '70vw','767px': '100vw'}" [modal]="true" [(visible)]="saveConfirmVisible" [style]="{ width: '50vw' }">
+<p-dialog [modal]="true" header="Header" [breakpoints]="{'1024px': '60vw', '1080px': '70vw','767px': '100vw'}" [modal]="true" [(visible)]="saveConfirmVisible" [style]="{ width: '50vw' }">
     <ng-template pTemplate="header">
         <span class="text-xl font-bold text-success" style="font-size: 24px;"> Ticket Saved Successfully</span>
     </ng-template>

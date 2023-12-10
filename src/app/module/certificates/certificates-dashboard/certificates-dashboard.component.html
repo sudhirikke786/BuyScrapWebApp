@@ -129,7 +129,7 @@
 <!-- End Page content -->
 <!-- ============================================================== -->
 
-<p-dialog
+<p-dialog [modal]="true" 
   header="New Regrade"
   [(visible)]="visible"
   [style]="{ width: '60vw' }"
@@ -195,7 +195,7 @@
 </p-dialog>
 
 <ng-container *ngIf="cvisible">
-  <p-dialog
+  <p-dialog [modal]="true" 
   header="New Regrade"
   [(visible)]="cvisible"
   [style]="{ width: '80vw' }"
@@ -237,7 +237,7 @@
 </ng-container>
 
 
-<!-- <p-dialog
+<!-- <p-dialog [modal]="true" 
   header="New Regrade"
   [(visible)]="ivisible"
   [style]="{ width: '80vw' }"

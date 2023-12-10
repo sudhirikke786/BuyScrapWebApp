@@ -133,7 +133,7 @@
 <!-- ============================================================== -->
 <!-- End Page content -->
 <!-- ============================================================== -->
-<p-dialog
+<p-dialog [modal]="true" 
   header="New Ship Out"
   [(visible)]="visible"
   [style]="{ width: '80vw' }"
@@ -187,7 +187,7 @@
   </div>
 </p-dialog>
 
-<p-dialog
+<p-dialog [modal]="true" 
   header="New Ship Out"
   [(visible)]="custVisible"
   [style]="{ width: '80vw' }"

@@ -88,7 +88,7 @@
 
 
 
-<p-dialog header="Printer Settings" [breakpoints]="{'767px': '100vw'}" [(visible)]="pvisible" [style]="{ width: '50vw' }">
+<p-dialog [modal]="true" header="Printer Settings" [breakpoints]="{'767px': '100vw'}" [(visible)]="pvisible" [style]="{ width: '50vw' }">
     <ng-template pTemplate="header">
 
         <div class="d-flex">
@@ -109,7 +109,7 @@
 
 
 
-<p-dialog header="Add Money" [breakpoints]="{'767px': '100vw'}" [(visible)]="mpVisible" [style]="{ width: '50vw' }">
+<p-dialog [modal]="true" header="Add Money" [breakpoints]="{'767px': '100vw'}" [(visible)]="mpVisible" [style]="{ width: '50vw' }">
     <ng-template pTemplate="header">
 
         <div class="d-flex">
@@ -124,7 +124,7 @@
 </p-dialog>
 
 
-<p-dialog header="Cashier Settings" [breakpoints]="{'767px': '100vw'}" [(visible)]="cvisible" [style]="{ width: '60vw' }">
+<p-dialog [modal]="true" header="Cashier Settings" [breakpoints]="{'767px': '100vw'}" [(visible)]="cvisible" [style]="{ width: '60vw' }">
     <ng-template pTemplate="header">
 
         <div class="d-flex">
@@ -143,7 +143,7 @@
 
 
 
-<p-dialog header="Ticket Settings" [(visible)]="tvisible" [style]="{ width: '60vw' }">
+<p-dialog [modal]="true" header="Ticket Settings" [(visible)]="tvisible" [style]="{ width: '60vw' }">
     <ng-template pTemplate="header">
 
         <div class="d-flex">
@@ -157,7 +157,7 @@
 
 </p-dialog>
 
-<p-dialog header="Ticket Settings" [breakpoints]="{'767px': '100vw'}" [(visible)]="systemprefVisible" [style]="{ width: '70vw' }">
+<p-dialog [modal]="true" header="Ticket Settings" [breakpoints]="{'767px': '100vw'}" [(visible)]="systemprefVisible" [style]="{ width: '70vw' }">
     <ng-template pTemplate="header">
 
         <div class="d-flex">
@@ -172,7 +172,7 @@
 
 
 
-<p-dialog header="Camera Settings" [(visible)]="cameravisible" [style]="{ width: '50vw' }" [breakpoints]="{'767px': '100vw'}">
+<p-dialog [modal]="true"  header="Camera Settings" [(visible)]="cameravisible" [style]="{ width: '50vw' }" [breakpoints]="{'767px': '100vw'}">
     <ng-template pTemplate="header">
 
         <div class="d-flex">
@@ -189,7 +189,7 @@
 
 <!--
 
-            <p-dialog
+            <p-dialog [modal]="true" 
             header="Add Money"
             [(visible)]="pvisible"
             [style]="{ width: '50vw' }"
@@ -208,7 +208,7 @@
 
 
 
-            <p-dialog
+            <p-dialog [modal]="true" 
             header="Add Money"
             [(visible)]="pvisible"
             [style]="{ width: '50vw' }"
@@ -227,7 +227,7 @@
 
 
 
-            <p-dialog
+            <p-dialog [modal]="true" 
             header="Add Money"
             [(visible)]="pvisible"
             [style]="{ width: '50vw' }"
@@ -245,7 +245,7 @@
 
 
 
-            <p-dialog
+            <p-dialog [modal]="true"
             header="Add Money"
             [(visible)]="pvisible"
             [style]="{ width: '50vw' }"
