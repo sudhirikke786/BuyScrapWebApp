@@ -49,6 +49,8 @@ export class AuthInterceptor implements HttpInterceptor {
                           return this.handle400Error(req, error);
                       case 401:
                           return this.handle401Error(req, next);
+                      case 406:
+                          return this.handle406Error(req, next);
                       default:
                           return observableThrowError(error);
                   }
@@ -209,6 +211,12 @@ export class AuthInterceptor implements HttpInterceptor {
       localStorage.removeItem('locId');
       this.router.navigateByUrl(`${orgName}/user-login`);
 
+      return observableThrowError('');
+  }
+
+  handle406Error(req: HttpRequest<any>, error: any) {      
+      localStorage.clear();
+      this.router.navigateByUrl(`organization-login`);
       return observableThrowError('');
   }
 

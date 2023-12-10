@@ -177,6 +177,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Tickets/InsertUpdateTickets', 'POST', requestObj);
   }
 
+  voidCopyTickets(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/VoidCopyTickets', 'POST', requestObj);
+  }
+
   insertTicketTransactions(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/InsertTicketTransactions', 'POST', requestObj);
   }

@@ -88,6 +88,7 @@ export class AdminDashboardComponent implements OnInit {
       this.editObj = adminObj;
       this.userForm.patchValue(adminObj);
     }else{
+      this.title = 'Add User';
       this.userForm.reset();
     }
    
