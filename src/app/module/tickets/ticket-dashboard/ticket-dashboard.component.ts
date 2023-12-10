@@ -269,6 +269,42 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   showVoidCopy(){
+    console.log(this.tiketSelectedObj);
+    this.isVoidOrRestore = 'VoidCopy';
+    this.getTicketTransactions();
+  }
+
+  voidCopyTicket() {
+    const datePipe = new DatePipe('en-US');
+    // alert(this.voidReason);
+    console.log("Void Ticket :: " + this.voidReason);
+    
+    console.log(this.tiketSelectedObj);
+
+    this.tiketSelectedObj['VoidReason'] = this.voidReason;
+    this.tiketSelectedObj['VoidFlag'] = true;
+    this.tiketSelectedObj['VoidBy'] = this.logInUserId;
+    this.tiketSelectedObj['CreatedBy'] = this.logInUserId;
+    this.tiketSelectedObj['UpdatedBy'] = this.logInUserId;
+    this.tiketSelectedObj['VoidDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+    this.tiketSelectedObj['CreatedDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+    this.tiketSelectedObj['UpdatedDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+    this.tiketSelectedObj['Status'] = 'VOIDED';
+    
+    console.log("Final ticketData :: " + JSON.stringify(this.tiketSelectedObj));
+
+    this.commonService.voidCopyTickets(this.tiketSelectedObj).subscribe(data =>{    
+      console.log(data);
+      this.refreshData();
+      this.voidReason = '';
+      this.showOpen = false;
+      this.showPartially = false;
+      this.showVoidDialogBox = false;
+      this.showVoid = false;
+    },(error: any) =>{  
+      console.log(error);  
+      // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+    });
 
   }
 
@@ -294,6 +330,7 @@ export class TicketDashboardComponent implements OnInit {
       this.showOpen = false;
       this.showPartially = false;
       this.showVoidDialogBox = false;
+      this.showVoid = false;
     },(error: any) =>{  
       console.log(error);  
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
@@ -318,6 +355,7 @@ export class TicketDashboardComponent implements OnInit {
       this.showOpen = false;
       this.showPartially = false;
       this.showVoidDialogBox = false;
+      this.showVoid = false;
     },(error: any) =>{  
       console.log(error);  
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });

@@ -374,7 +374,7 @@
 
     </p-dialog>
 
-    <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" [header]="isVoidOrRestore == 'Void' ? 'Void Ticket' : 'Restore Ticket'"
+    <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" [header]="isVoidOrRestore.indexOf('Void') >= 0 ? (isVoidOrRestore == 'VoidCopy' ? 'Void & Copy Ticket' : 'Void & Cancel Ticket') : 'Restore Ticket'"
     [(visible)]="showVoidDialogBox" [style]="{ width: '40vw' }">
     
     <div class="row">
@@ -437,7 +437,8 @@
     <div class="row">
         <div class="d-flex justify-content-end mt-2">
             <button class="btn w-110 btn-success justify-content-center  me-2" *ngIf="isVoidOrRestore == 'Void'" (click)="voidTicket()">Void</button>
-            <button class="btn w-110 btn-success justify-content-center  me-2" *ngIf="isVoidOrRestore !== 'Void'" (click)="restoreTicket()">Restore</button>
+            <button class="btn w-110 btn-success justify-content-center  me-2" *ngIf="isVoidOrRestore == 'VoidCopy'" (click)="voidCopyTicket()">Void</button>
+            <button class="btn w-110 btn-success justify-content-center  me-2" *ngIf="isVoidOrRestore !== 'Void' && isVoidOrRestore !== 'VoidCopy'" (click)="restoreTicket()">Restore</button>
             <button class="btn w-110  btn-danger justify-content-center" (click)="showVoidDialogBox=false">Close</button>
           </div>
      
