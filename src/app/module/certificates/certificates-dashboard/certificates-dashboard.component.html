@@ -46,6 +46,7 @@
                 [scrollable]="true" 
                 scrollHeight="50vh"
                 [showCurrentPageReport]="true"
+              
                 [tableStyle]="{ 'min-width': '50rem' }"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" 
@@ -53,6 +54,7 @@
              
                 <ng-template pTemplate="header">
                   <tr>
+                    <th></th>
                     <th>Ticket ID</th>
                     <th>Date Created</th>
                     <th>Ticket Amount</th>
@@ -63,6 +65,15 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-certificate>
                   <tr>
+                    <td>
+                      <!-- <p-tableCheckbox [value]="product" [disabled]="isOutOfStock(product)"></p-tableCheckbox> -->
+                      <p-tableCheckbox 
+                     
+                      [value]="certificate"
+                      
+                      [disabled]="certificate?.dateClosed"> 
+                      
+                  </p-tableCheckbox> </td>
                     <td>{{ certificate.rowId }}</td>
                     <td>{{ certificate?.dateOpened | date: 'MM/dd/yyyy' }}</td>
                     <td>{{ certificate?.ticketAmount }}</td>
@@ -157,9 +168,9 @@
 
   <div class="row pd-imgs-box mt-3" *ngIf="!certificateLoader">
     <ng-container  *ngFor="let item of certificatesImages">
-    <div class="col-sm-6">
+    <div class="col-sm-3">
       <div class="pd-imgs" tabindex="1">
-        <img src="{{item?.codImagePath}}" alt="My COD added in role based data" class="img-responsive" />
+        <img src="{{item?.codImagePath}}" style="min-height: 150px;" alt="My COD added in role based data" class="img-responsive" />
       </div>
     </div>
   </ng-container>
@@ -201,11 +212,11 @@
     <app-camera (getPicture)="handleImage($event)"></app-camera>
   </div>
 
-  <div class="row mt-3">
+  <!-- <div class="row mt-3">
     <div class="col-sm-12">
       <div id="image-preview"></div>
     </div>
-  </div>
+  </div> -->
 
   <div class="row mt-3">
     <div class="col-sm-12 d-flex">
@@ -226,7 +237,7 @@
 </ng-container>
 
 
-<p-dialog
+<!-- <p-dialog
   header="New Regrade"
   [(visible)]="ivisible"
   [style]="{ width: '80vw' }"
@@ -309,4 +320,4 @@
       </table>
     </div>
   </div>
-</p-dialog>
+</p-dialog> -->

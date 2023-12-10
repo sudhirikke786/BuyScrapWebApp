@@ -87,6 +87,7 @@ export class CertificatesDashboardComponent implements OnInit {
   certificatesImages: any;
 
   certificateLoader = false;
+  selectedProducts:any;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -110,7 +111,11 @@ export class CertificatesDashboardComponent implements OnInit {
       .subscribe(data => {
           console.log('getAllCODTickets :: ');
           console.log(data);
-          this.certificates = data.body.data;
+          this.certificates = data.body.data.map((item:any) => {
+            item.selected =  item?.dateClosed ? true : false;
+            return item;
+          });
+          console.log(this.certificates);
         },
         (err: any) => {
           this.showLoader = false;
