@@ -2,9 +2,9 @@
             <!-- Start Page Content here -->
             <!-- ============================================================== -->
 
-            <div class="content-page">
+            <div class="content-page" *ngIf="!sellerLoader">
 
-                <div class="content" *ngIf="!sellerLoader">
+                <div class="content" >
 
                     <!-- Start Content-->
                     <div class="container-fluid">
@@ -87,13 +87,15 @@
 
            
 
-                <div class="content" *ngIf="sellerLoader">
-         
-                    <app-page-loader type="ftable"></app-page-loader>
-               
-            </div>
+             
 
             </div>
+
+            <div class="content" *ngIf="sellerLoader">
+         
+                <app-page-loader type="ftable"></app-page-loader>
+           
+        </div>
 
             <!-- ============================================================== -->
             <!-- End Page content -->
