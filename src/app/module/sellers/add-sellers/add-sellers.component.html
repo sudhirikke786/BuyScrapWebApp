@@ -434,7 +434,7 @@
 </div>
 
 
-<p-dialog [header]="'Edit Image'" [breakpoints]="{'767px': '100vw'}" (onHide)="cancel()" [(visible)]="cameraVisible"
+<p-dialog [modal]="true" [header]="'Edit Image'" [breakpoints]="{'767px': '100vw'}" (onHide)="cancel()" [(visible)]="cameraVisible"
     [style]="{width: '70vw'}">
 
     <div class="row">
@@ -522,7 +522,7 @@
 
 
 </p-dialog>
-<p-dialog [header]="showImageHeader" (onHide)="cancelImage()" [(visible)]="showImage">
+<p-dialog [modal]="true" [header]="showImageHeader" (onHide)="cancelImage()" [(visible)]="showImage">
 
     <div class="over-flow-300 image-center img-profile">
         <img [src]="selectedImageUrl" style="height: 100%; width: 100%;">

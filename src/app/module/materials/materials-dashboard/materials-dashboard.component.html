@@ -78,7 +78,7 @@
          
 
 
-          <p-dialog
+          <p-dialog [modal]="true" 
             [header]="isEditModeOn == true? 'Edit Material' : 'Add Material'"
             [(visible)]="visible"
             [style]="{ width: '60vw' }"
@@ -144,7 +144,7 @@
           </p-dialog>
 
 
-          <p-dialog
+          <p-dialog [modal]="true" 
             header="Bulk Materials Update"
             [(visible)]="bulkvisible"
             [style]="{ width: '60vw' }"
