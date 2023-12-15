@@ -2,8 +2,6 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';  
 
 import { MessageService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -19,6 +17,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
   providers: [MessageService]
 })
 export class TicketDetailComponent implements OnInit {
+  [x: string]: any;
   @ViewChild('htmlData') htmlData!: ElementRef;
 
   showCalculator = false;
@@ -89,6 +88,14 @@ export class TicketDetailComponent implements OnInit {
   pageSize = 10;
   isCODRequired = false;
 
+
+  ticketsTransactions:any;
+  defaultSelectedTicketsTypes =  [
+    {name: 'OPEN', code: 'OPEN'},
+    {name: 'Partially Paid', code: 'Partially Paid'},
+    {name: 'ON HOLD', code: 'ON HOLD'}
+  ];
+
   /**Print out Variable */
   activeSection: string = '';
 
@@ -112,6 +119,8 @@ export class TicketDetailComponent implements OnInit {
   fileDataObj: any;
   showDownload = false;
   isLoading = false;
+
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -130,6 +139,7 @@ export class TicketDetailComponent implements OnInit {
       this.getSellerById();
       this.processDataBasedOnTicketId();
       this.GetAllAdjustmentType();
+      this.getTicketTransactions();
     });
 
     
@@ -387,7 +397,7 @@ export class TicketDetailComponent implements OnInit {
       return;
     }
 
-    
+
     // return;
 
     const transactionObj = {
@@ -809,6 +819,37 @@ export class TicketDetailComponent implements OnInit {
         this.fileDataObj = data.body.data;
         this.showDownload = true;
       },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+
+
+
+  getTicketTransactions() {
+   
+    const param = {
+      TicketId: this.ticketId
+    };
+    this.getAllTicketsTransactionsByTicketId(param);
+  }
+
+  getAllTicketsTransactionsByTicketId(paramObj: any) {
+    console.log(paramObj);
+    this.commonService.getAllTicketsTransactionsByTicketId(paramObj)
+      .subscribe(data => {
+          console.log('getAllTicketsTransactionsByTicketId :: ');
+          console.log(data);
+          if (data.body.data.length > 0) {
+            this.ticketsTransactions = data.body.data;
+            
+          } else {
+            this.showPartially = false;
+            this.showOpen = true;
+          }
+        },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }

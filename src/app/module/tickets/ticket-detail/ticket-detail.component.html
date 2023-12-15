@@ -78,7 +78,9 @@
                         </div>
 
                         <div class="row">
-                            <div [ngClass]="!isEditModeOn && !editItemCloseImageCapture? 'col-sm-12' : 'col-sm-9'">
+                            <!-- <div [ngClass]="!isEditModeOn && !editItemCloseImageCapture? 'col-sm-12' : 'col-sm-9'"> -->
+
+                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  ticketData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-9'">
                                 
                                 <div class="row">
                                     <div style="overflow-y: scroll;height:calc(100vh - 425px);">
@@ -274,6 +276,40 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-sm-3" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
+
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body px-1 py-1">
+                                            
+                                            <p-table #dt1 [value]="ticketsTransactions" [paginator]="false">
+                        
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                        <th>*</th>
+                                                        <th>Transaction Type</th>
+                                                        <th>Amount paid</th>
+                                                        <th>Check number</th>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-ticketsTransaction>
+                                                    <tr>
+                                                        <td># </td>
+                                                        <td>{{ ticketsTransaction?.type }}</td>
+                                                        <td>{{ ticketsTransaction?.amount | number : '1.3-3' }}</td>
+                                                        <td>{{ ticketsTransaction?.checkNumber }}</td>
+                                                    </tr>
+                                                </ng-template>
+                        
+                                            </p-table>
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+
+                            </div>
+
                             <div class="col-sm-3" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 300px)">
