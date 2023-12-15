@@ -63,31 +63,34 @@
                     <th>Action</th>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-certificate>
+                <ng-template pTemplate="body" let-certificate let-rowIndex="rowIndex">
                   <tr>
                     <td>
                       <!-- <p-tableCheckbox [value]="product" [disabled]="isOutOfStock(product)"></p-tableCheckbox> -->
-                      <p-tableCheckbox 
-                     
-                      [value]="certificate"
+
+                      <!-- <p-tableCheckbox   [disabled]="certificate.selected" id="{{'pp'+ rowIndex}}"  (onChange)="onCheckboxChange(certificate)" >
+                      </p-tableCheckbox> -->
+
+                      <p-checkbox [binary]="true" [disabled]="certificate.selected"  [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
+                      <!-- <p-tableCheckbox  [(ngModel)]="certificate.selected" (onChange)="onCheckboxChange(certificate)"></p-tableCheckbox> -->
+
+                 
                       
-                      [disabled]="certificate?.dateClosed"> 
-                      
-                  </p-tableCheckbox> </td>
+                      </td>
                     <td>{{ certificate.rowId }}</td>
                     <td>{{ certificate?.dateOpened | date: 'MM/dd/yyyy' }}</td>
                     <td>{{ certificate?.ticketAmount }}</td>
                     <td>{{ certificate.customerName }}</td>
                     <td>{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>
                     <td *ngIf="certificate?.dateClosed != null">
-					          <a (click)="getCODImagesbyID(certificate)" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-eye"></i> Show</a>
+					          <a (click)="getCODImagesbyID(certificate,'show')" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-eye"></i> Show</a>
 
                       <a href="javascript:void()" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-printer"></i> Print</a>
 
                       <!-- <a href="" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-restore"></i> Restore</a>  -->
                     </td>
                     <td *ngIf="certificate?.dateClosed == null">
-                      <a data-bs-target="" data-bs-toggle="modal" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-certificate"></i> COD</a>
+                      <a (click)="getCODImagesbyID(certificate,'cod')" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-certificate"></i> COD</a>
 
                       <!-- <a data-bs-target="" data-bs-toggle="modal" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-close"></i> Close</a> -->
                   </td>
@@ -121,6 +124,8 @@
 
   
 </div>
+
+
 
 
 
@@ -161,7 +166,7 @@
         type="text"
         id="example-palaceholder"
         class="form-control"
-        value="My COD added in role based data"
+      
       />
     </div>
   </div>
@@ -179,7 +184,7 @@
 
   <div class="row pd-imgs-box mt-3" *ngIf="certificateLoader">
    
-    <app-page-loader></app-page-loader>
+    <app-page-loader type="table"></app-page-loader>
   </div>
 
 
@@ -208,7 +213,7 @@
     <h4 class="modal-title ml-10" id="myLargeModalLabel">Capture Image</h4>
   </ng-template>
 
-  <div class="row">
+  <div class="row" *ngIf="cvisible">
     <app-camera (getPicture)="handleImage($event)"></app-camera>
   </div>
 
@@ -237,87 +242,27 @@
 </ng-container>
 
 
-<!-- <p-dialog [modal]="true" 
-  header="New Regrade"
-  [(visible)]="ivisible"
-  [style]="{ width: '80vw' }"
->
+
+<p-dialog header="Header" [(visible)]="isConfirmModel" [modal]="true" [style]="{ width: '40rem' }">
   <ng-template pTemplate="header">
-    <div class="d-flex">
-        <a (click) ="hideItemViewModel()" class="btn btn-primary btn-back"
-        ><i class="mdi mdi-keyboard-backspace"></i
-      ></a>
-  
-      <h4 class="modal-title ml-10" id="myLargeModalLabel">View Item</h4>
-    </div>
-   
+      <div class="inline-flex align-items-center justify-content-center gap-2">
+          
+          <span class="font-bold white-space-nowrap">Confirm COD</span>
+      </div>
   </ng-template>
-
-  <div class="row">
-    <div class="col-sm-12">
-      <table
-        id="dt-certificates-view-item"
-        class="table dt-responsive nowrap w-100"
-      >
-        <thead>
-          <tr>
-            <th>Material</th>
-            <th>Gross Net</th>
-            <th>Amount</th>
-            <th></th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>Computer Memory</td>
-            <td>222.00</td>
-            <td>1485.000</td>
-            <td>
-              <img
-                src="assets/images/custom/aluminium-extrusion.jpg"
-                class="img-responsive certificates-img"
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td>Computer Memory</td>
-            <td>363.00</td>
-            <td>985.000</td>
-            <td>
-              <img
-                src="assets/images/custom/aluminium-extrusion.jpg"
-                class="img-responsive certificates-img"
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td>Copper #1</td>
-            <td>252.00</td>
-            <td>580.000</td>
-            <td>
-              <img
-                src="assets/images/custom/aluminium-extrusion.jpg"
-                class="img-responsive certificates-img"
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td>Copper #2</td>
-            <td>341.00</td>
-            <td>951.000</td>
-            <td>
-              <img
-                src="assets/images/custom/aluminium-extrusion.jpg"
-                class="img-responsive certificates-img"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="m-0">
+      <h3>Do you need to confirm ticket for COD ? </h3>
   </div>
-</p-dialog> -->
+  <ng-template pTemplate="footer">
+    <button class="btn btn-primary" (click)="confirmData()">Confirm</button>
+    <button type="button" class="btn btn-danger" (click)="cancelClick()">Cancel</button>
+
+  </ng-template>
+</p-dialog>
+
+      
+
+
+
+
+

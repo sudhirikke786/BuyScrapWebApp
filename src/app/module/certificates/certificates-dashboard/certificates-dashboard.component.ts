@@ -2,11 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-certificates-dashboard',
   templateUrl: './certificates-dashboard.component.html',
-  styleUrls: ['./certificates-dashboard.component.scss']
+  styleUrls: ['./certificates-dashboard.component.scss'],
+  providers: [ConfirmationService, MessageService]
+
+  
 })
 export class CertificatesDashboardComponent implements OnInit {
 
@@ -88,9 +93,15 @@ export class CertificatesDashboardComponent implements OnInit {
 
   certificateLoader = false;
   selectedProducts:any;
+  isShowModel = false;
+  checkOBj: any;
+  currentIndex: any;
+  isConfirmModel: boolean = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
+    private confirmationService: ConfirmationService, 
+    private messageService: MessageService,
     public commonService: CommonService) { }
 
   ngOnInit() {
@@ -98,6 +109,29 @@ export class CertificatesDashboardComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.getAllCODTickets();
   }
+
+
+  confirm1() {
+  
+    this.isConfirmModel =  true;
+  }
+
+  confirmData(){
+    
+    this.saveConfirm();
+  }
+
+  saveConfirm(){
+    this.isConfirmModel =  false;
+  }
+
+  cancelClick(){
+      this.certificates[this.currentIndex].selected =  false;
+      this.isConfirmModel = false;
+  }
+
+
+
 
   
   getAllCODTickets() {
@@ -127,9 +161,38 @@ export class CertificatesDashboardComponent implements OnInit {
       );
   }
 
+  setChecked(item: any,rowIndex:any): void {
+      this.currentIndex = rowIndex;
+      this.checkOBj = item;
+      this.confirm1();
+    
+      
+  }
 
-  getCODImagesbyID(obj:any){
+  onCheckboxChange(item: any) {
+    // Handle individual checkbox change if needed
+    console.log('Checkbox state changed for item:', item);
+
+    this.confirm1();
+  }
+
+  toggleAllSelection() {
+    
+    // Toggle all checkboxes state
+   // this.selectAll = !this.selectAll;
+  //  this.certificates.forEach((item:any)=> (item.selected = this.selectAll));
+  }
+
+  codeAdd(){
     this.showModel();
+  }
+
+
+  getCODImagesbyID(obj:any,type:string){
+    if(type=='cod'){
+      this.codeAdd()
+    }else{
+      this.showModel();
     this.certificateLoader = true;
     const paramObject = {
       TicketID:obj?.rowId
@@ -149,6 +212,7 @@ export class CertificatesDashboardComponent implements OnInit {
           this.certificateLoader = false;
         }
       );
+    }
   }
 
   showModel(){

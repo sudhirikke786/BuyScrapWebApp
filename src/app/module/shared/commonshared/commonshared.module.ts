@@ -12,7 +12,7 @@ import { FormErrorMessageComponent } from './form-error-message/form-error-messa
 import { SignaturePadComponent } from './signature-pad/signature-pad.component';
 import { ThumbFingerComponent } from './thumb-finger/thumb-finger.component';
 import { PenSignatureComponent } from './pen-signature/pen-signature.component';
-import { PageLoaderComponent } from './page-loader/page-loader.component';
+import { PageLoaderComponent } from '../page-loader/page-loader.component';
 
 @NgModule({
   declarations: [
