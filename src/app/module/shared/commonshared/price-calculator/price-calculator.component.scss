@@ -2,19 +2,19 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 8px;
-    max-width: 300px;
+    height:calc(100vh - 590px);
     width: 100%;
     margin: 0 auto;
     padding: 2px;
-    font-size: 24px;
+    font-size: 2rem;
     text-align: center;
   }
   
   .display {
     grid-column: 1 / span 4;
     background-color: #f2f2f2;
-    padding: 5px;
-    font-size: 20px;
+   
+    font-size: 2rem;
     text-align: right;
   }
   
@@ -22,9 +22,8 @@
     background-color: var(--ct-blue);
     color: var(--ct-white);
     border: none;
-    padding: 2px;
+    font-size: 0.8rem;
     text-align: center;
-    font-size: 12px;
     cursor: pointer;
   }
   
@@ -42,7 +41,7 @@
 //   }
   
   .h-30{
-    height: 20px;
+    
     border-color: #e9ecef;
   }
 

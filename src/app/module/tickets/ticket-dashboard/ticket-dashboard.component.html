@@ -29,11 +29,10 @@
                     <option value="Status">Status</option>
                 </select>
             </div>
-            <div class="col-sm-3 mb-1">
-                <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText"
-                    placeholder="Search">
+            <div class="col-sm-2 mb-1">
+                <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText" placeholder="Search">
             </div>
-            <div class="col-sm-3 mb-1 d-flex justify-content-start">
+            <div class="col-sm-4 mb-1 d-flex justify-content-start">
                 <div  class="d-flex justify-content-between">
                     <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
                 </div>
