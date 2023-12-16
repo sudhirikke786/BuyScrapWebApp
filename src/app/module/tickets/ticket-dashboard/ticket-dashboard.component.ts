@@ -13,67 +13,67 @@ import { StorageService } from 'src/app/core/services/storage.service';
   styleUrls: ['./ticket-dashboard.component.scss']
 })
 export class TicketDashboardComponent implements OnInit {
-  sellerTicketsloader :boolean = false;
+  sellerTicketsloader: boolean = false;
 
   selectedTickets: any;
- 
+
 
   actionList = [{
-    iconcode:'mdi-magnify',
-    title:'Search'
+    iconcode: 'mdi-magnify',
+    title: 'Search'
   },
   {
-    iconcode:'mdi-refresh',
-    title:'Refresh'
+    iconcode: 'mdi-refresh',
+    title: 'Refresh'
   },
   {
-    iconcode:'mdi-ticket',
-    title:'New Ticket'
+    iconcode: 'mdi-ticket',
+    title: 'New Ticket'
   }
-  
+
   ];
-  
+
   newTicketList = [{
-      iconcode:'mdi-magnify',
-      title:'Search'
-    },
-    {
-      iconcode:'mdi-refresh',
-      title:'Refresh'
-    },
-    {
-      iconcode:'mdi-account',
-      title:'New Customer'
-    }  
+    iconcode: 'mdi-magnify',
+    title: 'Search'
+  },
+  {
+    iconcode: 'mdi-refresh',
+    title: 'Refresh'
+  },
+  {
+    iconcode: 'mdi-account',
+    title: 'New Customer'
+  }
   ];
 
   mergeTicketlist = [{
-    iconcode:'mdi-magnify',
-    title:'Search'
+    iconcode: 'mdi-magnify',
+    title: 'Search'
   },
   {
-    iconcode:'mdi-refresh',
-    title:'Refresh'
+    iconcode: 'mdi-refresh',
+    title: 'Refresh'
   }
-  
+
   ];
 
-  ticketsTypes =  [
-    {name: 'ALL', code: 'ALL'},
-    {name: 'OPEN', code: 'OPEN'},
-    {name: 'Partially Paid', code: 'Partially Paid'},
-    {name: 'ON HOLD', code: 'ON HOLD'},
-    {name: 'PAID', code: 'PAID'},
-    {name: 'VOIDED', code: 'VOIDED'}
+  ticketsTypes = [
+    { name: 'ALL', code: 'ALL' , },
+    { name: 'OPEN', code: 'OPEN' },
+    { name: 'PARTIALLY PAID', code: 'PARTIALLY PAID' },
+    { name: 'ON HOLD', code: 'ON HOLD' },
+    { name: 'PAID', code: 'PAID' },
+    { name: 'VOIDED', code: 'VOIDED' }
   ];
 
-  
-  defaultSelectedTicketsTypes =  [
-    {name: 'OPEN', code: 'OPEN'},
-    {name: 'Partially Paid', code: 'Partially Paid'},
-    {name: 'ON HOLD', code: 'ON HOLD'}
+
+  defaultSelectedTicketsTypes = [
+    { name: 'OPEN', code: 'OPEN' },
+    { name: 'PARTIALLY PAID', code: 'PARTIALLY PAID' },
+    { name: 'ON HOLD', code: 'ON HOLD' }
   ];
-  
+
   tickets: any;
   childTickets: any;
   ticketsTransactions: any;
@@ -101,7 +101,7 @@ export class TicketDashboardComponent implements OnInit {
   orgName: any;
   locId: any;
   logInUserId: any;
-  
+
   maxItem = 2;
   parentTicketIDVisible = false;
   isParentTicketVisible = false;
@@ -115,17 +115,17 @@ export class TicketDashboardComponent implements OnInit {
   showPartially = false;
   showVoidDialogBox = false;
   voidReason: any = '';
-  isVoidOrRestore: any = ''; 
+  isVoidOrRestore: any = '';
 
 
   pagination: any = {
     SerachText: '',
     SearchOrder: 'TicketId',
-    Status: this.defaultSelectedTicketsTypes.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(','),
+    Status: this.defaultSelectedTicketsTypes.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(','),
     PageNumber: 1,
     RowOfPage: 10,
     LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
-    first : 0, 
+    first: 0,
   }
 
   currentPage = 1;
@@ -135,24 +135,24 @@ export class TicketDashboardComponent implements OnInit {
   pageTotal = 0;
   tiketSelectedObj: any;
   currentRole: any;
-  isLoading= false;
+  isLoading = false;
   childTicketsLoader: boolean = false;
-  sellerLoader : boolean = false;
+  sellerLoader: boolean = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private authService:AuthService,
-    private stroarge:StorageService,
+    private authService: AuthService,
+    private stroarge: StorageService,
     public commonService: CommonService) { }
 
   ngOnInit() {
     this.currentRole = this.authService.userCurrentRole();
 
     // ['Administrator','Scale','Cashier']
-    if(['Administrator','Cashier'].includes(this.currentRole)){
+    if (['Administrator', 'Cashier'].includes(this.currentRole)) {
       this.actionList.unshift(
         {
-          iconcode:'mdi-merge',
-          title:'Merge Ticket and Pay'
+          iconcode: 'mdi-merge',
+          title: 'Merge Ticket and Pay'
         })
     }
 
@@ -160,7 +160,7 @@ export class TicketDashboardComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
-    const result = this.selectedTickets.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(',');
+    const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
     this.pagination.Status = result;
     this.getAllTicketsDetails(this.pagination);
   }
@@ -168,12 +168,12 @@ export class TicketDashboardComponent implements OnInit {
 
   onPageChange(event: any) {
     this.currentPage = event.first / event.rows + 1;
-    this.first = event.first ;
+    this.first = event.first;
     let pagObj = {
       PageNumber: this.currentPage,
       RowOfPage: event.rows,
     }
-    this.pagination = {...this.pagination,...pagObj};
+    this.pagination = { ...this.pagination, ...pagObj };
     this.getAllTicketsDetails(this.pagination);
   }
 
@@ -186,24 +186,81 @@ export class TicketDashboardComponent implements OnInit {
     console.log(this.pagination);
     this.commonService.getAllTicketsDetails(pagination)
       .subscribe(data => {
-          console.log('getAllTicketsDetails :: ');
-          console.log(data);
-          this.tickets = data.body.data;
-          this.pageTotal =  data?.body?.totalRecord
-          this.last = data?.body?.totalIndex;
-       
-        },
+        console.log('getAllTicketsDetails :: ');
+        console.log(data);
+        this.tickets = data.body.data.map((item:any) => {
+          item.statusClass = this.getColor(item.status);
+          return item;
+        });
+        this.pageTotal = data?.body?.totalRecord
+        this.last = data?.body?.totalIndex;
+
+      },
         (err: any) => {
           this.isLoading = false;
           // this.errorMsg = 'Error occured';
         },
-        () =>{
+        () => {
           this.isLoading = false;
         }
       );
   }
 
-  showVoideCancelCopy(ticketData:any){
+
+  getColor(type: any) {
+
+    //     .text-primary
+
+    // .text-secondary
+
+    // .text-success
+
+    // .text-danger
+
+    // .text-warning
+
+    // .text-info
+
+    // { name: 'ALL', code: 'ALL' },
+    // { name: 'OPEN', code: 'OPEN' },
+    // { name: 'Partially Paid', code: 'Partially Paid' },
+    // { name: 'ON HOLD', code: 'ON HOLD' },
+    // { name: 'PAID', code: 'PAID' },
+    // { name: 'VOIDED', code: 'VOIDED' }
+
+
+    let statusClassName = 'text-dark'
+    switch (type.toLowerCase()) {
+      case 'void':
+        statusClassName = 'text-dark'
+        break;
+      case 'paid':
+        statusClassName = 'text-info'
+        break;
+      case 'voided':
+        statusClassName = 'text-dark'
+        break;
+      case 'open':
+        statusClassName = 'text-primary'
+        break;
+      case 'on hold':
+        statusClassName = 'text-danger'
+        break;
+      case 'balance owed':
+          statusClassName = 'text-warning'
+      break;
+      case 'partially paid':
+        statusClassName = 'text-info'
+        break;
+      default:
+        statusClassName = 'text-dark'
+        break;
+    }
+    return statusClassName;
+
+  }
+
+  showVoideCancelCopy(ticketData: any) {
     this.tiketSelectedObj = ticketData;
     this.parentTicketId = ticketData.parentTicketID;
     this.isParent = ticketData.isParent;
@@ -215,24 +272,24 @@ export class TicketDashboardComponent implements OnInit {
       this.parentTicketIDVisible = false;
       this.isParentTicketVisible = true;
     } else {
-      this.showVoid =  true;
+      this.showVoid = true;
 
     }
 
   }
 
-  showVoideForPartiallyPaid(ticketData:any){
+  showVoideForPartiallyPaid(ticketData: any) {
     this.tiketSelectedObj = ticketData;
-    this.showVoid =  true;
+    this.showVoid = true;
   }
 
-  showVoidCancel(){
+  showVoidCancel() {
     console.log(this.tiketSelectedObj);
     this.isVoidOrRestore = 'Void';
     this.getTicketTransactions();
   }
 
-  showRestoreTicket(ticketData:any) {
+  showRestoreTicket(ticketData: any) {
     console.log("Restore Ticket :: " + ticketData);
     this.tiketSelectedObj = ticketData;
     this.isVoidOrRestore = 'Restore';
@@ -251,24 +308,24 @@ export class TicketDashboardComponent implements OnInit {
     console.log(paramObj);
     this.commonService.getAllTicketsTransactionsByTicketId(paramObj)
       .subscribe(data => {
-          console.log('getAllTicketsTransactionsByTicketId :: ');
-          console.log(data);
-          if (data.body.data.length > 0) {
-            this.ticketsTransactions = data.body.data;
-            this.showPartially = true;
-            this.showOpen = false;
-          } else {
-            this.showPartially = false;
-            this.showOpen = true;
-          }
-        },
+        console.log('getAllTicketsTransactionsByTicketId :: ');
+        console.log(data);
+        if (data.body.data.length > 0) {
+          this.ticketsTransactions = data.body.data;
+          this.showPartially = true;
+          this.showOpen = false;
+        } else {
+          this.showPartially = false;
+          this.showOpen = true;
+        }
+      },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
       );
   }
 
-  showVoidCopy(){
+  showVoidCopy() {
     console.log(this.tiketSelectedObj);
     this.isVoidOrRestore = 'VoidCopy';
     this.getTicketTransactions();
@@ -278,7 +335,7 @@ export class TicketDashboardComponent implements OnInit {
     const datePipe = new DatePipe('en-US');
     // alert(this.voidReason);
     console.log("Void Ticket :: " + this.voidReason);
-    
+
     console.log(this.tiketSelectedObj);
 
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
@@ -290,10 +347,10 @@ export class TicketDashboardComponent implements OnInit {
     this.tiketSelectedObj['CreatedDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     this.tiketSelectedObj['UpdatedDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     this.tiketSelectedObj['Status'] = 'VOIDED';
-    
+
     console.log("Final ticketData :: " + JSON.stringify(this.tiketSelectedObj));
 
-    this.commonService.voidCopyTickets(this.tiketSelectedObj).subscribe(data =>{    
+    this.commonService.voidCopyTickets(this.tiketSelectedObj).subscribe(data => {
       console.log(data);
       this.refreshData();
       this.voidReason = '';
@@ -301,8 +358,8 @@ export class TicketDashboardComponent implements OnInit {
       this.showPartially = false;
       this.showVoidDialogBox = false;
       this.showVoid = false;
-    },(error: any) =>{  
-      console.log(error);  
+    }, (error: any) => {
+      console.log(error);
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
 
@@ -312,7 +369,7 @@ export class TicketDashboardComponent implements OnInit {
     const datePipe = new DatePipe('en-US');
     // alert(this.voidReason);
     console.log("Void Ticket :: " + this.voidReason);
-    
+
     console.log(this.tiketSelectedObj);
 
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
@@ -320,10 +377,10 @@ export class TicketDashboardComponent implements OnInit {
     this.tiketSelectedObj['VoidBy'] = this.logInUserId;
     this.tiketSelectedObj['VoidDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     this.tiketSelectedObj['Status'] = 'VOIDED';
-    
+
     console.log("Final ticketData :: " + JSON.stringify(this.tiketSelectedObj));
-    
-    this.commonService.insertUpdateTickets(this.tiketSelectedObj).subscribe(data =>{    
+
+    this.commonService.insertUpdateTickets(this.tiketSelectedObj).subscribe(data => {
       console.log(data);
       this.refreshData();
       this.voidReason = '';
@@ -331,24 +388,24 @@ export class TicketDashboardComponent implements OnInit {
       this.showPartially = false;
       this.showVoidDialogBox = false;
       this.showVoid = false;
-    },(error: any) =>{  
-      console.log(error);  
+    }, (error: any) => {
+      console.log(error);
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
-    
+
   }
 
-  restoreTicket() {    
+  restoreTicket() {
     const datePipe = new DatePipe('en-US');
     // alert('Restore Ticket :: ' + this.voidReason);
 
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
     this.tiketSelectedObj['CreatedBy'] = this.logInUserId;
     this.tiketSelectedObj['CreatedDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-    
+
     console.log("Restore ticketData :: " + JSON.stringify(this.tiketSelectedObj));
-    
-    this.commonService.RestoreVoidTickets(this.tiketSelectedObj).subscribe(data =>{    
+
+    this.commonService.RestoreVoidTickets(this.tiketSelectedObj).subscribe(data => {
       console.log(data);
       this.refreshData();
       this.voidReason = '';
@@ -356,21 +413,21 @@ export class TicketDashboardComponent implements OnInit {
       this.showPartially = false;
       this.showVoidDialogBox = false;
       this.showVoid = false;
-    },(error: any) =>{  
-      console.log(error);  
+    }, (error: any) => {
+      console.log(error);
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
   }
 
-  refreshData() {    
+  refreshData() {
     this.selectedTickets = this.defaultSelectedTicketsTypes;
     this.serachText = '';
     this.searchOrder = 'All';
-    const result = this.selectedTickets.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(',');
+    const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
     this.pagination.Status = result;
     this.pagination.SerachText = this.serachText,
-    this.pagination.SearchOrder = this.searchOrder,
-    this.getAllTicketsDetails(this.pagination);
+      this.pagination.SearchOrder = this.searchOrder,
+      this.getAllTicketsDetails(this.pagination);
   }
 
   showMergeDialog() {
@@ -396,20 +453,20 @@ export class TicketDashboardComponent implements OnInit {
     };
     this.getAllsellersDetails(paramObject);
   }
-  
+
   getAllsellersDetails(paramObject: any) {
     this.sellerLoader = true;
     this.commonService.getAllsellersDetails(paramObject)
       .subscribe(data => {
-          console.log('getAllsellersDetails :: ');
-          console.log(data);
-          this.sellers = data.body.data;
-        },
+        console.log('getAllsellersDetails :: ');
+        console.log(data);
+        this.sellers = data.body.data;
+      },
         (err: any) => {
           // this.errorMsg = 'Error occured';
           this.sellerLoader = false;
         },
-        ()=>{
+        () => {
           this.sellerLoader = false;
         }
       );
@@ -417,11 +474,11 @@ export class TicketDashboardComponent implements OnInit {
 
   searchTickets() {
     console.log('selectedTickets :: ' + JSON.stringify(this.selectedTickets));
-    const result = this.selectedTickets.reduce((acc:any, cur:any) => ((acc.push(cur.name)), acc), []).join(',');
+    const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
     this.pagination.Status = result;
     this.pagination.SerachText = this.serachText,
-    this.pagination.SearchOrder = this.searchOrder,
-    this.pagination.currentPage = 1;
+      this.pagination.SearchOrder = this.searchOrder,
+      this.pagination.currentPage = 1;
 
     this.getAllTicketsDetails(this.pagination);
   }
@@ -443,8 +500,8 @@ export class TicketDashboardComponent implements OnInit {
     this.parentTicketIDVisible = false;
   }
 
-  clickOnSeller(sellerId: any) {    
-    if (this.newTicketVisible == true) {      
+  clickOnSeller(sellerId: any) {
+    if (this.newTicketVisible == true) {
       this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${sellerId}`);
     } else if (this.ticketvisible == true) {
       this.mergeTicketVisible = true;
@@ -481,51 +538,51 @@ export class TicketDashboardComponent implements OnInit {
     };
     this.commonService.getAllTicketsByParentID(paramObject)
       .subscribe(data => {
-          console.log('getAllTicketsByParentID :: ');
-          console.log(data);
-          this.childTickets = data.body.data;
-        },
+        console.log('getAllTicketsByParentID :: ');
+        console.log(data);
+        this.childTickets = data.body.data;
+      },
         (err: any) => {
           this.childTicketsLoader = false;
 
           // this.errorMsg = 'Error occured';
         },
-        () =>{
+        () => {
           this.childTicketsLoader = false;
         }
       );
   }
 
-  getAllTicketsBySellerId(sellerId: any) {    
-    this.sellerTicketsloader = true; 
+  getAllTicketsBySellerId(sellerId: any) {
+    this.sellerTicketsloader = true;
     const paramObj: any = {
       SellerId: sellerId,
       LocationId: this.locId
     }
     this.commonService.getAllTicketsBySellerId(paramObj)
       .subscribe(data => {
-          console.log('getAllTicketsBySellerId :: ');
-          console.log(data);
-          this.sellerTickets = data.body.data;
-          this.sellerTickets = this.sellerTickets.filter( (obj: any) => {
-              return obj.status === 'OPEN';   
-          }).sort((a:any, b:any) => (a.title > b.title) ? 1 : -1);
-        },
+        console.log('getAllTicketsBySellerId :: ');
+        console.log(data);
+        this.sellerTickets = data.body.data;
+        this.sellerTickets = this.sellerTickets.filter((obj: any) => {
+          return obj.status === 'OPEN';
+        }).sort((a: any, b: any) => (a.title > b.title) ? 1 : -1);
+      },
         (err: any) => {
           this.sellerTicketsloader = false;
           // this.errorMsg = 'Error occured';
         },
-        ()=>{
-          this.sellerTicketsloader = false; 
+        () => {
+          this.sellerTicketsloader = false;
         }
       );
   }
 
-  closeMergeAndPayTickets() {    
+  closeMergeAndPayTickets() {
     this.mergeTicketVisible = false;
   }
 
-  mergeAndPaySelectedTickets() {    
+  mergeAndPaySelectedTickets() {
     // this.mergeTicketVisible = false;
     this.paymentVisible = true;
   }
@@ -540,15 +597,15 @@ export class TicketDashboardComponent implements OnInit {
     this.cashSectionVisible = false;
     this.checkSectionVisible = true;
     this.electronicPaymentSectionVisible = false;
-    
+
   }
 
   processElectronicPayment() {
     this.cashSectionVisible = false;
     this.checkSectionVisible = false;
-    this.electronicPaymentSectionVisible = true;    
+    this.electronicPaymentSectionVisible = true;
   }
-  
+
   payTickets() {
 
   }
@@ -577,20 +634,20 @@ export class TicketDashboardComponent implements OnInit {
     this.getAllsellersDetails(paramObject);
   }
 
-  addNewSeller() {    
+  addNewSeller() {
     this.router.navigateByUrl(`${this.orgName}/sellers-buyers/add-seller`)
-  }  
-  
+  }
+
   onRightClick(event: any) {
     // alert('333333333333' + JSON.stringify(ticket));
     // Your code here
     // alert('1111111111111');
     return false;   // Add return false
- }
+  }
   /** Seller pop up actions end */
 
 
-  getAction(actionCode:any){
+  getAction(actionCode: any) {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
@@ -609,10 +666,10 @@ export class TicketDashboardComponent implements OnInit {
         break;
     }
 
-  
+
   }
 
-  getSellerAction(actionCode:any){
+  getSellerAction(actionCode: any) {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
@@ -627,7 +684,7 @@ export class TicketDashboardComponent implements OnInit {
       default:
         break;
     }
-  
+
   }
 
 }

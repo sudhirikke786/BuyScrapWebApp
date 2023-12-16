@@ -68,7 +68,7 @@
                                             <tr (contextmenu)="onRightClick($event)">
                                                 <td>{{ ticket?.rowId }}</td>
                                                 <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy' }}</td>
-                                                <td>{{ ticket?.status }}</td>
+                                                <td><span class="{{ticket?.statusClass}}">{{ ticket?.status | uppercase }}</span></td>
                                                 <td>{{ ticket?.ticketAmount | number : '1.3-3' }}</td>
                                                 <td>{{ ticket?.customerName }}</td>
                                                 <td>{{ ticket?.dateClosed ? (ticket?.dateClosed | date: 'MM/dd/yyyy') : ''}}</td>
