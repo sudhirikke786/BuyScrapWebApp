@@ -144,6 +144,10 @@ export class AddSellersComponent implements OnInit {
 
   }
 
+  goBack(){
+    this.router.navigateByUrl(`/${this.orgName}/sellers-buyers`);
+  }
+
   onSubmit() {
     const dateObject = new Date(this.sellerForm?.value?.dob);
     const ExpDate =  new Date(this.sellerForm.value.expiryDate);

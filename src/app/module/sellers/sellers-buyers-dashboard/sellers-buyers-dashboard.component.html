@@ -29,6 +29,10 @@
                             </div>
                             <div class="col-sm-6 mb-1"> 
                                 <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
+                                <a  type="button" (click)="addNewSeller()" 
+                                class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
+                                Add Seller
+                                </a>
                             </div>
                             
                         </div>  
@@ -61,9 +65,9 @@
                                                     <td>{{ seller.driverLicenseNumber }}</td>
                                                     <td>{{ seller.streetAddress }}</td>
                                                     <td>
-                                                        <a routerLink = "/{{orgName}}/sellers-buyers/view-seller/{{seller?.rowId}}" type="button" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i> Show</a> 
+                                                        <a routerLink = "/{{orgName}}/sellers-buyers/view-seller/{{seller?.rowId}}" type="button" class="btn btn-grid btn-success waves-effect waves-light me-1 "><i class="mdi mdi-eye pe-1"></i> Show</a> 
                                                         <a routerLink = "/{{orgName}}/sellers-buyers/edit-seller/{{seller?.rowId}}" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
-                                                        <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
+                                                        <a class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline pe-1"></i> Delete</a>
 													</td>
                                                 </tr>
                                             </ng-template>

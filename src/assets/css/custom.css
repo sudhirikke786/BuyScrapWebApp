@@ -674,7 +674,7 @@
  .btn-block{display: block; width: 100%;}
  .btn-success{background:green !important;}
  .btn-spl{font-size: 16px !important;}
- .btn-grid{padding:2px 10px !important;}
+ .btn-grid{padding:5px 5px !important;} */
  .btn-danger{background:#c90303 !important;}
  .btn-square-less-padd{padding:2px 8px !important;}
  .mdi-cust{font-size: 20px;}
@@ -865,16 +865,23 @@
  .form-control{font-size: 12px !important;}
  select option{font-size: 12px !important;}
  select optgroup option{font-size: 12px !important;}
- .btn-primary{font-size: 12px !important; padding: 3px 10px !important;  align-items: center;}
+ .btn-primary{align-items: center;}
  
- .btn-danger{font-size: 12px !important; padding: 3px 10px !important; display: inline-flex !important; align-items: center;}
- .btn-success{font-size: 12px !important; padding: 3px 10px !important; display: inline-flex !important; align-items: center;}
+ .btn-danger{display: inline-flex !important; align-items: center; }
+ .btn-success{display: inline-flex !important; align-items: center;}
  .modal-content label{font-size: 12px !important; display: flex; align-items: center;}
  h4{font-size: 15px !important;}
  .table .mdi{margin-right: 4px;}
  .btn-blue{background: #02659d;}
  .void-tbl tr td{border:1px solid #dee2e6;}
  .void-tbl{width:100%; text-align: center;}
+ 
+ .btn{
+  font-size: 14px !important;
+ }
+ .btn-danger{
+  background-color: #cd303f!important;
+ }
  
  
  

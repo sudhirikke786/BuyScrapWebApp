@@ -38,9 +38,11 @@
 
                                 <div class="form-group col-sm-6">
                                     <div class="flt-right">
+                                        <button type="button" class="btn btn-primary me-1" (click)="goBack()">Back</button>
                                         <button class="btn btn-success me-1" (click)="onSubmit()">{{ sellerId == 0 ?
                                             'Save' : 'Update'}}</button>
                                         <button type="button" class="btn btn-primary">Print</button>
+                                       
                                     </div>
                                 </div>
                             </div>

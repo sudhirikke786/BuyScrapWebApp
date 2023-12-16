@@ -21,16 +21,11 @@ export class TicketDashboardComponent implements OnInit {
   actionList = [{
     iconcode: 'mdi-magnify',
     title: 'Search'
-  },
-  {
+  }, {
     iconcode: 'mdi-refresh',
     title: 'Refresh'
   },
-  {
-    iconcode: 'mdi-ticket',
-    title: 'New Ticket'
-  }
-
+ 
   ];
 
   newTicketList = [{
@@ -40,10 +35,6 @@ export class TicketDashboardComponent implements OnInit {
   {
     iconcode: 'mdi-refresh',
     title: 'Refresh'
-  },
-  {
-    iconcode: 'mdi-account',
-    title: 'New Customer'
   }
   ];
 
@@ -61,7 +52,7 @@ export class TicketDashboardComponent implements OnInit {
   ticketsTypes = [
     { name: 'ALL', code: 'ALL' , },
     { name: 'OPEN', code: 'OPEN' },
-    { name: 'PARTIALLY PAID', code: 'PARTIALLY PAID' },
+    { name: 'Partially Paid', code: 'Partially Paid' },
     { name: 'ON HOLD', code: 'ON HOLD' },
     { name: 'PAID', code: 'PAID' },
     { name: 'VOIDED', code: 'VOIDED' }
@@ -70,7 +61,7 @@ export class TicketDashboardComponent implements OnInit {
 
   defaultSelectedTicketsTypes = [
     { name: 'OPEN', code: 'OPEN' },
-    { name: 'PARTIALLY PAID', code: 'PARTIALLY PAID' },
+    { name: 'Partially Paid', code: 'Partially Paid' },
     { name: 'ON HOLD', code: 'ON HOLD' }
   ];
 
@@ -148,13 +139,13 @@ export class TicketDashboardComponent implements OnInit {
     this.currentRole = this.authService.userCurrentRole();
 
     // ['Administrator','Scale','Cashier']
-    if (['Administrator', 'Cashier'].includes(this.currentRole)) {
-      this.actionList.unshift(
-        {
-          iconcode: 'mdi-merge',
-          title: 'Merge Ticket and Pay'
-        })
-    }
+    // if (['Administrator', 'Cashier'].includes(this.currentRole)) {
+    //   let actionButton = [{
+    //     iconcode: 'mdi-merge',
+    //     title: 'Merge Ticket and Pay'
+    //   }]
+    //   this.actionList = [...this.actionList,...actionButton];
+    // }
 
     this.selectedTickets = this.defaultSelectedTicketsTypes;
     this.orgName = localStorage.getItem('orgName');
