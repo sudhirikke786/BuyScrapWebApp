@@ -31,6 +31,9 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   priceInput:any =0;
   focusedInput: string | null = null;
   addNoteSectionVisible = false;  
+  inputBoxes: any[] = [];
+  private currentFocusIndex = 0;
+
 
   constructor(private renderer: Renderer2) {
 
@@ -46,6 +49,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     if (this.inputBox1) {
       this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
     }
+   
 
   }
 
@@ -61,7 +65,33 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   // }
 
   ngAfterViewInit(): void {
+    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox4,this.inputBox3];
+    setTimeout(()=>{
+      this.inputBoxes[this.currentFocusIndex]?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    },100)
+  }
 
+  changeFocus() {
+    // Set focus on the current input
+
+    if (this.currentFocusIndex === this.inputBoxes.length-1) {
+      const obj = {
+        itemGross: this.grossInput,
+        itemTare: this.tareInput,
+        itemNet: this.grossInput - this.tareInput,
+        itemPrice: this.priceInput,
+        materialNote: this.materialNote
+      }
+      this.calculateObj.emit(obj);
+     }
+      this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
+     
+     
+
+      // Increment the focus index, resetting to 0 if it exceeds the number of inputs
+      this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
+    
+  
   }
 
 
@@ -149,14 +179,10 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   }
 
   enter() {
-    const obj = {
-      itemGross: this.grossInput,
-      itemTare: this.tareInput,
-      itemNet: this.grossInput - this.tareInput,
-      itemPrice: this.priceInput,
-      materialNote: this.materialNote
-    }
-    this.calculateObj.emit(obj);
+    this.changeFocus();
+    console.log(this.currentFocusIndex);
+    
+   
   }
 
 
