@@ -24,7 +24,7 @@ export class CommonService {
   constructor(private http: HttpClient,private localService:StorageService) { }
 
   /* GET: get the data for type ahead select dropdown based on key passed*/
-    callAPI(path: string, method: string, requestObj?: any, clientName?: string): Observable<any> {
+    callAPI(path: string, method: string, requestObj?: any, clientName?: string, postParams?: any): Observable<any> {
     let httpHeader = new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'
     });
@@ -59,7 +59,8 @@ export class CommonService {
     } else if (method === 'POST') {
         return this.http.post<any>(productionURL, requestObj, {
             headers: httpHeader,
-            observe: 'response'
+            observe: 'response',
+            params: postParams
         });
     } else if (method === 'PUT') {
         return this.http.put<any>(productionURL, requestObj, {
@@ -216,6 +217,10 @@ export class CommonService {
   insertUpdateGroupMaterials(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Materialss/InsertUpdateGroupMaterials', 'POST', requestObj);
   }
+
+  getSubMaterials(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Materialss/GetSubMaterials', 'GET', paramObj);
+  } 
 
   getAllSubMaterials(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterials', 'GET', paramObj);
@@ -386,6 +391,15 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/AWS/FileUploadFromWeb', 'POST', requestObj);
   }
 
+  /* Regrades API */  
+
+  GetAllRegrades(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Regrades/GetAllRegrades', 'GET', paramObj);
+  }
+
+  InsertUpdateRegradedMaterials(requestObj:any, postParams: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Regrades/InsertUpdateRegradedMaterials', 'POST', requestObj, postParams);
+  }
 
 
   getFileData(url: string) {
