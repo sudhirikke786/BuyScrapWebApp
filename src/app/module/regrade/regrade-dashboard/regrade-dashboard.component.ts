@@ -24,57 +24,7 @@ export class RegradeDashboardComponent implements OnInit {
     },
   ];
 
-  regrades = [
-    {
-      dateCreated: '07/11/2022',
-      material: 'CRV 1',
-      previousNet: '600.00',
-      regradedMaterial: 'CRV 1',
-      regradeNet: '590.00',
-    },
-    {
-      dateCreated: '05/12/2022',
-      material: 'Aluminium Extrusion(Clean)',
-      previousNet: '600.00',
-      regradedMaterial: 'Aluminium Extrusion(Clean)',
-      regradeNet: '590.00',
-    },
-    {
-      dateCreated: '03/08/2022',
-      material: 'CRV 1',
-      previousNet: '600.00',
-      regradedMaterial: 'CRV 1',
-      regradeNet: '590.00',
-    },
-    {
-      dateCreated: '19/11/2022',
-      material: 'Aluminium Extrusion(Clean)',
-      previousNet: '600.00',
-      regradedMaterial: 'Aluminium Extrusion(Clean)',
-      regradeNet: '590.00',
-    },
-    {
-      dateCreated: '30/10/2022',
-      material: 'CRV 1',
-      previousNet: '600.00',
-      regradedMaterial: 'CRV 1',
-      regradeNet: '590.00',
-    },
-    {
-      dateCreated: '15/03/2022',
-      material: 'CRV 1',
-      previousNet: '600.00',
-      regradedMaterial: 'CRV 1',
-      regradeNet: '590.00',
-    },
-    {
-      dateCreated: '08/03/2022',
-      material: 'Yellow Brass(Clean)',
-      previousNet: '600.00',
-      regradedMaterial: 'Yellow Brass(Clean)',
-      regradeNet: '590.00',
-    },
-  ];
+  regrades: any;
 
   showLoader = false;
 
@@ -89,9 +39,39 @@ export class RegradeDashboardComponent implements OnInit {
     },
   ];
 
-  visible: boolean = false;
+
+  
+  pagination: any = {
+    SerachText: '',
+    PageNumber: 1,
+    RowOfPage: 10,
+    LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
+    first: 0,
+  }
+
+  currentPage = 1;
+  pageSize = 10;
+  first = 0;
+  last = 0;
+  pageTotal = 0;
+  isLoading = false;
+  subMaterialList: any;
+  subMaterialLoader: boolean = false;
+  searchSubMaterialInput: any = '';
+
+  visibleNewRegrade: boolean = false;
   ShowmodelRegrate: boolean = false;
   poupRegrate = false;
+  selectedSubMaterial: any;
+  currentRegradedMaterialRowID: any = 0;
+  newRegradedMaterialName: any;
+  newMaterialStock: any;
+  currentRegradedMaterialName: any;
+  currentMaterialStock: any;
+  stockAfterRegrade: number = 0;
+  defaultSelectedMaterial: any;
+  newSelectedMaterial: any;
+  materialList: any;
   
   orgName: any;
   locId: any;
@@ -103,17 +83,92 @@ export class RegradeDashboardComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.getAllRegrades(this.pagination);
+  }
+
+
+  onPageChange(event: any) {
+    this.currentPage = event.first / event.rows + 1;
+    this.first = event.first;
+    let pagObj = {
+      PageNumber: this.currentPage,
+      RowOfPage: event.rows,
+    }
+    this.pagination = { ...this.pagination, ...pagObj };
+    this.getAllRegrades(this.pagination);
+  }
+
+  
+  getAllRegrades(pagination: any) {
+    this.isLoading = true;
+    console.log(this.pagination);
+    this.commonService.GetAllRegrades(pagination)
+      .subscribe(data => {
+        console.log('GetAllRegrades :: ');
+        console.log(data.body.data);
+        this.regrades = data.body.data;
+        this.pageTotal = data?.body?.totalRecord | 6;
+        this.last = data?.body?.totalIndex | 1;
+      },
+        (err: any) => {
+          this.isLoading = false;
+          // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.isLoading = false;
+        }
+      );
+  }
+
+  getSubMaterials() {
+    this.subMaterialLoader = true;
+
+    const paramObject = {
+      SearchText: this.searchSubMaterialInput,
+      LocationId: this.locId
+    };
+    this.commonService.getSubMaterials(paramObject)
+      .subscribe(data => {
+          console.log('getSubMaterials :: ');
+          console.log(data);
+          this.subMaterialList = data.body.data;
+          this.defaultSelectedMaterial = this.subMaterialList[0].rowId;
+          // alert(this.defaultSelectedMaterial);
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+          this.subMaterialLoader = false;
+        },
+        () => {
+          this.subMaterialLoader = false;
+        }
+      );
+  }
+
+  getAllGroupMaterial() {
+    this.materialList =  JSON.parse(JSON.stringify(this.subMaterialList)); //{ ...this.subMaterialList };
+    this.materialList = this.materialList.filter((subMaterial:any) => subMaterial.rowId != this.currentRegradedMaterialRowID);
+    
+    console.log('materialList :: ');
+    console.log(this.materialList);
+    this.newSelectedMaterial = this.materialList[0].rowId;
   }
   
   showDialog() {
-    this.visible = true;
+    this.visibleNewRegrade = true;
+    this.getSubMaterials();
   }
   showTableModel() {
     this.ShowmodelRegrate = true;
+    this.getSubMaterials();
   }
 
-  showRegrateDeatilModel(){
+  showRegrateDeatilModel(subMaterial: any){
+    this.currentRegradedMaterialRowID = subMaterial.rowId;
+    this.newRegradedMaterialName = subMaterial.materialName;
+    this.newMaterialStock = subMaterial.net;
     this.poupRegrate =  true;
+    this.getAllGroupMaterial();
   }
   hideRegrateDeatilModel(){
     this.poupRegrate =  false;
@@ -132,4 +187,19 @@ export class RegradeDashboardComponent implements OnInit {
         break;
     }
   }
+
+  getSubMaterialAction(actionCode: any) {
+    switch (actionCode?.iconcode) {
+      case 'mdi-magnify':
+        this.showDialog();
+        break;
+        case 'mdi-refresh':
+          this.searchSubMaterialInput = '';
+          this.showDialog();
+          break;
+      default:
+        break;
+    }
+  }
+
 }

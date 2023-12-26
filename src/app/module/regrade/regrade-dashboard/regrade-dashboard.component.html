@@ -4,7 +4,7 @@
 
 <div class="content-page">
 
-    <div class="content">
+    <div class="content" *ngIf="!isLoading">
 
         <!-- Start Content-->
         <div class="container-fluid">
@@ -39,30 +39,28 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-
-                            <p-table [value]="regrades" [scrollable]="true" scrollHeight="50vh" [paginator]="true"
-                                [rows]="10" [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                [rowsPerPageOptions]="commonService.tableConfig.pageOptions">
-
+                            
+                            <p-table #dt1 [value]="regrades" [paginator]="false" [rows]="pageSize"
+                                [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" 
+                                scrollHeight="calc(100vh - 250px)"
+                                [globalFilterFields]="['regrade.createdDate', 'regrade.materialName', 'regrade.formattedText', 'regrade.sumMaterialNet']">
 
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th>Date Created</th>
-                                        <th>Material</th>
-                                        <th>Previous Net</th>
-                                        <th>Regraded Material</th>
-                                        <th>Regrade Net</th>
-                                        <th>Action</th>
+                                        <th style="width: 15%;">Date Created</th>
+                                        <th style="width: 25%;">Material</th>
+                                        <!-- <th>Previous Net</th> -->
+                                        <th style="width: 35%;">Regraded Material</th>
+                                        <th style="width: 15%;">Regrade Net</th>
+                                        <th style="width: 10%;">Action</th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-regrade>
                                     <tr>
-                                        <td>{{ regrade.dateCreated }}</td>
-                                        <td>{{ regrade.material }}</td>
-                                        <td>{{ regrade.previousNet }}</td>
-                                        <td>{{ regrade.regradedMaterial }}</td>
-                                        <td>{{ regrade.regradeNet }}</td>
+                                        <td>{{ regrade.createdDate | date: 'MM/dd/yyyy' }}</td>
+                                        <td>{{ regrade.materialName }}</td>
+                                        <td>{{ regrade.formattedText }}</td>
+                                        <td>{{ regrade.sumMaterialNet | number : '1.3-3' }}</td>
                                         <td>
                                             <a (click)="showTableModel()"
                                                 class="btn btn-grid btn-success waves-effect waves-light"><i
@@ -81,6 +79,17 @@
                             </p-table>
 
                         </div> <!-- end card body-->
+
+                        <div class="col-sm-12">
+                            <div *ngIf="regrades?.length > 0">
+                                <p-paginator class="serverside-paginator" [showCurrentPageReport]="true"
+                                    (onPageChange)="onPageChange($event)"
+                                    currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries"
+                                    [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal"
+                                    [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions"></p-paginator>
+                            </div>
+                        </div>
+
                     </div> <!-- end card -->
                 </div><!-- end col-->
             </div>
@@ -93,106 +102,6 @@
     <!-- Footer Start -->
 
     <!-- end Footer -->
-
-    <!--  New Regrade Modal Popup -->
-    <div class="modal fade" id="new-regrade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel">New Regrade</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="row">
-
-                        <div class="col-md-6">
-                            <input type="text" id="example-palaceholder" class="form-control" placeholder="">
-                        </div>
-                        <div class="col-md-6">
-                            <a class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Search"><i
-                                    class="mdi mdi-cust mdi-magnify"></i></a>
-
-                            <a class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Refresh"><i
-                                    class="mdi mdi-cust mdi-refresh"></i></a>
-                        </div>
-
-                    </div>
-
-                    <div class="row mt-3">
-
-                        <table id="dt-new-ship-out" class="table dt-responsive nowrap w-100">
-                            <thead>
-                                <tr>
-                                    <th>Material</th>
-                                    <th>Net Available</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-
-
-                            <tbody>
-                                <tr>
-                                    <td>Aluminium Extrusion(Clean)</td>
-                                    <td>33790</td>
-                                    <td>
-                                        <a data-bs-target="#modal-regrade-select-btn" data-bs-toggle="modal"
-                                            data-bs-dismiss="modal"
-                                            class="btn btn-grid btn-success waves-effect waves-light">Select</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Aluminium Rims(Clean)</td>
-                                    <td>6821</td>
-                                    <td>
-                                        <a data-bs-target="#modal-regrade-select-btn" data-bs-toggle="modal"
-                                            data-bs-dismiss="modal"
-                                            class="btn btn-grid btn-success waves-effect waves-light">Select</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Computer Memory</td>
-                                    <td>15436</td>
-                                    <td>
-                                        <a data-bs-target="#modal-regrade-select-btn" data-bs-toggle="modal"
-                                            data-bs-dismiss="modal"
-                                            class="btn btn-grid btn-success waves-effect waves-light">Select</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Copper #1</td>
-                                    <td>1955</td>
-                                    <td>
-                                        <a data-bs-target="#modal-regrade-select-btn" data-bs-toggle="modal"
-                                            data-bs-dismiss="modal"
-                                            class="btn btn-grid btn-success waves-effect waves-light">Select</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Copper #2</td>
-                                    <td>5909</td>
-                                    <td>
-                                        <a data-bs-target="#modal-regrade-select-btn" data-bs-toggle="modal"
-                                            data-bs-dismiss="modal"
-                                            class="btn btn-grid btn-success waves-effect waves-light">Select</a>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-
-                    </div>
-
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
-    <!--  New Regrade Modal Popup -->
 
     <!--  Modal Regrade - Select Button Click Inside 2nd Modal Popup -->
     <div class="modal fade" id="modal-regrade-select-btn" tabindex="-1" role="dialog"
@@ -330,66 +239,69 @@
     <!--  Regrade Show Button Click Popup -->
 
 </div>
-<!-- 
-<div class="content" *ngIf="showLoader">
+
+<div class="content" *ngIf="isLoading">
 
 
     <app-page-loader type="ftable"></app-page-loader>
 
 
-</div> -->
+</div>
 
 <!-- ============================================================== -->
 <!-- End Page content -->
 <!-- ============================================================== -->
-<p-dialog [modal]="true" header="New Regrade" [breakpoints]="{'767px': '100vw'}" [(visible)]="visible" [style]="{width: '60vw'}">
 
-    <div class="row">
+<p-dialog [modal]="true" header="New Regrade" [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}" [(visible)]="visibleNewRegrade" [style]="{width: '60vw'}">
 
-        <div class="col-md-6">
-            <input type="text" id="example-palaceholder" class="form-control" placeholder="">
-        </div>
-        <div class="col-md-6">
-            <app-actionbar (iconAction)="getAction($event)" [actions]="regreateList"></app-actionbar>
 
-        </div>
+<div class="row" *ngIf="subMaterialLoader"> 
+        <app-page-loader type="ftable"></app-page-loader>   
+</div>
+
+
+<div class="row" *ngIf="!subMaterialLoader">
+    <div class="col-md-6">        
+        <input type="text" id="example-palaceholder" [(ngModel)]="searchSubMaterialInput" class="form-control"
+        placeholder="Search for Sub Materials">
+    </div>
+    <div class="col-md-6">
+        <app-actionbar (iconAction)="getSubMaterialAction($event)" [actions]="regreateList"></app-actionbar>
 
     </div>
+</div>
 
-    <div class="row mt-3">
+<div class="row mt-3"  *ngIf="!subMaterialLoader">
 
-        <table id="dt-new-ship-out" class="table dt-responsive nowrap w-100">
-            <thead>
-                <tr>
-                    <th>Material</th>
-                    <th>Net Available</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
+    <p-table [value]="subMaterialList" [scrollable]="true" scrollHeight="40vh" [paginator]="false" [rows]="1000"
+        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }">
 
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Material</th>
+                <th>Net Available</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-subMaterial>
+            <tr>
+                <td>{{ subMaterial.materialName }}</td>
+                <td>{{ subMaterial.net }}</td>
+                <td>
+                    <a (click)="showRegrateDeatilModel(subMaterial)"
+                        class="btn btn-grid btn-success waves-effect waves-light">Select</a>
+                </td>
+            </tr>
+        </ng-template>
+      
+    </p-table>
+</div>
 
-            <tbody>
-                <tr>
-                    <td>Aluminium Extrusion(Clean)</td>
-                    <td>33790</td>
-                    <td>
-                        <a (click)="showRegrateDeatilModel()"
-                            class="btn btn-grid btn-success waves-effect waves-light">Select</a>
-                    </td>
-                </tr>
-
-
-
-            </tbody>
-        </table>
-
-    </div>
 
 </p-dialog>
 
 
-
-<p-dialog header="New Regrade" [breakpoints]="{'767px': '100vw'}" [(visible)]="ShowmodelRegrate"
+<p-dialog header="Show Regrade" [breakpoints]="{'767px': '100vw'}" [(visible)]="ShowmodelRegrate"
     [style]="{width: '60vw'}">
 
     <ng-template pTemplate="header">
@@ -405,36 +317,30 @@
 
         <div class="col-md-12">
             <form action="">
-                <div class="form-group col-sm-12 mb-2 d-flex">
-                    <label for="simpleinput" class="form-label">Current Regraded Item</label>
-                    <input type="text" id="currentregradeditem" class="form-control" placeholder="CRV 1">
+                <div class="form-group col-sm-6 mb-2 d-flex">
+                    <label for="simpleinput" class="form-label">Current Regraded Item :</label>                    
+                    <input type="text" id="currentRegradedMaterialName" [(ngModel)]="currentRegradedMaterialName" class="form-control"
+                    placeholder="Current Regraded Item">
                 </div>
 
-                <div class="form-group col-sm-12 mb-2 d-flex">
-                    <label for="simpleinput" class="form-label">Select Amount to Regrade</label>
-                    <input type="text" id="selectamounttoregrade" class="form-control" placeholder="500.00">
+                <div class="form-group col-sm-6 mb-2 d-flex">
+                    <label for="simpleinput" class="form-label">Select Amount to Regrade :</label>          
+                    <input type="text" id="currentMaterialStock" [(ngModel)]="currentMaterialStock" class="form-control"
+                    placeholder="Select Amount to Regrade">
                 </div>
 
-                <div class="form-group col-sm-12 mb-2 d-flex">
-                    <label for="example-select" class="form-label">Regrade To</label>
-                    <select class="form-select" id="example-select">
-                        <option>Aluminium Extrusion(Clean)</option>
-                        <option>Aluminium Rims(Clean)</option>
-                        <option>Brass Caulks &amp; Faucets</option>
-                        <option>Circuit Boards(High Grade)</option>
-                        <option>Computer Memory</option>
-                        <option>Computers(Complete)</option>
-                        <option>Copper #1</option>
-                        <option>Copper #2</option>
-                        <option>CRT Monitors</option>
-                        <option>CRV 1</option>
-                        <option>Iron 1</option>
-                        <option>Iron 2</option>
+                <div class="form-group col-sm-6 mb-2 d-flex">
+                    <label for="example-select" class="form-label">Regrade To :</label>
+                    <select class="form-control" id="defaultSelectedMaterial" name="defaultSelectedMaterial" [(ngModel)]="defaultSelectedMaterial">
+                        <option *ngFor="let option of subMaterialList"
+                        [value]="option.rowId">
+                            {{ option.materialName }}
+                        </option>
                     </select>
                 </div>
 
-                <div class="form-group col-sm-12 mb-2 d-flex">
-                    <label for="simpleinput" class="form-label">Stock After Regrade</label>
+                <div class="form-group col-sm-6 mb-2 d-flex">
+                    <label for="simpleinput" class="form-label">Stock After Regrade :</label>
                     <input type="text" id="stockafterregrade" class="form-control" value="590.00">
                 </div>
 
@@ -448,7 +354,7 @@
 
 
 
-<p-dialog [modal]="true" header="New Regrade" [breakpoints]="{'767px': '100vw'}" [(visible)]="poupRegrate" [style]="{width: '60vw'}">
+<p-dialog [modal]="true" header="Add New Regrade Item" [breakpoints]="{'767px': '100vw'}" [(visible)]="poupRegrate" [style]="{width: '60vw'}">
 
     <ng-template pTemplate="header">
         <div>
@@ -462,47 +368,44 @@
     <div class="row">
 
         <div class="col-md-12">
-            <form action="">
-                <div class="form-group col-sm-12 mb-2 d-flex">
-                    <label for="simpleinput" class="form-label">Current Regraded Item</label>
-                    <input type="text" id="currentregradeditem" class="form-control"
-                        placeholder="Aluminium Extrusion(Clean)">
+            <form action="">                
+                <div class="row" >
+                    <div class="form-group col-sm-6 mb-2 d-flex">
+                        <label for="simpleinput" class="form-label">Current Regraded Item</label>                    
+                        <input type="text" id="newRegradedMaterialName" name="newRegradedMaterialName" 
+                        [(ngModel)]="newRegradedMaterialName" class="form-control"
+                        placeholder="Current Regraded Item">
+                    </div>
+    
+                    <div class="form-group col-sm-6 mb-2 d-flex">
+                        <label for="simpleinput" class="form-label">Current Stock</label>          
+                        <input type="text" id="newMaterialStock" name="newMaterialStock" 
+                        [(ngModel)]="newMaterialStock" class="form-control"
+                        placeholder="Current Stock">
+                    </div>
                 </div>
-
-                <div class="form-group col-sm-12 mb-2 d-flex">
-                    <label for="simpleinput" class="form-label">Current Stock</label>
-                    <input type="text" id="currentstock" class="form-control" placeholder="33790">
+                <div class="row" >
+                    <div class="form-group col-sm-6 mb-2 d-flex">
+                        <label for="example-select" class="form-label">Regrade To</label>
+                        <select class="form-control" id="newSelectedMaterial" name="newSelectedMaterial" [(ngModel)]="newSelectedMaterial">
+                            <option *ngFor="let option of materialList"
+                            [value]="option.rowId">
+                                {{ option.materialName }}
+                            </option>
+                        </select>
+                    </div>    
+                    <div class="form-group col-sm-6 mb-2 d-flex">
+                        <label for="simpleinput" class="form-label">Stock After Regrade</label>          
+                        <input type="text" id="stockAfterRegrade" name="stockAfterRegrade"
+                        [(ngModel)]="stockAfterRegrade" class="form-control"
+                        placeholder="Select Amount to Regrade">
+                    </div>                    
                 </div>
+                <a class="btn btn-primary btn-materials">Add</a>
+                
+                <div class="row" >
 
-                <div class="form-group col-sm-12 mb-2 d-flex">
-                    <label for="simpleinput" class="form-label">Select Amount to Regrade</label>
-                    <input type="text" id="selectamounttoregrade" class="form-control"
-                        placeholder="Select to Regrade Stock">
                 </div>
-
-                <div class="form-group col-sm-12 mb-2 d-flex">
-                    <label for="example-select" class="form-label">Regrade To</label>
-                    <select class="form-select" id="example-select">
-                        <option>Aluminium Extrusion(Clean)</option>
-                        <option>Aluminium Rims(Clean)</option>
-                        <option>Brass Caulks & Faucets</option>
-                        <option>Circuit Boards(High Grade)</option>
-                        <option>Computer Memory</option>
-                        <option>Computers(Complete)</option>
-                        <option>Copper #1</option>
-                        <option>Copper #2</option>
-                        <option>CRT Monitors</option>
-                        <option>CRV 1</option>
-                        <option>Iron 1</option>
-                        <option>Iron 2</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-sm-12 mb-2 d-flex">
-                    <label for="simpleinput" class="form-label">Stock After Regrade</label>
-                    <input type="text" id="stockafterregrade" class="form-control" placeholder="Current Stock">
-                </div>
-
                 <a class="btn btn-primary btn-materials">Save</a>
             </form>
         </div>
