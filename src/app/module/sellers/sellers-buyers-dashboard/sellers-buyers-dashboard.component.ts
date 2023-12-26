@@ -21,6 +21,11 @@ export class SellersBuyersDashboardComponent implements OnInit {
     {
       iconcode:'mdi-refresh',
       title:'Refresh'
+    },{
+      iconcode:'mdi-plus',
+      title:'Add Seller',
+      label:'Add Seller'
+
     }
   ];
 

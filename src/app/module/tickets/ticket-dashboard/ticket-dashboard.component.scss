@@ -28,9 +28,14 @@
   .w-110 {
     width: 110px;
   }
-
-  .ticket-box div{
-    flex: 1 0 0 0;
+  .ticket-card > div{
+     margin-right: 5px;
   }
+  // .ticket-card > div:last-child{
+  //   width: 28%;
+  // }
 
+  // .ticket-box div{
+  //   flex: 1 0 0 0;
+  // }
   

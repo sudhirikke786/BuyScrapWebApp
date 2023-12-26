@@ -676,7 +676,7 @@
  .btn-spl{font-size: 16px !important;}
  .btn-grid{padding:5px 5px !important;} */
  .btn-danger{background:#c90303 !important;}
- .btn-square-less-padd{padding:2px 8px !important;}
+ /* .btn-square-less-padd{padding:2px 8px !important;} */
  .mdi-cust{font-size: 20px;}
  .upload-all{display: flex; justify-content: center; align-items: center; flex-direction: column;}
  .upload-options-ul li{display:inline; margin-right: 10px;}
@@ -862,7 +862,7 @@
  table.dataTable tbody tr td{font-size: 12px !important;}
  .tqable td{font-size: 12px !important;}
  a{font-size: 12px !important;}
- .form-control{font-size: 12px !important;}
+ .form-control{font-size: 14px !important;}
  select option{font-size: 12px !important;}
  select optgroup option{font-size: 12px !important;}
  .btn-primary{align-items: center;}

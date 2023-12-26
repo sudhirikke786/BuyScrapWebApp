@@ -10,46 +10,49 @@
                     </div>
                     
                 </div> -->
-        <div class="row mt-2">
-            <div class="col-sm-3 mb-1">
-                <p-multiSelect [class.fixed-multiselect]="true"   [options]="ticketsTypes" [style]="{'minWidth':'100%'}"
-                    [(ngModel)]="selectedTickets"  [maxSelectedLabels]="maxItem" defaultLabel="You can choose  ..."
-                    optionLabel="name" display="chip" (onChange)="addRemoveStatus($event)">
-                
-                </p-multiSelect>
-            </div>
-            <div class="col-sm-3 mb-1">
-                <select class="form-control" id="example-select" [(ngModel)]="searchOrder">
-                    <option value="All">All</option>
-                    <option value="TicketId">Ticket ID</option>
-                    <option value="DateCreatedLatest">Date Created : Latest</option>
-                    <option value="DateCreatedOldest">Date Created : Oldest</option>
-                    <option value="LowTicketAmount">Low Ticket Amount</option>
-                    <option value="HighTicketAmount">High Ticket Amount</option>
-                    <option value="Status">Status</option>
-                </select>
-            </div>
-            <div class="col-sm-2 mb-1">
-                <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText" placeholder="Search">
-            </div>
-            <div class="col-sm-4 mb-1 d-flex justify-content-start">
-                <div  class="d-flex justify-content-between">
-                    <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
+        <div class="row mt-2" >
+            <div class="ticket-card col-md-12 d-flex align-items-center">
+                <div class="col-sm-3 mb-1">
+                    <p-multiSelect [class.fixed-multiselect]="true"   [options]="ticketsTypes" [style]="{'minWidth':'100%'}"
+                        [(ngModel)]="selectedTickets"  [maxSelectedLabels]="maxItem" defaultLabel="You can choose  ..."
+                        optionLabel="name" display="chip" (onChange)="addRemoveStatus($event)">
+                    
+                    </p-multiSelect>
                 </div>
-                <div class="d-flex justify-content-between align-items-center">
-                    <a  type="button" (click)="addNewTicket()" 
-                    class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
-                     New Ticket
-                    </a>
-                    <a  type="button"  (click)="showMergeDialog();" 
-                        class="btn btn-primary  me-1 px-1 py-1 cursor-pointer"  style="font-size: 16px !important;padding: 5px !important;">
-                        Merge Ticket
-                    </a>
+                <div class="col-sm-2  mb-1">
+                    <select class="form-control" id="example-select" [(ngModel)]="searchOrder">
+                        <option value="All">All</option>
+                        <option value="TicketId">Ticket ID</option>
+                        <option value="DateCreatedLatest">Date Created : Latest</option>
+                        <option value="DateCreatedOldest">Date Created : Oldest</option>
+                        <option value="LowTicketAmount">Low Ticket Amount</option>
+                        <option value="HighTicketAmount">High Ticket Amount</option>
+                        <option value="Status">Status</option>
+                    </select>
                 </div>
-               
-
-               
+                <div class="col-sm-3  mb-1">
+                    <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText" placeholder="Search">
+                </div>
+                <div class="col-sm-4  mb-1">
+                    <div  class="d-flex justify-content-between">
+                        <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
+                    </div>
+                    <!-- <div class="d-flex justify-content-between align-items-start">
+                        <a  type="button" (click)="addNewTicket()" 
+                        class="btn btn-primary me-1  cursor-pointer" >
+                         New Ticket
+                        </a>
+                        <a  type="button"  (click)="showMergeDialog();" 
+                            class="btn btn-primary  me-1  cursor-pointer"  >
+                            Merge Ticket
+                        </a>
+                    </div> -->
+                   
+    
+                   
+                </div>
             </div>
+         
 
         </div>
         <!-- end page title -->
@@ -169,10 +172,10 @@
             <div class="col-md-6">
                 <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newTicketList"></app-actionbar>
 
-                <a  type="button" (click)="addNewSeller()" 
+                <!-- <a  type="button" (click)="addNewSeller()" 
                 class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
                 New Customer
-                </a>
+                </a> -->
             </div>
 
         </div>

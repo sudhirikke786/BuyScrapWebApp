@@ -3,18 +3,30 @@
   
 <div class="container px-0 py-0">
   <div class="row">
-    <div class="col-md-12">
-      <div class="image-card">
+    <div class="col-lg-6 col-md-12">
+      <img [src]="itemImagePath" alt="Image" class="img-fluid" >
+    </div>
+    <div class="col-lg-6 col-md-12">
+      <div class="content-container">
+        <button type="button" class="btn btn-primary mb-1">Change Item</button>
+        <button type="button" class="btn btn-danger">Capture Img</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- <div class="row">
+      <div class="image-card d-flex  flex-wrap">
         <div class="image-container">
-          <img [src]="itemImagePath" alt="Image" class="img-fluid" style="height: 76px; width: 160px;">
+          <img [src]="itemImagePath" alt="Image" class="img-fluid">
         </div>
         <div class="content-container">
           <button type="button" class="btn btn-primary mb-1">Change Item</button>
           <button type="button" class="btn btn-danger">Capture Img</button>
         </div>
       </div>
-    </div>
-  </div>
+  </div> -->
   <div class="row">
       <div class="col-12"   >
         <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom" > {{itemGroupName}} - {{itemMaterialName}}</div>
@@ -99,7 +111,7 @@
   <button class="btn-cal " (click)="appendNumber(4)">4</button>
   <button class="btn-cal" (click)="appendNumber(5)">5</button>
   <button class="btn-cal" (click)="appendNumber(6)">6</button>
-  <button class="btn-cal" (click)="note()">Notes</button>
+  <button class="btn-cal btn-danger" (click)="note()">Notes</button>
   <button class="btn-cal" (click)="appendNumber(7)">7</button>
   <button class="btn-cal" (click)="appendNumber(8)">8</button>
   <button class="btn-cal" (click)="appendNumber(9)">9</button>

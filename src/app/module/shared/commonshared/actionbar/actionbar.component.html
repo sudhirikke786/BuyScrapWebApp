@@ -1,5 +1,8 @@
+<div class="d-flex">
+
 
 <ng-container *ngFor="let item of actions">
-    <button [disabled]="item?.isDisable" (click)="actionClick(item)" [attr.title]="item?.title" class="btn me-1 btn-square-less-padd btn-primary waves-effect waves-light" title="Search"><i
-        class="mdi mdi-cust {{item.iconcode}}"></i></button>
+    <button [disabled]="item?.isDisable" (click)="actionClick(item)" [attr.title]="item?.title" class="btn me-1  btn-primary d-flex align-items-center" title="Search">
+        <i class="mdi mdi-cust {{item.iconcode}}"></i>{{item?.label}}</button>
 </ng-container>
+</div>

@@ -20,6 +20,7 @@ export class RegradeDashboardComponent implements OnInit {
     {
       iconcode: 'mdi-plus',
       title: 'New Regrade',
+      label:'New Regrade'
     },
   ];
 

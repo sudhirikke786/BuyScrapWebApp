@@ -24,11 +24,13 @@ export class MaterialsDashboardComponent implements OnInit {
     },
     {
       iconcode:'mdi-plus',
-      title:'Add Materials'
+      title:'Add Materials',
+      label:'Add Materials'
     },
     {
       iconcode:'mdi-currency-usd',
-      title:'Quick Price Update'
+      title:'Quick Price Update',
+      label:'Quick Price Update'
     }
   ];
 

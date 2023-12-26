@@ -41,11 +41,13 @@ export class AdminDashboardComponent implements OnInit {
   actionList = [
     {
       iconcode:'mdi-plus',
-      title:'Add New User'
+      title:'Add New User',
+      label:'Add New User'
     },
     {
       iconcode:'mdi-map-marker',
-      title:'Location Management'
+      title:'Location Management',
+      label:'Location Management'
     }
   ];
 

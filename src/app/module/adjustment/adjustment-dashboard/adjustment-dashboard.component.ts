@@ -14,10 +14,11 @@ import { StorageService } from 'src/app/core/services/storage.service';
 })
 export class AdjustmentDashboardComponent implements OnInit {
 
-  actionList = [
+  actionList:any[] = [
     {
       iconcode:'mdi-magnify',
-      title:'Search'
+      title:'Search',
+      
     },
     {
       iconcode:'mdi-refresh',
@@ -68,7 +69,9 @@ export class AdjustmentDashboardComponent implements OnInit {
       this.actionList.unshift(
         {
           iconcode:'mdi-plus',
-          title:'Add Adjustment'
+          title:'Add Adjustment',
+          label:'Add Adjustment'
+         
         })
     }
 

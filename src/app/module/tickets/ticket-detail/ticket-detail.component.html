@@ -37,7 +37,10 @@
                                         </a> -->
                                    </div>
 
-                                   <div class="col-sm-6">
+                                   <div class="col-sm-6 d-flex justify-content-end">
+                                    <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/home">
+                                        <i class="mdi mdi-keyboard-backspace"></i> Back
+                                    </a>
                                         <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
                                             <i class="mdi mdi-pencil"></i> Edit
                                         </a>
@@ -45,6 +48,7 @@
                                             <a class="btn btn-danger me-1" (click)="cancelEditTicket()">Cancel</a>
                                             <a class="btn btn-primary" (click)="confirmSave()">Save</a>
                                         </div>
+
                                    </div> 
                                 </div>
 

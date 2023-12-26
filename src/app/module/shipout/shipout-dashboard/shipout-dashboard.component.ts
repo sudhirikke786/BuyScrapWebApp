@@ -21,7 +21,8 @@ export class ShipoutDashboardComponent implements OnInit {
     },
     {
       iconcode:'mdi-plus',
-      title:'New Ship Out'
+      title:'New Ship Out',
+      label:'New Ship Out',
     }
   ];
 
@@ -36,7 +37,8 @@ export class ShipoutDashboardComponent implements OnInit {
     },
     {
       iconcode:'mdi-account',
-      title:'New Customer'
+      title:'New Customer',
+      label:'New Customer',
     }
   ];
 

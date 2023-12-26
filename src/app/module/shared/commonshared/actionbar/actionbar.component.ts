@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 export class ActionbarComponent implements OnChanges {
 
   @Input() actions : any;
+  
   @Output() iconAction = new EventEmitter<any>();
 
 

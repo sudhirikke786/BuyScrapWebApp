@@ -23,8 +23,14 @@ export class TicketDashboardComponent implements OnInit {
     title: 'Search'
   }, {
     iconcode: 'mdi-refresh',
-    title: 'Refresh'
+    title: 'Refresh', 
   },
+  {
+    iconcode: 'mdi-ticket',
+    title: 'New Ticket',
+    label:'New Ticket'
+  },
+  
  
   ];
 
@@ -35,6 +41,11 @@ export class TicketDashboardComponent implements OnInit {
   {
     iconcode: 'mdi-refresh',
     title: 'Refresh'
+  },
+  {
+    iconcode: 'mdi-account',
+    title: 'New Customer',
+    label:'New Customer'
   }
   ];
 
@@ -138,14 +149,15 @@ export class TicketDashboardComponent implements OnInit {
   ngOnInit() {
     this.currentRole = this.authService.userCurrentRole();
 
-    // ['Administrator','Scale','Cashier']
-    // if (['Administrator', 'Cashier'].includes(this.currentRole)) {
-    //   let actionButton = [{
-    //     iconcode: 'mdi-merge',
-    //     title: 'Merge Ticket and Pay'
-    //   }]
-    //   this.actionList = [...this.actionList,...actionButton];
-    // }
+    ['Administrator','Scale','Cashier']
+    if (['Administrator', 'Cashier'].includes(this.currentRole)) {
+      let actionButton = [{
+        iconcode: 'mdi-merge',
+        label:'Merge Ticket',
+        title: 'Merge Ticket and Pay'
+      }]
+      this.actionList = [...this.actionList,...actionButton];
+    }
 
     this.selectedTickets = this.defaultSelectedTicketsTypes;
     this.orgName = localStorage.getItem('orgName');
