@@ -701,17 +701,17 @@
  .ticket-summary-div{margin-top:5px !important;}
  .color-green{color: green;}
  .materials-heading{font-weight: 500; color: #343a40; text-align: center;}
- .btn-materials-2{font-weight: 500; color: #343a40; font-size: 18px; padding-top: 5px;}
+ .-2{font-weight: 500; color: #343a40; font-size: 18px; padding-top: 5px;}
  .ticket-details-p{margin-bottom: 0;}
  .btn-back{padding:2px 8px !important;}
- .btn-materials-inner{
+ .-inner{
   margin-bottom: 10px; 
   width: 100%; padding: 5px !important; color: #fff;
   line-height: 12px !important;
 
 
 }
-.btn-materials-inner:hover{
+.-inner:hover{
   color: #fff;
 }
  .ticket-particulars-img{height:30px;}
@@ -725,7 +725,7 @@
  .seller-view-tbl{width: 100%;}
  .ticket-details-tbl{width: 100%;}
  .materials-ul li{text-decoration: none; display: inline-block;}
- .btn-materials{margin-bottom: 10px; padding: 5px !important;}
+ .{margin-bottom: 10px; padding: 5px !important;}
  .materials-ul{margin-bottom: 0; padding-left: 0;}
  .mainbox-row{background:#f5f5f5; text-align: center; padding: 10px; box-shadow: 0px 0px 3px grey;}
  .ticket-details-new-tbl{width:100%;}
@@ -736,7 +736,7 @@
  .materials-name-edit-ul li h4{font-size: 12px; line-height: 22px;}
  .materials-pg-boxes img{width:100%; padding: 10px 10px 0 10px;}
  .materials-pg-boxes{background: #f5f5f5; box-shadow: 0px 0px 3px grey; border-radius: 10px; margin-bottom: 20px; position: relative;}
- .btn-materials-pg{border:1px solid grey !important; color: #02659d !important; padding: 2px 5px !important;}
+ .-pg{border:1px solid grey !important; color: #02659d !important; padding: 2px 5px !important;}
  .adjustment-pg-boxes img{width:100%; padding: 10px 10px 0 10px;}
  .adjustment-pg-boxes{background: #f5f5f5; box-shadow: 0px 0px 3px grey; border-radius: 10px; margin-bottom: 20px; position: relative;}
  .adjustment-name-edit-ul{padding-left:0; margin-bottom: 0; text-align: center; display: flex; align-items: center; justify-content: center;}
@@ -918,7 +918,7 @@
  .table>:not(caption)>*>*{padding:3px !important;}
  .balance-bar-desktop{display:block;}
  .balance-bar-mobile{display:none;}
- .btn-materials{margin-bottom: 10px; padding: 5px !important;}
+ .{margin-bottom: 10px; padding: 5px !important;}
  }
  
  @media only screen and (max-width:991px){

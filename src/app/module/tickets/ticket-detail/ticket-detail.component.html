@@ -39,7 +39,7 @@
 
                                    <div class="col-sm-6 d-flex justify-content-end">
                                     <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/home">
-                                        <i class="mdi mdi-keyboard-backspace"></i> Back
+                                        Back
                                     </a>
                                         <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
                                             <i class="mdi mdi-pencil"></i> Edit
@@ -323,7 +323,7 @@
                                       
                                       <ng-container  *ngFor="let item of materialList" >
                                           <li>
-                                              <a id="showInnerDiv1" class="btn btn-primary btn-materials" 
+                                              <a id="showInnerDiv1" class="btn btn-primary " 
                                               pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
                                               (click)="getSubMaterials(item.rowId, item.groupName, false)">
                                                   {{item.groupName}}
@@ -335,7 +335,7 @@
                                 </div>
   
                                 <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row" style="height:calc(100vh - 300px)">
-                                    <h1 class="btn-materials-2">
+                                    <h1 class="-2">
                                       <span>
                                           <a id="backToMainBox1" class="btn btn-primary btn-back" (click)="backToMainMaterials()"><i class="mdi mdi-keyboard-backspace"></i></a>
                                       </span>
@@ -347,7 +347,7 @@
                                           <li>
                                               <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
                                               pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
-                                              class="btn btn-materials-inner">{{item.materialName}}</a>
+                                              class="btn -inner">{{item.materialName}}</a>
                                           </li>
                                       </ng-container>                                     
                                     </ul>
@@ -460,7 +460,7 @@
                             
                             <ng-container  *ngFor="let item of materialList" >
                                 <li>
-                                    <a id="showInnerDiv1" class="btn btn-primary btn-materials" 
+                                    <a id="showInnerDiv1" class="btn btn-primary " 
                                     pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
                                     (click)="getSubMaterials(item.rowId, item.groupName, true)">
                                         {{item.groupName}}
@@ -472,7 +472,7 @@
                         </div>
 
                         <div *ngIf="!changeItemMaterialsVisible" id="innerdiv1" class="mainbox-row over-flow-200">
-                            <h1 class="btn-materials-2">
+                            <h1 class="-2">
                             <span>
                                 <a id="backToMainBox1" class="btn btn-primary btn-back" (click)="backToChangeItemMainMaterials()"><i class="mdi mdi-keyboard-backspace me-1"></i></a>
                             </span>
@@ -484,7 +484,7 @@
                                 <li>
                                     <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="updateExistingItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
                                     pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
-                                    class="btn btn-primary btn-materials-inner">{{item.materialName}}</a>
+                                    class="btn btn-primary -inner">{{item.materialName}}</a>
                                 </li>
                             </ng-container>                                     
                             </ul>

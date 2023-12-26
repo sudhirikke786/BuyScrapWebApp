@@ -49,7 +49,7 @@
                                                         <img src="assets/images/custom/adjustment/Default-Adjustment.png">
                                                         <div class="d-flex px-1 py-1" [class]="currentRole!='Scale' ? 'justify-content-between' : 'justify-content-center'" >
                                                             <div><b>{{item.adjustmentName}}</b></div>
-                                                            <div *ngIf="currentRole!='Scale'"><a (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></div>
+                                                            <div *ngIf="currentRole!='Scale'"><a (click)="showDialog(item)" class="btn -pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></div>
                                                         </div>
                                                     </div>
                                                
@@ -119,7 +119,7 @@
                             </div>
                         </div>
 
-                        <a class="btn btn-primary btn-materials" (click)="onSubmit(adjustmentData)">Save</a>
+                        <a class="btn btn-primary " (click)="onSubmit(adjustmentData)">Save</a>
 
                         </form>
                     </div>

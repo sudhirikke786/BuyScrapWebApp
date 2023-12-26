@@ -25,7 +25,8 @@ export class MaterialsDetailsComponent implements OnInit {
     },
     {
       iconcode:'mdi-plus',
-      title:'Add Materials'
+      title:'Add Materials',
+      label:'Add Materials'
     }
   ];
 

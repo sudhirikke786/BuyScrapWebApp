@@ -49,7 +49,7 @@
                                                         </a>
                                                         <div class="d-flex flex-wrap justify-content-between px-1 py-1">
                                                             <div>{{item.groupName}}</div>
-                                                            <div (click)="showDialog()" class="btn btn-materials-pg waves-effect waves-light cursor-pointer"><i class="mdi mdi-pencil"></i> Edit</div>
+                                                            <div (click)="showDialog()" class="btn -pg waves-effect waves-light cursor-pointer"><i class="mdi mdi-pencil"></i> Edit</div>
                                                         </div>
                                                     </div>  
                                                 </ng-container>
@@ -67,7 +67,7 @@
                                                         </ul>
                                                         <div class="d-flex justify-content-between px-2 py-1">
                                                             <div>Scrap Price - {{item.scrapPrice}}</div>
-                                                            <div><a (click)="showDialog(item)" class="btn btn-materials-pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></div>
+                                                            <div><a (click)="showDialog(item)" class="btn -pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></div>
                                                         </div>
                                                     </div>
 
@@ -201,7 +201,7 @@
                                 <div id="image-preview" class="mt-10"></div>
                             </div> -->
 
-                            <a class="btn btn-primary btn-materials" (click)="onSubmit(materialData)">Save</a>
+                            <a class="btn btn-primary " (click)="onSubmit(materialData)">Save</a>
 
                         </form>
                     </div>
@@ -240,7 +240,7 @@
                                 <input type="text" id="setkey" class="form-control"  formControlName="values">
                             </div>
             
-                            <button class="btn btn-primary btn-materials" (click)="connectToUpdate()">Submit</button>
+                            <button class="btn btn-primary " (click)="connectToUpdate()">Submit</button>
                         </form>
             
                     </div>
