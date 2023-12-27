@@ -82,7 +82,7 @@
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="body" let-ticket>
-                                            <tr (contextmenu)="onRightClick($event)">
+                                            <tr (contextmenu)="onRightClick($event)" [ngClass]="{'bg-info': ticket.isParent}">
                                                 <td>{{ ticket?.rowId }}</td>
                                                 <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy' }}</td>
                                                 <td><span class="{{ticket?.statusClass}}">{{ ticket?.status | uppercase }}</span></td>

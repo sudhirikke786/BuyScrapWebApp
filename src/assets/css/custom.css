@@ -685,9 +685,9 @@
  .mdi-white-color{color:#fff;}
  .mdi-cust-upload{font-size:25px;}
  .upload-a{cursor:pointer;}
- .seller-view-tbl tr td{border:1px solid #dee2e6; padding:2px 5px;}
- .ticket-details-tbl tr td{border:1px solid #dee2e6; padding:5px;}
- .ticket-details-tbl th{border:1px solid #dee2e6; padding:5px;}
+ .seller-view-tbl tr td{border:1px solid #dee2e6; padding:2px 5px;font-size: 0.9rem}
+ .ticket-details-tbl tr td{border:1px solid #dee2e6; padding:5px;font-size: 0.9rem}
+ .ticket-details-tbl th{border:1px solid #dee2e6; padding:5px;font-size: 0.9rem}
  .dl-img{height:80px;}
  .menu-item .active .menu-links-text{color:yellow;}
  .b-links a{color:#fff;}
@@ -701,7 +701,7 @@
  .ticket-summary-div{margin-top:5px !important;}
  .color-green{color: green;}
  .materials-heading{font-weight: 500; color: #343a40; text-align: center;}
- .-2{font-weight: 500; color: #343a40; font-size: 18px; padding-top: 5px;}
+
  .ticket-details-p{margin-bottom: 0;}
  .btn-back{padding:2px 8px !important;}
  .-inner{
@@ -926,3 +926,15 @@
  .ticket-details-new-tbl{display: block; overflow-x: auto; white-space: nowrap;}
  .dl-img{height:auto; width: 100%;}
  }
+
+ /* Media query for tablets (portrait and landscape) */
+@media screen and (min-width: 600px) and (max-width: 1024px) {
+  /* Tablet-specific styles */
+ 
+  .btn {
+      font-size: 12px !important;
+      /* line-height: 14px !important; */
+  }
+
+  /* Add more styles as needed for tablets */
+}
