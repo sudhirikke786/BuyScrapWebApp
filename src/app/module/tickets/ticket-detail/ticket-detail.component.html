@@ -314,7 +314,7 @@
 
                             </div>
 
-                            <div class="col-sm-3" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
+                            <div class="col-sm-3 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 300px)">
                                     <h4 class="materials-heading">Materials</h4>
@@ -323,7 +323,7 @@
                                       
                                       <ng-container  *ngFor="let item of materialList" >
                                           <li>
-                                              <a id="showInnerDiv1" class="btn btn-primary " 
+                                              <a id="showInnerDiv1" class="btn btn-primary "  style="line-height: 18px !important;" 
                                               pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
                                               (click)="getSubMaterials(item.rowId, item.groupName, false)">
                                                   {{item.groupName}}
@@ -335,9 +335,9 @@
                                 </div>
   
                                 <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row" style="height:calc(100vh - 300px)">
-                                    <h1 class="-2">
+                                    <h1 class="materials-heading">
                                       <span>
-                                          <a id="backToMainBox1" class="btn btn-primary btn-back" (click)="backToMainMaterials()"><i class="mdi mdi-keyboard-backspace"></i></a>
+                                          <a id="backToMainBox1" class="btn btn-primary " (click)="backToMainMaterials()"><i class="mdi mdi-keyboard-backspace"></i></a>
                                       </span>
                                        Main Material - {{selectedMaterial}}
                                   </h1>
@@ -345,9 +345,9 @@
                                     <ul class="main-ul">
                                       <ng-container  *ngFor="let item of subMaterialList" >
                                           <li>
-                                              <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
+                                              <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
                                               pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
-                                              class="btn -inner">{{item.materialName}}</a>
+                                              class="btn btn-primary" style="line-height: 18px !important;">{{item.materialName}}</a>
                                           </li>
                                       </ng-container>                                     
                                     </ul>
@@ -434,7 +434,7 @@
                 <table class="numpad-heading-tbl">
                     <tbody><tr>
                         <td>
-                            <button id="back-btn" class="btn btn-primary btn-back" (click)="backToCapturedImage()">
+                            <button id="back-btn" class="btn btn-primary " (click)="backToCapturedImage()">
                                 <i class="mdi mdi-keyboard-backspace"></i>
                             </button>
                         </td>
@@ -474,7 +474,7 @@
                         <div *ngIf="!changeItemMaterialsVisible" id="innerdiv1" class="mainbox-row over-flow-200">
                             <h1 class="-2">
                             <span>
-                                <a id="backToMainBox1" class="btn btn-primary btn-back" (click)="backToChangeItemMainMaterials()"><i class="mdi mdi-keyboard-backspace me-1"></i></a>
+                                <a id="backToMainBox1" class="btn btn-primary " (click)="backToChangeItemMainMaterials()"><i class="mdi mdi-keyboard-backspace me-1"></i></a>
                             </span>
                                 Main Material - {{selectedMaterial}}
                         </h1>
@@ -635,7 +635,7 @@
 <p-dialog header="Header" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [modal]="true" [(visible)]="paymentVisible">
     <ng-template pTemplate="header">
 
-        <a  class="btn btn-primary btn-back" (click)="paymentVisible=false">
+        <a  class="btn btn-primary " (click)="paymentVisible=false">
             <i _ class="mdi mdi-keyboard-backspace">
            Back
         </i>

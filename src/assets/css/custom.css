@@ -700,10 +700,10 @@
  .app-version{position: absolute; bottom:10px;}
  .ticket-summary-div{margin-top:5px !important;}
  .color-green{color: green;}
- .materials-heading{font-weight: 500; color: #343a40; text-align: center;}
+ .materials-heading{font-weight: 500; color: #343a40; text-align: center; font-size: 15px;}
 
  .ticket-details-p{margin-bottom: 0;}
- .btn-back{padding:2px 8px !important;}
+ .{padding:2px 8px !important;}
  .-inner{
   margin-bottom: 10px; 
   width: 100%; padding: 5px !important; color: #fff;
@@ -743,7 +743,7 @@
  .adjustment-name-edit-ul li{list-style: none; display: inline-block; margin: 0 5px;}
  .btn-adjustment-pg{border:1px solid grey !important; color: #02659d !important; padding: 2px 5px !important;}
  .adjustment-name-edit-ul li h4{font-size: 12px; line-height: 22px;}
- .btn-back-2{margin-right: 10px;}
+ .-2{margin-right: 10px;}
  .img-responsive{width:100%;}
  .pd-imgs{background:#f5f5f5; padding:10px; border:1px solid transparent;}
  .pd-imgs:hover{background: aliceblue; border:1px solid grey;}

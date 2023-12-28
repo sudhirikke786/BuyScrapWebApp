@@ -111,7 +111,7 @@
                 <div class="modal-header">
                     <!-- <h4 class="modal-title" id="myLargeModalLabel">New Regrade</h4> -->
                     <a data-bs-target="#new-regrade" data-bs-toggle="modal" data-bs-dismiss="modal"
-                        class="btn btn-primary btn-back" title="Back to New Regrade"><i
+                        class="btn btn-primary " title="Back to New Regrade"><i
                             class="mdi mdi-keyboard-backspace"></i></a>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -181,7 +181,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <!-- <h4 class="modal-title" id="myLargeModalLabel">New Regrade</h4> -->
-                    <a data-bs-dismiss="modal" class="btn btn-primary btn-back" title="Back to New Regrade"><i
+                    <a data-bs-dismiss="modal" class="btn btn-primary " title="Back to New Regrade"><i
                             class="mdi mdi-keyboard-backspace"></i></a>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -306,7 +306,7 @@
 
     <ng-template pTemplate="header">
         <div>
-            <a (click)="hideModel()" data-bs-dismiss="modal" class="btn btn-primary btn-back"
+            <a (click)="hideModel()" data-bs-dismiss="modal" class="btn btn-primary "
                 title="Back to New Regrade"><i class="mdi mdi-keyboard-backspace"></i></a>
 
         </div>
@@ -358,7 +358,7 @@
 
     <ng-template pTemplate="header">
         <div>
-            <a (click)="hideRegrateDeatilModel()" data-bs-dismiss="modal" class="btn btn-primary btn-back"
+            <a (click)="hideRegrateDeatilModel()" data-bs-dismiss="modal" class="btn btn-primary "
                 title="Back to New Regrade"><i class="mdi mdi-keyboard-backspace"></i></a>
 
         </div>
@@ -399,14 +399,16 @@
                         <input type="text" id="stockAfterRegrade" name="stockAfterRegrade"
                         [(ngModel)]="stockAfterRegrade" class="form-control"
                         placeholder="Select Amount to Regrade">
-                    </div>                    
+                    </div>  
+                    
+                 
                 </div>
-                <a class="btn btn-primary ">Add</a>
+                <div class="col-3">
+                    <a class="btn btn-primary ">Save</a>
+                </div>
+              
                 
-                <div class="row" >
-
-                </div>
-                <a class="btn btn-primary ">Save</a>
+            
             </form>
         </div>
 
