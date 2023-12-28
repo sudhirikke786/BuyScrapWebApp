@@ -110,8 +110,6 @@ export class ShipoutDetailsComponent implements OnInit {
   adjustmentNote = '';
   selectedAdjustment = 'Certified Destruction Cost ';
   selectedRowObj: any;
-  saveConfirmVisible = false;
-  paymentVisible = false;
   isReceiptPrint = false;
 
   fileDataObj: any;
@@ -364,12 +362,11 @@ export class ShipoutDetailsComponent implements OnInit {
 
 
   confirmSave() {
-    this.saveConfirmVisible = true;
+    alert('Saving record & opening printer');
   }
 
   showPayment(isReceiptPrint: boolean){
     this.isReceiptPrint = isReceiptPrint;
-    this.paymentVisible =  true;
     this.payAmount = this.totalAmount - this.ticketData?.paidAmount;
     this.showSection('Cash');
   }
@@ -422,7 +419,6 @@ export class ShipoutDetailsComponent implements OnInit {
       console.log(error);  
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
-    this.paymentVisible =  false;
     this.saveConfirmVisible = false;
   }
 
@@ -479,7 +475,6 @@ export class ShipoutDetailsComponent implements OnInit {
       // this.confirmSave();
       // alert('Ticket Inserted/ updated successfully');
      // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
-      this.saveConfirmVisible = false;
       this.cancelEditTicket();
       if (isReceiptPrint) {
         this.generateSingleTicketReport();
