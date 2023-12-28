@@ -242,13 +242,6 @@ export class CashdrawerDashboardComponent implements OnInit {
       this.cashdrawerClosingdetail.action = 'Close';
       // POST call
       this.saveRegister(this.cashdrawerClosingdetail);
-      // Redirect to user login page
-      const orgName = localStorage.getItem('orgName');
-      if (orgName && orgName != '') {
-        localStorage.removeItem('userFullName');
-        localStorage.removeItem('token');
-        this.router.navigateByUrl(`${orgName}/user-login`);
-      }
     } else {
       // alert('Total Amount is not matched with Cash Drawer Balance');      
       this.closeRegisterWithDiffernceVisible = true;
@@ -271,11 +264,24 @@ export class CashdrawerDashboardComponent implements OnInit {
     
     this.commonService.insertCashDrawerDetails(newCashDrawerdetail).subscribe(data =>{    
       console.log(data); 
+      let text = "Do you want to print receipt?";
+      if (confirm(text) == true) {
+        alert("You pressed OK!");
+      }
+
       // alert('Cash Drawer Detail saved successfully');
       // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
-      
       this.hideCloseRegister();
       this.hideReopenRegister();
+      // Redirect to user login page
+      const orgName = localStorage.getItem('orgName');
+      if (orgName && orgName != '') {
+        localStorage.removeItem('userFullName');
+        localStorage.removeItem('token');
+        localStorage.removeItem('userObj');
+        localStorage.removeItem('locId');
+        this.router.navigateByUrl(`${orgName}/user-login`);
+      }
     },(error: any) =>{  
       console.log(error);  
       alert('Error!!! Cash Drawer Detail not saved..');
@@ -315,6 +321,8 @@ export class CashdrawerDashboardComponent implements OnInit {
     if (orgName && orgName != '') {
       localStorage.removeItem('userFullName');
       localStorage.removeItem('token');
+      localStorage.removeItem('userObj');
+      localStorage.removeItem('locId');
       this.router.navigateByUrl(`${orgName}/user-login`);
     }
   }

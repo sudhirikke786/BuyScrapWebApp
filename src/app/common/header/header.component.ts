@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
   differntOpeningAmount: number = 0.00;
   mobileName: any;
   cashAmount:any;
+  numberFormat: string = '1.3-3';
   constructor(private route: ActivatedRoute,
     private router: Router,
     public dataService: DataService,
@@ -94,12 +95,13 @@ export class HeaderComponent implements OnInit {
           console.log(data);
           // this.dataService.cashDrawerAmountDTO(data);
           this.cashDrawerBalanceAmount = data.body.data.amount;
-          this.dataService.setCashDrawerAmountDTO(this.cashDrawerBalanceAmount)
 
           if (data.body.data.status.toUpperCase() === 'CLOSE') {
             this.isReopenRegister = true;
+            this.dataService.setCashDrawerAmountDTO(0);
           } else {
             this.isReopenRegister = false;
+            this.dataService.setCashDrawerAmountDTO(this.cashDrawerBalanceAmount);
           }
         },
         (err: any) => {
@@ -165,7 +167,8 @@ export class HeaderComponent implements OnInit {
     
     this.commonService.insertCashDrawerDetails(newCashDrawerdetail).subscribe(data =>{    
       console.log(data); 
-      alert('Cash Drawer Detail saved successfully');
+      alert('Cash Drawer Detail saved successfully');      
+      this.dataService.setCashDrawerAmountDTO(newCashDrawerdetail.totalAmount);
       // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       
       this.hideCloseRegister();

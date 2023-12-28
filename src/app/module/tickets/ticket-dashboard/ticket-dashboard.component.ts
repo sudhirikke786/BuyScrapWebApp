@@ -192,7 +192,7 @@ export class TicketDashboardComponent implements OnInit {
         console.log('getAllTicketsDetails :: ');
         console.log(data);
         this.tickets = data.body.data.map((item:any) => {
-          item.statusClass = this.getColor(item.status);
+          item.statusClass = this.getColor(item.status, item.isParent);
           return item;
         });
         this.pageTotal = data?.body?.totalRecord
@@ -210,7 +210,7 @@ export class TicketDashboardComponent implements OnInit {
   }
 
 
-  getColor(type: any) {
+  getColor(type: any, isParent: boolean) {
 
     //     .text-primary
 
@@ -251,9 +251,13 @@ export class TicketDashboardComponent implements OnInit {
         break;
       case 'balance owed':
           statusClassName = 'text-warning'
-      break;
+        break;
       case 'partially paid':
-        statusClassName = 'text-info'
+        if (isParent) {
+          statusClassName = 'text-dark';
+        } else {
+          statusClassName = 'text-info';
+        }
         break;
       default:
         statusClassName = 'text-dark'

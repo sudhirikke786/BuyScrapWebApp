@@ -15,11 +15,11 @@ export class PrinterTypeComponent implements OnInit {
 
   
   ngOnInit() {
-    this.defaultReceiptPrinter = 'Normal';
+    this.defaultReceiptPrinter = localStorage.getItem('defaultPrintSize') || 'Normal';
   }
 
   savePrintOption(){
-    alert(this.defaultReceiptPrinter);
+    // alert(this.defaultReceiptPrinter);
     localStorage.setItem('defaultPrintSize',this.defaultReceiptPrinter)
   }
 

@@ -809,7 +809,7 @@ export class TicketDetailComponent implements OnInit {
     const param = {
       TicketId: this.ticketId,
       LocationId: this.locId,
-      Type: 'A4Size' //localStorage.getItem('defaultPrintSize')
+      Type: localStorage.getItem('defaultPrintSize')
     }
 
     this.commonService.generateSingleTicketReport(param)
