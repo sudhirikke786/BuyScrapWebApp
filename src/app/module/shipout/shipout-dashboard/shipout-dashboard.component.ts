@@ -49,7 +49,8 @@ export class ShipoutDashboardComponent implements OnInit {
   sellers: any;
 
   visible = false;
-  custVisible=  false;
+  newDriverScreenVisible=  false;
+  selectedSellerId: any;
   orgName: any;
   locId: any;  
 
@@ -116,10 +117,18 @@ export class ShipoutDashboardComponent implements OnInit {
 
   showCustomerModel(sellerId: any){
     // alert(sellerId);
-    this.custVisible = true;
+    this.newDriverScreenVisible = true;
+    this.selectedSellerId = sellerId;
   }
+
+  saveDriverInfo() {
+    this.newDriverScreenVisible = false;
+    this.router.navigateByUrl(`/${this.orgName}/ship-out/detail/new/${this.selectedSellerId}`);
+
+  }
+
   closeDriver(){
-    this.custVisible = false;
+    this.newDriverScreenVisible = false;
   }
 
 

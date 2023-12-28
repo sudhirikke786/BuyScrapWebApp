@@ -13,6 +13,7 @@ import { SignaturePadComponent } from './signature-pad/signature-pad.component';
 import { ThumbFingerComponent } from './thumb-finger/thumb-finger.component';
 import { PenSignatureComponent } from './pen-signature/pen-signature.component';
 import { PageLoaderComponent } from '../page-loader/page-loader.component';
+import { MaterialCalculatorComponent } from './material-calculator/material-calculator.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PageLoaderComponent } from '../page-loader/page-loader.component';
     SignaturePadComponent,
     ThumbFingerComponent,
     PenSignatureComponent,
-    PageLoaderComponent
+    PageLoaderComponent,
+    MaterialCalculatorComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { PageLoaderComponent } from '../page-loader/page-loader.component';
     SignaturePadComponent,
     ThumbFingerComponent,
     PenSignatureComponent,
-    PageLoaderComponent
+    PageLoaderComponent,
+    MaterialCalculatorComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
