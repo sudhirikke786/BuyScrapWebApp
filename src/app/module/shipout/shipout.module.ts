@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -8,6 +8,7 @@ import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 
 import { ShipoutDashboardComponent } from './shipout-dashboard/shipout-dashboard.component';
 import { ShipoutDetailsComponent } from './shipout-details/shipout-details.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 
 export const routes: Routes = [
@@ -16,7 +17,7 @@ export const routes: Routes = [
     component: ShipoutDashboardComponent
   },
   {
-    path: 'details/:shipoutId',
+    path:'detail/:ticketId/:customerId',
     component: ShipoutDetailsComponent
   }
 ]
@@ -32,7 +33,10 @@ export const routes: Routes = [
     CommonsharedModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
+    NgxExtendedPdfViewerModule,
     PrimengModule
-  ]
+  ],
+  providers: [DatePipe],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class ShipoutModule { }
