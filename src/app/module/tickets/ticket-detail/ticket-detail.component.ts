@@ -100,7 +100,7 @@ export class TicketDetailComponent implements OnInit {
   activeSection: string = '';
 
   payAmount: number = 0;
-  selectedCheckDate: any;
+  selectedCheckDate:any;
   checkNumber: string = '';
   ePaymentType: string = '';
 
@@ -119,7 +119,8 @@ export class TicketDetailComponent implements OnInit {
   fileDataObj: any;
   showDownload = false;
   isLoading = false;
-
+  systemInfo:any;
+  isEnable =  true;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -130,6 +131,14 @@ export class TicketDetailComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+  
+    const _dataObj : any = this.stroarge.getLocalStorage('systemInfo');
+    if(_dataObj){
+      const isElectronic = _dataObj.filter((item:any) => item?.keys?.toLowerCase() == 'iselectronicpayment')[0];
+      this.systemInfo =  isElectronic?.values;
+    }
+   
+
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
@@ -380,17 +389,38 @@ export class TicketDetailComponent implements OnInit {
 
   showSection(paymentType: string) {
     this.activeSection =  paymentType;
-    this.selectedCheckDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+
+   setTimeout(()=>{
+    this.selectedCheckDate = new Date().toISOString();
+   },10)
     this.checkNumber = '';
     this.ePaymentType = '';
   }  
 
   payAndSave(activeSection: string) {
+
+    if(!this.payAmount){
+      alert('Enter Amount');
+      return 
+    }
+
+  if(this.activeSection =='Check') {
+    if(this.checkNumber.length == 0){
+      alert('Enter Check Number');
+      return 
+    }
+
+  } else if(this.activeSection=='Electronic Payment'){
+    if(this.ePaymentType?.length == 0){
+      alert('Enter Electronic Payment Type');
+      return 
+    }
+  }
     // alert(this.selectedCheckDate);
     // alert(this.payAmount);
     // alert(this.checkNumber);
     // alert(this.ePaymentType);
-
+   
     
     if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.ticketData?.paidAmount)) {
       alert('Please enter valid amount!!!');

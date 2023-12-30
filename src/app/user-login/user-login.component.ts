@@ -120,11 +120,34 @@ export class UserLoginComponent implements OnInit {
     }    
     const locationName = this.loginForm.value.locationName;
     const req = {...this.loginForm.value,locID:Number(this.loginForm.value.locID)};
-    this.commonService.validateUserCredentials(req).subscribe(data => {
+    this.commonService.validateUserCredentials(req).subscribe(async(data) => {
       this.localService.setLocalStorage('locId',Number(this.loginForm.value.locID)); 
       localStorage.setItem('locationName',locationName)
           if (data?.body.token!='' && data?.body.userdto.userName) {
-            this.localService.setLocalStorage('userObj',data?.body);       
+            this.localService.setLocalStorage('userObj',data?.body);   
+            
+               const systemInfo = await this.getSystemPreferencesValue(); 
+
+            //  const obj =  systemInfo?.body?.data?.reduce((result:any,item:any) => {
+            //   const keyValue = item['keys'];
+
+            //   // If the key doesn't exist in the result, create an empty array for it
+            //   if (!result[keyValue]) {
+            //     result[keyValue] = [];
+            //   }
+          
+            //   // Push the current item into the array for the corresponding key
+            //   result[keyValue].push(item);
+          
+            //   return result;
+            // },{})
+            // console.log(obj)
+
+            if(systemInfo?.body?.data){
+              this.localService.setLocalStorage('systemInfo',systemInfo?.body?.data)   
+            }
+           
+           console.log(systemInfo?.body?.data);  
             this.router.navigateByUrl(`/${this.organizationName}/home`);
           } else {
             alert('Invalid User Credentials.');
@@ -139,5 +162,17 @@ export class UserLoginComponent implements OnInit {
         }
       );
   }
+
+  getSystemPreferencesValue(){
+    let reqObj = {
+      Key:'',
+      ManageByStore:true
+    }
+    return this.commonService.GetSystemPreferencesValue(reqObj).toPromise()
+
+   }
+   
+
+  
 
 }
