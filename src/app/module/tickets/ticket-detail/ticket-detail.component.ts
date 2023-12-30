@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
-import { MessageService } from 'primeng/api';
+import { MessageService,ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
 import { WebcamImage } from 'ngx-webcam';
 import { TicketItem } from 'src/app/core/model/ticket-item.model';
@@ -14,7 +14,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
   selector: 'app-ticket-detail',
   templateUrl: './ticket-detail.component.html',
   styleUrls: ['./ticket-detail.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService,ConfirmationService]
 })
 export class TicketDetailComponent implements OnInit {
   [x: string]: any;
@@ -127,6 +127,7 @@ export class TicketDetailComponent implements OnInit {
     private datePipe: DatePipe,
     private messageService: MessageService,
     private stroarge:StorageService,
+    private confirmationService: ConfirmationService,
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -391,30 +392,34 @@ export class TicketDetailComponent implements OnInit {
     this.activeSection =  paymentType;
 
    setTimeout(()=>{
-    this.selectedCheckDate = new Date().toISOString();
+    this.selectedCheckDate = new Date().toISOString().split('T')[0];
    },10)
     this.checkNumber = '';
     this.ePaymentType = '';
   }  
 
   payAndSave(activeSection: string) {
-
+    
     if(!this.payAmount){
       alert('Enter Amount');
       return 
     }
-
+  let msg = 'Do You want to print receipt?'
   if(this.activeSection =='Check') {
-    if(this.checkNumber.length == 0){
+    msg = 'Please insert Check into Printer and click on Yes Button   '
+    if(this.checkNumber.length == 0){  
       alert('Enter Check Number');
       return 
     }
-
+  
   } else if(this.activeSection=='Electronic Payment'){
+    msg = 'Do You want to print receipt?'
     if(this.ePaymentType?.length == 0){
       alert('Enter Electronic Payment Type');
       return 
     }
+  }else{
+    msg= 'You selected as Cash as payment mode please confirm ?';
   }
     // alert(this.selectedCheckDate);
     // alert(this.payAmount);
@@ -428,9 +433,44 @@ export class TicketDetailComponent implements OnInit {
     }
 
 
-    // return;
+    this.showConfirmation(activeSection,msg);
 
-    const transactionObj = {
+
+    
+
+
+
+   
+  }
+
+  showConfirmation(pos:any,confirmMessage:any) {
+    // this.saveConfirmVisible = false;
+    // this.paymentVisible = false;
+    
+
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: confirmMessage,
+      accept: () => {
+        // Action to take when the user clicks "Yes" or "OK"
+        console.log('Confirmed');
+        this.saveTransactionData(pos);
+        // Add your logic here
+      },
+      reject: () => {
+        // Action to take when the user clicks "No" or "Cancel"
+        console.log('Rejected');
+        // Add your logic here
+      },
+    });
+  }
+
+
+  saveTransactionData(activeSection:any){
+
+     // return;
+
+     const transactionObj = {
       rowId: 0,
       createdBy: this.logInUserId,
       createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
@@ -457,7 +497,13 @@ export class TicketDetailComponent implements OnInit {
     });
     this.paymentVisible =  false;
     this.saveConfirmVisible = false;
+
   }
+
+
+
+
+
 
   saveTicketDetails(paidAmount: number, isReceiptPrint: boolean) {
     // alert(paidAmount);

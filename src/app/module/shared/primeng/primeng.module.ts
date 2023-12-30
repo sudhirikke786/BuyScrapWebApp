@@ -16,6 +16,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CheckboxModule } from 'primeng/checkbox';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [],
@@ -32,7 +33,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     SkeletonModule,
     PaginatorModule,
     ConfirmDialogModule,
-    CheckboxModule
+    CheckboxModule,
+    InputSwitchModule
   ],
   exports:[
     InputTextModule,
@@ -49,7 +51,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     SkeletonModule,
     ContextMenuModule,
     ConfirmDialogModule,
-    CheckboxModule
+    CheckboxModule,
+    InputSwitchModule
   ]
 })
 export class PrimengModule { }

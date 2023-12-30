@@ -242,23 +242,31 @@
                                         </div>
                                         
                                         <div class="row mt-2">   
-                                            <div class="col-md-5 col-lg-6 col-sm-6">    
+                                            <div class="col-md-7 col-lg-7 col-sm-7">    
                                          
                                                     <div class="ticket-summary-div d-flex justify-content-start align-item-center">
                                                         <div class="me-2">
                                                             <b class="fz-14">Paid Amount  {{ticketData?.paidAmount | number : '1.3-3'}}</b>
                                                         </div>
             
-                                                        <div class="ms-2">
+                                                        <div class="ms-2 me-2">
                                                             <b class="fz-14">Balance Amount  {{totalAmount - ticketData?.paidAmount | number : '1.3-3'}}</b>
                                                         </div> 
+                                                        <div class="ms-2">
+                                                            <div class="d-flex justify-content-start align-items-center">
+                                                                <div><p-inputSwitch  [(ngModel)]="ticketData.isCOD"></p-inputSwitch></div>
+                                                                <div class="ms-2">COD <span *ngIf="!ticketData.isCOD">Required</span></div> 
+                                                            </div>
+                                                          
+
+                                                        </div>
                                                     </div>
                                                    
         
                                                 
                                             </div>
         
-                                            <div class="col-md-7 col-lg-6 col-sm-6">    
+                                            <div class="col-md-5 col-lg-5 col-sm-5">    
                                                 <div class="d-flex justify-content-end">
                                                  
         
@@ -620,9 +628,9 @@
         <span class="text-xl font-bold text-info text-center" style="font-size: 14px;"> Please select Option</span>  
     </div>
     <div class="d-flex justify-content-center">
-        <div> <button class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)">Pay Amount without printing</button></div>
-        <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveTicketDetails(0, true)">Print and Save</button></div>
-        <div><button class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)">Pay Amount and Print </button></div>
+        <div> <button class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">Pay Amount without printing</button></div>
+        <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveTicketDetails(0, true)" style="line-height: 18px  !important;">Print and Save</button></div>
+        <div><button class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)"  style="line-height: 18px  !important;">Pay Amount and Print </button></div>
     </div>
 
     <div class="d-flex justify-content-center mt-2">
@@ -737,13 +745,13 @@
                         <div class="col-sm-5 ms-2" *ngIf="activeSection === 'Electronic Payment'">
                             <div class="mb-3">
                                 <label for="" class="form-label">Electronic Payment Type</label>
-                                <input type="text" name="ePaymentType" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                                <input type="text" name="ePaymentType" id="" [(ngModel)]="ePaymentType" class="form-control" placeholder="" aria-describedby="helpId">
                             </div>
                         </div>
                         <div class="col-sm-5 form-group" *ngIf="activeSection === 'Check'">
                             <label for="floatingInput">Check Date</label>
         
-                            <input type="date" name="checkDate" id="checkDate" [(ngModel)]="selectedCheckDate" class="form-control" placeholder="Check Date">
+                            <input type="date" name="checkDate" id="checkDate" [min]="selectedCheckDate" [(ngModel)]="selectedCheckDate" class="form-control" placeholder="Check Date">
                         </div>
                     </form>
         
@@ -772,3 +780,4 @@
 
 
 <p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
