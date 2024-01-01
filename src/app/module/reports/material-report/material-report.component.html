@@ -102,10 +102,15 @@
             <!-- ============================================================== -->
             <!-- End Page content -->
             <!-- ============================================================== -->
-            <p-dialog [modal]="true" header="Material Report" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
+            <p-dialog [modal]="true" header="Material Report" [(visible)]="isReportShow" [modal]="true" [style]="{ width: '70vw' }">
+              
+              <div *ngIf="showDownload">
+                <app-page-loader type="reportloader"></app-page-loader>
+              </div>
+             
 
-              <div class="row" >
-                <div style="height: 500px;" *ngIf="showDownload">
+              <div class="row">
+                <div style="height: 500px;width:100%" *ngIf="!showDownload">
                 
                   <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
 

@@ -45,6 +45,7 @@ export class MaterialReportComponent implements OnInit {
   fileDataObj: any;
   showDownload = false;
   showLoader = false;
+  isReportShow = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -87,27 +88,26 @@ export class MaterialReportComponent implements OnInit {
   }
 
   generateMaterialReport() {
-
+   this.isReportShow = true;
     const param = {
       LocationId: this.locId,
       FromDate: this.fromDate,
       Todate: this.toDate
     }
-    this.showLoader =  true;
-
+    this.showDownload =  true;
     this.commonService.generateMaterialReport(param)
       .subscribe(data => {
         console.log('generateMaterialReport :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
-        this.showDownload = true;
+        this.showDownload = false;
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
-          this.showLoader =  false;
+          this.showDownload =  false
         },
         () => {
-          this.showLoader =  false;
+          this.showDownload =  false
         }
       );
   }

@@ -45,6 +45,8 @@ export class CashDrawerReportComponent implements OnInit {
   fileDataObj: any;
   showDownload = false;
   showLoader = false;
+  isReportShow = false;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -89,20 +91,22 @@ export class CashDrawerReportComponent implements OnInit {
 
   generateCashDrawerReport() {
 
+    this.isReportShow = true;
     const param = {
       LocId: this.locId,
       FromDate: this.fromDate,
       Todate: this.toDate
     }
-
+    this.showDownload = true;
     this.commonService.generateCashDrawerReport(param)
       .subscribe(data => {
         console.log('generateCashDrawerReport :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
-        this.showDownload = true;
+        this.showDownload = false;
       },
         (err: any) => {
+          this.showDownload = false;
           // this.errorMsg = 'Error occured';
         }
       );

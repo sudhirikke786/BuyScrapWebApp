@@ -49,7 +49,8 @@ export class SubMaterialReportComponent implements OnInit {
   fileDataObj: any;
   showDownload = false;
   showLoader  = false;
-
+  isReportShow = false;
+  showLoaderReport = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -60,7 +61,7 @@ export class SubMaterialReportComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.setDefaultDate();
     this.getAllGroupMaterial();
-    this.getSubMaterialsReport();
+   // this.getSubMaterialsReport();
   }
 
   setDefaultDate() {
@@ -73,19 +74,19 @@ export class SubMaterialReportComponent implements OnInit {
   }
 
   getSubMaterialsReport() {
-
     const param = {
       SubMaterialId: this.defaultSelectedSubMaterial,
       LocationId: this.locId,
       FromDate: this.fromDate,
       Todate: this.toDate
     }
+   
     this.showLoader  = true; 
-
     this.commonService.getSubMaterialsReport(param)
       .subscribe(data => {
         console.log('getSubMaterialsReport :: ');
         console.log(data);
+        this.showLoader  = false; 
         this.reportData = data.body.data;
       },
         (err: any) => {
@@ -99,6 +100,7 @@ export class SubMaterialReportComponent implements OnInit {
   }
 
   generateSubMaterialsReport() {
+    this.isReportShow = true;
 
     const param = {
       SubMaterialId: this.defaultSelectedSubMaterial,
@@ -106,15 +108,18 @@ export class SubMaterialReportComponent implements OnInit {
       FromDate: this.fromDate,
       Todate: this.toDate
     }
+    this.showLoaderReport  = true; 
 
     this.commonService.generateSubMaterialsReport(param)
       .subscribe(data => {
         console.log('generateSubMaterialsReport :: ');
         console.log(data);
+        this.showLoaderReport  = false; 
         this.fileDataObj = data.body.data;
-        this.showDownload = true;
+       
       },
         (err: any) => {
+          this.showLoaderReport  = false; 
           // this.errorMsg = 'Error occured';
         }
       );

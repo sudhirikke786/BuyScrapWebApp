@@ -49,6 +49,9 @@ export class InventoryReportComponent implements OnInit {
   fileDataObj: any;
   showDownload = false;
   showLoader = false;
+  isReportShow = false;
+  showLoaderReport = false;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -59,7 +62,7 @@ export class InventoryReportComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.setDefaultDate();
     this.getAllGroupMaterial();
-    this.getInventoryReport();
+  //  this.getInventoryReport();
   }
 
   setDefaultDate() {
@@ -76,20 +79,23 @@ export class InventoryReportComponent implements OnInit {
       MaterialID: this.defaultSelectedMaterial,
       SubMaterialID: this.defaultSelectedSubMaterial
     }
-    this.showLoader = true;
+    this.isReportShow = true;
+    this.showLoaderReport = true;
 
     this.commonService.getInventoryReport(param)
       .subscribe(data => {
         console.log('getInventoryReport :: ');
         console.log(data);
+        this.showLoaderReport = false;
+
         this.reportData = data.body.data;
       },
         (err: any) => {
-          this.showLoader = false;
+          this.showLoaderReport = false;
           // this.errorMsg = 'Error occured';
         },
         () =>{
-          this.showLoader = false;
+          this.showLoaderReport = false;
         }
       );
   }
@@ -156,7 +162,8 @@ export class InventoryReportComponent implements OnInit {
         break;
       case 'mdi-download':
         console.log(this.fileDataObj);
-        this.showDownload = true;
+        this.getInventoryReport();
+      
         break;
       default:
         break;

@@ -48,6 +48,8 @@ export class SingleTicketsReportComponent implements OnInit {
   showDownload = false;
 
   showLoader = false;
+  showLoaderReport = false;
+  isReportShow = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -100,6 +102,9 @@ export class SingleTicketsReportComponent implements OnInit {
 
   generateSingleTicketReport() {
 
+    this.isReportShow = true;
+    this.showLoaderReport = true;
+
     const param = {
       TicketId: 3093,
       LocationId: this.locId,
@@ -110,10 +115,12 @@ export class SingleTicketsReportComponent implements OnInit {
       .subscribe(data => {
         console.log('generateSingleTicketReport :: ');
         console.log(data);
+        this.showLoaderReport = false;
         this.fileDataObj = data.body.data;
-        this.showDownload = true;
+       
       },
         (err: any) => {
+          this.showLoaderReport = false;
           // this.errorMsg = 'Error occured';
         }
       );

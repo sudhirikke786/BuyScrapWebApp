@@ -45,6 +45,8 @@ export class VoidTicketReportComponent implements OnInit {
   fileDataObj: any;
   showDownload = false;
   showLoader =  false;
+  showLoaderReport = false;
+  isReportShow = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -96,21 +98,24 @@ export class VoidTicketReportComponent implements OnInit {
   }
 
   generateVoidTicketReport() {
-
+    this.isReportShow = true;
     const param = {
       LocationId: this.locId,
       FromDate: this.fromDate,
       Todate: this.toDate
     }
+    this.showLoaderReport = true;
+
 
     this.commonService.generateVoidTicketReport(param)
       .subscribe(data => {
-        console.log('generateVoidTicketReport :: ');
-        console.log(data);
-        this.fileDataObj = data.body.data;
-        this.showDownload = true;
+     
+       
+        this.showLoaderReport = false;
+        this.fileDataObj = data?.body?.data;
       },
         (err: any) => {
+          this.showLoaderReport = false;
           // this.errorMsg = 'Error occured';
         }
       );

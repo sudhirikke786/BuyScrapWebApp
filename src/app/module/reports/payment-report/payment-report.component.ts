@@ -50,7 +50,8 @@ export class PaymentReportComponent implements OnInit {
 
   fileDataObj: any;
   showLoader = false;
-  
+  isReportShow = false;
+  showLoaderReport = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -101,15 +102,19 @@ export class PaymentReportComponent implements OnInit {
       FromDate: this.fromDate,
       Todate: this.toDate
     }
+    this.isReportShow = true;
+    this.showLoaderReport = true;
 
     this.commonService.generatePaymentReport(param)
       .subscribe(data => {
         console.log('generatePaymentReport :: ');
         console.log(data);
-        this.fileDataObj = data.body.data;
-        this.showDownload = true;
+        this.showLoaderReport = false;
+        this.fileDataObj = data?.body?.data;
+       
       },
         (err: any) => {
+          this.showLoaderReport = false;
           // this.errorMsg = 'Error occured';
         }
       );

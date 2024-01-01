@@ -75,13 +75,29 @@
                 </tr>
             </ng-template>
         </p-table>
-
+ 
 
     </div>
 
     <div *ngSwitchCase="'image'">
 
         <div class="row mb-3 mt-3">
+
+            <div class="d-flex  justify-content-start mb-5 mt-3" >
+
+                <div class="col-sm-8 me-2"> <p-skeleton height="3rem"></p-skeleton></div>
+                
+                <div class="col-sm-4"> 
+                    <div class="d-flex justify-content-center align-items-center">
+                        <p-skeleton width="7rem" height="2rem" class="me-2"></p-skeleton>
+                        <p-skeleton width="4rem" height="2rem" class="me-2"></p-skeleton>
+                       
+                        <p-skeleton width="4rem" height="2rem"></p-skeleton></div>
+                    </div>
+                    
+    
+            </div>
+
             <div class="col-sm-2" *ngFor="let item of products">
                 <div class="me-2">
                     <p-skeleton width="12rem"  height="10rem" styleClass="mb-2"></p-skeleton>
@@ -101,6 +117,42 @@
 
 
     </div>
+    <div *ngSwitchCase="'reportloader'">
+
+        <div class="row mb-3 mt-3">
+
+            <div class="d-flex  justify-content-center mb-5 mt-3" >
+
+                <div class="col-sm-12 me-2">
+                    <div>
+                        <p-skeleton width="100%" height="3rem" class="me-2"></p-skeleton>
+
+                    </div>
+                    
+                    <div class="mt-1">
+                        <p-skeleton width="100%" height="450px" class="me-2"></p-skeleton>
+
+                    </div>
+                    
+                
+                
+                    </div>
+                
+                
+                    
+    
+            </div>
+
+           
+          
+        </div>
+
+
+        
+
+
+    </div>
+
     <div *ngSwitchDefault>
 
         <div class="border-round border-1 surface-border p-4 surface-card">
