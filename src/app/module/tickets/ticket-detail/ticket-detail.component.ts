@@ -404,9 +404,15 @@ export class TicketDetailComponent implements OnInit {
       alert('Enter Amount');
       return 
     }
-  let msg = 'Do You want to print receipt?'
+    if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.ticketData?.paidAmount)) {
+      alert('Please enter valid amount!!!');
+      return;
+    }
+
+  let msg = 'Do You want to print receipt?';
+
   if(this.activeSection =='Check') {
-    msg = 'Please insert Check into Printer and click on Yes Button   '
+    msg = 'Do You want to print receipt?'
     if(this.checkNumber.length == 0){  
       alert('Enter Check Number');
       return 
@@ -421,17 +427,9 @@ export class TicketDetailComponent implements OnInit {
   }else{
     msg= 'You selected as Cash as payment mode please confirm ?';
   }
-    // alert(this.selectedCheckDate);
-    // alert(this.payAmount);
-    // alert(this.checkNumber);
-    // alert(this.ePaymentType);
-   
     
-    if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.ticketData?.paidAmount)) {
-      alert('Please enter valid amount!!!');
-      return;
-    }
-
+    
+  
 
     this.showConfirmation(activeSection,msg);
 
