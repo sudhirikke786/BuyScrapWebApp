@@ -72,10 +72,12 @@ export class RegradeDashboardComponent implements OnInit {
   defaultSelectedMaterial: any;
   newSelectedMaterial: any;
   materialList: any;
-  
   orgName: any;
   locId: any;
-  
+  metarialObj:any = [];
+
+  stockQuanity: number = 0;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     public commonService: CommonService) { }
@@ -176,6 +178,17 @@ export class RegradeDashboardComponent implements OnInit {
 
   hideModel() {
     this.ShowmodelRegrate = false;
+  }
+
+
+  addMetarial() {
+   const _name = this.materialList.filter((item:any)=>item.rowId==this.newSelectedMaterial)[0];
+   this.metarialObj.push({name:_name.materialName,quanitity:this.stockQuanity})
+    console.log(this.metarialObj);
+  }
+  removeQuantty(index:number){
+
+    this.metarialObj.splice(index,1);
   }
 
   getAction(actionCode: any) {

@@ -273,7 +273,7 @@
 
 <div class="row mt-3"  *ngIf="!subMaterialLoader">
 
-    <p-table [value]="subMaterialList" [scrollable]="true" scrollHeight="40vh" [paginator]="false" [rows]="1000"
+    <p-table [value]="subMaterialList" [scrollable]="true" scrollHeight="40vh" [paginator]="false" 
         [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }">
 
         <ng-template pTemplate="header">
@@ -396,15 +396,44 @@
                     </div>    
                     <div class="form-group col-sm-6 mb-2 d-flex">
                         <label for="simpleinput" class="form-label">Stock After Regrade</label>          
-                        <input type="text" id="stockAfterRegrade" name="stockAfterRegrade"
-                        [(ngModel)]="stockAfterRegrade" class="form-control"
+                        <input type="text" id="stockQuanity" name="stockQuanity"
+                        [(ngModel)]="stockQuanity" class="form-control"
                         placeholder="Select Amount to Regrade">
                     </div>  
                     
                  
                 </div>
-                <div class="col-3">
-                    <a class="btn btn-primary ">Save</a>
+
+                <a class="btn btn-primary " (click)="addMetarial()">Add</a>
+
+
+
+                <!-- <div class="form-group col-sm-6 mb-2 d-flex">
+                    <label for="simpleinput" class="form-label">Stock After Regrade :</label>
+                    <input type="text" id="stockafterregrade" ([ngModel])="stockQuanity" class="form-control">
+                </div> -->
+
+
+
+
+                <table class="table border">
+                    <tr>
+                        <th>Material Name</th>
+                        <th>Quantity</th>
+                    </tr>
+                  
+
+                    <tr *ngFor="let item of metarialObj;let i=index">
+                        <td>{{item?.name}}</td>
+                        <td>{{item?.quanitity}}</td>
+                        <td><a class="btn btn-danger" style="background-color:#cd303f!important" (click)="removeQuantty(i)">Remove</a></td>
+                    </tr>
+                </table>
+
+
+
+                <div class="col-3" *ngIf="metarialObj.length > 0">
+                    <a class="btn btn-primary"> Save</a>
                 </div>
               
                 
