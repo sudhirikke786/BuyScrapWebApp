@@ -97,7 +97,8 @@ export class CertificatesDashboardComponent implements OnInit {
   checkOBj: any;
   currentIndex: any;
   isConfirmModel: boolean = false;
-
+  certificateDesc:any;
+  materialDesc:any;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private confirmationService: ConfirmationService, 
