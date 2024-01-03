@@ -45,7 +45,7 @@
                                             <i class="mdi mdi-pencil"></i> Edit
                                         </a>
                                         <div *ngIf="isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
-                                            <a class="btn btn-danger me-1" (click)="cancelEditTicket()">Cancel</a>
+                                            <a class="btn btn-danger me-1" (click)="cancelEditTicket(false, 0)">Cancel</a>
                                             <a class="btn btn-primary" (click)="confirmSave()">Save</a>
                                         </div>
 
@@ -221,7 +221,7 @@
                                                             <th style="width: 12%;">Net</th>
                                                             <th style="width: 12%;">Rounding</th>
                                                             <th style="width: 20%;">Amount</th>
-                                                            <th style="width: 20%;">Actual Amount1</th>
+                                                            <th style="width: 20%;">Actual Amount</th>
                                                     </tr></thead>
         
                                                     <tbody> 
@@ -272,7 +272,7 @@
         
                                                     <div *ngIf="!isEditModeOn" class="pay-print-box">
                                                         <a *ngIf="ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid'" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
-                                                        <a class="btn btn-primary" (click)="generateSingleTicketReport()">Printout</a>
+                                                        <a class="btn btn-primary" (click)="generateSingleTicketReport(ticketId)">Printout</a>
                                                     </div>        
         
                                                     <div *ngIf="isEditModeOn" class="adjustment-deduction-box">
@@ -434,8 +434,8 @@
                     </div>
                 </div>
                 <br>
-                <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage()">Save Image</a>
-                <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage()">Close</a>
+                <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage(1)">Save Image</a>
+                <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage(1)">Close</a>
             </div>
             <!-- <ng-template #elsepart>
             <div id="numpad-div" class="numpad-div" style="display: block;">
@@ -642,24 +642,20 @@
 
 <p-dialog header="Header" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [modal]="true" [(visible)]="paymentVisible">
     <ng-template pTemplate="header">
-
         <a  class="btn btn-primary " (click)="paymentVisible=false">
             <i _ class="mdi mdi-keyboard-backspace">
-           Back
-        </i>
-     </a>
-        <!-- <a (click)="paymentVisible=false" class="btn btn-light">
-            <span class="mr-2">&larr;</span> Back
-        </a> -->
+            Back
+            </i>
+        </a>
     </ng-template>
 
-    <div class="d-flex justify-content-start">
+    <div class="d-flex justify-content-start" *ngIf="isHoldTrue">
         <div class="text-danger">
             * Some items from transactions are in Hold
         </div>
     </div>
 
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between" *ngIf="isHoldTrue">
         <div> <div class="form-check equal-h  form-check-inline">
             <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdamount" value="Pay Total Amount">
             <label class="form-check-label" for="">Pay Total Amount</label>
@@ -770,13 +766,65 @@
     
 </p-dialog>
 
-<p-dialog header="Ticket Receipt" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
+<p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
     <div class="row" >
       <div style="height: 500px;" *ngIf="showDownload">                
         <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
       </div>
     </div>
-  </p-dialog>
+</p-dialog>
+
+
+
+
+<p-dialog [modal]="true" [header]="'Edit Image'" [breakpoints]="{'767px': '100vw'}" (onHide)="closeCapturedImage(8)" [(visible)]="signaturePadVisible"
+    [style]="{width: '70vw'}">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" [(ngModel)]="signCaptureType" name="radio" id=""
+                    value="Using Signature Pad">
+                <label class="form-check-label" for="signature">Using Signature Pad</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" [(ngModel)]="signCaptureType" name="radio" id=""
+                    value="Using Sign">
+                <label class="form-check-label" for="sign">Sign</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div *ngIf="signCaptureType=='Using Signature Pad'">
+                <!-- " -->
+                <!-- <app-pen-signature></app-pen-signature> -->
+                <app-pen-signature [signpad]="'pen'" (setSignature)="setSignature($event)"></app-pen-signature>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div *ngIf="signCaptureType=='Using Sign'">
+                <!-- " -->
+                <!-- <app-pen-signature></app-pen-signature> -->
+                <app-pen-signature [signpad]="'manual'" (setSignature)="setSignature($event)"></app-pen-signature>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage(8)">Save Image</a>
+        <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage(8)">Close</a>
+
+    </div>
+
+
+</p-dialog>
 
 
 <p-toast></p-toast>
