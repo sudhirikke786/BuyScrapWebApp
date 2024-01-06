@@ -214,8 +214,12 @@ export class AuthInterceptor implements HttpInterceptor {
       return observableThrowError('');
   }
 
-  handle406Error(req: HttpRequest<any>, error: any) {      
-      localStorage.clear();
+  handle406Error(req: HttpRequest<any>, error: any) {   
+    localStorage.removeItem('userObj');
+    localStorage.removeItem('locId');
+    localStorage.removeItem('orgName');
+    localStorage.removeItem('systemInfo');
+    localStorage.removeItem('locationName');
       this.router.navigateByUrl(`organization-login`);
       return observableThrowError('');
   }

@@ -50,7 +50,7 @@ export class UserLoginComponent implements OnInit {
     }
     this.getIPAddress();
     this.route.params.subscribe((param)=>{ 
-      this.organizationName = param["orgName"] || 'prodTest';
+      this.organizationName = param["orgName"];
       this.getOrgLocation();
     });
     if(userObjectExist){

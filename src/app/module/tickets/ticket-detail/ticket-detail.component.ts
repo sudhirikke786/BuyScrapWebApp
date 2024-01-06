@@ -544,7 +544,8 @@ export class TicketDetailComponent implements OnInit {
         alert("Please insert Check into Printer!!!");
         // Open Pdf viewer          
         this.showDownload = true;        
-        this.pdfViwerTitle = 'Check For Print';      
+        this.pdfViwerTitle = 'Check For Print';
+        this.generateCheckPrintReport(this.ticketId);      
       }
     },(error: any) =>{  
       this.saveTicketDetails(0, false);
@@ -1021,6 +1022,31 @@ export class TicketDetailComponent implements OnInit {
       );
   }
 
+
+  generateCheckPrintReport(ticketId: any) {
+
+    const param = {
+      TicketId: ticketId,
+      FullName: this.customer?.fullName,
+      PrintDate: this.selectedCheckDate,
+      CheckDate: this.selectedCheckDate,
+      CheckAmount: this.payAmount,
+      AmountInWord: "ONE DOLLARS AND ZERO CENTS ONLY"
+    }
+
+    this.commonService.getCheckPrintReport(param)
+      .subscribe(data => {
+        console.log('getCheckPrintReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showDownload = true;        
+        this.pdfViwerTitle = 'Check For Print';
+      },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
  
 
 }

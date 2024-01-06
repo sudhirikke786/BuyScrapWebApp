@@ -325,6 +325,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetAllInventoryReport', 'GET', paramObj);
   }
 
+  getCheckPrintReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetCheckPrintReport', 'GET', paramObj);
+  }
+
   generateCashDrawerReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetCashDrawerReportData', 'GET', paramObj);
   }
