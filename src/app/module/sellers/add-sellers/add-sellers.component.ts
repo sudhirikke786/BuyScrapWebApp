@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService,ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -70,21 +70,21 @@ export class AddSellersComponent implements OnInit {
   createSellerForm() {
 
     this.sellerForm = this.fb.group({
-       firstName : [],
+       firstName : ['',Validators.required],
        sellerType:[this.sellerType],
-       middleName : [],
-       lastName : [],
-       fullName: [],
+       middleName : ['',Validators.required],
+       lastName : ['',Validators.required],
+       fullName: [''],
        dob : [],
        profilePic : [],
        streetAddress : [],
        city : [],
        state : [],
        zipCode : [],
-       idnumber : [],
+       idnumber : [''],
        expiryDate : [],
        class : [],
-       gender : [''],
+       gender : ['',Validators.required],
        vehicleColor : [],
        vehicleType : [],
        vehicleName : [],
@@ -95,8 +95,8 @@ export class AddSellersComponent implements OnInit {
        userName : [],
        dealerType : [''],
        vehicleModel : [],
-       emailId : [],
-       cellNumber : []
+       emailId : ['',Validators.required],
+       cellNumber : ['',Validators.required]
     })
 
 

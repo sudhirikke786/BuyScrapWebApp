@@ -831,7 +831,7 @@
    
     <div class="row" >
       <div style="height: 500px;" *ngIf="!showLoaderReport">                
-        <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
+        <ngx-extended-pdf-viewer   [base64Src]="fileDataObj" [PageViewMode]="Single" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
       </div>
     </div>
 </p-dialog>

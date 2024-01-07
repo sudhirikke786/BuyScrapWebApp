@@ -24,8 +24,8 @@
             <div class="col-12">
                 <div class="card custom-height">
                     <div class="card-body">
-
-                        <form [formGroup]="sellerForm">
+                        {{sellerForm.status}}
+                        <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()">
                             <div class="row">
                                 <div class="form-group col-sm-6 d-flex flex-center">
                                     <label for="example-select" class="form-label dd-label">Select Type</label>
@@ -39,7 +39,7 @@
                                 <div class="form-group col-sm-6">
                                     <div class="flt-right">
                                         <button type="button" class="btn btn-primary me-1" (click)="goBack()">Back</button>
-                                        <button class="btn btn-success me-1" (click)="onSubmit()">{{ sellerId == 0 ?
+                                        <button class="btn btn-success me-1"  [disabled]="!sellerForm.valid" (click)="onSubmit()">{{ sellerId == 0 ?
                                             'Save' : 'Update'}}</button>
                                         <button type="button" class="btn btn-primary">Print</button>
                                        
