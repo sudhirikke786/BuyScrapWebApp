@@ -48,6 +48,10 @@
                               [rows]="10"
                               [scrollable]="true" 
                               scrollHeight="65vh"
+                              selectionMode="single"
+                              [(selection)]="customerObj"
+                              (onRowSelect)="onRowSelect($event)"
+                              (onRowUnselect)="onRowUnselect($event)"
                               [showCurrentPageReport]="true"
                               [tableStyle]="{ 'min-width': '50rem' }" >
                            
@@ -62,7 +66,7 @@
                                 </tr>
                               </ng-template>
                               <ng-template pTemplate="body" let-rowData>
-                                <tr>
+                                <tr [pSelectableRow]="rowData">
                                   <td>{{ rowData.ticketId }}</td>
                                   <td>{{ rowData.dateOpened | date: 'MM/dd/yyyy' }}</td>
                                   <td>{{ rowData.status }}</td>

@@ -14,15 +14,18 @@ export class SingleTicketsReportComponent implements OnInit {
   actionList = [
     {
       iconcode: 'mdi-magnify',
-      title: 'Search'
+      title: 'Search',
+      isDisable:false,
     },
     {
       iconcode: 'mdi-refresh',
-      title: 'Refresh'
+      title: 'Refresh',
+      isDisable:false,
     },
     {
       iconcode: 'mdi-download',
-      title: 'Download'
+      title: 'Download',
+      isDisable:true,
     }
   ];
 
@@ -50,6 +53,7 @@ export class SingleTicketsReportComponent implements OnInit {
   showLoader = false;
   showLoaderReport = false;
   isReportShow = false;
+  customerObj:any;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -106,7 +110,7 @@ export class SingleTicketsReportComponent implements OnInit {
     this.showLoaderReport = true;
 
     const param = {
-      TicketId: 3093,
+      TicketId:this.customerObj.ticketId,
       LocationId: this.locId,
       Type: '4inch'
     }
@@ -124,6 +128,32 @@ export class SingleTicketsReportComponent implements OnInit {
           // this.errorMsg = 'Error occured';
         }
       );
+  }
+
+
+
+
+  onRowSelect(event: any) {
+    // Handle row selection
+    this.customerObj = event?.data;
+    console.log('Selected Row:', event?.data);
+    this.actionList =  this.actionList.map((item) => {
+      if(item.iconcode=='mdi-download'){
+        item.isDisable = false;
+      }
+      return item
+    })
+  }
+  onRowUnselect(event: any) {
+    // Handle row selection
+    //this.customerObj = event?.data;
+    console.log('Selected Row:', event?.data);
+    this.actionList =  this.actionList.map((item) => {
+      if(item.iconcode=='mdi-download'){
+        item.isDisable = true;
+      }
+      return item
+    })
   }
 
 
