@@ -230,7 +230,22 @@ export class TicketDetailComponent implements OnInit {
     }
   }
 
+
+  isInputValid(input: any): boolean {
+    const numberFloatRegex: RegExp = /^-?\d+(\.\d+)?$/;
+    return numberFloatRegex.test(input);
+  }
+
   addTransction() {
+
+
+    if(!this.isInputValid(this.payAmount)){
+      window.alert("Add valid input");
+
+      return;
+    }
+    
+
     
 
     const findItemExist = this.transactionPaymentType.findIndex((item:any) => item.typeofPayment?.toLowerCase() == this.activeSection?.toLowerCase())
@@ -246,7 +261,8 @@ export class TicketDetailComponent implements OnInit {
 
       this.transactionPaymentType[findItemExist] = {
         typeofPayment :this.activeSection,
-        typeofAmount : this.payAmount
+        typeofAmount : this.payAmount,
+        paymentType:this.getType()
       }
 
     }else{
@@ -254,7 +270,8 @@ export class TicketDetailComponent implements OnInit {
      
      this.transactionPaymentType.push({
           typeofPayment :this.activeSection,
-          typeofAmount : this.payAmount
+          typeofAmount : this.payAmount,
+          paymentType:this.getType()
       })
 
     const checkPrice = this.checkTotalAmount();
@@ -272,6 +289,16 @@ export class TicketDetailComponent implements OnInit {
      
     
 
+  }
+
+  getType() {
+    let str = '';
+    if(this.activeSection=='Cash'){
+      str = ''
+    }
+
+    str = this.activeSection == 'Check' ? this.checkNumber : this.ePaymentType;
+    return str;
   }
 
   checkTotalAmount(){
@@ -1052,6 +1079,11 @@ export class TicketDetailComponent implements OnInit {
     return { 'border-bottom': 'none !important' }
   }
   
+
+  closeTicket(){
+      this.saveConfirmVisible =  false;
+      this.transactionPaymentType = [];
+  }
 
   generateSingleTicketReport(ticketId: any) {
 
