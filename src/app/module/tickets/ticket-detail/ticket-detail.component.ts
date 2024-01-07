@@ -1081,7 +1081,8 @@ export class TicketDetailComponent implements OnInit {
   
 
   closeTicket(){
-      this.saveConfirmVisible =  false;
+    console.log('close');
+      this.paymentVisible =  false;
       this.transactionPaymentType = [];
   }
 
