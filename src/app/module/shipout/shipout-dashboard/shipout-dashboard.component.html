@@ -138,6 +138,18 @@
   [(visible)]="visible"
   [style]="{ width: '80vw' }"
 >
+
+
+<div *ngIf="showPageLoader">
+  <app-page-loader type="ftable"></app-page-loader>
+
+</div>
+
+
+
+
+
+<div *ngIf="!showPageLoader">
   <div class="row">
     <div class="col-md-6">
       <input type="text" id="serachText" name="serachText" class="form-control" [(ngModel)]="serachText" placeholder="Search for Sellers, Address, License and License Plate">         
@@ -146,6 +158,9 @@
         <app-actionbar (iconAction)="getAction($event)"  [actions]="newButtonList"></app-actionbar>
     </div>
   </div>
+
+
+
   <div class="row mt-3">
 
     <p-table #dt1 [value]="sellers" [paginator]="true" [rows]="10"
@@ -179,6 +194,10 @@
       </ng-template>
     </p-table>   
   </div>
+</div>
+
+
+ 
 </p-dialog>
 
 <p-dialog [modal]="true" 

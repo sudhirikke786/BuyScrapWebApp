@@ -78,6 +78,7 @@ export class ShipoutDashboardComponent implements OnInit {
   reference = '';
   packslip = '';
   note = '';
+  showPageLoader: boolean = false;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -121,6 +122,8 @@ export class ShipoutDashboardComponent implements OnInit {
   }
   
   getAllsellersDetails() {
+
+    this.showPageLoader = true;
     const paramObject = {
       PageNumber: 1,
       RowOfPage: 1000,
@@ -129,11 +132,15 @@ export class ShipoutDashboardComponent implements OnInit {
     };
     this.commonService.getAllsellersDetails(paramObject)
       .subscribe(data => {
+        this.showPageLoader = false;
+
           console.log('getAllsellersDetails :: ');
           console.log(data);
           this.sellers = data.body.data;
         },
         (err: any) => {
+          this.showPageLoader = false;
+
           // this.errorMsg = 'Error occured';
         }
       );

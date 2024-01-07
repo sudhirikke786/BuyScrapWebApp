@@ -416,7 +416,40 @@
 
 
 
-                <table class="table border">
+                <p-table class="ticket-table" [value]="metarialObj" 
+                 scrollHeight="50vh"
+                 [paginator]="true"
+                [rows]="10"
+                [loading]="isLoading"
+                [showCurrentPageReport]="false"
+                [scrollable]="true" 
+                >
+        
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Material Name</th>
+                        <th>Quantity</th>
+                        <!-- <th style="width:30%;"> Action </th> -->
+                   </tr>
+                   
+                </ng-template>
+                <ng-template pTemplate="body" let-type let-rowIndex="rowIndex">
+        
+                    <tr>
+                        <td>{{type?.name}}</td>
+                        <td>{{type?.quanitity}}</td>
+                        <td> <a class="btn btn-danger" (click)="removeQuantty(rowIndex)">Delete</a> </td>
+                    </tr>      
+        
+                  
+                </ng-template>
+                
+            </p-table>
+
+
+
+
+                <!-- <table class="table border">
                     <tr>
                         <th>Material Name</th>
                         <th>Quantity</th>
@@ -428,7 +461,7 @@
                         <td>{{item?.quanitity}}</td>
                         <td><a class="btn btn-danger" style="background-color:#cd303f!important" (click)="removeQuantty(i)">Remove</a></td>
                     </tr>
-                </table>
+                </table> -->
 
 
 
