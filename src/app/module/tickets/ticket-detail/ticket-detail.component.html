@@ -793,7 +793,7 @@
             <tr>
                 <td>{{type?.typeofPayment}}</td>
                 <td>{{type?.typeofAmount}}</td>
-                <td> <a class="btn btn-danger" (click)="removeItem(rowIndex)">Remove</a> </td>
+                <td> <a class="btn btn-danger" (click)="removeItem(rowIndex)">Delete</a> </td>
             </tr>      
 
           
@@ -820,8 +820,14 @@
 </p-dialog>
 
 <p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+   
+        <div *ngIf="showLoaderReport">
+        <app-page-loader type="reportloader"></app-page-loader>
+      </div>
+
+   
     <div class="row" >
-      <div style="height: 500px;" *ngIf="showDownload">                
+      <div style="height: 500px;" *ngIf="!showLoaderReport">                
         <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
       </div>
     </div>

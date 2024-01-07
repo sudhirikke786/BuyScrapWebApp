@@ -128,6 +128,7 @@ export class TicketDetailComponent implements OnInit {
 
   fileDataObj: any;
   showDownload = false;
+  showLoaderReport = false;
   pdfViwerTitle = 'Ticket Receipt';
   isLoading = false;
   systemInfo:any;  
@@ -1120,6 +1121,7 @@ export class TicketDetailComponent implements OnInit {
 
 
   generateCheckPrintReport(ticketId: any) {
+    this.showLoaderReport = true;
 
     const param = {
       TicketId: ticketId,
@@ -1132,6 +1134,7 @@ export class TicketDetailComponent implements OnInit {
 
     this.commonService.getCheckPrintReport(param)
       .subscribe(data => {
+        this.showLoaderReport = false;
         console.log('getCheckPrintReport :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
@@ -1139,6 +1142,7 @@ export class TicketDetailComponent implements OnInit {
         this.pdfViwerTitle = 'Check For Print';
       },
         (err: any) => {
+          this.showLoaderReport = false;
           // this.errorMsg = 'Error occured';
         }
       );
