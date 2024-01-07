@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { ShipOut } from 'src/app/core/model/ship-out.model';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { DataService } from 'src/app/core/services/data.service';
 
 @Component({
   selector: 'app-shipout-dashboard',
@@ -50,19 +54,43 @@ export class ShipoutDashboardComponent implements OnInit {
 
   visible = false;
   newDriverScreenVisible=  false;
-  selectedSellerId: any;
+  selectedSeller: any;
   orgName: any;
-  locId: any;  
+  locId: any;
+  logInUserId: any;
 
   showLoader =  false;
+
+  serachText = '';
+
+  carrier = '';
+  truck = '';
+  make = '';
+  model = '';
+  driverName = '';
+  trailer1 = '';
+  trailer2 = '';
+  container = '';
+  seal = '';
+  booking = '';
+  vesselvoyage = '';
+  chassis = '';
+  reference = '';
+  packslip = '';
+  note = '';
   
   constructor(private route: ActivatedRoute,
     private router: Router,
+    private datePipe: DatePipe,
+    private stroarge: StorageService,
+    public dataService: DataService,
     public commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    
     this.getAllShipOutDetails();
   }
 
@@ -96,7 +124,8 @@ export class ShipoutDashboardComponent implements OnInit {
     const paramObject = {
       PageNumber: 1,
       RowOfPage: 1000,
-      LocationId: this.locId
+      LocationId: this.locId,
+      SellerType: 'Business'
     };
     this.commonService.getAllsellersDetails(paramObject)
       .subscribe(data => {
@@ -115,15 +144,47 @@ export class ShipoutDashboardComponent implements OnInit {
     this.getAllsellersDetails();
   }
 
-  showCustomerModel(sellerId: any){
+  showCustomerModel(seller: any){
     // alert(sellerId);
     this.newDriverScreenVisible = true;
-    this.selectedSellerId = sellerId;
+    this.selectedSeller = seller;
   }
 
   saveDriverInfo() {
     this.newDriverScreenVisible = false;
-    this.router.navigateByUrl(`/${this.orgName}/ship-out/detail/new/${this.selectedSellerId}`);
+    
+    const newShipOut = new ShipOut();     
+    newShipOut.rowId = 0;
+    newShipOut.createdBy = this.logInUserId;
+    newShipOut.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+    newShipOut.updatedBy = this.logInUserId;
+    newShipOut.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+    newShipOut.customerId = parseFloat(this.selectedSeller.rowId);
+    newShipOut.locID = this.locId;
+    newShipOut.customerName = this.selectedSeller?.fullName || '';
+    newShipOut.streetAddress = this.selectedSeller?.streetAddress || '';
+    newShipOut.driverName = this.driverName;
+    newShipOut.truck = this.truck;
+    newShipOut.from = '';
+    newShipOut.fromAddress = '';
+    newShipOut.make = this.make;
+    newShipOut.model = this.model;
+    newShipOut.trailer1 = this.trailer1;
+    newShipOut.trailer2 = this.trailer2;
+    newShipOut.carrier = this.carrier;
+    newShipOut.container = this.container;
+    newShipOut.seal = this.seal;
+    newShipOut.booking = this.booking;
+    newShipOut.vessels = this.vesselvoyage;
+    newShipOut.chasis = this.chassis;
+    newShipOut.packSlip = this.packslip;
+    newShipOut.reference = this.reference;
+    newShipOut.note = this.note;
+    newShipOut.shipoutmaterial = [];
+
+    this.dataService.setNewShipOut(newShipOut);
+    
+    this.router.navigateByUrl(`/${this.orgName}/ship-out/detail/new`);
 
   }
 

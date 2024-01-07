@@ -24,6 +24,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   @Input() itemAvailableNet: number = 0;
 
   @Output() calculateObj = new EventEmitter<any>();
+  @Output() changeItemEvent = new EventEmitter<any>();
 
   grossInput:any =0;
   tareInput:any =0;
@@ -33,6 +34,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   inputBoxes: any[] = [];
   private currentFocusIndex = 0;
 
+  displayValue: string = '0';
 
   constructor(private renderer: Renderer2) {
 
@@ -84,8 +86,6 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
       this.calculateObj.emit(obj);
      }
       this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
-     
-     
 
       // Increment the focus index, resetting to 0 if it exceeds the number of inputs
       this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
@@ -93,8 +93,9 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   
   }
 
-
-  displayValue: string = '0';
+  changeItem() {
+    this.changeItemEvent.emit();
+  }
 
   clearDisplay() {
     this.displayValue = '0';

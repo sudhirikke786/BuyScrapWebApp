@@ -1,0 +1,32 @@
+export class ShipOut {  
+    rowId: number = 0;
+    createdBy: number = 0;
+    createdDate: any;
+    updatedBy: number = 0;
+    updatedDate: any;
+    customerId: number = 0;
+    locID: number = 0;
+    driverName: string = '';
+    customerName: string = '';
+    streetAddress: string = '';
+    truck: string = '';
+    from: string = '';
+    fromAddress: string = '';
+    make: string = '';
+    model: string = '';
+    trailer1: string = '';
+    trailer2: string = '';
+    carrier: string = '';
+    container: string = '';
+    seal: string = '';
+    booking: string = '';
+    vessels: string = '';
+    chasis: string = '';
+    packSlip: string = '';
+    reference: string = '';
+    note: string = '';
+    totalGross: number = 0;
+    totalTare: number = 0;
+    totalNet: number = 0;
+    shipoutmaterial: any;
+}

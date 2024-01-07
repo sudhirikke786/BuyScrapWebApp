@@ -373,7 +373,8 @@
 
                             <div class="col-sm-3 position-relative" *ngIf="isEditModeOn && editItemCloseImageCapture">
                                 <div class="calc" style="height:calc(100vh - 200px);width:100%;overflow: hidden;">
-                                    <app-price-calculator style="height: 100%;" (calculateObj)="calculation($event)" [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
+                                    <app-price-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()"
+                                        [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
                                         [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
                                     </app-price-calculator>
                                 </div>

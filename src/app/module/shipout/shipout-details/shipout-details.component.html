@@ -37,30 +37,29 @@
                                     <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/ship-out">
                                         Back
                                     </a>
-                                        <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
-                                            <i class="mdi mdi-pencil"></i> Edit
-                                        </a>
-                                        <div *ngIf="isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
-                                            <a class="btn btn-danger me-1" (click)="cancelEditTicket()">Cancel</a>
-                                            <a class="btn btn-primary" (click)="confirmSave()">Save</a>
-                                        </div>
+                                    <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
+                                        <i class="mdi mdi-pencil"></i> Edit
+                                    </a>
+                                    <div *ngIf="isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
+                                        <a class="btn btn-danger me-1" (click)="cancelEditTicket()">Cancel</a>
+                                        <a class="btn btn-primary" (click)="confirmSave()">Save</a>
+                                    </div>
 
                                    </div> 
                                 </div>
 
                                 <table class="seller-view-tbl">
-                                    <tbody><tr>
-                                        <td>{{customer?.fullName}}</td>
-                                        <td>Address : {{customer?.streetAddress}}</td>
-                                        <td>Created on : <label>{{ticketData?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
-                                        <td>Time : {{ticketData?.createdDate  | date: 'hh:mm a'}}</td>
+                                    <tbody>
+                                    <tr>
+                                        <td>Business : {{shipOutDetails?.customerName}}</td>
+                                        <td>Address : {{shipOutDetails?.streetAddress}}</td>
+                                        <td>Driver : {{shipOutDetails?.driverName}}</td>
                                     </tr>
 
                                     <tr>
-                                        <td>DL# - {{customer?.driverLicenseNumber}}</td>
-                                        <td>Dealer Type - {{customer?.dealerType}}</td>
-                                        <td>License Plate # :{{customer?.driverLicenseNumber}}</td>
-                                        <td>By <label>{{user?.firstName}} {{user?.lastName}}</label></td>
+                                        <td>DL# - {{shipOutDetails?.rowId}}</td>
+                                        <td>Truck - {{shipOutDetails?.truck}}</td>
+                                        <td>By - <label>{{user?.firstName}} {{user?.lastName}}</label></td>
                                     </tr>
                                 </tbody></table>
                             </div>
@@ -69,18 +68,13 @@
                         <hr>
 
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-12">
                                 <h4 class="title-plus-border">Particulars</h4>                                                
-                            </div>
-                            <div class="col-sm-4">
-                                <h4 class="title-plus-border">Status - <span class="color-green">{{ticketData?.status}}</span></h4>                                                
                             </div>
                         </div>
 
                         <div class="row">
-                            <!-- <div [ngClass]="!isEditModeOn && !editItemCloseImageCapture? 'col-sm-12' : 'col-sm-9'"> -->
-
-                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  ticketData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-9'">
+                            <div [ngClass]="!isEditModeOn && !editItemCloseImageCapture? 'col-sm-12' : 'col-sm-9'">
                                 
                                 <div class="row">
                                     <div style="overflow-y: scroll;height:calc(100vh - 425px);">
@@ -176,7 +170,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-3" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
+                            <!-- <div class="col-sm-3" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
 
                                 <div class="col-12">
                                     <div class="card">
@@ -207,7 +201,7 @@
                                   
                                 </div>
 
-                            </div>
+                            </div> -->
 
                             <div class="col-sm-3 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
@@ -252,7 +246,8 @@
 
                             <div class="col-sm-3 position-relative" *ngIf="isEditModeOn && editItemCloseImageCapture">
                                 <div class="calc" style="height:calc(100vh - 200px);width:100%;overflow: hidden;">
-                                    <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)" [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
+                                    <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()"
+                                        [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
                                         [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
                                     </app-material-calculator>
                                 </div>

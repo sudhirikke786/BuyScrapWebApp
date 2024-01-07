@@ -24,6 +24,8 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   @Input() itemPrice: number = 0;
 
   @Output() calculateObj = new EventEmitter<any>();
+  @Output() changeItemEvent = new EventEmitter<any>();
+  @Output() changeImageEvent = new EventEmitter<any>();
 
   grossInput:any =0;
   tareInput:any =0;
@@ -94,6 +96,13 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   
   }
 
+  changeItem() {
+    this.changeItemEvent.emit();
+  }
+
+  changeImage() {
+    this.changeImageEvent.emit();
+  }
 
   displayValue: string = '0';
 

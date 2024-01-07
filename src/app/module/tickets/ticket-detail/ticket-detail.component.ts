@@ -736,7 +736,7 @@ export class TicketDetailComponent implements OnInit {
     this.itemGroupName = selectedMaterial;
     this.itemMaterialName = materialName;
     this.itemPrice = scrapPrice;
-    this.itemLeveloperationPerform = 'Add';
+    this.itemLeveloperationPerform = this.itemLeveloperationPerform == '' ? 'Add' : this.itemLeveloperationPerform;
     this.itemCodNote = '';    
     // this.materialNote = '';
   }  
@@ -864,6 +864,19 @@ export class TicketDetailComponent implements OnInit {
     this.updateExistingItemDataResponse();
   }
 
+  changeItem() {
+    this.editItemCloseImageCapture = false;
+    this.mainMaterialsVisible = true;
+  }
+
+  changeImage() {
+    this.modalHeader = 'Edit Item Details';
+    this.editItemVisible = true;
+    
+    // this.editItemCloseImageCapture = false;
+    this.itemLeveloperationPerform = 'Edit';
+  }
+
 
   updateExistingItemDataResponse() {
     
@@ -882,7 +895,7 @@ export class TicketDetailComponent implements OnInit {
       rowData.net = rowData.gross - rowData.tare ;
       rowData.price = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
       rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
-      rowData.imagePath = (this.itemImagePath.indexOf('assets/images')>=0 ? null : this.itemImagePath);
+      rowData.imagePath = (this.itemImagePath?.indexOf('assets/images')>=0 ? null : this.itemImagePath);
       rowData.codNote = '';
       rowData.materialNote = (this.materialNote ? null : this.materialNote);
 
@@ -910,7 +923,7 @@ export class TicketDetailComponent implements OnInit {
           rowData.net = rowData.gross - rowData.tare ;
           rowData.price = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
           rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
-          rowData.imagePath = (this.itemImagePath.indexOf('assets/images')>=0 ? null : this.itemImagePath);
+          rowData.imagePath = (this.itemImagePath?.indexOf('assets/images')>=0 ? null : this.itemImagePath);
           rowData.codNote = this.itemCodNote;          
           rowData.materialNote = (this.materialNote ? null : this.materialNote);
 
@@ -919,8 +932,8 @@ export class TicketDetailComponent implements OnInit {
           rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
           rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
         }
-      });
-
+                  });
+                  this.itemLeveloperationPerform = '';
     }
 
     console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
