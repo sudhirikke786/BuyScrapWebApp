@@ -22,15 +22,11 @@
 
       <div class="row mt-2">
         <div class="col-md-6 d-flex">
-          <input
-            type="text"
-            id="example-palaceholder"
-            class="form-control"
-            placeholder="Search.."
-          />
+          <input type="text" id="example-palaceholder" [(ngModel)]="serachText" class="form-control"
+              placeholder="Search ...">    
         </div>
         <div class="col-md-6">
-          <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
+          <app-actionbar (iconAction)="getShipOutAction($event)"  [actions]="actionList"></app-actionbar>
         </div>
       </div>
       <!-- end page title -->
@@ -152,10 +148,11 @@
 <div *ngIf="!showPageLoader">
   <div class="row">
     <div class="col-md-6">
-      <input type="text" id="serachText" name="serachText" class="form-control" [(ngModel)]="serachText" placeholder="Search for Sellers, Address, License and License Plate">         
+      <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control"
+          placeholder="Search for Sellers, Address, License and License Plate">
     </div>
     <div class="col-md-6">
-        <app-actionbar (iconAction)="getAction($event)"  [actions]="newButtonList"></app-actionbar>
+        <app-actionbar (iconAction)="getSellerAction($event)"  [actions]="newButtonList"></app-actionbar>
     </div>
   </div>
 
