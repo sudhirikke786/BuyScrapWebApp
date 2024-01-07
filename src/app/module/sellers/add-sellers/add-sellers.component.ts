@@ -238,9 +238,10 @@ export class AddSellersComponent implements OnInit {
   }
 
   uploadPicture(selectionType:any,capType:any) {
-
+   
     console.log(selectionType)
-    this.cameraVisible = true;
+    this.cameraVisible = !this.cameraVisible;
+    this.captureType = '';
     this.type =  selectionType;
     this.captureType = capType;
    
@@ -290,7 +291,9 @@ export class AddSellersComponent implements OnInit {
     this.isWebcam = false
   }
 
-  cancel() {
+  cancel() { 
+    console.log("close------");
+    this.captureType = '';
     this.isWebcam = false
   } 
 
