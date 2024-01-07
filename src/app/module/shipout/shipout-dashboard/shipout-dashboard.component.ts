@@ -62,6 +62,7 @@ export class ShipoutDashboardComponent implements OnInit {
   showLoader =  false;
 
   serachText = '';
+  searchSellerInput = '';
 
   carrier = '';
   truck = '';
@@ -79,6 +80,14 @@ export class ShipoutDashboardComponent implements OnInit {
   packslip = '';
   note = '';
   showPageLoader: boolean = false;
+
+  pagination: any = {
+    SerachText: this.serachText,
+    PageNumber: 1,
+    RowOfPage: 10,
+    LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
+    first: 0,
+  }
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -92,18 +101,12 @@ export class ShipoutDashboardComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     
-    this.getAllShipOutDetails();
+    this.getAllShipOutDetails(this.pagination);
   }
 
-  getAllShipOutDetails() {   
-
+  getAllShipOutDetails(pagination: any) {   
+    pagination.SerachText = this.serachText;
     this.showLoader = true;
-
-    const pagination = {
-      PageNumber: 1,
-      RowOfPage: 1000,
-      LocationId: this.locId
-    }
 
     this.commonService.getAllShipOutDetails(pagination)
       .subscribe(data => {
@@ -128,7 +131,8 @@ export class ShipoutDashboardComponent implements OnInit {
       PageNumber: 1,
       RowOfPage: 1000,
       LocationId: this.locId,
-      SellerType: 'Business'
+      SellerType: 'Business',
+      SerachText: this.searchSellerInput
     };
     this.commonService.getAllsellersDetails(paramObject)
       .subscribe(data => {
@@ -144,6 +148,15 @@ export class ShipoutDashboardComponent implements OnInit {
           // this.errorMsg = 'Error occured';
         }
       );
+  }
+
+  refreshSellerData() {
+    this.searchSellerInput = '';
+    this.getAllsellersDetails();
+  }
+
+  addNewSeller() {
+    this.router.navigateByUrl(`${this.orgName}/sellers-buyers/add-seller`)
   }
 
   showDialog() {    
@@ -200,19 +213,39 @@ export class ShipoutDashboardComponent implements OnInit {
   }
 
 
-  getAction(actionCode:any){
+  getSellerAction(actionCode: any) {
 
     switch (actionCode?.iconcode) {
-      case 'mdi-plus':
-        this.showDialog();
+      case 'mdi-magnify':
+        this.getAllsellersDetails();
         break;
-      case 'mdi-merge':
-      
+      case 'mdi-refresh':
+        this.refreshSellerData();
+        break;
+      case 'mdi-account':
+        this.addNewSeller();
         break;
       default:
         break;
     }
+  }
 
+  getShipOutAction(actionCode:any){
+
+    switch (actionCode?.iconcode) {
+      case 'mdi-magnify':
+        this.getAllShipOutDetails(this.pagination);
+        break;
+      case 'mdi-refresh':
+        this.serachText = '';
+        this.getAllShipOutDetails(this.pagination);
+        break;
+      case 'mdi-plus':
+        this.showDialog();
+        break;
+      default:
+        break;
+    }
   
   }
 

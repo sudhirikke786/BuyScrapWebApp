@@ -331,7 +331,7 @@ export class ShipoutDetailsComponent implements OnInit {
   }
 
   addItem(materialId: any, materialName: any, selectedMaterial: string, availableStock: any) {
-    alert(availableStock);
+    // alert(availableStock);
     this.editItemCloseImageCapture = true;
     this.imageUrl = null;
     this.itemMaterialId = materialId;
