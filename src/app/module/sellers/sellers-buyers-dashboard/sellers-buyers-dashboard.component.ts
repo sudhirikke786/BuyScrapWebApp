@@ -84,6 +84,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
       RowOfPage: event.rows,
       LocationId: this.locId
     }
+    this.pageSize = event.rows;
    // this.pagination = {...this.pagination,...pagObj};
     this.getAllsellersDetails(pagObj);
   }
