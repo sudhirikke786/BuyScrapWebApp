@@ -257,6 +257,8 @@ export class AddSellersComponent implements OnInit {
    
   }
 
+
+
   removeImage(selectionType:any) {
     if(selectionType=='2') {
       this.idscanImage = 'assets/images/custom/id_scan.png';
@@ -352,6 +354,7 @@ export class AddSellersComponent implements OnInit {
 
   closeImageCapture() {
     this.imageUrl = null;
+    this.type = '';
     this.cameraVisible = false;
   }
   changeSellerType() {

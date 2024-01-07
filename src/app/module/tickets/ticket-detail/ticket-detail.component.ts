@@ -97,6 +97,11 @@ export class TicketDetailComponent implements OnInit {
     {name: 'ON HOLD', code: 'ON HOLD'}
   ];
 
+
+  transactionPaymentType : any = [];
+
+
+
   /**Print out Variable */
   activeSection: string = '';
 
@@ -223,6 +228,81 @@ export class TicketDetailComponent implements OnInit {
       this.editTicketDetails();
     }
   }
+
+  addTransction() {
+    
+
+    const findItemExist = this.transactionPaymentType.findIndex((item:any) => item.typeofPayment?.toLowerCase() == this.activeSection?.toLowerCase())
+    const checkPrice =  this.checkTotalAmount();
+
+    if(checkPrice){
+      window.alert("adding amount is greter than total amount")
+      return;
+    }
+    
+  
+    if(findItemExist > -1){
+
+      this.transactionPaymentType[findItemExist] = {
+        typeofPayment :this.activeSection,
+        typeofAmount : this.payAmount
+      }
+
+    }else{
+     
+     
+     this.transactionPaymentType.push({
+          typeofPayment :this.activeSection,
+          typeofAmount : this.payAmount
+      })
+
+    const checkPrice = this.checkTotalAmount();
+    if(checkPrice){
+      this.transactionPaymentType.splice(this.transactionPaymentType.length-1 ,1)
+      window.alert("adding amount is greter than total amount")
+      return false;
+    }
+
+    
+     
+     
+
+    }
+     
+    
+
+  }
+
+  checkTotalAmount(){
+    let checkError =  false;
+    if(Number(this.payAmount) > Number(this.totalAmount)){
+      checkError = true;
+    
+    }else{
+      const total = this.getTotal();
+      if(Number(total) >  Number(this.totalAmount)){
+        checkError = true;
+      }
+    }
+    return checkError;
+   
+  } 
+
+  removeItem(i:number){
+    this.transactionPaymentType.splice(i,1);
+  }
+
+
+  getTotal():number{
+   return this.transactionPaymentType.reduce((sum:number,curr:any) => {
+      return sum = sum + Number(curr.typeofAmount)      
+    },0)
+  }
+
+  get isDisabled():boolean{
+    return (this.getTotal() < this.totalAmount);
+  }
+
 
   getAllTicketsDetails() {
     this.isLoading = true;
@@ -441,6 +521,9 @@ export class TicketDetailComponent implements OnInit {
   }  
 
   payAndSave(activeSection: string) {
+
+   // const payAmout = this.getTotal();
+    this.payAmount =  this.getTotal();
     
     if(!this.payAmount){
       alert('Enter Amount');

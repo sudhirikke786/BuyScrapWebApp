@@ -53,6 +53,8 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
 
   ngOnDestroy() {
     this.showWebcam = false;
+    this.imageUrl = '';
+    console.log('Destory------->>')
   }
   
 

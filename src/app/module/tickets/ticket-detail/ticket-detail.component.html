@@ -252,6 +252,14 @@
                                                         <div class="ms-2 me-2">
                                                             <b class="fz-14">Balance Amount  {{totalAmount - ticketData?.paidAmount | number : '1.3-3'}}</b>
                                                         </div> 
+                                                        <div class="ms-2" *ngIf="!isEditModeOn">
+                                                            <div class="d-flex justify-content-start align-items-center">
+                                                                <div><p-inputSwitch [disabled]="true"  [(ngModel)]="ticketData.isCOD"></p-inputSwitch></div>
+                                                                <div class="ms-2" >COD <span *ngIf="!ticketData.isCOD">Required</span></div> 
+                                                            </div>
+                                                          
+
+                                                        </div>
                                                         <div class="ms-2" *ngIf="isEditModeOn">
                                                             <div class="d-flex justify-content-start align-items-center">
                                                                 <div><p-inputSwitch  [(ngModel)]="ticketData.isCOD"></p-inputSwitch></div>
@@ -718,9 +726,10 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="d-flex justify-content-start">
-                <div><button class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Cash'}" (click)="showSection('Cash')">Cash</button></div>
-                <div><button class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Check'}" (click)="showSection('Check')" >Check</button></div>
-                <div ><button *ngIf="systemInfo =='True'" class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Electronic Payment'}"  (click)="showSection('Electronic Payment')">Electronic Payment</button></div>
+              
+                <div><button class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Cash'}" (click)="showSection('Cash');payAmount=0">Cash</button></div>
+                <div><button  class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Check'}" (click)="showSection('Check');payAmount=0" >Check</button></div>
+                <div ><button   *ngIf="systemInfo =='True'" class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Electronic Payment'}"  (click)="showSection('Electronic Payment');payAmount=0">Electronic Payment</button></div>
             </div>        
             <div>
                 <div class="row">
@@ -760,8 +769,51 @@
         </div>
 
     </div>
+    <div class="col-12" *ngIf="transactionPaymentType?.length > 0">
+
+        <p-table class="ticket-table" [value]="transactionPaymentType" 
+        [paginator]="false" 
+        [rows]="3"
+        [loading]="isLoading"
+        [showCurrentPageReport]="false"
+        [scrollable]="fallse" 
+        >
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 30%;"> Type </th>
+                <th style="width:30%;"> Amount </th>
+                <!-- <th style="width:30%;"> Action </th> -->
+           </tr>
+           
+        </ng-template>
+        <ng-template pTemplate="body" let-type let-rowIndex="rowIndex">
+
+            <tr>
+                <td>{{type?.typeofPayment}}</td>
+                <td>{{type?.typeofAmount}}</td>
+                <td> <a class="btn btn-danger" (click)="removeItem(rowIndex)">Remove</a> </td>
+            </tr>      
+
+          
+        </ng-template>
+        
+    </p-table>
+
+
+
+
+
+
+
+      
+
+    </div>
     <div class="d-flex justify-content-left mt-2">
-        <div><button class="btn btn-primary justify-content-center equal-h me-2"  (click)="payAndSave(activeSection)">Pay Ticket</button></div>
+
+        <div><button class="btn btn-primary justify-content-center equal-h me-2"  (click)="addTransction()">Add Ticket</button></div>
+
+        <div><button class="btn btn-primary justify-content-center equal-h me-2" *ngIf="transactionPaymentType?.length > 0"  (click)="payAndSave(activeSection)">Pay Ticket</button></div>
     </div>
     
 </p-dialog>
