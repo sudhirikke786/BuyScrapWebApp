@@ -70,7 +70,7 @@
                     <td>{{ shipout.customerName }}</td>
                     <td>
                       <a
-                       routerLink="/{{orgName}}/ship-out/detail/{{shipout.rowId}}/208"
+                       routerLink="/{{orgName}}/ship-out/detail/{{shipout.rowId}}"
                        routerLinkActive="router-link-active"
                         type="button"
                         class="btn btn-grid btn-success waves-effect waves-light"
@@ -140,16 +140,10 @@
 >
   <div class="row">
     <div class="col-md-6">
-      <input
-        type="text"
-        id="example-palaceholder"
-        class="form-control"
-        placeholder="Search for Sellers, Address, License and License Plate"
-      />
+      <input type="text" id="serachText" name="serachText" class="form-control" [(ngModel)]="serachText" placeholder="Search for Sellers, Address, License and License Plate">         
     </div>
     <div class="col-md-6">
         <app-actionbar (iconAction)="getAction($event)"  [actions]="newButtonList"></app-actionbar>
-
     </div>
   </div>
   <div class="row mt-3">
@@ -179,7 +173,7 @@
             <td>{{ seller?.streetAddress }}</td>
       
               <td>
-                  <a (click)="showCustomerModel(seller?.rowId)" class="btn btn-primary">Select</a>
+                  <a (click)="showCustomerModel(seller)" class="btn btn-primary">Select</a>
           </td>
       </tr>
       </ng-template>
@@ -211,7 +205,7 @@
         <input
           type="text"
           class="form-control"
-          id="carrier"
+          id="carrier" name="carrier" [(ngModel)]="carrier" 
           placeholder="Carrier"
         />
         <label for="floatingInput">Carrier</label>
@@ -225,7 +219,7 @@
         <input
           type="text"
           class="form-control"
-          id="truck"
+          id="truck" name="truck" [(ngModel)]="truck" 
           placeholder="Truck"
         />
         <label for="floatingInput">Truck</label>
@@ -234,7 +228,8 @@
 
     <div class="form-group col-sm-3">
       <div class="form-floating">
-        <input type="text" class="form-control" id="make" placeholder="Make" />
+        <input type="text" class="form-control" id="make" name="make" [(ngModel)]="make" 
+        placeholder="Make" />
         <label for="floatingInput">Make</label>
       </div>
     </div>
@@ -244,7 +239,7 @@
         <input
           type="text"
           class="form-control"
-          id="model"
+          id="model" name="model" [(ngModel)]="model" 
           placeholder="Model"
         />
         <label for="floatingInput">Model</label>
@@ -256,7 +251,7 @@
         <input
           type="text"
           class="form-control"
-          id="drivername"
+          id="driverName" name="driverName" [(ngModel)]="driverName" 
           placeholder="Driver Name"
         />
         <label for="floatingInput">Driver Name</label>
@@ -270,7 +265,7 @@
         <input
           type="text"
           class="form-control"
-          id="trailer1"
+          id="trailer1" name="trailer1" [(ngModel)]="trailer1" 
           placeholder="Trailer 1"
         />
         <label for="floatingInput">Trailer 1</label>
@@ -282,7 +277,7 @@
         <input
           type="text"
           class="form-control"
-          id="trailer2"
+          id="trailer2" name="trailer2" [(ngModel)]="trailer2" 
           placeholder="Trailer 2"
         />
         <label for="floatingInput">Trailer 2</label>
@@ -294,7 +289,7 @@
         <input
           type="text"
           class="form-control"
-          id="container"
+          id="container" name="container" [(ngModel)]="container" 
           placeholder="Container"
         />
         <label for="floatingInput">Container</label>
@@ -303,7 +298,8 @@
 
     <div class="form-group col-sm-3">
       <div class="form-floating">
-        <input type="text" class="form-control" id="seal" placeholder="Seal" />
+        <input type="text" class="form-control" id="seal" name="seal" [(ngModel)]="seal" 
+         placeholder="Seal" />
         <label for="floatingInput">Seal</label>
       </div>
     </div>
@@ -315,7 +311,7 @@
         <input
           type="text"
           class="form-control"
-          id="booking"
+          id="booking" name="booking" [(ngModel)]="booking" 
           placeholder="Booking"
         />
         <label for="floatingInput">Booking</label>
@@ -327,7 +323,7 @@
         <input
           type="text"
           class="form-control"
-          id="vesselvoyage"
+          id="vesselvoyage" name="vesselvoyage" [(ngModel)]="vesselvoyage" 
           placeholder="Vessel/Voyage"
         />
         <label for="floatingInput">Vessel/Voyage</label>
@@ -339,7 +335,7 @@
         <input
           type="text"
           class="form-control"
-          id="chassis"
+          id="chassis" name="chassis" [(ngModel)]="chassis" 
           placeholder="Chassis"
         />
         <label for="floatingInput">Chassis</label>
@@ -351,7 +347,7 @@
         <input
           type="text"
           class="form-control"
-          id="reference"
+          id="reference" name="reference" [(ngModel)]="reference" 
           placeholder="Reference"
         />
         <label for="floatingInput">Reference</label>
@@ -365,7 +361,7 @@
         <input
           type="text"
           class="form-control"
-          id="packslip"
+          id="packslip" name="packslip" [(ngModel)]="packslip" 
           placeholder="Pack Slip"
         />
         <label for="floatingInput">Pack Slip</label>
@@ -374,7 +370,8 @@
 
     <div class="form-group col-sm-6">
       <div class="form-floating">
-        <input type="text" class="form-control" id="note" placeholder="Note" />
+        <input type="text" class="form-control" id="note" name="note" [(ngModel)]="note" 
+         placeholder="Note" />
         <label for="floatingInput">Note</label>
       </div>
     </div>

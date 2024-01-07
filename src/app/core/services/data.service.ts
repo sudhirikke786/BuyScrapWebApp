@@ -9,6 +9,7 @@ export class DataService {
 
   private _cashDrawerDetail: any;
   private _cashDrawerAmountAndPaidTicketCount: any;
+  private _newShipOut: any;  
   // _cashDrawerAmountDTO: any;
  
   private _cashDrawerAmountDTO = new BehaviorSubject<any>(0);
@@ -36,6 +37,14 @@ export class DataService {
 
   getCashDrawerAmountDTO() {
     return this._cashDrawerAmountDTO$;
+  }
+
+  setNewShipOut(val: any) {
+    this._newShipOut = val;
+  }
+
+  getNewShipOut() {
+    return this._newShipOut;
   }
 
 }

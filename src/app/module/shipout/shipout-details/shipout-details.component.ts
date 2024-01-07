@@ -9,6 +9,8 @@ import { WebcamImage } from 'ngx-webcam';
 import { TicketItem } from 'src/app/core/model/ticket-item.model';
 import { Ticket } from 'src/app/core/model/ticket.model';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { ShipOut } from 'src/app/core/model/ship-out.model';
+import { DataService } from 'src/app/core/services/data.service';
 
 @Component({
   selector: 'app-shipout-details',
@@ -26,11 +28,6 @@ export class ShipoutDetailsComponent implements OnInit {
   
   cheight= '50vh';
 
-  isHoldTrue : boolean = false;
-
-  selectedHoldAmount= 'Pay Total Amount'
-
-
   ticketObj:any = [];
   orgName: any;
   sellerId: any;
@@ -40,16 +37,12 @@ export class ShipoutDetailsComponent implements OnInit {
   locationName: any;
 
   ticketData:any = {};
-  customer: any;
+  shipOutDetails: any;
   user: any;
   totalNoOfMaterial: any;
   totalGross: any;
   totalTare: any;
   totalNet: any;
-  totalAmount: any;
-  totalAdjustment: any;
-  totalActualAmount: any;
-  totalRoundingAmount: any;
 
   isEditModeOn = false;
   materialList: any;
@@ -84,31 +77,7 @@ export class ShipoutDetailsComponent implements OnInit {
   totalRecords = 0;
   currentPage = 1;
   pageSize = 10;
-  isCODRequired = false;
 
-
-  ticketsTransactions:any;
-  defaultSelectedTicketsTypes =  [
-    {name: 'OPEN', code: 'OPEN'},
-    {name: 'Partially Paid', code: 'Partially Paid'},
-    {name: 'ON HOLD', code: 'ON HOLD'}
-  ];
-
-  /**Print out Variable */
-  activeSection: string = '';
-
-  payAmount: number = 0;
-  selectedCheckDate: any;
-  checkNumber: string = '';
-  ePaymentType: string = '';
-
-
-  addEditAdjustmentVisible = false;
-  modalAdjustmentHeader = 'Add Adjustment';
-  adjustmentList: any;
-  adjustmentAmount = '';
-  adjustmentNote = '';
-  selectedAdjustment = 'Certified Destruction Cost ';
   selectedRowObj: any;
   isReceiptPrint = false;
 
@@ -122,6 +91,7 @@ export class ShipoutDetailsComponent implements OnInit {
     private datePipe: DatePipe,
     private messageService: MessageService,
     private stroarge:StorageService,
+    public dataService: DataService,
     private commonService: CommonService) {  }
 
   ngOnInit() {
@@ -130,61 +100,29 @@ export class ShipoutDetailsComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.route.params.subscribe((param)=>{
-      this.ticketId = param["ticketId"];
-      this.sellerId = param["customerId"];
-      this.getSellerById();
+      this.ticketId = param["shipOutId"];
+      if (parseInt(this.ticketId)) {
+        this.getShipOutDetailsByID();
+      }
+      else {
+        this.shipOutDetails = this.dataService.getNewShipOut();
+        this.getAllUsers(this.logInUserId);
+      }
       this.processDataBasedOnTicketId();
-      this.getTicketTransactions();
     });
 
     
   }
 
-
-  onContextMenu(event: MouseEvent ,obj:any) {
-    this.selectedRowObj =  obj;
-    this.isCODRequired = (obj.codNote != '');
-    event.preventDefault();
-  }
-
-  addNote(obj:any){  
-    this.selectedRowObj =  obj;
-    // add the Data from Table
-    this.itemLocalRowId = this.selectedRowObj?.localRowId;
-    this.updateTicketObjectForCOD('Flagged for COD');
-  }
-
-  removeCode(obj:any){
-    // remove the Data from Table
-    this.selectedRowObj =  obj;
-    this.itemLocalRowId = this.selectedRowObj.localRowId;
-    this.updateTicketObjectForCOD('');
-  }
-
-  private updateTicketObjectForCOD(itemCodNote: any) {
-    this.ticketObj.forEach((rowData: any) => {
-      if (this.itemLocalRowId === rowData.localRowId) {
-        console.log("found " + rowData.rowId);
-        rowData.codNote = itemCodNote;
-        rowData.isCOD = itemCodNote != '' ? true : false;
-
-        // TO DO:: does not required. need to verify
-        rowData.updatedBy = this.logInUserId;
-        rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      }
-    });
-  }
   
   private processDataBasedOnTicketId() {
     if (parseInt(this.ticketId)) {
-      this.getTransactionsDetailsById();
-      this.getAllTicketsDetails();
+      this.getShipOutMaterialbyID();
+      // this.getAllTicketsDetails();
     } else {
       this.ticketId = 0;
       this.ticketData['createdDate'] = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       this.ticketData['status'] = 'NEW SHIP OUT';
-      this.ticketData['paidAmount'] = 0;
-      this.ticketData['balanceAmount'] = 0;
 
       this.ticketObj = [];
 
@@ -192,41 +130,38 @@ export class ShipoutDetailsComponent implements OnInit {
       this.totalGross = 0;
       this.totalTare = 0;
       this.totalNet = 0;
-      this.totalRoundingAmount = 0;
-      this.totalAmount = 0;
-      this.totalActualAmount = 0;
       this.editTicketDetails();
     }
   }
 
-  getAllTicketsDetails() {
-    this.isLoading = true;
-    const paramObject = {
-      LocationId: this.locId,
-      SerachText: this.ticketId,
-      SearchOrder: 'TicketId', 
-      PageNumber: 1, 
-      RowOfPage: 10
-    };
-    this.commonService.getAllTicketsDetails(paramObject)
-      .subscribe(data => {
-          console.log('getAllTicketsDetails for ticketId :: ');
-          console.log(data);
-          this.ticketData = data.body.data[0];
-          this.totalRecords =  data.totalRecords;
-          const userId = data.body.data[0].createdBy;
+  // getAllTicketsDetails() {
+  //   this.isLoading = true;
+  //   const paramObject = {
+  //     LocationId: this.locId,
+  //     SerachText: this.ticketId,
+  //     SearchOrder: 'TicketId', 
+  //     PageNumber: 1, 
+  //     RowOfPage: 10
+  //   };
+  //   this.commonService.getAllTicketsDetails(paramObject)
+  //     .subscribe(data => {
+  //         console.log('getAllTicketsDetails for ticketId :: ');
+  //         console.log(data);
+  //         this.ticketData = data.body.data[0];
+  //         this.totalRecords =  data.totalRecords;
+  //         const userId = data.body.data[0].createdBy;
        
-          this.getAllUsers(userId);
-        },
-        (err: any) => {
-          this.isLoading = false;
-          // this.errorMsg = 'Error occured';
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
-  }
+  //         this.getAllUsers(userId);
+  //       },
+  //       (err: any) => {
+  //         this.isLoading = false;
+  //         // this.errorMsg = 'Error occured';
+  //       },
+  //       () => {
+  //         this.isLoading = false;
+  //       }
+  //     );
+  // }
 
   getAllUsers(userId: any){
     const reqObj = {
@@ -237,24 +172,20 @@ export class ShipoutDetailsComponent implements OnInit {
       this.user =  res?.body?.data[0];     
     })
   }
-  
-  onPageChange(event: any) {
-    this.currentPage = event.first / event.rows + 1;
-    this.getAllTicketsDetails();
-  }
-
-
-  
-  getSellerById() {
+    
+  getShipOutDetailsByID() {
     const paramObject = {
-      ID: this.sellerId,
-      LocationId: this.locId
+      rowId: this.ticketId,
+      LocID: this.locId
     };
-    this.commonService.getSellerById(paramObject)
+    this.commonService.getShipOutDetailsByID(paramObject)
       .subscribe(data => {
-          console.log('getSellerById :: ');
+          console.log('getShipOutDetailsByID :: ');
           console.log(data);
-          this.customer = data.body.data;
+          this.shipOutDetails = data.body.data; 
+          this.shipOutDetails.shipoutmaterial = null; 
+          const userId = data.body.data.createdBy;
+          this.getAllUsers(userId);
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -263,23 +194,16 @@ export class ShipoutDetailsComponent implements OnInit {
   }
 
   
-  getTransactionsDetailsById() {
+  getShipOutMaterialbyID() {
     const paramObject = {
-      TicketId: this.ticketId,
-      locid: this.locId,
-      IsCOD: false,
-      IsCODDone: false
+      ShipOutIDId: this.ticketId,
+      locid: this.locId
     };
-    this.commonService.getTransactionsDetailsById(paramObject)
+    this.commonService.getShipOutMaterialbyID(paramObject)
       .subscribe(data => {
-          console.log('getTransactionsDetailsById :: ');
+          console.log('getShipOutMaterialbyID :: ');
           console.log(data);
-          this.ticketObj = data.body.data.map((item:any) => {
-            item.isSelected = false;
-            return item
-          } );
-
-          this.isHoldTrue = data.body.data[0].isHold;
+          this.ticketObj = data.body.data;
 
           this.calculateTotal(this.ticketObj);
         },
@@ -299,15 +223,6 @@ export class ShipoutDetailsComponent implements OnInit {
     }, 0);
     this.totalNet = tickets.reduce(function (sum:any, tickets:any) {
       return sum + tickets.net;
-    }, 0);
-    this.totalActualAmount = tickets.reduce(function (sum:any, tickets:any) {
-      return sum + (tickets.isAdjusmentSet? tickets.amount * -1 : tickets.amount);
-    }, 0);
-
-    this.totalAmount = Math.round(this.totalActualAmount);
-    this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
-    this.totalAdjustment = tickets.reduce(function (sum:any, tickets:any) {
-      return sum + (tickets.isAdjusmentSet? tickets.amount * -1 : 0);
     }, 0);
   }
 
@@ -362,122 +277,36 @@ export class ShipoutDetailsComponent implements OnInit {
 
 
   confirmSave() {
-    alert('Saving record & opening printer');
-  }
-
-  showPayment(isReceiptPrint: boolean){
-    this.isReceiptPrint = isReceiptPrint;
-    this.payAmount = this.totalAmount - this.ticketData?.paidAmount;
-    this.showSection('Cash');
-  }
-
-
-  showSection(paymentType: string) {
-    this.activeSection =  paymentType;
-    this.selectedCheckDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-    this.checkNumber = '';
-    this.ePaymentType = '';
-  }  
-
-  payAndSave(activeSection: string) {
-    // alert(this.selectedCheckDate);
-    // alert(this.payAmount);
-    // alert(this.checkNumber);
-    // alert(this.ePaymentType);
+    alert('Saving record .........');
 
     
-    if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.ticketData?.paidAmount)) {
-      alert('Please enter valid amount!!!');
-      return;
-    }
-
-
-    // return;
-
-    const transactionObj = {
-      rowId: 0,
-      createdBy: this.logInUserId,
-      createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      updatedBy: this.logInUserId,
-      updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      ticketId: parseInt(this.ticketId),
-      type: activeSection,
-      amount: parseFloat(this.payAmount.toString()),
-      checkNumber: this.checkNumber,
-      barCode: '',
-      guid: '',
-      dateClosed: null,
-      checkDate: null
-    }
-
-    this.commonService.insertTicketTransactions(transactionObj).subscribe(data =>{    
-   
-      this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
-      this.isReceiptPrint = false;
-    },(error: any) =>{  
-      this.saveTicketDetails(0, false);
-      console.log(error);  
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
-    });
-    this.saveConfirmVisible = false;
-  }
-
-  saveTicketDetails(paidAmount: number, isReceiptPrint: boolean) {
-    // alert(paidAmount);
-    // alert(this.totalAmount);
-    let ticketStatus = 'OPEN';
-    if (paidAmount > 0 && paidAmount == this.totalAmount) {
-      ticketStatus = 'PAID';
-    }
+    // this.totalGross = tickets.reduce(function (sum:any, tickets:any) {
+    //   return sum + tickets.gross;
+    // }, 0);
+    // this.totalTare = tickets.reduce(function (sum:any, tickets:any) {
+    //   return sum + tickets.tare;
+    // }, 0);
+    // this.totalNet = tickets.reduce(function (sum:any, tickets:any) {
+    //   return sum + tickets.net;
+    // }, 0);
+       
+    this.isEditModeOn = false;
+    this.shipOutDetails.totalGross = this.totalGross;
+    this.shipOutDetails.totalTare = this.totalTare;
+    this.shipOutDetails.totalNet = this.totalNet;
+    this.shipOutDetails.shipoutmaterial = this.ticketObj;
     
-    if (this.ticketId != 0) {
-      if (paidAmount > 0 && paidAmount == (this.totalAmount - this.ticketData?.paidAmount)) {
-        ticketStatus = 'PAID';
-      } else if (paidAmount > 0 && paidAmount != this.totalAmount) {
-        ticketStatus = 'Partially Paid';
-      }      
-      this.isEditModeOn = false;
-      this.ticketData.status = ticketStatus;
-      this.ticketData.amount = parseFloat(this.totalAmount.toFixed(3));  
-      this.ticketData.paidAmount = parseFloat(paidAmount.toString());   
-      this.ticketData.lstttransactionMasterDTO = this.ticketObj;
-    } else {
-      const newTicket = new Ticket();     
-      newTicket.rowId = 0;
-      newTicket.createdBy = this.logInUserId;
-      newTicket.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      newTicket.updatedBy = this.logInUserId;
-      newTicket.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      newTicket.customerId = parseFloat(this.sellerId);
-      newTicket.ticketId = 0;
-      newTicket.status = ticketStatus;
-      newTicket.amount = parseFloat(this.totalAmount.toFixed(3));
-      newTicket.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
-      newTicket.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
-      newTicket.ticketAmount = parseFloat(this.totalActualAmount.toFixed(3));
-      newTicket.paidAmount = parseFloat(paidAmount.toString());
-      newTicket.dateOpened = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      newTicket.dateClosed = null;
-      newTicket.customerName = this.customer?.fullName;
-      newTicket.adjustmentAmount = parseFloat(this.totalAdjustment.toFixed(3));
-      newTicket.locID = this.locId;
-      newTicket.lstttransactionMasterDTO = this.ticketObj;
-      
-      this.ticketData = newTicket;
-    } 
-
+    console.log("Final shipOutDetails :: " + JSON.stringify(this.shipOutDetails));
     
-    console.log("Final ticketData :: " + JSON.stringify(this.ticketData));
-    
-    this.commonService.insertUpdateTickets(this.ticketData).subscribe(data =>{    
+    this.commonService.insertShipOutDTO(this.shipOutDetails).subscribe(data =>{    
       console.log(data); 
 
       // this.confirmSave();
       // alert('Ticket Inserted/ updated successfully');
      // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       this.cancelEditTicket();
-      if (isReceiptPrint) {
-        this.generateSingleTicketReport();
+      if (this.isReceiptPrint) {
+        // this.generateShipOutReport();
       }
     },(error: any) =>{  
       console.log(error);  
@@ -497,7 +326,7 @@ export class ShipoutDetailsComponent implements OnInit {
       this.processDataBasedOnTicketId();
     } else {
       console.log('222222');
-      this.router.navigateByUrl(`${this.orgName}/home`);
+      this.router.navigateByUrl(`${this.orgName}/ship-out`);
     }    
   }
 
@@ -509,7 +338,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemGroupName = selectedMaterial;
     this.itemMaterialName = materialName;
     this.itemAvailableNet = availableStock;
-    this.itemLeveloperationPerform = 'Add';
+    this.itemLeveloperationPerform = this.itemLeveloperationPerform == '' ? 'Add' : this.itemLeveloperationPerform;
     this.itemCodNote = '';    
     // this.materialNote = '';
   }  
@@ -523,39 +352,25 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemLeveloperationPerform = 'Edit';
   }
 
-  editItem(rowData: any) {
+  editItem(rowData: any) {    
+    this.editItemCloseImageCapture = true;
+    this.itemLeveloperationPerform = 'Edit';
+
+    this.itemRowId = rowData.rowId;
+    this.itemLocalRowId = rowData.localRowId;
+    this.itemGroupName = rowData.groupName;
+    this.itemMaterialName = rowData.materialName;
+    this.itemMaterialId = rowData.materialId;
+    this.itemGross = rowData.gross;
+    this.itemTare = rowData.tare;
+    this.itemNet = rowData.net;
+    this.itemAvailableNet = rowData.price;
+    this.itemImagePath = rowData.imagePath;
+    this.itemCodNote = rowData.codNote;    
+    this.materialNote = rowData.materialNote;
     
-    if(rowData.isAdjusmentSet == true) {
-      this.addEditAdjustmentVisible = true;      
-      this.modalAdjustmentHeader = 'Edit Adjustment';
-      this.itemLeveloperationPerform = 'Edit';
-  
-      this.itemRowId = rowData.rowId;
-      this.itemLocalRowId = rowData.localRowId;
-      this.adjustmentAmount = rowData.price;
-      this.adjustmentNote = rowData.materialNote;
-      this.selectedAdjustment = rowData.concatAdjustments;
-
-    } else {
-      this.editItemCloseImageCapture = true;
-      this.itemLeveloperationPerform = 'Edit';
-  
-      this.itemRowId = rowData.rowId;
-      this.itemLocalRowId = rowData.localRowId;
-      this.itemGroupName = rowData.groupName;
-      this.itemMaterialName = rowData.materialName;
-      this.itemMaterialId = rowData.materialId;
-      this.itemGross = rowData.gross;
-      this.itemTare = rowData.tare;
-      this.itemNet = rowData.net;
-      this.itemAvailableNet = rowData.price;
-      this.itemImagePath = rowData.imagePath;
-      this.itemCodNote = rowData.codNote;    
-      this.materialNote = rowData.materialNote;
-      
-      this.imageUrl = (this.itemImagePath ? this.itemImagePath : 'assets/images/custom/id_scan.png');
-    }   
-
+    this.imageUrl = (this.itemImagePath ? this.itemImagePath : 'assets/images/custom/id_scan.png');
+    
   }
 
   calculateNet() {
@@ -581,28 +396,26 @@ export class ShipoutDetailsComponent implements OnInit {
     this.updateExistingItemDataResponse();
   }
 
+  changeItem() {
+    this.editItemCloseImageCapture = false;
+    this.mainMaterialsVisible = true;
+  }
+
 
   updateExistingItemDataResponse() {
 
     if (this.itemLeveloperationPerform === 'Add') {
       // const arr = [];
-      const rowData = new TicketItem();   
-      rowData.rowId = 0;
-      rowData.localRowId = this.localRowIdCounter++;
-      rowData.groupName = this.itemGroupName;
-      rowData.materialName = this.itemMaterialName;
-      rowData.materialId = this.itemMaterialId;
-      rowData.gross = parseFloat(parseFloat(this.itemGross.toString()).toFixed(3));
-      rowData.tare = parseFloat(parseFloat(this.itemTare.toString()).toFixed(3));
-      rowData.net = rowData.gross - rowData.tare ;
-      rowData.price = parseFloat(parseFloat(this.itemAvailableNet.toString()).toFixed(3));
-
-      
-      rowData.createdBy = this.logInUserId;
-      rowData.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      rowData.updatedBy = this.logInUserId;
-      rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      let rowData = {
+        rowId : 0,
+        localRowId : this.localRowIdCounter++,
+        groupName : this.itemGroupName,
+        materialName : this.itemMaterialName,
+        materialId : this.itemMaterialId,
+        gross : parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)),
+        tare : parseFloat(parseFloat(this.itemTare.toString()).toFixed(3)),
+        net : parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)) - parseFloat(parseFloat(this.itemTare.toString()).toFixed(3))
+      };   
 
       this.ticketObj.push(rowData);
       // this.ticketObj = arr;
@@ -619,14 +432,9 @@ export class ShipoutDetailsComponent implements OnInit {
           rowData.gross = parseFloat(parseFloat(this.itemGross.toString()).toFixed(3));
           rowData.tare = parseFloat(parseFloat(this.itemTare.toString()).toFixed(3));
           rowData.net = rowData.gross - rowData.tare ;
-          rowData.price = parseFloat(parseFloat(this.itemAvailableNet.toString()).toFixed(3));
-
-          // TO DO:: does not required. need to verify;
-          rowData.updatedBy = this.logInUserId;
-          rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-          rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
         }
       });
+      this.itemLeveloperationPerform = '';
 
     }
 
@@ -671,37 +479,5 @@ export class ShipoutDetailsComponent implements OnInit {
       );
   }
 
-
-
-
-  getTicketTransactions() {
-   
-    const param = {
-      TicketId: this.ticketId
-    };
-    this.getAllTicketsTransactionsByTicketId(param);
-  }
-
-  getAllTicketsTransactionsByTicketId(paramObj: any) {
-    console.log(paramObj);
-    this.commonService.getAllTicketsTransactionsByTicketId(paramObj)
-      .subscribe(data => {
-          console.log('getAllTicketsTransactionsByTicketId :: ');
-          console.log(data);
-          if (data.body.data.length > 0) {
-            this.ticketsTransactions = data.body.data;
-            
-          } else {
-            this.showPartially = false;
-            this.showOpen = true;
-          }
-        },
-        (err: any) => {
-          // this.errorMsg = 'Error occured';
-        }
-      );
-  }
-
- 
 
 }

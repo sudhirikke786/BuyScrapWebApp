@@ -246,6 +246,14 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/ShipOuts/GetShipOutDetailsByID', 'GET', paramObj);
   }
 
+  getShipOutMaterialbyID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/ShipOuts/GetShipOutMaterialbyID', 'GET', paramObj);
+  }
+
+  insertShipOutDTO(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/ShipOuts/InsertShipOutDTO', 'POST', requestObj);
+  }
+
   getAllCODTickets(pagination: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllCODTickets', 'GET', pagination);
   }
