@@ -1060,16 +1060,20 @@ export class TicketDetailComponent implements OnInit {
       LocationId: this.locId,
       Type: localStorage.getItem('defaultPrintSize')
     }
+    this.showLoaderReport = true;
 
     this.commonService.generateSingleTicketReport(param)
       .subscribe(data => {
         console.log('generateSingleTicketReport :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
+        this.showLoaderReport = false;
+
         this.showDownload = true;        
         this.pdfViwerTitle = 'Ticket Receipt';
       },
         (err: any) => {
+          this.showLoaderReport = false;
           // this.errorMsg = 'Error occured';
         }
       );
