@@ -84,7 +84,7 @@ export class ShipoutDashboardComponent implements OnInit {
   pagination: any = {
     SerachText: this.serachText,
     PageNumber: 1,
-    RowOfPage: 10,
+    RowOfPage: 100,
     LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
     first: 0,
   }

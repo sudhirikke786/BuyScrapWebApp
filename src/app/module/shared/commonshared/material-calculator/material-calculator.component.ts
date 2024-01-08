@@ -83,6 +83,10 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
         itemAvailableNet: this.availableNetInput,
         materialNote: this.materialNote
       }
+      if (obj.itemNet > obj.itemAvailableNet) {
+        alert('Shipout Net is more than Available net.');
+        return;
+      }
       this.calculateObj.emit(obj);
      }
       this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
@@ -165,7 +169,12 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   
   }
 
-  enter() {
+  enter() {    
+    if ((this.grossInput - this.tareInput) > this.availableNetInput) {
+      alert('Shipout Net is more than Available net.');
+      // return;
+    }
+
     this.changeFocus();
     console.log(this.currentFocusIndex);
     

@@ -50,7 +50,7 @@ export class RegradeDashboardComponent implements OnInit {
   }
 
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 100;
   first = 0;
   last = 0;
   pageTotal = 0;
@@ -161,8 +161,10 @@ export class RegradeDashboardComponent implements OnInit {
     this.getSubMaterials();
   }
   showTableModel() {
-    this.ShowmodelRegrate = true;
-    this.getSubMaterials();
+    alert('In-progress .... !!!')
+    // TO DO:: 
+    // this.ShowmodelRegrate = true;
+    // this.getSubMaterials();
   }
 
   showRegrateDeatilModel(subMaterial: any){

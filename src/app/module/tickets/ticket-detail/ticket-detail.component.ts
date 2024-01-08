@@ -106,6 +106,8 @@ export class TicketDetailComponent implements OnInit {
   activeSection: string = '';
 
   payAmount: number = 0;
+  selectedPayAmount: number = 0;
+  remainingAmount: number = 0;
   totalHoldAmount: number = 0;
   selectedCheckDate: any;
   checkNumber: string = '';
@@ -238,19 +240,15 @@ export class TicketDetailComponent implements OnInit {
 
   addTransction() {
 
-    if (this.payAmount <= 0) {
+    if (this.selectedPayAmount <= 0) {
       window.alert("Please Enter Amount");
       return;
     }
 
-    if (!this.isInputValid(this.payAmount)) {
+    if (!this.isInputValid(this.selectedPayAmount)) {
       window.alert("Add valid input");
-
       return;
     }
-
-
-
 
     const findItemExist = this.transactionPaymentType.findIndex((item: any) => item.typeofPayment?.toLowerCase() == this.activeSection?.toLowerCase())
     const checkPrice = this.checkTotalAmount();
@@ -260,12 +258,41 @@ export class TicketDetailComponent implements OnInit {
       return;
     }
 
+    
+    if (this.activeSection == 'Check') {
+      if (this.checkNumber.length == 0) {
+        alert('Enter Check Number');
+        return;
+      }
+    } else if (this.activeSection == 'Electronic Payment') {
+      if (this.ePaymentType?.length == 0) {
+        alert('Enter Electronic Payment Type');
+        return;
+      }
+    }
+
+    switch (this.selectedHoldAmount) {
+      case 'Partial Pay Amount':
+        const total = this.getTotal();
+        const eligiblePayAmount = this.totalAmount - total - this.totalHoldAmount;
+        if (this.selectedPayAmount > eligiblePayAmount) {
+          alert('Exclude hold item amount');
+          this.selectedPayAmount = eligiblePayAmount;
+          return;
+        }
+        break;
+      case 'Hold All Amount':
+        alert('You have selected option as "Hold All Amount"!!!');
+        this.selectedPayAmount = 0;
+        return;
+        break;
+    }
 
     if (findItemExist > -1) {
 
       this.transactionPaymentType[findItemExist] = {
         typeofPayment: this.activeSection,
-        typeofAmount: this.payAmount,
+        typeofAmount: this.selectedPayAmount,
         paymentType: this.getType()
       }
 
@@ -274,23 +301,22 @@ export class TicketDetailComponent implements OnInit {
 
       this.transactionPaymentType.push({
         typeofPayment: this.activeSection,
-        typeofAmount: this.payAmount,
+        typeofAmount: this.selectedPayAmount,
         paymentType: this.getType()
       })
 
-      const checkPrice = this.checkTotalAmount();
-      if (checkPrice) {
-        this.transactionPaymentType.splice(this.transactionPaymentType.length - 1, 1)
-        window.alert("adding amount is greter than total amount")
-        return false;
-      }
-
-
-
-
-
     }
 
+    const checkPrice2 = this.checkTotalAmount();
+    if (checkPrice2) {
+      // TO DO: Needs to write a logic to remove latest added transaction based on activeSection 
+      this.transactionPaymentType.splice(this.transactionPaymentType.length - 1, 1)
+      window.alert("adding amount is greter than total amount")
+      return false;
+    }
+
+    this.remainingAmount = this.totalAmount - this.getTotal();
+    this.selectedPayAmount = this.remainingAmount;
 
 
   }
@@ -520,7 +546,7 @@ export class TicketDetailComponent implements OnInit {
   showPayment(isReceiptPrint: boolean) {
     this.isReceiptPrint = isReceiptPrint;
     this.paymentVisible = true;
-    this.payAmount = this.totalAmount - this.ticketData?.paidAmount;
+    this.selectedPayAmount = this.remainingAmount = this.payAmount = this.totalAmount - this.ticketData?.paidAmount;
     this.showSection('Cash');
   }
 
@@ -629,28 +655,101 @@ export class TicketDetailComponent implements OnInit {
 
   saveTransactionData(activeSection: any) {
     let isCheckPrint = false;
+    let isCheckTransaction = false;
+    let payTransactionObj: any = [];
+
+    this.transactionPaymentType.map((item: any) => {
+
+      if (item.typeofPayment == 'Cash') {  
+
+        payTransactionObj.push({
+          localRowId: 1,
+          rowId: 0,
+          createdBy: this.logInUserId,
+          createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          updatedBy: this.logInUserId,
+          updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          ticketId: parseInt(this.ticketId),
+          type: item.typeofPayment,
+          amount: parseFloat(item.typeofAmount),
+          checkNumber: '',
+          barCode: '',
+          guid: '',
+          dateClosed: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+        });
+
+      } else if (item.typeofPayment == 'Check') {
+
+        isCheckTransaction = true;
+
+        payTransactionObj.push({
+          localRowId: 2,
+          rowId: 0,
+          createdBy: this.logInUserId,
+          createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          updatedBy: this.logInUserId,
+          updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          ticketId: parseInt(this.ticketId),
+          type: item.typeofPayment,
+          amount: parseFloat(item.typeofAmount),
+          checkNumber: item.paymentType,
+          barCode: '',
+          guid: '',
+          dateClosed: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+        });
+
+      } else if (item.typeofPayment == 'Electronic Payment') {
+        
+        payTransactionObj.push({
+          localRowId: 3,
+          rowId: 0,
+          createdBy: this.logInUserId,
+          createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          updatedBy: this.logInUserId,
+          updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          ticketId: parseInt(this.ticketId),
+          type: item.typeofPayment,
+          amount: parseFloat(item.typeofAmount),
+          checkNumber: item.paymentType,
+          barCode: '',
+          guid: '',
+          dateClosed: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+        });
+      }
+
+      return item
+    })
+
+    
     let text = "Do you want to print receipt?";
     if (confirm(text) == true) {
-      if (this.activeSection == 'Check') {
+      if (isCheckTransaction) {
         isCheckPrint = true;
       }
     }
 
     const transactionObj = {
-      rowId: 0,
-      createdBy: this.logInUserId,
-      createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      updatedBy: this.logInUserId,
-      updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      ticketId: parseInt(this.ticketId),
-      type: activeSection,
-      amount: parseFloat(this.payAmount.toString()),
-      checkNumber: this.checkNumber,
-      barCode: '',
-      guid: '',
-      dateClosed: null,
-      checkDate: null
-    }
+      tickettransaction : {
+        localRowId: 0,
+        rowId: 0,
+        createdBy: this.logInUserId,
+        createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+        updatedBy: this.logInUserId,
+        updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+        ticketId: parseInt(this.ticketId),
+        type: this.transactionPaymentType[0]?.typeofPayment,
+        amount: 0,
+        checkNumber: '',
+        barCode: '',
+        guid: '',
+        dateClosed: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+        checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+      },
+      lstickettransaction : payTransactionObj
+    };
 
     this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {
       this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
