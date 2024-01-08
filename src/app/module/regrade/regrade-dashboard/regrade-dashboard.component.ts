@@ -96,6 +96,7 @@ export class RegradeDashboardComponent implements OnInit {
       PageNumber: this.currentPage,
       RowOfPage: event.rows,
     }
+    this.pageSize = event.rows;
     this.pagination = { ...this.pagination, ...pagObj };
     this.getAllRegrades(this.pagination);
   }
