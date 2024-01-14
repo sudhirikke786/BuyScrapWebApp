@@ -131,7 +131,7 @@
                                                             <td>{{ ticket.amount | number : '1.3-3'}}</td>
                                                         </ng-template>
                                                         <td>
-                                                            <img src="{{ticket.imagePath}}" class="ticket-particulars-img">
+                                                            <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img" (click)="showSelectedImage(ticket.imagePath, '1')"></a>
                                                         </td>
                                                         <td *ngIf="isEditModeOn">
                                                             <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editItem(ticket)"
@@ -180,7 +180,7 @@
                                                             <td>{{ ticket.amount | number : '1.3-3'}}</td>
                                                         </ng-template>
                                                         <td>
-                                                            <img src="{{ticket.imagePath}}" class="ticket-particulars-img">
+                                                            <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img" (click)="showSelectedImage(ticket.imagePath, '1')"></a>
                                                         </td>
                                                         
                                                     </tr>
@@ -631,7 +631,8 @@
 
 
 <p-dialog [modal]="true" header="Header"  [breakpoints]="{'1024px': '60vw', '1080px': '70vw','767px': '100vw'}" [modal]="true" [(visible)]="saveConfirmVisible" [style]="{ width: '50vw' }">
-    <ng-template pTemplate="header">
+    <ng-template pTemplate="header">        
+        <a class="btn btn-primary " (click)="saveConfirmVisible=false;"><i class="mdi mdi-keyboard-backspace"> Back </i></a>
         <span class="text-xl font-bold text-success" style="font-size: 24px;"> Ticket Saved Successfully</span>
     </ng-template>
     <div class="text-center  mb-2 mt-2">
@@ -879,6 +880,14 @@
     </div>
 
 
+</p-dialog>
+
+
+<p-dialog [modal]="true" [header]="showImageHeader" (onHide)="cancelImage()" [(visible)]="showImage">
+
+    <div class="over-flow-300 image-center img-profile">
+        <img [src]="selectedImageUrl" style="height: 100%; width: 100%;">
+    </div>
 </p-dialog>
 
 

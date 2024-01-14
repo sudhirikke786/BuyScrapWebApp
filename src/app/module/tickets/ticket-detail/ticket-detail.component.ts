@@ -39,6 +39,7 @@ export class TicketDetailComponent implements OnInit {
   locId: any;
   logInUserId: any;
   locationName: any;
+  showImage = false;
 
   ticketData: any = {};
   customer: any;
@@ -1404,6 +1405,20 @@ export class TicketDetailComponent implements OnInit {
         words_string = words_string.split("  ").join(" ");
     }
     return words_string;
+  }
+
+  
+
+  showSelectedImage(imageUrl: string, selectionType:any) {
+    this.selectedImageUrl = imageUrl;
+    this.showImage = true;
+    if(selectionType=='1') {
+      this.showImageHeader = 'Show Material Image';
+    } 
+  }
+
+  cancelImage() {
+    this.showImage = false;
   }
 
 

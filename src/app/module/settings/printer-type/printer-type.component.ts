@@ -19,8 +19,9 @@ export class PrinterTypeComponent implements OnInit {
   }
 
   savePrintOption(){
-    // alert(this.defaultReceiptPrinter);
-    localStorage.setItem('defaultPrintSize',this.defaultReceiptPrinter)
+    localStorage.setItem('defaultPrintSize',this.defaultReceiptPrinter);
+    alert('Set default printer setting for receipt print');
+    this.closePopup();
   }
 
   closePopup(){
