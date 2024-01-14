@@ -72,10 +72,10 @@ export class TicketDetailComponent implements OnInit {
   itemGroupName: string = '';
   itemMaterialName: string = '';
   itemMaterialId: number = 0;
-  itemGross: number = 0;
-  itemTare: number = 0;
-  itemNet: number = 0;
-  itemPrice: number = 0;
+  itemGross: any;
+  itemTare: any;
+  itemNet: any = 0;
+  itemPrice: any;
   itemImagePath: string = 'assets/images/custom/id_scan.png';
   itemDefaultImagePath: string = 'assets/images/custom/id_scan.png';
   materialNote: any = null;
@@ -212,12 +212,15 @@ export class TicketDetailComponent implements OnInit {
     if (parseInt(this.ticketId)) {
       this.getTransactionsDetailsById();
       this.getAllTicketsDetails();
+      this.getTicketTransactions();
     } else {
       this.ticketId = 0;
       this.ticketData['createdDate'] = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       this.ticketData['status'] = 'NEW TICKET';
       this.ticketData['paidAmount'] = 0;
       this.ticketData['balanceAmount'] = 0;
+      this.ticketData['isCOD'] = false;
+      
 
       this.ticketObj = [];
 
@@ -315,7 +318,7 @@ export class TicketDetailComponent implements OnInit {
       return false;
     }
 
-    this.remainingAmount = this.totalAmount - this.getTotal();
+    this.remainingAmount = this.totalAmount - this.ticketData?.paidAmount - this.getTotal();
     this.selectedPayAmount = this.remainingAmount;
 
 
@@ -376,6 +379,7 @@ export class TicketDetailComponent implements OnInit {
         console.log('getAllTicketsDetails for ticketId :: ');
         console.log(data);
         this.ticketData = data.body.data[0];
+        this.isCODRequired = this.ticketData.isCOD;
         this.totalRecords = data.totalRecords;
         const userId = data.body.data[0].createdBy;
 
@@ -580,7 +584,17 @@ export class TicketDetailComponent implements OnInit {
 
   payAndSave(activeSection: string) {
 
-    // const payAmout = this.getTotal();
+    const payAmout = this.getTotal();
+
+    if (payAmout == 0 && this.selectedPayAmount> 0) {
+      console.log('directly click on Pay Tiket button');
+      this.transactionPaymentType.push({
+        typeofPayment: this.activeSection,
+        typeofAmount: this.selectedPayAmount,
+        paymentType: this.getType()
+      });
+    } 
+      
     this.payAmount = this.getTotal();
 
     if (!this.payAmount) {
@@ -625,31 +639,8 @@ export class TicketDetailComponent implements OnInit {
     } else {
       msg = 'You selected as Cash as payment mode please confirm ?';
     }
-
-    this.showConfirmation(activeSection, msg);
-
-  }
-
-  showConfirmation(pos: any, confirmMessage: any) {
-    // this.saveConfirmVisible = false;
-    // this.paymentVisible = false;
-
-
-    this.confirmationService.confirm({
-      header: 'Confirmation',
-      message: confirmMessage,
-      accept: () => {
-        // Action to take when the user clicks "Yes" or "OK"
-        console.log('Confirmed');
-        this.saveTransactionData(pos);
-        // Add your logic here
-      },
-      reject: () => {
-        // Action to take when the user clicks "No" or "Cancel"
-        console.log('Rejected');
-        // Add your logic here
-      },
-    });
+    
+    this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
   }
 
 
@@ -657,6 +648,8 @@ export class TicketDetailComponent implements OnInit {
     let isCheckPrint = false;
     let isCheckTransaction = false;
     let payTransactionObj: any = [];
+    let checkAmount = 0;
+    let checkNumber = '';
 
     this.transactionPaymentType.map((item: any) => {
 
@@ -682,6 +675,8 @@ export class TicketDetailComponent implements OnInit {
       } else if (item.typeofPayment == 'Check') {
 
         isCheckTransaction = true;
+        checkAmount = parseFloat(item.typeofAmount);
+        checkNumber = item.paymentType;
 
         payTransactionObj.push({
           localRowId: 2,
@@ -692,8 +687,8 @@ export class TicketDetailComponent implements OnInit {
           updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
           ticketId: parseInt(this.ticketId),
           type: item.typeofPayment,
-          amount: parseFloat(item.typeofAmount),
-          checkNumber: item.paymentType,
+          amount: checkAmount,
+          checkNumber: checkNumber,
           barCode: '',
           guid: '',
           dateClosed: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
@@ -752,17 +747,26 @@ export class TicketDetailComponent implements OnInit {
     };
 
     this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {
-      this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
+      
+
+      const checkPaymentTransaction = this.transactionPaymentType.filter((item:any) => item.typeofPayment == 'Check')
+      if (checkPaymentTransaction.length < 1) {
+        this.cancelEditTicket(this.isReceiptPrint, this.ticketId);
+      } else {
+        this.cancelEditTicket(false, this.ticketId);
+      }
+      
       // this.isReceiptPrint = false;
       if (isCheckPrint) {
         alert("Please insert Check into Printer!!!");
         // Open Pdf viewer          
         this.showDownload = true;
         this.pdfViwerTitle = 'Check For Print';
-        this.generateCheckPrintReport(this.ticketId);
-      }
+        this.generateCheckPrintReport(this.ticketId, checkAmount);
+      }     
+
     }, (error: any) => {
-      this.saveTicketDetails(0, false);
+      // this.saveTicketDetails(0, false);
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
@@ -791,6 +795,7 @@ export class TicketDetailComponent implements OnInit {
         ticketStatus = 'Partially Paid';
       }
       this.isEditModeOn = false;
+      this.ticketData.isCOD = this.isCODRequired;
       this.ticketData.status = ticketStatus;
       this.ticketData.amount = parseFloat(this.totalAmount.toFixed(3));
       this.ticketData.paidAmount = parseFloat(paidAmount.toString());
@@ -817,6 +822,7 @@ export class TicketDetailComponent implements OnInit {
       newTicket.locID = this.locId;
       newTicket.lstttransactionMasterDTO = this.ticketObj;
       newTicket.sellerSignature = this.sellerSignatureImagePath;
+      newTicket.isCOD = this.isCODRequired;
 
       this.ticketData = newTicket;
       this.sellerSignatureImagePath = null;
@@ -827,12 +833,23 @@ export class TicketDetailComponent implements OnInit {
 
     this.commonService.insertUpdateTickets(this.ticketData).subscribe(data => {
       console.log(data);
-      const ticketId = data.body.insertedRow;
+
+      
+      if (this.transactionPaymentType.length > 0) { 
+        const oldTicketId = this.ticketId;       
+        this.ticketId = data.body.insertedRow;
+        this.saveTransactionData(this.activeSection);
+        this.saveConfirmVisible = false;
+      } else {     
+        this.ticketId = data.body.insertedRow;
+        this.saveConfirmVisible = false;     
+        this.cancelEditTicket(isReceiptPrint, this.ticketId);
+      }
+
       // this.confirmSave();
       // alert('Ticket Inserted/ updated successfully');
       // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
-      this.saveConfirmVisible = false;
-      this.cancelEditTicket(isReceiptPrint, ticketId);
+      
     }, (error: any) => {
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
@@ -844,12 +861,12 @@ export class TicketDetailComponent implements OnInit {
 
   cancelEditTicket(isReceiptPrint: boolean, ticketId: any) {
     // alert('Refresh' + this.ticketId);
-    if (this.ticketId && this.ticketId != 0) {
+    if (ticketId && ticketId != 0) {
       console.log('11111');
       this.isEditModeOn = false;
       this.editItemCloseImageCapture = false;
       this.processDataBasedOnTicketId();
-    } else if (this.ticketId == 0 && !isReceiptPrint) {
+    } else if (ticketId == 0 && !isReceiptPrint) {
       console.log('222222');
       this.router.navigateByUrl(`${this.orgName}/home`);
     }
@@ -908,7 +925,7 @@ export class TicketDetailComponent implements OnInit {
       this.itemMaterialId = rowData.materialId;
       this.itemGross = rowData.gross;
       this.itemTare = rowData.tare;
-      this.itemNet = rowData.net;
+      this.itemNet = isNaN(rowData.net) ?  0 : rowData.net;
       this.itemPrice = rowData.price;
       this.itemImagePath = rowData.imagePath;
       this.itemCodNote = rowData.codNote;
@@ -920,7 +937,8 @@ export class TicketDetailComponent implements OnInit {
   }
 
   calculateNet() {
-    this.itemNet = this.itemGross - this.itemTare;
+    const netQty = this.itemGross - this.itemTare
+    this.itemNet = isNaN(netQty) ?  0 : netQty;
   }
 
   closeCapturedImage(imagetype: number) {
@@ -989,7 +1007,8 @@ export class TicketDetailComponent implements OnInit {
     this.mainMaterialsVisible = true;
     this.itemGross = rowData.itemGross;
     this.itemTare = rowData.itemTare;
-    this.itemNet = this.itemGross - this.itemTare;
+    const netQty = this.itemGross - this.itemTare
+    this.itemNet = isNaN(netQty) ?  0 : netQty;
     this.itemPrice = rowData.itemPrice;
     this.materialNote = rowData.materialNote;
     this.updateExistingItemDataResponse();
@@ -1260,16 +1279,28 @@ export class TicketDetailComponent implements OnInit {
   }
 
 
-  generateCheckPrintReport(ticketId: any) {
+  generateCheckPrintReport(ticketId: any, checkAmount: any) {
     this.showLoaderReport = true;
+
+    let amount = checkAmount;
+
+    var num = amount.toString().split(".");
+    let  doller = this.convertNumberToWords(num[0]);
+    let cent = '';
+    if (num.length>1) {
+      cent = this.convertNumberToWords(num[1])
+    }
+    let amountInWord = ((doller.length==0? 'Zero ' : doller) + 'DOLLARS AND ' + (cent.length==0? 'Zero' : cent) + ' CENTS ONLY').toUpperCase()
+    console.info(amountInWord);
+
 
     const param = {
       TicketId: ticketId,
-      FullName: this.customer?.fullName,
-      PrintDate: this.selectedCheckDate,
-      CheckDate: this.selectedCheckDate,
-      CheckAmount: this.payAmount,
-      AmountInWord: "ONE DOLLARS AND ZERO CENTS ONLY"
+      FullName: this.customer?.fullName.toUpperCase(),
+      PrintDate: this.formatDate(new Date()),
+      CheckDate: this.formatDate(this.selectedCheckDate),
+      CheckAmount: '$' + (Math.round(checkAmount*100)/100).toFixed(2),
+      AmountInWord: amountInWord
     }
 
     this.commonService.getCheckPrintReport(param)
@@ -1286,6 +1317,93 @@ export class TicketDetailComponent implements OnInit {
           // this.errorMsg = 'Error occured';
         }
       );
+  }
+
+  formatDate(dateStr: any) {
+    const d = new Date(dateStr);
+    return (d.getMonth() + 1).toString().padStart(2, '0') + '/' + d.getDate().toString().padStart(2, '0') + '/' + d.getFullYear();
+  }
+  
+  convertNumberToWords(amount: any) {
+    var words = new Array();
+    words[0] = 'Zero';
+    words[1] = 'One';
+    words[2] = 'Two';
+    words[3] = 'Three';
+    words[4] = 'Four';
+    words[5] = 'Five';
+    words[6] = 'Six';
+    words[7] = 'Seven';
+    words[8] = 'Eight';
+    words[9] = 'Nine';
+    words[10] = 'Ten';
+    words[11] = 'Eleven';
+    words[12] = 'Twelve';
+    words[13] = 'Thirteen';
+    words[14] = 'Fourteen';
+    words[15] = 'Fifteen';
+    words[16] = 'Sixteen';
+    words[17] = 'Seventeen';
+    words[18] = 'Eighteen';
+    words[19] = 'Nineteen';
+    words[20] = 'Twenty';
+    words[30] = 'Thirty';
+    words[40] = 'Forty';
+    words[50] = 'Fifty';
+    words[60] = 'Sixty';
+    words[70] = 'Seventy';
+    words[80] = 'Eighty';
+    words[90] = 'Ninety';
+    amount = amount.toString();
+    var atemp = amount.split(".");
+    var number = atemp[0].split(",").join("");
+    var n_length = number.length;
+    var words_string = "";
+    if (n_length <= 9) {
+        var n_array = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
+        var received_n_array = new Array();
+        for (var i = 0; i < n_length; i++) {
+            received_n_array[i] = number.substr(i, 1);
+        }
+        for (var i = 9 - n_length, j = 0; i < 9; i++, j++) {
+            n_array[i] = received_n_array[j];
+        }
+        for (var i = 0, j = 1; i < 9; i++, j++) {
+            if (i == 0 || i == 2 || i == 4 || i == 7) {
+                if (n_array[i] == 1) {
+                    n_array[j] = 10 + parseInt(n_array[j] as any);
+                    n_array[i] = 0;
+                }
+            }
+        }
+      let  value;
+        for (var i = 0; i < 9; i++) {
+            if (i == 0 || i == 2 || i == 4 || i == 7) {
+                value = n_array[i] * 10;
+            } else {
+                value = n_array[i];
+            }
+            if (value != 0) {
+                words_string += words[value] + " ";
+            }
+            if ((i == 1 && value != 0) || (i == 0 && value != 0 && n_array[i + 1] == 0)) {
+                words_string += "Crores ";
+            }
+            if ((i == 3 && value != 0) || (i == 2 && value != 0 && n_array[i + 1] == 0)) {
+                words_string += "Lakhs ";
+            }
+            if ((i == 5 && value != 0) || (i == 4 && value != 0 && n_array[i + 1] == 0)) {
+                words_string += "Thousand ";
+            }
+            if (i == 6 && value != 0 && (n_array[i + 1] != 0 && n_array[i + 2] != 0)) {
+                words_string += "Hundred ";
+            } else if (i == 6 && value != 0) {
+                words_string += "Hundred ";
+            }
+        }
+        words_string = words_string.split("  ").join(" ");
+    }
+    return words_string;
   }
 
 

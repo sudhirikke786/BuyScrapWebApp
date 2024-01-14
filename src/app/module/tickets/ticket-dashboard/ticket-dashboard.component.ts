@@ -6,11 +6,13 @@ import { Pagination } from 'src/app/core/interfaces/common-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-ticket-dashboard',
   templateUrl: './ticket-dashboard.component.html',
-  styleUrls: ['./ticket-dashboard.component.scss']
+  styleUrls: ['./ticket-dashboard.component.scss'],
+  providers: [MessageService, ConfirmationService]
 })
 export class TicketDashboardComponent implements OnInit {
   sellerTicketsloader: boolean = false;
@@ -81,7 +83,9 @@ export class TicketDashboardComponent implements OnInit {
   ticketsTransactions: any;
   sellerTickets: any;
   sellers: any;
+  selectedSellerId: any;
   selectedSellerTickets: any;
+  selectedSellerTicketsPaidAmount = 0;
 
   dialogPopupVisible: boolean = false;
   newTicketVisible: boolean = false;
@@ -118,6 +122,27 @@ export class TicketDashboardComponent implements OnInit {
   showVoidDialogBox = false;
   voidReason: any = '';
   isVoidOrRestore: any = '';
+  
+
+  /**Print out Variable */
+  ticketId: any;
+  activeSection: string = '';
+
+  totalAmount: any;
+  selectedPayAmount: number = 0;
+  remainingAmount: number = 0;
+  totalHoldAmount: number = 0;
+  selectedCheckDate: any;
+  ePaymentType: string = '';
+  systemInfo: any;
+  isReceiptPrint = false;
+
+  transactionPaymentType: any = [];
+
+  holdticketObj: any = [];
+  isHoldTrue: boolean = false;
+
+  selectedHoldAmount = 'Pay Total Amount'
 
 
   pagination: any = {
@@ -144,6 +169,9 @@ export class TicketDashboardComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private stroarge: StorageService,
+    private confirmationService: ConfirmationService,
+    private datePipe: DatePipe,
+    private messageService: MessageService,
     public commonService: CommonService) { }
 
   ngOnInit() {
@@ -160,6 +188,15 @@ export class TicketDashboardComponent implements OnInit {
     }
 
     this.selectedTickets = this.defaultSelectedTicketsTypes;
+
+    
+
+    const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
+    if (_dataObj) {
+      const isElectronic = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'iselectronicpayment')[0];
+      this.systemInfo = isElectronic?.values;
+    }
+
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
@@ -271,6 +308,7 @@ export class TicketDashboardComponent implements OnInit {
 
   showVoideCancelCopy(ticketData: any) {
     this.tiketSelectedObj = ticketData;
+    this.ticketId = ticketData.rowId;
     this.parentTicketId = ticketData.parentTicketID;
     this.isParent = ticketData.isParent;
     if (this.parentTicketId) {
@@ -510,6 +548,7 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   clickOnSeller(sellerId: any) {
+    this.selectedSellerId = sellerId;
     if (this.newTicketVisible == true) {
       this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${sellerId}`);
     } else if (this.ticketvisible == true) {
@@ -522,6 +561,7 @@ export class TicketDashboardComponent implements OnInit {
 
   showTicketDetails(ticketData: any) {
     this.parentTicketId = ticketData.parentTicketID;
+    this.ticketId = ticketData.rowId;
     this.isParent = ticketData.isParent;
     if (this.parentTicketId) {
       this.parentTicketIDVisible = true;
@@ -592,8 +632,466 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   mergeAndPaySelectedTickets() {
+    // alert(JSON.stringify(this.selectedSellerTickets));
+
+    if ((!this.selectedSellerTickets) || (this.selectedSellerTickets && this.selectedSellerTickets.length <= 1)) {
+      alert('Please select more than one ticket to merge!!!')
+      return;
+    }
+    
+    this.holdticketObj = null;
+    this.holdticketObj = this.selectedSellerTickets.filter((obj: any) => {
+      return obj.isHold === true
+    });
+    this.isHoldTrue = (this.holdticketObj.length > 0) ? true : false;
+
+    var totalbalanceAmount = this.selectedSellerTickets.reduce((totalAmount: any, item: any) => totalAmount + item.balanceAmount, 0);
+    
+    // alert(totalbalanceAmount);
+
+    
+    const totalActualAmount = this.selectedSellerTickets.reduce(function (sum: any, tickets: any) {
+      return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : tickets.amount);
+    }, 0);
+
+    this.ticketId = this.selectedSellerTickets.map((item: any) => item.ticketId).join(',');
+
+    this.totalAmount = Math.round(totalbalanceAmount);
+    alert(this.totalAmount + '========' + this.ticketId);
+
     // this.mergeTicketVisible = false;
+    // this.paymentVisible = true;
+    this.showPayment(false);
+  }
+
+
+  closePaymentPopup() {
+    console.log('close');
+    this.paymentVisible = false;
+    this.transactionPaymentType = [];
+  }
+
+  
+
+  showPayment(isReceiptPrint: boolean) {
+    this.isReceiptPrint = isReceiptPrint;
     this.paymentVisible = true;
+
+    
+    this.selectedSellerTicketsPaidAmount = this.selectedSellerTickets.reduce(function (sum: any, tickets: any) {
+      return sum + tickets.paidAmount;
+    }, 0);
+
+    this.selectedPayAmount = this.remainingAmount = this.payAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount;
+    this.showSection('Cash');
+  }
+
+
+  showSection(paymentType: string) {
+    this.activeSection = paymentType;
+
+    setTimeout(() => {
+      this.selectedCheckDate = new Date().toISOString().split('T')[0];
+    }, 10)
+    this.checkNumber = '';
+    this.ePaymentType = '';
+
+    if (this.isHoldTrue) {
+      this.totalHoldAmount = this.holdticketObj.reduce((acc: any, curr: any) => acc + curr.amount, 0);
+    }
+    switch (this.selectedHoldAmount) {
+      case 'Partial Pay Amount':
+        if (this.totalHoldAmount >= this.payAmount && (this.totalHoldAmount != 0 || this.payAmount != 0)) {
+          alert(`Hold amount ( $${this.totalHoldAmount} ) is equal or more than total pay amount ( $${this.payAmount} )`);
+          this.payAmount = 0;
+        } else {
+          this.payAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount - this.totalHoldAmount;
+        }
+        break;
+      case 'Hold All Amount':
+        this.payAmount = 0;
+        break;
+    }
+  }
+
+
+  isInputValid(input: any): boolean {
+    const numberFloatRegex: RegExp = /^-?\d+(\.\d+)?$/;
+    return numberFloatRegex.test(input);
+  }
+
+  addTransction() {
+
+    if (this.selectedPayAmount <= 0) {
+      window.alert("Please Enter Amount");
+      return;
+    }
+
+    if (!this.isInputValid(this.selectedPayAmount)) {
+      window.alert("Add valid input");
+      return;
+    }
+
+    const findItemExist = this.transactionPaymentType.findIndex((item: any) => item.typeofPayment?.toLowerCase() == this.activeSection?.toLowerCase())
+    const checkPrice = this.checkTotalAmount();
+
+    if (checkPrice) {
+      window.alert("adding amount is greter than total amount")
+      return;
+    }
+
+    
+    if (this.activeSection == 'Check') {
+      if (this.checkNumber.length == 0) {
+        alert('Enter Check Number');
+        return;
+      }
+    } else if (this.activeSection == 'Electronic Payment') {
+      if (this.ePaymentType?.length == 0) {
+        alert('Enter Electronic Payment Type');
+        return;
+      }
+    }
+
+    switch (this.selectedHoldAmount) {
+      case 'Partial Pay Amount':
+        const total = this.getTotal();
+        const eligiblePayAmount = this.totalAmount - total - this.totalHoldAmount;
+        if (this.selectedPayAmount > eligiblePayAmount) {
+          alert('Exclude hold item amount');
+          this.selectedPayAmount = eligiblePayAmount;
+          return;
+        }
+        break;
+      case 'Hold All Amount':
+        alert('You have selected option as "Hold All Amount"!!!');
+        this.selectedPayAmount = 0;
+        return;
+        break;
+    }
+
+    if (findItemExist > -1) {
+
+      this.transactionPaymentType[findItemExist] = {
+        typeofPayment: this.activeSection,
+        typeofAmount: this.selectedPayAmount,
+        paymentType: this.getType()
+      }
+
+    } else {
+
+
+      this.transactionPaymentType.push({
+        typeofPayment: this.activeSection,
+        typeofAmount: this.selectedPayAmount,
+        paymentType: this.getType()
+      })
+
+    }
+
+    const checkPrice2 = this.checkTotalAmount();
+    if (checkPrice2) {
+      // TO DO: Needs to write a logic to remove latest added transaction based on activeSection 
+      this.transactionPaymentType.splice(this.transactionPaymentType.length - 1, 1)
+      window.alert("adding amount is greter than total amount")
+      return false;
+    }
+
+    this.remainingAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount - this.getTotal();
+    this.selectedPayAmount = this.remainingAmount;
+
+
+  }
+
+  getType() {
+    let str = '';
+    if (this.activeSection == 'Cash') {
+      str = ''
+    }
+
+    str = this.activeSection == 'Check' ? this.checkNumber : this.ePaymentType;
+    return str;
+  }
+
+  checkTotalAmount() {
+    let checkError = false;
+    if (Number(this.payAmount) > Number(this.totalAmount)) {
+      checkError = true;
+
+    } else {
+      const total = this.getTotal();
+      if (Number(total) > Number(this.totalAmount)) {
+        checkError = true;
+      }
+    }
+    return checkError;
+
+  }
+
+  removeItem(i: number) {
+    this.transactionPaymentType.splice(i, 1);
+  }
+
+
+  getTotal(): number {
+    return this.transactionPaymentType.reduce((sum: number, curr: any) => {
+      return sum = sum + Number(curr.typeofAmount)
+    }, 0)
+  }
+
+  get isDisabled(): boolean {
+    return (this.getTotal() < this.totalAmount);
+  }
+
+  payAndSave(activeSection: string) {
+
+    const payAmout = this.getTotal();
+
+    if (payAmout == 0 && this.selectedPayAmount> 0) {
+      console.log('directly click on Pay Tiket button');
+      this.transactionPaymentType.push({
+        typeofPayment: this.activeSection,
+        typeofAmount: this.selectedPayAmount,
+        paymentType: this.getType()
+      });
+    } 
+      
+    this.payAmount = this.getTotal();
+
+    if (!this.payAmount) {
+      alert('Enter Amount');
+      return
+    }
+    if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.selectedSellerTicketsPaidAmount)) {
+      alert('Please enter valid amount!!!');
+      return;
+    }
+
+    switch (this.selectedHoldAmount) {
+      case 'Partial Pay Amount':
+        const eligiblePayAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount - this.totalHoldAmount;
+        if (this.payAmount > eligiblePayAmount) {
+          alert('Exclude hold item amount');
+          this.payAmount = eligiblePayAmount;
+          return;
+        }
+        break;
+      case 'Hold All Amount':
+        alert('You have selected option as "Hold All Amount"!!!');
+        this.payAmount = 0;
+        return;
+        break;
+    }
+
+    let msg = 'Do You want to print receipt?';
+
+    if (this.activeSection == 'Check') {
+      msg = 'Do You want to print receipt?'
+      if (this.checkNumber.length == 0) {
+        alert('Enter Check Number');
+        return;
+      }
+    } else if (this.activeSection == 'Electronic Payment') {
+      msg = 'Do You want to print receipt?'
+      if (this.ePaymentType?.length == 0) {
+        alert('Enter Electronic Payment Type');
+        return;
+      }
+    } else {
+      msg = 'You selected as Cash as payment mode please confirm ?';
+    }
+
+    this.saveTransactionData(activeSection);
+
+  }
+
+  saveTransactionData(activeSection: any) {
+    let isCheckPrint = false;
+    let isCheckTransaction = false;
+    let payTransactionObj: any = [];
+    let checkAmount = 0;
+    let checkNumber = '';
+
+    const ticketId = (this.ticketId.indexOf(',') > -1) ? 0 : this.ticketId;
+
+    this.transactionPaymentType.map((item: any) => {
+
+      if (item.typeofPayment == 'Cash') {  
+
+        payTransactionObj.push({
+          localRowId: 1,
+          rowId: 0,
+          createdBy: this.logInUserId,
+          createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          updatedBy: this.logInUserId,
+          updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          ticketId: parseInt(ticketId),
+          type: item.typeofPayment,
+          amount: parseFloat(item.typeofAmount),
+          checkNumber: '',
+          barCode: '',
+          guid: '',
+          dateClosed: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+        });
+
+      } else if (item.typeofPayment == 'Check') {
+
+        isCheckTransaction = true;
+        checkAmount = parseFloat(item.typeofAmount);
+        checkNumber = item.paymentType;
+
+        payTransactionObj.push({
+          localRowId: 2,
+          rowId: 0,
+          createdBy: this.logInUserId,
+          createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          updatedBy: this.logInUserId,
+          updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          ticketId: parseInt(ticketId),
+          type: item.typeofPayment,
+          amount: checkAmount,
+          checkNumber: checkNumber,
+          barCode: '',
+          guid: '',
+          dateClosed: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+        });
+
+      } else if (item.typeofPayment == 'Electronic Payment') {
+        
+        payTransactionObj.push({
+          localRowId: 3,
+          rowId: 0,
+          createdBy: this.logInUserId,
+          createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          updatedBy: this.logInUserId,
+          updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          ticketId: parseInt(ticketId),
+          type: item.typeofPayment,
+          amount: parseFloat(item.typeofAmount),
+          checkNumber: item.paymentType,
+          barCode: '',
+          guid: '',
+          dateClosed: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+        });
+      }
+
+      return item
+    })
+
+    
+    let text = "Do you want to print receipt?";
+    if (confirm(text) == true) {
+      if (isCheckTransaction) {
+        isCheckPrint = true;
+      }
+    }
+
+    if(this.ticketId.indexOf(',') > -1) {
+      this.saveMergeTicketDetails(payTransactionObj, isCheckPrint, this.isReceiptPrint);
+    } else {
+      this.savePaymentTransation(payTransactionObj, isCheckPrint, this.isReceiptPrint);
+    }
+    this.paymentVisible = false;
+    // this.saveConfirmVisible = false; // TO DO
+
+  }
+
+  savePaymentTransation(payTransactionObj: any, isCheckPrint: boolean, isReceiptPrint: boolean) {
+    
+    const transactionObj = {
+      tickettransaction : {
+        localRowId: 0,
+        rowId: 0,
+        createdBy: this.logInUserId,
+        createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+        updatedBy: this.logInUserId,
+        updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+        ticketId: this.ticketId,
+        type: this.transactionPaymentType[0]?.typeofPayment,
+        amount: 0,
+        checkNumber: '',
+        barCode: '',
+        guid: '',
+        dateClosed: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+        checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+      },
+      lstickettransaction : payTransactionObj
+    };
+
+    this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {
+      // this.isReceiptPrint = false;
+      if (isCheckPrint) {
+        alert("Please insert Check into Printer!!!");
+
+        // TO DO :: Open Pdf viewer          
+        // this.showDownload = true;
+        // this.pdfViwerTitle = 'Check For Print';
+        // this.generateCheckPrintReport(this.ticketId, checkAmount);
+      }
+    }, (error: any) => {
+      console.log(error);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+    });
+  }
+
+
+  saveMergeTicketDetails(payTransactionObj: any, isCheckPrint: boolean, isReceiptPrint: boolean) {
+
+    const newTicket = {
+      rowId: 0,
+      userID: this.logInUserId,
+      date: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+      ticketId: this.ticketId,
+      type: this.transactionPaymentType[0]?.typeofPayment,
+      amount: 0,
+      checkNumber: '',
+      checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+      customerID: this.selectedSellerId,
+      locID: this.locId,
+      lstTTicketTransactionDTO: payTransactionObj
+    };
+
+
+    console.log("New Merge ticketData :: " + JSON.stringify(newTicket));
+
+    this.commonService.insertUpdateMergeTickets(newTicket).subscribe((data: any) => {
+      console.log(data);
+      const ticketId = data.body.insertedRow;
+      alert('Tickets merged successfully');
+
+      if (isCheckPrint) {
+        alert("Please insert Check into Printer!!!");
+
+      //     // TO DO :: Open Pdf viewer          
+      //     // this.showDownload = true;
+      //     // this.pdfViwerTitle = 'Check For Print';
+      //     // this.generateCheckPrintReport(this.ticketId, checkAmount);
+        this.router.navigateByUrl(`${this.orgName}/home`);
+      }
+
+      // this.cancelEditTicket(isReceiptPrint, ticketId);
+    }, (error: any) => {
+      console.log(error);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+    });
+    // setTimeout(this.cancelEditTicket, 2000);
+    // this.cancelEditTicket();
+    // this.router.navigateByUrl(`${this.orgName}/home`);
+  }
+
+  payRemainder() {
+    alert(this.ticketId);
+    this.paymentVisible = true;
+
+    this.selectedPayAmount = this.remainingAmount = this.payAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount;
+    this.showSection('Cash');
+  }
+
+  print() {
+    alert(this.ticketId);
   }
 
   processCash() {
