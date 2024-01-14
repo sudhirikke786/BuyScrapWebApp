@@ -41,7 +41,7 @@
                                         <button type="button" class="btn btn-primary me-1" (click)="goBack()">Back</button>
                                         <button class="btn btn-success me-1"  [disabled]="!sellerForm.valid" (click)="onSubmit()">{{ sellerId == 0 ?
                                             'Save' : 'Update'}}</button>
-                                        <button type="button" class="btn btn-primary">Print</button>
+                                        <button type="button" class="btn btn-primary" (click)="generateSellerInfoReport()">Print</button>
                                        
                                     </div>
                                 </div>
@@ -544,3 +544,19 @@
         <button type="button" pButton icon="pi pi-check" label="Yes" (click)="confirmPosition"></button>
     </ng-template>
 </p-confirmDialog> -->
+
+
+
+<p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+   
+    <div *ngIf="showLoaderReport">
+        <app-page-loader type="reportloader"></app-page-loader>
+    </div>
+
+
+    <div class="row" >
+    <div style="height: 500px;" *ngIf="!showLoaderReport">                
+        <ngx-extended-pdf-viewer   [base64Src]="fileDataObj" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
+    </div>
+    </div>
+</p-dialog>

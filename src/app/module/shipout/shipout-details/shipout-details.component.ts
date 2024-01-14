@@ -62,8 +62,8 @@ export class ShipoutDetailsComponent implements OnInit {
   itemGroupName: string = '';
   itemMaterialName: string = '';
   itemMaterialId: number = 0;
-  itemGross: number = 0;
-  itemTare: number = 0;
+  itemGross: any;
+  itemTare: any;
   itemNet: number = 0;
   itemAvailableNet: number = 0;
   itemImagePath: string = 'assets/images/custom/id_scan.png';
@@ -363,7 +363,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemMaterialId = rowData.materialId;
     this.itemGross = rowData.gross;
     this.itemTare = rowData.tare;
-    this.itemNet = rowData.net;
+    this.itemNet = isNaN(rowData.net) ?  0 : rowData.net;
     this.itemAvailableNet = rowData.price;
     this.itemImagePath = rowData.imagePath;
     this.itemCodNote = rowData.codNote;    
@@ -374,7 +374,8 @@ export class ShipoutDetailsComponent implements OnInit {
   }
 
   calculateNet() {
-    this.itemNet = this.itemGross - this.itemTare;
+    const netQty = this.itemGross - this.itemTare
+    this.itemNet = isNaN(netQty) ?  0 : netQty;
   }
 
   clickOnChangeItem() {
@@ -390,7 +391,8 @@ export class ShipoutDetailsComponent implements OnInit {
     this.mainMaterialsVisible = true;
     this.itemGross = rowData.itemGross;
     this.itemTare = rowData.itemTare;
-    this.itemNet = this.itemGross - this.itemTare;
+    const netQty = this.itemGross - this.itemTare
+    this.itemNet = isNaN(netQty) ?  0 : netQty;
     this.itemAvailableNet = rowData.itemAvailableNet;
     this.materialNote = rowData.materialNote;
     this.updateExistingItemDataResponse();
@@ -458,17 +460,17 @@ export class ShipoutDetailsComponent implements OnInit {
   }
   
 
-  generateSingleTicketReport() {
+  generateShipOutReport() {
+    alert('generating report .... !!!');
 
     const param = {
-      TicketId: this.ticketId,
-      LocationId: this.locId,
-      Type: localStorage.getItem('defaultPrintSize')
+      ShipOutId: this.ticketId,
+      LocationId: this.locId
     }
 
-    this.commonService.generateSingleTicketReport(param)
+    this.commonService.getShipOutReportByID(param)
       .subscribe(data => {
-        console.log('generateSingleTicketReport :: ');
+        console.log('getShipOutReportByID :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
         this.showDownload = true;

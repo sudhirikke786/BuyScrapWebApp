@@ -25,7 +25,8 @@
           </div>
           <div class="col-md-8">
               <div class="input-group">
-                  <input type="text" placeholder="Enter Gross Weight" #inputBox1 [(ngModel)]="grossInput" (focus)="focusedInput = 'inputBox1'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+                  <input type="text" placeholder="Enter Gross Weight" #inputBox1 [(ngModel)]="grossInput" (focus)="focusedInput = 'inputBox1'" 
+                  (ngModelChange)="calcNetFromGross($event)" id="inputBox1" name="inputBox1" class="form-control  h-30 mb-1 ps-0">
                   <div class="input-group-append" *ngIf="grossInput">
                     <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="grossInput ='0'">
                       <i class="bi bi-x"></i>
@@ -43,7 +44,7 @@
           </div>
           <div class="col-md-8">
               <div class="input-group">
-                  <input type="text" placeholder="Enter Tare Weight" #inputBox2  [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+                  <input type="text" placeholder="Enter Tare Weight" #inputBox2  [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'"   id="tear" class="form-control  h-30 mb-1 ps-0">
                   <div class="input-group-append" *ngIf="tareInput">
                     <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="tareInput ='0'">
                       <i class="bi bi-x"></i>
@@ -58,7 +59,7 @@
           </div>
           <div class="col-md-8">
               <div class="input-group">
-                  <input type="text" readonly placeholder="Net Weight" #inputBox3  [(ngModel)]="netInput" value = "{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox3'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+                  <input type="text" readonly placeholder="Net Weight" #inputBox3  [(ngModel)]="netInput" value = "{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox3'"   id="net" class="form-control  h-30 mb-1 ps-0">
                   <!-- <div class="input-group-append" *ngIf="netInput">
                     <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="netInput =''">
                       <i class="bi bi-x"></i>
@@ -73,7 +74,7 @@
           </div>
           <div class="col-md-8">
               <div class="input-group">
-                  <input type="text" #inputBox4 [(ngModel)]="availableNetInput" (focus)="focusedInput = 'inputBox4'"   id="gross" class="form-control  h-30 mb-1 ps-0">
+                  <input type="text" #inputBox4 [(ngModel)]="availableNetInput" (focus)="focusedInput = 'inputBox4'"   id="availanleNet" class="form-control  h-30 mb-1 ps-0">
                   <!-- <div class="input-group-append" *ngIf="availableNetInput">
                     <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="availableNetInput ='0'">
                       <i class="bi bi-x"></i>

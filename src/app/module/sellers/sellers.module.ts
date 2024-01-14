@@ -10,6 +10,7 @@ import { SellersBuyersDashboardComponent } from './sellers-buyers-dashboard/sell
 import { SellersBuyersDetailsComponent } from './sellers-buyers-details/sellers-buyers-details.component';
 import { AddSellersComponent } from './add-sellers/add-sellers.component';
 import { RoleGuard } from 'src/app/core/guard/role.guard';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 
 export const routes: Routes = [
@@ -45,6 +46,7 @@ export const routes: Routes = [
     CommonsharedModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
+    NgxExtendedPdfViewerModule,
     PrimengModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

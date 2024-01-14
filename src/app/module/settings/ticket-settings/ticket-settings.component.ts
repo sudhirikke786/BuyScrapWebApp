@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
@@ -12,6 +12,8 @@ import { StorageService } from 'src/app/core/services/storage.service';
   styleUrls: ['./ticket-settings.component.scss']
 })
 export class TicketSettingsComponent implements OnInit {
+  
+@Output() close = new EventEmitter<boolean>();
   ticketForm!: FormGroup;
   logo:any;
   logInUserId: any;
@@ -75,7 +77,8 @@ export class TicketSettingsComponent implements OnInit {
     const reqObj = {...userInfo,...obj};
 
     this.commonService.InsertUpdateTicketSettings(reqObj).subscribe((res) =>{
-    //  alert('updated')
+      alert('Organization Details Successfully Updated');     
+      this.close.emit();
       //this.msgService.showSuccess('Successfully Updated')
     },(error)=>{
       

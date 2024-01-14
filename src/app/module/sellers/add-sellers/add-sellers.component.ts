@@ -38,6 +38,11 @@ export class AddSellersComponent implements OnInit {
   imagePath: any;
   captureType :any;
 
+  
+  fileDataObj: any;
+  showDownload = false;
+  showLoaderReport = false;
+  pdfViwerTitle = 'Seller Info';
 
 
   constructor(private route: ActivatedRoute,
@@ -72,8 +77,8 @@ export class AddSellersComponent implements OnInit {
     this.sellerForm = this.fb.group({
        firstName : ['',Validators.required],
        sellerType:[this.sellerType],
-       middleName : ['',Validators.required],
-       lastName : ['',Validators.required],
+       middleName : [''],
+       lastName : [''],
        fullName: [''],
        dob : [],
        profilePic : [],
@@ -84,7 +89,7 @@ export class AddSellersComponent implements OnInit {
        idnumber : [''],
        expiryDate : [],
        class : [],
-       gender : ['',Validators.required],
+       gender : [''],
        vehicleColor : [],
        vehicleType : [],
        vehicleName : [],
@@ -95,8 +100,8 @@ export class AddSellersComponent implements OnInit {
        userName : [],
        dealerType : [''],
        vehicleModel : [],
-       emailId : ['',Validators.required],
-       cellNumber : ['',Validators.required]
+       emailId : [''],
+       cellNumber : ['']
     })
 
 
@@ -380,7 +385,34 @@ export class AddSellersComponent implements OnInit {
     this.imageUrl= $event;
   }
 
+  generateSellerInfoReport() {    
+    alert('generating report .... !!!');
+    this.showLoaderReport = true;
 
+    const param = {
+      LocationId: this.locId,
+      SellerId: this.sellerId
+    };
+
+    this.commonService.getSellerInfo(param)
+      .subscribe(data => {
+        this.showLoaderReport = false;
+        console.log('getSellerInfo :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showDownload = true;
+        this.pdfViwerTitle = 'Seller Info';
+      },
+        (err: any) => {
+          this.showLoaderReport = false;
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  closePdfReport() {
+    this.showDownload = false;
+  }
 
 
 

@@ -147,13 +147,13 @@
     <ng-template pTemplate="header">
 
         <div class="d-flex">
-            <a class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a>
+            <a class="btn btn-primary " (click)="tvisible=false;"><i class="mdi mdi-keyboard-backspace"> Back </i></a>
 
             <h4 class="modal-title ml-10" id="myLargeModalLabel">Ticket Settings</h4>
         </div>
 
     </ng-template>
-    <app-ticket-settings *ngIf="tvisible"> </app-ticket-settings>
+    <app-ticket-settings *ngIf="tvisible" (close)="tvisible=false"> </app-ticket-settings>
 
 </p-dialog>
 
