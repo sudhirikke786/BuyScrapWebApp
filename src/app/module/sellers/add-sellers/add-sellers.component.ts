@@ -387,6 +387,8 @@ export class AddSellersComponent implements OnInit {
 
   generateSellerInfoReport() {    
     alert('generating report .... !!!');
+
+    this.showDownload = true;
     this.showLoaderReport = true;
 
     const param = {
@@ -400,7 +402,7 @@ export class AddSellersComponent implements OnInit {
         console.log('getSellerInfo :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
-        this.showDownload = true;
+      
         this.pdfViwerTitle = 'Seller Info';
       },
         (err: any) => {
