@@ -1,6 +1,6 @@
 <div class="account-pages account-pages-bsa">
-    <div class="container">
-        <div class="row d-flex justify-content-center align-item-center login-class" style="margin-top:65px">
+    <div class="container" >
+        <div *ngIf="!isShow" class="row d-flex justify-content-center align-item-center login-class" style="margin-top:65px">
           <div class="d-flex justify-content-center login-inner">
             <div class="col-md-8 col-lg-6 col-sm-12">
                 <div class="card bg-pattern">
@@ -96,6 +96,66 @@
               
           
         </div>
+
+
+
+        <div *ngIf="isShow" class="d-flex justify-content-center login-inner">
+               <div class="col-md-8 col-lg-6 col-sm-12">
+                <div class="card bg-pattern">
+
+                    <div class="card-body p-4">
+                        
+                        <div class="text-center w-75 m-auto auth-logo d-flex justify-content-center align-items-center text-center">
+                            <div class="auth-logo text-center">
+                              
+            
+                                <p-skeleton shape="circle" size="5rem" styleClass="mr-2 mb-2"></p-skeleton>
+                                <p-skeleton width="100%" height="1rem" class="me-2"></p-skeleton>
+                            </div>
+                          
+                        </div>
+
+                        <div class="form-group mb-3 mt-2">
+                            <p-skeleton width="100%" height="3rem" class="me-2"></p-skeleton>
+                        </div>
+                            <div class="form-group mb-3">
+                                <p-skeleton width="100%" height="3rem" class="me-2"></p-skeleton>
+                            </div>
+
+                            <div class="form-group mb-2 text-center">
+                                <p-skeleton width="100%" height="3rem" class="me-2"></p-skeleton>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <p-skeleton width="100%" height="3rem" class="me-2"></p-skeleton>
+                            </div>
+
+                            <div class="form-group mb-2 text-center">
+                                <p-skeleton width="100%" height="1rem" class="me-2"></p-skeleton>
+                            </div>
+                     
+
+                        
+
+                    </div> <!-- end card-body -->
+                </div>
+                <!-- end card -->
+
+               
+
+              
+            </div> <!-- end col -->
+      
+       
+
+
+
+       
+
+
+
+
+
         <!-- end row -->
     </div>
     <!-- end container -->

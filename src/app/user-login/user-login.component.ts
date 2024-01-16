@@ -32,6 +32,7 @@ export class UserLoginComponent implements OnInit {
   locationId: number = 0;
   inputType: string  = 'password';
   isSubmit: boolean = false;
+  isShow = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -96,8 +97,10 @@ export class UserLoginComponent implements OnInit {
    * Get the data by calling WebAPI to fetch the details for organization login
    */
   getOrgLocation() {
+    this.isShow = true;
     this.commonService.getOrgLocation()
       .subscribe(data => {
+        this.isShow = false;
           console.log('getOrgLocation :: ');
           console.log(data);
           this.locations = data.body.data;
@@ -107,6 +110,7 @@ export class UserLoginComponent implements OnInit {
           this.loginForm.patchValue(this.user)
         },
         (err: any) => {
+          this.isShow = false;
           // this.errorMsg = 'Error occured';
         }
       );
