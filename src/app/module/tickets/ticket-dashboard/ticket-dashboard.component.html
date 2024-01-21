@@ -197,7 +197,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-seller>
-                    <tr (click)="clickOnSeller(seller.rowId)"  style="cursor: pointer;">
+                    <tr (click)="clickOnSeller(seller.rowId, seller.fullName)"  style="cursor: pointer;">
                         <td>{{ seller.fullName }}</td>
                         <td>{{ seller.driverLicenseNumber }}</td>
                         <td>{{ seller.streetAddress }}</td>
@@ -618,11 +618,25 @@
     </div>
     <div class="d-flex justify-content-left mt-2">
 
-        <div><button type="submit" class="btn btn-primary justify-content-center  me-2"  (click)="addTransction()">Add Ticket</button></div>
+        <div><button type="submit" class="btn btn-primary justify-content-center  me-2"  (click)="addTransction()">Add Payment</button></div>
 
         <div><button class="btn btn-primary justify-content-center me-2" (click)="payAndSave(activeSection)">Pay Ticket</button></div>
     </div>
     
+</p-dialog>
+
+<p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+   
+        <div *ngIf="showLoaderReport">
+        <app-page-loader type="reportloader"></app-page-loader>
+      </div>
+
+   
+    <div class="row" >
+      <div style="height: 500px;" *ngIf="!showLoaderReport">                
+        <ngx-extended-pdf-viewer   [base64Src]="fileDataObj" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
+      </div>
+    </div>
 </p-dialog>
 
 

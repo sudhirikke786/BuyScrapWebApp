@@ -133,6 +133,8 @@ export class TicketDetailComponent implements OnInit {
   showDownload = false;
   showLoaderReport = false;
   pdfViwerTitle = 'Ticket Receipt';
+  isCheckPrint = false;
+  checkAmount = 0;
   isLoading = false;
   systemInfo: any;
   signPadVisible = false;
@@ -646,10 +648,10 @@ export class TicketDetailComponent implements OnInit {
 
 
   saveTransactionData(activeSection: any) {
-    let isCheckPrint = false;
+    this.isCheckPrint = false;
     let isCheckTransaction = false;
     let payTransactionObj: any = [];
-    let checkAmount = 0;
+    this.checkAmount = 0;
     let checkNumber = '';
 
     this.transactionPaymentType.map((item: any) => {
@@ -676,7 +678,7 @@ export class TicketDetailComponent implements OnInit {
       } else if (item.typeofPayment == 'Check') {
 
         isCheckTransaction = true;
-        checkAmount = parseFloat(item.typeofAmount);
+        this.checkAmount = parseFloat(item.typeofAmount);
         checkNumber = item.paymentType;
 
         payTransactionObj.push({
@@ -688,7 +690,7 @@ export class TicketDetailComponent implements OnInit {
           updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
           ticketId: parseInt(this.ticketId),
           type: item.typeofPayment,
-          amount: checkAmount,
+          amount: this.checkAmount,
           checkNumber: checkNumber,
           barCode: '',
           guid: '',
@@ -723,7 +725,7 @@ export class TicketDetailComponent implements OnInit {
     let text = "Do you want to print receipt?";
     if (confirm(text) == true) {
       if (isCheckTransaction) {
-        isCheckPrint = true;
+        this.isCheckPrint = true;
       }
     }
 
@@ -750,21 +752,17 @@ export class TicketDetailComponent implements OnInit {
     this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {
       
 
-      const checkPaymentTransaction = this.transactionPaymentType.filter((item:any) => item.typeofPayment == 'Check')
-      if (checkPaymentTransaction.length < 1) {
-        this.cancelEditTicket(this.isReceiptPrint, this.ticketId);
-      } else {
-        this.cancelEditTicket(false, this.ticketId);
-      }
+      // const checkPaymentTransaction = this.transactionPaymentType.filter((item:any) => item.typeofPayment == 'Check')
+      // if (checkPaymentTransaction.length < 1) {
+      //   this.cancelEditTicket(this.isReceiptPrint, this.ticketId);
+      // } else {
+      //   this.cancelEditTicket(false, this.ticketId);
+      // }
+
       
-      // this.isReceiptPrint = false;
-      if (isCheckPrint) {
-        alert("Please insert Check into Printer!!!");
-        // Open Pdf viewer          
-        this.showDownload = true;
-        this.pdfViwerTitle = 'Check For Print';
-        this.generateCheckPrintReport(this.ticketId, checkAmount);
-      }     
+      // this.isReceiptPrint = false;   
+      
+      this.cancelEditTicket(this.isReceiptPrint, this.ticketId); 
 
     }, (error: any) => {
       // this.saveTicketDetails(0, false);
@@ -873,6 +871,16 @@ export class TicketDetailComponent implements OnInit {
     }
     if (isReceiptPrint) {
       this.generateSingleTicketReport(ticketId);
+    } else {      
+      if (this.isCheckPrint) {
+        alert("Please insert Check into Printer!!!");
+        // Open Pdf viewer          
+        this.showDownload = true;
+        this.pdfViwerTitle = 'Check For Print';
+        this.generateCheckPrintReport(this.ticketId, this.checkAmount);
+        this.isCheckPrint = false;
+        this.checkAmount = 0;
+      } 
     }
   }
 
@@ -1242,6 +1250,16 @@ export class TicketDetailComponent implements OnInit {
       // this.isEditModeOn = false;
       // this.editItemCloseImageCapture = false;
       // this.processDataBasedOnTicketId();
+      
+      if (this.isCheckPrint) {
+        alert("Please insert Check into Printer!!!");
+        // Open Pdf viewer          
+        this.showDownload = true;
+        this.pdfViwerTitle = 'Check For Print';
+        this.generateCheckPrintReport(this.ticketId, this.checkAmount);
+        this.isCheckPrint = false;
+        this.checkAmount = 0;
+      }
     } else {
       console.log('222222');
       this.router.navigateByUrl(`${this.orgName}/home`);

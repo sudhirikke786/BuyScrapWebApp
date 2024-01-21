@@ -84,6 +84,7 @@ export class TicketDashboardComponent implements OnInit {
   sellerTickets: any;
   sellers: any;
   selectedSellerId: any;
+  selectedSellerName: any;
   selectedSellerTickets: any;
   selectedSellerTicketsPaidAmount = 0;
 
@@ -143,6 +144,11 @@ export class TicketDashboardComponent implements OnInit {
   isHoldTrue: boolean = false;
 
   selectedHoldAmount = 'Pay Total Amount'
+
+  fileDataObj: any;
+  showDownload = false;
+  showLoaderReport = false;
+  pdfViwerTitle = 'Ticket Receipt';
 
 
   pagination: any = {
@@ -467,14 +473,16 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   refreshData() {
+    this.parentTicketIDVisible = true;
+    this.isParentTicketVisible = false;
     this.selectedTickets = this.defaultSelectedTicketsTypes;
     this.serachText = '';
     this.searchOrder = 'All';
     const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
     this.pagination.Status = result;
     this.pagination.SerachText = this.serachText,
-      this.pagination.SearchOrder = this.searchOrder,
-      this.getAllTicketsDetails(this.pagination);
+    this.pagination.SearchOrder = this.searchOrder,
+    this.getAllTicketsDetails(this.pagination);
   }
 
   showMergeDialog() {
@@ -547,7 +555,8 @@ export class TicketDashboardComponent implements OnInit {
     this.parentTicketIDVisible = false;
   }
 
-  clickOnSeller(sellerId: any) {
+  clickOnSeller(sellerId: any, sellerFullname: any) {
+    this.selectedSellerName = sellerFullname;
     this.selectedSellerId = sellerId;
     if (this.newTicketVisible == true) {
       this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${sellerId}`);
@@ -561,6 +570,7 @@ export class TicketDashboardComponent implements OnInit {
 
   showTicketDetails(ticketData: any) {
     this.parentTicketId = ticketData.parentTicketID;
+    this.tiketSelectedObj = ticketData;
     this.ticketId = ticketData.rowId;
     this.isParent = ticketData.isParent;
     if (this.parentTicketId) {
@@ -657,7 +667,7 @@ export class TicketDashboardComponent implements OnInit {
     this.ticketId = this.selectedSellerTickets.map((item: any) => item.ticketId).join(',');
 
     this.totalAmount = Math.round(totalbalanceAmount);
-    alert(this.totalAmount + '========' + this.ticketId);
+    // alert(this.totalAmount + '========' + this.ticketId);
 
     // this.mergeTicketVisible = false;
     // this.paymentVisible = true;
@@ -912,7 +922,7 @@ export class TicketDashboardComponent implements OnInit {
     let checkAmount = 0;
     let checkNumber = '';
 
-    const ticketId = (this.ticketId.indexOf(',') > -1) ? 0 : this.ticketId;
+    const ticketId = (this.ticketId.toString().indexOf(',') > -1) ? 0 : this.ticketId;
 
     this.transactionPaymentType.map((item: any) => {
 
@@ -989,7 +999,7 @@ export class TicketDashboardComponent implements OnInit {
       }
     }
 
-    if(this.ticketId.indexOf(',') > -1) {
+    if(this.ticketId.toString().indexOf(',') > -1) {
       this.saveMergeTicketDetails(payTransactionObj, isCheckPrint, this.isReceiptPrint);
     } else {
       this.savePaymentTransation(payTransactionObj, isCheckPrint, this.isReceiptPrint);
@@ -1000,7 +1010,16 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   savePaymentTransation(payTransactionObj: any, isCheckPrint: boolean, isReceiptPrint: boolean) {
-    
+    console.log('payTransactionObj');
+    console.log(payTransactionObj);
+    console.log('this.transactionPaymentType');
+    console.log(this.transactionPaymentType);
+    const checkPaymentTransaction = this.transactionPaymentType.filter((item:any) => item.typeofPayment == 'Check');
+    const checkAmount = checkPaymentTransaction[0]?.typeofAmount;
+    // alert('checkAmount ::' + checkAmount);
+    const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
+    const customerFullName = selectedTicketDetail[0].customerName;
+
     const transactionObj = {
       tickettransaction : {
         localRowId: 0,
@@ -1025,11 +1044,10 @@ export class TicketDashboardComponent implements OnInit {
       // this.isReceiptPrint = false;
       if (isCheckPrint) {
         alert("Please insert Check into Printer!!!");
-
         // TO DO :: Open Pdf viewer          
-        // this.showDownload = true;
-        // this.pdfViwerTitle = 'Check For Print';
-        // this.generateCheckPrintReport(this.ticketId, checkAmount);
+        this.showDownload = true;
+        this.pdfViwerTitle = 'Check For Print';
+        this.generateCheckPrintReport(this.ticketId, checkAmount, customerFullName);
       }
     }, (error: any) => {
       console.log(error);
@@ -1057,19 +1075,26 @@ export class TicketDashboardComponent implements OnInit {
 
     console.log("New Merge ticketData :: " + JSON.stringify(newTicket));
 
+
     this.commonService.insertUpdateMergeTickets(newTicket).subscribe((data: any) => {
       console.log(data);
       const ticketId = data.body.insertedRow;
       alert('Tickets merged successfully');
+      this.mergeTicketVisible = false;
+      this.dialogPopupVisible = false;
 
       if (isCheckPrint) {
         alert("Please insert Check into Printer!!!");
 
-      //     // TO DO :: Open Pdf viewer          
-      //     // this.showDownload = true;
-      //     // this.pdfViwerTitle = 'Check For Print';
-      //     // this.generateCheckPrintReport(this.ticketId, checkAmount);
-        this.router.navigateByUrl(`${this.orgName}/home`);
+        const checkPaymentTransaction = this.transactionPaymentType.filter((item:any) => item.typeofPayment == 'Check');
+        const checkAmount = checkPaymentTransaction[0]?.typeofAmount;    
+        const customerFullName = this.selectedSellerName;
+
+        // TO DO :: Open Pdf viewer          
+        this.showDownload = true;
+        this.pdfViwerTitle = 'Check For Print';
+        this.generateCheckPrintReport(ticketId, checkAmount, customerFullName);
+        // this.router.navigateByUrl(`${this.orgName}/home`);
       }
 
       // this.cancelEditTicket(isReceiptPrint, ticketId);
@@ -1083,15 +1108,168 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   payRemainder() {
-    alert(this.ticketId);
-    this.paymentVisible = true;
+    // alert(this.ticketId);
+    const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
+    this.totalAmount = selectedTicketDetail.reduce((totalAmount: any, item: any) => totalAmount + item.balanceAmount, 0);
+    // this.totalAmount = selectedTicketDetail[0].balanceAmount;
+    
+    this.paymentVisible = true;    
 
     this.selectedPayAmount = this.remainingAmount = this.payAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount;
     this.showSection('Cash');
   }
 
+  closePdfReport() {
+    // this.showDownload = false;
+    // if (this.ticketId && this.ticketId != 0) {
+    //   console.log('11111');
+    //   // this.isEditModeOn = false;
+    //   // this.editItemCloseImageCapture = false;
+    //   // this.processDataBasedOnTicketId();
+    // } else {
+    //   console.log('222222');
+      // this.router.navigateByUrl(`${this.orgName}/home`);
+    // }
+    
+    this.parentTicketIDVisible = false;
+    this.isParentTicketVisible = false;
+    this.getAllTicketsDetails(this.pagination);
+  }
+
+
+  generateCheckPrintReport(ticketId: any, checkAmount: any, customerFullName: any) {
+    this.showLoaderReport = true;
+
+    let amount = checkAmount;
+
+    var num = amount.toString().split(".");
+    let  doller = this.convertNumberToWords(num[0]);
+    let cent = '';
+    if (num.length>1) {
+      cent = this.convertNumberToWords(num[1])
+    }
+    let amountInWord = ((doller.length==0? 'Zero ' : doller) + 'DOLLARS AND ' + (cent.length==0? 'Zero' : cent) + ' CENTS ONLY').toUpperCase()
+    console.info(amountInWord);
+
+    // alert(amountInWord);
+    
+    // const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
+    // const customerFullName = selectedTicketDetail[0].customerName;       
+
+    const param = {
+      TicketId: ticketId,
+      FullName: customerFullName.toUpperCase(),
+      PrintDate: this.formatDate(new Date()),
+      CheckDate: this.formatDate(this.selectedCheckDate),
+      CheckAmount: '$' + (Math.round(checkAmount*100)/100).toFixed(2),
+      AmountInWord: amountInWord
+    }
+
+    this.commonService.getCheckPrintReport(param)
+      .subscribe(data => {
+        this.showLoaderReport = false;
+        console.log('getCheckPrintReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showDownload = true;
+        this.pdfViwerTitle = 'Check For Print';
+      },
+        (err: any) => {
+          this.showLoaderReport = false;
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  formatDate(dateStr: any) {
+    const d = new Date(dateStr);
+    return (d.getMonth() + 1).toString().padStart(2, '0') + '/' + d.getDate().toString().padStart(2, '0') + '/' + d.getFullYear();
+  }
+  
+  convertNumberToWords(amount: any) {
+    var words = new Array();
+    words[0] = 'Zero';
+    words[1] = 'One';
+    words[2] = 'Two';
+    words[3] = 'Three';
+    words[4] = 'Four';
+    words[5] = 'Five';
+    words[6] = 'Six';
+    words[7] = 'Seven';
+    words[8] = 'Eight';
+    words[9] = 'Nine';
+    words[10] = 'Ten';
+    words[11] = 'Eleven';
+    words[12] = 'Twelve';
+    words[13] = 'Thirteen';
+    words[14] = 'Fourteen';
+    words[15] = 'Fifteen';
+    words[16] = 'Sixteen';
+    words[17] = 'Seventeen';
+    words[18] = 'Eighteen';
+    words[19] = 'Nineteen';
+    words[20] = 'Twenty';
+    words[30] = 'Thirty';
+    words[40] = 'Forty';
+    words[50] = 'Fifty';
+    words[60] = 'Sixty';
+    words[70] = 'Seventy';
+    words[80] = 'Eighty';
+    words[90] = 'Ninety';
+    amount = amount.toString();
+    var atemp = amount.split(".");
+    var number = atemp[0].split(",").join("");
+    var n_length = number.length;
+    var words_string = "";
+    if (n_length <= 9) {
+        var n_array = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
+        var received_n_array = new Array();
+        for (var i = 0; i < n_length; i++) {
+            received_n_array[i] = number.substr(i, 1);
+        }
+        for (var i = 9 - n_length, j = 0; i < 9; i++, j++) {
+            n_array[i] = received_n_array[j];
+        }
+        for (var i = 0, j = 1; i < 9; i++, j++) {
+            if (i == 0 || i == 2 || i == 4 || i == 7) {
+                if (n_array[i] == 1) {
+                    n_array[j] = 10 + parseInt(n_array[j] as any);
+                    n_array[i] = 0;
+                }
+            }
+        }
+      let  value;
+        for (var i = 0; i < 9; i++) {
+            if (i == 0 || i == 2 || i == 4 || i == 7) {
+                value = n_array[i] * 10;
+            } else {
+                value = n_array[i];
+            }
+            if (value != 0) {
+                words_string += words[value] + " ";
+            }
+            if ((i == 1 && value != 0) || (i == 0 && value != 0 && n_array[i + 1] == 0)) {
+                words_string += "Crores ";
+            }
+            if ((i == 3 && value != 0) || (i == 2 && value != 0 && n_array[i + 1] == 0)) {
+                words_string += "Lakhs ";
+            }
+            if ((i == 5 && value != 0) || (i == 4 && value != 0 && n_array[i + 1] == 0)) {
+                words_string += "Thousand ";
+            }
+            if (i == 6 && value != 0 && (n_array[i + 1] != 0 && n_array[i + 2] != 0)) {
+                words_string += "Hundred ";
+            } else if (i == 6 && value != 0) {
+                words_string += "Hundred ";
+            }
+        }
+        words_string = words_string.split("  ").join(" ");
+    }
+    return words_string;
+  }
+
   print() {
-    alert(this.ticketId);
+    // alert(this.ticketId);
   }
 
   processCash() {
