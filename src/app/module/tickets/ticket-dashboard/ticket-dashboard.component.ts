@@ -143,7 +143,7 @@ export class TicketDashboardComponent implements OnInit {
   holdticketObj: any = [];
   isHoldTrue: boolean = false;
 
-  selectedHoldAmount = 'Pay Total Amount'
+  selectedHoldAmount = 'Pay Total Amount';
 
   fileDataObj: any;
   showDownload = false;
@@ -566,7 +566,7 @@ export class TicketDashboardComponent implements OnInit {
     }
 
   }
-  // routerLink = "/{{orgName}}/home/detail/{{ticket.rowId}}/{{ticket.customerId}}" 
+  
 
   showTicketDetails(ticketData: any) {
     this.parentTicketId = ticketData.parentTicketID;
@@ -624,7 +624,7 @@ export class TicketDashboardComponent implements OnInit {
         console.log(data);
         this.sellerTickets = data.body.data;
         this.sellerTickets = this.sellerTickets.filter((obj: any) => {
-          return obj.status === 'OPEN';
+          return obj.status === 'OPEN' || obj.status === 'Partially Paid' ;
         }).sort((a: any, b: any) => (a.title > b.title) ? 1 : -1);
       },
         (err: any) => {
@@ -1120,6 +1120,12 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   closePdfReport() {
+    if (this.isParentTicketVisible && !this.paymentVisible){
+      this.isParentTicketVisible = false;
+    } else {
+      this.parentTicketIDVisible = false;
+      this.getAllTicketsDetails(this.pagination);
+    }
     // this.showDownload = false;
     // if (this.ticketId && this.ticketId != 0) {
     //   console.log('11111');
@@ -1131,14 +1137,12 @@ export class TicketDashboardComponent implements OnInit {
       // this.router.navigateByUrl(`${this.orgName}/home`);
     // }
     
-    this.parentTicketIDVisible = false;
-    this.isParentTicketVisible = false;
-    this.getAllTicketsDetails(this.pagination);
   }
 
 
   generateCheckPrintReport(ticketId: any, checkAmount: any, customerFullName: any) {
     this.showLoaderReport = true;
+    this.showDownload = true;
 
     let amount = checkAmount;
 
@@ -1171,8 +1175,33 @@ export class TicketDashboardComponent implements OnInit {
         console.log('getCheckPrintReport :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
-        this.showDownload = true;
         this.pdfViwerTitle = 'Check For Print';
+      },
+        (err: any) => {
+          this.showLoaderReport = false;
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  generateSingleTicketReport(ticketId: any) {
+    // alert(ticketId);
+    const param = {
+      TicketId: ticketId,
+      LocationId: this.locId,
+      Type: localStorage.getItem('defaultPrintSize')
+    }
+    this.showLoaderReport = true;
+    this.showDownload = true;
+
+    this.commonService.getMergeTransactionsTicketReceipt(param)
+      .subscribe(data => {
+        console.log('generateSingleTicketReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showLoaderReport = false;
+
+        this.pdfViwerTitle = 'Ticket Receipt :: #' + ticketId;
       },
         (err: any) => {
           this.showLoaderReport = false;

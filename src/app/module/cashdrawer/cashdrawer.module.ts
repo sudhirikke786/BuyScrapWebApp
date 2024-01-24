@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 import { PrimengModule } from '../shared/primeng/primeng.module';
 import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
@@ -25,7 +26,9 @@ export const routes: Routes = [
     CommonsharedModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
+    NgxExtendedPdfViewerModule,
     PrimengModule
-  ]
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class CashdrawerModule { }

@@ -37,6 +37,11 @@ export class CashdrawerDashboardComponent implements OnInit {
   cashDrawerAction: string = '';
   enterAmount: number = 0;
   addReason: string = '';
+
+  fileDataObj: any;
+  showDownload = false;
+  showLoaderReport = false;
+  pdfViwerTitle = 'Cash Drawer Closer Receipt';
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -265,22 +270,16 @@ export class CashdrawerDashboardComponent implements OnInit {
     this.commonService.insertCashDrawerDetails(newCashDrawerdetail).subscribe(data =>{    
       console.log(data); 
       let text = "Do you want to print receipt?";
-      if (confirm(text) == true) {
-        alert("You pressed OK!");
-      }
 
       // alert('Cash Drawer Detail saved successfully');
       // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       this.hideCloseRegister();
       this.hideReopenRegister();
-      // Redirect to user login page
-      const orgName = localStorage.getItem('orgName');
-      if (orgName && orgName != '') {
-        localStorage.removeItem('userFullName');
-        localStorage.removeItem('token');
-        localStorage.removeItem('userObj');
-        localStorage.removeItem('locId');
-        this.router.navigateByUrl(`${orgName}/user-login`);
+      
+      if (confirm(text) == true) {
+        this.getCashdrawerReceipt();
+      } else {        
+        this.closeAndRedirect()
       }
     },(error: any) =>{  
       console.log(error);  
@@ -316,6 +315,34 @@ export class CashdrawerDashboardComponent implements OnInit {
     // POST call
     this.saveRegister(this.cashdrawerClosingdetail);
     this.closeRegisterWithDiffernceExplaination = '';
+    this.closeAndRedirect()
+  }
+
+  getCashdrawerReceipt() {
+    const param = {
+      LocationId: this.locId,
+      Type: localStorage.getItem('defaultPrintSize')
+    }
+    this.showDownload = true;
+    this.showLoaderReport = true;
+
+    this.commonService.getCashdrawerReceipt(param)
+      .subscribe(data => {
+        console.log('getCashdrawerReceipt :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showLoaderReport = false;
+      },
+        (err: any) => {
+          this.showLoaderReport = false;
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  closeAndRedirect() {
+    this.showDownload = false;
+
     // Redirect to user login page
     const orgName = localStorage.getItem('orgName');
     if (orgName && orgName != '') {

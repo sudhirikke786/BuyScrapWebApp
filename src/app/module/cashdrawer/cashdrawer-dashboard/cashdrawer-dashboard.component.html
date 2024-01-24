@@ -433,3 +433,19 @@
             </div>      
 
         </p-dialog>
+
+        
+
+        <p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closeAndRedirect()" [modal]="true" [style]="{ width: '70vw' }">
+        
+            <div *ngIf="showLoaderReport">
+                <app-page-loader type="reportloader"></app-page-loader>
+            </div>
+
+
+            <div class="row" >
+                <div style="height: 500px;" *ngIf="!showLoaderReport">                
+                    <ngx-extended-pdf-viewer   [base64Src]="fileDataObj" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
+                </div>
+            </div>
+        </p-dialog>

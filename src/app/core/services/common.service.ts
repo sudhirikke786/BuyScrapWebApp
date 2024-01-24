@@ -377,6 +377,14 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetShipOutDetailsByID', 'GET', paramObj);
   }
 
+  getMergeTransactionsTicketReceipt(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetMergeTransactionsTicketReceipt', 'GET', paramObj);
+  }
+
+  getCashdrawerReceipt(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetCashdrawerReceipt', 'GET', paramObj);
+  }
+
   /** Admin API */
 
   GetAllUsers(paramObj: any): Observable<any> {
