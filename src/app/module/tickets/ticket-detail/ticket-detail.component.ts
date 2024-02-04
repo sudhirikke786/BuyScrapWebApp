@@ -229,7 +229,7 @@ export class TicketDetailComponent implements OnInit {
               }
               #cw-print-wrapper {
                   max-width: 450px;
-                  margin: 0 auto;
+                  margin: 2px auto;
               }
       
               .border-bottom {
@@ -1584,39 +1584,59 @@ export class TicketDetailComponent implements OnInit {
 
   generateSingleTicketReport(ticketId: any) {
 
-    this.openPrintPreview();
+   // this.openPrintPreview();
  
   
 
-    // const param = {
-    //   TicketId: ticketId,
-    //   LocationId: this.locId,
-    //   Type: localStorage.getItem('defaultPrintSize')
-    // }
-    // this.showLoaderReport = true;
+    const param = {
+      TicketId: ticketId,
+      LocationId: this.locId,
+      Type: localStorage.getItem('defaultPrintSize')
+    }
+    this.showLoaderReport = false;
 
-    // this.commonService.generateSingleTicketReport(param)
-    //   .subscribe(data => {
-    //     console.log('generateSingleTicketReport :: ');
-    //     console.log(data);
-    //     this.fileDataObj = data.body.data;
-    //     this.showLoaderReport = false;
+    this.commonService.generateSingleTicketReport(param)
+      .subscribe(data => {
+        console.log('generateSingleTicketReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showLoaderReport = false;
 
-    //     this.showDownload = true;
-    //     this.pdfViwerTitle = 'Ticket Receipt';
+        this.showDownload = false;
+        this.pdfViwerTitle = 'Ticket Receipt';
+        this.loadAndPrintBase64Pdf(this.fileDataObj);
 
 
-    //     this.pdfService.print();
+        this.pdfService.print();
 
-    //   //  this.pdfViewer.pdfPrint();
+      //  this.pdfViewer.pdfPrint();
 
-    //   },
-    //     (err: any) => {
-    //       this.showLoaderReport = false;
-    //       // this.errorMsg = 'Error occured';
-    //     }
-    //   );
+      },
+        (err: any) => {
+          this.showLoaderReport = false;
+          // this.errorMsg = 'Error occured';
+        }
+      );
   }
+
+
+
+
+
+
+
+  loadAndPrintBase64Pdf(base64Data: string): void {
+    const iframe = document.getElementById('pdfFrame') as HTMLIFrameElement;
+   const dataUrl = 'data:application/pdf;base64,' + base64Data;
+
+    iframe.src = dataUrl;
+
+    iframe.onload = () => {
+      iframe.contentWindow?.print();
+    };
+  }
+
+  
 
   closePdfReport() {
     this.showDownload = false;
