@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild,Renderer2 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -152,6 +152,7 @@ export class TicketDetailComponent implements OnInit {
     private el: ElementRef,
     private confirmationService: ConfirmationService,
     private renderer: Renderer2,
+    private sanitizer: DomSanitizer,
 
     private commonService: CommonService) { }
 
@@ -1622,19 +1623,55 @@ export class TicketDetailComponent implements OnInit {
 
 
 
+  loadAndPrintBaseDiv(base64Data: string): void {
+    // Get the native element of the hidden container
+    const container = this.printContainer.nativeElement;
+
+    // Set the Base64 content to the container
+    container.innerHTML = `<p>${base64Data}</p>`; // Replace this with your actual content
+
+    // Wait for the content to be rendered
+    setTimeout(() => {
+      // Trigger the print operation
+      window.print();
+    }, 1000); // Adjust the timeout if needed
+  }
+ 
 
 
 
-  loadAndPrintBase64Pdf(base64Data: string): void {
-    const iframe = document.getElementById('pdfFrame') as HTMLIFrameElement;
-   const dataUrl = 'data:application/pdf;base64,' + base64Data;
 
-    iframe.src = dataUrl;
+loadAndPrintBase64Pdf(base64Data: string): void {
+    const iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+
+    iframe.src = blobUrl;
 
     iframe.onload = () => {
-      iframe.contentWindow?.print();
+        // Uncomment the following line if you want to trigger print programmatically
+       iframe.contentWindow?.print();
     };
-  }
+
+    // You can add a print button or trigger print through another user action
+    // const printButton = document.createElement('button');
+    // printButton.textContent = 'Print PDF';
+    // printButton.onclick = () => {
+    //     iframe.contentWindow?.print();
+    // };
+
+    // document.body.appendChild(printButton);
+}
 
   
 
