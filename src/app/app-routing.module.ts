@@ -6,6 +6,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { PrintTicketComponent } from './print-ticket/print-ticket.component';
 import { ErrorComponent } from './error/error.component';
 import { RoleGuard } from './core/guard/role.guard';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 const routes: Routes = [
   { 
@@ -28,6 +29,10 @@ const routes: Routes = [
   { 
     path: ':orgName/user-login', 
     component: UserLoginComponent 
+  },
+  {
+    path:'sign-up',
+    component:SignUpComponent
   },
   { 
       path: ':orgName',
