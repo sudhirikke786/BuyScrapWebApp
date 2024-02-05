@@ -1,4 +1,4 @@
-<div class="content no-printme" *ngIf="!isLoading">
+<div class="content" *ngIf="!isLoading">
 
     <!-- Start Content-->
     <div class="container-fluid">
@@ -399,43 +399,6 @@
 </div>
 
 
-
-
-<div class="print-area" #printArea>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <ng-container *ngIf="editItemVisible">
 
     <p-dialog [modal]="true" [header]="modalHeader" [(visible)]="editItemVisible" [style]="{width: '80vw'}"
@@ -832,16 +795,16 @@
    
     <div class="row" >
       <div style="height: 500px;" *ngIf="!showLoaderReport">                
-        <ngx-extended-pdf-viewer #pdfViewer    [base64Src]="fileDataObj" [PageViewMode]="Single" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
+        <ngx-extended-pdf-viewer #pdfViewer [base64Src]="fileDataObj" [PageViewMode]="Single" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
       </div>
     </div>
 </p-dialog>
 
-
+<iframe id="pdfFrame" #pdfFrame style="display: none;"></iframe>
 
 
 <p-dialog [modal]="true" [header]="'Sign Receipt'" [breakpoints]="{'767px': '100vw'}" (onHide)="closeCapturedImage(8)" [(visible)]="signaturePadVisible"
-    [style]="{width: '70vw'}">
+    [style]="{width: '550'}">
 
     <div class="row">
         <div class="col-md-12">
@@ -880,11 +843,11 @@
         </div>
     </div>
 
-    <div class="mt-2">
+    <!-- <div class="mt-2">
         <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage(8)">Save Image</a>
         <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage(8)">Close</a>
 
-    </div>
+    </div> -->
 
 
 </p-dialog>
@@ -901,20 +864,5 @@
 </p-dialog>
 
 
-
-<iframe id="pdfFrame" #pdfFrame style="display: none;"></iframe>
-
-
-
-
-
-
-
-
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
-
-
-
-
-

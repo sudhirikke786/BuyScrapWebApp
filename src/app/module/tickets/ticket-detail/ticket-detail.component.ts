@@ -1,7 +1,7 @@
-import { Component, OnInit, ElementRef, ViewChild,Renderer2 } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
+
 
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -9,7 +9,6 @@ import { WebcamImage } from 'ngx-webcam';
 import { TicketItem } from 'src/app/core/model/ticket-item.model';
 import { Ticket } from 'src/app/core/model/ticket.model';
 import { StorageService } from 'src/app/core/services/storage.service';
-import { NgxExtendedPdfViewerComponent } from 'ngx-extended-pdf-viewer';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -21,14 +20,11 @@ export class TicketDetailComponent implements OnInit {
   [x: string]: any;
   @ViewChild('htmlData') htmlData!: ElementRef;
 
-
-
   showCalculator = false;
   @ViewChild('inputFile')
   myInputVariable!: ElementRef;
 
   cheight = '50vh';
-  isShow = false;
 
   isHoldTrue: boolean = false;
 
@@ -149,11 +145,7 @@ export class TicketDetailComponent implements OnInit {
     private datePipe: DatePipe,
     private messageService: MessageService,
     private stroarge: StorageService,
-    private el: ElementRef,
     private confirmationService: ConfirmationService,
-    private renderer: Renderer2,
-    private sanitizer: DomSanitizer,
-
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -182,359 +174,6 @@ export class TicketDetailComponent implements OnInit {
     });
 
 
-  }
-
-
-
-  openPrintPreview() {
-    const printContent = this.el.nativeElement.querySelector('.print-area');
-    const printWindow = window.open('', '_blank');
-    
-    if (printWindow) {
-      printWindow.document.write(`<!DOCTYPE html>
-      <html>
-      
-      <head>
-          <meta charset="UTF-8" />
-          <title>title</title>
-          <style>
-              * {
-                  box-sizing: border-box;
-              }
-      
-              html,
-              body {
-                  margin: 0;
-                  padding: 0;
-                  font-family: Verdana, Geneva, Tahoma, sans-serif;
-                  font-style: normal;
-                  color: #000;
-                  font-size: 14px;
-                  line-height: 1.5;
-              }
-              h1,h2,h3 {
-                  font-weight: 600;
-                  margin: 0;
-              } 
-              h1 {
-                  font-size: 24px;
-              }
-              h2 {
-                  font-size: 18px;
-              }
-              .my-3 {
-                  margin: 16px 0;
-              }
-              .px-2 {
-                  padding: 0 8px;
-              }
-              #cw-print-wrapper {
-                  max-width: 450px;
-                  margin: 2px auto;
-              }
-      
-              .border-bottom {
-                  border-bottom: 3px solid #000;
-              }
-      
-              .cw-header {
-                  text-align: center;
-                  padding: 16px 0;
-                  border-bottom: 3px solid #000;
-              }
-      
-              .cw-header p {
-                  margin: 0;
-                  font-size: 16px;
-                  padding: 8px 0;
-              }
-      
-              .cw-header a {
-                  text-decoration: none;
-                  font-size: 16px;
-                  color: #000;
-              }
-      
-              table {
-                  margin: 6px 0;
-                  padding: 0;
-                  border-collapse: collapse;
-                  width: 100%;
-              }
-      
-              table td,
-              table th {
-                  padding: 6px 8px;
-                  text-align: left;
-                  vertical-align: text-top;
-              }
-      
-              table th {
-                  font-weight: 600;
-                  text-align: left;
-              }
-      
-              .table-bordered thead {
-                  border-top: 2px solid #000;
-                  border-bottom: 2px solid #000;
-              }
-      
-              .table-bordered tfoot {
-                  border-top: 2px solid #000;
-              }
-              .cw-site {
-                  padding: 16px 8px;
-              }
-              .cw-site a {
-                  text-decoration: none;
-                  color: #000;
-              }
-      
-              @page { 
-                  size: 6cm 10cm portrait;
-                  margin: 16px;
-              }
-          </style>
-      </head>
-      
-      <body>
-          <div id="cw-print-wrapper">
-              <div class="cw-print-container">
-                  <div class="cw-header">
-                      <h1>CALWEST RECYCLING</h1>
-                      <p>29300 Pacific Street Hayward CA 94544</p>
-                      <a href="mailto:test@gmail.com">test@gmail.com</a>
-                  </div>
-      
-                  <div class="cw-section border-bottom">
-                      <table>
-                          <tr>
-                              <th>Ticket Number :-</th>
-                              <td>3312</td>
-                          </tr>
-                          <tr>
-                              <th>Start Date :-</th>
-                              <td>01-23-2024</td>
-                          </tr>
-                          <tr>
-                              <th>End Date :-</th>
-                              <td>01-23-2024</td>
-                          </tr>
-                          <tr>
-                              <th>By :-</th>
-                              <td>Administrator / ss2</td>
-                          </tr>
-                      </table>
-                  </div>
-      
-                  <div class="cw-section">
-                      <table>
-                          <tr>
-                              <th>Child Ticket Number :-</th>
-                              <td>3312</td>
-                          </tr>
-                          <tr>
-                              <th>Start Date :-</th>
-                              <td>01-23-2024</td>
-                          </tr>
-                      </table>
-                  </div>
-      
-                  <div class="cw-section border-bottom">
-                      <table class="table-bordered">
-                          <thead>
-                              <tr>
-                                  <th>GROSS</th>
-                                  <th>TARE</th>
-                                  <th>NET</th>
-                                  <th>PRICE</th>
-                                  <th>AMOUNT</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr>
-                                  <td colspan="5">Alu Breakage</td>
-                              </tr>
-                              <tr>
-                                  <td>1111.00</td>
-                                  <td>0.00</td>
-                                  <td>1111.00</td>
-                                  <td>0.030/Lb</td>
-                                  <td>33.3300</td>
-                              </tr>
-                          </tbody>
-                          <tfoot>
-                              <tr>
-                                  <th>1111.00</th>
-                                  <th>0.00</th>
-                                  <th>1111.00</th>
-                                  <th></th>
-                                  <th>33.3300</th>
-                              </tr>
-                          </tfoot>
-      
-      
-                      </table>
-                  </div>
-      
-                  <div class="cw-section">
-                      <table>
-                          <tr>
-                              <th>Child Ticket Number :-</th>
-                              <td>3312</td>
-                          </tr>
-                          <tr>
-                              <th>Start Date :-</th>
-                              <td>01-23-2024</td>
-                          </tr>
-                      </table>
-                  </div>
-      
-                  <div class="cw-section border-bottom">
-                      <table class="table-bordered">
-                          <thead>
-                              <tr>
-                                  <th>GROSS</th>
-                                  <th>TARE</th>
-                                  <th>NET</th>
-                                  <th>PRICE</th>
-                                  <th>AMOUNT</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr>
-                                  <td colspan="5">Alu Breakage</td>
-                              </tr>
-                              <tr>
-                                  <td>1111.00</td>
-                                  <td>0.00</td>
-                                  <td>1111.00</td>
-                                  <td>0.030/Lb</td>
-                                  <td>33.3300</td>
-                              </tr>
-                          </tbody>
-                          <tfoot>
-                              <tr>
-                                  <th>1111.00</th>
-                                  <th>0.00</th>
-                                  <th>1111.00</th>
-                                  <th></th>
-                                  <th>33.3300</th>
-                              </tr>
-                          </tfoot>
-      
-      
-                      </table>
-                  </div>
-      
-                  <h2 class="my-3 px-2">TRANSACTIONS :</h2>
-      
-                  <div class="cw-section border-bottom">
-                      <table class="table-bordered">
-                          <thead>
-                              <tr>
-                                  <th>DATE</th>
-                                  <th>TYPE</th>
-                                  <th>CHECK #</th>
-                                  <th>AMOUNT</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr>
-                                  <td colspan="5">Alu Breakage</td>
-                              </tr>
-                              <tr>
-                                  <td>01-23-2024</td>
-                                  <td>Cash</td>
-                                  <td>-</td>
-                                  <td>1.0000</td>
-                              </tr>
-                              <tr>
-                                  <td>01-23-2024</td>
-                                  <td>Check</td>
-                                  <td>12345</td>
-                                  <td>2.0000</td>
-                              </tr>
-                              <tr>
-                                  <td>01-23-2024</td>
-                                  <td>Electronic Payment</td>
-                                  <td>paypal</td>
-                                  <td>3.0000</td>
-                              </tr>
-                          </tbody>
-                          <tfoot>
-                              <tr>
-                                  <td colspan="4"><strong>Name :-</strong>  adolfo salazar gamboa</td>
-                              </tr>
-                          </tfoot>
-                      </table>
-                  </div>
-      
-                  <div class="cw-section border-bottom">
-                      <table>
-                          <tr>
-                              <th>Total Amount :-</th>
-                              <td>66.0000</td>
-                          </tr>
-                          <tr>
-                              <th>Adjustment Amount :-</th>
-                              <td>0.0000</td>
-                          </tr>
-                          <tr>
-                              <th>Paid Amount :-</th>
-                              <td>6.0000</td>
-                          </tr>
-                          <tr>
-                              <th>Balance Amount :-</th>
-                              <td>60.0000</td>
-                          </tr>
-                      </table>
-                  </div>
-      
-                  <div class="cw-section border-bottom">
-                      <p class="px-2">Ownership, I herby State that I am the lawful owner of the material described herin, and I have the
-                          right to sell same said material and for the payment received I convey said material to the issuer
-                          of this receipt ....<br> Testing
-                      </p>
-                      <table>
-                          <thead>
-                              <tr>
-                                  <td colspan="2">
-                                      CALWEST RECYCLING
-                                  </td>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr>
-                                  <th>Print Name :-</th>
-                                  <td>-</td>
-                              </tr>
-                              <tr>
-                                  <th>Sign Name :-</th>
-                                  <td>-</td>
-                              </tr>
-                          </tbody>
-                      </table>
-                  </div>
-      
-                  <div class="cw-site">
-                      <a href="https://www.calwestmetals.com/">www.CalWestMetals.com</a>
-                  </div>
-      
-              </div>
-          </div>
-      </body>
-      
-      </html>
-      `);
-     
-      printWindow.document.write(printContent.outerHTML);
-      printWindow.document.close();
-      printWindow.print();
-      printWindow.document.close();
-    } else {
-      console.error('Error opening print preview window');
-    }
   }
 
 
@@ -1334,6 +973,8 @@ export class TicketDetailComponent implements OnInit {
   setSignature($event: any) {
     // alert($event);
     this.imageUrl = $event;
+    this.SaveImage(8);
+    this.signaturePadVisible = false;
   }
 
   SaveImage(type: number) {
@@ -1578,16 +1219,7 @@ export class TicketDetailComponent implements OnInit {
     this.transactionPaymentType = [];
   }
 
-
-  getPrint(){
-    (window as any).print();
-  }
-
   generateSingleTicketReport(ticketId: any) {
-
-   // this.openPrintPreview();
- 
-  
 
     const param = {
       TicketId: ticketId,
@@ -1605,13 +1237,7 @@ export class TicketDetailComponent implements OnInit {
 
         this.showDownload = false;
         this.pdfViwerTitle = 'Ticket Receipt';
-        this.loadAndPrintBase64Pdf(this.fileDataObj);
-
-
-        this.pdfService.print();
-
-      //  this.pdfViewer.pdfPrint();
-
+        this.loadAndPrintBase64Pdf(this.fileDataObj)
       },
         (err: any) => {
           this.showLoaderReport = false;
@@ -1620,28 +1246,7 @@ export class TicketDetailComponent implements OnInit {
       );
   }
 
-
-
-
-  loadAndPrintBaseDiv(base64Data: string): void {
-    // Get the native element of the hidden container
-    const container = this.printContainer.nativeElement;
-
-    // Set the Base64 content to the container
-    container.innerHTML = `<p>${base64Data}</p>`; // Replace this with your actual content
-
-    // Wait for the content to be rendered
-    setTimeout(() => {
-      // Trigger the print operation
-      window.print();
-    }, 1000); // Adjust the timeout if needed
-  }
- 
-
-
-
-
-loadAndPrintBase64Pdf(base64Data: string): void {
+  loadAndPrintBase64Pdf(base64Data: string): void {
     const iframe = document.createElement('iframe');
     document.body.appendChild(iframe);
 
@@ -1659,21 +1264,9 @@ loadAndPrintBase64Pdf(base64Data: string): void {
     iframe.src = blobUrl;
 
     iframe.onload = () => {
-        // Uncomment the following line if you want to trigger print programmatically
        iframe.contentWindow?.print();
     };
-
-    // You can add a print button or trigger print through another user action
-    // const printButton = document.createElement('button');
-    // printButton.textContent = 'Print PDF';
-    // printButton.onclick = () => {
-    //     iframe.contentWindow?.print();
-    // };
-
-    // document.body.appendChild(printButton);
-}
-
-  
+  }
 
   closePdfReport() {
     this.showDownload = false;

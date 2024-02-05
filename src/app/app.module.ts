@@ -22,7 +22,7 @@ import { AuthInterceptor } from './core/interceptors/http-interceptor';
 import { GlobalErrorHandlerService } from './core/services/global-error-handler.service';
 import { PrintTicketComponent } from './print-ticket/print-ticket.component';
 import { ErrorComponent } from './error/error.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
+import { SignUpComponent } from './sign-up/sign-up.component'
 
 @NgModule({
   declarations: [
@@ -36,8 +36,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     FourColumnPipe,
     PrintTicketComponent,
     ErrorComponent,
-    SignUpComponent,
-    
+    SignUpComponent    
   ],
   imports: [
     BrowserModule,

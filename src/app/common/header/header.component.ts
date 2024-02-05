@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
 
   orgName: any;
   locId: any;
-  cashDrawerbalance: number = 0.00;
+  // cashDrawerbalance: number = 0.00;
   paidTicketCount: number = 0;
   userFullName: any;
   logInUserId: any;
@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
   closeRegisterWithDiffernceExplaination = '';
   differntOpeningAmount: number = 0.00;
   mobileName: any;
-  cashAmount:any;
+  // cashAmount:any;
   numberFormat: string = '1.3-3';
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
     this.getCashDrawerAmountAndPaidTicketCount(paramObject);
     this.getCashdrawerdetails(paramObject);
       this.dataService.getCashDrawerAmountDTO().subscribe((amount:any) =>{
-        this.cashAmount = amount;
+        this.cashDrawerBalanceAmount = amount;
      });
     this.getCashDrawerAmountDTO(paramObject);
   }
@@ -61,8 +61,10 @@ export class HeaderComponent implements OnInit {
           console.log('getCashDrawerAmountAndPaidTicketCount :: ');
           console.log(data);
           // this.dataService.cashDrawerAmountAndPaidTicketCount(data);
-          this.cashDrawerbalance = data.body.cashDrawerbalance;
+          this.cashDrawerBalanceAmount = data.body.cashDrawerbalance;
           this.paidTicketCount = data.body.paidTicketCount;
+          this.dataService.setCashDrawerAmountDTO(this.cashDrawerBalanceAmount);
+          this.dataService.setPaidCount(this.paidTicketCount);
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -94,7 +96,7 @@ export class HeaderComponent implements OnInit {
           console.log('getCashDrawerAmountDTO :: ');
           console.log(data);
           // this.dataService.cashDrawerAmountDTO(data);
-          this.cashDrawerBalanceAmount = data.body.data.amount;
+          this.cashDrawerBalanceAmount = data.body.data.balanceAmount;
 
           if (data.body.data.status.toUpperCase() === 'CLOSE') {
             this.isReopenRegister = true;
@@ -211,6 +213,10 @@ export class HeaderComponent implements OnInit {
   }
 
   backToUserLogin() {
+    document.querySelectorAll('iframe').forEach(
+      function(elem: any){
+        elem.parentNode.removeChild(elem);
+    });
     const orgName = localStorage.getItem('orgName');
     localStorage.removeItem('userObj');
     localStorage.removeItem('locId');

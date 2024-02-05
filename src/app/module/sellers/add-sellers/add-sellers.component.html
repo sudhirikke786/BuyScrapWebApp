@@ -437,7 +437,7 @@
 
 
 <p-dialog [modal]="true" [header]="'Edit Image'" [breakpoints]="{'767px': '100vw'}" (onHide)="cancel()"  [(visible)]="cameraVisible"
-    [style]="{width: '70vw'}">
+    [style]="(captureType=='Using Signature Pad' || captureType=='Using Sign') ? {width: '550'} : {width: '70vw'}">
 
     <div class="row">
 
@@ -516,7 +516,7 @@
         </div>
     </div>
 
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="captureType!='Using Signature Pad' && captureType!='Using Sign'">
         <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage()">Save Image</a>
         <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeImageCapture()">Close</a>
 

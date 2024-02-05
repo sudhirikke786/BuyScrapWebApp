@@ -383,6 +383,7 @@ export class AddSellersComponent implements OnInit {
   setSignature($event:any){
     // alert($event);
     this.imageUrl= $event;
+    this.SaveImage();
   }
 
   generateSellerInfoReport() {    

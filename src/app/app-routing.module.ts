@@ -20,11 +20,11 @@ const routes: Routes = [
   },
   {
     path:'print-layout',
-    component:PrintTicketComponent
+    component: PrintTicketComponent
   },
   {
     path:'error',
-    component:ErrorComponent
+    component: ErrorComponent
   },
   { 
     path: ':orgName/user-login', 
@@ -32,7 +32,7 @@ const routes: Routes = [
   },
   {
     path:'sign-up',
-    component:SignUpComponent
+    component: SignUpComponent
   },
   { 
       path: ':orgName',

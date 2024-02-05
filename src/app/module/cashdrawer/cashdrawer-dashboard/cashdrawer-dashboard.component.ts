@@ -69,8 +69,10 @@ export class CashdrawerDashboardComponent implements OnInit {
           console.log('getCashDrawerAmountAndPaidTicketCount :: ');
           console.log(data);
           // this.dataService.cashDrawerAmountAndPaidTicketCount(data);
-          this.cashDrawerbalance = data.body.cashDrawerbalance;
+          this.cashDrawerBalanceAmount = data.body.cashDrawerbalance;
           this.paidTicketCount = data.body.paidTicketCount;
+          this.dataService.setCashDrawerAmountDTO(this.cashDrawerBalanceAmount);
+          this.dataService.setPaidCount(this.paidTicketCount);
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -85,7 +87,6 @@ export class CashdrawerDashboardComponent implements OnInit {
           console.log(data);
           // this.dataService.cashDrawerDetail(data);
           this.cashdrawerdetail = data.body.data[0];
-          this.cashDrawerPreviousDayBalanceAmount = data.body.data[0].totalAmount;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -99,7 +100,8 @@ export class CashdrawerDashboardComponent implements OnInit {
           console.log('getCashDrawerAmountDTO :: ');
           console.log(data);
           // this.dataService.cashDrawerAmountDTO(data);
-          this.cashDrawerBalanceAmount = data.body.data.amount;
+          this.cashDrawerPreviousDayBalanceAmount = data.body.data.amount;
+          this.cashDrawerBalanceAmount = data.body.data.balanceAmount;
           this.dataService.setCashDrawerAmountDTO(this.cashDrawerBalanceAmount);
           this.cashDrawerStatus = data.body.data.status;
         },
@@ -153,6 +155,7 @@ export class CashdrawerDashboardComponent implements OnInit {
       };
       // this.getCashdrawerdetails(paramObject);
       this.getCashDrawerAmountDTO(paramObject);
+      this.getCashDrawerAmountAndPaidTicketCount(paramObject);
 
       this.hideAddWithdrawMoneyPopup();
     },(error: any) =>{  

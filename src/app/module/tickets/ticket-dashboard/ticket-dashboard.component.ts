@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { DataService } from 'src/app/core/services/data.service';
 
 @Component({
   selector: 'app-ticket-dashboard',
@@ -177,6 +178,7 @@ export class TicketDashboardComponent implements OnInit {
     private stroarge: StorageService,
     private confirmationService: ConfirmationService,
     private datePipe: DatePipe,
+    private dataService: DataService,
     private messageService: MessageService,
     public commonService: CommonService) { }
 
@@ -994,9 +996,12 @@ export class TicketDashboardComponent implements OnInit {
     
     let text = "Do you want to print receipt?";
     if (confirm(text) == true) {
+      this.isReceiptPrint = true;
       if (isCheckTransaction) {
         isCheckPrint = true;
       }
+    } else {
+      this.isReceiptPrint = false;
     }
 
     if(this.ticketId.toString().indexOf(',') > -1) {
@@ -1014,8 +1019,6 @@ export class TicketDashboardComponent implements OnInit {
     console.log(payTransactionObj);
     console.log('this.transactionPaymentType');
     console.log(this.transactionPaymentType);
-    const checkPaymentTransaction = this.transactionPaymentType.filter((item:any) => item.typeofPayment == 'Check');
-    const checkAmount = checkPaymentTransaction[0]?.typeofAmount;
     // alert('checkAmount ::' + checkAmount);
     const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
     const customerFullName = selectedTicketDetail[0].customerName;
@@ -1042,13 +1045,16 @@ export class TicketDashboardComponent implements OnInit {
 
     this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {
       // this.isReceiptPrint = false;
-      if (isCheckPrint) {
-        alert("Please insert Check into Printer!!!");
-        // TO DO :: Open Pdf viewer          
-        this.showDownload = true;
-        this.pdfViwerTitle = 'Check For Print';
-        this.generateCheckPrintReport(this.ticketId, checkAmount, customerFullName);
-      }
+      // if (isCheckPrint) {
+      //   alert("Please insert Check into Printer!!!");
+      //   // TO DO :: Open Pdf viewer          
+      //   this.showDownload = true;
+      //   this.pdfViwerTitle = 'Check For Print';
+      //   this.generateCheckPrintReport(this.ticketId, checkAmount, customerFullName);
+      // }
+      
+      this.cancelEditTicket(isReceiptPrint, this.ticketId, isCheckPrint, customerFullName);
+
     }, (error: any) => {
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
@@ -1082,22 +1088,8 @@ export class TicketDashboardComponent implements OnInit {
       alert('Tickets merged successfully');
       this.mergeTicketVisible = false;
       this.dialogPopupVisible = false;
+      this.cancelEditTicket(isReceiptPrint, ticketId, isCheckPrint, this.selectedSellerName);
 
-      if (isCheckPrint) {
-        alert("Please insert Check into Printer!!!");
-
-        const checkPaymentTransaction = this.transactionPaymentType.filter((item:any) => item.typeofPayment == 'Check');
-        const checkAmount = checkPaymentTransaction[0]?.typeofAmount;    
-        const customerFullName = this.selectedSellerName;
-
-        // TO DO :: Open Pdf viewer          
-        this.showDownload = true;
-        this.pdfViwerTitle = 'Check For Print';
-        this.generateCheckPrintReport(ticketId, checkAmount, customerFullName);
-        // this.router.navigateByUrl(`${this.orgName}/home`);
-      }
-
-      // this.cancelEditTicket(isReceiptPrint, ticketId);
     }, (error: any) => {
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
@@ -1105,6 +1097,63 @@ export class TicketDashboardComponent implements OnInit {
     // setTimeout(this.cancelEditTicket, 2000);
     // this.cancelEditTicket();
     // this.router.navigateByUrl(`${this.orgName}/home`);
+  }
+
+  cancelEditTicket(isReceiptPrint: boolean, ticketId: any, isCheckPrint: boolean, customerFullName: any) {
+    const paramObject = {
+      LocationId: this.locId
+    };
+    this.getCashDrawerAmountAndPaidTicketCount(paramObject);
+    // alert('Refresh' + this.ticketId);
+    // if (ticketId && ticketId != 0) {
+    //   console.log('11111');
+    //   this.isEditModeOn = false;
+    //   this.editItemCloseImageCapture = false;
+    //   this.processDataBasedOnTicketId();
+    // } else if (ticketId == 0 && !isReceiptPrint) {
+    //   console.log('222222');
+    //   this.router.navigateByUrl(`${this.orgName}/home`);
+    // }
+    if (isReceiptPrint) {
+      this.generateSingleTicketReport(ticketId);
+    } else {      
+      if (isCheckPrint) {
+        alert("Please insert Check into Printer!!!");
+
+        const checkPaymentTransaction = this.transactionPaymentType.filter((item:any) => item.typeofPayment == 'Check');
+        const checkAmount = checkPaymentTransaction[0]?.typeofAmount;    
+        const customerFullName = this.selectedSellerName;
+
+        // const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
+        // const customerFullName = selectedTicketDetail[0].customerName;
+
+
+        // TO DO :: Open Pdf viewer          
+        this.showDownload = true;
+        this.pdfViwerTitle = 'Check For Print';
+        this.generateCheckPrintReport(ticketId, checkAmount, customerFullName);
+        // this.router.navigateByUrl(`${this.orgName}/home`);
+      } else {
+        this.closePdfReport();
+      }
+    }
+  }
+  
+  getCashDrawerAmountAndPaidTicketCount(paramObject: any) {
+    this.commonService.getCashDrawerAmountAndPaidTicketCount(paramObject)
+      .subscribe((data: any) => {
+          console.log('getCashDrawerAmountAndPaidTicketCount :: ');
+          console.log(data);
+          // this.dataService.cashDrawerAmountAndPaidTicketCount(data);
+          const cashDrawerBalanceAmount = data.body.cashDrawerbalance;
+          const paidTicketCount = data.body.paidTicketCount;
+          this.dataService.setCashDrawerAmountDTO(cashDrawerBalanceAmount);
+          this.dataService.setPaidCount(paidTicketCount);
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
   }
 
   payRemainder() {
@@ -1120,23 +1169,9 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   closePdfReport() {
-    if (this.isParentTicketVisible && !this.paymentVisible){
-      this.isParentTicketVisible = false;
-    } else {
-      this.parentTicketIDVisible = false;
-      this.getAllTicketsDetails(this.pagination);
-    }
-    // this.showDownload = false;
-    // if (this.ticketId && this.ticketId != 0) {
-    //   console.log('11111');
-    //   // this.isEditModeOn = false;
-    //   // this.editItemCloseImageCapture = false;
-    //   // this.processDataBasedOnTicketId();
-    // } else {
-    //   console.log('222222');
-      // this.router.navigateByUrl(`${this.orgName}/home`);
-    // }
-    
+    this.isParentTicketVisible = false;
+    this.parentTicketIDVisible = false;
+    this.getAllTicketsDetails(this.pagination);    
   }
 
 
@@ -1191,8 +1226,8 @@ export class TicketDashboardComponent implements OnInit {
       LocationId: this.locId,
       Type: localStorage.getItem('defaultPrintSize')
     }
-    this.showLoaderReport = true;
-    this.showDownload = true;
+    this.showLoaderReport = false;
+    this.showDownload = false;
 
     this.commonService.getMergeTransactionsTicketReceipt(param)
       .subscribe(data => {
@@ -1200,14 +1235,38 @@ export class TicketDashboardComponent implements OnInit {
         console.log(data);
         this.fileDataObj = data.body.data;
         this.showLoaderReport = false;
+        this.showDownload = false;
 
         this.pdfViwerTitle = 'Ticket Receipt :: #' + ticketId;
+        this.loadAndPrintBase64Pdf(this.fileDataObj)
       },
         (err: any) => {
           this.showLoaderReport = false;
           // this.errorMsg = 'Error occured';
         }
       );
+  }
+
+  loadAndPrintBase64Pdf(base64Data: string): void {
+    const iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+
+    iframe.src = blobUrl;
+
+    iframe.onload = () => {
+       iframe.contentWindow?.print();
+    };
   }
 
   formatDate(dateStr: any) {

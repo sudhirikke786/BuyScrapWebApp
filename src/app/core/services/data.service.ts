@@ -14,6 +14,9 @@ export class DataService {
  
   private _cashDrawerAmountDTO = new BehaviorSubject<any>(0);
   private _cashDrawerAmountDTO$ = this._cashDrawerAmountDTO.asObservable();
+ 
+  private _paidCount = new BehaviorSubject<any>(0);
+  private _paidCount$ = this._paidCount.asObservable();
 
   set cashDrawerDetail(val: any) {
     this._cashDrawerDetail = val;
@@ -37,6 +40,14 @@ export class DataService {
 
   getCashDrawerAmountDTO() {
     return this._cashDrawerAmountDTO$;
+  }
+  
+  setPaidCount(val: any) {
+    this._paidCount.next(val);
+  }
+
+  getPaidCount() {
+    return this._paidCount$;
   }
 
   setNewShipOut(val: any) {

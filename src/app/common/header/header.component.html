@@ -30,7 +30,7 @@
 
                     <li class="dropdown d-inline-block">
                         <ul class="balance-details-ul balance-bar-desktop">
-                            <li><strong>Balance</strong>: ${{ cashAmount | number : numberFormat}}</li>
+                            <li><strong>Balance</strong>: ${{ cashDrawerBalanceAmount | number : numberFormat}}</li>
                             <li><strong>PaidCount</strong>: {{paidTicketCount}}</li>
                         </ul>
                     </li>
@@ -105,7 +105,7 @@
 
             <div class="balance-bar-mobile">
                 <ul class="balance-details-ul">
-                    <li><strong>Balance</strong>: ${{ cashAmount | number : numberFormat}}</li>
+                    <li><strong>Balance</strong>: ${{ cashDrawerBalanceAmount | number : numberFormat}}</li>
                     <li><strong>PaidCount</strong>: {{paidTicketCount}}</li>
                 </ul>
             </div>

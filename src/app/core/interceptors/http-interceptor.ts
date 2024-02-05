@@ -204,7 +204,10 @@ export class AuthInterceptor implements HttpInterceptor {
       
       // localStorage.clear();
       // window.location.assign(location.origin + '/11');
-
+      document.querySelectorAll('iframe').forEach(
+        function(elem: any){
+          elem.parentNode.removeChild(elem);
+      });
       
       const orgName = localStorage.getItem('orgName');
       localStorage.removeItem('userObj');
@@ -215,6 +218,10 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   handle406Error(req: HttpRequest<any>, error: any) {   
+    document.querySelectorAll('iframe').forEach(
+      function(elem: any){
+        elem.parentNode.removeChild(elem);
+    });
     localStorage.removeItem('userObj');
     localStorage.removeItem('locId');
     localStorage.removeItem('orgName');

@@ -97,7 +97,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
       PageNumber: 1,
       RowOfPage: 1000,
       LocationId: this.locId,
-      SerachText: this.searchSellerInput
+      SerachText: this.searchSellerInput.replace(/ /g, "%")
     };
     this.getAllsellersDetails(paramObject);
 
