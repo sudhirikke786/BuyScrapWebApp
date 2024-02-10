@@ -4,11 +4,14 @@ import { DatePipe } from '@angular/common';
 
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-system-perf',
   templateUrl: './system-perf.component.html',
-  styleUrls: ['./system-perf.component.scss']
+  styleUrls: ['./system-perf.component.scss'],
+  providers: [ConfirmationService, MessageService]
 })
 export class SystemPerfComponent implements OnInit {
  
@@ -19,6 +22,8 @@ export class SystemPerfComponent implements OnInit {
   logInUserId: any;
   searchValue = '';
   constructor(public commonService: CommonService,
+    private confirmationService: ConfirmationService, 
+    private messageService: MessageService,
     private stroarge:StorageService,
     private formBuilder: FormBuilder){
 
@@ -52,7 +57,7 @@ export class SystemPerfComponent implements OnInit {
     this.getSystemPreferencesValue();
   }
 
-  systemPerObj = [];
+  systemPerObj:any = [];
 
   searchBox() {
     if(this.searchValue.length ===0){
@@ -72,8 +77,11 @@ export class SystemPerfComponent implements OnInit {
       ManageByStore:true
     }
     this.commonService.GetSystemPreferencesValue(reqObj).subscribe((res) =>{
-      this.systemPerObj = res?.body?.data;
-      this.copyObj = res?.body?.data;
+      this.systemPerObj = res?.body?.data.map((item:any) => {
+        item.isChecked = item.values == 'True' ? true : false;
+        return item
+      });
+      this.copyObj = res?.body?.data.map;
     
     },(error)=>{
 
@@ -82,21 +90,45 @@ export class SystemPerfComponent implements OnInit {
 
 
 
-  saveForm(){
+
+  showConfirmation(pos:any,rowIndex:number,type:any) {
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: `Are you sure you want to change ${type.keys} value?`,
+      accept: () => {
+        // Action to take when the user clicks "Yes" or "OK"
+        this.saveForm(type,pos?.checked);
+     
+        // Add your logic here
+      },
+      reject: () => {
+        console.log(pos);
+        this.systemPerObj[rowIndex].isChecked  =  !pos.checked;
+        // Action to take when the user clicks "No" or "Cancel"
+        console.log('Rejected');
+        // Add your logic here
+      },
+    });
+  }
+
+
+
+  saveForm(type?:any,ischecked=false){
     const datePipe = new DatePipe('en-US');
 
-    const obj = this.systemPerfForm.value;
     const sysInfo = {
       "createdBy": this.logInUserId,
       "updatedBy": this.logInUserId,
       "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      "rowId": this.editObj?.rowId,
+      "rowId": this.editObj?.rowId || type.rowId,
+      "keys":type.keys,
+      "values":ischecked ? 'True' : 'False'
     }
 
-    const reqObj = {...sysInfo,...obj};
+   // const reqObj = {...sysInfo,...obj};
 
-    this.commonService.InsertUpdateSystemPreferences(reqObj).subscribe((res) =>{
+    this.commonService.InsertUpdateSystemPreferences(sysInfo).subscribe((res) =>{
       this.getSystemPreferencesValue();
       this.visible = false;
       // alert('updated')

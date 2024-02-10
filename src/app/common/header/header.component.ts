@@ -6,11 +6,16 @@ import { CashDrawer } from 'src/app/core/model/cash-drawer.model';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DataService } from 'src/app/core/services/data.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  	
+	providers: [MessageService]
+	
 })
 export class HeaderComponent implements OnInit {
 
@@ -28,17 +33,33 @@ export class HeaderComponent implements OnInit {
   closeRegisterWithDiffernceExplaination = '';
   differntOpeningAmount: number = 0.00;
   mobileName: any;
+  currentRole:any;
   // cashAmount:any;
   numberFormat: string = '1.3-3';
   constructor(private route: ActivatedRoute,
     private router: Router,
     public dataService: DataService,
     private stroarge:StorageService,
-    public commonService: CommonService) { }
+    private messageService: MessageService,
+    private authService:AuthService,
+    public commonService: CommonService) { 
+
+      
+      const _userRole =  this.authService.userCurrentRole();
+
+      if(_userRole){
+        this.currentRole  = _userRole;
+        console.log(this.currentRole);
+      }
+
+
+    }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+
+     
     
     this.userFullName = this.stroarge.getLocalStorage('userObj').userdto?.firstName;
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
@@ -71,6 +92,7 @@ export class HeaderComponent implements OnInit {
         }
       );
   }
+
   
   getCashdrawerdetails(paramObject: any) {
     this.commonService.getCashdrawerdetails(paramObject)
@@ -141,11 +163,26 @@ export class HeaderComponent implements OnInit {
       // POST call
       this.saveRegister(this.cashdrawerdetail);
     } else {
-      alert('Total Amount is not matched with Cash Drawer Balance');
+      this.errorAlert('Total Amount is not matched with Cash Drawer Balance');
     }
     
   }
+
+
+  errorAlert(msg:any){
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
+  }
+
   
+    successAlert(msg:any){
+    this.messageService.add({ severity: 'success', summary: 'success', detail: msg });
+  }
+
+
+
+
+
+
   openWithDifferentAmount() {
     // alert('implementation pending .... !!!');
     this.closeRegisterWithDiffernceVisible = true;
@@ -169,14 +206,14 @@ export class HeaderComponent implements OnInit {
     
     this.commonService.insertCashDrawerDetails(newCashDrawerdetail).subscribe(data =>{    
       console.log(data); 
-      alert('Cash Drawer Detail saved successfully');      
+      this.successAlert('Cash Drawer Detail saved successfully');      
       this.dataService.setCashDrawerAmountDTO(newCashDrawerdetail.totalAmount);
       // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       
       this.hideCloseRegister();
     },(error: any) =>{  
       console.log(error);  
-      alert('Error!!! Cash Drawer Detail not saved..');
+      this.errorAlert('Error!!! Cash Drawer Detail not saved..');
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
   }

@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import SignaturePad from 'signature_pad';
+import { MessageService } from 'primeng/api';
 
 declare var SetTabletState: any;
 declare var SetDisplayXSize: any;
@@ -20,7 +21,9 @@ var tmr: any;
   selector: 'app-pen-signature',
 
   templateUrl: './pen-signature.component.html',
-  styleUrls: ['./pen-signature.component.scss']
+  styleUrls: ['./pen-signature.component.scss'],
+  providers: [MessageService]
+
 })
 export class PenSignatureComponent implements OnInit {
   @ViewChild('canvasmanual', { static: true }) canvasmanual!: ElementRef;
@@ -35,6 +38,9 @@ export class PenSignatureComponent implements OnInit {
   signatureImg: any ;
   singPen: boolean = false;
 
+  constructor( private messageService: MessageService,){
+
+  }
   ngOnInit() {
     if(this.signpad =='manual'){
       this.singPen = false;
@@ -44,6 +50,10 @@ export class PenSignatureComponent implements OnInit {
       this.onSign();
     }
  
+  }
+
+  successAlert(msg:any){
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: msg });
   }
 
   onSign() {
@@ -68,6 +78,10 @@ export class PenSignatureComponent implements OnInit {
 
   }
 
+  errorAlert(msg:any){
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
+  }
+
   saveDone() {
    
     if (this.singPen) {
@@ -82,7 +96,7 @@ export class PenSignatureComponent implements OnInit {
   onDone() {
     this.signatureNeeded = true;
     if (NumberOfTabletPoints() == 0) {
-      alert("Please sign before continuing");
+      this.errorAlert("Please sign before continuing");
     }
     else {
       SetTabletState(0, tmr);

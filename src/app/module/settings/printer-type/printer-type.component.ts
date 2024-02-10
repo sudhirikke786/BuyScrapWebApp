@@ -1,9 +1,12 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-printer-type',
   templateUrl: './printer-type.component.html',
-  styleUrls: ['./printer-type.component.scss']
+  styleUrls: ['./printer-type.component.scss'],
+  providers: [MessageService]
+
 })
 export class PrinterTypeComponent implements OnInit {
 
@@ -11,16 +14,22 @@ export class PrinterTypeComponent implements OnInit {
   defaultReceiptPrinter: string = 'Normal';
 
   
-  constructor() { }
+  constructor( private messageService: MessageService) { }
 
   
   ngOnInit() {
     this.defaultReceiptPrinter = localStorage.getItem('defaultPrintSize') || 'Normal';
   }
 
+
+  errorAlert(msg:any){
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
+  }
+
+
   savePrintOption(){
     localStorage.setItem('defaultPrintSize',this.defaultReceiptPrinter);
-    alert('Set default printer setting for receipt print');
+    this.errorAlert('Set default printer setting for receipt print');
     this.closePopup();
   }
 

@@ -5,11 +5,14 @@ import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-materials-dashboard',
   templateUrl: './materials-dashboard.component.html',
-  styleUrls: ['./materials-dashboard.component.scss']
+  styleUrls: ['./materials-dashboard.component.scss'],
+  providers: [MessageService]
+
 })
 export class MaterialsDashboardComponent implements OnInit {
 
@@ -74,6 +77,8 @@ export class MaterialsDashboardComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private stroarge:StorageService,
+    private messageService: MessageService,
+
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -184,6 +189,15 @@ export class MaterialsDashboardComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.form.controls; }
 
+
+  errorAlert(msg:any){
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
+  }
+
+  successAlert(msg:any){
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: msg });
+  }
+
   onSubmit(materialData: any) {
     // alert(JSON.stringify(materialData));
     // alert(JSON.stringify(this.form.value));
@@ -205,11 +219,13 @@ export class MaterialsDashboardComponent implements OnInit {
       this.isEditModeOn = false;
       this.materialData = null;
       this.visible = false;      
-      alert('Material data Inserted/ updated successfully');
+      this.successAlert('Material data Inserted/ updated successfully');
       
       this.getAllGroupMaterial();
     },(error: any) =>{  
       console.log(error);  
+
+      this.errorAlert(error);
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
 

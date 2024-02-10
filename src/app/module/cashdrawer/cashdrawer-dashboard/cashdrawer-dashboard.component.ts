@@ -8,10 +8,14 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { DataService } from 'src/app/core/services/data.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 
+import { MessageService } from 'primeng/api';
+	
+
 @Component({
   selector: 'app-cashdrawer-dashboard',
   templateUrl: './cashdrawer-dashboard.component.html',
-  styleUrls: ['./cashdrawer-dashboard.component.scss']
+  styleUrls: ['./cashdrawer-dashboard.component.scss'],
+  providers: [MessageService]
 })
 export class CashdrawerDashboardComponent implements OnInit {
 
@@ -47,6 +51,7 @@ export class CashdrawerDashboardComponent implements OnInit {
     private router: Router,
     private commonService: CommonService,
     private stroarge:StorageService,
+    private messageService: MessageService,
     private dataService: DataService) { }
 
   ngOnInit() {
@@ -146,7 +151,7 @@ export class CashdrawerDashboardComponent implements OnInit {
     
     this.commonService.insertUpdateCashDrawerTransactions(newCashDrawerTransaction).subscribe(data =>{    
       console.log(data); 
-      alert('Cash Drawer Transaction saved successfully');
+      this.successAlert('Cash Drawer Transaction saved successfully');
       // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       
       // Update values
@@ -206,10 +211,20 @@ export class CashdrawerDashboardComponent implements OnInit {
       // POST call
       this.saveRegister(this.cashdrawerdetail);
     } else {
-      alert('Total Amount is not matched with Cash Drawer Balance');
+      this.errorAlert('Total Amount is not matched with Cash Drawer Balance');
     }
     
   }
+
+
+  errorAlert(msg:any){
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
+  }
+
+  successAlert(msg:any){
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: msg });
+  }
+
 
   openCloseRegisterPopup(){    
     this.cashdrawerClosingdetail = new CashDrawer();
@@ -286,7 +301,7 @@ export class CashdrawerDashboardComponent implements OnInit {
       }
     },(error: any) =>{  
       console.log(error);  
-      alert('Error!!! Cash Drawer Detail not saved..');
+      this.errorAlert('Error!!! Cash Drawer Detail not saved..');
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
   }

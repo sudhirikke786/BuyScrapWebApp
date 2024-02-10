@@ -30,15 +30,23 @@
             <tr>
                 <th>Key</th>
                 <th>Value</th>
-                <th>Action</th>
+                <!-- <th>Action</th> -->
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-seller>
+        <ng-template pTemplate="body" let-seller let-rowIndex="rowIndex">
             <tr>
                 <td>{{ seller.keys }}</td>
-                <td>{{ seller.values }}</td>
-                <td> <a class="btn btn-grid btn-primary" (click)="editSystem(seller)"><i class="mdi mdi-pencil"></i> Edit</a>
+                <td>
+
+                    <div class="d-flex">
+                        <div class="ms-1">Off</div>
+                        <div class="ms-1"><p-inputSwitch [(ngModel)]="seller.isChecked" (onChange)="showConfirmation($event,rowIndex,seller)"></p-inputSwitch></div>
+                        <div class="ms-1">On</div>
+
+                     </div>
                 </td>
+                <!-- <td> <a class="btn btn-grid btn-primary" (click)="editSystem(seller)"><i class="mdi mdi-pencil"></i> Edit</a>
+                </td> -->
             </tr>
         </ng-template>
      
@@ -79,3 +87,9 @@
     </div>
   
 </p-dialog>
+
+
+
+<p-toast></p-toast>
+
+<p-confirmDialog></p-confirmDialog>

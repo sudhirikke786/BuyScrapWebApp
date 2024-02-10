@@ -277,7 +277,6 @@ export class ShipoutDetailsComponent implements OnInit {
 
 
   confirmSave() {
-    alert('Saving record .........');
 
     
     // this.totalGross = tickets.reduce(function (sum:any, tickets:any) {
@@ -461,7 +460,6 @@ export class ShipoutDetailsComponent implements OnInit {
   
 
   generateShipOutReport() {
-    alert('generating report .... !!!');
 
     const param = {
       ShipOutId: this.ticketId,

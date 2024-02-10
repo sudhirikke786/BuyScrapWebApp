@@ -31,7 +31,7 @@
                     </select>
                 </div>
                 <div class="col-sm-3  mb-1">
-                    <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText" placeholder="Search">
+                    <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText" (keyup.enter)="searchSeller()" placeholder="Search">
                 </div>
                 <div class="col-sm-4  mb-1">
                     <div  class="d-flex justify-content-between">

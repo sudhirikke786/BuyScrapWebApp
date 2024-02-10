@@ -3,13 +3,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
 import { CommonService } from 'src/app/core/services/common.service';
-import { MessageServiceService } from 'src/app/core/services/message-service.service';
 import { StorageService } from 'src/app/core/services/storage.service';
-
+import { MessageService } from 'primeng/api';
+	
 @Component({
   selector: 'app-ticket-settings',
   templateUrl: './ticket-settings.component.html',
-  styleUrls: ['./ticket-settings.component.scss']
+  styleUrls: ['./ticket-settings.component.scss'],
+  providers: [MessageService]
 })
 export class TicketSettingsComponent implements OnInit {
   
@@ -20,6 +21,8 @@ export class TicketSettingsComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private stroarge:StorageService,
     private commonService:CommonService,
+    private messageService: MessageService,
+
    ){
 
   }
@@ -28,6 +31,12 @@ export class TicketSettingsComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.createForm();
     this.getAllTicketDetails();
+  }
+
+
+  
+  successAlert(msg:any){
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: msg });
   }
 
   getAllTicketDetails(){
@@ -77,7 +86,7 @@ export class TicketSettingsComponent implements OnInit {
     const reqObj = {...userInfo,...obj};
 
     this.commonService.InsertUpdateTicketSettings(reqObj).subscribe((res) =>{
-      alert('Organization Details Successfully Updated');     
+      this.successAlert('Organization Details Successfully Updated');     
       this.close.emit();
       //this.msgService.showSuccess('Successfully Updated')
     },(error)=>{

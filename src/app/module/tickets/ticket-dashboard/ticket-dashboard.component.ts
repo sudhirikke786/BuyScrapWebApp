@@ -735,12 +735,14 @@ export class TicketDashboardComponent implements OnInit {
   addTransction() {
 
     if (this.selectedPayAmount <= 0) {
-      window.alert("Please Enter Amount");
+ 
+      this.errorAlert('Please Enter Amount')
       return;
     }
 
     if (!this.isInputValid(this.selectedPayAmount)) {
-      window.alert("Add valid input");
+      //window.alert("Add valid input");
+      this.errorAlert('Add valid input')
       return;
     }
 
@@ -748,19 +750,22 @@ export class TicketDashboardComponent implements OnInit {
     const checkPrice = this.checkTotalAmount();
 
     if (checkPrice) {
-      window.alert("adding amount is greter than total amount")
+   //   window.alert("adding amount is greter than total amount");
+      this.errorAlert('adding amount is greter than total amount')
       return;
     }
 
     
     if (this.activeSection == 'Check') {
       if (this.checkNumber.length == 0) {
-        alert('Enter Check Number');
+      //  alert('Enter Check Number');
+        this.errorAlert('Enter Check Number')
         return;
       }
     } else if (this.activeSection == 'Electronic Payment') {
       if (this.ePaymentType?.length == 0) {
-        alert('Enter Electronic Payment Type');
+      //  alert('Enter Electronic Payment Type');
+        this.errorAlert('Enter Electronic Payment Type')
         return;
       }
     }
@@ -770,13 +775,18 @@ export class TicketDashboardComponent implements OnInit {
         const total = this.getTotal();
         const eligiblePayAmount = this.totalAmount - total - this.totalHoldAmount;
         if (this.selectedPayAmount > eligiblePayAmount) {
-          alert('Exclude hold item amount');
+          //alert('Exclude hold item amount');
+          this.errorAlert('Exclude hold item amount')
+
+  
           this.selectedPayAmount = eligiblePayAmount;
           return;
         }
         break;
       case 'Hold All Amount':
-        alert('You have selected option as "Hold All Amount"!!!');
+      //  alert('You have selected option as "Hold All Amount"!!!');
+
+        this.errorAlert('You have selected option as "Hold All Amount"!!!')
         this.selectedPayAmount = 0;
         return;
         break;
@@ -805,7 +815,9 @@ export class TicketDashboardComponent implements OnInit {
     if (checkPrice2) {
       // TO DO: Needs to write a logic to remove latest added transaction based on activeSection 
       this.transactionPaymentType.splice(this.transactionPaymentType.length - 1, 1)
-      window.alert("adding amount is greter than total amount")
+  //    window.alert("adding amount is greter than total amount")
+
+      this.errorAlert('adding amount is greter than total amount')
       return false;
     }
 
@@ -855,6 +867,11 @@ export class TicketDashboardComponent implements OnInit {
     return (this.getTotal() < this.totalAmount);
   }
 
+
+  errorAlert(msg:any){
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
+  }
+
   payAndSave(activeSection: string) {
 
     const payAmout = this.getTotal();
@@ -871,11 +888,13 @@ export class TicketDashboardComponent implements OnInit {
     this.payAmount = this.getTotal();
 
     if (!this.payAmount) {
-      alert('Enter Amount');
+    
+      this.errorAlert('Enter Amount')
       return
     }
     if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.selectedSellerTicketsPaidAmount)) {
-      alert('Please enter valid amount!!!');
+     // alert('Please enter valid amount!!!');
+      this.errorAlert('Please enter valid amount!!!')
       return;
     }
 
@@ -883,7 +902,8 @@ export class TicketDashboardComponent implements OnInit {
       case 'Partial Pay Amount':
         const eligiblePayAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount - this.totalHoldAmount;
         if (this.payAmount > eligiblePayAmount) {
-          alert('Exclude hold item amount');
+         // alert('Exclude hold item amount');
+          this.errorAlert('Exclude hold item amount')
           this.payAmount = eligiblePayAmount;
           return;
         }
@@ -900,13 +920,14 @@ export class TicketDashboardComponent implements OnInit {
     if (this.activeSection == 'Check') {
       msg = 'Do You want to print receipt?'
       if (this.checkNumber.length == 0) {
-        alert('Enter Check Number');
+       // alert('Enter Check Number');
+        this.errorAlert('Enter Check Number')
         return;
       }
     } else if (this.activeSection == 'Electronic Payment') {
       msg = 'Do You want to print receipt?'
       if (this.ePaymentType?.length == 0) {
-        alert('Enter Electronic Payment Type');
+        this.errorAlert('Enter Electronic Payment Type')
         return;
       }
     } else {
@@ -1118,7 +1139,8 @@ export class TicketDashboardComponent implements OnInit {
       this.generateSingleTicketReport(ticketId);
     } else {      
       if (isCheckPrint) {
-        alert("Please insert Check into Printer!!!");
+       // alert("Please insert Check into Printer!!!");
+        this.errorAlert('Please insert Check into Printer!!!')
 
         const checkPaymentTransaction = this.transactionPaymentType.filter((item:any) => item.typeofPayment == 'Check');
         const checkAmount = checkPaymentTransaction[0]?.typeofAmount;    

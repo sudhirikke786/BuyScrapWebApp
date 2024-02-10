@@ -154,7 +154,6 @@ export class UserLoginComponent implements OnInit {
            console.log(systemInfo?.body?.data);  
             this.router.navigateByUrl(`/${this.organizationName}/home`);
           } else {
-            alert('Invalid User Credentials.');
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials or No user found.' });
           }
           
