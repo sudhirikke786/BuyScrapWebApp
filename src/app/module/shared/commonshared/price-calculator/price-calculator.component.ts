@@ -38,7 +38,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   isNaN: Function = Number.isNaN;
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2,private elementRef: ElementRef) {
 
   }
 
@@ -55,6 +55,10 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     }
    
 
+  }
+
+  focusInput() {
+    this.elementRef.nativeElement.querySelector('.inputone').focus();
   }
 
   calcNetFromGross(gross: any) {

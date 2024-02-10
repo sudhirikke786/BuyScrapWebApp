@@ -43,7 +43,7 @@
       <div class="col-md-9">
           <div class="input-group">
               <input type="text" placeholder="Enter Gross Weight" #inputBox1 [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" 
-              (focus)="focusedInput = 'inputBox1'" (ngModelChange)="calcNetFromGross($event)"  class="form-control  h-30 mb-1 ps-0">
+              (focus)="focusedInput = 'inputBox1'" (ngModelChange)="calcNetFromGross($event)"  class="form-control inputone  h-30 mb-1 ps-0">
               <div class="input-group-append" *ngIf="grossInput">
                 <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="grossInput ='0'">
                   <i class="bi bi-x"></i>

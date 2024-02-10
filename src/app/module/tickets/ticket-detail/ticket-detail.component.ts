@@ -9,6 +9,7 @@ import { WebcamImage } from 'ngx-webcam';
 import { TicketItem } from 'src/app/core/model/ticket-item.model';
 import { Ticket } from 'src/app/core/model/ticket.model';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { PriceCalculatorComponent } from '../../shared/commonshared/price-calculator/price-calculator.component';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -140,6 +141,10 @@ export class TicketDetailComponent implements OnInit {
   signPadVisible = false;
   isEnable = true;
 
+  @ViewChild(PriceCalculatorComponent) priceCalculatorComponent!: PriceCalculatorComponent;
+  
+
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -174,6 +179,10 @@ export class TicketDetailComponent implements OnInit {
     });
 
 
+  }
+
+  focusChildInput() {
+    this.priceCalculatorComponent.focusInput();
   }
 
 
@@ -981,6 +990,9 @@ export class TicketDetailComponent implements OnInit {
     if (imagetype == 1) {
       this.editItemVisible = false;
       this.editItemCloseImageCapture = true;
+      setTimeout(() =>{
+        this.focusChildInput()
+      },100)
     } else {
       this.saveConfirmVisible = true;
       this.signaturePadVisible = false;
