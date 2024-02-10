@@ -938,3 +938,47 @@
 
   /* Add more styles as needed for tablets */
 }
+
+
+@media screen and (min-width: 1900px) {
+  /* Your CSS styles for large devices with a width greater than 1900 pixels */
+  /* For example, you can increase font sizes or adjust layout */
+  body {
+      font-size: 1.5rem !important /* Adjust font size for larger devices */
+  }
+
+
+  .fz-14{
+      font-size:1.5rem !important;
+   }
+
+
+   .p-datatable .p-datatable-thead>tr>th {
+   
+      font-size: 1.2rem !important;
+      color: #6c757d;
+  }
+  
+  .p-datatable .p-datatable-tbody>tr>td {
+  
+      font-size: 1.2rem !important;
+    
+  }
+  .p-component {
+      font-family: "Cerebri Sans,sans-serif" !important;
+      font-size: 1.2rem !important;
+  }
+
+  tr td{
+      font-size: 1.2rem !important;
+  }
+  
+  .btn{
+      font-size: 1.2rem !important; 
+  }
+
+  .btn {
+    line-height: 2rem !important;
+  }
+
+}

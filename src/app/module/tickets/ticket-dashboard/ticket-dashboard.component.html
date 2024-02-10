@@ -67,7 +67,7 @@
                                 <div class="col-sm-12">
                                     <p-table #dt1 [value]="tickets" [paginator]="false" [rows]="pageSize"
                                         [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" 
-                                        scrollHeight="calc(100vh - 250px)"
+                                          scrollHeight="calc(100vh - 250px)"
                                          [loading]="isLoading"
                                         [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']">
                                         <ng-template pTemplate="header">
