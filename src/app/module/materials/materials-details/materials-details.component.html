@@ -43,15 +43,32 @@
                                              <div class="img-grid">
                                                
                                                 <ng-container *ngFor="let item of materialList" >
+
+
                                                     <div class="materials-pg-boxes">
+
+
+                                                        <div style="cursor: pointer;" class="title" routerLink = "/{{orgName}}/materials/{{item.rowId}}">
+                                                            <!-- <img src="{{item.imagePath}}" (error)="this.changeSource($event);" /> -->
+                                                            {{item.groupName}}
+                                                        </div>
+                                                        <div class="d-flex  justify-content-center px-1 py-1">
+                                                         
+                                                            <div (click)="showDialog()" class="btn btn-outline-primary" style="width:75px"><i class="mdi mdi-pencil"></i> Edit</div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <!-- <div class="materials-pg-boxes">
                                                         <a routerLink = "/{{orgName}}/materials/{{item.rowId}}">
-                                                            <img src="assets/images/custom/materials/Default-Scrap-Material.png">
+                                                            {{item.groupName}}
                                                         </a>
-                                                        <div class="d-flex flex-wrap justify-content-between px-1 py-1">
-                                                            <div>{{item.groupName}}</div>
+                                                        <div class="d-flex justify-content-center px-1 py-1">
+                                                          
                                                             <div (click)="showDialog()" class="btn -pg waves-effect waves-light cursor-pointer"><i class="mdi mdi-pencil"></i> Edit</div>
                                                         </div>
-                                                    </div>  
+                                                    </div>   -->
                                                 </ng-container>
 
                                             </div>
@@ -61,14 +78,23 @@
                                             <div class="img-grid">
                                                 <ng-container *ngFor="let item of subMaterialList" >
                                                     <div class="materials-pg-boxes">
-                                                        <img src="assets/images/custom/materials/Default-Scrap-Material.png">
-                                                        <ul class="materials-name-edit-ul">
+
+                                                        <div style="cursor: pointer;" class="title">
+                                                            <!-- <img src="{{item.imagePath}}" (error)="this.changeSource($event);" /> -->
+                                                            {{item.materialName}}
+                                                        </div>
+                                                        <div class="d-flex justify-content-between px-2 py-1">
+                                                            <div>Scrap Price - {{item.scrapPrice}}</div>
+                                                            <div><a (click)="showDialog(item)"class="btn btn-outline-primary" ><i class="mdi mdi-pencil"></i> Edit</a></div>
+                                                        </div>
+                                                       
+                                                        <!-- <ul class="materials-name-edit-ul">
                                                             <li class="fz-14"><b>{{item.materialName}}</b></li>
                                                         </ul>
                                                         <div class="d-flex justify-content-between px-2 py-1">
                                                             <div>Scrap Price - {{item.scrapPrice}}</div>
                                                             <div><a (click)="showDialog(item)" class="btn -pg waves-effect waves-light"><i class="mdi mdi-pencil"></i> Edit</a></div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
 
                                                 </ng-container>

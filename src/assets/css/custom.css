@@ -734,8 +734,30 @@
  .materials-name-edit-ul{padding-left:0; margin-bottom: 0; text-align: center; display: flex; align-items: center; justify-content: center;}
  .materials-name-edit-ul li{list-style: none; display: inline-block; margin: 0 5px;}
  .materials-name-edit-ul li h4{font-size: 12px; line-height: 22px;}
- .materials-pg-boxes img{width:100%; padding: 10px 10px 0 10px;}
- .materials-pg-boxes{background: #f5f5f5; box-shadow: 0px 0px 3px grey; border-radius: 10px; margin-bottom: 20px; position: relative;}
+ .materials-pg-boxes {
+  width:100%; 
+  padding: 0px 0px 0 0px;
+  .title {
+    background-color: #02659d;
+    color: #fff;
+    padding: 5px;
+    font-size: 14px !important;
+    text-transform: capitalize;;
+    margin-bottom: 5px;
+    border-radius: 10px 10px 0px 0px;
+  }
+
+}
+
+
+
+ .materials-pg-boxes{
+    background: #f5f5f5; 
+    box-shadow: 0px 0px 0px #02659d;
+    border-radius: 10px; 
+    margin-bottom: 20px; 
+    position: relative;
+  }
  .-pg{border:1px solid grey !important; color: #02659d !important; padding: 2px 5px !important;}
  .adjustment-pg-boxes img{width:100%; padding: 10px 10px 0 10px;}
  .adjustment-pg-boxes{background: #f5f5f5; box-shadow: 0px 0px 3px grey; border-radius: 10px; margin-bottom: 20px; position: relative;}
@@ -743,7 +765,6 @@
  .adjustment-name-edit-ul li{list-style: none; display: inline-block; margin: 0 5px;}
  .btn-adjustment-pg{border:1px solid grey !important; color: #02659d !important; padding: 2px 5px !important;}
  .adjustment-name-edit-ul li h4{font-size: 12px; line-height: 22px;}
- .-2{margin-right: 10px;}
  .img-responsive{width:100%;}
  .pd-imgs{background:#f5f5f5; padding:10px; border:1px solid transparent;}
  .pd-imgs:hover{background: aliceblue; border:1px solid grey;}
@@ -983,6 +1004,20 @@
 
   .form-control{
     font-size: 1.2rem !important; 
+  }
+
+  .materials-pg-boxes {
+    width:100%; 
+    padding: 0px 0px 0 0px;
+    .title {
+      background-color: #02659d;
+      color: #fff;
+      padding: 5px;
+      font-size: 20px !important;
+      text-transform: capitalize;;
+      
+    }
+  
   }
 
 }

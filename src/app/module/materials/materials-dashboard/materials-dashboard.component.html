@@ -42,13 +42,15 @@
                                         <div class="img-grid">
                                             <ng-container  *ngFor="let item of materialList">
                                                 <div class="materials-pg-boxes">
-                                                    <a routerLink = "/{{orgName}}/materials/detail/{{item.rowId}}">
+
+
+                                                    <div style="cursor: pointer;" class="title" routerLink = "/{{orgName}}/materials/detail/{{item.rowId}}">
                                                         <!-- <img src="{{item.imagePath}}" (error)="this.changeSource($event);" /> -->
-                                                        <img src="assets/images/custom/materials/Default-Scrap-Material.png">
-                                                    </a>
-                                                    <div class="d-flex  justify-content-between px-1 py-1">
-                                                        <div>{{item.groupName}}</div>
-                                                        <div (click)="showDialog(item)" class="btn btn-primary" style="width:75px"><i class="mdi mdi-pencil"></i> Edit</div>
+                                                        {{item.groupName}}
+                                                    </div>
+                                                    <div class="d-flex  justify-content-center px-1 py-1">
+                                                     
+                                                        <div (click)="showDialog(item)" class="btn btn-outline-primary" style="width:75px"><i class="mdi mdi-pencil"></i> Edit</div>
                                                     </div>
                                                 </div>
                                             </ng-container>
