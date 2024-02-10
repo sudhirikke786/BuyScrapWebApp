@@ -44,14 +44,30 @@
 
                                             
                                              <ng-container  *ngFor="let item of adjustmentList">
+
+
+                                                <div class="materials-pg-boxes">
+
+
+                                                    <div style="cursor: pointer;" class="title">
+                                                        <!-- <img src="{{item.imagePath}}" (error)="this.changeSource($event);" /> -->
+                                                        {{item.adjustmentName}}
+                                                    </div>
+                                                    <div class="d-flex  justify-content-center px-1 py-1">
+                                                     
+                                                        <div *ngIf="currentRole!='Scale'" (click)="showDialog(item)" class="btn btn-outline-primary" style="width:75px"><i class="mdi mdi-pencil"></i> Edit</div>
+                                                    </div>
+                                                </div>
+
+
                                                
-                                                    <div class="adjustment-pg-boxes">
+                                                    <!-- <div class="adjustment-pg-boxes">
                                                         <img src="assets/images/custom/adjustment/Default-Adjustment.png">
                                                         <div class="d-flex px-1 py-1 card-title-edit justify-content-between" [class]="currentRole!='Scale' ? 'justify-content-between' : 'justify-content-center'" >
                                                             <div><b>{{item.adjustmentName}}</b></div>
                                                             <div *ngIf="currentRole!='Scale'" class="text-right"><a (click)="showDialog(item)" class="btn btn-primary" style="width:75px"><i class="mdi mdi-pencil"></i> Edit</a></div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                
                                             </ng-container>
                                         </div>
