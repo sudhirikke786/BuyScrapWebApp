@@ -59,30 +59,7 @@
   }
 
 
-//   .image-container {
-//     position: relative;
-//   }
-  
-//   .overlay {
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     height: 100%;
-//     opacity: 0;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     opacity: 1;
-//     .btn{
-//         top:50px;
-//         position: relative;
-//     }
-//   }
-  
-//   .image-container:hover .overlay {
-//     opacity: 1;
-//   }
+
 
 
   .image-card {
@@ -120,5 +97,41 @@
     .btn-cal{
       font-size: 1rem;
     }
+
+ }
+
+
+ @media screen and (min-width: 1900px) {
+
+  .calculator {
+    
+    padding: 5px;
+    font-size: 2rem !important;
+    text-align: center;
+   }
+
+   .btn-cal {
+    font-size: 2.5rem;
+   }
+
+   .h-30{
+    height: 50px;
+    border-color: #e9ecef;
+   }
+
+   .cost-image{
+     div {
+      width:100%;
+     }
+     .img-fluid{
+      width: 100%;
+      height: auto;
+     }
+     .btn{
+      width:45%;
+      margin-right: 5px;
+      margin-top:10px;
+     }
+   }
 
  }

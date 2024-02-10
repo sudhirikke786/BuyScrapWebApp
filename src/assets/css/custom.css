@@ -981,4 +981,8 @@
     line-height: 2rem !important;
   }
 
+  .form-control{
+    font-size: 1.2rem !important; 
+  }
+
 }
