@@ -1239,6 +1239,22 @@ select option{
 .payment-ticket{
   bottom: 92px !important;
 }
+
+
+element.style {
+}
+.money-button-red {
+    background: #ec5756;
+}
+.money-button {
+    padding: 40px;
+    font-size: 2.5rem !important;
+}
+
+.h3, h3{
+  font-size: 2.5rem !important; 
+}
+
 }
 
 
