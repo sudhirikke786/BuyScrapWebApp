@@ -62,7 +62,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   }
 
   calcNetFromGross(gross: any) {
-    this.tareInput = (isNaN(this.tareInput) ?  0 : this.tareInput);
+    this.tareInput = (isNaN(this.tareInput) || this.tareInput == '') ?  0 : this.tareInput;
     this.netInput = gross - this.tareInput;
   }
 
