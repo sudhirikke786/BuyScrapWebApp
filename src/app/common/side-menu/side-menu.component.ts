@@ -19,7 +19,7 @@ export class SideMenuComponent {
         title: 'Home/Tickets',
         url: '/home',
         icon: '/assets/images/custom/icons/home.png',
-        role: ['Administrator','Cashier']
+        role: ['Administrator','Scale','Cashier']
       },
       {
         title:'Sellers/Buyers',

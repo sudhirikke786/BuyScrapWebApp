@@ -162,7 +162,7 @@ export class TicketDetailComponent implements OnInit {
       this.systemInfo = isElectronic?.values;
 
       const isSignatureOnReceipt = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'signatureonreceipt')[0];
-      this.signPadVisible = Boolean(isSignatureOnReceipt?.values.toLowerCase());
+      this.signPadVisible = (isSignatureOnReceipt?.values.toLowerCase() === "true");
     }
 
 
@@ -294,7 +294,14 @@ export class TicketDetailComponent implements OnInit {
       //  alert('Enter Electronic Payment Type');
         return;
       }
+    } else if (this.activeSection == 'Cash') {
+      let text = 'You selected as Cash as payment mode please confirm ?';
+      if (confirm(text) != true) {
+        return;
+      }
+
     }
+
 
     switch (this.selectedHoldAmount) {
       case 'Partial Pay Amount':
@@ -378,6 +385,9 @@ export class TicketDetailComponent implements OnInit {
 
   removeItem(i: number) {
     this.transactionPaymentType.splice(i, 1);
+    
+    this.remainingAmount = this.totalAmount - this.ticketData?.paidAmount - this.getTotal();
+    this.selectedPayAmount = this.remainingAmount;
   }
 
 
@@ -611,6 +621,13 @@ export class TicketDetailComponent implements OnInit {
 
   payAndSave(activeSection: string) {
 
+    if (this.transactionPaymentType.length > 1) {      
+      let text = 'You selected multiple payment mode please confirm ?';
+      if (confirm(text) != true) {
+        return;
+      }
+    }
+
     const payAmout = this.getTotal();
 
     if (payAmout == 0 && this.selectedPayAmount> 0) {
@@ -654,10 +671,10 @@ export class TicketDetailComponent implements OnInit {
         break;
     }
 
-    let msg = 'Do You want to print receipt?';
+    let msg = '';
 
     if (this.activeSection == 'Check') {
-      msg = 'Do You want to print receipt?'
+      // msg = 'Do You want to print receipt?'
       if (this.checkNumber.length == 0) {
         //alert('Enter Check Number');
         this.errorAlert('Enter Check Number')
@@ -665,7 +682,7 @@ export class TicketDetailComponent implements OnInit {
         return;
       }
     } else if (this.activeSection == 'Electronic Payment') {
-      msg = 'Do You want to print receipt?'
+      // msg = 'Do You want to print receipt?'
       if (this.ePaymentType?.length == 0) {
        // alert('Enter Electronic Payment Type');
 
@@ -674,6 +691,7 @@ export class TicketDetailComponent implements OnInit {
       }
     } else {
       msg = 'You selected as Cash as payment mode please confirm ?';
+      this.errorAlert(msg);
     }
     
     this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
@@ -754,12 +772,14 @@ export class TicketDetailComponent implements OnInit {
       return item
     })
 
-    
-    let text = "Do you want to print receipt?";
-    if (confirm(text) == true) {
-      if (isCheckTransaction) {
-        this.isCheckPrint = true;
+    if (this.isReceiptPrint) {      
+      let text = "Do you want to print receipt?";
+      if (confirm(text) != true) {
+        this.isReceiptPrint = false;
       }
+    }
+    if (isCheckTransaction) {
+      this.isCheckPrint = true;
     }
 
     const transactionObj = {
@@ -783,18 +803,7 @@ export class TicketDetailComponent implements OnInit {
     };
 
     this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {
-      
-
-      // const checkPaymentTransaction = this.transactionPaymentType.filter((item:any) => item.typeofPayment == 'Check')
-      // if (checkPaymentTransaction.length < 1) {
-      //   this.cancelEditTicket(this.isReceiptPrint, this.ticketId);
-      // } else {
-      //   this.cancelEditTicket(false, this.ticketId);
-      // }
-
-      
-      // this.isReceiptPrint = false;   
-      
+     
       this.cancelEditTicket(this.isReceiptPrint, this.ticketId); 
 
     }, (error: any) => {
@@ -886,9 +895,6 @@ export class TicketDetailComponent implements OnInit {
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
-    // setTimeout(this.cancelEditTicket, 2000);
-    // this.cancelEditTicket();
-    // this.router.navigateByUrl(`${this.orgName}/home`);
   }
 
   cancelEditTicket(isReceiptPrint: boolean, ticketId: any) {
@@ -905,18 +911,22 @@ export class TicketDetailComponent implements OnInit {
     if (isReceiptPrint) {
       this.generateSingleTicketReport(ticketId);
     } else {      
-      if (this.isCheckPrint) {
+      this.checkPrintAction(); 
+    }
+  }
 
-        this.errorAlert('Please insert Check into Printer!!!')
+  private checkPrintAction() {
+    if (this.isCheckPrint) {
 
-       // alert("Please insert Check into Printer!!!");
-        // Open Pdf viewer          
-        this.showDownload = true;
-        this.pdfViwerTitle = 'Check For Print';
-        this.generateCheckPrintReport(this.ticketId, this.checkAmount);
-        this.isCheckPrint = false;
-        this.checkAmount = 0;
-      } 
+      this.errorAlert('Please insert Check into Printer!!!');
+
+      // alert("Please insert Check into Printer!!!");
+      // Open Pdf viewer          
+      this.showDownload = true;
+      this.pdfViwerTitle = 'Check For Print';
+      this.generateCheckPrintReport(this.ticketId, this.checkAmount);
+      this.isCheckPrint = false;
+      this.checkAmount = 0;
     }
   }
 
@@ -1263,7 +1273,7 @@ export class TicketDetailComponent implements OnInit {
   }
 
   generateSingleTicketReport(ticketId: any) {
-
+    // this.checkPrintAction();
     const param = {
       TicketId: ticketId,
       LocationId: this.locId,
@@ -1307,31 +1317,23 @@ export class TicketDetailComponent implements OnInit {
     iframe.src = blobUrl;
 
     iframe.onload = () => {
-       iframe.contentWindow?.print();
+      iframe.contentWindow?.print();
+      //redirct to home page
+      this.router.navigateByUrl(`${this.orgName}/home`);
     };
   }
 
   closePdfReport() {
     this.showDownload = false;
-    if (this.ticketId && this.ticketId != 0) {
-      console.log('11111');
-      // this.isEditModeOn = false;
-      // this.editItemCloseImageCapture = false;
-      // this.processDataBasedOnTicketId();
-      
-      if (this.isCheckPrint) {
-        this.errorAlert("Please insert Check into Printer!!!");
-        // Open Pdf viewer          
-        this.showDownload = true;
-        this.pdfViwerTitle = 'Check For Print';
-        this.generateCheckPrintReport(this.ticketId, this.checkAmount);
-        this.isCheckPrint = false;
-        this.checkAmount = 0;
-      }
-    } else {
-      console.log('222222');
-      this.router.navigateByUrl(`${this.orgName}/home`);
-    }
+    // if (this.ticketId && this.ticketId != 0) {
+    //   console.log('11111');      
+    //   this.checkPrintAction();
+    // } else {
+    //   console.log('222222');
+    //   this.router.navigateByUrl(`${this.orgName}/home`);
+    // }
+    
+    this.router.navigateByUrl(`${this.orgName}/home`);
   }
 
 

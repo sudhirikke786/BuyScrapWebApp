@@ -494,7 +494,7 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   refreshData() {
-    this.parentTicketIDVisible = true;
+    // this.parentTicketIDVisible = true;
     this.isParentTicketVisible = false;
     this.selectedTickets = this.defaultSelectedTicketsTypes;
     this.serachText = '';
@@ -787,6 +787,12 @@ export class TicketDashboardComponent implements OnInit {
         this.errorAlert('Enter Electronic Payment Type')
         return;
       }
+    } else if (this.activeSection == 'Cash') {
+      let text = 'You selected as Cash as payment mode please confirm ?';
+      if (confirm(text) != true) {
+        return;
+      }
+
     }
 
     switch (this.selectedHoldAmount) {
@@ -873,6 +879,9 @@ export class TicketDashboardComponent implements OnInit {
 
   removeItem(i: number) {
     this.transactionPaymentType.splice(i, 1);
+        
+    this.remainingAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount - this.getTotal();
+    this.selectedPayAmount = this.remainingAmount;
   }
 
 
@@ -892,6 +901,13 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   payAndSave(activeSection: string) {
+
+    if (this.transactionPaymentType.length > 1) {      
+      let text = 'You selected multiple payment mode please confirm ?';
+      if (confirm(text) != true) {
+        return;
+      }
+    }
 
     const payAmout = this.getTotal();
 
@@ -934,23 +950,24 @@ export class TicketDashboardComponent implements OnInit {
         break;
     }
 
-    let msg = 'Do You want to print receipt?';
+    let msg = '';
 
     if (this.activeSection == 'Check') {
-      msg = 'Do You want to print receipt?'
+      // msg = 'Do You want to print receipt?'
       if (this.checkNumber.length == 0) {
        // alert('Enter Check Number');
         this.errorAlert('Enter Check Number')
         return;
       }
     } else if (this.activeSection == 'Electronic Payment') {
-      msg = 'Do You want to print receipt?'
+      // msg = 'Do You want to print receipt?'
       if (this.ePaymentType?.length == 0) {
         this.errorAlert('Enter Electronic Payment Type')
         return;
       }
     } else {
       msg = 'You selected as Cash as payment mode please confirm ?';
+      this.errorAlert(msg);
     }
 
     this.saveTransactionData(activeSection);
@@ -1034,14 +1051,23 @@ export class TicketDashboardComponent implements OnInit {
     })
 
     
-    let text = "Do you want to print receipt?";
-    if (confirm(text) == true) {
-      this.isReceiptPrint = true;
-      if (isCheckTransaction) {
-        isCheckPrint = true;
+    // let text = "Do you want to print receipt?";
+    // if (confirm(text) == true) {
+    //   this.isReceiptPrint = true;
+    //   if (isCheckTransaction) {
+    //     isCheckPrint = true;
+    //   }
+    // } else {
+    //   this.isReceiptPrint = false;
+    // }
+    if (this.isReceiptPrint) {      
+      let text = "Do you want to print receipt?";
+      if (confirm(text) != true) {
+        this.isReceiptPrint = false;
       }
-    } else {
-      this.isReceiptPrint = false;
+    }
+    if (isCheckTransaction) {
+      isCheckPrint = true;
     }
 
     if(this.ticketId.toString().indexOf(',') > -1) {
@@ -1157,29 +1183,31 @@ export class TicketDashboardComponent implements OnInit {
     if (isReceiptPrint) {
       this.generateSingleTicketReport(ticketId);
     } else {      
-      if (isCheckPrint) {
-       // alert("Please insert Check into Printer!!!");
-        this.errorAlert('Please insert Check into Printer!!!')
-
-        const checkPaymentTransaction = this.transactionPaymentType.filter((item:any) => item.typeofPayment == 'Check');
-        const checkAmount = checkPaymentTransaction[0]?.typeofAmount;    
-        const customerFullName = this.selectedSellerName;
-
-        // const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
-        // const customerFullName = selectedTicketDetail[0].customerName;
-
-
-        // TO DO :: Open Pdf viewer          
-        this.showDownload = true;
-        this.pdfViwerTitle = 'Check For Print';
-        this.generateCheckPrintReport(ticketId, checkAmount, customerFullName);
-        // this.router.navigateByUrl(`${this.orgName}/home`);
-      } else {
-        this.closePdfReport();
-      }
+      this.checkPrintAction(isCheckPrint, ticketId);
     }
   }
   
+  private checkPrintAction(isCheckPrint: boolean, ticketId: any) {
+    if (isCheckPrint) {
+      // alert("Please insert Check into Printer!!!");
+      this.errorAlert('Please insert Check into Printer!!!');
+
+      const checkPaymentTransaction = this.transactionPaymentType.filter((item: any) => item.typeofPayment == 'Check');
+      const checkAmount = checkPaymentTransaction[0]?.typeofAmount;
+      const customerFullName = this.selectedSellerName;
+
+      // const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
+      // const customerFullName = selectedTicketDetail[0].customerName;
+      // TO DO :: Open Pdf viewer          
+      this.showDownload = true;
+      this.pdfViwerTitle = 'Check For Print';
+      this.generateCheckPrintReport(ticketId, checkAmount, customerFullName);
+      // this.router.navigateByUrl(`${this.orgName}/home`);
+    } else {
+      this.closePdfReport();
+    }
+  }
+
   getCashDrawerAmountAndPaidTicketCount(paramObject: any) {
     this.commonService.getCashDrawerAmountAndPaidTicketCount(paramObject)
       .subscribe((data: any) => {
