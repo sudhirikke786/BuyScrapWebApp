@@ -731,7 +731,7 @@
   .title {
     background-color: #bbdaeb;
     color: #000;
-    padding: 20px;
+    padding: 30px 20px 30px 20px ;
     font-size: 14px !important;
     text-transform: capitalize;
     text-align: center;
