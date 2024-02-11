@@ -517,13 +517,15 @@ export class TicketDetailComponent implements OnInit {
       return sum + tickets.net;
     }, 0);
     this.totalActualAmount = tickets.reduce(function (sum: any, tickets: any) {
-      return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : tickets.amount);
+      // return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : tickets.amount);
+      return sum + (tickets.isAdjusmentSet ? 0 : tickets.amount);
     }, 0);
 
     this.totalAmount = Math.round(this.totalActualAmount);
     this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
     this.totalAdjustment = tickets.reduce(function (sum: any, tickets: any) {
-      return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : 0);
+      // return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : 0);
+      return sum + (tickets.isAdjusmentSet ? tickets.amount : 0);
     }, 0);
   }
 
@@ -948,7 +950,9 @@ export class TicketDetailComponent implements OnInit {
     this.itemMaterialName = materialName;
     this.itemPrice = scrapPrice;
     this.itemLeveloperationPerform = this.itemLeveloperationPerform == '' ? 'Add' : this.itemLeveloperationPerform;
-    this.itemCodNote = '';
+    this.itemCodNote = '';    
+    this.itemGross = '';
+    this.itemTare = '';
     // this.materialNote = '';
   }
 
@@ -1000,8 +1004,19 @@ export class TicketDetailComponent implements OnInit {
   }
 
   
-  deleteItem(rowData: any) {
-    alert(JSON.stringify(rowData));
+  deleteItem(i: number) {
+    alert(i);
+    this.ticketObj.splice(i, 1);
+
+    
+    console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
+
+    this.calculateTotal(this.ticketObj);
+    // this.backToChangeItemMainMaterials();
+    // this.backToMainMaterials();
+    // this.itemGross = '';
+    // this.itemTare = 0;
+
   }
 
   calculateNet() {
@@ -1164,7 +1179,7 @@ export class TicketDetailComponent implements OnInit {
     this.calculateTotal(this.ticketObj);
     this.backToChangeItemMainMaterials();
     this.backToMainMaterials();
-    this.itemGross = 0;
+    this.itemGross = '';
     this.itemTare = 0;
 
   }
@@ -1181,7 +1196,7 @@ export class TicketDetailComponent implements OnInit {
   onAdjustmentChange(value: any) {
     this.selectedAdjustment = value.target.value;
 
-    this.messageAlert(this.selectedAdjustment)
+    // this.messageAlert(this.selectedAdjustment)
 
     //alert(this.selectedAdjustment);
   }
@@ -1215,7 +1230,7 @@ export class TicketDetailComponent implements OnInit {
       rowData.materialNote = this.adjustmentNote;
       rowData.price = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
       rowData.imagePath = '';
-      rowData.isCOD = 0;
+      rowData.isCOD = false;
       rowData.isAdjusmentSet = true;
 
       rowData.createdBy = this.logInUserId;
@@ -1240,7 +1255,7 @@ export class TicketDetailComponent implements OnInit {
           rowData.materialNote = this.adjustmentNote;
           rowData.price = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
           rowData.imagePath = '';
-          rowData.isCOD = 0;
+          rowData.isCOD = false;
           rowData.isAdjusmentSet = true;
 
           // TO DO:: does not required. need to verify;

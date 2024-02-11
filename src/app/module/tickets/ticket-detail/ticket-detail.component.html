@@ -109,7 +109,7 @@
                                                     <th *ngIf="isEditModeOn">Action</th>
                                                 </tr>
                                             </ng-template>
-                                            <ng-template pTemplate="body" let-ticket>
+                                            <ng-template pTemplate="body" let-ticket let-rowIndex="rowIndex">
 
                                                 <ng-container *ngIf="isEditModeOn">
                                                     <!-- (contextmenu)="onContextMenu($event,ticket) ; op?.toggle($event)"  -->
@@ -139,7 +139,7 @@
                                                                 <i class="mdi mdi-pencil"></i> Edit
                                                             </a> 
                                                             
-                                                            <a class="btn btn-grid btn-danger waves-effect waves-light" (click)="deleteItem(ticket)">
+                                                            <a class="btn btn-grid btn-danger waves-effect waves-light" (click)="deleteItem(rowIndex)">
                                                                 <i class="mdi mdi-trash-can-outline"></i> Delete
                                                             </a>
                                                             <!-- <a *ngIf="ticket?.codNote != ''" (click)="removeCode(ticket)" class="btn btn-grid btn-danger waves-effect waves-light ms-1">
