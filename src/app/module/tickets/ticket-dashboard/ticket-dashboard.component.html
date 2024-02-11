@@ -645,5 +645,18 @@
 <p-confirmDialog></p-confirmDialog>
 
 
+<p-dialog header="Header" [(visible)]="alertVisible" [modal]="true" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}">
+    <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <span class="font-bold white-space-nowrap">Information</span>
+        </div>
+    </ng-template>
+    <p class="m-0">
+        {{alertMessage}}
+    </p>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="alertVisible = false" label="Ok" pAutoFocus [autofocus]="true"></p-button>
+    </ng-template>
+</p-dialog>
 
 

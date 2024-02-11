@@ -141,6 +141,9 @@ export class TicketDetailComponent implements OnInit {
   signPadVisible = false;
   isEnable = true;
 
+  alertVisible = false;
+  alertMessage: any;
+
   @ViewChild(PriceCalculatorComponent) priceCalculatorComponent!: PriceCalculatorComponent;
   
 
@@ -257,16 +260,21 @@ export class TicketDetailComponent implements OnInit {
     this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
   }
 
+  messageAlert(msg:any) {    
+    this.alertVisible = true;
+    this.alertMessage = msg;
+  }
+
   addTransction() {
 
     if (this.selectedPayAmount <= 0) {
-      this.errorAlert('Please Enter Amount')
+      this.messageAlert('Please Enter Amount')
       return;
     }
 
     if (!this.isInputValid(this.selectedPayAmount)) {
    
-      this.errorAlert('Add valid input')
+      this.messageAlert('Add valid input')
       return;
     }
 
@@ -275,7 +283,7 @@ export class TicketDetailComponent implements OnInit {
 
     if (checkPrice) {
 
-      this.errorAlert('adding amount is greter than total amount')
+      this.messageAlert('adding amount is greter than total amount')
     
       return;
     }
@@ -285,12 +293,12 @@ export class TicketDetailComponent implements OnInit {
       if (this.checkNumber.length == 0) {
       
 
-        this.errorAlert('Enter Check Number')
+        this.messageAlert('Enter Check Number')
         return;
       }
     } else if (this.activeSection == 'Electronic Payment') {
       if (this.ePaymentType?.length == 0) {
-        this.errorAlert('Enter Electronic Payment Type')
+        this.messageAlert('Enter Electronic Payment Type')
       //  alert('Enter Electronic Payment Type');
         return;
       }
@@ -309,14 +317,14 @@ export class TicketDetailComponent implements OnInit {
         const eligiblePayAmount = this.totalAmount - total - this.totalHoldAmount;
         if (this.selectedPayAmount > eligiblePayAmount) {
           //alert('Exclude hold item amount');
-          this.errorAlert('Exclude hold item amount')
+          this.messageAlert('Exclude hold item amount')
           this.selectedPayAmount = eligiblePayAmount;
           return;
         }
         break;
       case 'Hold All Amount':
       //  alert('You have selected option as "Hold All Amount"!!!');
-        this.errorAlert('You have selected option as "Hold All Amount"!!!')
+        this.messageAlert('You have selected option as "Hold All Amount"!!!')
         this.selectedPayAmount = 0;
         return;
         break;
@@ -347,7 +355,7 @@ export class TicketDetailComponent implements OnInit {
       this.transactionPaymentType.splice(this.transactionPaymentType.length - 1, 1)
    //   window.alert("adding amount is greter than total amount")
 
-      this.errorAlert('adding amount is greter than total amount')
+      this.messageAlert('adding amount is greter than total amount')
     
       return false;
     }
@@ -643,11 +651,11 @@ export class TicketDetailComponent implements OnInit {
 
     if (!this.payAmount) {
      
-      this.errorAlert('Enter Amount')
+      this.messageAlert('Enter Amount')
       return
     }
     if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.ticketData?.paidAmount)) {
-      this.errorAlert('adding amount is greter than total amount')
+      this.messageAlert('adding amount is greter than total amount')
       return;
     }
 
@@ -657,14 +665,14 @@ export class TicketDetailComponent implements OnInit {
         if (this.payAmount > eligiblePayAmount) {
         //  alert('Exclude hold item amount');
 
-          this.errorAlert('Exclude hold item amount')
+          this.messageAlert('Exclude hold item amount')
           this.payAmount = eligiblePayAmount;
           return;
         }
         break;
       case 'Hold All Amount':
 
-         this.errorAlert('You have selected option as "Hold All Amount"!!!')
+         this.messageAlert('You have selected option as "Hold All Amount"!!!')
       //  alert('You have selected option as "Hold All Amount"!!!');
         this.payAmount = 0;
         return;
@@ -677,7 +685,7 @@ export class TicketDetailComponent implements OnInit {
       // msg = 'Do You want to print receipt?'
       if (this.checkNumber.length == 0) {
         //alert('Enter Check Number');
-        this.errorAlert('Enter Check Number')
+        this.messageAlert('Enter Check Number')
    
         return;
       }
@@ -686,12 +694,12 @@ export class TicketDetailComponent implements OnInit {
       if (this.ePaymentType?.length == 0) {
        // alert('Enter Electronic Payment Type');
 
-        this.errorAlert('Enter Electronic Payment Type')
+        this.messageAlert('Enter Electronic Payment Type')
         return;
       }
     } else {
       msg = 'You selected as Cash as payment mode please confirm ?';
-      this.errorAlert(msg);
+      this.messageAlert(msg);
     }
     
     this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
@@ -918,7 +926,7 @@ export class TicketDetailComponent implements OnInit {
   private checkPrintAction() {
     if (this.isCheckPrint) {
 
-      this.errorAlert('Please insert Check into Printer!!!');
+      this.messageAlert('Please insert Check into Printer!!!');
 
       // alert("Please insert Check into Printer!!!");
       // Open Pdf viewer          
@@ -989,6 +997,11 @@ export class TicketDetailComponent implements OnInit {
       this.imageUrl = (this.itemImagePath ? this.itemImagePath : 'assets/images/custom/id_scan.png');
     }
 
+  }
+
+  
+  deleteItem(rowData: any) {
+    alert(JSON.stringify(rowData));
   }
 
   calculateNet() {
@@ -1168,7 +1181,7 @@ export class TicketDetailComponent implements OnInit {
   onAdjustmentChange(value: any) {
     this.selectedAdjustment = value.target.value;
 
-    this.errorAlert(this.selectedAdjustment)
+    this.messageAlert(this.selectedAdjustment)
 
     //alert(this.selectedAdjustment);
   }
@@ -1215,14 +1228,14 @@ export class TicketDetailComponent implements OnInit {
       // this.ticketObj = arr;
 
     } else if (this.itemLeveloperationPerform === 'Edit') {
-      this.errorAlert(this.selectedAdjustment);
+      this.messageAlert(this.selectedAdjustment);
 
   
       this.ticketObj.forEach((rowData: any) => {
         if (this.itemLocalRowId === rowData.localRowId) {
           console.log("found " + rowData.rowId);
 
-          this.errorAlert(this.selectedAdjustment);
+          this.messageAlert(this.selectedAdjustment);
           rowData.materialName = rowData.concatAdjustments = this.selectedAdjustment;
           rowData.materialNote = this.adjustmentNote;
           rowData.price = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
