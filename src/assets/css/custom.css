@@ -705,17 +705,6 @@
  .materials-heading{font-weight: 500; color: #343a40; text-align: center; font-size: 15px;}
 
  .ticket-details-p{margin-bottom: 0;}
- .{padding:2px 8px !important;}
- .-inner{
-  margin-bottom: 10px; 
-  width: 100%; padding: 5px !important; color: #fff;
-  line-height: 12px !important;
-
-
-}
-.-inner:hover{
-  color: #fff;
-}
  .ticket-particulars-img{height:30px;}
  #numpad-div {
   display: none;
@@ -1048,6 +1037,11 @@
 
   .app-menu{
     width: var(--ct-leftbar-width);
+  }
+
+  .dl-img {
+    height: auto;
+    width: 90%;
   }
 
   /* .app-menu{
