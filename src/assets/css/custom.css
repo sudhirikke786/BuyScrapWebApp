@@ -979,26 +979,26 @@
 
    .p-datatable .p-datatable-thead>tr>th {
    
-      font-size: 1.2rem !important;
+      font-size: 2.5rem !important;
       color: #6c757d;
   }
   
   .p-datatable .p-datatable-tbody>tr>td {
   
-      font-size: 1.2rem !important;
+      font-size: 2.5rem !important;
     
   }
   .p-component {
       font-family: "Cerebri Sans,sans-serif" !important;
-      font-size: 1.2rem !important;
+      font-size: 2.5rem !important;
   }
 
   tr td{
-      font-size: 1.2rem !important;
+      font-size: 2.5rem !important;
   }
   
   .btn{
-      font-size: 1.2rem !important; 
+      font-size: 2.5rem !important; 
   }
 
   .btn {
@@ -1006,7 +1006,7 @@
   }
 
   .form-control{
-    font-size: 1.2rem !important; 
+    font-size: 2.5rem !important; 
   }
 
   .materials-pg-boxes {
@@ -1025,11 +1025,11 @@
   }
 
   .page-title{
-    font-size: 1.2rem !important; 
+    font-size: 2.5rem !important; 
   }
 
   a {
-    font-size: 1.2rem !important; 
+    font-size: 2.5rem !important; 
   }
 
   .menu .menu-item .menu-link > .menu-text{
@@ -1041,7 +1041,7 @@
   }
 
   .dl-img {
-    height: auto;
+    height: 100px;
     width: 90%;
   }
 
@@ -1052,3 +1052,149 @@
  
 
 }
+
+
+@media only screen and (max-width: 5000px) and (min-width: 2040px)  {
+
+
+  
+:root {
+ 
+  --ct-leftbar-width:500px;
+  
+}
+
+
+  /* Your CSS styles for large devices with a width greater than 1900 pixels */
+  /* For example, you can increase font sizes or adjust layout */
+  body {
+      font-size: 2.5rem !important /* Adjust font size for larger devices */
+  }
+
+
+  .fz-14{
+      font-size:2.5rem !important;
+   }
+
+
+   .p-datatable .p-datatable-thead>tr>th {
+   
+      font-size: 2.5rem !important;
+      color: #6c757d;
+  }
+  
+  .p-datatable .p-datatable-tbody>tr>td {
+  
+      font-size: 2.5rem !important;
+    
+  }
+  .p-component {
+      font-family: "Cerebri Sans,sans-serif" !important;
+      font-size: 2.5rem !important;
+  }
+
+  tr td{
+      font-size: 2.5rem !important;
+  }
+  
+  .btn{
+      font-size: 2.5rem !important; 
+  }
+
+  .btn {
+    line-height: 3.5rem !important;
+  }
+
+  .form-control{
+    font-size: 2.5rem !important; 
+  }
+
+  .materials-pg-boxes {
+    width:100%; 
+    padding: 0px 0px 0 0px;
+    .title {
+      background-color: #bbdaeb;
+      color: #000;
+      padding: 20px;
+      font-size: 30px !important;
+      text-transform: capitalize;
+      margin-bottom: 20px
+      
+    }
+  
+  }
+
+  .page-title{
+    font-size: 2.5rem !important; 
+  }
+
+  a {
+    font-size: 2.5rem !important; 
+  }
+
+  .menu .menu-item .menu-link > .menu-text{
+    font-size: 2.1rem !important; 
+  }
+
+  .app-menu{
+    width: var(--ct-leftbar-width);
+  }
+
+  .dl-img {
+    height: 100px;
+    width: 90%;
+  }
+
+  .p-paginator .p-paginator-current{
+    font-size: 2.5rem !important; 
+  }
+
+  .p-paginator .p-paginator-pages .p-paginator-page{
+    height: 100px;
+    width: 100px;
+    font-size: 2.5rem;
+  }
+
+  .p-paginator .p-dropdown{
+    height: 80px;
+  }
+
+  .p-dropdown-label{
+    font-size: 2.5rem;
+  }
+
+  .p-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.ticket-details-tbl th{
+  font-size: 2.5rem;
+}
+
+.equal-h{
+  width:90% !important;
+  min-width: 400px !important
+}
+
+.fz-16{
+  font-size: 2.2rem !important; 
+}
+
+h4{
+  font-size: 2.2rem !important; 
+}
+
+.materials-heading{
+  font-size: 2.2rem !important;   
+}
+
+
+
+}
+
+
+
+
+
+

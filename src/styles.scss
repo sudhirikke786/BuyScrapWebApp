@@ -224,6 +224,10 @@ a {
     line-height: 10px !important;
 }
 
+.custom-lh{
+    line-height: 18px !important;
+}
+
 
 /**
   overlay padding
@@ -238,6 +242,13 @@ a {
 .calc {
     position: absolute;
     top: -40px
+}
+
+.payment-ticket{
+    position: absolute;
+     bottom: 10px;
+      right: 5px; 
+     left: 5px;
 }
 
 @media (max-width: 767px) {
@@ -381,6 +392,10 @@ body{
     font-size: 0.9rem;
  }
 
+ .fz-16{
+    font-size: 16px
+ }
+
 
  @media screen and (min-width: 1900px) {
     /* Your CSS styles for large devices with a width greater than 1900 pixels */
@@ -418,5 +433,92 @@ body{
     .btn{
         font-size: 1.2rem !important; 
     }
+
+    .fz-16{
+        font-size: 1.2rem !important; 
+     }
+
+     .equal-h{
+        width:90% !important;
+        min-width: 400px !important;
+      }
+      .payment-ticket{
+  
+        bottom: 30px;
+       
+   }
+
+   .custom-lh{
+    line-height: 1.5px !important;
+    }
+
+}
+
+
+@media only screen and (max-width: 5000) and (min-width: 2040px)  {
+
+     /* Your CSS styles for large devices with a width greater than 1900 pixels */
+    /* For example, you can increase font sizes or adjust layout */
+    body {
+        font-size: 2.5rem !important /* Adjust font size for larger devices */
+    }
+
+
+    .fz-14{
+        font-size:2.5rem !important;
+     }
+
+
+     .p-datatable .p-datatable-thead>tr>th {
+     
+        font-size: 2.2rem !important;
+        color: #6c757d;
+    }
+    
+    .p-datatable .p-datatable-tbody>tr>td {
+    
+        font-size: 2.2rem !important;
+      
+    }
+    .p-component {
+        font-family: "Cerebri Sans,sans-serif" !important;
+        font-size: 2.2rem !important;
+    }
+
+    tr td{
+        font-size: 2.2rem !important;
+    }
+    
+    .btn{
+        font-size: 2.2rem !important; 
+    }
+
+    .fz-16{
+        font-size: 2.2rem !important; 
+     }
+
+    h4{
+        font-size: 2.2rem !important; 
+     }
+
+     
+    .payment-ticket{
+    
+        bottom: 30px;
+        
+    }
+
+    .custom-lh{
+        line-height: 1.5px !important;
+    }
+
+    .main-material{
+        font-size: 2.2rem !important;   
+    }
+
+    .materials-heading{
+        font-size: 2.2rem !important;   
+    }
+    
 
 }
