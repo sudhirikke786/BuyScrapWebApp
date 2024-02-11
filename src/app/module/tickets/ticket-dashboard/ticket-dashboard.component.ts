@@ -181,7 +181,7 @@ export class TicketDashboardComponent implements OnInit {
     private dataService: DataService,
     private messageService: MessageService,
     public commonService: CommonService) {
-      this.setPageSize();
+     // this.setPageSize();
      }
 
   ngOnInit() {
@@ -229,22 +229,22 @@ export class TicketDashboardComponent implements OnInit {
     this.getAllTicketsDetails(this.pagination);
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event:any) {
-    this.setPageSize();
-  }
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event:any) {
+  //   this.setPageSize();
+  // }
 
-  private setPageSize() {
-    if (window.innerWidth >= 1200 && window.innerWidth < 1500) {
-      this.pageSize = 25; // Large device
-    }else if (window.innerWidth > 1500 && window.innerWidth < 3000) {
-      this.pageSize = 100; // Medium device
-    } else if (window.innerWidth >= 768) {
-      this.pageSize = 10; // Medium device
-    } else {
-      this.pageSize = 10; // Small device
-    }
-  }
+  // private setPageSize() {
+  //   if (window.innerWidth >= 1200 && window.innerWidth < 1500) {
+  //     this.pageSize = 25; // Large device
+  //   }else if (window.innerWidth > 1500 && window.innerWidth < 3000) {
+  //     this.pageSize = 100; // Medium device
+  //   } else if (window.innerWidth >= 768) {
+  //     this.pageSize = 10; // Medium device
+  //   } else {
+  //     this.pageSize = 10; // Small device
+  //   }
+  // }
 
 
   /**

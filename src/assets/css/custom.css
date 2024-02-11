@@ -1,5 +1,7 @@
 /* ============================ Upload Images ================================ */
 
+
+
 .box {
   display: block;
  /* min-width: 300px;*/
@@ -736,15 +738,16 @@
  .materials-name-edit-ul li h4{font-size: 12px; line-height: 22px;}
  .materials-pg-boxes {
   width:100%; 
-  padding: 0px 0px 0 0px;
+  padding: 0px 0px 5px 0px;
   .title {
-    background-color: #02659d;
-    color: #fff;
-    padding: 5px;
+    background-color: #bbdaeb;
+    color: #000;
+    padding: 20px;
     font-size: 14px !important;
-    text-transform: capitalize;;
-    margin-bottom: 5px;
-    border-radius: 10px 10px 0px 0px;
+    text-transform: capitalize;
+    text-align: center;
+    border-radius: 10px 10px 0px 0px; 
+    margin-bottom: 20px
   }
 
 }
@@ -753,7 +756,7 @@
 
  .materials-pg-boxes{
     background: #f5f5f5; 
-    box-shadow: 0px 0px 0px #02659d;
+    box-shadow: -1px 5px 5px 0px #07679d;
     border-radius: 10px; 
     margin-bottom: 20px; 
     position: relative;
@@ -962,6 +965,16 @@
 
 
 @media screen and (min-width: 1900px) {
+
+
+  
+:root {
+ 
+  --ct-leftbar-width:300px;
+  
+}
+
+
   /* Your CSS styles for large devices with a width greater than 1900 pixels */
   /* For example, you can increase font sizes or adjust layout */
   body {
@@ -1010,14 +1023,37 @@
     width:100%; 
     padding: 0px 0px 0 0px;
     .title {
-      background-color: #02659d;
-      color: #fff;
-      padding: 5px;
+      background-color: #bbdaeb;
+      color: #000;
+      padding: 20px;
       font-size: 20px !important;
-      text-transform: capitalize;;
+      text-transform: capitalize;
+      margin-bottom: 20px
       
     }
   
   }
+
+  .page-title{
+    font-size: 1.2rem !important; 
+  }
+
+  a {
+    font-size: 1.2rem !important; 
+  }
+
+  .menu .menu-item .menu-link > .menu-text{
+    font-size: 1.1rem !important; 
+  }
+
+  .app-menu{
+    width: var(--ct-leftbar-width);
+  }
+
+  /* .app-menu{
+    width: 300px !important;
+  } */
+
+ 
 
 }
