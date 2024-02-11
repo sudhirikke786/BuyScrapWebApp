@@ -24,11 +24,12 @@
 
     .img-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
+        gap: 50px;
       }
 
   }
+
 
 // .card-title-edit > div{
 //     flex-grow: 1; /* The second container takes up remaining space */
