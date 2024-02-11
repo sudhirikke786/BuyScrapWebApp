@@ -1141,7 +1141,7 @@
   }
 
   .dl-img {
-    height: 100px;
+    min-height: 180px;
     width: 90%;
   }
 
