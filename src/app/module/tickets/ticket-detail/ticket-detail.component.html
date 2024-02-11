@@ -870,14 +870,15 @@
 <p-dialog header="Header" [(visible)]="alertVisible" [modal]="true" [style]="{width: '500'}">
     <ng-template pTemplate="header">
         <div class="inline-flex align-items-center justify-content-center gap-2">
-            <span class="font-bold white-space-nowrap">Information</span>
+            <span class="text-xl font-bold"  style="font-size: 16px;">Information</span>
         </div>
     </ng-template>
-    <p class="m-0" style="width:300px">
+    <p class="m-0 fz-14" style="width:300px">
          
         {{alertMessage}}
     </p>
     <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="alertVisible = false" label="Ok" pAutoFocus [autofocus]="true"></p-button>
+        <button class="btn btn-primary"  (click)="alertVisible = false"> Ok </button>
+        <!-- <p-button class="btn btn-primary" icon="pi pi-check" (click)="alertVisible = false" label="Ok" pAutoFocus [autofocus]="true"></p-button> -->
     </ng-template>
 </p-dialog>
