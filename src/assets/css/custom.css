@@ -954,15 +954,11 @@
 }
 
 
-@media screen and (min-width: 2040px) {
+@media screen and (min-width: 2038px) {
 
 
   
-:root {
- 
-  --ct-leftbar-width:300px;
-  
-}
+
 
 
   /* Your CSS styles for large devices with a width greater than 1900 pixels */
@@ -1044,6 +1040,13 @@
     height: 100px;
     width: 90%;
   }
+  .balance-details-ul li{
+    font-size: 1.2rem !important; 
+}
+.pro-user-name{
+  font-size: 2.2rem !important; 
+}
+
 
   /* .app-menu{
     width: 300px !important;
@@ -1190,7 +1193,52 @@ h4{
 }
 
 
+.balance-details-ul li{
+  font-size: 2.2rem !important; 
+}
 
+.pro-user-name{
+  font-size: 2.2rem !important; 
+}
+
+.dash-icons{
+  width: 40px;
+  height: 40px;
+}
+
+.menu .menu-item .menu-link {
+  padding: 10px 0px 10px 0px !important;
+}
+.menu .menu-item .menu-link > .menu-icon + .menu-text {
+  padding-left: 30px;
+}
+
+.button-toggle-menu{
+  font-size: 2.2rem !important; 
+}
+
+.mdi-cust{
+  font-size: 2.2rem !important; 
+}
+.mdi-cust-upload{
+  font-size: 40px !important; 
+}
+
+.form-floating>.form-control{
+  height: 100px !important;
+}
+
+.form-select{
+  height: 100px !important;
+  font-size: 2.2rem !important; 
+}
+
+select option{
+  font-size: 2.2rem !important; 
+}
+.payment-ticket{
+  bottom: 92px !important;
+}
 }
 
 

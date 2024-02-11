@@ -18,7 +18,7 @@
   
 
 
-  @media screen and (min-width: 1900px) {
+  @media screen and (min-width: 2038px) {
     .img-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -27,4 +27,14 @@
 
   }
  
+
+  @media only screen and (max-width: 5000px) and (min-width: 2040px)  {
+
+    .img-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+        gap: 30px;
+      }
+
+  }
 

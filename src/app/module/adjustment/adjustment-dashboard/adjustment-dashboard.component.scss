@@ -10,16 +10,25 @@
 }
 
 
-@media screen and (min-width: 1900px) {
-
+@media screen and (min-width: 2038px) {
     .img-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
         gap: 20px;
-    }
-    
+      }
 
-}
+  }
+ 
+
+  @media only screen and (max-width: 5000px) and (min-width: 2040px)  {
+
+    .img-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+        gap: 20px;
+      }
+
+  }
 
 // .card-title-edit > div{
 //     flex-grow: 1; /* The second container takes up remaining space */

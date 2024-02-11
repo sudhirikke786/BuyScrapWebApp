@@ -397,7 +397,11 @@ body{
  }
 
 
- @media screen and (min-width: 2040px) {
+ @media screen and (min-width: 2038px) {
+
+
+
+
     /* Your CSS styles for large devices with a width greater than 1900 pixels */
     /* For example, you can increase font sizes or adjust layout */
     body {
@@ -451,6 +455,8 @@ body{
    .custom-lh{
     line-height: 1.5px !important;
     }
+
+  
 
 }
 
@@ -519,6 +525,14 @@ body{
     .materials-heading{
         font-size: 2.2rem !important;   
     }
-    
+
+    .balance-details-ul li{
+        font-size: 2.2rem !important;   
+    }
+
+    .payment-ticket{
+        bottom: 92px !important;
+      }
+  
 
 }
