@@ -47,7 +47,7 @@
 
   .avatar-container {
     max-height: 90px;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .avatar{
@@ -126,6 +126,7 @@
      .img-fluid{
       width: 100%;
       height: auto;
+      max-height: 200px;
      }
      .btn{
       width:45%;
@@ -135,3 +136,48 @@
    }
 
  }
+
+ @media only screen and (max-width:5500px) and (min-width: 1920px) {
+
+  .calculator {
+    
+    padding: 5px;
+    font-size: 2.5rem !important;
+    text-align: center;
+   }
+
+
+   .res-1920{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+   }
+   .btn-cal {
+    font-size: 3.5rem;
+   }
+
+   .h-30{
+    height: 100px !important;
+    border-color: #e9ecef;
+   }
+
+  
+  .cost-image{
+    div {
+     width:100%;
+    }
+    .img-fluid{
+     width: 100%;
+     height: auto;
+     max-height: 300px;
+    }
+    .btn{
+     width:47%;
+   
+    }
+  }
+
+ }
+//  @media  screen only (max-width:2500px) and screen(min-width:1920){
+
+//  }

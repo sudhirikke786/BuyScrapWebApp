@@ -6518,7 +6518,7 @@ span.flatpickr-weekday {
 
 
 
-@media screen and (min-width: 2040px) {
+@media only screen and (max-width:5500px) and (min-width: 1920px)  {
 
 
   
@@ -6564,3 +6564,6 @@ span.flatpickr-weekday {
   height: calc(var(--ct-menu-item-icon-size) * 2.25);
 }
 }
+
+
+
