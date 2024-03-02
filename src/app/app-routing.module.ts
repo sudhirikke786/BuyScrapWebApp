@@ -7,6 +7,7 @@ import { PrintTicketComponent } from './print-ticket/print-ticket.component';
 import { ErrorComponent } from './error/error.component';
 import { RoleGuard } from './core/guard/role.guard';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { SuccessPageComponent } from './success-page/success-page.component';
 
 const routes: Routes = [
   { 
@@ -33,6 +34,10 @@ const routes: Routes = [
   {
     path:'sign-up',
     component: SignUpComponent
+  },
+  {
+    path:'success',
+    component:SuccessPageComponent
   },
   { 
       path: ':orgName',

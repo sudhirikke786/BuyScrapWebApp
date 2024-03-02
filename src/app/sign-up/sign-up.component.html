@@ -33,104 +33,52 @@
                             </div>
 
                             <div class="row mt-20">
-
-                                        <div class="col-sm-6">
-                                            <div class="pricing-box pricing-box-1" tabindex="0">
-                                                <h4 class="pricing-plan-name">BuyScrapApp Lite</h4> 
-
-                                                <div class="pricing-inner-content"> 
-
-                                                    <span>Recommended for CRV-only buyers and buyers not needing state compliance or saving of images.</span>
-
-                                                    <hr>
-
-                                                    <h4 class="pricing-plan-price"><img src="assets/images/custom/no-camera.png" class="camera-img">$49/Monthly</h4>
-
-                                                    <h5 class="pricing-plan-popularity">Budget Plan</h5>
-
-                                                    <table class="pricing-tbl">
-                                                        <tr>
-                                                            <td class="pricing-tbl-td-1"><i class="fa-solid fa-check fa-green"></i></td>
-                                                            <td>500 Tickets/mo included (approx. 20/day)</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="pricing-tbl-td-1"><i class="fa-solid fa-check fa-green"></i></td>
-                                                            <td>3 User Logins Included</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="pricing-tbl-td-1"><i class="fa-solid fa-xmark fa-red"></i></td>
-                                                            <td>No images of materials, customers, signatures or thumbprints</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="pricing-tbl-td-1"><i class="fa-solid fa-xmark fa-red"></i></td>
-                                                            <td>Compliance Engine and Uploads NOT Included</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="pricing-tbl-td-1"><i class="fa-solid fa-xmark fa-red"></i></td>
-                                                            <td>No VIN scanning & title for buying scrap vehicles</td>
-                                                        </tr>
-                                                    </table>
-
-                                                    <a href="" target="_blank" class="btn btn-primary-bsa-orange mt-15">SELECT PLAN</a>
-
-                                                    <p class="info-p">Free 30 day trial</p>
-                                                </div>
+                                <ng-container *ngFor="let item of planObj;let i=index">
+                        
+                                    <div class="col-sm-6">
+                                        <div class="pricing-box pricing-box-1" tabindex="0" [ngClass]="{'plan-selected': item?.isselected}">
+                                            <h4 class="pricing-plan-name">{{item?.planTitle}}</h4> 
+        
+                                            <div class="pricing-inner-content"> 
+        
+                                                <span>{{item?.planRecommendationText}}</span>
+        
+                                                <hr>
+        
+                                                <h4 class="pricing-plan-price"><img src="assets/images/custom/no-camera.png" class="camera-img">${{item?.planCost}}/Monthly</h4>
+        
+                                                <h5 class="pricing-plan-popularity">{{item?.planSubTitle}}</h5>
+        
+                                                <table class="pricing-tbl">
+                                                    <tr *ngFor="let obj of item?.planDesc">
+                                                        <td class="pricing-tbl-td-1">
+                                                            <i class="fa-solid fa-check fa-green" *ngIf="!obj?.isCross"></i>
+                                                            <i class="fa-solid fa-xmark fa-red" *ngIf="obj?.isCross"></i>
+                                                           
+                                                        </td>
+                                                        <td>{{obj?.planDesc}}</td>
+                                                    </tr>
+        
+                                                   
+                                                </table>
+        
+                                                <button class="btn btn-primary-bsa-orange mt-15" *ngIf="item?.isselected" (click)="getSelected(item,i)">SELECTED</button>
+                                                <button class="btn btn-primary-bsa-orange mt-15" *ngIf="!item?.isselected" (click)="getSelected(item,i)">Select Plan</button>
+        
+                                                <!-- <button class="btn btn-primary-bsa-orange mt-15"   (click)="removeCartItem(buyScrappLite);buyScrappLite.selected=false">SELECTED</button> -->
+        
+        
+                                               
+                                                   
+                                                
+        
+                                                <!-- <p class="info-p">Free 30 day trial</p> -->
                                             </div>
                                         </div>
-
-                                        <div class="col-sm-6">
-
-                                            <div class="pricing-box pricing-box-1" tabindex="0">
-                                                <h4 class="pricing-plan-name">BuyScrapApp Plus</h4> 
-
-                                                <div class="pricing-inner-content"> 
-
-                                                    <span>Recommended for all scrap yards, especially ones that need to be in compliance with state metal laws.</span>
-
-                                                    <hr>
-
-                                                    <h4 class="pricing-plan-price"><img src="assets/images/custom/camera.png" class="camera-img">$99/Monthly</h4>
-
-                                                    <h5 class="pricing-plan-popularity">Most Popular!</h5>
-
-                                                    <table class="pricing-tbl">
-                                                        <tr>
-                                                            <td class="pricing-tbl-td-1"><i class="fa-solid fa-check fa-green"></i></td>
-                                                            <td>500 Tickets/mo included (approx. 20/day)</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="pricing-tbl-td-1"><i class="fa-solid fa-check fa-green"></i></td>
-                                                            <td>3 User Logins Included</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="pricing-tbl-td-1"><i class="fa-solid fa-check fa-green"></i></td>
-                                                            <td>Includes images of materials, customers, signatures or thumbprints</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="pricing-tbl-td-1"><i class="fa-solid fa-check fa-green"></i></td>
-                                                            <td>Compliance Engine and Uploads Included</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="pricing-tbl-td-1"><i class="fa-solid fa-check fa-green"></i></td>
-                                                            <td>VIN scanning & title for buying scrap vehicles</td>
-                                                        </tr>
-                                                    </table>
-
-                                                    <a href="" target="_blank" class="btn btn-primary-bsa-orange mt-15">SELECT PLAN</a>
-
-                                                    <p class="info-p">30 Days Money Back Guarantee</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                    </div>
+                                    
+                                </ng-container>
+                                       
                             </div>
 
                             <div class="row mt-30">
@@ -155,18 +103,18 @@
 
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td *ngIf="selectedPlan?.planTitle">
                                                 <div class="row">
                                                     <div class="col-8">
-                                                        <h4 class="summary-h4">BuyScrapApp Plus <br>(with images)</h4> 
+                                                        <h4 class="summary-h4">{{selectedPlan?.planTitle}} </h4> 
                                                     </div>
 
                                                     <div class="col-4">
-                                                        <h4 class="summary-h4-2">$99/mo</h4>
+                                                        <h4 class="summary-h4-2">${{selectedPlan?.planCost || 0}} / Monthly</h4>
                                                     </div>
 
                                                     <div class="col-12">
-                                                        <span class="summary-sub-heading">(Includes 500 tickets & 1 User Login)</span>
+                                                        <span class="summary-sub-heading">(Includes {{selectedPlan?.defaultTickets}} tickets & {{selectedPlan?.defaultUserCount}} User Login)</span>
                                                     </div> 
 
                                                 </div>
@@ -181,7 +129,7 @@
                                                     </div>
 
                                                     <div class="col-4">
-                                                        <h4 class="summary-total-h4-2">$599</h4>
+                                                        <h4 class="summary-total-h4-2">${{selectedPlan?.planCost || 0  }} / Monthly</h4>
                                                         <span class="summary-sub-heading" style="text-align: right;">Initial Payment</span>
                                                     </div>
 
@@ -192,7 +140,7 @@
                                         <tr>
                                             <td colspan="2">
                                                 <div class="get-started-btn">
-                                                   <a  (click)="addRegister()" class="btn btn-primary-bsa-get-started">GET STARTED</a> 
+                                                   <button [disabled]="!selectedPlan?.planCost"   (click)="selectedPlan?.planCost && addRegister()" class="btn btn-primary-bsa-get-started">GET STARTED</button> 
                                                 </div>
                                             </td> 
                                         </tr>

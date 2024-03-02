@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { forkJoin } from 'rxjs';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -8,6 +10,17 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
 
   showImage = false;
+
+  planObj:any;
+  extraMOnthlyobj:any;
+  organizationPlanDetails:any; 
+  selectedPlan: any;
+
+  constructor( private commonService: CommonService){
+
+  }
+
+  
   ngAfterViewInit(): void {
     const ds : any = document.querySelector('body');
     if(ds){
@@ -16,8 +29,65 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    
+    this.getSubscription();
   }
+
+
+  getSubscription(){
+ 
+
+  
+       this.commonService.getAllSubscriptionPlan({SubscriptionPlanID: 0}).subscribe((res) => {
+         this.planObj = res.body.data.map((res:any) => {
+          res.planDesc =  this.addCrossMark(res.planHighlights);
+          res.isselected =  false;
+          return res;
+        });
+
+       })
+  
+   
+  
+  
+      
+ 
+  
+    
+
+  }
+
+  getSelected(res:any,index:number){
+
+    
+    this.planObj[index].isselected =  !this.planObj[index].isselected;
+    
+    this.planObj.map((obj:any, i:number) => {
+      obj.isselected = i === index;
+      return obj
+    });
+    console.log(this.planObj);
+
+   this.selectedPlan = res;
+    
+   
+
+  }
+
+  addCrossMark(descp:any) {
+    const obj = descp?.split('||');
+
+    const resp = obj.map((res:any) =>{
+      const crossReplace = res.replace('(X)','');
+      let obj =   {
+        isCross : res.includes('(X)') ?  true : false,
+        planDesc : crossReplace,
+       }
+       return obj
+    })
+    return resp;
+
+   
+   }
 
   ngOnDestroy(): void {
 

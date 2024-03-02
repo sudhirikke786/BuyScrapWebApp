@@ -102,12 +102,8 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
      }
       this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
      
-     
-
       // Increment the focus index, resetting to 0 if it exceeds the number of inputs
       this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
-    
-  
   }
 
   changeItem() {

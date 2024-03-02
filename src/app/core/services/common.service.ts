@@ -226,6 +226,8 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Materialss/GetSubMaterials', 'GET', paramObj);
   } 
 
+
+
   getAllSubMaterials(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterials', 'GET', paramObj);
   }  
@@ -437,5 +439,21 @@ export class CommonService {
   getFileData(url: string) {
     return this.http.get(url, { responseType: 'arraybuffer' });
   }
+
+
+  getAllSubscriptionPlan(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Master/GetAllSubscriptionPlan', 'GET', paramObj);
+  }
+
+  getAllExtraTicketPlans(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Master/GetAllExtraTicketPlans', 'GET', paramObj);
+  }
+
+  getAllOrganisationPlanDetails(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Master/GetAllOrganisationPlanDetails', 'GET', paramObj);
+  }
+
+  //{{BaseURL}}/Master/GetAllOrganisationPlanDetails?OrgName=ProdTest
+    
     
 }
