@@ -43,7 +43,24 @@
                 <div class="card custom-height">
                     <div class="card-body">
 
-                        <div class="row">
+
+                        <div  class="row mt-20" *ngIf="showLoder">
+                                
+                            <div class="col-sm-6">
+                                <app-page-loader type="packageloader"></app-page-loader>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <app-page-loader type="packageloader"></app-page-loader>
+                            </div>
+                          
+                        
+                            
+                        </div>
+
+
+
+                        <div class="row" *ngIf="!showLoder">
 
                             <ng-container *ngFor="let item of planObj;let i = index">
 
@@ -101,7 +118,9 @@
 
                         </div>
 
-                        <div class="row mt-20">
+                     
+
+                        <div class="row mt-20" *ngIf="!showLoder">
 
                             <div class="col-sm-6">
                                 <div class="pricing-box">
@@ -265,7 +284,7 @@
 
 
 
-                        <div class="row mt-30">
+                        <div class="row mt-30" *ngIf="!showLoder">
 
                             <div class="col-sm-12">
                                 <h4 class="pricing-plan-name pricing-plan-name-summary">Summary

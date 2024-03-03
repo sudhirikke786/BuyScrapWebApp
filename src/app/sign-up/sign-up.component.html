@@ -32,7 +32,12 @@
                                </div> 
                             </div>
 
-                            <div class="row mt-20">
+
+
+
+
+
+                            <div class="row mt-20" *ngIf="!showLoder">
                                 <ng-container *ngFor="let item of planObj;let i=index">
                         
                                     <div class="col-sm-6">
@@ -80,6 +85,23 @@
                                 </ng-container>
                                        
                             </div>
+
+
+                                
+                            <div  class="row mt-20" *ngIf="showLoder">
+                                
+                                <div class="col-sm-6">
+                                    <app-page-loader type="packageloader"></app-page-loader>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <app-page-loader type="packageloader"></app-page-loader>
+                                </div>
+                              
+                            
+                                
+                            </div>
+  
 
                             <div class="row mt-30">
 

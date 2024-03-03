@@ -20,7 +20,7 @@ export class SubscriptionComponent implements OnInit {
 
   orgName: any;
   locId: any;
-
+  showLoder =  false;
 
   userPlan = { name: 'Add User Login', price: 30, quantity: 0, selected: false };
   locationPlan = { name: 'Add Locations', price: 15, quantity: 0, selected: false };
@@ -47,13 +47,14 @@ export class SubscriptionComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.getSubscription();
+    this.getAllExtraTicketPlans();
   }
 
 
 
   getSubscription(){
  
-
+    this.showLoder =  true;
     const apiObj = [this.commonService.getAllSubscriptionPlan({
       SubscriptionPlanID: 0
     }), this.commonService.getAllExtraTicketPlans({
@@ -62,9 +63,9 @@ export class SubscriptionComponent implements OnInit {
       OrgName:this.orgName
     })]
 
-
+    
     forkJoin(apiObj).subscribe((res) =>{
-
+     
     
 
       this.organizationPlanDetails = res[2].body.data;
@@ -89,7 +90,7 @@ export class SubscriptionComponent implements OnInit {
 
       console.log("plan Object",this.planSelectedObj)
 
-     
+      this.showLoder =  false;
 
     });
     
@@ -140,11 +141,14 @@ export class SubscriptionComponent implements OnInit {
   getAllExtraTicketPlans(){
 
     const req = {
-      ExtraTicketPlanID:0
+      SubscriptionPlanID: 0
     }
 
+    this.showLoder = true;
 
-    this.commonService.getAllExtraTicketPlans(req).subscribe((res) => {
+    this.commonService.getAllSubscriptionPlan(req).subscribe((res:any) => {
+
+      this.showLoder = false;
       this.extraMOnthlyobj = res.body.data
 
     })

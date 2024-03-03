@@ -7,6 +7,7 @@ import { PrimengModule } from '../module/shared/primeng/primeng.module';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ViewCartComponent } from './view-cart/view-cart.component';
+import { CommonsharedModule } from '../module/shared/commonshared/commonshared.module';
 
 export const routes: Routes = [{
   path: 'subscription',
@@ -33,6 +34,7 @@ export const routes: Routes = [{
   imports: [
     CommonModule,
     PrimengModule,
+    CommonsharedModule,
     FormsModule,
     RouterModule.forChild(routes)
   ]

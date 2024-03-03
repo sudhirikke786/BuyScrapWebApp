@@ -152,6 +152,60 @@
 
 
     </div>
+    <div *ngSwitchCase="'packageloader'">
+
+        <div class="pricing-box pricing-box-1">
+            <h4 class="pricing-plan-name"><p-skeleton height="2rem"></p-skeleton></h4> 
+
+        
+                <div class="pricing-inner-content"> 
+        
+                    <span> <p-skeleton height="2rem"></p-skeleton></span>
+
+                    <hr>
+
+                    <h4 class="pricing-plan-price"> <p-skeleton width="10rem" height="2rem"></p-skeleton></h4>
+
+                    <div class="d-flex justify-content-center text-center mb-2"> <p-skeleton width="3rem" height="1rem"></p-skeleton></div>
+
+                    <table  style="width:100%">
+                        <tr *ngFor="let obj of products">
+                            <td style="width:5%">
+                                <p-skeleton width="4rem" height="2rem"></p-skeleton>
+                   
+                            </td>
+                            <td style="width:95%"><p-skeleton width="100%" height="2rem"></p-skeleton></td>
+                        </tr>
+
+                       
+                    </table>
+                <div class="d-flex justify-content-center">
+                    <p-skeleton width="6rem" height="2rem"></p-skeleton>
+                    
+                </div>
+                  
+
+                    <!-- <button class="btn btn-primary-bsa-orange mt-15"   (click)="removeCartItem(buyScrappLite);buyScrappLite.selected=false">SELECTED</button> -->
+
+
+                   
+                       
+                    
+
+                    <!-- <p class="info-p">Free 30 day trial</p> -->
+                </div>
+           
+
+        </div>
+
+
+   
+
+        
+
+
+    </div>
+   
 
     <div *ngSwitchDefault>
 
