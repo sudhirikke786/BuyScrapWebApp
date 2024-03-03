@@ -7,7 +7,9 @@ import { Observable, of, EMPTY, throwError, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { StorageService } from './storage.service';
+import { CheckoutSession } from '../interfaces/checkout-session.model';
 
+declare const Stripe: any;
 
 @Injectable({
   providedIn: 'root'
@@ -435,6 +437,49 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Regrades/InsertUpdateRegradedMaterials', 'POST', requestObj, postParams);
   }
 
+  paySubscriptionFee(requestObj: any): Observable<any> {
+    requestObj.callbackUrl = this.buildCallbackUrl();
+
+    // return this.http.post<any>(environment.baseUrl + '/Payment/CreateCheckoutSession', requestObj, { responseType: 'text' as 'json' })
+
+    
+  //   return this.http.post<any>(productionURL, requestObj, {
+  //     headers: httpHeader,
+  //     observe: 'response',
+  //     params: postParams
+  // });
+
+    return this.callAPI(environment.baseUrl + '/Payment/CreateCheckoutSession', 'POST', requestObj);
+  }
+
+  redirectToCheckout(session: CheckoutSession) {
+
+      const stripe = Stripe(session.stripePublicKey);
+
+      stripe.redirectToCheckout({
+          sessionId: session.stripeCheckoutSessionId
+      });
+  }
+
+  //{{BaseURL}}/Master/GetAllOrganisationPlanDetails?OrgName=ProdTest
+    
+  buildCallbackUrl() {
+
+    const protocol = window.location.protocol,
+        hostName = window.location.hostname,
+        port = window.location.port;
+
+    let callBackUrl = `${protocol}//${hostName}`;
+
+    if (port) {
+        callBackUrl += ":" + port;
+    }
+
+    callBackUrl+= "/stripe-checkout";
+
+    return callBackUrl;
+  }
+
 
   getFileData(url: string) {
     return this.http.get(url, { responseType: 'arraybuffer' });
@@ -452,8 +497,5 @@ export class CommonService {
   getAllOrganisationPlanDetails(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Master/GetAllOrganisationPlanDetails', 'GET', paramObj);
   }
-
-  //{{BaseURL}}/Master/GetAllOrganisationPlanDetails?OrgName=ProdTest
-    
     
 }
