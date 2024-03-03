@@ -149,7 +149,7 @@ export class SubscriptionComponent implements OnInit {
     this.commonService.getAllSubscriptionPlan(req).subscribe((res:any) => {
 
       this.showLoder = false;
-      this.extraMOnthlyobj = res.body.data
+      
 
     })
 
