@@ -460,8 +460,6 @@ export class CommonService {
           sessionId: session.stripeCheckoutSessionId
       });
   }
-
-  //{{BaseURL}}/Master/GetAllOrganisationPlanDetails?OrgName=ProdTest
     
   buildCallbackUrl() {
 

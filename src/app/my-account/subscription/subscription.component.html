@@ -175,7 +175,7 @@
                                                             <div class="number">
                                                                 <span class="minus" (click)="subUserQuantity()">-</span>
                                                                 <input type="text"
-                                                                    [value]="organizationPlanDetails[0]?.extraUserCount" />
+                                                                    [value]="organizationPlanDetails?.extraUserCount" />
                                                                 <span class="plus" (click)="addUserQuantity()">+</span>
                                                             </div>
                                                         </div>
@@ -184,14 +184,14 @@
                                                     <div class="col-sm-6">
                                                         <div class="addon-price-calculation">
                                                             <label
-                                                                *ngIf="organizationPlanDetails[0].extraUserCount > 0">
+                                                                *ngIf="organizationPlanDetails.extraUserCount > 0">
                                                                 Total - <span
-                                                                    class="total-amount">${{organizationPlanDetails[0].defaultMonthPrice
-                                                                    * organizationPlanDetails[0].extraUserCount
+                                                                    class="total-amount">${{organizationPlanDetails.defaultMonthPrice
+                                                                    * organizationPlanDetails.extraUserCount
                                                                     }}</span>
                                                             </label>
                                                             <label
-                                                                *ngIf="organizationPlanDetails[0].extraUserCount == 0">
+                                                                *ngIf="organizationPlanDetails.extraUserCount == 0">
                                                                 Total - <span class="total-amount">$0</span>
                                                             </label>
                                                         </div>
@@ -229,7 +229,7 @@
                                                                 <span class="minus"
                                                                     (click)="sublocationQuantity()">-</span>
                                                                 <input type="text"
-                                                                    [value]="organizationPlanDetails[0]?.extraUserLocation" />
+                                                                    [value]="organizationPlanDetails?.extraUserLocation" />
                                                                 <span class="plus"
                                                                     (click)="addlocationQuantity()">+</span>
                                                             </div>
@@ -239,14 +239,14 @@
                                                     <div class="col-sm-6">
                                                         <div class="addon-price-calculation">
                                                             <label
-                                                                *ngIf="organizationPlanDetails[0]?.extraUserLocation > 0">
+                                                                *ngIf="organizationPlanDetails?.extraUserLocation > 0">
                                                                 Total - <span
-                                                                    class="total-amount">${{organizationPlanDetails[0]?.defaultMonthPrice
-                                                                    * organizationPlanDetails[0]?.extraUserLocation
+                                                                    class="total-amount">${{organizationPlanDetails?.defaultMonthPrice
+                                                                    * organizationPlanDetails?.extraUserLocation
                                                                     }} / Monthly </span>
                                                             </label>
                                                             <label
-                                                                *ngIf="organizationPlanDetails[0]?.extraUserLocation == 0">
+                                                                *ngIf="organizationPlanDetails?.extraUserLocation == 0">
                                                                 Total - <span class="total-amount">$0</span>
                                                             </label>
                                                         </div>
@@ -330,19 +330,19 @@
                                             </td>
                                         </tr>
 
-                                        <tr *ngIf="organizationPlanDetails[0]?.extraUserCount > 0">
+                                        <tr *ngIf="organizationPlanDetails?.extraUserCount > 0">
 
                                             <td >
                                                 <div class="row">
                                                     <div class="col-8">
                                                         <h4 class="summary-h4">Add User Logins </h4>
-                                                        <span class="summary-sub-heading"> (Adds User Logins {{organizationPlanDetails[0].extraUserCount}})</span>
+                                                        <span class="summary-sub-heading"> (Adds User Logins {{organizationPlanDetails.extraUserCount}})</span>
 
                                                     </div>
 
                                                     <div class="col-4">
-                                                        <h4 class="summary-h4-2">${{organizationPlanDetails[0].defaultMonthPrice
-                                                            * organizationPlanDetails[0].extraUserCount
+                                                        <h4 class="summary-h4-2">${{organizationPlanDetails.defaultMonthPrice
+                                                            * organizationPlanDetails.extraUserCount
                                                             }} / Monthly </h4>
 
                                                     </div>
@@ -353,19 +353,19 @@
                                             </td>
                                         </tr>
 
-                                        <tr *ngIf="organizationPlanDetails[0]?.extraUserLocation > 0">
+                                        <tr *ngIf="organizationPlanDetails?.extraUserLocation > 0">
 
                                             <td >
                                                 <div class="row">
                                                     <div class="col-8">
                                                         <h4 class="summary-h4">Add Locations</h4>
-                                                        <span class="summary-sub-heading">(Adds Locations {{organizationPlanDetails[0].extraUserLocation}} ) </span>
+                                                        <span class="summary-sub-heading">(Adds Locations {{organizationPlanDetails.extraUserLocation}} ) </span>
 
                                                     </div>
 
                                                     <div class="col-4">
-                                                        <h4 class="summary-h4-2">${{organizationPlanDetails[0]?.defaultMonthPrice
-                                                            * organizationPlanDetails[0]?.extraUserLocation
+                                                        <h4 class="summary-h4-2">${{organizationPlanDetails?.defaultMonthPrice
+                                                            * organizationPlanDetails?.extraUserLocation
                                                             }} /
                                                             Monthly</h4>
 
@@ -386,9 +386,9 @@
                                                     </div>
 
                                                     <div class="col-4">
-                                                        <h4 class="summary-total-h4-2">${{(organizationPlanDetails[0]?.defaultMonthPrice
-                                                            * organizationPlanDetails[0]?.extraUserLocation) + (organizationPlanDetails[0].defaultMonthPrice
-                                                            * organizationPlanDetails[0].extraUserCount) +  filtermonthlySelectd?.extraAmount +  planSelectedObj?.planCost
+                                                        <h4 class="summary-total-h4-2">${{(organizationPlanDetails?.defaultMonthPrice
+                                                            * organizationPlanDetails?.extraUserLocation) + (organizationPlanDetails.defaultMonthPrice
+                                                            * organizationPlanDetails.extraUserCount) +  filtermonthlySelectd?.extraAmount +  planSelectedObj?.planCost
                                                             }} / Monthly</h4>
                                                         <span class="summary-sub-heading" style="text-align: right;">Initial Payment</span>
                                                     </div>
