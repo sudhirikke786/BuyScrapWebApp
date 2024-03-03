@@ -2256,8 +2256,36 @@ h4 {
     width: 300px !important;
   } */
 
+/* ============== Plus Minus Counter ==================*/
+.minus,
+.plus {
+  width: 80px;
+  height: 80px;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
 
+.plus-minus-box input {
+  height: 80px;
+  width: 100px;
+  text-align: center;
+  
+}
+label {
+  font-weight: 500;
+  font-size: 2.5rem;
+}
 
+.summary-table tr td{
+  padding: 30px;
+}
+
+  .btn-primary-bsa-get-started{
+    min-height: 120px;
+    height: auto;
+    min-width: 200px;
+    width: auto;
+  }
 }
 
 
@@ -2512,6 +2540,24 @@ h4 {
   width: 50px !important;;
   height: 50px !important;;
  }
+
+ label {
+  font-weight: 500;
+  font-size: 2.0rem;
+}
+
+.summary-table tr td{
+  padding: 30px;
+}
+
+
+.btn-primary-bsa-get-started{
+  min-height: 120px;
+  height: auto;
+  min-width: 200px;
+  width: auto;
+}
+
 }
 
 
@@ -2759,6 +2805,36 @@ h4 {
   width: 50px !important;;
   height: 50px !important;;
  }
+
+ /* ============== Plus Minus Counter ==================*/
+.minus,
+.plus {
+  width: 80px;
+  height: 80px;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.plus-minus-box input {
+  height: 80px;
+  width: 100px;
+  text-align: center;
+  
+}
+
+label {
+  font-weight: 500;
+  font-size: 2.5rem;
+}
+.summary-table tr td{
+  padding: 30px;
+}
+.btn-primary-bsa-get-started{
+  min-height: 120px;
+  height: auto;
+  min-width: 200px;
+  width: auto;
+}
 
 }
 
@@ -3009,5 +3085,36 @@ h4 {
  .p-datatable .p-datatable-tbody > tr > td{
   padding: 2rem 2rem !important;
  }
+
+ /* ============== Plus Minus Counter ==================*/
+.minus,
+.plus {
+  width: 80px;
+  height: 80px;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.plus-minus-box input {
+  height: 80px;
+  width: 100px;
+  text-align: center;
+  
+}
+
+label {
+  font-weight: 500;
+  font-size: 3.1rem;
+}
+.summary-table tr td{
+  padding: 30px;
+}
+
+.btn-primary-bsa-get-started{
+  min-height: 120px;
+  height: auto;
+  min-width: 200px;
+  width: auto;
+}
 
 }
