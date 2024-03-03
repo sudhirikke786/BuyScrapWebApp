@@ -2,7 +2,7 @@ import { Component, EventEmitter, AfterViewInit, Output, OnDestroy } from '@angu
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 
-declare var Tesseract:any 
+// declare var Tesseract:any 
 
 @Component({
   selector: 'app-camera',
@@ -102,11 +102,11 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
     const url = URL.createObjectURL(blob);
 
     try {
-      const result =  await Tesseract.recognize(url);
-      console.log(result); // Log the result object
-      const dta = result?.text;
-      const textArray = dta.split('\n'); // Split by line breaks, adjust the delimiter based on your text format
-       return textArray
+    //  // const result =  await Tesseract.recognize(url);
+    //   console.log(result); // Log the result object
+    //   const dta = result?.text;
+    //   const textArray = dta.split('\n'); // Split by line breaks, adjust the delimiter based on your text format
+    //    return textArray
     
     } catch (error) {
       console.error('Error during OCR:', error);
@@ -115,15 +115,15 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
 
 
 
-  async handleImage(webcamImage: WebcamImage) {
+  handleImage(webcamImage: WebcamImage) {
     this.webcamImage = webcamImage;
     this.imageUrl = webcamImage.imageAsDataUrl;
    
 
 
-    const _textData = await this.convertIntoOCR(this.imageUrl);
+    //const _textData = await this.convertIntoOCR(this.imageUrl);
 
-    console.log(_textData);
+    //console.log(_textData);
 
     this.getPicture.emit(this.imageUrl);
 
@@ -160,12 +160,12 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
     let reader = new FileReader();
     if (event.target.files && event.target.files[0]) {
       reader.readAsDataURL(file);
-      reader.onload = async () => {
+      reader.onload =  () => {
         this.imageUrl = reader.result;
 
-        const _textData = await this.convertIntoOCR(this.imageUrl);
+       // const _textData = await this.convertIntoOCR(this.imageUrl);
 
-        console.log(_textData);
+      //  console.log(_textData);
 
         this.getPicture.emit(this.imageUrl);
 

@@ -9,3 +9,19 @@
     
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#293E93", endColorstr="#DDE2F8", GradientType=1 );
 }
+
+
+
+
+.thank-you-page {
+
+
+    .fz-icon-error{
+        font-size: 72px;
+    }
+}
+
+
+@media only screen and (max-width:3500px) and (min-width: 2570px) {
+    
+}
