@@ -99,13 +99,33 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
 
   }
 
-
   addRegister(){
     this.showImage = true;
   }
 
   cancelImage(){
     this.showImage = false;
+  }
+
+  makePayment(){    
+    console.log(this.selectedPlan);
+    alert(JSON.stringify(this.selectedPlan));
+
+    // const reqObj = {
+    //   amount: 1
+    // };
+
+    // this.commonService.paySubscriptionFee(reqObj).subscribe(session =>{
+    //   console.log("session details :: ");
+    //   console.log(session);
+    //   this.commonService.redirectToCheckout(session.body);
+    //   // this.htmlToAdd = session;
+
+    //   // window.location.href = session;
+    //   // return session;
+    // },(error: any) =>{
+    //   console.log(error);
+    // })
   }
 
 

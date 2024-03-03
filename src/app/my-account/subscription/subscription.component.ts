@@ -68,18 +68,18 @@ export class SubscriptionComponent implements OnInit {
     
 
       this.organizationPlanDetails = res[2].body.data;
-      this.organizationPlanDetails[0].defaultMonthPrice = 15;
+      this.organizationPlanDetails.defaultMonthPrice = 15;
       console.log(this.organizationPlanDetails);
 
       this.planObj =  res[0].body.data.map((res:any) => {
         res.planDesc =  this.addCrossMark(res.planHighlights);
       
-        res.isselected = this.organizationPlanDetails.find((item:any) => item.subscriptionPlanId == res.subscriptionPlanId) ? true : false;
+        res.isselected = (this.organizationPlanDetails.subscriptionPlanId == res.subscriptionPlanId) ? true : false;
         return res;
       });
 
       this.extraMOnthlyobj =   res[1].body.data.map((res:any) => {
-        res.isSelected = this.organizationPlanDetails.find((item:any) => item.extraTicketPlanId == res.extraTicketPlanId) ? true : false;
+        res.isSelected = (this.organizationPlanDetails.extraTicketPlanId == res.extraTicketPlanId) ? true : false;
         res.totalTickets = res.extraTicket > 0 ?  (res.extraTicket / 25).toFixed(0) : 0;
         return res
       });
@@ -194,8 +194,8 @@ export class SubscriptionComponent implements OnInit {
       userId : this.userInfo?.currentUserInfo().userId,
       subscriptionPlanId : this.planObj.filter((item:any) => item.isselected)[0].subscriptionPlanId ,
       extraTicketPlanId : this.extraMOnthlyobj.filter((item:any) => item.isSelected)[0].extraTicketPlanId,
-      extraUserCount : this.organizationPlanDetails[0].extraUserCount ,
-      extraUserLocation : this.organizationPlanDetails[0].extraUserLocation ,
+      extraUserCount : this.organizationPlanDetails.extraUserCount ,
+      extraUserLocation : this.organizationPlanDetails.extraUserLocation ,
       totalSubscriptionCost : 149 ,
       CreatedBy : 7 ,
       UpdatedBy : 7 ,
@@ -250,22 +250,22 @@ export class SubscriptionComponent implements OnInit {
 
 
   addUserQuantity() {
-    this.updateUserPlanQuantity(this.organizationPlanDetails[0].extraUserCount + 1);
+    this.updateUserPlanQuantity(this.organizationPlanDetails.extraUserCount + 1);
     //this.addUser(this.userPlan);
   }
 
   subUserQuantity() {
-    this.updateUserPlanQuantity(this.organizationPlanDetails[0].extraUserCount - 1);
+    this.updateUserPlanQuantity(this.organizationPlanDetails.extraUserCount - 1);
  //   this.addUser(this.userPlan);
   }
 
   updateUserPlanQuantity(quantity: number) {
     if (quantity > 0) {
-      this.organizationPlanDetails[0].extraUserCount = quantity;
-      this.organizationPlanDetails[0].defaultMonthPrice = 15;
+      this.organizationPlanDetails.extraUserCount = quantity;
+      this.organizationPlanDetails.defaultMonthPrice = 15;
     } else {
-      this.organizationPlanDetails[0].extraUserCount = 0;
-      this.organizationPlanDetails[0].defaultMonthPrice = 0;
+      this.organizationPlanDetails.extraUserCount = 0;
+      this.organizationPlanDetails.defaultMonthPrice = 0;
     }
   }
 
@@ -273,22 +273,22 @@ export class SubscriptionComponent implements OnInit {
 
 
   addlocationQuantity() {
-    this.updatelocationPlanQuantity(this.organizationPlanDetails[0].extraUserLocation + 1);
+    this.updatelocationPlanQuantity(this.organizationPlanDetails.extraUserLocation + 1);
    // this.addItemLocation(this.locationPlan);
   }
 
   sublocationQuantity() {
-    this.updatelocationPlanQuantity(this.organizationPlanDetails[0].extraUserLocation - 1);
+    this.updatelocationPlanQuantity(this.organizationPlanDetails.extraUserLocation - 1);
  //   this.addItemLocation(this.locationPlan);
   }
 
   updatelocationPlanQuantity(quantity: number) {
     if (quantity > 0) {
-      this.organizationPlanDetails[0].extraUserLocation = quantity;
-      this.organizationPlanDetails[0].defaultMonthPrice =  15;
+      this.organizationPlanDetails.extraUserLocation = quantity;
+      this.organizationPlanDetails.defaultMonthPrice =  15;
     } else {
-      this.organizationPlanDetails[0].extraUserLocation = 0;
-      this.organizationPlanDetails[0].defaultMonthPrice = 0;
+      this.organizationPlanDetails.extraUserLocation = 0;
+      this.organizationPlanDetails.defaultMonthPrice = 0;
     }
   }
 

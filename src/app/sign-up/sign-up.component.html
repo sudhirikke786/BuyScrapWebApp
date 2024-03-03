@@ -523,12 +523,12 @@
 
                     <div class="row">
                         <div class="col-sm-6">
-                            <a class="btn btn-primary-popup-1">I'M ALL SET</a>
+                            <button [disabled]="!selectedPlan?.planCost"   (click)="selectedPlan?.planCost && makePayment()" class="btn btn-primary-popup-1">I'M ALL SET</button>
                         </div>
 
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <a class="btn btn-primary-popup-2">GET 7 DAY FREE TRIAL</a>
-                        </div>
+                        </div> -->
                     </div>                                          
 
                     
