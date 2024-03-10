@@ -6518,14 +6518,14 @@ span.flatpickr-weekday {
 
 
 
-@media only screen and (max-width:5500px) and (min-width: 1920px)  {
+@media only screen and (max-width:2700px) and (min-width: 1920px)  {
 
 
   
   :root {
    
     --ct-logo-lg-height:70px;
-    --ct-logo-sm-height: 40px;
+    --ct-logo-sm-height: 25px;
     --ct-leftbar-width: 270px;
     --ct-leftbar-width-md: 300px;
     --ct-leftbar-width-sm: 100px;
@@ -6541,16 +6541,16 @@ span.flatpickr-weekday {
     --ct-menu-link-padding-x: 20px;
     --ct-menu-link-padding-y: 20px;
     --ct-menu-link-item-gap: 0px;
-    --ct-menu-item-icon-size: 1.5rem;
-    --ct-menu-item-font-size: 2.5rem;
+    --ct-menu-item-icon-size: 25px;
+    --ct-menu-item-font-size: 25px;
     --ct-footer-height: 100px;
     --ct-boxed-layout-width: 1300px;
     
   }
 
   .dash-icons{
-    width: 40px;
-    height: 40px;
+    width:22px;
+    height: 22px;
   }
 
   html[data-sidenav-size="condensed"]:not([data-layout="horizontal"])
@@ -6563,6 +6563,46 @@ span.flatpickr-weekday {
   width: calc(var(--ct-menu-item-icon-size) * 2.25);
   height: calc(var(--ct-menu-item-icon-size) * 2.25);
 }
+}
+
+
+
+@media only screen and (max-width:7000px) and (min-width: 3000px)  {
+
+  .dash-icons{
+    width:30px;
+    height: 30px;
+  }
+
+
+  :root {
+   
+    --ct-logo-lg-height:100px;
+    --ct-logo-sm-height: 25px;
+    --ct-leftbar-width: 450px;
+    --ct-leftbar-width-md: 400px;
+    --ct-leftbar-width-sm: 100px;
+    --ct-leftbar-condensed-height: 1600px;
+    --ct-twocolumn-sidebar-width: 300px;
+    --ct-twocolumn-sidebar-iconview-width: 100px;
+    --ct-twocolumn-sidebar-iconview-size: 50px;
+    --ct-topbar-height:80px;
+    --ct-horizontal-menu-height: 100px;
+    --ct-menu-transition: all 0.1s ease-in-out;
+    --ct-menu-item-padding-x: 10px;
+    --ct-menu-item-gap: 0px;
+    --ct-menu-link-padding-x: 20px;
+    --ct-menu-link-padding-y: 20px;
+    --ct-menu-link-item-gap: 0px;
+    --ct-menu-item-icon-size: 25px;
+    --ct-menu-item-font-size: 25px;
+    --ct-footer-height: 100px;
+    --ct-boxed-layout-width: 1300px;
+    
+  }
+
+  
+
 }
 
 

@@ -2139,13 +2139,11 @@ h4 {
 
 @media screen and (min-width: 1920px) {
 
-  /* body {
-    font-size:30px !important
-  } */
+  
 
   .payment-ticket{
     bottom: 50px;
-  }
+  } 
 
   .dash-icons{
     height: auto;
@@ -2156,9 +2154,25 @@ h4 {
 
 
 @media only screen and (max-width:2560px) and (min-width: 1920px) {
-  /* body {
-    font-size:30px !important
-  } */
+    body {
+      font-size:16px !important
+    }
+    a{
+      font-size: 16px !important;
+    }
+
+  h1, h2, h3 {
+    font-size:16px !important
+  }
+
+   table tr td{
+    font-size:16px !important
+   }
+
+  .btn{
+    font-size:16px !important;
+    line-height: 20px !important;
+  }
 
   .payment-ticket{
     bottom: 50px;
@@ -2169,10 +2183,89 @@ h4 {
 
 @media only screen and (max-width:3840px) and (min-width:2560px) {
 
+  body {
+    font-size:24px !important
+  }
+  a{
+    font-size: 24px !important;
+  }
+
+h1, h2, h3 {
+  font-size:24px !important
+}
+
+ table tr td{
+  font-size:24px !important
+ }
+
+.btn{
+  font-size:24px !important;
+  line-height: 24px !important;
+}
+
+.payment-ticket{
+  bottom: 50px;
+}
+
+.menu .menu-item .menu-link>.menu-text {
+  font-size: 24px !important;
+}
+
+
 }
 
 
 @media only screen and (max-width:7000px) and (min-width:3840px) {
+
+
+  body {
+    font-size:30px !important;
+  }
+  a{
+    font-size:30px !important;
+  }
+
+h1, h2, h3,h4 ,h5,h6 {
+  font-size:30px !important;
+}
+
+ table  tr td{
+  font-size:30px !important;
+ }
+ th{
+  font-size:30px !important;
+ }
+
+.btn{
+  font-size:30px !important;
+  line-height: 34px !important;
+}
+
+.payment-ticket{
+  bottom: 50px;
+}
+
+b, strong{
+  font-size:30px !important;
+}
+
+  .menu .menu-item .menu-link>.menu-text{
+    font-size:30px !important;
+  }
+
+
+ ul li{
+  font-size:30px !important;
+ }
+ /*Header top css*/
+
+ .pro-user-name{
+  font-size:30px !important;
+ }  
+
+ .balance-details-ul li{
+   padding: 30px ;
+ }
 
 }
 
