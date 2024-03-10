@@ -30,6 +30,7 @@ export class SettingsDashboardComponent implements OnInit {
     this.currentRole = this.authService.userCurrentRole();
 
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.cameravisible = false;
   }
 
   hidePSettingsmodel(){
@@ -65,7 +66,7 @@ export class SettingsDashboardComponent implements OnInit {
   }
 
   scrapModel(){
-      this.cameravisible = true;
+      this.cameravisible =  true;
   }
 
   hidescrapModel(){
