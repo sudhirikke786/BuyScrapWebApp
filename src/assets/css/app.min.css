@@ -6524,8 +6524,8 @@ span.flatpickr-weekday {
   
   :root {
    
-    --ct-logo-lg-height: 100px;
-    --ct-logo-sm-height: 22px;
+    --ct-logo-lg-height:70px;
+    --ct-logo-sm-height: 40px;
     --ct-leftbar-width: 270px;
     --ct-leftbar-width-md: 300px;
     --ct-leftbar-width-sm: 100px;
@@ -6533,7 +6533,7 @@ span.flatpickr-weekday {
     --ct-twocolumn-sidebar-width: 220px;
     --ct-twocolumn-sidebar-iconview-width: 100px;
     --ct-twocolumn-sidebar-iconview-size: 50px;
-    --ct-topbar-height:100px;
+    --ct-topbar-height:80px;
     --ct-horizontal-menu-height: 100px;
     --ct-menu-transition: all 0.1s ease-in-out;
     --ct-menu-item-padding-x: 10px;
