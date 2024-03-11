@@ -410,7 +410,7 @@
             <div id="camera-div" class="camera-div">
                 <div style="border: 1px solid black;" *ngIf="editItemVisible">
                     <div class="col-sm-12" style="border: 1px solid black;  display:inline-block;">
-                        <app-camera (getPicture)="handleImage($event)"></app-camera>
+                        <app-camera (getPicture)="handleImage($event)" [defaultCamera]="dCamera"></app-camera>
                     </div>
                 </div>
                 <br>

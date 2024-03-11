@@ -1,4 +1,4 @@
-import { Component, EventEmitter, AfterViewInit, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, AfterViewInit, Output, OnDestroy, Input } from '@angular/core';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 
@@ -14,6 +14,8 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
   showWebcam = false;
   isCameraExist = true;
   allMediaDevices: any;
+
+  @Input() defaultCamera:any;
   
   webcamImage: WebcamImage | undefined;
   selectedCamera: any = '';
@@ -49,10 +51,10 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
       this.allMediaDevices = devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput");
       console.log('mediaDevices' + JSON.stringify(this.allMediaDevices));
       this.isCameraExist = this.allMediaDevices && this.allMediaDevices.length > 0;
-        const deviceId =  localStorage.getItem('deviceId')
-      if(localStorage.getItem('deviceId')){
+      const deviceId =  localStorage.getItem('metarialCamera');
+      if(localStorage.getItem('metarialCamera')){
         setTimeout(() =>{
-           this.selectedCamera =  deviceId; 
+           this.selectedCamera =  this.defaultCamera; 
            this.changeWebCame(this.selectedCamera);
         },100)
        

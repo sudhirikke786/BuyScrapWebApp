@@ -13,7 +13,7 @@ export class CameraSettingsComponent implements OnInit, AfterViewInit {
 
   isCameraExist = true;
   allMediaDevices: any;
-  selectedCamera:any;
+  selectedMaterialScrap:any;
   selectedDefault:any;
   
   webcamImage: WebcamImage | undefined;
@@ -53,13 +53,21 @@ export class CameraSettingsComponent implements OnInit, AfterViewInit {
   async addCameraDevices(): Promise<void> {
     this.allMediaDevices = await this.getCameraDevices();
 
-    const deviceId = localStorage.getItem('deviceId');
+    const mCamera = localStorage.getItem('metarialCamera');
 
     if(localStorage.getItem('deviceId')){
   
-        this.selectedDefault =  deviceId;
+        this.selectedMaterialScrap =  mCamera;
     
      }
+
+     const dCamera = localStorage.getItem('defualtCamera');
+
+     if(localStorage.getItem('deviceId')){
+   
+         this.selectedDefault =  dCamera;
+     
+      }
   }
 
 
@@ -87,13 +95,14 @@ export class CameraSettingsComponent implements OnInit, AfterViewInit {
   changeWebCame(event:any) {    
     console.log(event);
 
-   // localStorage.setItem('defualtCemera' , event.target.value);
+    localStorage.setItem('metarialCamera' , event.target.value);
+  
   }
 
 
   changeDWebCame(event:any) {    
     if(event.target.value){
-      localStorage.setItem('deviceId', event.target.value);
+      localStorage.setItem('defualtCamera', event.target.value);
     }
  
   }

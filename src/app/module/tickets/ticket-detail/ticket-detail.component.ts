@@ -90,7 +90,7 @@ export class TicketDetailComponent implements OnInit {
   currentPage = 1;
   pageSize = 10;
   isCODRequired = false;
-
+  dCamera:any; 
 
   ticketsTransactions: any;
   defaultSelectedTicketsTypes = [
@@ -158,6 +158,13 @@ export class TicketDetailComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+
+
+    const mCamera =  localStorage.getItem('defualtCamera') ;
+    if(mCamera) {
+      this.dCamera = mCamera;
+    }
+
 
     const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
     if (_dataObj) {

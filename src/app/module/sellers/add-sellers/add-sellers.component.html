@@ -476,7 +476,7 @@
 
                 <div style="border: 1px solid black;">
                     <div class="col-sm-12" style="border: 1px solid black;  display:inline-block;">
-                        <app-camera  *ngIf="captureType==='Capture Image'"  (getPicture)="handleImage($event)"></app-camera>
+                        <app-camera  *ngIf="captureType==='Capture Image'" [defaultCamera]="meTarialCamera"  (getPicture)="handleImage($event)"></app-camera>
                     </div>
                 </div>
 

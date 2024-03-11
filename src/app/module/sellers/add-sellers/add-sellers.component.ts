@@ -43,6 +43,7 @@ export class AddSellersComponent implements OnInit {
   showDownload = false;
   showLoaderReport = false;
   pdfViwerTitle = 'Seller Info';
+  meTarialCamera :any;
 
 
   constructor(private route: ActivatedRoute,
@@ -64,11 +65,21 @@ export class AddSellersComponent implements OnInit {
           this.sellerId = 0;
         }    
       });
+
+
+     
+    
       
     }
 
   ngOnInit() {
     this.createSellerForm();
+
+    const mCamera =  localStorage.getItem('metarialCamera') ;
+    if(mCamera) {
+      this.meTarialCamera = mCamera || null;
+    }
+
   }
 
 
