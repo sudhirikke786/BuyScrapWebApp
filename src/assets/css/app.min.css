@@ -6567,7 +6567,7 @@ span.flatpickr-weekday {
 
 
 
-@media only screen and (max-width:7000px) and (min-width: 3000px)  {
+@media only screen and (max-width:3000px) and (min-width: 2600px)  {
 
   .dash-icons{
     width:30px;
@@ -6596,6 +6596,47 @@ span.flatpickr-weekday {
     --ct-menu-link-item-gap: 0px;
     --ct-menu-item-icon-size: 25px;
     --ct-menu-item-font-size: 25px;
+    --ct-footer-height: 100px;
+    --ct-boxed-layout-width: 1300px;
+    
+  }
+
+  
+
+}
+
+
+
+
+@media only screen and (max-width:7000px) and (min-width: 3100px)  {
+
+  .dash-icons{
+    width:40px;
+    height: 40px;
+  }
+
+
+  :root {
+   
+    --ct-logo-lg-height:100px;
+    --ct-logo-sm-height: 25px;
+    --ct-leftbar-width: 700px;
+    --ct-leftbar-width-md: 400px;
+    --ct-leftbar-width-sm: 150px;
+    --ct-leftbar-condensed-height: 1600px;
+    --ct-twocolumn-sidebar-width: 600px;
+    --ct-twocolumn-sidebar-iconview-width: 100px;
+    --ct-twocolumn-sidebar-iconview-size: 50px;
+    --ct-topbar-height:150px;
+    --ct-horizontal-menu-height: 200px;
+    --ct-menu-transition: all 0.1s ease-in-out;
+    --ct-menu-item-padding-x: 10px;
+    --ct-menu-item-gap: 0px;
+    --ct-menu-link-padding-x: 20px;
+    --ct-menu-link-padding-y: 20px;
+    --ct-menu-link-item-gap: 0px;
+    --ct-menu-item-icon-size: 40x;
+    --ct-menu-item-font-size: 40px;
     --ct-footer-height: 100px;
     --ct-boxed-layout-width: 1300px;
     
