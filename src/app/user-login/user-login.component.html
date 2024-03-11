@@ -2,7 +2,7 @@
     <div class="container" >
         <div *ngIf="!isShow" class="row d-flex justify-content-center align-item-center login-class">
           <div class="d-flex justify-content-center login-inner">
-            <div class="col-lg-6 col-xl-6 col-xxl-8 col-md-8  col-sm-12 login-box">
+            <div class="col-lg-6 col-xl-6 col-xxl-6 col-md-8  col-sm-12 login-box">
                 <div class="card bg-pattern">
 
                     <div class="card-body p-4">
@@ -66,7 +66,7 @@
                             </div>
 
                             <div class="form-group mb-2 text-center">
-                                <button type="submit" [disabled]="loginForm.invalid" class="px-1 py-1 btn-primary-bsa btn btn-primary btn-block h-30" type="submit" (click)="validateUser()"> Login </button>
+                                <button type="submit" [disabled]="loginForm.invalid" class="px-1 py-1 btn-primary-bsa btn btn-primary btn-block" type="submit" (click)="validateUser()"> Login </button>
                             </div>
 
                         </form>
