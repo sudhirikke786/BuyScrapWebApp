@@ -176,14 +176,14 @@
     <ng-template pTemplate="header">
 
         <div class="d-flex">
-            <a class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a>
+            <a class="btn btn-primary " (click)="hidescrapModel()"><i class="mdi mdi-keyboard-backspace"></i></a>
 
             <h4 class="modal-title ml-10" id="myLargeModalLabel">Camera Settings</h4>
         </div>
 
     </ng-template>
 
-    <app-camera-settings  ></app-camera-settings>
+    <app-camera-settings *ngIf="cameravisible" ></app-camera-settings>
 </p-dialog>
 
 

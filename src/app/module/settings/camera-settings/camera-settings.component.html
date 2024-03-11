@@ -1,7 +1,6 @@
 <div class="row">
     <div class="col-sm-12">
         
-        <form action="">
             
             <div class="form-group col-sm-12 mb-2">
                 <label for="simpleinput" class="form-label w-100">Select Scrap Material Camera</label>
@@ -17,12 +16,11 @@
                 <select class="form-select" [(ngModel)]="selectedDefault" (change)="changeDWebCame($event)">
                     <option value="undefined">Select a camera</option>            
                     <option *ngFor="let option of allMediaDevices" [value]="option?.deviceId"> {{ option?.label }} </option>
-                    <!-- <option value="cd857abbf36b2b1511ae171f1778ffb3cc19c0240e6accda93c40162dc3e0dd1">HP HD Camera (05c8:0397)</option> -->
                 </select>
             </div>
 
             <a class="btn btn-primary ">Save</a>
-        </form>
+    
 
     </div>
 </div>
