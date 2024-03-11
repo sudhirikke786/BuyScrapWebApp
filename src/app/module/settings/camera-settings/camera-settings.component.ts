@@ -29,23 +29,52 @@ export class CameraSettingsComponent implements OnInit, AfterViewInit {
   constructor() {}
 
   ngOnInit(){
-    navigator.mediaDevices.getUserMedia({video: true}); 
-    (async () => {     
-      let devices = await navigator.mediaDevices.enumerateDevices(); 
-     
-      if(devices){
-        this.allMediaDevices = devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput");
-        const deviceId = localStorage.getItem('deviceId');
-        if(localStorage.getItem('deviceId')){
-  
-             this.selectedDefault =  deviceId;
-  
-        }
-      
-      }
 
-    })();
+     this.addCameraDevices();
+    // navigator.mediaDevices.getUserMedia({video: true}); 
+    // (async () => {     
+    //   let devices = await navigator.mediaDevices.enumerateDevices(); 
+     
+    //   if(devices){
+    //     this.allMediaDevices = devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput");
+    //     const deviceId = localStorage.getItem('deviceId');
+    //     if(localStorage.getItem('deviceId')){
+  
+    //          this.selectedDefault =  deviceId;
+  
+    //     }
+      
+    //   }
+
+    // })();
   }
+
+
+  async addCameraDevices(): Promise<void> {
+    this.allMediaDevices = await this.getCameraDevices();
+
+    const deviceId = localStorage.getItem('deviceId');
+
+    if(localStorage.getItem('deviceId')){
+  
+        this.selectedDefault =  deviceId;
+    
+     }
+  }
+
+
+    async getCameraDevices(): Promise<MediaDeviceInfo[]> {
+
+   
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        return devices.filter(device => device.kind === 'videoinput');
+      } catch (error) {
+        console.error('Error enumerating camera devices:', error);
+        return [];
+      }
+    
+   }
 
 
   ngAfterViewInit(): void {
