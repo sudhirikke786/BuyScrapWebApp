@@ -160,7 +160,7 @@ export class TicketDetailComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
 
 
-    const mCamera =  localStorage.getItem('defualtCamera') ;
+    const mCamera =  localStorage.getItem('metarialCamera') ;
     if(mCamera) {
       this.dCamera = mCamera;
     }

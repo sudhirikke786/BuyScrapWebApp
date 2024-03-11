@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit,Output } from '@angular/core';
 import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 import { Subject } from 'rxjs';
 
@@ -21,6 +21,9 @@ export class CameraSettingsComponent implements OnInit, AfterViewInit {
   imageUrl: any;
 
   errors: WebcamInitError[] = [];
+
+
+  @Output() close = new EventEmitter<any>();
 
   // webcam snapshot trigger
   
@@ -55,7 +58,7 @@ export class CameraSettingsComponent implements OnInit, AfterViewInit {
 
     const mCamera = localStorage.getItem('metarialCamera');
 
-    if(localStorage.getItem('deviceId')){
+    if(mCamera){
   
         this.selectedMaterialScrap =  mCamera;
     
@@ -63,7 +66,7 @@ export class CameraSettingsComponent implements OnInit, AfterViewInit {
 
      const dCamera = localStorage.getItem('defualtCamera');
 
-     if(localStorage.getItem('deviceId')){
+     if(dCamera){
    
          this.selectedDefault =  dCamera;
      
@@ -105,6 +108,10 @@ export class CameraSettingsComponent implements OnInit, AfterViewInit {
       localStorage.setItem('defualtCamera', event.target.value);
     }
  
+  }
+
+  onSave(){
+     this.close.emit(true)
   }
 
 

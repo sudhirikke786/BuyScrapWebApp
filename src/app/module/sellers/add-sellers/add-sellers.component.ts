@@ -75,7 +75,7 @@ export class AddSellersComponent implements OnInit {
   ngOnInit() {
     this.createSellerForm();
 
-    const mCamera =  localStorage.getItem('metarialCamera') ;
+    const mCamera =  localStorage.getItem('defualtCamera') ;
     if(mCamera) {
       this.meTarialCamera = mCamera || null;
     }

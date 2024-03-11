@@ -183,7 +183,7 @@
 
     </ng-template>
 
-    <app-camera-settings *ngIf="cameravisible" ></app-camera-settings>
+    <app-camera-settings *ngIf="cameravisible"  (close)="cameravisible =false"></app-camera-settings>
 </p-dialog>
 
 
