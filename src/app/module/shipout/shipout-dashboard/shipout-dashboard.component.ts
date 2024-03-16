@@ -183,33 +183,45 @@ export class ShipoutDashboardComponent implements OnInit {
     newShipOut.locID = this.locId;
     newShipOut.customerName = this.selectedSeller?.fullName || '';
     newShipOut.streetAddress = this.selectedSeller?.streetAddress || '';
-    newShipOut.driverName = this.driverName;
-    newShipOut.truck = this.truck;
     newShipOut.from = '';
     newShipOut.fromAddress = '';
+    newShipOut.carrier = this.carrier;
+    newShipOut.truck = this.truck;
     newShipOut.make = this.make;
     newShipOut.model = this.model;
-    newShipOut.trailer1 = this.trailer1;
-    newShipOut.trailer2 = this.trailer2;
-    newShipOut.carrier = this.carrier;
-    newShipOut.container = this.container;
-    newShipOut.seal = this.seal;
-    newShipOut.booking = this.booking;
-    newShipOut.vessels = this.vesselvoyage;
-    newShipOut.chasis = this.chassis;
-    newShipOut.packSlip = this.packslip;
-    newShipOut.reference = this.reference;
+    newShipOut.driverName = this.driverName;
+    // newShipOut.trailer1 = this.trailer1;
+    // newShipOut.trailer2 = this.trailer2;
+    // newShipOut.container = this.container;
+    // newShipOut.seal = this.seal;
+    // newShipOut.booking = this.booking;
+    // newShipOut.vessels = this.vesselvoyage;
+    // newShipOut.chasis = this.chassis;
+    // newShipOut.packSlip = this.packslip;
+    // newShipOut.reference = this.reference;
     newShipOut.note = this.note;
     newShipOut.shipoutmaterial = [];
 
     this.dataService.setNewShipOut(newShipOut);
     
-    this.router.navigateByUrl(`/${this.orgName}/ship-out/detail/new`);
+    this.router.navigateByUrl(`/${this.orgName}/ship-out/detail/new/new`);
 
   }
 
   closeDriver(){
     this.newDriverScreenVisible = false;
+  }
+
+  showDetails(shipoutId: any) {
+    this.router.navigateByUrl(`${this.orgName}/ship-out/detail/${shipoutId}/show`);
+  }
+
+  editDetails(shipoutId: any) {
+    this.router.navigateByUrl(`${this.orgName}/ship-out/detail/${shipoutId}/edit`);
+  }
+
+  deleteDetails(shipoutId: any) {
+    alert('Delete action Triggered')
   }
 
 

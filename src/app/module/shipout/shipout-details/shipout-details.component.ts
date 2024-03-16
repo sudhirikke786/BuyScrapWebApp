@@ -31,7 +31,8 @@ export class ShipoutDetailsComponent implements OnInit {
   ticketObj:any = [];
   orgName: any;
   sellerId: any;
-  ticketId: any;
+  shipoutId: any;
+  shipoutAction: any;
   locId: any;
   logInUserId: any;
   locationName: any;
@@ -100,8 +101,12 @@ export class ShipoutDetailsComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.route.params.subscribe((param)=>{
-      this.ticketId = param["shipOutId"];
-      if (parseInt(this.ticketId)) {
+      this.shipoutId = param["shipOutId"];
+      this.shipoutAction = param["action"];
+      if (this.shipoutAction == 'edit') {
+        this.editTicketDetails();
+      }
+      if (parseInt(this.shipoutId)) {
         this.getShipOutDetailsByID();
       }
       else {
@@ -116,11 +121,11 @@ export class ShipoutDetailsComponent implements OnInit {
 
   
   private processDataBasedOnTicketId() {
-    if (parseInt(this.ticketId)) {
+    if (parseInt(this.shipoutId)) {
       this.getShipOutMaterialbyID();
       // this.getAllTicketsDetails();
     } else {
-      this.ticketId = 0;
+      this.shipoutId = 0;
       this.ticketData['createdDate'] = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       this.ticketData['status'] = 'NEW SHIP OUT';
 
@@ -138,14 +143,14 @@ export class ShipoutDetailsComponent implements OnInit {
   //   this.isLoading = true;
   //   const paramObject = {
   //     LocationId: this.locId,
-  //     SerachText: this.ticketId,
+  //     SerachText: this.shipoutId,
   //     SearchOrder: 'TicketId', 
   //     PageNumber: 1, 
   //     RowOfPage: 10
   //   };
   //   this.commonService.getAllTicketsDetails(paramObject)
   //     .subscribe(data => {
-  //         console.log('getAllTicketsDetails for ticketId :: ');
+  //         console.log('getAllTicketsDetails for shipoutId :: ');
   //         console.log(data);
   //         this.ticketData = data.body.data[0];
   //         this.totalRecords =  data.totalRecords;
@@ -175,7 +180,7 @@ export class ShipoutDetailsComponent implements OnInit {
     
   getShipOutDetailsByID() {
     const paramObject = {
-      rowId: this.ticketId,
+      rowId: this.shipoutId,
       LocID: this.locId
     };
     this.commonService.getShipOutDetailsByID(paramObject)
@@ -196,7 +201,7 @@ export class ShipoutDetailsComponent implements OnInit {
   
   getShipOutMaterialbyID() {
     const paramObject = {
-      ShipOutIDId: this.ticketId,
+      ShipOutIDId: this.shipoutId,
       locid: this.locId
     };
     this.commonService.getShipOutMaterialbyID(paramObject)
@@ -317,8 +322,8 @@ export class ShipoutDetailsComponent implements OnInit {
   }
 
   cancelEditTicket() {
-    // alert('Refresh' + this.ticketId);
-    if (this.ticketId && this.ticketId != 0) {
+    // alert('Refresh' + this.shipoutId);
+    if (this.shipoutId && this.shipoutId != 0) {
       console.log('11111');
       this.isEditModeOn = false;
       this.editItemCloseImageCapture = false;
@@ -462,7 +467,7 @@ export class ShipoutDetailsComponent implements OnInit {
   generateShipOutReport() {
 
     const param = {
-      ShipOutId: this.ticketId,
+      ShipOutId: this.shipoutId,
       LocationId: this.locId
     }
 

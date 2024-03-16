@@ -17,7 +17,7 @@ export const routes: Routes = [
     component: ShipoutDashboardComponent
   },
   {
-    path:'detail/:shipOutId',
+    path:'detail/:shipOutId/:action',
     component: ShipoutDetailsComponent
   }
 ]

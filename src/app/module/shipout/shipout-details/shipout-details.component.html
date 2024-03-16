@@ -11,7 +11,7 @@
 
                 <div class="col-sm-6 col-6">
                     <div class="b-links">
-                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/ship-out">Ship Out</a> / <a href="javscript:void()" routerLink="/{{orgName}}/ship-out/detail/{{ticketId}}/{{sellerId}}">Ship Out Details</a>
+                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/ship-out">Ship Out</a> / <a href="javscript:void()">Ship Out Details</a>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
 
                                 <div class="row">
                                    <div class="col-sm-6 d-flex">
-                                        <h4 class="ticket-number me-1">Ship-out # - {{ticketId}}</h4>
+                                        <h4 class="ticket-number me-1">Ship-out # - {{shipoutId}}</h4>
                                         <!-- <a href="javascript:void(0)" class="btn btn-grid btn-primary waves-effect waves-light ms-1 mb-1">
                                             <i class="mdi mdi-plus"></i>  COD Required
                                         </a> -->
@@ -46,9 +46,9 @@
                                     </div>
 
                                     
-                                    <div class="waves-effect waves-light ticket-edit flt-right">
+                                    <!-- <div class="waves-effect waves-light ticket-edit flt-right">
                                         <a class="btn btn-primary" (click)="generateShipOutReport()">Print</a>
-                                    </div>
+                                    </div> -->
 
                                    </div> 
                                 </div>
