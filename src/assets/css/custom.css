@@ -927,6 +927,85 @@ i.material-icons {
   .wizard-content-left {
     height: auto;
   }
+
+  .display-mobile{
+    display: block !important;
+  }
+
+
+  body {
+    font-size:12px !important
+  }
+  a{
+    font-size: 12px !important;
+  }
+
+h1, h2, h3,h4,h5 {
+  font-size:12px !important
+}
+
+ table tr td{
+  font-size:12px !important
+ }
+
+.btn{
+  font-size:12px !important;
+  line-height: 12px !important;
+}
+
+.payment-ticket{
+  bottom: 50px;
+}
+
+.menu .menu-item .menu-link>.menu-text {
+  font-size: 24px !important;
+}
+
+.form-floating>.form-control {
+  height: calc(2.5rem + 26px) !important;
+}
+
+.form-control{
+  font-size:12px !important;
+}
+
+select option{
+  font-size: 12px !important;
+}
+
+.p-component{
+  font-size: 12px !important;
+
+}
+
+.mdi-cust{
+  font-size: 12px !important;
+}
+
+.button-toggle-menu{
+  font-size: 12px !important;
+}
+
+.balance-details-ul li {
+  display: inline-block;
+  margin-right: 10px;
+  color: #ffffff;
+  font-size: 12px !important;
+  /* float: left; */
+  margin-right: 40px !important;
+
+}
+
+.ticket-details-tbl {
+  display: block;
+  overflow-x: auto;
+  white-space: pre-wrap !important;
+}
+.m-button{
+  margin-top: 5px;
+}
+
+
 }
 
 .form-wizard .form-wizard-steps li.active::after {
@@ -1251,10 +1330,6 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
   display: inline-block;
 }
 
-. {
-  margin-bottom: 10px;
-  padding: 5px !important;
-}
 
 .materials-ul {
   margin-bottom: 0;
@@ -1973,9 +2048,6 @@ select optgroup option {
   align-items: center;
 }
 
-h4 {
-  font-size: 15px !important;
-}
 
 .table .mdi {
   margin-right: 4px;

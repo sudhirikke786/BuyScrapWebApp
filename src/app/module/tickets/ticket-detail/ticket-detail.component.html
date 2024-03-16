@@ -205,7 +205,7 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="payment-ticket"   [style.width]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? '98%' : '75%'">
+                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98' : 'w-75'" >
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
                                                 <p class="ticket-details-p fz-14"><b>Adjustment : {{totalAdjustment | number : '1.3-3'}}</b></p>
@@ -417,140 +417,7 @@
                 <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage(1)">Save Image</a>
                 <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeCapturedImage(1)">Close</a>
             </div>
-            <!-- <ng-template #elsepart>
-            <div id="numpad-div" class="numpad-div" style="display: block;">
-                <table class="numpad-heading-tbl">
-                    <tbody><tr>
-                        <td>
-                            <button id="back-btn" class="btn btn-primary " (click)="backToCapturedImage()">
-                                <i class="mdi mdi-keyboard-backspace"></i>
-                            </button>
-                        </td>
-                        <td>
-                            <h4>{{itemGroupName}} ==> {{itemMaterialName}}</h4>
-                        </td>
-                        <td>
-                            <a id="backToMainBox9" class="btn btn-primary numpad-heading-btn" data-bs-dismiss="modal" (click)="clickOnChangeItem()">Change Item</a>
-                        </td>
-                        <td>
-                            <a id="back-btnss" class="btn btn-primary numpad-heading-btn" (click)="backToCapturedImage()">Capture Image</a>
-                        </td>
-                    </tr>
-                </tbody></table>
-
-                <div class="row mt-3">
-                
-                    <div [ngClass]="isChangeItemOn ? 'col-sm-4 mb-2' : 'col-sm-6 mb-2' " *ngIf="isChangeItemOn" >
-                        <div *ngIf="changeItemMaterialsVisible" id="mainbox" class="mainbox-row over-flow-200">
-                            <h4 class="materials-heading">Materials</h4>
-
-                            <ul class="main-ul">
-                            
-                            <ng-container  *ngFor="let item of materialList" >
-                                <li>
-                                    <a id="showInnerDiv1" class="btn btn-primary " 
-                                    pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
-                                    (click)="getSubMaterials(item.rowId, item.groupName, true)">
-                                        {{item.groupName}}
-                                    </a>
-                                </li>
-                            </ng-container>
-                            </ul>
-                            
-                        </div>
-
-                        <div *ngIf="!changeItemMaterialsVisible" id="innerdiv1" class="mainbox-row over-flow-200">
-                            <h1 class="-2">
-                            <span>
-                                <a id="backToMainBox1" class="btn btn-primary " (click)="backToChangeItemMainMaterials()"><i class="mdi mdi-keyboard-backspace me-1"></i></a>
-                            </span>
-                                Main Material - {{selectedMaterial}}
-                        </h1>
-                
-                            <ul class="main-ul">
-                            <ng-container  *ngFor="let item of subMaterialList" >
-                                <li>
-                                    <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="updateExistingItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
-                                    pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
-                                    class="btn btn-primary -inner">{{item.materialName}}</a>
-                                </li>
-                            </ng-container>                                     
-                            </ul>
-
-                        </div>
-                    </div>
-
-                    <div [ngClass]="isChangeItemOn ? 'col-sm-4 mb-2' : 'col-sm-6 mb-2' " >
-                        <div class="input-container">
-                          <label for="gross">Gross:</label>
-                          <input type="text" id="gross" [(ngModel)]="itemGross" tabindex="1" placeholder="Enter Gross Weight" required="">
-                        </div>
-
-                        <div class="input-container">
-                          <label for="tare">Tare:</label>
-                          <input type="text" id="tare" [(ngModel)]="itemTare" tabindex="2" placeholder="Enter Tare Weight" required="">
-                        </div>
-
-                        <div class="input-container">
-                          <label for="net">Net:</label>
-                          <input type="text" id="net" value = "{{itemGross - itemTare}}" tabindex="3" placeholder="Enter Net Weight" required="">
-                        </div>
-
-                        <div class="input-container">
-                          <label for="price">Price:</label>
-                          <input type="text" id="price" [(ngModel)]="itemPrice" tabindex="4" placeholder="Enter Final Price" required="">
-                        </div>
-                    </div>
-
-                    <div [ngClass]="isChangeItemOn ? 'col-sm-4' : 'col-sm-6' " >
-                        <div class="num-pad">
-                          <div class="row">
-                            <button class="num-btn">1</button>
-                            <button class="num-btn">2</button>
-                            <button class="num-btn">3</button>
-                          </div>
-                          <div class="row">
-                            <button class="num-btn">4</button>
-                            <button class="num-btn">5</button>
-                            <button class="num-btn">6</button>
-                          </div>
-                          <div class="row">
-                            <button class="num-btn">7</button>
-                            <button class="num-btn">8</button>
-                            <button class="num-btn">9</button>
-                          </div>
-                          <div class="row">
-                            <button class="num-btn">0</button>
-                            <button class="num-btn">00</button>
-                            <button class="num-btn">.</button>
-                          </div>
-                          <div class="row">
-                            <button class="clear-btn">Clear</button>
-                            <button class="delete-btn">Delete</button>
-                            <button class="enter-btn" (click)="updateExistingItemDataResponse()">Enter</button>
-                          </div>
-                          <div class="row ">
-                            <button class="notes-btn">Notes</button>
-                          </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div id="notes-modal" class="modal">
-                     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                      <div class="modal-content">
-                        <span class="close">×</span>
-                        <label for="notes">Enter notes:</label>
-                        <textarea id="notes" rows="4"></textarea>
-                        <button class="save-btn">Save</button>
-                      </div>
-                     </div>
-                </div>
-
-
-            </div>
-            </ng-template> -->
+        
         </div>
 
     </div>

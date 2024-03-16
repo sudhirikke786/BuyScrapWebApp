@@ -50,9 +50,29 @@ h4{
   .button-container {
     display: flex;
   }
+
+  .w-98{
+    width: 98%;
+  }
+  .w-75{
+    width: 75%;
+  }
   
 
+  @media (max-width: 767px) {
+    .w-98{
+      width: 100% !important ;
+    }
+    .w-75{
+      width:100% !important;
+    }
+
+  }
+
   @media (max-width: 1024px) {
+
+    
+    
     .equal-h{
       width: 114px;
       height: 60px;

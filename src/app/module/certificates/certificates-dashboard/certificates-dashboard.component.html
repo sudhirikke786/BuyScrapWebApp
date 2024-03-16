@@ -138,6 +138,7 @@
   header="New Regrade"
   [(visible)]="visible"
   [style]="{ width: '60vw' }"
+  [breakpoints]="{'767px': '100vw'}"
 >
   <ng-template pTemplate="header">
     <div class="d-flex justify-content-between col-10">
@@ -228,6 +229,7 @@
   header="New Regrade"
   [(visible)]="cvisible"
   [style]="{ width: '80vw' }"
+  [breakpoints]="{'767px': '100vw'}"
 >
   <ng-template pTemplate="header">
     <a (click)="hideCaptureModel()" class="btn btn-primary "
@@ -267,7 +269,7 @@
 
 
 
-<p-dialog header="Header" [(visible)]="isConfirmModel" [modal]="true" [style]="{ width: '40rem' }">
+<p-dialog header="Header" [(visible)]="isConfirmModel" [modal]="true" [style]="{ width: '40rem' }" [breakpoints]="{'767px': '100vw'}">
   <ng-template pTemplate="header">
       <div class="inline-flex align-items-center justify-content-center gap-2">
           
