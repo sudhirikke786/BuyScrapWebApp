@@ -2158,10 +2158,7 @@ select optgroup option {
     display: none;
   }
 
-  . {
-    margin-bottom: 10px;
-    padding: 5px !important;
-  }
+  
 }
 
 @media only screen and (max-width:991px) {
@@ -2184,16 +2181,19 @@ select optgroup option {
 }
 
 /* Media query for tablets (portrait and landscape) */
-@media screen and (min-width: 600px) and (max-width: 1024px) {
-  /* Tablet-specific styles */
 
-  .btn {
-    font-size: 12px !important;
-    /* line-height: 14px !important; */
+
+@media only screen and (max-width:1024px) and (min-width: 768px) {
+
+  .btn{
+    font-size:12px !important;
+    line-height: 12px !important;
   }
 
-  /* Add more styles as needed for tablets */
+
+
 }
+
 
 
 
@@ -2255,49 +2255,6 @@ h1, h2, h3 ,h4{
 
 
 }
-
-/* @media only screen and (max-width:3840px) and (min-width:2560px) {
-
-body {
-  font-size:24px !important
-}
-a{
-  font-size: 24px !important;
-}
-
-h1, h2, h3,h4,h5 {
-font-size:24px !important
-}
-
-table tr td{
-font-size:24px !important
-}
-
-.btn{
-font-size:24px !important;
-line-height: 24px !important;
-}
-
-.payment-ticket{
-bottom: 50px;
-}
-
-.menu .menu-item .menu-link>.menu-text {
-font-size: 24px !important;
-}
-
-
-.form-select{
-  font-size:24px !important;
-}
-
-
-.p-component{
-  font-size: 24px !important;
-}
- 
-
- } */
 
 
 

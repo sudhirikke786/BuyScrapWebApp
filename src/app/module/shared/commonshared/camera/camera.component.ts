@@ -54,13 +54,16 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
       const deviceId =  localStorage.getItem('metarialCamera');
       if(localStorage.getItem('metarialCamera')){
         setTimeout(() =>{
-           this.selectedCamera =  this.defaultCamera; 
+           this.selectedCamera =  deviceId; 
            this.changeWebCame(this.selectedCamera);
         },100)
        
+      }else{
+        this.selectedCamera =  this.allMediaDevices[0].deviceId;
+        this.changeWebCame(this.selectedCamera);
       }
 
-      this.showWebcam = false;
+    //  this.showWebcam = false;
     })();
   }
 
