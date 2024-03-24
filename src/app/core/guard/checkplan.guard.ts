@@ -28,8 +28,17 @@ export class CheckplanGuard implements CanActivate {
 
 
    getPlanDetails()  {
-   
-      return this.cService.getAllOrganisationPlanName({}).toPromise();
+      if(this.dtService.getActivePlan()){
+        let obj : any = {
+          body: {
+            data:this.dtService.getActivePlan()
+          }
+        }
+        return obj;
+      }else{
+        return this.cService.getAllOrganisationPlanName({}).toPromise();
+      }
+     
    }
 
   
