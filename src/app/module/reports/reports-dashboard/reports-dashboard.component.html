@@ -84,11 +84,17 @@
                                                     <a href="javscript:void()" routerLink="/{{orgName}}/reports/payment-report" class="report-button">Payment Report</a>
                                                 </div>
                                             </div> 
-                                            <div class="col-sm-6 mb-20">
+                                            <!-- *ngIf="subScriptionType?.organisationPlan=='Pro'" -->
+                                            <div class="col-sm-6 mb-20"  *ngIf="subScriptionType?.organisationPlan?.toLowerCase()!=='default'">
                                                 <div class="text-center">
                                                     <a href="javscript:void()" routerLink="/{{orgName}}/reports/accounting-report" class="report-button">Accounting Report</a>
                                                 </div>
                                             </div> 
+                                            <div class="col-sm-6 mb-20"  *ngIf="subScriptionType?.organisationPlan?.toLowerCase()=='default'">
+                                                <div class="text-center">
+                                                    <a href="javscript:void()" (click)="showPlan = true"  class="report-button">Accounting Report</a>
+                                                </div>
+                                            </div>
                                         </div>
                                                                                      
 
@@ -104,329 +110,26 @@
 
                 </div> <!-- content -->
 
-                <!-- Footer Start -->
-                <!-- <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <script>document.write(new Date().getFullYear())</script> &copy; BUYSCRAPAPP. All Rights Reserved. 
-                            </div>
-                            <div class="col-md-6">
-                                <div class="d-none d-md-flex gap-4 align-item-center justify-content-md-end footer-links">
-                                    <a href="javascript: void(0);">About</a>
-                                    <a href="javascript: void(0);">Support</a>
-                                    <a href="javascript: void(0);">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer> -->
-                <!-- end Footer -->
-
-                <!--  Add Money Modal Popup -->
-                <!-- <div class="modal fade" id="add-money" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <a  data-bs-dismiss="modal" class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                                <h4 class="modal-title ml-10" id="myLargeModalLabel">Add Money</h4>
-
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        
-                                        <form action="">
-                                            
-                                            <div class="form-group col-sm-12 mb-2">
-                                                <label for="simpleinput" class="form-label w-100">Amount</label>
-                                                <input type="text" id="stockafterregrade" class="form-control" placeholder="Enter Amount">
-                                            </div>
-
-                                            <div class="form-group col-sm-12 mb-2">
-                                                <label for="simpleinput" class="form-label w-100">Reason</label>
-                                                <input type="text" id="stockafterregrade" class="form-control" placeholder="Add Reason">
-                                            </div>
-
-                                            <a class="btn btn-primary ">Save</a>
-                                        </form>
-
-                                    </div>
-                                </div>                        
-
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!--  Add Money Modal Popup -->
-
-                <!--  Petty Cash Amount Modal Popup -->
-                <!-- <div class="modal fade" id="petty-cash-amount" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <a  data-bs-dismiss="modal" class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                                <h4 class="modal-title ml-10" id="myLargeModalLabel">Petty Cash Amount</h4>
-
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        
-                                        <form action="">
-                                            
-                                            <div class="form-group col-sm-12 mb-2">
-                                                <label for="simpleinput" class="form-label w-100">Amount</label>
-                                                <input type="text" id="stockafterregrade" class="form-control" placeholder="Enter Amount">
-                                            </div>
-
-                                            <div class="form-group col-sm-12 mb-2">
-                                                <label for="simpleinput" class="form-label w-100">Reason</label>
-                                                <input type="text" id="stockafterregrade" class="form-control" placeholder="Add Reason">
-                                            </div>
-
-                                            <a class="btn btn-primary ">Save</a>
-                                        </form>
-
-                                    </div>
-                                </div>                        
-
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!--  Petty Cash Amount Modal Popup -->
-
-                <!--  Recalculate Days Balance Modal Popup -->
-                <!-- <div class="modal fade" id="recalculate-days-balance" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <a  data-bs-dismiss="modal" class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                                <h4 class="modal-title ml-10" id="myLargeModalLabel">Reopen Register</h4>
-
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        
-                                        <form action="">
-                                            
-                                            <div class="row">
-                                                <h4>Bills</h4>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$1</label>
-                                                    <input type="text" id="" class="form-control" placeholder="0">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$5</label>
-                                                    <input type="text" id="" class="form-control" placeholder="0">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$10</label>
-                                                    <input type="text" id="" class="form-control" placeholder="0">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$20</label>
-                                                    <input type="text" id="" class="form-control" placeholder="0">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$50</label>
-                                                    <input type="text" id="" class="form-control" placeholder="0">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$100</label>
-                                                    <input type="text" id="" class="form-control" placeholder="0">
-                                                </div>
-                                            </div>
-
-                                            <div class="row mt-3">
-                                                <h4>Cents</h4>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">1C</label>
-                                                    <input type="text" id="" class="form-control" placeholder="0">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">5C</label>
-                                                    <input type="text" id="" class="form-control" placeholder="0">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">10C</label>
-                                                    <input type="text" id="" class="form-control" placeholder="0">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">25C</label>
-                                                    <input type="text" id="" class="form-control" placeholder="0">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <h4>Total Amount : $500</h4>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <a href="" class="btn btn-primary">Recalculate Register</a>
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <h4>Cash Drawer Remaining Balance : 428.000</h4>
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                </div>                        
-
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!--  Recalculate Days Balance Modal Popup -->
-
-                <!--  Close Register Modal Popup -->
-                <!-- <div class="modal fade" id="close-register" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <a  data-bs-dismiss="modal" class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                                <h4 class="modal-title ml-10" id="myLargeModalLabel">Close Register</h4>
-
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        
-                                        <form action="">
-                                            
-                                            <div class="row">
-                                                <h4>Bills</h4>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$1</label>
-                                                    <input type="text" id="" class="form-control" placeholder="Enter Number of Bills">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$5</label>
-                                                    <input type="text" id="" class="form-control" placeholder="Enter Number of Bills">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$10</label>
-                                                    <input type="text" id="" class="form-control" placeholder="Enter Number of Bills">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$20</label>
-                                                    <input type="text" id="" class="form-control" placeholder="Enter Number of Bills">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$50</label>
-                                                    <input type="text" id="" class="form-control" placeholder="Enter Number of Bills">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">$100</label>
-                                                    <input type="text" id="" class="form-control" placeholder="Enter Number of Bills">
-                                                </div>
-                                            </div>
-
-                                            <div class="row mt-3">
-                                                <h4>Cents</h4>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">1C</label>
-                                                    <input type="text" id="" class="form-control" placeholder="Enter Number of Cents">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">5C</label>
-                                                    <input type="text" id="" class="form-control" placeholder="Enter Number of Cents">
-                                                </div>
-
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">10C</label>
-                                                    <input type="text" id="" class="form-control" placeholder="Enter Number of Cents">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-sm-4 mb-2">
-                                                    <label for="simpleinput" class="form-label w-100">25C</label>
-                                                    <input type="text" id="" class="form-control" placeholder="Enter Number of Cents">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <h4>Total Amount : $0.00</h4>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <a href="" class="btn btn-primary">Close Register</a>
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <h4>Cash Drawer Remaining Balance : 428.000</h4>
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                </div>                        
-
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!--  Close Register Modal Popup -->
+           
 
             </div>
 
             <!-- ============================================================== -->
             <!-- End Page content -->
             <!-- ============================================================== -->
+            <p-dialog [modal]="true" (onHide)="showPlan =  false" [(visible)]="showPlan" [style]="{width: '80vw'}"
+            [breakpoints]="{'767px': '100vw'}">
+                   
+               
+           
+                   <div class="col-md-12">
+                       <app-plan-upgrade></app-plan-upgrade>
+                   </div>
+           
+           
+             
+           
+           
+           
+           
+           </p-dialog>

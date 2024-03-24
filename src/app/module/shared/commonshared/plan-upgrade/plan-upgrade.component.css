@@ -1,0 +1,11 @@
+.message-box {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px;
+  }
+  .message-box h4 {
+    margin-top: 0;
+  }

@@ -10,6 +10,7 @@ import { TicketItem } from 'src/app/core/model/ticket-item.model';
 import { Ticket } from 'src/app/core/model/ticket.model';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { PriceCalculatorComponent } from '../../shared/commonshared/price-calculator/price-calculator.component';
+import { DataService } from 'src/app/core/services/data.service';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -143,6 +144,7 @@ export class TicketDetailComponent implements OnInit {
 
   alertVisible = false;
   alertMessage: any;
+  subScriptionType:any;
 
   @ViewChild(PriceCalculatorComponent) priceCalculatorComponent!: PriceCalculatorComponent;
   
@@ -153,11 +155,15 @@ export class TicketDetailComponent implements OnInit {
     private datePipe: DatePipe,
     private messageService: MessageService,
     private stroarge: StorageService,
+    public dtService:DataService,
     private confirmationService: ConfirmationService,
     private commonService: CommonService) { }
 
   ngOnInit() {
+
+
     this.orgName = localStorage.getItem('orgName');
+    this.subScriptionType = this.dtService.getActivePlan();
 
 
     const mCamera =  localStorage.getItem('metarialCamera') ;
@@ -986,7 +992,7 @@ export class TicketDetailComponent implements OnInit {
       this.selectedAdjustment = rowData.concatAdjustments;
 
     } else {
-      this.modalHeader = 'Edit Item Details';
+      this.modalHeader =  'Edit Item Details';
       this.editItemVisible = true;
 
       this.editItemCloseImageCapture = false;

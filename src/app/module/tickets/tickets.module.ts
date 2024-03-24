@@ -9,6 +9,7 @@ import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 import { TicketDashboardComponent } from './ticket-dashboard/ticket-dashboard.component';
 import { TicketDetailComponent } from './ticket-detail/ticket-detail.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { CheckplanGuard } from 'src/app/core/guard/checkplan.guard';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,7 @@ export const routes: Routes = [
   },
   {
     path:'detail/:ticketId/:customerId',
+    canActivate: [CheckplanGuard],
     component:TicketDetailComponent
   }
 ]

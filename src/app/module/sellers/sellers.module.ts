@@ -11,6 +11,7 @@ import { SellersBuyersDetailsComponent } from './sellers-buyers-details/sellers-
 import { AddSellersComponent } from './add-sellers/add-sellers.component';
 import { RoleGuard } from 'src/app/core/guard/role.guard';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { CheckplanGuard } from 'src/app/core/guard/checkplan.guard';
 
 
 export const routes: Routes = [
@@ -21,11 +22,14 @@ export const routes: Routes = [
   },
   {
     path:'add-seller',
-    component:AddSellersComponent
+    component:AddSellersComponent,
+    canActivate: [CheckplanGuard],
+    
   },
   {
     path:'edit-seller/:sellerId',
-    component:AddSellersComponent
+    component:AddSellersComponent,
+    canActivate: [CheckplanGuard],
   },
   {
     path:'view-seller/:sellerId',

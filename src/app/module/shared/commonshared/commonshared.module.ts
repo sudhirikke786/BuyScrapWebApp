@@ -14,6 +14,7 @@ import { ThumbFingerComponent } from './thumb-finger/thumb-finger.component';
 import { PenSignatureComponent } from './pen-signature/pen-signature.component';
 import { PageLoaderComponent } from '../page-loader/page-loader.component';
 import { MaterialCalculatorComponent } from './material-calculator/material-calculator.component';
+import { PlanUpgradeComponent } from './plan-upgrade/plan-upgrade.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MaterialCalculatorComponent } from './material-calculator/material-calc
     ThumbFingerComponent,
     PenSignatureComponent,
     PageLoaderComponent,
-    MaterialCalculatorComponent
+    MaterialCalculatorComponent,
+    PlanUpgradeComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +46,8 @@ import { MaterialCalculatorComponent } from './material-calculator/material-calc
     ThumbFingerComponent,
     PenSignatureComponent,
     PageLoaderComponent,
-    MaterialCalculatorComponent
+    MaterialCalculatorComponent,
+    PlanUpgradeComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

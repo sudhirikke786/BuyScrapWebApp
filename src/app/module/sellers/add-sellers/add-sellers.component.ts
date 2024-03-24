@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService,ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DataService } from 'src/app/core/services/data.service';
 
 @Component({
   selector: 'app-add-sellers',
@@ -44,12 +45,14 @@ export class AddSellersComponent implements OnInit {
   showLoaderReport = false;
   pdfViwerTitle = 'Seller Info';
   meTarialCamera :any;
-
+  subScriptionType:any;
+  showPlan =  false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private _sanitizer: DomSanitizer,
+    public dtService:DataService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private commonService: CommonService) { 
@@ -67,12 +70,18 @@ export class AddSellersComponent implements OnInit {
       });
 
 
+
+
      
     
       
     }
 
   ngOnInit() {
+
+    this.subScriptionType = this.dtService.getActivePlan();
+
+
     this.createSellerForm();
 
     const mCamera =  localStorage.getItem('defualtCamera') ;

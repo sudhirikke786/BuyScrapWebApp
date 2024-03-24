@@ -18,6 +18,9 @@ export class DataService {
   private _paidCount = new BehaviorSubject<any>(0);
   private _paidCount$ = this._paidCount.asObservable();
 
+
+  private _planDetails :any;
+
   set cashDrawerDetail(val: any) {
     this._cashDrawerDetail = val;
   }
@@ -57,5 +60,15 @@ export class DataService {
   getNewShipOut() {
     return this._newShipOut;
   }
+
+  getActivePlan() {
+    return this._planDetails
+  }
+
+  setSubscriptionPlan(planObj:any) {
+     this._planDetails = planObj; 
+  }
+
+
 
 }

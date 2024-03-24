@@ -18,10 +18,12 @@ import { VoidTicketReportComponent } from './void-ticket-report/void-ticket-repo
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { AccountingReportComponent } from './accounting-report/accounting-report.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { CheckplanGuard } from 'src/app/core/guard/checkplan.guard';
 
 export const routes: Routes = [
   {
     path: '',
+    canActivate: [CheckplanGuard],
     component: ReportsDashboardComponent
   },
   {

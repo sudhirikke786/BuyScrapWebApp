@@ -406,7 +406,7 @@
         
     <div class="row">
                                 
-        <div class="col-md-12">
+        <div class="col-md-12" *ngIf="subScriptionType?.organisationPlan=='pro'">
             <div id="camera-div" class="camera-div">
                 <div style="border: 1px solid black;" *ngIf="editItemVisible">
                     <div class="col-sm-12" style="border: 1px solid black;  display:inline-block;">
@@ -420,7 +420,17 @@
         
         </div>
 
+        <div class="col-md-12" *ngIf="subScriptionType?.organisationPlan =='lite' || subScriptionType?.organisationPlan=='default'">
+            <app-plan-upgrade></app-plan-upgrade>
+        </div>
+
+
+
     </div>
+
+
+
+
 </p-dialog>
 
 </ng-container>

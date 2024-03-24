@@ -495,5 +495,11 @@ export class CommonService {
   getAllOrganisationPlanDetails(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Master/GetAllOrganisationPlanDetails', 'GET', paramObj);
   }
+
+  getAllOrganisationPlanName(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Organisations/GetOrganisactionPlanByName', 'GET', paramObj);
+  }
+  
+  
     
 }
