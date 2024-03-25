@@ -23,6 +23,8 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
   showLoder = false;
   sendDisabled = false;
   otpDisabled = false;
+  showOtp =  false;
+  otpVerified = false;
   buttonText = 'Send Otp';
   constructor(
     private commonService: CommonService, 
@@ -189,15 +191,17 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
 
 
     this.sendDisabled = true;
-    
+    this.showOtp =  false;
     this.commonService.sendOTPEmail({
       EmailID:this.registrationForm.controls.emailAddress.value
     }).subscribe((res) => {
+      this.showOtp =  true;
       this.sendDisabled = false;
       this.buttonText = 'Resend Otp';
       this.messageService.add({ severity: 'success', summary: 'success', detail: 'Otp send successfully on email box' });
 
     },(error) =>{
+      this.showOtp =  true;
       this.sendDisabled = false;
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong!!!' });
     })
@@ -209,14 +213,13 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
   verifyOtp(){
 
     this.otpDisabled = true;
+    this.otpVerified = false;
     this.commonService.VerifyOTP({
       EmailId:this.registrationForm.controls.emailAddress.value,
       OTP:""+this.registrationForm.controls.otp.value
     }).subscribe((res) => {
       this.otpDisabled = true;
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Otp verified successfully on email box' });
-
-     
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Otp verified successfully' });
 
     },(error) =>{
       this.otpDisabled = false;
