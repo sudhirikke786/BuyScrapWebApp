@@ -23,6 +23,7 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
   showLoder = false;
   sendDisabled = false;
   otpDisabled = false;
+  showOtp =  false;
   buttonText = 'Send Otp';
   constructor(
     private commonService: CommonService, 
@@ -189,15 +190,17 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
 
 
     this.sendDisabled = true;
-    
+    this.showOtp =  false;
     this.commonService.sendOTPEmail({
       EmailID:this.registrationForm.controls.emailAddress.value
     }).subscribe((res) => {
+      this.showOtp =  true;
       this.sendDisabled = false;
       this.buttonText = 'Resend Otp';
       this.messageService.add({ severity: 'success', summary: 'success', detail: 'Otp send successfully on email box' });
 
     },(error) =>{
+      this.showOtp =  true;
       this.sendDisabled = false;
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong!!!' });
     })
