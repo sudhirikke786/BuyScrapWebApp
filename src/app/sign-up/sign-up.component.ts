@@ -24,6 +24,7 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
   sendDisabled = false;
   otpDisabled = false;
   showOtp =  false;
+  otpVerified = false;
   buttonText = 'Send Otp';
   constructor(
     private commonService: CommonService, 
@@ -212,14 +213,13 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
   verifyOtp(){
 
     this.otpDisabled = true;
+    this.otpVerified = false;
     this.commonService.VerifyOTP({
       EmailId:this.registrationForm.controls.emailAddress.value,
       OTP:""+this.registrationForm.controls.otp.value
     }).subscribe((res) => {
       this.otpDisabled = true;
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Otp verified successfully on email box' });
-
-     
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Otp verified successfully' });
 
     },(error) =>{
       this.otpDisabled = false;
