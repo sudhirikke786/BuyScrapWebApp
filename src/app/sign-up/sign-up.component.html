@@ -319,24 +319,41 @@
         <div class="row">
             <div class="col-sm-12">
                 
-                <form action="">
+                <form  [formGroup]="registrationForm">
                     
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Company Name</label>
-                            <input type="text" id="companyname" class="form-control" placeholder="Company Name">
+                            <input type="text" formControlName="companyname" id="companyname" class="form-control" placeholder="Company Name">
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Email Address</label>
-                            <input type="email" id="emailaddress" class="form-control" placeholder="Email Address">
+                        <div class="form-group col-sm-6 mb-2 d-flex align-items-center">
+                            <div class="col">
+                                <label for="simpleinput" class="form-label w-100">Email Address</label>
+                                <input type="email" formControlName="emailAddress" id="emailaddress" class="form-control" placeholder="Email Address">
+                            </div>
+                            <div class="d-flex align-items-center mt-3 ps-1">
+                                <button type="submit"   class="btn btn-primary btn-block" (click)="sendOtp()">{{buttonText}}</button>
+                            </div>
+                          
+                           
                         </div>
 
-                        <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Confirm Email Address</label>
-                            <input type="email" id="confirmemailaddress" class="form-control" placeholder="Confirm Email Address">
+                        <div class="form-group col-sm-6 mb-2 d-flex align-items-center">
+
+                            <div class="col">
+                                <label for="otpinput" class="form-label w-100">Add OTP</label>
+                                <input type="number" formControlName="otp" min="0" id="otp" class="form-control" placeholder="Add OTP">
+                            </div>
+                            <div class="d-flex align-items-center mt-3 ps-1">
+                                <button type="submit" class="btn btn-primary btn-block" (click)="verifyOtp()">Verify </button>
+                            </div>
+
+
+                            <!-- <label for="simpleinput" class="form-label w-100">Enter Otp </label>
+                            <input type="number" min="0" id="confirmemailaddress" class="form-control" placeholder="Add Otp"> -->
                         </div>
                     </div>
 
@@ -578,3 +595,5 @@
       
 
 </div>
+
+<p-toast></p-toast>

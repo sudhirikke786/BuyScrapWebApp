@@ -499,6 +499,16 @@ export class CommonService {
   getAllOrganisationPlanName(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Organisations/GetOrganisactionPlanByName', 'GET', paramObj);
   }
+
+
+  sendOTPEmail(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Emails/SendOTPEmail', 'POST', requestObj);
+  }
+
+  VerifyOTP(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Emails/VerifyOTP', 'POST', requestObj);
+  }
+  
   
   
     

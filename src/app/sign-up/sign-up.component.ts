@@ -1,22 +1,34 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+  styleUrls: ['./sign-up.component.css'],
+  providers: [MessageService]
 })
 export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
 
   showImage = false;
+
+  registrationForm!: FormGroup;
+
 
   planObj:any;
   extraMOnthlyobj:any;
   organizationPlanDetails:any; 
   selectedPlan: any;
   showLoder = false;
-  constructor( private commonService: CommonService){
+  sendDisabled = false;
+  otpDisabled = false;
+  buttonText = 'Send Otp';
+  constructor(
+    private commonService: CommonService, 
+    private messageService: MessageService,
+    private formBuilder :FormBuilder
+    ){
 
   }
 
@@ -30,6 +42,46 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.getSubscription();
+    this.getRegistrationForm();
+  }
+
+  
+
+  getRegistrationForm(){
+
+    this.registrationForm = this.formBuilder.group({
+      companyName: ['', Validators.required],
+      emailAddress: ['', [Validators.required, Validators.email]],
+      otp: ['', Validators.required],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+      contactsFirstName: ['', Validators.required],
+      contactsLastName: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      jobTitle: ['', Validators.required],
+      businessAddress: ['', Validators.required],
+      country: ['', Validators.required],
+      state: ['', Validators.required],
+      city: ['', Validators.required],
+      zip: ['', Validators.required],
+      billingAddress: [''],
+      sameAddress: [false],
+      billingAddressDetails: this.formBuilder.group({
+        billingAddress: [''],
+        billingCountry: [''],
+        billingState: [''],
+        billingCity: [''],
+        billingZip: ['']
+      }),
+      inputUOM: ['', Validators.required],
+      currency: ['', Validators.required],
+      referralSource: ['', Validators.required],
+      privacyPolicy: [false, Validators.requiredTrue],
+      terms: [false, Validators.requiredTrue],
+      communications: [false],
+      recaptcha: [null, Validators.required]
+    });
+
   }
 
 
@@ -40,7 +92,7 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
        this.commonService.getAllSubscriptionPlan({SubscriptionPlanID: 0}).subscribe((res) => {
           this.showLoder = false;
          this.planObj = res.body.data.map((res:any) => {
-          res.planDesc =  this.addCrossMark(res.planHighlights);
+          res.planDesc =  this.addCrossMark(res?.planHighlights);
           res.isselected =  false;
           return res;
         });
@@ -132,6 +184,49 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
     //   console.log(error);
     // })
   }
+
+  sendOtp(){
+
+
+    this.sendDisabled = true;
+    
+    this.commonService.sendOTPEmail({
+      EmailID:this.registrationForm.controls.emailAddress.value
+    }).subscribe((res) => {
+      this.sendDisabled = false;
+      this.buttonText = 'Resend Otp';
+      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Otp send successfully on email box' });
+
+    },(error) =>{
+      this.sendDisabled = false;
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong!!!' });
+    })
+   // 
+
+
+  }
+
+  verifyOtp(){
+
+    this.otpDisabled = true;
+    this.commonService.VerifyOTP({
+      EmailId:this.registrationForm.controls.emailAddress.value,
+      OTP:""+this.registrationForm.controls.otp.value
+    }).subscribe((res) => {
+      this.otpDisabled = true;
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Otp verified successfully on email box' });
+
+     
+
+    },(error) =>{
+      this.otpDisabled = false;
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Otp Invalid' });
+    })
+
+
+  }
+
+
 
 
 
