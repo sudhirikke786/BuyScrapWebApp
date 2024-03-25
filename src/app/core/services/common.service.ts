@@ -433,6 +433,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Regrades/GetAllRegrades', 'GET', paramObj);
   }
 
+  GetRegradedMaterialsById(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Regrades/GetRegradedMaterialsById', 'GET', paramObj);
+  }
+
   InsertUpdateRegradedMaterials(requestObj:any, postParams: any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Regrades/InsertUpdateRegradedMaterials', 'POST', requestObj, postParams);
   }

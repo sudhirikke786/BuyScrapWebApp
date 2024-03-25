@@ -75,6 +75,7 @@ export class RegradeDashboardComponent implements OnInit {
   orgName: any;
   locId: any;
   metarialObj:any = [];
+  popupAction = 'edit';
 
   stockQuanity: number = 0;
 
@@ -147,6 +148,38 @@ export class RegradeDashboardComponent implements OnInit {
         }
       );
   }
+  
+
+  getSubMaterialById(regradeId: any, subMaterialId: any) {
+    this.subMaterialLoader = true;
+
+    const paramObject = {
+      SearchText: this.searchSubMaterialInput,
+      LocationId: this.locId
+    };
+    this.commonService.getSubMaterials(paramObject)
+      .subscribe(data => {
+          console.log('getSubMaterials :: ');
+          console.log(data);
+          this.subMaterialList = data.body.data;
+          const subMaterial = data.body.data.filter((item:any) => item.rowId == subMaterialId)[0]
+          
+          console.log('subMaterial :: ');
+          console.log(subMaterial);
+          this.showRegrateDeatilModel(subMaterial);
+          this.GetRegradedMaterialsById(regradeId);
+          // this.defaultSelectedMaterial = this.subMaterialList[0].rowId;
+          // alert(this.defaultSelectedMaterial);
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+          this.subMaterialLoader = false;
+        },
+        () => {
+          this.subMaterialLoader = false;
+        }
+      );
+  }
 
   getAllGroupMaterial() {
     this.materialList =  JSON.parse(JSON.stringify(this.subMaterialList)); //{ ...this.subMaterialList };
@@ -158,14 +191,50 @@ export class RegradeDashboardComponent implements OnInit {
   }
   
   showDialog() {
-    this.visibleNewRegrade = true;
+    this.visibleNewRegrade = true;    
+    this.metarialObj = [];
     this.getSubMaterials();
   }
-  showTableModel() {
-    alert('In-progress .... !!!')
-    // TO DO:: 
-    // this.ShowmodelRegrate = true;
-    // this.getSubMaterials();
+
+  regradeDetails(regradeId: any, shipoutId: any, action: string) {
+    this.popupAction = action;
+    // alert(action + ' action Triggered :: ' + shipoutId + ' :: ' + regradeId)
+    this.getSubMaterialById(regradeId, shipoutId);
+  }
+
+  deleteDetails(shipoutId: any) {
+    alert('Delete action Triggered')
+  }
+
+
+  existingMaterialList(materialName: any, stockQuanity: any) {
+    this.metarialObj.push({name:materialName,quanitity:stockQuanity})
+    console.log(this.metarialObj);
+  }
+
+  
+  GetRegradedMaterialsById(id: any) {
+     this.isLoading = true;
+     const param = {RegradedID : id};
+     console.log(this.pagination);
+     this.commonService.GetRegradedMaterialsById(param)
+       .subscribe(data => {
+          console.log('GetRegradedMaterialsById :: ');
+          console.log(data.body.data);
+          // Iterate through the object
+          this.metarialObj = [];
+          data.body.data.forEach((item: any) => {
+            this.existingMaterialList(item.materialName, item.net);
+          });
+       },
+         (err: any) => {
+           this.isLoading = false;
+           // this.errorMsg = 'Error occured';
+         },
+         () => {
+           this.isLoading = false;
+         }
+       );
   }
 
   showRegrateDeatilModel(subMaterial: any){
