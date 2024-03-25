@@ -166,7 +166,8 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
     this.showImage = false;
   }
 
-  makePayment(){    
+  makePayment(){   
+    console.log(this.registrationForm.value) 
     console.log(this.selectedPlan);
     alert(JSON.stringify(this.selectedPlan));
 
@@ -218,10 +219,12 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
       EmailId:this.registrationForm.controls.emailAddress.value,
       OTP:""+this.registrationForm.controls.otp.value
     }).subscribe((res) => {
+      this.otpVerified = true;
       this.otpDisabled = true;
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Otp verified successfully' });
 
     },(error) =>{
+      this.otpVerified = false;
       this.otpDisabled = false;
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Otp Invalid' });
     })
