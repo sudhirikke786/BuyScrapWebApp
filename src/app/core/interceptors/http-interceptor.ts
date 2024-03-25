@@ -115,7 +115,8 @@ export class AuthInterceptor implements HttpInterceptor {
   addToken(req: HttpRequest<any>): HttpRequest<any> {
     if ( (req.url.indexOf('token') > 0 && this.callToken !== false) || (this.callToken === false) || 
     (req.url.indexOf('GetAllLocatoins') > 0) || (req.url.indexOf('ValidateCredentials') > 0) || 
-    (req.url.indexOf('UserAuthentication') > 0) || (req.url.indexOf('GetAllSubscriptionPlan') > 0) ) {
+    (req.url.indexOf('UserAuthentication') > 0) || (req.url.indexOf('GetAllSubscriptionPlan') > 0) || 
+    (req.url.indexOf('OTP') > 0)) {
       return req.clone({ withCredentials: true });
     } else {      
       const userToken = this.localService.getLocalStorage('userObj');
