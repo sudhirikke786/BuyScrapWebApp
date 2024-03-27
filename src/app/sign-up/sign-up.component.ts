@@ -216,11 +216,11 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
     this.otpDisabled = true;
     this.otpVerified = false;
     this.commonService.VerifyOTP({
-      EmailId:this.registrationForm.controls.emailAddress.value,
-      OTP:""+this.registrationForm.controls.otp.value
+      EmailId:this.registrationForm?.controls?.emailAddress?.value,
+      OTP:""+this.registrationForm?.controls?.otp?.value
     }).subscribe((res) => {
       this.otpVerified = true;
-      this.otpDisabled = true;
+      this.otpDisabled = false;
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Otp verified successfully' });
 
     },(error) =>{
