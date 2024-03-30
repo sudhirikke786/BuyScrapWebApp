@@ -37,10 +37,10 @@
 
 
 
-                            <div class="row mt-20" *ngIf="!showLoder">
+                            <div class="row mt-20 plan" *ngIf="!showLoder">
                                 <ng-container *ngFor="let item of planObj;let i=index">
                         
-                                    <div class="col-sm-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                                         <div class="pricing-box pricing-box-1" tabindex="0" [ngClass]="{'plan-selected': item?.isselected}">
                                             <h4 class="pricing-plan-name">{{item?.planTitle}}</h4> 
         
@@ -50,9 +50,27 @@
         
                                                 <hr>
         
-                                                <h4 class="pricing-plan-price" *ngIf="item?.planCostMonthly != 0"><img src="assets/images/custom/no-camera.png" class="camera-img">${{item?.planCostMonthly}}/Monthly + fees</h4>
+                                                <h4 class="pricing-plan-price d-flex align-items-center ms-2" *ngIf="item?.planCostMonthly != 0">
+                                                
+                                                    <input class="form-check-input me-1" type="radio"  [checked]="item.planDetails[0].isSelcted"    (click)="getSelectedPlan(item?.planDetails,1)"   name="liteplanName_{{i}}" id="flexRadioDefault1">  
+                                                    <img *ngIf="item.IsLightVersion" src="assets/images/custom/no-camera.png" class="camera-img  me-1">
+                                                    <i *ngIf="item.IsProVersion"  class="bi bi-camera  me-1" style="color: black;"></i>
+                                                   
+                                                   
+                                                    ${{item?.planCostMonthly}}/Monthly + fees
+                                                
+                                                </h4>
                                                 <span *ngIf="item?.planCostMonthly != 0 && item?.planCostYearly != 0">OR</span>                                                
-                                                <h4 class="pricing-plan-price" *ngIf="item?.planCostYearly != 0"><img src="assets/images/custom/no-camera.png" class="camera-img">${{item?.planCostYearly}}/Yearly + fees</h4>
+                                                <h4 class="pricing-plan-price d-flex align-items-center ms-2" *ngIf="item?.planCostYearly != 0">
+
+                                                    
+                                                    <input class="form-check-input me-1" type="radio"  [checked]="item.planDetails[1].isSelcted"    (click)="getSelectedPlan(item?.planDetails,0)"  name="liteplanName_{{i}}"   id="flexRadioDefault1">  
+
+                                                    <img *ngIf="item.IsLightVersion" src="assets/images/custom/no-camera.png" class="camera-img  me-1">
+                                                    <i *ngIf="item.IsProVersion"  class="bi bi-camera  me-1" style="color: black;"></i>
+                                                     <!-- <i class="bi bi-camera-fill" style="background-color: #000;"></i> -->
+                                                    
+                                                    ${{item?.planCostYearly}}/Yearly + fees</h4>
         
                                                 <h5 class="pricing-plan-popularity">{{item?.planSubTitle}}</h5>
         
@@ -68,10 +86,14 @@
         
                                                    
                                                 </table>
+
+                                                <div class="btn-footer">
+                                                    <button class="btn btn-primary-bsa-orange mt-15" *ngIf="item?.isselected" (click)="getSelected(item,i)">SELECTED</button>
+                                                    <button class="btn btn-primary-bsa-orange mt-15" *ngIf="!item?.isselected" (click)="getSelected(item,i)">Select Plan</button>
+            
+                                                </div>
         
-                                                <button class="btn btn-primary-bsa-orange mt-15" *ngIf="item?.isselected" (click)="getSelected(item,i)">SELECTED</button>
-                                                <button class="btn btn-primary-bsa-orange mt-15" *ngIf="!item?.isselected" (click)="getSelected(item,i)">Select Plan</button>
-        
+                                           
                                                 <!-- <button class="btn btn-primary-bsa-orange mt-15"   (click)="removeCartItem(buyScrappLite);buyScrappLite.selected=false">SELECTED</button> -->
         
         
@@ -92,11 +114,15 @@
                                 
                             <div  class="row mt-20" *ngIf="showLoder">
                                 
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <app-page-loader type="packageloader"></app-page-loader>
                                 </div>
 
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
+                                    <app-page-loader type="packageloader"></app-page-loader>
+                                </div>
+
+                                <div class="col-sm-4">
                                     <app-page-loader type="packageloader"></app-page-loader>
                                 </div>
                               
@@ -133,8 +159,15 @@
                                                         <h4 class="summary-h4">{{selectedPlan?.planTitle}} </h4> 
                                                     </div>
 
-                                                    <div class="col-4">
-                                                        <h4 class="summary-h4-2">${{selectedPlan?.planCostMonthly || 0}} / Monthly</h4>
+                                                    <div class="col-4" *ngIf="selectedPlan.planDetails[0].isSelcted">
+                                                  
+                                                        <h4 class="summary-h4-2">${{selectedPlan?.planCostMonthly || 0  }}/  {{selectedPlan.planDetails[0]?.type}}</h4>
+                                                    </div>
+
+                                                    <div class="col-4" *ngIf="selectedPlan.planDetails[1].isSelcted">
+                                                    
+                                                       
+                                                        <h4 class="summary-h4-2">${{selectedPlan?.planCostYearly  || 0  }} /  {{selectedPlan.planDetails[1]?.type}}</h4>
                                                     </div>
 
                                                     <div class="col-12">
@@ -151,9 +184,16 @@
                                                     <div class="col-8">
                                                         <h4 class="summary-total-h4">Upfront Total Due</h4> 
                                                     </div>
+                                                    
+                                                    <div class="col-4" *ngIf="selectedPlan?.planDetails[0]?.isSelcted">
+                                                      
+                                                        <h4 class="summary-total-h4-2">${{selectedPlan?.planCostMonthly || 0  }} / {{selectedPlan?.planDetails[0]?.type}}</h4>
+                                                        <span class="summary-sub-heading" style="text-align: right;">Initial Payment</span>
+                                                    </div>
 
-                                                    <div class="col-4">
-                                                        <h4 class="summary-total-h4-2">${{selectedPlan?.planCostMonthly || 0  }} / Monthly</h4>
+                                                    <div class="col-4" *ngIf="selectedPlan?.planDetails[1]?.isSelcted">
+                                                   
+                                                        <h4 class="summary-total-h4-2">${{selectedPlan?.planCostYearly || 0  }} / {{selectedPlan?.planDetails[1]?.type}}</h4>
                                                         <span class="summary-sub-heading" style="text-align: right;">Initial Payment</span>
                                                     </div>
 
@@ -164,7 +204,7 @@
                                         <tr>
                                             <td colspan="2">
                                                 <div class="get-started-btn">
-                                                   <button [disabled]="!selectedPlan?.planCostMonthly"   (click)="selectedPlan?.planCostMonthly && addRegister()" class="btn btn-primary-bsa-get-started">GET STARTED</button> 
+                                                   <button  (click)="addRegister()" class="btn btn-primary-bsa-get-started">GET STARTED</button> 
                                                 </div>
                                             </td> 
                                         </tr>
@@ -316,7 +356,7 @@
 
     <!--  Get Started Modal Popup -->
 
-    <p-dialog [modal]="true" header="Get Started"  (onHide)="cancelImage()" [(visible)]="showImage"  [style]="{width: '70vw'}">
+    <p-dialog [modal]="true" header="Get Started"  (onHide)="cancelImage()" [(visible)]="showImage"  [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}" >
 
         <div class="row">
             <div class="col-sm-12">
@@ -327,6 +367,8 @@
                         <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Company Name</label>
                             <input type="text" formControlName="OrganisationName" id="OrganisationName" class="form-control" placeholder="Company Name">
+                            <app-form-error-message msg="Company is required" *ngIf="submitted && registrationForm?.get('OrganisationName')?.errors?.required"></app-form-error-message>
+                        
                         </div>
                     </div>
 
@@ -335,6 +377,8 @@
                             <div class="col">
                                 <label for="simpleinput" class="form-label w-100">Email Address</label>
                                 <input type="email" [readonly]="otpVerified" formControlName="EmailID" id="EmailID" class="form-control" [ngClass]="{ 'is-valid': otpVerified}" placeholder="Email Address">
+                                <app-form-error-message msg="Otp is required" *ngIf="submitted && registrationForm?.get('otpVerified')?.errors?.required"></app-form-error-message>
+
                                 <div class="valid-feedback" *ngIf="otpVerified">
                                     Email Verified
                                   </div>
@@ -378,12 +422,22 @@
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Password</label>
+
                             <input type="password" formControlName="OrgKey" id="OrgKey" class="form-control" placeholder="Enter Your Password">
+                            <app-form-error-message msg="Passwords is required" *ngIf="submitted && registrationForm?.get('OrgKey')?.errors?.required"></app-form-error-message>
+
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Confirm Password</label>
                             <input type="password" formControlName="ConfirmOrgKey" id="ConfirmOrgKey" class="form-control" placeholder="Enter Your Password">
+                           
+                              <!-- <app-form-error-message msg=" Name is required" *ngIf="(isSubmit && "></app-form-error-message> -->
+
+                              <app-form-error-message msg="confirm Passwords is required" *ngIf="submitted && registrationForm?.get('ConfirmOrgKey')?.errors?.required"></app-form-error-message>
+                              <app-form-error-message msg="Passwords do not match." *ngIf="submitted && registrationForm.hasError('passwordMismatch')"></app-form-error-message>
+                          
+                           
                         </div>
                     </div>
 
@@ -391,30 +445,45 @@
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Contact's First Name</label>
                             <input type="text" formControlName="ContactFirstName" id="ContactFirstName" class="form-control" placeholder="Contact's First Name">
+                            <app-form-error-message msg="First Name is required" *ngIf="submitted && registrationForm?.get('ContactFirstName')?.errors?.required"></app-form-error-message>
+
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Contact's Last Name</label>
+
+                            
                             <input type="text" formControlName="ContactLastName" id="ContactLastName" class="form-control" placeholder="Contact's Last Name">
+                            <app-form-error-message msg="Last Name is required" *ngIf="submitted && registrationForm?.get('ContactLastName')?.errors?.required"></app-form-error-message>
+
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Phone Number</label>
+
                             <input type="text" formControlName="PhoneNumber" id="PhoneNumber" class="form-control" placeholder="Phone Number">
+                            <app-form-error-message msg="Mobile no is required" *ngIf="submitted && registrationForm?.get('PhoneNumber')?.errors?.required"></app-form-error-message>
+
+                     
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Job Title</label>
+
                             <input type="text" formControlName="JobTitle" id="JobTitle" class="form-control" placeholder="Job Title">
+
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Business Address</label>
+
                             <textarea class="form-control mb-0" formControlName="BusinessAddress" placeholder="Enter your address here"></textarea>
+                            <app-form-error-message msg="Business Address  is required" *ngIf="submitted && registrationForm?.get('BusinessAddress')?.errors?.required"></app-form-error-message>
+
                         </div>
                     </div>
 
@@ -422,39 +491,43 @@
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Country</label>
                             <select class="form-select" formControlName="CountryID" id="CountryID">
-                                <option>Country</option>
-                                <option>United States</option>
-                                <option>United Kingdom</option>
-                                <option>India</option>
-                                <option>Canada</option>
+                                <option value="">Country</option>
+                                <option  value="United States" >United States</option>
+                                <option  value="United Kingdom">United Kingdom</option>
+                                <option  value="India">India</option>
+                                <option  value="Canada">Canada</option>
                             </select>
+                            <app-form-error-message msg="Country is required" *ngIf="submitted && registrationForm?.get('CountryID')?.errors?.required"></app-form-error-message>
+
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">State</label>
-                            <select class="form-select" formControlName="StateID" id="StateID">
-                                <option>Country</option>
-                                <option>State 1</option>
-                                <option>State 2</option>
-                                <option>State 3</option>
-                                <option>State 4</option>
+                            <select class="form-select" formControlName="StateID" id="StateID" (change)="getCity()">
+                                
+                                <option  *ngFor="let item of stateList">{{item}}</option>
                             </select>
+                            <app-form-error-message msg="State is required" *ngIf="submitted && registrationForm?.get('StateID')?.errors?.required"></app-form-error-message>
+
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">City</label>
-                            <select class="form-select" formControlName="CityID" id="CityID">
-                                <option>City</option>
-                                <option>City 1</option>
-                                <option>City 2</option>
-                                <option>City 3</option>
-                                <option>City 4</option>
+                           
+
+                            <select class="form-select" formControlName="CityID" id="CityID" >
+                                <option  *ngFor="let item of cityList">{{item}}</option>
                             </select>
+                           
+                            <app-form-error-message msg="City  is required" *ngIf="submitted && registrationForm?.get('CityID')?.errors?.required"></app-form-error-message>
+
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Zip</label>
                             <input type="text" formControlName="ZipCode" id="ZipCode" class="form-control" placeholder="Zip">
+                            <app-form-error-message msg="Zip  is required" *ngIf="submitted && registrationForm?.get('ZipCode')?.errors?.required"></app-form-error-message>
+
                         </div>
                     </div>
 
@@ -465,7 +538,7 @@
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" formControlName="Sameaddress" id="Sameaddress">
+                                <input type="checkbox"  (click)="saveAsSameAddress($event)" class="form-check-input" formControlName="Sameaddress" id="Sameaddress">
                                 <label class="w-100" for="Sameaddress">Same as address above</label>
                             </div>
                         </div>
@@ -482,33 +555,27 @@
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Country</label>
                             <select class="form-select" formControlName="BillingCountryID" id="BillingCountryID">
-                                <option>Country</option>
-                                <option>United States</option>
-                                <option>United Kingdom</option>
-                                <option>India</option>
-                                <option>Canada</option>
+                                <option value="">Country</option>
+                                <option  value="United States" >United States</option>
+                                <option  value="United Kingdom">United Kingdom</option>
+                                <option  value="India">India</option>
+                                <option  value="Canada">Canada</option>
                             </select>
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">State</label>
-                            <select class="form-select" formControlName="BillingStateID" id="BillingStateID">
-                                <option>Country</option>
-                                <option>State 1</option>
-                                <option>State 2</option>
-                                <option>State 3</option>
-                                <option>State 4</option>
+                            <select class="form-select" formControlName="BillingStateID" id="BillingStateID" (change)="getBCity()">
+                                <option>State</option>
+                                <option  *ngFor="let item of stateList">{{item}}</option>
+                               
                             </select>
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">City</label>
                             <select class="form-select" formControlName="BillingCityID" id="BillingCityID">
-                                <option>City</option>
-                                <option>City 1</option>
-                                <option>City 2</option>
-                                <option>City 3</option>
-                                <option>City 4</option>
+                                <option  *ngFor="let item of cityList">{{item}}</option>
                             </select>
                         </div>
 
@@ -543,11 +610,12 @@
                         <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Where did you hear about us?</label>
                             <select class="form-select" formControlName="GetReference" id="GetReference">
-                                <option>Web</option>
-                                <option>Advertisement</option>
-                                <option>Friends</option>
-                                <option>Other</option>
+                                <option value="web">Web</option>
+                                <option value="Advertisement">Advertisement</option>
+                                <option value="Friends">Friends</option>
+                                <option value="Other">Other</option>
                             </select>
+
                         </div>
                     </div>
 
@@ -555,12 +623,17 @@
                         <div class="form-group col-sm-12 mb-2">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" formControlName="PrivacyPolicy" id="PrivacyPolicy">
+
                                 <label class="w-100" for="PrivacyPolicy">I agree to BuyScrapApp’s <a href="#">Privacy Policy</a></label>
+                                <app-form-error-message msg="Click on Agree" *ngIf="submitted && registrationForm?.get('PrivacyPolicy')?.errors?.required"></app-form-error-message>
+
                             </div>
 
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" formControlName="TermsAndCondition" id="TermsAndCondition">
                                 <label class="w-100" for="TermsAndCondition">I agree to BuyScrapApp’s <a href="#">Terms of Service</a></label>
+                                <app-form-error-message msg="Click on Terms of Service " *ngIf="submitted && registrationForm?.get('TermsAndCondition')?.errors?.required"></app-form-error-message>
+
                             </div>
 
                             <div class="form-check">
@@ -569,18 +642,18 @@
                             </div>
                         </div>
                     </div>
-
+<!-- 
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <form action="?" method="POST">
                               <div class="g-recaptcha" data-sitekey="8Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-"></div>
                             </form>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="row">
                         <div class="col-sm-6">
-                            <button [disabled]="!selectedPlan?.planCostMonthly" (click)="selectedPlan?.planCostMonthly && makePayment()" class="btn btn-primary-popup-1">I'M ALL SET</button>
+                            <button type="submit"  (click)="makePayment()" class="btn btn-primary-popup-1">I'M ALL SET</button>
                         </div>
 
                         <div class="col-sm-6">

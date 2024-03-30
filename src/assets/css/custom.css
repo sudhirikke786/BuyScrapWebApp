@@ -2324,6 +2324,9 @@ h1, h2, h3 ,h4{
     height: 60px;
   }
  
+  .container-lg {
+    max-width: 90% !important;
+  }
 
 }
 
@@ -2391,7 +2394,13 @@ select option{
   height: 60px;
 }
 
+.container-lg {
+  max-width: 80% !important;
+}
 
+  .pricing-box{
+    min-height: 30vw !important;
+  }
 }
 
 
@@ -2488,10 +2497,22 @@ b, strong{
     height: 60px;
   }
 
-
+  .container-lg {
+    max-width: 70% !important;
+  }
+  .pricing-box{
+    min-height: 30vw !important;
+  }
 }
 
+.pricing-box{
+  min-height: 490px;
+  height: auto;
+  position: relative;
+  min-width: 360px;
+  width: auto;
 
+}
 
 
 

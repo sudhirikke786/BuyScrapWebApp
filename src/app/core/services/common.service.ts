@@ -512,6 +512,14 @@ export class CommonService {
   VerifyOTP(requestObj:any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Emails/VerifyOTP', 'POST', requestObj);
   }
+
+
+  createOrganisationViaWeb(requestObj:any):Observable<any>{ 
+    return this.callAPI(environment.baseUrl + '/Organisations/CreateOrganisationViaWeb', 'POST', requestObj);
+
+  }
+
+  
   
   
   
