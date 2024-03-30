@@ -50,7 +50,9 @@
         
                                                 <hr>
         
-                                                <h4 class="pricing-plan-price"><img src="assets/images/custom/no-camera.png" class="camera-img">${{item?.planCost}}/Monthly</h4>
+                                                <h4 class="pricing-plan-price" *ngIf="item?.planCostMonthly != 0"><img src="assets/images/custom/no-camera.png" class="camera-img">${{item?.planCostMonthly}}/Monthly + fees</h4>
+                                                <span *ngIf="item?.planCostMonthly != 0 && item?.planCostYearly != 0">OR</span>                                                
+                                                <h4 class="pricing-plan-price" *ngIf="item?.planCostYearly != 0"><img src="assets/images/custom/no-camera.png" class="camera-img">${{item?.planCostYearly}}/Yearly + fees</h4>
         
                                                 <h5 class="pricing-plan-popularity">{{item?.planSubTitle}}</h5>
         
@@ -132,7 +134,7 @@
                                                     </div>
 
                                                     <div class="col-4">
-                                                        <h4 class="summary-h4-2">${{selectedPlan?.planCost || 0}} / Monthly</h4>
+                                                        <h4 class="summary-h4-2">${{selectedPlan?.planCostMonthly || 0}} / Monthly</h4>
                                                     </div>
 
                                                     <div class="col-12">
@@ -151,7 +153,7 @@
                                                     </div>
 
                                                     <div class="col-4">
-                                                        <h4 class="summary-total-h4-2">${{selectedPlan?.planCost || 0  }} / Monthly</h4>
+                                                        <h4 class="summary-total-h4-2">${{selectedPlan?.planCostMonthly || 0  }} / Monthly</h4>
                                                         <span class="summary-sub-heading" style="text-align: right;">Initial Payment</span>
                                                     </div>
 
@@ -162,7 +164,7 @@
                                         <tr>
                                             <td colspan="2">
                                                 <div class="get-started-btn">
-                                                   <button [disabled]="!selectedPlan?.planCost"   (click)="selectedPlan?.planCost && addRegister()" class="btn btn-primary-bsa-get-started">GET STARTED</button> 
+                                                   <button [disabled]="!selectedPlan?.planCostMonthly"   (click)="selectedPlan?.planCostMonthly && addRegister()" class="btn btn-primary-bsa-get-started">GET STARTED</button> 
                                                 </div>
                                             </td> 
                                         </tr>
@@ -324,7 +326,7 @@
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Company Name</label>
-                            <input type="text" formControlName="companyname" id="companyname" class="form-control" placeholder="Company Name">
+                            <input type="text" formControlName="OrganisationName" id="OrganisationName" class="form-control" placeholder="Company Name">
                         </div>
                     </div>
 
@@ -332,7 +334,7 @@
                         <div class="form-group col-sm-6 mb-2 d-flex align-items-center">
                             <div class="col">
                                 <label for="simpleinput" class="form-label w-100">Email Address</label>
-                                <input type="email" [readonly]="otpVerified" formControlName="emailAddress" id="emailaddress" class="form-control" [ngClass]="{ 'is-valid': otpVerified}" placeholder="Email Address">
+                                <input type="email" [readonly]="otpVerified" formControlName="EmailID" id="EmailID" class="form-control" [ngClass]="{ 'is-valid': otpVerified}" placeholder="Email Address">
                                 <div class="valid-feedback" *ngIf="otpVerified">
                                     Email Verified
                                   </div>
@@ -376,50 +378,50 @@
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Password</label>
-                            <input type="password" id="password" class="form-control" placeholder="Enter Your Password">
+                            <input type="password" formControlName="OrgKey" id="OrgKey" class="form-control" placeholder="Enter Your Password">
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Confirm Password</label>
-                            <input type="password" id="confirmpassword" class="form-control" placeholder="Enter Your Password">
+                            <input type="password" formControlName="ConfirmOrgKey" id="ConfirmOrgKey" class="form-control" placeholder="Enter Your Password">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Contact's First Name</label>
-                            <input type="text" id="contactsfirstname" class="form-control" placeholder="Contact's First Name">
+                            <input type="text" formControlName="ContactFirstName" id="ContactFirstName" class="form-control" placeholder="Contact's First Name">
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Contact's Last Name</label>
-                            <input type="text" id="contactslastname" class="form-control" placeholder="Contact's Last Name">
+                            <input type="text" formControlName="ContactLastName" id="ContactLastName" class="form-control" placeholder="Contact's Last Name">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Phone Number</label>
-                            <input type="text" id="phonenumber" class="form-control" placeholder="Phone Number">
+                            <input type="text" formControlName="PhoneNumber" id="PhoneNumber" class="form-control" placeholder="Phone Number">
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Job Title</label>
-                            <input type="text" id="jobtitle" class="form-control" placeholder="Job Title">
+                            <input type="text" formControlName="JobTitle" id="JobTitle" class="form-control" placeholder="Job Title">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Business Address</label>
-                            <textarea class="form-control mb-0" placeholder="Enter your address here"></textarea>
+                            <textarea class="form-control mb-0" formControlName="BusinessAddress" placeholder="Enter your address here"></textarea>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Country</label>
-                            <select class="form-select" id="selectrole">
+                            <select class="form-select" formControlName="CountryID" id="CountryID">
                                 <option>Country</option>
                                 <option>United States</option>
                                 <option>United Kingdom</option>
@@ -430,7 +432,7 @@
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">State</label>
-                            <select class="form-select" id="selectrole">
+                            <select class="form-select" formControlName="StateID" id="StateID">
                                 <option>Country</option>
                                 <option>State 1</option>
                                 <option>State 2</option>
@@ -441,7 +443,7 @@
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">City</label>
-                            <select class="form-select" id="selectrole">
+                            <select class="form-select" formControlName="CityID" id="CityID">
                                 <option>City</option>
                                 <option>City 1</option>
                                 <option>City 2</option>
@@ -452,7 +454,7 @@
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Zip</label>
-                            <input type="text" id="zip" class="form-control" placeholder="Zip">
+                            <input type="text" formControlName="ZipCode" id="ZipCode" class="form-control" placeholder="Zip">
                         </div>
                     </div>
 
@@ -463,8 +465,8 @@
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sameaddress">
-                                <label class="w-100" for="sameaddress">Same as address above</label>
+                                <input type="checkbox" class="form-check-input" formControlName="Sameaddress" id="Sameaddress">
+                                <label class="w-100" for="Sameaddress">Same as address above</label>
                             </div>
                         </div>
                     </div>
@@ -472,14 +474,14 @@
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Address</label>
-                            <textarea class="form-control mb-0" placeholder="Enter your address here"></textarea>
+                            <textarea class="form-control mb-0" formControlName="BillingBusinessAddress" placeholder="Enter your address here"></textarea>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Country</label>
-                            <select class="form-select" id="selectrole">
+                            <select class="form-select" formControlName="BillingCountryID" id="BillingCountryID">
                                 <option>Country</option>
                                 <option>United States</option>
                                 <option>United Kingdom</option>
@@ -490,7 +492,7 @@
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">State</label>
-                            <select class="form-select" id="selectrole">
+                            <select class="form-select" formControlName="BillingStateID" id="BillingStateID">
                                 <option>Country</option>
                                 <option>State 1</option>
                                 <option>State 2</option>
@@ -501,7 +503,7 @@
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">City</label>
-                            <select class="form-select" id="selectrole">
+                            <select class="form-select" formControlName="BillingCityID" id="BillingCityID">
                                 <option>City</option>
                                 <option>City 1</option>
                                 <option>City 2</option>
@@ -512,14 +514,14 @@
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Zip</label>
-                            <input type="text" id="zip" class="form-control" placeholder="Zip">
+                            <input type="text" formControlName="BillingZipCode" id="BillingZipCode" class="form-control" placeholder="Zip">
                         </div>
                     </div>
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Input UOM</label>
-                            <select class="form-select" id="selectrole">
+                            <select class="form-select" formControlName="inputUOM" id="inputUOM">
                                 <option>LB</option>
                                 <option>KG</option>
                             </select>
@@ -527,7 +529,7 @@
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Currency</label>
-                            <select class="form-select" id="selectrole">
+                            <select class="form-select" formControlName="currency" id="currency">
                                 <option>$</option>
                                 <option>HTD</option>
                                 <option>€</option>
@@ -535,12 +537,12 @@
                                 <option>£</option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Where did you hear about us?</label>
-                            <select class="form-select" id="selectrole">
+                            <select class="form-select" formControlName="GetReference" id="GetReference">
                                 <option>Web</option>
                                 <option>Advertisement</option>
                                 <option>Friends</option>
@@ -552,18 +554,18 @@
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="privacypolicy">
-                                <label class="w-100" for="privacypolicy">I agree to BuyScrapApp’s <a href="#">Privacy Policy</a></label>
+                                <input type="checkbox" class="form-check-input" formControlName="PrivacyPolicy" id="PrivacyPolicy">
+                                <label class="w-100" for="PrivacyPolicy">I agree to BuyScrapApp’s <a href="#">Privacy Policy</a></label>
                             </div>
 
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="terms">
-                                <label class="w-100" for="terms">I agree to BuyScrapApp’s <a href="#">Terms of Service</a></label>
+                                <input type="checkbox" class="form-check-input" formControlName="TermsAndCondition" id="TermsAndCondition">
+                                <label class="w-100" for="TermsAndCondition">I agree to BuyScrapApp’s <a href="#">Terms of Service</a></label>
                             </div>
 
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="communications">
-                                <label class="w-100" for="communications">I would like BuyScrapApp to send me communications</label>
+                                <input type="checkbox" class="form-check-input" formControlName="Communications" id="Communications">
+                                <label class="w-100" for="Communications">I would like BuyScrapApp to send me communications</label>
                             </div>
                         </div>
                     </div>
@@ -578,12 +580,12 @@
 
                     <div class="row">
                         <div class="col-sm-6">
-                            <button [disabled]="!selectedPlan?.planCost"   (click)="selectedPlan?.planCost && makePayment()" class="btn btn-primary-popup-1">I'M ALL SET</button>
+                            <button [disabled]="!selectedPlan?.planCostMonthly" (click)="selectedPlan?.planCostMonthly && makePayment()" class="btn btn-primary-popup-1">I'M ALL SET</button>
                         </div>
 
-                        <!-- <div class="col-sm-6">
+                        <div class="col-sm-6">
                             <a class="btn btn-primary-popup-2">GET 7 DAY FREE TRIAL</a>
-                        </div> -->
+                        </div>
                     </div>                                          
 
                     

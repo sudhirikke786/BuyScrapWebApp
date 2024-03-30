@@ -52,36 +52,33 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
   getRegistrationForm(){
 
     this.registrationForm = this.formBuilder.group({
-      companyName: ['', Validators.required],
-      emailAddress: ['', [Validators.required, Validators.email]],
+      OrganisationName: ['', Validators.required],
+      EmailID: ['', [Validators.required, Validators.email]],
       otp: ['', Validators.required],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
-      contactsFirstName: ['', Validators.required],
-      contactsLastName: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
-      jobTitle: ['', Validators.required],
-      businessAddress: ['', Validators.required],
-      country: ['', Validators.required],
-      state: ['', Validators.required],
-      city: ['', Validators.required],
-      zip: ['', Validators.required],
-      billingAddress: [''],
-      sameAddress: [false],
-      billingAddressDetails: this.formBuilder.group({
-        billingAddress: [''],
-        billingCountry: [''],
-        billingState: [''],
-        billingCity: [''],
-        billingZip: ['']
-      }),
-      inputUOM: ['', Validators.required],
-      currency: ['', Validators.required],
-      referralSource: ['', Validators.required],
-      privacyPolicy: [false, Validators.requiredTrue],
-      terms: [false, Validators.requiredTrue],
-      communications: [false],
-      recaptcha: [null, Validators.required]
+      OrgKey: ['', Validators.required],
+      ConfirmOrgKey: ['', Validators.required],
+      ContactFirstName: ['', Validators.required],
+      ContactLastName: ['', Validators.required],
+      PhoneNumber: ['', Validators.required],
+      JobTitle: ['', Validators.required],
+      BusinessAddress: ['', Validators.required],
+      CountryID: ['', Validators.required],
+      StateID: ['', Validators.required],
+      CityID: ['', Validators.required],
+      ZipCode: ['', Validators.required],
+      Sameaddress: [false],
+      BillingBusinessAddress: [''],
+      BillingCountryID: [''],
+      BillingStateID: [''],
+      BillingCityID: [''],
+      BillingZipCode: [''],
+      // inputUOM: ['', Validators.required],
+      // currency: ['', Validators.required],
+      // Recaptcha: [null, Validators.required],
+      GetReference: ['', Validators.required],
+      PrivacyPolicy: [false, Validators.requiredTrue],
+      TermsAndCondition: [false, Validators.requiredTrue],
+      Communications: [false]
     });
 
   }
@@ -126,6 +123,7 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
     });
     console.log(this.planObj);
 
+    res.isselected = true;
    this.selectedPlan = res;
     
    
@@ -194,7 +192,7 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
     this.sendDisabled = true;
     this.showOtp =  false;
     this.commonService.sendOTPEmail({
-      EmailID:this.registrationForm.controls.emailAddress.value
+      EmailID:this.registrationForm.controls.EmailID.value
     }).subscribe((res) => {
       this.showOtp =  true;
       this.sendDisabled = false;
@@ -216,7 +214,7 @@ export class SignUpComponent implements OnInit,AfterViewInit, OnDestroy {
     this.otpDisabled = true;
     this.otpVerified = false;
     this.commonService.VerifyOTP({
-      EmailId:this.registrationForm?.controls?.emailAddress?.value,
+      EmailId:this.registrationForm?.controls?.EmailID?.value,
       OTP:""+this.registrationForm?.controls?.otp?.value
     }).subscribe((res) => {
       this.otpVerified = true;
