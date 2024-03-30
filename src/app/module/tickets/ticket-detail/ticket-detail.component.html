@@ -22,70 +22,73 @@
                 <div class="card">
                     <div class="card-body" style="min-height:calc(100vh - 147px);">
 
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <img src="{{customer?.idfaceShotImage}}" class="dl-img">
-                            </div>
+                       
 
-                            <div class="col-sm-10">
-
-                                <div class="row">
-                                   <div class="col-sm-6 d-flex">
-                                        <h4 class="ticket-number me-1">Ticket# - {{ticketId}}</h4>
-                                        <!-- <a href="javascript:void(0)" class="btn btn-grid btn-primary waves-effect waves-light ms-1 mb-1">
-                                            <i class="mdi mdi-plus"></i>  COD Required
-                                        </a> -->
-                                   </div>
-
-                                   <div class="col-sm-6 d-flex justify-content-end">
-                                    <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/home">
-                                        Back
-                                    </a>
-                                        <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
-                                            <i class="mdi mdi-pencil"></i> Edit
-                                        </a>
-                                        <div *ngIf="isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
-                                            <a class="btn btn-danger me-1" (click)="cancelEditTicket(false, 0)">Cancel</a>
-                                            <a class="btn btn-primary" (click)="confirmSave()">Save</a>
-                                        </div>
-
-                                   </div> 
-                                </div>
-
-                                <table class="seller-view-tbl">
-                                    <tbody><tr>
-                                        <td>{{customer?.fullName}}</td>
-                                        <td>Address : {{customer?.streetAddress}}</td>
-                                        <td>Created on : <label>{{ticketData?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
-                                        <td>Time : {{ticketData?.createdDate  | date: 'hh:mm a'}}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>DL# - {{customer?.driverLicenseNumber}}</td>
-                                        <td>Dealer Type - {{customer?.dealerType}}</td>
-                                        <td>License Plate # :{{customer?.driverLicenseNumber}}</td>
-                                        <td>By <label>{{user?.firstName}} {{user?.lastName}}</label></td>
-                                    </tr>
-                                </tbody></table>
-                            </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <h4 class="title-plus-border">Particulars</h4>                                                
-                            </div>
-                            <div class="col-sm-4">
-                                <h4 class="title-plus-border">Status - <span class="color-green">{{ticketData?.status}}</span></h4>                                                
-                            </div>
-                        </div>
+                      
 
                         <div class="row">
                             <!-- <div [ngClass]="!isEditModeOn && !editItemCloseImageCapture? 'col-sm-12' : 'col-sm-9'"> -->
 
-                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  ticketData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-9'">
+                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  ticketData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-8'">
                                 
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <img src="{{customer?.idfaceShotImage}}" class="dl-img">
+                                    </div>
+        
+                                    <div class="col-sm-10">
+        
+                                        <div class="row">
+                                           <div class="col-sm-6 d-flex">
+                                                <h4 class="ticket-number me-1">Ticket# - {{ticketId}}</h4>
+                                                <!-- <a href="javascript:void(0)" class="btn btn-grid btn-primary waves-effect waves-light ms-1 mb-1">
+                                                    <i class="mdi mdi-plus"></i>  COD Required
+                                                </a> -->
+                                           </div>
+        
+                                           <div class="col-sm-6 d-flex justify-content-end">
+                                            <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/home">
+                                                Back
+                                            </a>
+                                                <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
+                                                    <i class="mdi mdi-pencil"></i> Edit
+                                                </a>
+                                                <div *ngIf="isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
+                                                    <a class="btn btn-danger me-1" (click)="cancelEditTicket(false, 0)">Cancel</a>
+                                                    <a class="btn btn-primary" (click)="confirmSave()">Save</a>
+                                                </div>
+        
+                                           </div> 
+                                        </div>
+        
+                                        <table class="seller-view-tbl">
+                                            <tbody><tr>
+                                                <td>{{customer?.fullName}}</td>
+                                                <td>Address : {{customer?.streetAddress}}</td>
+                                                <td>Created on : <label>{{ticketData?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
+                                                <td>Time : {{ticketData?.createdDate  | date: 'hh:mm a'}}</td>
+                                            </tr>
+        
+                                            <tr>
+                                                <td>DL# - {{customer?.driverLicenseNumber}}</td>
+                                                <td>Dealer Type - {{customer?.dealerType}}</td>
+                                                <td>License Plate # :{{customer?.driverLicenseNumber}}</td>
+                                                <td>By <label>{{user?.firstName}} {{user?.lastName}}</label></td>
+                                            </tr>
+                                        </tbody></table>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <h4 class="title-plus-border">Particulars</h4>                                                
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4 class="title-plus-border">Status - <span class="color-green">{{ticketData?.status}}</span></h4>                                                
+                                    </div>
+                                </div>
+
+
                                 <div class="row">
                                     <div style="overflow-y: auto;height:calc(100vh - 425px);">
                                         <p-table class="ticket-table" #dt1 [value]="ticketObj" 
@@ -297,10 +300,10 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-3" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
+                            <div class="col-sm-4" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
 
                                 <!-- <div class="col-12">  -->
-                                <div id="mainbox" class="mainbox-row" style="height:calc(100vh - 300px)">
+                                <div id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
                                     <div class="card">
                                         <div class="card-body px-1 py-1">
                                             
@@ -331,9 +334,9 @@
 
                             </div>
 
-                            <div class="col-sm-3 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
+                            <div class="col-sm-4 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
-                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 300px)">
+                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
                                     <h4 class="materials-heading">Materials</h4>
   
                                     <ul class="main-ul">
@@ -351,7 +354,7 @@
                                     
                                 </div>
   
-                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row" style="height:calc(100vh - 300px)">
+                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row" style="height:calc(100vh - 200px)">
                                     <h1 class="materials-heading">
                                       <span>
                                           <a id="backToMainBox1" class="btn btn-primary " (click)="backToMainMaterials()"><i class="mdi mdi-keyboard-backspace"></i></a>
@@ -372,8 +375,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-3 position-relative" *ngIf="isEditModeOn && editItemCloseImageCapture">
-                                <div class="calc" style="height:calc(100vh - 200px);width:100%;overflow: hidden;">
+                            <div class="col-sm-4 position-relative" *ngIf="isEditModeOn && editItemCloseImageCapture">
+                                <div class="calc" style="height:calc(100vh - 150px);width:100%;overflow: hidden;">
                                     <app-price-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()"
                                 [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
                                         [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">

@@ -9,7 +9,7 @@
     <div class="col-md-6 col-sm-12">
       <div class="content-container mb-1 res-1920">
         <button type="button" class="btn btn-primary" (click)="changeItem()">Change Item</button>
-        <button type="button" class="btn btn-danger" (click)="changeImage()">Capture Img</button>
+        <button type="button" class="btn btn-danger mt-1"  (click)="changeImage()">Capture Img</button>
       </div>
     </div>
   </div>
@@ -51,11 +51,11 @@
       <div class="col-md-9">
           <div class="input-group">
               <input type="text" placeholder="Enter Tare Weight" #inputBox2  [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'"   id="tear" class="form-control   mb-1 ps-0">
-              <div class="input-group-append" *ngIf="tareInput">
+              <!-- <div class="input-group-append" *ngIf="tareInput">
                 <button class="btn btn-outline-secondary  px-0 py-0" type="button" (click)="tareInput ='0'">
                   <i class="bi bi-x"></i>
                 </button>
-              </div>
+              </div> -->
             </div>
       </div>
   </div>
@@ -81,11 +81,11 @@
       <div class="col-md-9">
           <div class="input-group">
               <input type="text" #inputBox4 [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox4'"   id="price" class="form-control   mb-1 ps-0">
-              <div class="input-group-append" *ngIf="priceInput">
+              <!-- <div class="input-group-append" *ngIf="priceInput">
                 <button class="btn btn-outline-secondary  px-0 py-0" type="button" (click)="priceInput ='0'">
                   <i class="bi bi-x"></i>
                 </button>
-              </div>
+              </div> -->
           </div>
       </div>
   </div>

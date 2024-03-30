@@ -2328,6 +2328,11 @@ h1, h2, h3 ,h4{
     max-width: 90% !important;
   }
 
+  .btn-cal {
+    font-size: 2.1rem;
+   }
+
+
 }
 
 @media only screen and (max-width:3840px) and (min-width:2560px) {
@@ -2401,6 +2406,16 @@ select option{
   .pricing-box{
     min-height: 30vw !important;
   }
+  .btn-cal {
+    font-size: 3.1rem !important;
+   }
+
+   .container {
+    width: 100% !important;
+    max-width: 100% !important;
+   };
+
+
 }
 
 
@@ -2503,6 +2518,15 @@ b, strong{
   .pricing-box{
     min-height: 30vw !important;
   }
+
+  .btn-cal {
+    font-size: 6.1rem !important;
+   }
+   .container {
+    width: 100% !important;
+    max-width: 100% !important;
+   };
+
 }
 
 .pricing-box{
