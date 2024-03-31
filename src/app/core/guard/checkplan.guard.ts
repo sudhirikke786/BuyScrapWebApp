@@ -19,25 +19,31 @@ export class CheckplanGuard implements CanActivate {
   async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> {
-      const planObj = await this.getPlanDetails();
-      if(planObj.body.data){
-        this.dtService.setSubscriptionPlan(planObj.body.data)
+
+      try {
+        const planObj = await this.getPlanDetails();
+        if(planObj.body.data){
+          this.dtService.setSubscriptionPlan(planObj.body.data)
+        }
+      } catch (error) {
+        console.log(error)
       }
+     
       return true
   }
 
 
    getPlanDetails()  {
-      if(this.dtService.getActivePlan()){
-        let obj : any = {
-          body: {
-            data:this.dtService.getActivePlan()
-          }
-        }
-        return obj;
-      }else{
+      // if(this.dtService.getActivePlan()){
+      //   let obj : any = {
+      //     body: {
+      //       data:this.dtService.getActivePlan()
+      //     }
+      //   }
+      //   return obj;
+      // }else{
         return this.cService.getAllOrganisationPlanName({}).toPromise();
-      }
+      // }
      
    }
 
