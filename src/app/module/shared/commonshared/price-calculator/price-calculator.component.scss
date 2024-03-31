@@ -22,7 +22,7 @@
     background-color: var(--ct-blue);
     color: var(--ct-white);
     border: none;
-    font-size: 1.4rem;
+    font-size: 2.0rem;
     
     cursor: pointer;
   }
@@ -164,84 +164,20 @@
 }
 
 
- @media screen and (min-width: 1920px) {
 
-  .calculator {
+@media only screen and (min-width: 2050px) and (min-height: 2732px) {
+  .btn-cal {
+    background-color: var(--ct-blue);
+    color: var(--ct-white);
+    border: none;
+    font-size: 5.0rem !important;
     
-    padding: 5px;
-    font-size: 18px !important;
-    text-align: center;
-   }
-
-   .btn-cal {
-    font-size: 1.8rem;
-   }
-
-   .h-30{
-    height: 50px;
-    border-color: #e9ecef;
-   }
-
-   .cost-image{
-     div {
-      width:100%;
-     }
-     .img-fluid{
-      width: 100%;
-     
-     
-      max-height: 200px;
-     }
-     .btn{
-      width:45%;
-      margin-right: 5px;
-      margin-top:10px;
-     }
-   }
-
- }
-
- @media only screen and (max-width:7000px) and (min-width: 4000px) {
-
-  .calculator {
-    
-    padding: 5px;
-    font-size:50px !important;
-    text-align: center;
-   }
+    cursor: pointer;
+  } 
+}
 
 
-   .res-1920{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-   }
-   .btn-cal {
-    font-size: 2.1rem;
-   }
 
-   .h-30{
-   
-    border-color: #e9ecef;
-   }
-
-  
-  .cost-image{
-    div {
-     width:100%;
-    }
-    .img-fluid{
-     width: 100%;
-   
-     max-height: 400px;
-    }
-    .btn{
-     width:47%;
-   
-    }
-  }
-
- }
 //  @media  screen only (max-width:2500px) and screen(min-width:1920){
 
 //  }

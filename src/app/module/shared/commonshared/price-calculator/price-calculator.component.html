@@ -2,95 +2,59 @@
 <div class="card-body px-1 py-0" style="padding-top: 6px !important; padding-bottom: 6px !important;">
   
 <div class="container px-0 py-0">
+  <div class="row">
+    <div class="col-12">
+      <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom" > {{itemGroupName}} - {{itemMaterialName}}</div>
+     
+    
+    </div>
+</div>
   <div class="row cost-image">
     <div class="col-md-6 col-sm-12">
-      <img [src]="itemImagePath" alt="Image" class="img-fluid" >
-    </div>
-    <div class="col-md-6 col-sm-12">
-      <div class="content-container mb-1 res-1920">
-        <button type="button" class="btn btn-primary" (click)="changeItem()">Change Item</button>
-        <button type="button" class="btn btn-danger mt-1"  (click)="changeImage()">Capture Img</button>
+      <img [src]="itemImagePath" alt="Image" class="img-fluid img-responsive" >
+
+      <div class="content-container mb-1 col-sm-12">
+        <button type="button" class="btn w-100 btn-primary mt-1" (click)="changeItem()">Change Item</button>
+        <button type="button" class="btn w-100 btn-danger mt-1"  (click)="changeImage()">Capture Img</button>
       </div>
+
     </div>
-  </div>
-
-
-
-  <div class="row">
-      <div class="col-12">
-        <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom" > {{itemGroupName}} - {{itemMaterialName}}</div>
+    <div class="col-md-6 ps-0 col-sm-12">
        
-      
-      </div>
-  </div>
-</div>
-<div class="container px-0 py-0">
-  <div class="row">
-      <div class="col-md-3">
-          <label for="gross">Gross:</label>
-      </div>
-      <div class="col-md-9">
-          <div class="input-group">
-              <input type="text" placeholder="Enter Gross Weight" #inputBox1 [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" 
-              (focus)="focusedInput = 'inputBox1'" (ngModelChange)="calcNetFromGross($event)"  class="form-control inputone   mb-1 ps-0">
-              <div class="input-group-append" *ngIf="grossInput">
-                <!-- <button class="btn btn-outline-secondary  px-0 py-0" type="button" (click)="grossInput ='0'">
-                  <i class="bi bi-x"></i>
-                </button> -->
-              </div>
-            </div>
+          <div class="form-floating mt-1">
+            <input type="text"  readonly placeholder="Enter Gross Weight" #inputBox1 [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" 
+            (focus)="focusedInput = 'inputBox1'" (ngModelChange)="calcNetFromGross($event)"  class="form-control ">
          
-      </div>
-  </div>
+              <label for="inputBox1">Gross</label>
+       
+        
 
-  <!-- Add more rows for additional input boxes -->
-  <div class="row">
-      <div class="col-md-3">
-          <label for="Tare">Tare:</label>
-      </div>
-      <div class="col-md-9">
-          <div class="input-group">
-              <input type="text" placeholder="Enter Tare Weight" #inputBox2  [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'"   id="tear" class="form-control   mb-1 ps-0">
-              <!-- <div class="input-group-append" *ngIf="tareInput">
-                <button class="btn btn-outline-secondary  px-0 py-0" type="button" (click)="tareInput ='0'">
-                  <i class="bi bi-x"></i>
-                </button>
-              </div> -->
-            </div>
-      </div>
-  </div>
-  <div class="row">
-      <div class="col-md-3">
-          <label for="Net">Net:</label>
-      </div>
-      <div class="col-md-9">
-          <div class="input-group">
-              <input type="text" readonly placeholder="Net Weight" #inputBox3  [(ngModel)]="netInput" value = "{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox3'"   id="net" class="form-control   mb-1 ps-0">
-              <!-- <div class="input-group-append" *ngIf="netInput">
-                <button class="btn btn-outline-secondary  px-0 py-0" type="button" (click)="netInput =''">
-                  <i class="bi bi-x"></i>
-                </button>
-              </div> -->
-            </div>
-      </div>
-  </div>
-  <div class="row">
-      <div class="col-md-3">
-          <label for="Price">Price:</label>
-      </div>
-      <div class="col-md-9">
-          <div class="input-group">
-              <input type="text" #inputBox4 [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox4'"   id="price" class="form-control   mb-1 ps-0">
-              <!-- <div class="input-group-append" *ngIf="priceInput">
-                <button class="btn btn-outline-secondary  px-0 py-0" type="button" (click)="priceInput ='0'">
-                  <i class="bi bi-x"></i>
-                </button>
-              </div> -->
+      
+          <div class="form-floating mt-1">
+            <input type="text" placeholder="Enter Tare Weight" #inputBox2  [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'"   id="tear" class="form-control">
+
+              <label for="tear">Tare</label>
           </div>
-      </div>
+         
+
+          <div class="form-floating mt-1">
+            <input type="text" readonly placeholder="Net Weight" #inputBox3  [(ngModel)]="netInput" value = "{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox3'"   id="net" class="form-control">
+
+              <label for="net">Net</label>
+          </div>
+
+
+          <div class="form-floating mt-1">
+            <input type="text" #inputBox4 [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox4'"   id="price" class="form-control">
+
+              <label for="price">Price</label>
+          </div>
+    </div>
   </div>
 
-  <!-- Add more rows as needed for additional input boxes -->
+
+
+  
 </div>
 
 <div class="calculator"  >
