@@ -141,6 +141,7 @@ export class TicketDetailComponent implements OnInit {
   systemInfo: any;
   signPadVisible = false;
   isEnable = true;
+  isVirtual = false;
 
   alertVisible = false;
   alertMessage: any;
@@ -176,6 +177,11 @@ export class TicketDetailComponent implements OnInit {
     if (_dataObj) {
       const isElectronic = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'iselectronicpayment')[0];
       this.systemInfo = isElectronic?.values;
+    
+
+      const checkKeyboard = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'isvirtualkeyboard')[0];
+      this.isVirtual = checkKeyboard?.values == 'True' ? true : false ;
+      console.log(this.isVirtual)
 
       const isSignatureOnReceipt = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'signatureonreceipt')[0];
       this.signPadVisible = (isSignatureOnReceipt?.values.toLowerCase() === "true");

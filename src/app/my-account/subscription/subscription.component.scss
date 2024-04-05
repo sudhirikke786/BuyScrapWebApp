@@ -2,3 +2,13 @@
     max-height: calc(100vh - 200px);
     overflow: auto;
 }
+
+
+.btn-footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 35%;
+    bottom: 5px;
+}

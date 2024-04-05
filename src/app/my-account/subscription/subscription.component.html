@@ -64,7 +64,7 @@
 
                             <ng-container *ngFor="let item of planObj;let i = index">
 
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="pricing-box pricing-box-1" tabindex="0"
                                         [ngClass]="{'plan-selected': item?.isselected}">
                                         <h4 class="pricing-plan-name">{{item?.planTitle}}</h4>
@@ -93,9 +93,9 @@
 
                                             </table>
 
-                                            <button class="btn btn-primary-bsa-orange mt-15"
+                                            <button class="btn btn-primary-bsa-orange mt-15 btn-footer"
                                                 *ngIf="item?.isselected" (click)="getSelected(item,i)">SELECTED</button>
-                                            <button class="btn btn-primary-bsa-orange mt-15"
+                                            <button class="btn btn-primary-bsa-orange mt-15 btn-footer"
                                                 *ngIf="!item?.isselected">Select Plan</button>
 
                                             <!-- <button class="btn btn-primary-bsa-orange mt-15"   (click)="removeCartItem(buyScrappLite);buyScrappLite.selected=false">SELECTED</button> -->
@@ -123,7 +123,7 @@
                         <div class="row mt-20" *ngIf="!showLoder">
 
                             <div class="col-sm-6">
-                                <div class="pricing-box">
+                                <div class="pricing-box" style="min-height: auto;">
 
                                     <div class="addons-heading">
                                         <div class="form-check">
@@ -169,7 +169,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <div class="pricing-box">
+                                        <div class="pricing-box" style="min-height: auto;">
 
                                             <div class="addons-heading">
                                                 <div class="form-check">
@@ -223,7 +223,7 @@
 
                                 <div class="row mt-20">
                                     <div class="col-sm-12">
-                                        <div class="pricing-box">
+                                        <div class="pricing-box" style="min-height: auto;">
 
                                             <div class="addons-heading">
                                                 <div class="form-check">

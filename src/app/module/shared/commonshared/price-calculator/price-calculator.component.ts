@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-price-calculator',
@@ -38,7 +39,9 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   isNaN: Function = Number.isNaN;
 
-  constructor(private renderer: Renderer2,private elementRef: ElementRef) {
+  isVirtual = false;
+
+  constructor(private renderer: Renderer2,private elementRef: ElementRef,private stroarge: StorageService) {
 
   }
 
@@ -52,6 +55,15 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     this.priceInput = this.itemPrice;
     if (this.inputBox1) {
       this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
+    }
+
+
+
+    const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
+    if (_dataObj) {
+      const checkKeyboard = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'isvirtualkeyboard')[0];
+      this.isVirtual = checkKeyboard?.values == 'True' ? true : false ;
+      console.log(this.isVirtual)
     }
    
 
