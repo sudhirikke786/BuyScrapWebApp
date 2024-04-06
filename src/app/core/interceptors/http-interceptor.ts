@@ -114,7 +114,8 @@ export class AuthInterceptor implements HttpInterceptor {
    */
   addToken(req: HttpRequest<any>): HttpRequest<any> {
 
-    const excludesRoutes :any = ['GetAllLocatoins','ValidateCredentials','UserAuthentication','CreateOrganisationViaWeb','GetAllSubscriptionPlan','OTP','GetAllCountry','GetAllState','GetAllCity']
+    const excludesRoutes :any = ['GetAllLocatoins','ValidateCredentials','UserAuthentication','CreateOrganisationViaWeb',
+    'GetAllSubscriptionPlan','OTP','GetAllCountry','GetAllState','GetAllCity', 'CreateCheckoutSession']
 
     if ( (req.url.indexOf('token') > 0 && this.callToken !== false) || (this.callToken === false) || (req.url.includes(excludesRoutes))) {
       return req.clone({ withCredentials: true });

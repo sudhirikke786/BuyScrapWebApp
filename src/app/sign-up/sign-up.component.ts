@@ -358,7 +358,7 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       "BillingZipCode" : req.BillingZipCode,
       "GetReference" : req.GetReference,
       "ServerName" : "",
-      "DatabaseName" : "TestOrg",
+      "DatabaseName" : req.OrganisationName,
       "UserName" : "",
       "Password" : "",
       "IsReportOnly" : false,
@@ -375,18 +375,65 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       "TotalUsers" : this.planObj?.defaultUserCount || 0,
       "TotalTickets" : this.planObj?.defaultUserCount || 0,
       "TotalLocations" : 1,
-      "CreatedBy" : null,
+      "CreatedBy" : 1,
       "CreatedDate" : "2024-03-30T03:47:54.367Z",
-      "UpdatedBy" : null,
+      "UpdatedBy" : 1,
       "UpdatedDate" : "2024-03-30T03:47:54.367Z"
   }
 
   this.commonService.createOrganisationViaWeb(ReqObj).subscribe((res) =>{
     console.log('successs');
-  },(error) =>{
+    if (res.body.data != 0) {
+      const organisationPlanReqObj = {
+        "RowId" : 0,
+        "organisationPlanDetailId" : 0,
+        "organisationId" : res.body.data,
+        "organisationName" : req.OrganisationName,
+        "email" : req.EmailID,
+        "address" : req.BusinessAddress,
+        "city" : req.CityID,
+        "state" : req.StateID,
+        "postalCode" : req.ZipCode,
+        "country" : req.CountryID,
+        "callbackUrl" : this.commonService.buildCallbackUrl(),
+        "userId" : 0,
+        "subscriptionPlanId" : this.selectedPlan.subscriptionPlanId,
+        "extraTicketPlanId" : 0,
+        "extraUserCount" : 0,
+        "extraUserLocation" : 0,
+        "totalSubscriptionCost" : 0,
+        "status" : "ongoing",
+        "stripeSessionId" : null,
+        "pricingPlanId" : null,
+        "IsActive" : false,
+        "CreatedBy" : 1,
+        "CreatedDate" : "2024-03-30T03:47:54.367Z",
+        "UpdatedBy" : 1,
+        "UpdatedDate" : "2024-03-30T03:47:54.367Z"
+      }
+
+      this.checkoutSubscription(organisationPlanReqObj);
+    }
+  }, (error) =>{
     console.log(error)
   })
 
+
+  
+
+  }
+
+  private checkoutSubscription(reqObj: any) {
+    this.commonService.paySubscriptionFee(reqObj).subscribe(session => {
+      console.log("session details :: ");
+      console.log(session);
+      this.commonService.redirectToCheckout(session.body);
+      // this.htmlToAdd = session;
+      // window.location.href = session;
+      // return session;
+    }, (error: any) => {
+      console.log(error);
+    });
   }
 
   sendOtp() {

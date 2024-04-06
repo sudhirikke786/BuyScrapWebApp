@@ -445,16 +445,6 @@ export class CommonService {
 
   paySubscriptionFee(requestObj: any): Observable<any> {
     requestObj.callbackUrl = this.buildCallbackUrl();
-
-    // return this.http.post<any>(environment.baseUrl + '/Payment/CreateCheckoutSession', requestObj, { responseType: 'text' as 'json' })
-
-    
-  //   return this.http.post<any>(productionURL, requestObj, {
-  //     headers: httpHeader,
-  //     observe: 'response',
-  //     params: postParams
-  // });
-
     return this.callAPI(environment.baseUrl + '/Payment/CreateCheckoutSession', 'POST', requestObj);
   }
 

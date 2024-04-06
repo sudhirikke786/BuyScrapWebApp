@@ -36,7 +36,7 @@ const routes: Routes = [
     component: SignUpComponent
   },
   {
-    path:'payment-page',
+    path:'stripe-checkout',
     component:SuccessPageComponent
   },
   { 
