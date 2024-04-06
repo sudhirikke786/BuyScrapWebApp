@@ -1220,7 +1220,9 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 }
 
 .dl-img {
-  height: 80px;
+  min-height: 80px;
+  width: 100%;
+
 }
 
 .menu-item .active .menu-links-text {
@@ -2205,7 +2207,7 @@ select optgroup option {
 
 
    .login-class{
-     margin-top: 65px;
+     margin-top: 54px;
    }
 
 
@@ -2332,6 +2334,18 @@ h1, h2, h3 ,h4{
     font-size: 2.1rem;
    }
 
+   .menu .menu-item .menu-link{
+    padding: 10px !important;
+   }
+
+
+   .footer-text {
+      padding-left: 70px !important;
+   }
+
+   .add-footer .footer-text{
+    padding-left: 240px !important;
+   }
 
 }
 
@@ -2415,6 +2429,10 @@ select option{
     max-width: 100% !important;
    };
 
+
+   .menu .menu-item .menu-link{
+    padding: 10px !important;
+   }
 
 }
 
@@ -2528,6 +2546,16 @@ b, strong{
    };
 
 }
+
+/** 
+  Ipad PROD
+*/
+
+@media only screen and (min-width: 2048px) and (min-height: 2732px) {
+
+  /* Add your styles here */
+}
+
 
 .pricing-box{
   min-height: 490px;

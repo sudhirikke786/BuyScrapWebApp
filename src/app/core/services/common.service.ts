@@ -100,10 +100,12 @@ export class CommonService {
       if (sidenavSize === 'condensed') {
       
         htmlAttr?.setAttribute('data-sidenav-size', 'default');
+        htmlAttr?.classList.add("add-footer");
         // Code to run when data-sidenav-size is 'condensed'
         console.log('Sidenav size is condensed');
       } else if (sidenavSize === 'default') {
         htmlAttr?.setAttribute('data-sidenav-size', 'condensed');
+        htmlAttr?.classList.remove("add-footer");
       } else {
         // Code for other values, or handle as needed
         htmlAttr?.setAttribute('data-sidenav-size', 'default');

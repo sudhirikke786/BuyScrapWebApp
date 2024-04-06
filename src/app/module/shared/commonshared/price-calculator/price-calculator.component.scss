@@ -170,7 +170,7 @@
     background-color: var(--ct-blue);
     color: var(--ct-white);
     border: none;
-    font-size: 5.0rem !important;
+    font-size: 3.5rem !important;
     
     cursor: pointer;
   } 
@@ -178,6 +178,9 @@
 
 
 
-//  @media  screen only (max-width:2500px) and screen(min-width:1920){
-
-//  }
+@media only screen and (max-width:3840px) and (min-width:2000px){
+  .btn-cal {
+    
+    font-size: 3.5rem !important;
+  }
+}

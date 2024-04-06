@@ -33,7 +33,7 @@
                 <div class="col-xs-12 col-md-4 col-lg-3  mb-1">
                     <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText" (keyup.enter)="searchSeller()" placeholder="Search">
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-6 col-lg-3  mb-1">
+                <div class="col">
                     <div  class="d-flex justify-content-between">
                         <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
                     </div>
@@ -67,7 +67,7 @@
                                 <div class="col-sm-12">
                                     <p-table #dt1 [value]="tickets" [paginator]="false" [rows]="pageSize"
                                         [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" 
-                                          scrollHeight="calc(100vh - 250px)"
+                                          scrollHeight="calc(100vh - 290px)"
                                          [loading]="isLoading"
                                         [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']">
                                         <ng-template pTemplate="header">
