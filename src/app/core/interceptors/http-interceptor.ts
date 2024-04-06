@@ -113,10 +113,10 @@ export class AuthInterceptor implements HttpInterceptor {
    * @returns request object with Authorization header
    */
   addToken(req: HttpRequest<any>): HttpRequest<any> {
-    if ( (req.url.indexOf('token') > 0 && this.callToken !== false) || (this.callToken === false) || 
-    (req.url.indexOf('GetAllLocatoins') > 0) || (req.url.indexOf('ValidateCredentials') > 0) || 
-    (req.url.indexOf('UserAuthentication') > 0) || (req.url.indexOf('CreateOrganisationViaWeb') > 0) || (req.url.indexOf('GetAllSubscriptionPlan') > 0) || 
-    (req.url.indexOf('OTP') > 0)) {
+
+    const excludesRoutes :any = ['GetAllLocatoins','ValidateCredentials','UserAuthentication','CreateOrganisationViaWeb','GetAllSubscriptionPlan','OTP','GetAllCountry','GetAllState','GetAllCity']
+
+    if ( (req.url.indexOf('token') > 0 && this.callToken !== false) || (this.callToken === false) || (req.url.includes(excludesRoutes))) {
       return req.clone({ withCredentials: true });
     } else {      
       const userToken = this.localService.getLocalStorage('userObj');

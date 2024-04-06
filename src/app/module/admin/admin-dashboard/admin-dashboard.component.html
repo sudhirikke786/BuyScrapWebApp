@@ -9,14 +9,7 @@
                     <!-- Start Content-->
                     <div class="container-fluid">
 
-                        <!-- <div class="row mt-2">
-                            <div class="col text-center">
-                                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> New Ticket</button> 
-                                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> Merge Ticket and Pay</button>
-                            </div>
-                            
-                        </div> -->
-
+                       
                         <div class="bdcmb mt-2">
                             <div class="row">
                                 <div class="col-sm-6 col-6">
@@ -47,11 +40,17 @@
                                 <div class="card">
                                     <div class="card-body">
                                         
-                                        <p-table [value]="admins"  [scrollable]="true"   responsiveLayout="scroll" 
-                                        scrollHeight="50vh" [paginator]="true" [rows]="10"
-                                            [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                            [rowsPerPageOptions]="commonService.tableConfig.pageOptions" >
+                                        <p-table 
+                                        [value]="admins" 
+                                        [scrollable]="true" 
+                                        responsiveLayout="scroll" 
+                                        scrollHeight="50vh"
+                                        [paginator]="true"
+                                        [rows]="10"
+                                        [showCurrentPageReport]="true"
+                                        [tableStyle]="{ 'min-width': '50rem' }"
+                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                        [rowsPerPageOptions]="commonService.tableConfig.pageOptions" >
 
                                           
                                             

@@ -521,8 +521,26 @@ export class CommonService {
 
   }
 
-  
-  
+  getAllCountry(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Master/GetAllCountry', 'GET', paramObj);
+  }
+
+  getAllState(paramObj: any): Observable<any>{
+      return this.callAPI(environment.baseUrl + '/Master/GetAllState', 'GET', paramObj);
+  }
+
+  getAllCity(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Master/GetAllCity', 'GET', paramObj);
+  }
+    
+    
+
+
+//   //{{BaseURL}}/Master/GetAllCountry?CountryID=0
+// {{BaseURL}}/Master/GetAllState?CountryID=1&StateID=0 
+// {{BaseURL}}/Master/GetAllCity?CountryID=1&StateID=1&CityID=0
+
+
   
   
     

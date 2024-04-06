@@ -490,12 +490,10 @@
                     <div class="row">
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Country</label>
-                            <select class="form-select" formControlName="CountryID" id="CountryID">
+                            <select class="form-select" formControlName="CountryID" id="CountryID" (change)="getState($event)">
                                 <option value="">Country</option>
-                                <option  value="United States" >United States</option>
-                                <option  value="United Kingdom">United Kingdom</option>
-                                <option  value="India">India</option>
-                                <option  value="Canada">Canada</option>
+                                <option value="{{countryItem.rowID}}" *ngFor="let countryItem of countryList">{{countryItem.name}}</option>
+                           
                             </select>
                             <app-form-error-message msg="Country is required" *ngIf="submitted && registrationForm?.get('CountryID')?.errors?.required"></app-form-error-message>
 
@@ -503,9 +501,11 @@
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">State</label>
-                            <select class="form-select" formControlName="StateID" id="StateID" (change)="getCity()">
+                            <select class="form-select" formControlName="StateID" id="StateID" (change)="getCity($event)">
                                 
-                                <option  *ngFor="let item of stateList">{{item}}</option>
+                                <option>State</option>
+                                <option value="{{stateitem.rowID}}"  *ngFor="let stateitem of stateList">{{stateitem.name}}</option>
+                               
                             </select>
                             <app-form-error-message msg="State is required" *ngIf="submitted && registrationForm?.get('StateID')?.errors?.required"></app-form-error-message>
 
@@ -516,7 +516,7 @@
                            
 
                             <select class="form-select" formControlName="CityID" id="CityID" >
-                                <option  *ngFor="let item of cityList">{{item}}</option>
+                                <option value="{{cityItem.rowID}}"  *ngFor="let cityItem of cityList">{{cityItem.name}}</option>
                             </select>
                            
                             <app-form-error-message msg="City  is required" *ngIf="submitted && registrationForm?.get('CityID')?.errors?.required"></app-form-error-message>
@@ -554,28 +554,30 @@
                     <div class="row">
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Country</label>
-                            <select class="form-select" formControlName="BillingCountryID" id="BillingCountryID">
+                            <select class="form-select" formControlName="BillingCountryID" id="BillingCountryID" (change)="getState($event)">
                                 <option value="">Country</option>
-                                <option  value="United States" >United States</option>
-                                <option  value="United Kingdom">United Kingdom</option>
-                                <option  value="India">India</option>
-                                <option  value="Canada">Canada</option>
+                               <option value="{{countryItem.rowID}}" *ngFor="let countryItem of countryList">{{countryItem.name}}</option>
                             </select>
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">State</label>
-                            <select class="form-select" formControlName="BillingStateID" id="BillingStateID" (change)="getBCity()">
+                            <select class="form-select" formControlName="BillingStateID" id="BillingStateID" (change)="getCity($event)">
+                                  
                                 <option>State</option>
-                                <option  *ngFor="let item of stateList">{{item}}</option>
+                                <option value="{{stateitem.rowID}}"  *ngFor="let stateitem of stateList">{{stateitem.name}}</option>
                                
                             </select>
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">City</label>
-                            <select class="form-select" formControlName="BillingCityID" id="BillingCityID">
+                            <!-- <select class="form-select" formControlName="BillingCityID" id="BillingCityID">
                                 <option  *ngFor="let item of cityList">{{item}}</option>
+                            </select> -->
+
+                            <select class="form-select" formControlName="BillingCityID" id="BillingCityID" >
+                                <option value="{{cityItem.rowID}}"  *ngFor="let cityItem of cityList">{{cityItem.name}}</option>
                             </select>
                         </div>
 
