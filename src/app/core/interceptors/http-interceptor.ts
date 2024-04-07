@@ -117,7 +117,11 @@ export class AuthInterceptor implements HttpInterceptor {
     const excludesRoutes :any = ['GetAllLocatoins','ValidateCredentials','UserAuthentication','CreateOrganisationViaWeb',
     'GetAllSubscriptionPlan','OTP','GetAllCountry','GetAllState','GetAllCity', 'CreateCheckoutSession']
 
-    if ( (req.url.indexOf('token') > 0 && this.callToken !== false) || (this.callToken === false) || (req.url.includes(excludesRoutes))) {
+    var isExcludeRoute = excludesRoutes.some(function(el: any) {
+      return (req.url.indexOf(el) > -1);
+    });
+
+    if ( (req.url.indexOf('token') > 0 && this.callToken !== false) || (this.callToken === false) || (isExcludeRoute)) {
       return req.clone({ withCredentials: true });
     } else {      
       const userToken = this.localService.getLocalStorage('userObj');
