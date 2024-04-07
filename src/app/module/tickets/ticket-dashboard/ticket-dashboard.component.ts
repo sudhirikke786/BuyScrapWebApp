@@ -157,13 +157,13 @@ export class TicketDashboardComponent implements OnInit {
     SearchOrder: 'TicketId',
     Status: this.defaultSelectedTicketsTypes.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(','),
     PageNumber: 1,
-    RowOfPage: 50,
+    RowOfPage: 10,
     LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
     first: 0,
   }
 
   currentPage = 1;
-  pageSize = 50;
+  pageSize = 10;
   first = 0;
   last = 0;
   pageTotal = 0;

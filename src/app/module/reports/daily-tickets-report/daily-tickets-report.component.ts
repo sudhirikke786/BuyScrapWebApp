@@ -46,6 +46,8 @@ export class DailyTicketsReportComponent implements OnInit {
   toDate: any;  
   fileDataObj:any;	
   showDownload:boolean=false;
+  showLoaderReport = false;
+  isReportShow = false;
   showLoader = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -89,6 +91,32 @@ export class DailyTicketsReportComponent implements OnInit {
       );
   }
 
+  generateDailyTicketReport() {
+
+    this.isReportShow = true;
+    this.showLoaderReport = true;
+
+    const param = {
+      LocationId: this.locId,
+      FromDate: this.fromDate,
+      Todate: this.toDate
+    }
+
+    this.commonService.generateDailyTicketsReport(param)
+      .subscribe(data => {
+        console.log('generateDailyTicketsReport :: ');
+        console.log(data);
+        this.showLoaderReport = false;
+        this.fileDataObj = data.body.data;
+       
+      },
+        (err: any) => {
+          this.showLoaderReport = false;
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
 
   getAction(actionCode:any){
 
@@ -101,8 +129,7 @@ export class DailyTicketsReportComponent implements OnInit {
         this.getDailyTicketsReport();
         break;
         case 'mdi-download':
-          console.log(this.fileDataObj);
-          this.showDownload = true;
+          this.generateDailyTicketReport();
          break;
       default:
         break;

@@ -70,6 +70,7 @@ export class InventoryReportComponent implements OnInit {
     this.toDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   }
 
+  
   getInventoryReport() {
 
     const param = {
@@ -79,23 +80,48 @@ export class InventoryReportComponent implements OnInit {
       MaterialID: this.defaultSelectedMaterial,
       SubMaterialID: this.defaultSelectedSubMaterial
     }
-    this.isReportShow = true;
-    this.showLoaderReport = true;
-
+    this.showLoader = true;
     this.commonService.getInventoryReport(param)
       .subscribe(data => {
         console.log('getInventoryReport :: ');
         console.log(data);
-        this.showLoaderReport = false;
-
         this.reportData = data.body.data;
+      },
+        (err: any) => {
+          this.showLoader = false;
+
+          // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.showLoader = false;
+        }
+      );
+  }
+
+  generateInventoryReport() {
+
+    this.isReportShow = true;
+    this.showLoaderReport = true;
+
+    const param = {
+      LocationId: this.locId,
+      FromDate: this.fromDate,
+      Todate: this.toDate,
+      MaterialID: this.defaultSelectedMaterial,
+      SubMaterialID: this.defaultSelectedSubMaterial
+    }
+
+    this.commonService.generateInventoryReport(param)
+      .subscribe(data => {
+        console.log('generateInventoryReport :: ');
+        console.log(data);
+        this.showLoaderReport = false;
+        this.fileDataObj = data.body.data;
+       
       },
         (err: any) => {
           this.showLoaderReport = false;
           // this.errorMsg = 'Error occured';
-        },
-        () =>{
-          this.showLoaderReport = false;
         }
       );
   }
@@ -161,9 +187,7 @@ export class InventoryReportComponent implements OnInit {
         this.getInventoryReport();
         break;
       case 'mdi-download':
-        console.log(this.fileDataObj);
-        this.getInventoryReport();
-      
+        this.generateInventoryReport();      
         break;
       default:
         break;

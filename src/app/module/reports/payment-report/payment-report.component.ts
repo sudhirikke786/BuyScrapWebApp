@@ -65,7 +65,11 @@ export class PaymentReportComponent implements OnInit {
   }
 
   setDefaultDate() {
-    this.fromDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    let defaultDate = new Date();
+    defaultDate.setMonth(defaultDate.getMonth() - 2);
+    console.log(defaultDate);
+    this.fromDate = this.datePipe.transform(defaultDate, 'yyyy-MM-dd');
+    // this.fromDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.toDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   }
 
@@ -73,7 +77,7 @@ export class PaymentReportComponent implements OnInit {
 
     const param = {
       LocationId: this.locId,
-      Type: 'Cash and Check',
+      Type: this.paymentType.trim() != '' ? this.paymentType.trim() : 'Cash and Check',
       FromDate: this.fromDate,
       Todate: this.toDate
     }
@@ -96,21 +100,22 @@ export class PaymentReportComponent implements OnInit {
 
   generatePaymentReport() {
 
+    this.isReportShow = true;
+    this.showLoaderReport = true;
+
     const param = {
       LocationId: this.locId,
-      Type: 'Cash and Check',
+      Type: this.paymentType.trim() != '' ? this.paymentType.trim() : 'Cash and Check',
       FromDate: this.fromDate,
       Todate: this.toDate
     }
-    this.isReportShow = true;
-    this.showLoaderReport = true;
 
     this.commonService.generatePaymentReport(param)
       .subscribe(data => {
         console.log('generatePaymentReport :: ');
         console.log(data);
         this.showLoaderReport = false;
-        this.fileDataObj = data?.body?.data;
+        this.fileDataObj = data.body.data;
        
       },
         (err: any) => {

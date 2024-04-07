@@ -45,7 +45,7 @@ export class SingleTicketsReportComponent implements OnInit {
   locId: any;
   fromDate: any;
   toDate: any;
-  ticketNumber: any = 0;
+  ticketNumber: any;
   sellerName: string = '';
   fileDataObj: any;
   showDownload = false;
@@ -79,7 +79,7 @@ export class SingleTicketsReportComponent implements OnInit {
   getSingleTicketReport() {
 
     const param = {
-      TicketId: this.ticketNumber,
+      TicketId: this.ticketNumber || 0,
       LocationId: this.locId,
       TicketSettingsId: 0,
       FromDate: this.fromDate,
