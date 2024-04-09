@@ -491,7 +491,7 @@
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Country</label>
                             <select class="form-select" formControlName="CountryID" id="CountryID" (change)="getState($event)">
-                                <option value="">Country</option>
+                                <option value="undefined">Country</option>
                                 <option value="{{countryItem.rowID}}" *ngFor="let countryItem of countryList">{{countryItem.name}}</option>
                            
                             </select>
@@ -503,7 +503,7 @@
                             <label for="simpleinput" class="form-label w-100">State</label>
                             <select class="form-select" formControlName="StateID" id="StateID" (change)="getCity($event)">
                                 
-                                <option>State</option>
+                                <option value="undefined">Select State</option>
                                 <option value="{{stateitem.rowID}}"  *ngFor="let stateitem of stateList">{{stateitem.name}}</option>
                                
                             </select>
@@ -516,6 +516,7 @@
                            
 
                             <select class="form-select" formControlName="CityID" id="CityID" >
+                                <option value="undefined">Select City</option>
                                 <option value="{{cityItem.rowID}}"  *ngFor="let cityItem of cityList">{{cityItem.name}}</option>
                             </select>
                            
@@ -555,7 +556,7 @@
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Country</label>
                             <select class="form-select" formControlName="BillingCountryID" id="BillingCountryID" (change)="getState($event)">
-                                <option value="">Country</option>
+                                <option value="undefined">Country</option>
                                <option value="{{countryItem.rowID}}" *ngFor="let countryItem of countryList">{{countryItem.name}}</option>
                             </select>
                         </div>
@@ -564,7 +565,7 @@
                             <label for="simpleinput" class="form-label w-100">State</label>
                             <select class="form-select" formControlName="BillingStateID" id="BillingStateID" (change)="getCity($event)">
                                   
-                                <option>State</option>
+                                <option value="undefiend">State</option>
                                 <option value="{{stateitem.rowID}}"  *ngFor="let stateitem of stateList">{{stateitem.name}}</option>
                                
                             </select>
@@ -577,6 +578,7 @@
                             </select> -->
 
                             <select class="form-select" formControlName="BillingCityID" id="BillingCityID" >
+                                <option value="undefiend">Select City</option>
                                 <option value="{{cityItem.rowID}}"  *ngFor="let cityItem of cityList">{{cityItem.name}}</option>
                             </select>
                         </div>

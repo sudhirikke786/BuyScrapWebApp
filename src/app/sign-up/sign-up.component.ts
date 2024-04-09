@@ -79,13 +79,14 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getAllCountry();
 
     this.getRegistrationForm();
+   
   }
 
 
 
   getAllCountry(){
     this.commonService.getAllCountry({CountryID:0}).subscribe((res) => {
-      this.countryList = res.body.data;
+      this.countryList = res?.body?.data;
       console.log(this.countryList)
     })
   }
@@ -113,7 +114,7 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
     this.cityID =  $event.target.value;
 
     this.commonService.getAllCity({CountryID:this.countryId,StateID:$event?.target.value,CityID:0}).subscribe((res) => {
-      this.cityList = res.body.data;
+      this.cityList = res?.body?.data;
     })
 
   }
@@ -149,9 +150,6 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       BillingStateID: [''],
       BillingCityID: [''],
       BillingZipCode: [''],
-      // inputUOM: ['', Validators.required],
-      // currency: ['', Validators.required],
-      // Recaptcha: [null, Validators.required],
       GetReference: ['web'],
       PrivacyPolicy: [false, Validators.requiredTrue],
       TermsAndCondition: [false, Validators.requiredTrue],
@@ -159,6 +157,8 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
     }, {
       validator: passwordMatchValidator // Apply the custom validator
     });
+
+
 
   }
 
@@ -242,10 +242,12 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
     return [{
       amount: res?.planCostMonthly,
       type: 'Monthly',
+      RecursiveType:1,
       isSelcted: true
     }, {
       amount: res?.planCostYearly,
       type: 'Yearly',
+      RecursiveType:2,
       isSelcted: false
     }]
 
@@ -317,6 +319,11 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
   addRegister() {
     this.registrationForm.reset();
     this.showImage = true;
+
+    this.registrationForm.patchValue({
+      GetReference:'web'
+    })
+
   }
 
   cancelImage() {
@@ -324,16 +331,25 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   makePayment() {
-    this.submitted  = true
+    this.submitted  = true;
+
 
     if(!this.otpVerified){
-      alert("Verify the OTP");
+      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Please Verify Email Otp' });
       return;
     }
     if(this.registrationForm.invalid){
       return;
     }
+
+
     const req = this.registrationForm.value;
+
+    try {
+      
+    } catch (error) {
+      
+    }
 
     const ReqObj = {
       "RowId" : 0,
@@ -346,15 +362,15 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       "PhoneNumber" : req.PhoneNumber,
       "JobTitle" : req.JobTitle,
       "BusinessAddress" : req.BusinessAddress,
-      "CountryID" : 1,
-      "StateID" : 2,
-      "CityID" : 3,
+      "CountryID" : req.CountryID,
+      "StateID" : req.StateID,
+      "CityID" : req.CityID,
       "ZipCode" : req.ZipCode,
       "Sameaddress" : req.Sameaddress,
       "BillingBusinessAddress" :req.BillingBusinessAddress,
-      "BillingCountryID" : 1,
-      "BillingStateID" : 2,
-      "BillingCityID" : 3,
+      "BillingCountryID" : req.BillingCountryID,
+      "BillingStateID" : req.BillingStateID,
+      "BillingCityID" : req.BillingCityID,
       "BillingZipCode" : req.BillingZipCode,
       "GetReference" : req.GetReference,
       "ServerName" : "",
@@ -370,7 +386,7 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       "IsFreeVersion" : this.selectedPlan.IsFreeVersion,
       "SubscriptionEndDate" : "2024-04-30T03:47:54.367Z",
       "IsRecursive" : true,
-      "RecursiveType" : 1, /*1- Monthly, 2- Yearly, 0- Daily, 9 - else*/
+      "RecursiveType" : this.selectedPlan.planDetails.filter((item:any) => item.isSelcted)[0].RecursiveType || 1, /*1- Monthly, 2- Yearly, 0- Daily, 9 - else*/
       "IsActive" : false,
       "TotalUsers" : this.planObj?.defaultUserCount || 0,
       "TotalTickets" : this.planObj?.defaultUserCount || 0,
@@ -380,6 +396,9 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       "UpdatedBy" : 1,
       "UpdatedDate" : "2024-03-30T03:47:54.367Z"
   }
+
+
+
 
   this.commonService.createOrganisationViaWeb(ReqObj).subscribe((res) =>{
     console.log('successs');
