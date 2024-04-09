@@ -332,7 +332,7 @@ export class CommonService {
   /** Pdf Reports */
 
   generateDailyTicketsReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/PdfReports/GetAllTicketsForDailyReport', 'GET', paramObj);
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetDailyTicketData', 'GET', paramObj);
   }
 
   generateSingleTicketReport(paramObj: any): Observable<any> {

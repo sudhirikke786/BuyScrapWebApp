@@ -100,7 +100,11 @@ export class SubMaterialReportComponent implements OnInit {
   }
 
   generateSubMaterialsReport() {
-    this.isReportShow = true;
+
+    if (this.defaultSelectedSubMaterial <= 0) {
+      alert("Please select Sub material to generate report !!!")
+      return;
+    }
 
     const param = {
       SubMaterialId: this.defaultSelectedSubMaterial,
@@ -108,6 +112,7 @@ export class SubMaterialReportComponent implements OnInit {
       FromDate: this.fromDate,
       Todate: this.toDate
     }
+    this.isReportShow = true;
     this.showLoaderReport  = true; 
 
     this.commonService.generateSubMaterialsReport(param)
