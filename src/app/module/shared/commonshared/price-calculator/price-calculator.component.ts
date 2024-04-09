@@ -24,6 +24,8 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   @Input() itemNet: any = 0;
   @Input() itemPrice: any;
 
+  isKeyboard = true;
+
   @Output() calculateObj = new EventEmitter<any>();
   @Output() changeItemEvent = new EventEmitter<any>();
   @Output() changeImageEvent = new EventEmitter<any>();
@@ -39,10 +41,19 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   isNaN: Function = Number.isNaN;
 
-  isVirtual = false;
+  isVirtual = true;
 
   constructor(private renderer: Renderer2,private elementRef: ElementRef,private stroarge: StorageService) {
 
+  }
+
+
+  onKeyPress(event: KeyboardEvent) {
+
+    if(this.isVirtual){
+      event.preventDefault();
+    }
+   
   }
 
 
@@ -57,13 +68,15 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
     }
 
+    this.isVirtual = true;
+
 
 
     const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
     if (_dataObj) {
-      const checkKeyboard = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'isvirtualkeyboard')[0];
-      this.isVirtual = checkKeyboard?.values == 'True' ? true : false ;
-      console.log(this.isVirtual)
+      // const checkKeyboard = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'isvirtualkeyboard')[0];
+      // this.isVirtual = checkKeyboard?.values == 'True' ? true : false ;
+      // console.log(this.isVirtual)
     }
    
 
@@ -88,6 +101,11 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   //   }
     
   // }
+
+  showKeyboard(val:any){
+    this.isVirtual = val.checked
+    console.log(this.isKeyboard);
+  }
 
   ngAfterViewInit(): void {
     this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox4,this.inputBox3];
