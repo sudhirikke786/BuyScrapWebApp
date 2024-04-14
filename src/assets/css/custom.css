@@ -2253,7 +2253,9 @@ h1, h2, h3 ,h4{
   height: 40px;
 }
 
-
+.custom-lh{
+  width: 100%;
+}
 
 
 }
@@ -2439,6 +2441,9 @@ select option{
 
 @media only screen and (max-width:7000px) and (min-width:3840px) {
 
+  .m-image{
+    max-height: 30vh !important;
+  }
 
   body {
     font-size:50px !important;
@@ -2538,12 +2543,24 @@ b, strong{
   }
 
   .btn-cal {
-    font-size: 6.1rem !important;
+    font-size: 8.1rem !important;
    }
    .container {
     width: 100% !important;
     max-width: 100% !important;
    };
+
+   .main-ul li { 
+
+    padding: 30px;
+
+   }
+
+   .custom-lh{
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+    line-height: 150px !important;
+   }
 
 }
 

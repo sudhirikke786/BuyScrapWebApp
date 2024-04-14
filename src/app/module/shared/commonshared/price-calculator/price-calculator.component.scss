@@ -1,3 +1,15 @@
+
+.m-image{
+  max-height:100px;
+}
+
+.form-box{
+  margin-bottom: 10px;
+}
+
+
+
+
 .calculator {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -22,7 +34,7 @@
     background-color: var(--ct-blue);
     color: var(--ct-white);
     border: none;
-    font-size: 2.0rem;
+    font-size: 1.5rem;
     
     cursor: pointer;
   }
@@ -78,6 +90,14 @@
   .image-container img {
     width: 100%;
     height: auto;
+  }
+
+  .bi-keyboard{
+    font-size: 30px;
+  }
+
+  .c-title{
+    width: 40px;
   }
   
 //   @media (max-width: 1180px) {
@@ -157,7 +177,7 @@
       margin-top:0px;
      }
     
-  }
+    }
 
 
 
@@ -174,13 +194,54 @@
     
     cursor: pointer;
   } 
+  .m-image{
+    max-height:300px !important;
+  }
+
+  .bi-keyboard{
+    font-size: 50px;
+  }
+
 }
 
 
 
-@media only screen and (max-width:3840px) and (min-width:2000px){
+@media only screen and (max-width:3840px) and (min-width:2060px){
+
+  .m-image{
+    max-height: 600px !important;
+  }
   .btn-cal {
     
     font-size: 3.5rem !important;
   }
+  .bi-keyboard{
+    font-size: 50px;
+  }
+  .c-title{
+    width:145px;
+  }
+ 
+
+}
+
+
+@media only screen and (max-width:7000px) and (min-width:3500px){
+  .bi-keyboard{
+    font-size: 100px;
+  }
+
+  .c-title{
+    width:145px;
+  }
+ 
+  .t-on{
+    font-size: 50px !important;
+  }
+
+  .form-box{
+    margin-bottom: 20px;
+  }
+  
+
 }
