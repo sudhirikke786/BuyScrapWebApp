@@ -123,15 +123,15 @@
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
-                                                            <td class="cod-item">{{ ticket.amount * -1 }}</td>
+                                                            <td class="cod-item">{{ ticket.amount * -1 }}| currency:'USD':'symbol': '1.3-3'
                                                         </ng-container>
                                                         <ng-template #otherThanCOD >
                                                             <td style="width: 25%;">{{ ticket.materialName }}</td>
                                                             <td>{{ ticket.gross  }}</td>
                                                             <td>{{ ticket.tare }}</td>
                                                             <td>{{ ticket.net }}</td>
-                                                            <td>{{ ticket.price | number : '1.3-3'}}</td>
-                                                            <td>{{ ticket.amount | number : '1.3-3'}}</td>
+                                                            <td>{{ ticket.price | currency:'USD':'symbol': '1.3-3'}}</td>
+                                                            <td>{{ ticket.amount | currency:'USD':'symbol': '1.3-3'}}</td>
                                                         </ng-template>
                                                         <td>
                                                             <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img" (click)="showSelectedImage(ticket.imagePath, '1')"></a>
@@ -179,8 +179,8 @@
                                                             <td>{{ ticket.gross  }}</td>
                                                             <td>{{ ticket.tare }}</td>
                                                             <td>{{ ticket.net }}</td>
-                                                            <td>{{ ticket.price | number : '1.3-3'}}</td>
-                                                            <td>{{ ticket.amount | number : '1.3-3'}}</td>
+                                                            <td>{{ ticket.price | currency:'USD':'symbol': '1.3-3'}}</td>
+                                                            <td>{{ ticket.amount | currency:'USD':'symbol': '1.3-3'}}</td>
                                                         </ng-template>
                                                         <td>
                                                             <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img" (click)="showSelectedImage(ticket.imagePath, '1')"></a>
@@ -211,7 +211,7 @@
                                     <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98' : 'w-75'" >
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
-                                                <p class="ticket-details-p fz-14"><b>Adjustment : {{totalAdjustment | number : '1.3-3'}}</b></p>
+                                                <p class="ticket-details-p fz-14"><b>Adjustment : {{totalAdjustment | currency:'USD':'symbol': '1.3-3'}}</b></p>
         
                                                 <p class="ticket-details-p fz-14"><b>Total LBS</b></p>
         
@@ -233,9 +233,9 @@
                                                             <td>{{totalGross}}</td>
                                                             <td>{{totalTare}}</td>
                                                             <td>{{totalNet}}</td>
-                                                            <td>{{totalRoundingAmount | number : '1.3-3'}}</td>
-                                                            <td>{{totalAmount | number : '1.3-3'}}</td>
-                                                            <td>{{totalActualAmount | number : '1.3-3'}}</td>
+                                                            <td>{{totalRoundingAmount | currency:'USD':'symbol': '1.3-3'}}</td>
+                                                            <td>{{totalAmount | currency:'USD':'symbol': '1.3-3'}}</td>
+                                                            <td>{{totalActualAmount | currency:'USD':'symbol': '1.3-3'}}</td>
                                                         </tr>                                                     
                                                     </tbody>
                                                     
@@ -249,11 +249,11 @@
                                          
                                                     <div class="ticket-summary-div d-flex justify-content-start align-item-center">
                                                         <div class="me-2">
-                                                            <b class="fz-14">Paid Amount  {{ticketData?.paidAmount | number : '1.3-3'}}</b>
+                                                            <b class="fz-14">Paid Amount  {{ticketData?.paidAmount | currency:'USD':'symbol': '1.3-3'}}</b>
                                                         </div>
             
                                                         <div class="ms-2 me-2">
-                                                            <b class="fz-14">Balance Amount  {{totalAmount - ticketData?.paidAmount | number : '1.3-3'}}</b>
+                                                            <b class="fz-14">Balance Amount  {{totalAmount - ticketData?.paidAmount | currency:'USD':'symbol': '1.3-3'}}</b>
                                                         </div> 
                                                         <div class="ms-2" *ngIf="!isEditModeOn">
                                                             <div class="d-flex justify-content-start align-items-center">
@@ -321,7 +321,7 @@
                                                     <tr>
                                                         <td># </td>
                                                         <td>{{ ticketsTransaction?.type }}</td>
-                                                        <td>{{ ticketsTransaction?.amount | number : '1.3-3' }}</td>
+                                                        <td>{{ ticketsTransaction?.amount | currency:'USD':'symbol': '1.3-3' }}</td>
                                                         <td>{{ ticketsTransaction?.checkNumber }}</td>
                                                     </tr>
                                                 </ng-template>
@@ -574,7 +574,7 @@
             <div class="d-flex justify-content-between  mb-2 mt-2">
                 <div class="text-xl fz-16 font-bold">Total Amount
                 </div>
-                <div class="font-bold fz-16">{{remainingAmount | number : '1.3-3'}}</div>    
+                <div class="font-bold fz-16">{{remainingAmount | currency:'USD':'symbol': '1.3-3'}}</div>    
             </div>
         </div>
     </div>
