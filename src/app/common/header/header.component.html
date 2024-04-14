@@ -30,7 +30,7 @@
 
                     <li class="dropdown d-inline-block">
                         <ul class="balance-details-ul balance-bar-desktop">
-                            <li *ngIf="currentRole!='Scale' "><strong>Balance</strong>: ${{ cashDrawerBalanceAmount | number : numberFormat}}</li>
+                            <li *ngIf="currentRole!='Scale' "><strong>Balance</strong>: {{ cashDrawerBalanceAmount | currency:'USD':'symbol': numberFormat}}</li>
                             <li><strong>PaidCount</strong>: {{paidTicketCount}}</li>
                         </ul>
                     </li>
@@ -105,7 +105,7 @@
 
             <div class="balance-bar-mobile">
                 <ul class="balance-details-ul">
-                    <li *ngIf="currentRole!='Scale' "><strong>Balance</strong>: ${{ cashDrawerBalanceAmount | number : numberFormat}}</li>
+                    <li *ngIf="currentRole!='Scale' "><strong>Balance</strong>: {{ cashDrawerBalanceAmount | currency:'USD':'symbol': numberFormat}}</li>
                     <li><strong>PaidCount</strong>: {{paidTicketCount}}</li>
                 </ul>
             </div>
@@ -201,10 +201,10 @@
                         <div class="row">
                             <div>
                                 <h4>Reopen register with previous day balance : </h4>
-                                <h2>${{((cashdrawerdetail.dollar1 * 1) + (cashdrawerdetail.dollar5 * 5) + (cashdrawerdetail.dollar10 * 10) +
+                                <h2>{{((cashdrawerdetail.dollar1 * 1) + (cashdrawerdetail.dollar5 * 5) + (cashdrawerdetail.dollar10 * 10) +
                                     (cashdrawerdetail.dollar20 * 20) + (cashdrawerdetail.dollar50 * 50) + (cashdrawerdetail.dollar100 * 100) + 
                                     (cashdrawerdetail.cent1 * .01) + (cashdrawerdetail.cent5 * .05) + (cashdrawerdetail.cent10 * .1) + 
-                                    (cashdrawerdetail.cent25 * .25)) | number : numberFormat}}
+                                    (cashdrawerdetail.cent25 * .25)) | currency:'USD':'symbol': numberFormat}}
                                 </h2>
                             </div>
                         </div>
@@ -220,7 +220,7 @@
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <h4>Cash Drawer Remaining Balance : {{cashDrawerBalanceAmount | number : numberFormat}}</h4>
+                                <h4>Cash Drawer Remaining Balance : {{cashDrawerBalanceAmount | currency:'USD':'symbol': numberFormat}}</h4>
                             </div>
                         </div>
                     </form>
