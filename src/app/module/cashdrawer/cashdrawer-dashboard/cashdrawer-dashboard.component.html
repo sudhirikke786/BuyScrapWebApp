@@ -28,11 +28,11 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4>Previous Close Balance : {{cashDrawerPreviousDayBalanceAmount | number : '1.3-3'}}</h4>
+                                        <h4>Previous Close Balance : {{cashDrawerPreviousDayBalanceAmount | currency:'USD':'symbol': '1.3-3'}}</h4>
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="bg-light-grey">
-                                                    <h3>$ {{cashDrawerBalanceAmount | number : '1.3-3'}}</h3>
+                                                    <h3>{{cashDrawerBalanceAmount | currency:'USD':'symbol': '1.3-3'}}</h3>
                                                 </div>
                                             </div>
 
@@ -249,10 +249,10 @@
                         <div class="row">
                             <div>
                                 <h4>Total Amount : </h4>
-                                <h2>${{((cashdrawerdetail.dollar1 * 1) + (cashdrawerdetail.dollar5 * 5) + (cashdrawerdetail.dollar10 * 10) +
+                                <h2>{{((cashdrawerdetail.dollar1 * 1) + (cashdrawerdetail.dollar5 * 5) + (cashdrawerdetail.dollar10 * 10) +
                                     (cashdrawerdetail.dollar20 * 20) + (cashdrawerdetail.dollar50 * 50) + (cashdrawerdetail.dollar100 * 100) + 
                                     (cashdrawerdetail.cent1 * .01) + (cashdrawerdetail.cent5 * .05) + (cashdrawerdetail.cent10 * .1) + 
-                                    (cashdrawerdetail.cent25 * .25)) | number : '1.3-3'}}
+                                    (cashdrawerdetail.cent25 * .25)) | currency:'USD':'symbol': '1.3-3'}}
                                 </h2>
                             </div>
                         </div>
@@ -267,7 +267,7 @@
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <h4>Cash Drawer Remaining Balance : {{cashDrawerBalanceAmount | number : '1.3-3'}}</h4>
+                                <h4>Cash Drawer Remaining Balance : {{cashDrawerBalanceAmount | currency:'USD':'symbol': '1.3-3'}}</h4>
                             </div>
                         </div>
                     </form>
@@ -367,10 +367,10 @@
                         <div class="row">
                             <div>
                                 <h4>Total Amount : </h4>
-                                <h2>${{((cashdrawerClosingdetail.dollar1 * 1) + (cashdrawerClosingdetail.dollar5 * 5) + (cashdrawerClosingdetail.dollar10 * 10) +
+                                <h2>{{((cashdrawerClosingdetail.dollar1 * 1) + (cashdrawerClosingdetail.dollar5 * 5) + (cashdrawerClosingdetail.dollar10 * 10) +
                                     (cashdrawerClosingdetail.dollar20 * 20) + (cashdrawerClosingdetail.dollar50 * 50) + (cashdrawerClosingdetail.dollar100 * 100) + 
                                     (cashdrawerClosingdetail.cent1 * .01) + (cashdrawerClosingdetail.cent5 * .05) + (cashdrawerClosingdetail.cent10 * .1) + 
-                                    (cashdrawerClosingdetail.cent25 * .25)) | number : '1.3-3'}}
+                                    (cashdrawerClosingdetail.cent25 * .25)) | currency:'USD':'symbol': '1.3-3'}}
                                 </h2>
                             </div>
                         </div>
@@ -385,7 +385,7 @@
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <h4>Cash Drawer Remaining Balance : {{cashDrawerBalanceAmount | number : '1.3-3'}}</h4>
+                                <h4>Cash Drawer Remaining Balance : {{cashDrawerBalanceAmount | currency:'USD':'symbol': '1.3-3'}}</h4>
                             </div>
                         </div>
                     </form>

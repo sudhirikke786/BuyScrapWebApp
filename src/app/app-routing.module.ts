@@ -78,19 +78,19 @@ const routes: Routes = [
           path:'adjustment',
           loadChildren:() => import('./module/adjustment/adjustment.module').then(m => m.AdjustmentModule),
           canActivate: [RoleGuard],
-          data: { requiredRole:['Administrator','Scale','Cashier']},
+          data: { requiredRole:['Administrator','Cashier']},
         },
         {
           path:'regrade',
           loadChildren:() => import('./module/regrade/regrade.module').then(m => m.RegradeModule),
           canActivate: [RoleGuard],
-          data: { requiredRole:['Administrator','Scale','Cashier']},
+          data: { requiredRole:['Administrator','Cashier']},
         },
         {
           path:'certificates',
           loadChildren:() => import('./module/certificates/certificates.module').then(m => m.CertificatesModule),
           canActivate: [RoleGuard],
-          data: { requiredRole:['Administrator','Scale','Cashier']},
+          data: { requiredRole:['Administrator','Cashier']},
         },
         {
           path:'cash-drawer',
