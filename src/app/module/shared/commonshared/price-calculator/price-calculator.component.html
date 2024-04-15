@@ -15,9 +15,9 @@
 
         <div class="col-sm-12">
           <div class="col-md-12 col-sm-12">
-            <img [src]="itemImagePath" alt="Image" class="img-fluid m-image img-responsive">
+            <img [src]="itemImagePath" alt="Image" class="m-image ">
           </div>
-          <div class="col-md-12 col-sm-12 d-flex justify-content-between">
+          <div class="col-md-12 col-sm-12 d-flex justify-content-between flex-wrap">
             <div class="d-flex justify-content-start align-items-center">
 
               <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
@@ -25,7 +25,7 @@
 
             </div>
 
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex justify-content-center align-items-center flex-wrap">
               <div class="ms-2">
                 <i pTooltip="Virtual Keyboard" tooltipPosition="bottom" class="bi bi-keyboard"
                  ></i>
@@ -49,12 +49,13 @@
 
           <div class="container px-0 py-0">
             <div class="row">
-              <div class="col-6 d-flex justify-content-start align-items-center">
+              <div class="col-6 col-sm-12 col-lg-6 d-flex justify-content-start align-items-center">
                 <div class="c-title">
                   Gross:
                 </div>
                 <div>
-                  <div class="input-group">
+                  <div class="input-group price-d ">
+                   
                     <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
                       [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
                       (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
@@ -68,7 +69,7 @@
                 </div>
               </div>
 
-              <div class="col-6 d-flex justify-content-start align-items-center">
+              <div class="col-6 col-sm-12 col-lg-6 d-flex justify-content-start align-items-center">
                 <div class="c-title">
                   Tare:
                 </div>
@@ -90,7 +91,7 @@
 
             <!-- Add more rows for additional input boxes -->
             <div class="row form-box">
-              <div class="col-6 d-flex justify-content-start align-items-center">
+              <div class="col-6 col-sm-12 col-lg-6 d-flex justify-content-start align-items-center">
                 <div >
                   <div class="c-title">Net:</div>
                 </div>
@@ -104,13 +105,14 @@
                 </div>
               </div>
 
-              <div class="col-6 d-flex justify-content-start align-items-center">
+              <div class="col-6 col-sm-12 col-lg-6 d-flex justify-content-start align-items-center">
 
-                <div class="c-title">
+                <div class="c-title ">
                   Price:
                 </div>
                 <div>
-                  <div class="input-group">
+                  <div class="input-group price-d">
+                    
                     <input type="text" [readonly]="isVirtual" #inputBox4 [(ngModel)]="priceInput"
                       (focus)="focusedInput = 'inputBox4'" id="price" class="form-control   mb-1 ps-0">
 

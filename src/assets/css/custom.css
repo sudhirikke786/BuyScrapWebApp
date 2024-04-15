@@ -2325,7 +2325,7 @@ h1, h2, h3 ,h4{
   }
   
   .h-40{
-    height: 60px;
+    height: auto;
   }
  
   .container-lg {
@@ -2412,7 +2412,7 @@ select option{
 }
 
 .h-40{
-  height: 60px;
+  height: auto
 }
 
 .container-lg {
@@ -2438,12 +2438,14 @@ select option{
 
 }
 
+@media only screen and (max-width:5000px) and (min-width:3000px) {
+  
+}
+
 
 @media only screen and (max-width:7000px) and (min-width:3840px) {
 
-  .m-image{
-    max-height: 30vh !important;
-  }
+ 
 
   body {
     font-size:50px !important;
@@ -2543,7 +2545,7 @@ b, strong{
   }
 
   .btn-cal {
-    font-size: 8.1rem !important;
+    font-size: 6.1rem !important;
    }
    .container {
     width: 100% !important;
