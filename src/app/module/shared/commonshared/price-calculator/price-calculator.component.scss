@@ -7,9 +7,22 @@
 .price-d ::before{
   content: '$';
   top: 11px;
-  position: absolute;
+    position: absolute;
 }
 
+
+.m-image{
+ 
+  height:120px;
+  width: auto;
+  overflow: hidden;
+    img{
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Ensures no extra space below the image */
+    }
+
+}
 
 
 
@@ -50,49 +63,16 @@
     grid-column: 3 / span 2;
   }
   
-  /* On hover styles for buttons */
-//   .btn:hover {
-//     background-color: var(--ct-white);
-//   }
+
   
   .h-30{
     height: 30px;
     border-color: #e9ecef;
   }
 
-  .avatar-container {
-    max-height: 90px;
-    overflow-y: auto;
-  }
-
-  .avatar{
-    height:100%;
-    width: 100%;
-  }
+ 
   .custom-file-input {
     display: none;
-  }
-
-
-
-
-
-  .image-card {
-    display: flex;
-    justify-content: center;
-
-    border-radius: 5px;
-    padding: 5px 0px 5px 0px;
-  }
-  
-  .image-container {
-    margin-right: 5px;
-      
-  }
-  
-  .image-container img {
-    width: 100%;
-    height: auto;
   }
 
   .bi-keyboard{
@@ -143,19 +123,36 @@
 
  @media (max-width:1024px) {
 
- 
-    
-
 
 }
 
-@media (max-width:1920px) {
-  .m-image{
-    height: 125px;
-    width: 100%;
+@media only screen and (max-width: 2000px) and (min-width: 1600px) {
+
+  
+.m-image{
+ 
+  height:200px;
+  width: auto;
+  overflow: hidden;
+    img{
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Ensures no extra space below the image */
+    }
+
+}
+
+  .c-title{
+    width:70px;
+  }
+
+  .btn-cal {
+    font-size: 2.1rem;
   }
 
 }
+
+
 
 
 @media only screen and (min-width: 2050px) and (min-height: 2732px) {
@@ -168,10 +165,19 @@
     cursor: pointer;
   } 
 
-  .m-image{
-    height: 100%;
-    width: 95%;
-  }
+  
+.m-image{
+ 
+  height:150px;
+  width: auto;
+  overflow: hidden;
+    img{
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Ensures no extra space below the image */
+    }
+
+}
 
   .bi-keyboard{
     font-size: 50px;
@@ -185,8 +191,17 @@
 
   
   .m-image{
-    height: 100%;
-    width: 95%;
+ 
+    height:300px;
+    min-height: 300px;
+    width: auto;
+    overflow: hidden;
+      img{
+        width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        display: block; /* Ensures no extra space below the image */
+      }
+  
   }
   .btn-cal {
     
@@ -196,7 +211,7 @@
     font-size: 50px;
   }
   .c-title{
-    width:145px;
+    width:100px;
   }
  
 
@@ -209,7 +224,7 @@
   }
 
   .c-title{
-    width:145px;
+    width:170px;
   }
  
   .t-on{
@@ -228,11 +243,19 @@
     font-size: 7.1rem !important;
   }
    
-  .m-image{
-    height: 100%;
-    width: 95%;
-  
-  }
-  
+ 
+.m-image{
+ 
+  height:400px;
+  min-height: 300px;
+  width: auto;
+  overflow: hidden;
+    img{
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Ensures no extra space below the image */
+    }
+
+}
 
 }
