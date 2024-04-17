@@ -2253,7 +2253,9 @@ h1, h2, h3 ,h4{
   height: 40px;
 }
 
-
+.custom-lh{
+  width: 100%;
+}
 
 
 }
@@ -2323,7 +2325,7 @@ h1, h2, h3 ,h4{
   }
   
   .h-40{
-    height: 60px;
+    height: auto;
   }
  
   .container-lg {
@@ -2410,7 +2412,7 @@ select option{
 }
 
 .h-40{
-  height: 60px;
+  height: auto
 }
 
 .container-lg {
@@ -2436,9 +2438,14 @@ select option{
 
 }
 
+@media only screen and (max-width:5000px) and (min-width:3000px) {
+  
+}
+
 
 @media only screen and (max-width:7000px) and (min-width:3840px) {
 
+ 
 
   body {
     font-size:50px !important;
@@ -2544,6 +2551,18 @@ b, strong{
     width: 100% !important;
     max-width: 100% !important;
    };
+
+   .main-ul li { 
+
+    padding: 30px;
+
+   }
+
+   .custom-lh{
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+    line-height: 150px !important;
+   }
 
 }
 

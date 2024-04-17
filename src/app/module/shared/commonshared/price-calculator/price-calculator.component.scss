@@ -1,3 +1,31 @@
+
+
+.form-box{
+  margin-bottom: 10px;
+}
+
+.price-d ::before{
+  content: '$';
+  top: 11px;
+    position: absolute;
+}
+
+
+.m-image{
+ 
+  height:120px;
+  width: auto;
+  overflow: hidden;
+    img{
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Ensures no extra space below the image */
+    }
+
+}
+
+
+
 .calculator {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -22,7 +50,7 @@
     background-color: var(--ct-blue);
     color: var(--ct-white);
     border: none;
-    font-size: 2.0rem;
+    font-size: 1.5rem;
     
     cursor: pointer;
   }
@@ -35,49 +63,24 @@
     grid-column: 3 / span 2;
   }
   
-  /* On hover styles for buttons */
-//   .btn:hover {
-//     background-color: var(--ct-white);
-//   }
+
   
   .h-30{
     height: 30px;
     border-color: #e9ecef;
   }
 
-  .avatar-container {
-    max-height: 90px;
-    overflow-y: auto;
-  }
-
-  .avatar{
-    height:100%;
-    width: 100%;
-  }
+ 
   .custom-file-input {
     display: none;
   }
 
-
-
-
-
-  .image-card {
-    display: flex;
-    justify-content: center;
-
-    border-radius: 5px;
-    padding: 5px 0px 5px 0px;
+  .bi-keyboard{
+    font-size: 30px;
   }
-  
-  .image-container {
-    margin-right: 5px;
-      
-  }
-  
-  .image-container img {
-    width: 100%;
-    height: auto;
+
+  .c-title{
+    width: 40px;
   }
   
 //   @media (max-width: 1180px) {
@@ -112,56 +115,43 @@
     font-size: 12px !important;
    }
 
-   .h-30{
-    height: 20px;
-    border-color: #e9ecef;
-   }
+ 
 
-   .cost-image{
-     div {
-      width:100%;
-      max-height: 50px;
-     }
-     .img-fluid{
-      width: 100%;
-      max-height: 60px;
-     }
-     .btn{
-      width:100%;
-      height: 25px;
-      margin-right: 5px;
-      margin-top:10px;
-     }
-   }
+  
 }
 
 
  @media (max-width:1024px) {
 
-  .cost-image{
-
-    div {
-      width:100%;
-     }
-   
-    .img-fluid{
-     width: 100%;
-     display: block;
-     max-height: 50px;
-    }
-    .btn{
-      width:100%;
-      height: 25px;
-      font-size: 12px !important;
-      margin-right: 5px;
-      margin-top:0px;
-     }
-    
-  }
-
-
 
 }
+
+@media only screen and (max-width: 2000px) and (min-width: 1600px) {
+
+  
+.m-image{
+ 
+  height:200px;
+  width: auto;
+  overflow: hidden;
+    img{
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Ensures no extra space below the image */
+    }
+
+}
+
+  .c-title{
+    width:70px;
+  }
+
+  .btn-cal {
+    font-size: 2.1rem;
+  }
+
+}
+
 
 
 
@@ -174,13 +164,98 @@
     
     cursor: pointer;
   } 
+
+  
+.m-image{
+ 
+  height:150px;
+  width: auto;
+  overflow: hidden;
+    img{
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Ensures no extra space below the image */
+    }
+
+}
+
+  .bi-keyboard{
+    font-size: 50px;
+  }
+
 }
 
 
 
-@media only screen and (max-width:3840px) and (min-width:2000px){
+@media only screen and (max-width:3840px) and (min-width:2060px){
+
+  
+  .m-image{
+ 
+    height:300px;
+    min-height: 300px;
+    width: auto;
+    overflow: hidden;
+      img{
+        width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        display: block; /* Ensures no extra space below the image */
+      }
+  
+  }
   .btn-cal {
     
     font-size: 3.5rem !important;
   }
+  .bi-keyboard{
+    font-size: 50px;
+  }
+  .c-title{
+    width:100px;
+  }
+ 
+
+}
+
+
+@media only screen and (max-width:7000px) and (min-width:3500px){
+  .bi-keyboard{
+    font-size: 100px;
+  }
+
+  .c-title{
+    width:170px;
+  }
+ 
+  .t-on{
+    font-size: 50px !important;
+  }
+
+  .form-box{
+    margin-bottom: 20px;
+  }
+  .form-control{
+    height: 150px;
+  }
+
+  
+  .btn-cal {
+    font-size: 7.1rem !important;
+  }
+   
+ 
+.m-image{
+ 
+  height:400px;
+  min-height: 300px;
+  width: auto;
+  overflow: hidden;
+    img{
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Ensures no extra space below the image */
+    }
+
+}
+
 }

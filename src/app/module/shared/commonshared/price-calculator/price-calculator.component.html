@@ -1,148 +1,167 @@
-<div class="card" style="height:calc(100vh - 590px);">
-<div class="card-body px-1 py-0" style="padding-top: 6px !important; padding-bottom: 6px !important;">
-  
-<div class="container px-0 py-0">
+<div class="card">
+  <div class="card-body px-1 py-0" style="padding-top: 6px !important; padding-bottom: 6px !important;">
 
-  <div class="row">
-    <div class="col-12">
-      <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom" > {{itemGroupName}} - {{itemMaterialName}}</div>
-     
-    
-    </div>
-</div>
-  <div class="row cost-image">
+    <div class="px-0 py-0">
 
-    <div class="col-sm-6">
-      <div class="col-md-12 col-sm-12">
-        <img [src]="itemImagePath" alt="Image" class="img-fluid img-responsive" >
-      </div>
-      <div class="col-md-12 col-sm-12">
-        <div class="content-container mt-1">
-          <button type="button" class="btn  btn-primary" (click)="changeItem()">Change Item</button>
-          <button type="button" class="btn btn-danger"  (click)="changeImage()">Capture Img</button>
+      <div class="row">
+        <div class="col-12">
+          <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom"> {{itemGroupName}} -
+            {{itemMaterialName}}</div>
+
+
         </div>
       </div>
+      <div class="row">
 
-    </div>
- 
-    <div class="col-sm-6">
+        <div class="col-sm-12">
+          <div  class="m-image">
+            <img [src]="itemImagePath" alt="Image">
+          </div>
+          <!-- <div class="col-md-12 col-sm-12">
+           
+          </div> -->
+          <div class="col-md-12 col-sm-12 d-flex justify-content-between flex-wrap">
+            <div class="d-flex justify-content-start align-items-center">
 
-     
+              <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
+              <button type="button" class="btn btn-danger" (click)="changeImage()">Capture Img</button>
 
-      <div class="container px-0 py-0">
-
-        <div class="row">
-          <div class="d-flex justify-content-start align-items-center">
-            <div>                 <i pTooltip="Virtual Keyboard"  tooltipPosition="bottom"  class="bi bi-keyboard" style="font-size: 30px;"></i>           
             </div>
-            <div class="ms-2">OFF</div>
-            <div class="ms-2"> <p-inputSwitch   [(ngModel)]="isVirtual" (onChange)="showKeyboard($event)"></p-inputSwitch> 
+
+            <div class="d-flex justify-content-center align-items-center flex-wrap">
+              <div class="ms-2">
+                <i pTooltip="Virtual Keyboard" tooltipPosition="bottom" class="bi bi-keyboard"
+                 ></i>
+              </div>
+              <div class="t-on">OFF</div>
+              <div> <p-inputSwitch [(ngModel)]="isVirtual"
+                  (onChange)="showKeyboard($event)"></p-inputSwitch>
+              </div>
+              <div class="t-on">ON</div>
+
             </div>
-            <div class="ms-2">ON</div>
+
 
           </div>
-           
+
         </div>
 
-        <div class="row">
-            <div class="col-md-3">
-                <label for="gross">Gross:</label>
-            </div>
-            <div class="col-md-9">
-                <div class="input-group">
-                    <input type="text" (keypress)="onKeyPress($event)"  placeholder="Enter Gross Weight" #inputBox1 [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" 
-                    (focus)="focusedInput = 'inputBox1'" (ngModelChange)="calcNetFromGross($event)"  class="form-control inputone   mb-1 ps-0">
+        <div class="col-sm-12">
+
+
+
+          <div class="container px-0 py-0">
+            <div class="row">
+              <div class="col-6 col-sm-12 col-lg-6 d-flex justify-content-start align-items-center">
+                <div class="c-title">
+                  Gross:
+                </div>
+                <div>
+                  <div class="input-group price-d ">
+                   
+                    <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
+                      [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
+                      (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
                     <div class="input-group-append" *ngIf="grossInput">
                       <!-- <button class="btn btn-outline-secondary  px-0 py-0" type="button" (click)="grossInput ='0'">
-                        <i class="bi bi-x"></i>
-                      </button> -->
+                      <i class="bi bi-x"></i>
+                    </button> -->
                     </div>
                   </div>
-              
-            </div>
-        </div>
-      
-        <!-- Add more rows for additional input boxes -->
-        <div class="row">
-            <div class="col-md-3">
-                <label for="Tare">Tare:</label>
-            </div>
-            <div class="col-md-9">
-                <div class="input-group">
-                    <input type="text" (keypress)="onKeyPress($event)"   placeholder="Enter Tare Weight" #inputBox2  [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'"   id="tear" class="form-control   mb-1 ps-0">
-                    <!-- <div class="input-group-append" *ngIf="tareInput">
-                      <button class="btn btn-outline-secondary  px-0 py-0" type="button" (click)="tareInput ='0'">
-                        <i class="bi bi-x"></i>
-                      </button>
-                    </div> -->
-                  </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="Net">Net:</label>
-            </div>
-            <div class="col-md-9">
-                <div class="input-group">
-                    <input type="text" readonly placeholder="Net Weight" #inputBox3  [(ngModel)]="netInput" value = "{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox3'"   id="net" class="form-control   mb-1 ps-0">
-                    <!-- <div class="input-group-append" *ngIf="netInput">
-                      <button class="btn btn-outline-secondary  px-0 py-0" type="button" (click)="netInput =''">
-                        <i class="bi bi-x"></i>
-                      </button>
-                    </div> -->
-                  </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="Price">Price:</label>
-            </div>
-            <div class="col-md-9">
-                <div class="input-group">
-                    <input type="text" [readonly]="isVirtual"  #inputBox4 [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox4'"   id="price" class="form-control   mb-1 ps-0">
-                    <!-- <div class="input-group-append" *ngIf="priceInput">
-                      <button class="btn btn-outline-secondary  px-0 py-0" type="button" (click)="priceInput ='0'">
-                        <i class="bi bi-x"></i>
-                      </button>
-                    </div> -->
+
                 </div>
+              </div>
+
+              <div class="col-6 col-sm-12 col-lg-6 d-flex justify-content-start align-items-center">
+                <div class="c-title">
+                  Tare:
+                </div>
+                <div>
+                  <div class="input-group">
+                    <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
+                      [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'" id="tear"
+                      class="form-control   mb-1 ps-0">
+                    <!-- <div class="input-group-append" *ngIf="tareInput">
+                       <button class="btn btn-outline-secondary  px-0 py-0" type="button" (click)="tareInput ='0'">
+                         <i class="bi bi-x"></i>
+                       </button>
+                     </div> -->
+                  </div>
+                </div>
+              </div>
+
             </div>
+
+            <!-- Add more rows for additional input boxes -->
+            <div class="row form-box">
+              <div class="col-6 col-sm-12 col-lg-6 d-flex justify-content-start align-items-center">
+                <div >
+                  <div class="c-title">Net:</div>
+                </div>
+                <div>
+                  <div class="input-group">
+                    <input type="text" readonly placeholder="Net Weight" #inputBox3 [(ngModel)]="netInput"
+                      value="{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox3'" id="net"
+                      class="form-control   mb-1 ps-0">
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6 col-sm-12 col-lg-6 d-flex justify-content-start align-items-center">
+
+                <div class="c-title ">
+                  Price:
+                </div>
+                <div>
+                  <div class="input-group price-d">
+                    
+                    <input type="text" [readonly]="isVirtual" #inputBox4 [(ngModel)]="priceInput"
+                      (focus)="focusedInput = 'inputBox4'" id="price" class="form-control   mb-1 ps-0">
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+
+            <!-- Add more rows as needed for additional input boxes -->
+          </div>
         </div>
-      
-        <!-- Add more rows as needed for additional input boxes -->
+
+
       </div>
+
     </div>
 
-  
-</div>
- 
-</div>
+
+    <div class="calculator">
+      <button class="btn-cal" (click)="appendNumber(1)">1</button>
+      <button class="btn-cal" (click)="appendNumber(2)">2</button>
+      <button class="btn-cal" (click)="appendNumber(3)">3</button>
+      <button class="btn-cal btn-danger" (click)="deleteCharacter()">Del</button>
+      <button class="btn-cal " (click)="appendNumber(4)">4</button>
+      <button class="btn-cal" (click)="appendNumber(5)">5</button>
+      <button class="btn-cal" (click)="appendNumber(6)">6</button>
+      <button class="btn-cal btn-danger" (click)="note()">Notes</button>
+      <button class="btn-cal" (click)="appendNumber(7)">7</button>
+      <button class="btn-cal" (click)="appendNumber(8)">8</button>
+      <button class="btn-cal" (click)="appendNumber(9)">9</button>
+      <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
+      <button class="btn-cal" (click)="appendNumber(0)">0</button>
+      <button class="btn-cal" (click)="appendNumber('00')">00</button>
+      <button class="btn-cal" (click)="appendNumber('.')">.</button>
 
 
-<div class="calculator"  >
-  <button class="btn-cal" (click)="appendNumber(1)">1</button>
-  <button class="btn-cal" (click)="appendNumber(2)">2</button>
-  <button class="btn-cal" (click)="appendNumber(3)">3</button>
-  <button class="btn-cal btn-danger" (click)="deleteCharacter()">Del</button>
-  <button class="btn-cal " (click)="appendNumber(4)">4</button>
-  <button class="btn-cal" (click)="appendNumber(5)">5</button>
-  <button class="btn-cal" (click)="appendNumber(6)">6</button>
-  <button class="btn-cal btn-danger" (click)="note()">Notes</button>
-  <button class="btn-cal" (click)="appendNumber(7)">7</button>
-  <button class="btn-cal" (click)="appendNumber(8)">8</button>
-  <button class="btn-cal" (click)="appendNumber(9)">9</button>
-  <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
-  <button class="btn-cal" (click)="appendNumber(0)">0</button>
-  <button class="btn-cal" (click)="appendNumber('00')">00</button>
-  <button class="btn-cal" (click)="appendNumber('.')">.</button>
-
-
-</div>
-</div>
+    </div>
+  </div>
 </div>
 
 
-<p-dialog [modal]="true" header="Add Note" [(visible)]="addNoteSectionVisible" [style]="{ width: '30vw' }" [breakpoints]="{'767px': '100vw'}">
+<p-dialog [modal]="true" header="Add Note" [(visible)]="addNoteSectionVisible" [style]="{ width: '30vw' }"
+  [breakpoints]="{'767px': '100vw'}">
   <div>
     <div class="input-group">
       <textarea id="materialNote" [(ngModel)]="materialNote" rows="4" cols="50" class="form-control">
@@ -150,7 +169,8 @@
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <a href="javascript:void(0)" class="btn btn-success me-1" aria-label="Add / Edit Note" (click)="addEditNote()" >Add Note</a>
-    <a href="javascript:void(0)" class="btn btn-danger"  aria-label="Delete Note" (click)="deleteNote()" >Delete Note</a>
+    <a href="javascript:void(0)" class="btn btn-success me-1" aria-label="Add / Edit Note" (click)="addEditNote()">Add
+      Note</a>
+    <a href="javascript:void(0)" class="btn btn-danger" aria-label="Delete Note" (click)="deleteNote()">Delete Note</a>
   </ng-template>
 </p-dialog>

@@ -39,21 +39,21 @@
                                     <div class="col-sm-10">
         
                                         <div class="row">
-                                           <div class="col-sm-6 d-flex">
+                                           <div class="col-sm-6 col-md-3 d-flex">
                                                 <h4 class="ticket-number me-1">Ticket# - {{ticketId}}</h4>
                                                 <!-- <a href="javascript:void(0)" class="btn btn-grid btn-primary waves-effect waves-light ms-1 mb-1">
                                                     <i class="mdi mdi-plus"></i>  COD Required
                                                 </a> -->
                                            </div>
         
-                                           <div class="col-sm-6 d-flex justify-content-end">
-                                            <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/home">
-                                                Back
-                                            </a>
-                                                <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
+                                           <div class="col-sm-6 col-md-9 d-flex justify-content-end">
+                                                <a  class="btn btn-primary me-1" routerLink="/{{orgName}}/home">
+                                                    Back
+                                                </a>
+                                                <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary flt-right" (click)="editTicketDetails()">
                                                     <i class="mdi mdi-pencil"></i> Edit
                                                 </a>
-                                                <div *ngIf="isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
+                                                <div *ngIf="isEditModeOn" >
                                                     <a class="btn btn-danger me-1" (click)="cancelEditTicket(false, 0)">Cancel</a>
                                                     <a class="btn btn-primary" (click)="confirmSave()">Save</a>
                                                 </div>
@@ -375,9 +375,9 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4 position-relative" *ngIf="isEditModeOn && editItemCloseImageCapture">
-                                <div class="calc" style="height:calc(100vh - 150px);width:100%;overflow: hidden;">
-                                    <app-price-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()"
+                            <div class="col-lg-4 col-xs-12 col-sm-4" *ngIf="isEditModeOn && editItemCloseImageCapture">
+                                <div class="calc" style="height:calc(100vh - 150px);width:100%;overflow:hidden">
+                                    <app-price-calculator  (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()"
                                 [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
                                         [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
                                     </app-price-calculator>
@@ -404,7 +404,7 @@
 
 <ng-container *ngIf="editItemVisible">
 
-    <p-dialog [modal]="true" [header]="modalHeader" [(visible)]="editItemVisible" [style]="{width: '80vw'}"
+    <p-dialog [modal]="true" [header]="subScriptionType?.organisationPlan=='pro' ? 'Item Details' : ''" [(visible)]="editItemVisible" [style]="{width: '80vw'}"
  [breakpoints]="{'767px': '100vw'}">
         
     <div class="row">
