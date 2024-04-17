@@ -404,7 +404,7 @@
 
 <ng-container *ngIf="editItemVisible">
 
-    <p-dialog [modal]="true" [header]="modalHeader" [(visible)]="editItemVisible" [style]="{width: '80vw'}"
+    <p-dialog [modal]="true" [header]="subScriptionType?.organisationPlan=='pro' ? 'Item Details' : ''" [(visible)]="editItemVisible" [style]="{width: '80vw'}"
  [breakpoints]="{'767px': '100vw'}">
         
     <div class="row">
