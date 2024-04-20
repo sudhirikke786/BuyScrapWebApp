@@ -660,3 +660,77 @@
 </p-dialog>
 
 
+
+
+<p-dialog header="Header" [(visible)]="addSellerPopupVisible" [modal]="true" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}">
+    <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <span class="font-bold white-space-nowrap">Add New Customer</span>
+        </div>
+    </ng-template>
+        <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="form-group col-sm-4 d-flex flex-center">
+                    <label for="example-select" class="form-label dd-label">Select Type</label>
+                    <select formControlName="sellerType" class="form-select" id="example-select"
+                        (change)="changeSellerType()">
+                        <option>Personal</option>
+                        <option>Business</option>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
+                <h4>Personal Information</h4>
+
+                <div class="form-group col-sm-4 mt-1">
+                    <div class="form-floating">
+                        <input type="text" formControlName="firstName" class="form-control"
+                            id="firstname" placeholder="First Name">
+                        <label for="floatingInput">First Name</label>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4 mt-1">
+                    <div class="form-floating">
+                        <input type="text" formControlName="middleName" class="form-control"
+                            id="middlename" placeholder="Middle Name">
+                        <label for="floatingInput">Middle Name</label>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4 mt-1">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" formControlName="lastName" id="lastname"
+                            placeholder="Last Name">
+                        <label for="floatingInput">Last Name</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
+                <h4>Business Information</h4>
+
+                <div class="form-group col-sm-6 mt-1">
+                    <div class="form-floating">
+                        <input type="text" formControlName="firstName" class="form-control"
+                            id="bfirstName" placeholder="Business Name">
+                        <label for="floatingInput">Business Name</label>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="row">
+                <div class="form-group col-sm-6 d-flex flex-center">
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <div class="flt-right">
+                        <button type="submit" class="btn btn-primary me-1">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+</p-dialog>
+

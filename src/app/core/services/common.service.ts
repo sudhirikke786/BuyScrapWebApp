@@ -213,6 +213,10 @@ export class CommonService {
   addSeller(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Sellerss/InsertSellerDTO', 'POST', requestObj);
   }
+
+  DeleteSellerbyId(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Sellerss/DeleteSellerbyId', 'POST', null, localStorage.getItem('orgName') || "", paramObj);
+  }
   
   getTransactionsDetailsById(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/TransactionMasters/GetTicketMaterialsDetailsByTicketId', 'GET', paramObj);

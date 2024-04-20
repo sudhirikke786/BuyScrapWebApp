@@ -86,7 +86,8 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     this.elementRef.nativeElement.querySelector('.inputone').focus();
   }
 
-  calcNetFromGross(gross: any) {
+  calcNetFromGross(gross: any) {    
+    this.grossInput = (isNaN(gross) || gross == '') ?  0 : gross;
     this.tareInput = (isNaN(this.tareInput) || this.tareInput == '') ?  0 : this.tareInput;
     this.netInput = gross - this.tareInput;
   }
@@ -156,7 +157,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     if (this.focusedInput === 'inputBox1') {
       this.renderer.selectRootElement(this.inputBox1?.nativeElement).focus();
       let data = this.grossInput ?? '';
-      if (data === '') {
+      if (data === '' || data == '0') {
         this.grossInput = number.toString().trim();
       } else {
         this.grossInput += number.toString().trim();
@@ -231,6 +232,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   }
 
   enter() {
+    this.calcNetFromGross(this.grossInput);
     this.changeFocus();
     console.log(this.currentFocusIndex);
     

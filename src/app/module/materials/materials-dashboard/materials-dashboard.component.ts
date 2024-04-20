@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
@@ -72,6 +72,8 @@ export class MaterialsDashboardComponent implements OnInit {
   mainMaterialsVisible = true;
   defaultSelectedMaterial: any = 1;
   defaultImage = 'assets/images/custom/materials/Default-Scrap-Material.png';
+  
+  @ViewChild('subMaterialContainer') subMaterialContainer: any;
   
   constructor(private route: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -233,6 +235,14 @@ export class MaterialsDashboardComponent implements OnInit {
 
   showBulkDialog(){
     this.bulkvisible = true;
+  }
+
+  updateBulkMaterial() {
+    
+    const containerElement = this.subMaterialContainer.nativeElement;
+    const data = containerElement.textContent;
+
+    console.log(data); 
   }
   
   onMaterialChange(value: any) {

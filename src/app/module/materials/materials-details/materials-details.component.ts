@@ -25,8 +25,8 @@ export class MaterialsDetailsComponent implements OnInit {
     },
     {
       iconcode:'mdi-plus',
-      title:'Add Materials',
-      label:'Add Materials'
+      title:'Add Sub Materials',
+      label:'Add Sub Materials'
     }
   ];
 
@@ -119,7 +119,7 @@ export class MaterialsDetailsComponent implements OnInit {
       isEnable: false,
       uomId: 1,
       uom: 'Lb',
-      locID: 0,
+      locID: this.locId,
       isHold: false,
       isCRV: false,
       holdDays: 0
@@ -239,7 +239,7 @@ enablePriceItem(){
         createdDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         updatedBy: this.logInUserId,
         updatedDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-        groupId: this.defaultMaterialId,
+        groupId: parseInt(this.defaultMaterialId),
         description: '',
         materialName: '',
         marketPrice: 0,
@@ -251,7 +251,7 @@ enablePriceItem(){
         isEnable: false,
         uomId: 1,
         uom: 'Lb',
-        locID: 0,
+        locID: this.locId,
         isHold: false,
         isCRV: false,
         holdDays: 0
@@ -277,6 +277,12 @@ enablePriceItem(){
     const source = this.form.value;
 
     const returnedTarget = Object.assign(target, source);
+    
+    returnedTarget.marketPrice = returnedTarget.marketPrice ? parseFloat(returnedTarget.marketPrice) : 0;
+    returnedTarget.scrapPrice = returnedTarget.scrapPrice ? parseFloat(returnedTarget.scrapPrice) : 0;
+    returnedTarget.dealerPrice1 = returnedTarget.dealerPrice1 ? parseFloat(returnedTarget.dealerPrice1) : 0;
+    returnedTarget.dealerPrice2 = returnedTarget.dealerPrice2 ? parseFloat(returnedTarget.dealerPrice2) : 0;
+    returnedTarget.dealerPrice3 = returnedTarget.dealerPrice3 ? parseFloat(returnedTarget.dealerPrice3) : 0;
     // alert(JSON.stringify(returnedTarget));
     
     this.commonService.insertUpdateMaterials(returnedTarget).subscribe(data =>{    

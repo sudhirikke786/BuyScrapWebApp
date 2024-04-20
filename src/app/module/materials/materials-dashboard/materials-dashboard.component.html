@@ -178,11 +178,11 @@
                             </tr></thead>
 
                             <tbody> 
-                                <ng-container *ngFor="let item of subMaterialList">
+                                <ng-container #subMaterialContainer *ngFor="let item of subMaterialList">
                                     <tr>
                                         <td hidden>{{item.rowId}}</td>
                                         <td>{{item.materialName}}</td>
-                                        <td><input type="text" class="form-control" id="value" value="{{item.scrapPrice}}"></td>
+                                        <td><input type="text" class="form-control" id="value" value="{{item.scrapPrice | currency: 'USD': 'symbol': '1.3-3'}}"></td>
                                     </tr> 
                                 </ng-container>                                                    
                             </tbody>
@@ -193,7 +193,7 @@
 
                 </div>
 
-                <a class="btn btn-primary ">Save</a>
+                <a class="btn btn-primary" (click)="updateBulkMaterial()">Save</a>
 
                 </form>
             </div>

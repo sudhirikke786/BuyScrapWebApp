@@ -8,6 +8,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DataService } from 'src/app/core/services/data.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-ticket-dashboard',
@@ -176,8 +177,13 @@ export class TicketDashboardComponent implements OnInit {
   alertVisible = false;
   alertMessage: any;
 
+  addSellerPopupVisible = false;
+  sellerForm!: FormGroup;
+  sellerType: string = 'Personal';
+
   constructor(private route: ActivatedRoute,
     private router: Router,
+    private fb: FormBuilder,
     private authService: AuthService,
     private stroarge: StorageService,
     private confirmationService: ConfirmationService,
@@ -217,6 +223,13 @@ export class TicketDashboardComponent implements OnInit {
     const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
     this.pagination.Status = result;
     this.getAllTicketsDetails(this.pagination);
+
+    this.sellerForm = this.fb.group({
+      firstName : ['',Validators.required],
+      sellerType:[this.sellerType],
+      middleName : [''],
+      lastName : ['']
+    });
   }
 
 
@@ -1486,7 +1499,49 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   addNewSeller() {
-    this.router.navigateByUrl(`${this.orgName}/sellers-buyers/add-seller`)
+    // this.router.navigateByUrl(`${this.orgName}/sellers-buyers/add-seller`);
+    this.addSellerPopupVisible = true;
+  }
+
+  onSubmit() {
+    const reqObj = {
+      ...this.sellerForm.value,
+      ...{ 
+        rowId: 0,
+        locID: this.locId,
+        createdBy: this.logInUserId,
+        createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+        updatedBy: this.logInUserId,
+        updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+      }
+    }
+    console.log(reqObj);
+    this.commonService.addSeller(reqObj).subscribe(data =>{
+      console.log(data);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller updated Successfully' });
+        const sellerFullname = reqObj.firstName + (reqObj.middleName != '' ? ' ' + reqObj.middleName : '') 
+        + (reqObj.lastName != '' ? ' ' + reqObj.lastName : '') ;
+           
+        this.addSellerPopupVisible = false;
+        this.sellerForm.patchValue({
+          firstName: '',
+          middleName: '',
+          lastName: ''
+        });
+        
+        this.clickOnSeller(data.body.insertedRow, sellerFullname);
+      },(error: any) =>{
+      console.log(error);
+    })
+
+  }
+
+  changeSellerType() {
+    if (this.sellerType == 'Personal') {
+      this.sellerType = 'Business';
+    } else {
+      this.sellerType = 'Personal';
+    }
   }
 
   onRightClick(event: any) {

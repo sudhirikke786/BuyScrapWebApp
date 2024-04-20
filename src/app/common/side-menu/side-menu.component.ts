@@ -43,19 +43,19 @@ export class SideMenuComponent {
         title:'Adjustment',
         url:'/adjustment',
         icon:'/assets/images/custom/icons/adjustment.png',
-        role: ['Administrator','Scale','Cashier']
+        role: ['Administrator','Cashier']
       },
       {
         title:'Regrade',
         url:'/regrade',
         icon:'/assets/images/custom/icons/regrade.png',
-        role: ['Administrator','Scale','Cashier']
+        role: ['Administrator','Cashier']
       },
       {
         title:'Certificates of Destruction',
         url:'/certificates',
         icon:'/assets/images/custom/icons/certificate.png',
-        role: ['Administrator','Scale','Cashier']
+        role: ['Administrator','Cashier']
       },
       {
         title:'Cash Drawer',
