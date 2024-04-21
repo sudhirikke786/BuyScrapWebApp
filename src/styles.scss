@@ -4,8 +4,11 @@
 
 .p-component {
     font-family: "Cerebri Sans,sans-serif" !important;
-    font-size: 12px !important;
+    font-size: 1rem !important;
+}
 
+:root{
+    --ct-btn-line-height: 0.9;
 }
 
 .form-control {
@@ -92,14 +95,14 @@
 
 .search-box {
     span {
-        font-size: 12px;
+        font-size: 1rem;
         color: #6c757d;
         font-weight: normal;
     }
 
     .p-inputtext {
         height: 30px;
-        font-size: 12px;
+        font-size: 0.25rem;
         font-weight: normal;
     }
 
@@ -221,7 +224,8 @@ a {
 }
 
 .btn {
-    line-height: 10px !important;
+    line-height: 0.9rem !important;
+    cursor:pointer !important;
 }
 
 .custom-lh{
@@ -362,7 +366,7 @@ a {
     }
 
     .mdi-cust {
-        font-size: 12px !important;
+        font-size: 0.75rem !important;
     }
 
     .div-small {
@@ -385,7 +389,7 @@ a {
 }
 
 .p-paginator .p-paginator-current {
-    font-size: 14px;
+    font-size: 1rem;
 }
 
 .btn .mdi:before {
@@ -393,7 +397,7 @@ a {
 }
 
 body{
-    font-size: 14px !important;
+    font-size: 1rem !important;
 }
 
 .fz-14{
@@ -401,7 +405,7 @@ body{
  }
 
  .fz-16{
-    font-size: 16px
+    font-size: 1rem
  }
 
 

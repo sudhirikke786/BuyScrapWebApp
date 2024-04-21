@@ -275,7 +275,7 @@ html[data-topbar-color="brand"] {
 .app-search form span.search-icon {
   position: absolute;
   z-index: 4;
-  font-size: 20px;
+ font-size: 1.2rem;
   line-height: 38px;
   right: 10px;
   top: 0;
@@ -315,7 +315,7 @@ html[data-bs-theme="dark"] #light-dark-mode .ri-moon-line::before {
   width: 60px;
   height: var(--ct-topbar-height);
   background-color: transparent;
-  font-size: 24px;
+ font-size: 1.5rem;
   cursor: pointer;
   z-index: 1;
   position: relative;
@@ -405,7 +405,7 @@ html[data-bs-theme="dark"] #light-dark-mode .ri-moon-line::before {
   position: absolute;
   right: 0;
   bottom: -4px;
-  font-size: 10px;
+ font-size: 0.75rem;
 }
 .notification-item .user-status.online {
   color: #1abc9c;
@@ -2025,7 +2025,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
 .icons-list-demo i {
   text-align: center;
   vertical-align: middle;
-  font-size: 22px;
+ font-size: 1.4rem;
   width: 50px;
   height: 50px;
   line-height: 50px;
@@ -2206,7 +2206,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
   margin-top: 0;
   margin-left: 50px;
   font-weight: 400;
-  font-size: 16px;
+ font-size: 1rem;
 }
 .faq-answer {
   margin-left: 50px;
@@ -2310,7 +2310,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
   }
   .timeline .timeline-icon i {
     color: var(--ct-gray-600);
-    font-size: 13px;
+   font-size: 0.75rem;
     position: absolute;
     left: 4px;
     margin-top: 1px;
@@ -2696,7 +2696,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
   padding-bottom: 20px;
 }
 .card-pricing .card-pricing-icon {
-  font-size: 22px;
+ font-size: 1.4rem;
   background-color: rgba(102, 88, 221, 0.1);
   height: 60px;
   display: inline-block;
@@ -2784,7 +2784,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
 .gal-box .gall-info .gal-like-btn {
   position: absolute;
   right: 15px;
-  font-size: 22px;
+ font-size: 1.4rem;
   top: 24px;
 }
 .counter-number {
@@ -2825,7 +2825,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
   font-family: "Material Design Icons";
   position: absolute;
   left: 0;
-  font-size: 19px;
+ font-size: 1.2rem;
   top: -3px;
 }
 .tasklist {
@@ -2846,7 +2846,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
 }
 .tasklist li .btn-sm {
   padding: 2px 8px;
-  font-size: 12px;
+ font-size: 0.75rem;
 }
 .tasklist .form-check {
   margin-left: 20px;
@@ -2890,7 +2890,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
   height: 48px;
   line-height: 48px;
   font-weight: 700;
-  font-size: 20px;
+ font-size: 1.2rem;
   background-color: var(--ct-gray-100);
   text-align: center;
   padding: 0 10px;
@@ -3247,7 +3247,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
-  font-size: 12px;
+ font-size: 0.75rem;
 }
 .irs-line {
   position: relative;
@@ -3337,7 +3337,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
   left: 0;
   white-space: nowrap;
   text-align: center;
-  font-size: 9px;
+ font-size: 0.75rem;
   line-height: 9px;
   padding: 0 3px;
   color: #6c757d;
@@ -3423,7 +3423,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
   top: 0;
   padding: 1px 3px;
   color: var(--ct-secondary-text);
-  font-size: 10px;
+ font-size: 0.75rem;
   line-height: 1.333;
   text-shadow: none;
   background-color: var(--ct-light);
@@ -3433,7 +3433,7 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
 .irs--flat .irs-single,
 .irs--flat .irs-to {
   color: #fff;
-  font-size: 10px;
+ font-size: 0.75rem;
   line-height: 1.333;
   text-shadow: none;
   padding: 1px 5px;
@@ -3500,7 +3500,7 @@ th.fc-day-header {
 }
 .fc th.fc-widget-header {
   background: var(--ct-gray-100);
-  font-size: 13px;
+ font-size: 0.75rem;
   line-height: 20px;
   padding: 10px 0;
   text-transform: uppercase;
@@ -4330,7 +4330,7 @@ div.dataTables_scrollBody > table > :not(:first-child) {
   padding: 15px;
   font-family: var(--ct-font-sans-serif);
   background-color: #6658dd;
-  font-size: 13px;
+ font-size: 0.75rem;
   line-height: 22px;
 }
 .jq-toast-single h2 {
@@ -4349,7 +4349,7 @@ div.dataTables_scrollBody > table > :not(:first-child) {
   position: absolute;
   top: -12px;
   right: -12px;
-  font-size: 20px;
+ font-size: 1.2rem;
   cursor: pointer;
   height: 32px;
   width: 32px;
@@ -4460,10 +4460,10 @@ div.dataTables_scrollBody > table > :not(:first-child) {
   box-shadow: 0 10px 33px rgba(0, 0, 0, 0.1);
 }
 .swal2-modal .swal2-title {
-  font-size: 24px;
+ font-size: 1.5rem;
 }
 .swal2-modal .swal2-content {
-  font-size: 16px;
+ font-size: 1rem;
 }
 .swal2-modal .swal2-spacer {
   margin: 10px 0;
@@ -4472,7 +4472,7 @@ div.dataTables_scrollBody > table > :not(:first-child) {
 .swal2-modal .swal2-input,
 .swal2-modal .swal2-textarea {
   border: 2px solid var(--ct-gray-300);
-  font-size: 16px;
+ font-size: 1rem;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -4752,7 +4752,7 @@ div.dataTables_scrollBody > table > :not(:first-child) {
 }
 .dd-list .dd-item button {
   height: 36px;
-  font-size: 17px;
+ font-size: 1rem;
   margin: 0;
   color: var(--ct-gray-600);
   width: 36px;
@@ -4872,7 +4872,7 @@ div.hopscotch-bubble .hopscotch-content {
   border-radius: 3px;
 }
 .legend {
-  font-size: 14px;
+ font-size: 0.75rem;
 }
 .legend tr {
   height: 30px;
@@ -4885,7 +4885,7 @@ div.hopscotch-bubble .hopscotch-content {
   padding-left: 5px !important;
   line-height: 10px;
   padding-right: 10px;
-  font-size: 13px;
+ font-size: 0.75rem;
   font-weight: 500;
   color: var(--ct-gray-600);
   text-transform: uppercase;
@@ -4917,7 +4917,7 @@ div.hopscotch-bubble .hopscotch-content {
   z-index: 10;
 }
 .morris-hover.morris-default-style {
-  font-size: 12px;
+ font-size: 0.75rem;
   text-align: center;
   border-radius: 5px;
   padding: 10px 12px;
@@ -4952,13 +4952,13 @@ div.hopscotch-bubble .hopscotch-content {
 .ct-chart .ct-label {
   fill: var(--ct-gray-500);
   color: var(--ct-gray-500);
-  font-size: 12px;
+ font-size: 0.75rem;
   line-height: 1;
 }
 .ct-chart.simple-pie-chart-chartist .ct-label {
   color: #fff;
   fill: #fff;
-  font-size: 16px;
+ font-size: 1rem;
 }
 .ct-chart .ct-series.ct-series-a .ct-bar,
 .ct-chart .ct-series.ct-series-a .ct-line,
@@ -5059,7 +5059,7 @@ div.hopscotch-bubble .hopscotch-content {
   color: var(--ct-gray-100);
 }
 .c3-chart-arcs-title {
-  font-size: 18px;
+ font-size: 1.2rem;
   font-weight: 600;
 }
 .c3 text {
@@ -5068,7 +5068,7 @@ div.hopscotch-bubble .hopscotch-content {
 }
 .c3-legend-item {
   font-family: "Cerebri Sans", sans-serif;
-  font-size: 14px;
+ font-size: 0.75rem;
 }
 .c3 line,
 .c3 path {
@@ -5114,7 +5114,7 @@ div.hopscotch-bubble .hopscotch-content {
   display: block;
 }
 .responsive-table-plugin tbody th {
-  font-size: 14px;
+ font-size: 0.75rem;
   font-weight: 400;
 }
 .responsive-table-plugin .checkbox-row {
@@ -5144,7 +5144,7 @@ div.hopscotch-bubble .hopscotch-content {
 .responsive-table-plugin .checkbox-row label::after {
   color: var(--ct-gray-400);
   display: inline-block;
-  font-size: 9px;
+ font-size: 0.75rem;
   height: 16px;
   left: 0;
   margin-left: -19px;
@@ -5316,7 +5316,7 @@ div.hopscotch-bubble .hopscotch-content {
   display: inline-block;
   font-family: footable;
   padding-right: 5px;
-  font-size: 14px;
+ font-size: 0.75rem;
 }
 .footable.breakpoint > tbody > tr > td > span.footable-toggle:before {
   content: "\e000";
@@ -5462,10 +5462,10 @@ div.hopscotch-bubble .hopscotch-content {
   content: "\e019";
 }
 .footable.breakpoint.toggle-medium > tbody > tr > td > span.footable-toggle {
-  font-size: 18px;
+ font-size: 1.2rem;
 }
 .footable.breakpoint.toggle-large > tbody > tr > td > span.footable-toggle {
-  font-size: 24px;
+ font-size: 1.5rem;
 }
 .footable > thead > tr > th {
   -webkit-touch-callout: none;
@@ -5807,7 +5807,7 @@ table[data-toggle="table"] {
   font-weight: 500;
   font-family: "Cerebri Sans", sans-serif;
   color: var(--ct-gray-900) !important;
-  font-size: 13px;
+ font-size: 0.75rem;
 }
 .ms-container .ms-selectable,
 .ms-container .ms-selection {
@@ -5845,7 +5845,7 @@ table[data-toggle="table"] {
 }
 .autocomplete-group strong {
   font-weight: 700;
-  font-size: 16px;
+ font-size: 1rem;
   color: var(--ct-gray-900);
   display: block;
 }
@@ -6205,7 +6205,7 @@ span.flatpickr-weekday {
   background-color: var(--ct-gray-200);
 }
 .file-icon p {
-  font-size: 20px;
+ font-size: 1.2rem;
 }
 .editable-clear-x {
   background: url(../images/clear.png) center center no-repeat;
@@ -6281,7 +6281,7 @@ span.flatpickr-weekday {
   display: block;
   text-align: center;
   color: #fff;
-  font-size: 16px;
+ font-size: 1rem;
   line-height: 40px;
   background: #6658dd;
   border-radius: 4px;
@@ -6347,7 +6347,7 @@ span.flatpickr-weekday {
   background-color: #6658dd;
   text-decoration: none;
   color: #fff;
-  font-size: 14px;
+ font-size: 0.75rem;
   position: absolute;
   top: 0;
   left: 10px;
@@ -6367,7 +6367,7 @@ span.flatpickr-weekday {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  font-size: 13px;
+ font-size: 0.75rem;
   line-height: 28px;
 }
 .datepicker table tr td .active.disabled:hover[disabled],
@@ -6488,7 +6488,7 @@ span.flatpickr-weekday {
   position: relative;
   width: 36px;
   height: 36px;
-  font-size: 24px;
+ font-size: 1.5rem;
   text-align: center;
   cursor: move;
 }

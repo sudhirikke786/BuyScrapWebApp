@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
@@ -36,6 +36,9 @@ export class HeaderComponent implements OnInit {
   currentRole:any;
   // cashAmount:any;
   numberFormat: string = '1.3-3';
+  wHeiht: any;
+  wWidth: any;
+  wHeight: any;
   constructor(private route: ActivatedRoute,
     private router: Router,
     public dataService: DataService,
@@ -59,7 +62,7 @@ export class HeaderComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
 
-     
+     this.currentSize()
     
     this.userFullName = this.stroarge.getLocalStorage('userObj').userdto?.firstName;
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
@@ -176,6 +179,16 @@ export class HeaderComponent implements OnInit {
   
     successAlert(msg:any){
     this.messageService.add({ severity: 'success', summary: 'success', detail: msg });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?:any) {
+    this.wWidth = event.target.innerWidth;
+    this.wHeight = event.target.innerHeight;
+  }
+  currentSize(){
+    this.wWidth = window.innerWidth;
+    this.wHeight = window.innerHeight;
   }
 
 

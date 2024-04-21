@@ -107,12 +107,12 @@
   .calculator {
     
     padding: 5px;
-    font-size: 14px !important;
+    font-size: 1rem !important;
     text-align: center;
    }
 
    .btn-cal {
-    font-size: 12px !important;
+    font-size: 0.75rem !important;
    }
 
  
@@ -205,10 +205,10 @@
   }
   .btn-cal {
     
-    font-size: 2.8rem !important;
+    font-size: 2.1rem !important;
   }
   .bi-keyboard{
-    font-size: 50px;
+    font-size: 3.1rem;
   }
   .c-title{
     width:120px;
@@ -220,7 +220,7 @@
 
 @media only screen and (max-width:7000px) and (min-width:3500px){
   .bi-keyboard{
-    font-size: 100px;
+    font-size: 5rem;
   }
 
   .c-title{
@@ -228,7 +228,7 @@
   }
  
   .t-on{
-    font-size: 50px !important;
+    font-size:3.1px !important;
   }
 
   .form-box{
@@ -240,7 +240,7 @@
 
   
   .btn-cal {
-    font-size: 7.1rem !important;
+    font-size: 4.3rem !important;
   }
    
  

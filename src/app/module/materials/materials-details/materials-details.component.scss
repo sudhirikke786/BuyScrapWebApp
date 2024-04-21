@@ -18,21 +18,45 @@
   
 
 
+ 
+
   @media screen and (min-width: 2038px) {
     .img-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)) !important;
         gap: 12px;
       }
 
   }
  
 
-  @media only screen and (max-width: 5000px) and (min-width: 2040px)  {
+  @media screen and (min-width: 3840px) {
+    .img-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)) !important;
+        gap: 12px;
+      }
+
+  }
+
+  
+  @media screen and (min-width: 6000px) {
+    .img-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)) !important;
+        gap: 12px;
+      }
+
+  }
+ 
+ 
+ 
+
+  @media only screen and (min-width: 7000px)   {
 
     .img-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)) !important;
         gap: 50px;
       }
 
