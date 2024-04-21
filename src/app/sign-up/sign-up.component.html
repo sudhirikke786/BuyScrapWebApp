@@ -766,13 +766,13 @@
 
 
 
-    <p-dialog [modal]="true" header="Privacy Policy" (onHide)="cancelImage()" [(visible)]="showPrivacy"
+    <p-dialog [modal]="true" header="Privacy Policy for BuyScrapApp Online Application" (onHide)="showPrivacy = false" [(visible)]="showPrivacy"
         [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
 
         <div class="row">
-            <div class="h3">Privacy Policy for BuyScrapApp Online Application</div>
-            <div class="h3">
-                Effective Date: 20 th April 2024
+          
+            <div class="p-title">
+                Effective Date:  {{years}}
             </div>
             <p>
 
@@ -1010,7 +1010,9 @@ measures to protect sensitive information.</p>
 
 
         </div>
-
+        <ng-template pTemplate="footer">
+            <button  class="btn btn-primary" (click)="showPrivacy = false">Close</button>
+        </ng-template>
 
 
 

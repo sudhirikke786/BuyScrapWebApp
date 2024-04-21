@@ -52,14 +52,18 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
   countryId: any;
   cityID: any;
   showPrivacy = false;
-
+  years: any;
   constructor(
     private commonService: CommonService,
     private messageService: MessageService,
     private formBuilder: FormBuilder
   ) {
 
-  
+    const day =  new Date().getDate();
+    const month = new Date().getMonth();
+    const _year  = new Date().getFullYear();
+    this.years = `${day}-${month}-${_year}`
+
 
 
   }
