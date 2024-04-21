@@ -51,7 +51,7 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
   countryState: any;
   countryId: any;
   cityID: any;
-
+  showPrivacy = false;
 
   constructor(
     private commonService: CommonService,

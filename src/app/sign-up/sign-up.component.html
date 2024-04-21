@@ -7,7 +7,7 @@
                     <div class="card bg-pattern">
 
                         <div class="card-body p-3">
-                            
+
                             <div class="text-center w-75 m-auto">
                                 <div class="auth-logo">
                                     <!-- <a href="index.html" class="logo logo-dark text-center">
@@ -15,7 +15,7 @@
                                             <img src="assets/images/custom/logo-buyscrapapp.jpg" alt="" height="61">
                                         </span>
                                     </a> -->
-                
+
                                     <a class="logo logo-light text-center">
                                         <span class="logo-lg">
                                             <img src="assets/images/custom/logo-buyscrapapp.jpg" alt="" height="61">
@@ -27,9 +27,9 @@
                             <hr>
 
                             <div class="row mt-20">
-                               <div class="col-sm-12">
+                                <div class="col-sm-12">
                                     <h3 class="pricing-steps-heading">1. Select a Base Plan</h3>
-                               </div> 
+                                </div>
                             </div>
 
 
@@ -39,84 +39,103 @@
 
                             <div class="row mt-20 plan" *ngIf="!showLoder">
                                 <ng-container *ngFor="let item of planObj;let i=index">
-                        
+
                                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                                        <div class="pricing-box pricing-box-1" tabindex="0" [ngClass]="{'plan-selected': item?.isselected}">
-                                            <h4 class="pricing-plan-name">{{item?.planTitle}}</h4> 
-        
-                                            <div class="pricing-inner-content"> 
-        
+                                        <div class="pricing-box pricing-box-1" tabindex="0"
+                                            [ngClass]="{'plan-selected': item?.isselected}">
+                                            <h4 class="pricing-plan-name">{{item?.planTitle}}</h4>
+
+                                            <div class="pricing-inner-content">
+
                                                 <span>{{item?.planRecommendationText}}</span>
-        
+
                                                 <hr>
-        
-                                                <h4 class="pricing-plan-price d-flex align-items-center ms-2" *ngIf="item?.planCostMonthly != 0">
-                                                
-                                                    <input class="form-check-input me-1" type="radio"  [checked]="item.planDetails[0].isSelcted"    (click)="getSelectedPlan(item?.planDetails,1)"   name="liteplanName_{{i}}" id="flexRadioDefault1">  
-                                                    <img *ngIf="item.IsLightVersion" src="assets/images/custom/no-camera.png" class="camera-img  me-1">
-                                                    <i *ngIf="item.IsProVersion"  class="bi bi-camera  me-1" style="color: black;"></i>
-                                                   
-                                                   
+
+                                                <h4 class="pricing-plan-price d-flex align-items-center ms-2"
+                                                    *ngIf="item?.planCostMonthly != 0">
+
+                                                    <input class="form-check-input me-1" type="radio"
+                                                        [checked]="item.planDetails[0].isSelcted"
+                                                        (click)="getSelectedPlan(item?.planDetails,1)"
+                                                        name="liteplanName_{{i}}" id="flexRadioDefault1">
+                                                    <img *ngIf="item.IsLightVersion"
+                                                        src="assets/images/custom/no-camera.png"
+                                                        class="camera-img  me-1">
+                                                    <i *ngIf="item.IsProVersion" class="bi bi-camera  me-1"
+                                                        style="color: black;"></i>
+
+
                                                     ${{item?.planCostMonthly}}/Monthly + fees
-                                                
+
                                                 </h4>
-                                                <span *ngIf="item?.planCostMonthly != 0 && item?.planCostYearly != 0">OR</span>                                                
-                                                <h4 class="pricing-plan-price d-flex align-items-center ms-2" *ngIf="item?.planCostYearly != 0">
+                                                <span
+                                                    *ngIf="item?.planCostMonthly != 0 && item?.planCostYearly != 0">OR</span>
+                                                <h4 class="pricing-plan-price d-flex align-items-center ms-2"
+                                                    *ngIf="item?.planCostYearly != 0">
 
-                                                    
-                                                    <input class="form-check-input me-1" type="radio"  [checked]="item.planDetails[1].isSelcted"    (click)="getSelectedPlan(item?.planDetails,0)"  name="liteplanName_{{i}}"   id="flexRadioDefault1">  
 
-                                                    <img *ngIf="item.IsLightVersion" src="assets/images/custom/no-camera.png" class="camera-img  me-1">
-                                                    <i *ngIf="item.IsProVersion"  class="bi bi-camera  me-1" style="color: black;"></i>
-                                                     <!-- <i class="bi bi-camera-fill" style="background-color: #000;"></i> -->
-                                                    
-                                                    ${{item?.planCostYearly}}/Yearly + fees</h4>
-        
+                                                    <input class="form-check-input me-1" type="radio"
+                                                        [checked]="item.planDetails[1].isSelcted"
+                                                        (click)="getSelectedPlan(item?.planDetails,0)"
+                                                        name="liteplanName_{{i}}" id="flexRadioDefault1">
+
+                                                    <img *ngIf="item.IsLightVersion"
+                                                        src="assets/images/custom/no-camera.png"
+                                                        class="camera-img  me-1">
+                                                    <i *ngIf="item.IsProVersion" class="bi bi-camera  me-1"
+                                                        style="color: black;"></i>
+                                                    <!-- <i class="bi bi-camera-fill" style="background-color: #000;"></i> -->
+
+                                                    ${{item?.planCostYearly}}/Yearly + fees
+                                                </h4>
+
                                                 <h5 class="pricing-plan-popularity">{{item?.planSubTitle}}</h5>
-        
+
                                                 <table class="pricing-tbl">
                                                     <tr *ngFor="let obj of item?.planDesc">
                                                         <td class="pricing-tbl-td-1">
-                                                            <i class="fa-solid fa-check fa-green" *ngIf="!obj?.isCross"></i>
-                                                            <i class="fa-solid fa-xmark fa-red" *ngIf="obj?.isCross"></i>
-                                                           
+                                                            <i class="fa-solid fa-check fa-green"
+                                                                *ngIf="!obj?.isCross"></i>
+                                                            <i class="fa-solid fa-xmark fa-red"
+                                                                *ngIf="obj?.isCross"></i>
+
                                                         </td>
                                                         <td>{{obj?.planDesc}}</td>
                                                     </tr>
-        
-                                                   
+
+
                                                 </table>
 
                                                 <div class="btn-footer">
-                                                    <button class="btn btn-primary-bsa-orange mt-15" *ngIf="item?.isselected" (click)="getSelected(item,i)">SELECTED</button>
-                                                    <button class="btn btn-primary-bsa-orange mt-15" *ngIf="!item?.isselected" (click)="getSelected(item,i)">Select Plan</button>
-            
+                                                    <button class="btn btn-primary-bsa-orange mt-15"
+                                                        *ngIf="item?.isselected"
+                                                        (click)="getSelected(item,i)">SELECTED</button>
+                                                    <button class="btn btn-primary-bsa-orange mt-15"
+                                                        *ngIf="!item?.isselected" (click)="getSelected(item,i)">Select
+                                                        Plan</button>
+
                                                 </div>
-        
-                                           
+
+
                                                 <!-- <button class="btn btn-primary-bsa-orange mt-15"   (click)="removeCartItem(buyScrappLite);buyScrappLite.selected=false">SELECTED</button> -->
-        
-        
-                                               
-                                                   
-                                                
-        
+
+
+
+
+
+
                                                 <!-- <p class="info-p">Free 30 day trial</p> -->
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </ng-container>
-                                       
+
                             </div>
 
 
-                                
-                            <div  class="row mt-20" *ngIf="showLoder">
-                                
-                                <div class="col-sm-4">
-                                    <app-page-loader type="packageloader"></app-page-loader>
-                                </div>
+
+                            <div class="row mt-20" *ngIf="showLoder">
 
                                 <div class="col-sm-4">
                                     <app-page-loader type="packageloader"></app-page-loader>
@@ -125,91 +144,110 @@
                                 <div class="col-sm-4">
                                     <app-page-loader type="packageloader"></app-page-loader>
                                 </div>
-                              
-                            
-                                
+
+                                <div class="col-sm-4">
+                                    <app-page-loader type="packageloader"></app-page-loader>
+                                </div>
+
+
+
                             </div>
-  
+
 
                             <div class="row mt-30">
 
                                 <div class="col-sm-12">
                                     <h4 class="pricing-plan-name pricing-plan-name-summary">Summary
-                                                    <span class="pricing-sub-heading"><br>Based on your selections</span>
-                                                </h4>
+                                        <span class="pricing-sub-heading"><br>Based on your selections</span>
+                                    </h4>
                                     <table class="summary-table">
 
                                         <tbody>
                                             <tr>
-                                            <td>
-                                                <div class="row">
-                                                    <div class="col-8">
-                                                        <h4 class="summary-h4">One-Time Startup Fee</h4> 
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <h4 class="summary-h4">One-Time Startup Fee</h4>
+                                                        </div>
+
+                                                        <div class="col-4">
+                                                            <h4 class="summary-h4-2 color-green">Free</h4>
+                                                        </div>
+
                                                     </div>
+                                                </td>
+                                                <td *ngIf="selectedPlan?.planTitle">
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <h4 class="summary-h4">{{selectedPlan?.planTitle}} </h4>
+                                                        </div>
 
-                                                    <div class="col-4">
-                                                        <h4 class="summary-h4-2 color-green">Free</h4>
+                                                        <div class="col-4"
+                                                            *ngIf="selectedPlan.planDetails[0].isSelcted">
+
+                                                            <h4 class="summary-h4-2">${{selectedPlan?.planCostMonthly ||
+                                                                0 }}/ {{selectedPlan.planDetails[0]?.type}}</h4>
+                                                        </div>
+
+                                                        <div class="col-4"
+                                                            *ngIf="selectedPlan.planDetails[1].isSelcted">
+
+
+                                                            <h4 class="summary-h4-2">${{selectedPlan?.planCostYearly ||
+                                                                0 }} / {{selectedPlan.planDetails[1]?.type}}</h4>
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <span class="summary-sub-heading">(Includes
+                                                                {{selectedPlan?.defaultTickets}} tickets &
+                                                                {{selectedPlan?.defaultUserCount}} User Login)</span>
+                                                        </div>
+
                                                     </div>
+                                                </td>
+                                            </tr>
 
-                                                </div>
-                                            </td>
-                                            <td *ngIf="selectedPlan?.planTitle">
-                                                <div class="row">
-                                                    <div class="col-8">
-                                                        <h4 class="summary-h4">{{selectedPlan?.planTitle}} </h4> 
+                                            <tr>
+                                                <td colspan="2">
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <h4 class="summary-total-h4">Upfront Total Due</h4>
+                                                        </div>
+
+                                                        <div class="col-4"
+                                                            *ngIf="selectedPlan?.planDetails[0]?.isSelcted">
+
+                                                            <h4 class="summary-total-h4-2">
+                                                                ${{selectedPlan?.planCostMonthly || 0 }} /
+                                                                {{selectedPlan?.planDetails[0]?.type}}</h4>
+                                                            <span class="summary-sub-heading"
+                                                                style="text-align: right;">Initial Payment</span>
+                                                        </div>
+
+                                                        <div class="col-4"
+                                                            *ngIf="selectedPlan?.planDetails[1]?.isSelcted">
+
+                                                            <h4 class="summary-total-h4-2">
+                                                                ${{selectedPlan?.planCostYearly || 0 }} /
+                                                                {{selectedPlan?.planDetails[1]?.type}}</h4>
+                                                            <span class="summary-sub-heading"
+                                                                style="text-align: right;">Initial Payment</span>
+                                                        </div>
+
                                                     </div>
+                                                </td>
+                                            </tr>
 
-                                                    <div class="col-4" *ngIf="selectedPlan.planDetails[0].isSelcted">
-                                                  
-                                                        <h4 class="summary-h4-2">${{selectedPlan?.planCostMonthly || 0  }}/  {{selectedPlan.planDetails[0]?.type}}</h4>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <div class="get-started-btn">
+                                                        <button (click)="addRegister()"
+                                                            class="btn btn-primary-bsa-get-started">GET STARTED</button>
                                                     </div>
-
-                                                    <div class="col-4" *ngIf="selectedPlan.planDetails[1].isSelcted">
-                                                    
-                                                       
-                                                        <h4 class="summary-h4-2">${{selectedPlan?.planCostYearly  || 0  }} /  {{selectedPlan.planDetails[1]?.type}}</h4>
-                                                    </div>
-
-                                                    <div class="col-12">
-                                                        <span class="summary-sub-heading">(Includes {{selectedPlan?.defaultTickets}} tickets & {{selectedPlan?.defaultUserCount}} User Login)</span>
-                                                    </div> 
-
-                                                </div>
-                                            </td> 
-                                        </tr>
-
-                                        <tr>
-                                            <td colspan="2">
-                                                <div class="row">
-                                                    <div class="col-8">
-                                                        <h4 class="summary-total-h4">Upfront Total Due</h4> 
-                                                    </div>
-                                                    
-                                                    <div class="col-4" *ngIf="selectedPlan?.planDetails[0]?.isSelcted">
-                                                      
-                                                        <h4 class="summary-total-h4-2">${{selectedPlan?.planCostMonthly || 0  }} / {{selectedPlan?.planDetails[0]?.type}}</h4>
-                                                        <span class="summary-sub-heading" style="text-align: right;">Initial Payment</span>
-                                                    </div>
-
-                                                    <div class="col-4" *ngIf="selectedPlan?.planDetails[1]?.isSelcted">
-                                                   
-                                                        <h4 class="summary-total-h4-2">${{selectedPlan?.planCostYearly || 0  }} / {{selectedPlan?.planDetails[1]?.type}}</h4>
-                                                        <span class="summary-sub-heading" style="text-align: right;">Initial Payment</span>
-                                                    </div>
-
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td colspan="2">
-                                                <div class="get-started-btn">
-                                                   <button  (click)="addRegister()" class="btn btn-primary-bsa-get-started">GET STARTED</button> 
-                                                </div>
-                                            </td> 
-                                        </tr>
+                                                </td>
+                                            </tr>
                                         </tbody>
-                                        
+
                                     </table>
 
                                     <!-- <div class="row">
@@ -327,7 +365,7 @@
                                 </div>
 
                             </div>
-                            
+
 
                         </div> <!-- end card-body -->
                     </div>
@@ -356,19 +394,22 @@
 
     <!--  Get Started Modal Popup -->
 
-    <p-dialog [modal]="true" header="Get Started"  (onHide)="cancelImage()" [(visible)]="showImage"  [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}" >
+    <p-dialog [modal]="true" header="Get Started" (onHide)="cancelImage()" [(visible)]="showImage"
+        [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
 
         <div class="row">
             <div class="col-sm-12">
-                
-                <form  [formGroup]="registrationForm">
-                    
+
+                <form [formGroup]="registrationForm">
+
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Company Name</label>
-                            <input type="text" formControlName="OrganisationName" id="OrganisationName" class="form-control" placeholder="Company Name">
-                            <app-form-error-message msg="Company is required" *ngIf="submitted && registrationForm?.get('OrganisationName')?.errors?.required"></app-form-error-message>
-                        
+                            <input type="text" formControlName="OrganisationName" id="OrganisationName"
+                                class="form-control" placeholder="Company Name">
+                            <app-form-error-message msg="Company is required"
+                                *ngIf="submitted && registrationForm?.get('OrganisationName')?.errors?.required"></app-form-error-message>
+
                         </div>
                     </div>
 
@@ -376,40 +417,48 @@
                         <div class="form-group col-sm-6 mb-2 d-flex align-items-center">
                             <div class="col">
                                 <label for="simpleinput" class="form-label w-100">Email Address</label>
-                                <input type="email" [readonly]="otpVerified" formControlName="EmailID" id="EmailID" class="form-control" [ngClass]="{ 'is-valid': otpVerified}" placeholder="Email Address">
-                                <app-form-error-message msg="Otp is required" *ngIf="submitted && registrationForm?.get('otpVerified')?.errors?.required"></app-form-error-message>
+                                <input type="email" [readonly]="otpVerified" formControlName="EmailID" id="EmailID"
+                                    class="form-control" [ngClass]="{ 'is-valid': otpVerified}"
+                                    placeholder="Email Address">
+                                <app-form-error-message msg="Otp is required"
+                                    *ngIf="submitted && registrationForm?.get('otpVerified')?.errors?.required"></app-form-error-message>
 
                                 <div class="valid-feedback" *ngIf="otpVerified">
                                     Email Verified
-                                  </div>
+                                </div>
                             </div>
                             <div class="d-flex align-items-center mt-3 ps-1" *ngIf="!otpVerified">
-                               
-                                <button type="submit" [disabled]="sendDisabled"   class="btn btn-primary btn-block" (click)="sendOtp()">
-                                    <span *ngIf="sendDisabled" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-   
+
+                                <button type="submit" [disabled]="sendDisabled" class="btn btn-primary btn-block"
+                                    (click)="sendOtp()">
+                                    <span *ngIf="sendDisabled" class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+
                                     {{buttonText}}
-                                
-                                
+
+
                                 </button>
                             </div>
-                          
-                           
+
+
                         </div>
 
                         <div class="form-group col-sm-6 mb-2 d-flex align-items-center" *ngIf="showOtp && !otpVerified">
 
                             <div class="col">
                                 <label for="otpinput" class="form-label w-100">Add OTP</label>
-                                <input type="number" formControlName="otp" min="0" id="otp" class="form-control" placeholder="Add OTP">
+                                <input type="number" formControlName="otp" min="0" id="otp" class="form-control"
+                                    placeholder="Add OTP">
                             </div>
                             <div class="d-flex align-items-center mt-3 ps-1">
-                                <button type="submit"  [disabled]="otpDisabled"  class="btn btn-primary btn-block" (click)="verifyOtp()">
+                                <button type="submit" [disabled]="otpDisabled" class="btn btn-primary btn-block"
+                                    (click)="verifyOtp()">
 
-                                    <span *ngIf="otpDisabled" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    <span *ngIf="otpDisabled" class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
 
-                                    Verify 
-                                
+                                    Verify
+
                                 </button>
                             </div>
 
@@ -423,38 +472,47 @@
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Password</label>
 
-                            <input type="password" formControlName="OrgKey" id="OrgKey" class="form-control" placeholder="Enter Your Password">
-                            <app-form-error-message msg="Passwords is required" *ngIf="submitted && registrationForm?.get('OrgKey')?.errors?.required"></app-form-error-message>
+                            <input type="password" formControlName="OrgKey" id="OrgKey" class="form-control"
+                                placeholder="Enter Your Password">
+                            <app-form-error-message msg="Passwords is required"
+                                *ngIf="submitted && registrationForm?.get('OrgKey')?.errors?.required"></app-form-error-message>
 
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Confirm Password</label>
-                            <input type="password" formControlName="ConfirmOrgKey" id="ConfirmOrgKey" class="form-control" placeholder="Enter Your Password">
-                           
-                              <!-- <app-form-error-message msg=" Name is required" *ngIf="(isSubmit && "></app-form-error-message> -->
+                            <input type="password" formControlName="ConfirmOrgKey" id="ConfirmOrgKey"
+                                class="form-control" placeholder="Enter Your Password">
 
-                              <app-form-error-message msg="confirm Passwords is required" *ngIf="submitted && registrationForm?.get('ConfirmOrgKey')?.errors?.required"></app-form-error-message>
-                              <app-form-error-message msg="Passwords do not match." *ngIf="submitted && registrationForm.hasError('passwordMismatch')"></app-form-error-message>
-                          
-                           
+                            <!-- <app-form-error-message msg=" Name is required" *ngIf="(isSubmit && "></app-form-error-message> -->
+
+                            <app-form-error-message msg="confirm Passwords is required"
+                                *ngIf="submitted && registrationForm?.get('ConfirmOrgKey')?.errors?.required"></app-form-error-message>
+                            <app-form-error-message msg="Passwords do not match."
+                                *ngIf="submitted && registrationForm.hasError('passwordMismatch')"></app-form-error-message>
+
+
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Contact's First Name</label>
-                            <input type="text" formControlName="ContactFirstName" id="ContactFirstName" class="form-control" placeholder="Contact's First Name">
-                            <app-form-error-message msg="First Name is required" *ngIf="submitted && registrationForm?.get('ContactFirstName')?.errors?.required"></app-form-error-message>
+                            <input type="text" formControlName="ContactFirstName" id="ContactFirstName"
+                                class="form-control" placeholder="Contact's First Name">
+                            <app-form-error-message msg="First Name is required"
+                                *ngIf="submitted && registrationForm?.get('ContactFirstName')?.errors?.required"></app-form-error-message>
 
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Contact's Last Name</label>
 
-                            
-                            <input type="text" formControlName="ContactLastName" id="ContactLastName" class="form-control" placeholder="Contact's Last Name">
-                            <app-form-error-message msg="Last Name is required" *ngIf="submitted && registrationForm?.get('ContactLastName')?.errors?.required"></app-form-error-message>
+
+                            <input type="text" formControlName="ContactLastName" id="ContactLastName"
+                                class="form-control" placeholder="Contact's Last Name">
+                            <app-form-error-message msg="Last Name is required"
+                                *ngIf="submitted && registrationForm?.get('ContactLastName')?.errors?.required"></app-form-error-message>
 
                         </div>
                     </div>
@@ -463,16 +521,19 @@
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Phone Number</label>
 
-                            <input type="text" formControlName="PhoneNumber" id="PhoneNumber" class="form-control" placeholder="Phone Number">
-                            <app-form-error-message msg="Mobile no is required" *ngIf="submitted && registrationForm?.get('PhoneNumber')?.errors?.required"></app-form-error-message>
+                            <input type="text" formControlName="PhoneNumber" id="PhoneNumber" class="form-control"
+                                placeholder="Phone Number">
+                            <app-form-error-message msg="Mobile no is required"
+                                *ngIf="submitted && registrationForm?.get('PhoneNumber')?.errors?.required"></app-form-error-message>
 
-                     
+
                         </div>
 
                         <div class="form-group col-sm-6 mb-2">
                             <label for="simpleinput" class="form-label w-100">Job Title</label>
 
-                            <input type="text" formControlName="JobTitle" id="JobTitle" class="form-control" placeholder="Job Title">
+                            <input type="text" formControlName="JobTitle" id="JobTitle" class="form-control"
+                                placeholder="Job Title">
 
                         </div>
                     </div>
@@ -481,8 +542,10 @@
                         <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Business Address</label>
 
-                            <textarea class="form-control mb-0" formControlName="BusinessAddress" placeholder="Enter your address here"></textarea>
-                            <app-form-error-message msg="Business Address  is required" *ngIf="submitted && registrationForm?.get('BusinessAddress')?.errors?.required"></app-form-error-message>
+                            <textarea class="form-control mb-0" formControlName="BusinessAddress"
+                                placeholder="Enter your address here"></textarea>
+                            <app-form-error-message msg="Business Address  is required"
+                                *ngIf="submitted && registrationForm?.get('BusinessAddress')?.errors?.required"></app-form-error-message>
 
                         </div>
                     </div>
@@ -490,44 +553,54 @@
                     <div class="row">
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Country</label>
-                            <select class="form-select" formControlName="CountryID" id="CountryID" (change)="getState($event)">
+                            <select class="form-select" formControlName="CountryID" id="CountryID"
+                                (change)="getState($event)">
                                 <option value="undefined">Country</option>
-                                <option value="{{countryItem.rowID}}" *ngFor="let countryItem of countryList">{{countryItem.name}}</option>
-                           
+                                <option value="{{countryItem.rowID}}" *ngFor="let countryItem of countryList">
+                                    {{countryItem.name}}</option>
+
                             </select>
-                            <app-form-error-message msg="Country is required" *ngIf="submitted && registrationForm?.get('CountryID')?.errors?.required"></app-form-error-message>
+                            <app-form-error-message msg="Country is required"
+                                *ngIf="submitted && registrationForm?.get('CountryID')?.errors?.required"></app-form-error-message>
 
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">State</label>
-                            <select class="form-select" formControlName="StateID" id="StateID" (change)="getCity($event)">
-                                
+                            <select class="form-select" formControlName="StateID" id="StateID"
+                                (change)="getCity($event)">
+
                                 <option value="undefined">Select State</option>
-                                <option value="{{stateitem.rowID}}"  *ngFor="let stateitem of stateList">{{stateitem.name}}</option>
-                               
+                                <option value="{{stateitem.rowID}}" *ngFor="let stateitem of stateList">
+                                    {{stateitem.name}}</option>
+
                             </select>
-                            <app-form-error-message msg="State is required" *ngIf="submitted && registrationForm?.get('StateID')?.errors?.required"></app-form-error-message>
+                            <app-form-error-message msg="State is required"
+                                *ngIf="submitted && registrationForm?.get('StateID')?.errors?.required"></app-form-error-message>
 
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">City</label>
-                           
 
-                            <select class="form-select" formControlName="CityID" id="CityID" >
+
+                            <select class="form-select" formControlName="CityID" id="CityID">
                                 <option value="undefined">Select City</option>
-                                <option value="{{cityItem.rowID}}"  *ngFor="let cityItem of cityList">{{cityItem.name}}</option>
+                                <option value="{{cityItem.rowID}}" *ngFor="let cityItem of cityList">{{cityItem.name}}
+                                </option>
                             </select>
-                           
-                            <app-form-error-message msg="City  is required" *ngIf="submitted && registrationForm?.get('CityID')?.errors?.required"></app-form-error-message>
+
+                            <app-form-error-message msg="City  is required"
+                                *ngIf="submitted && registrationForm?.get('CityID')?.errors?.required"></app-form-error-message>
 
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Zip</label>
-                            <input type="text" formControlName="ZipCode" id="ZipCode" class="form-control" placeholder="Zip">
-                            <app-form-error-message msg="Zip  is required" *ngIf="submitted && registrationForm?.get('ZipCode')?.errors?.required"></app-form-error-message>
+                            <input type="text" formControlName="ZipCode" id="ZipCode" class="form-control"
+                                placeholder="Zip">
+                            <app-form-error-message msg="Zip  is required"
+                                *ngIf="submitted && registrationForm?.get('ZipCode')?.errors?.required"></app-form-error-message>
 
                         </div>
                     </div>
@@ -539,7 +612,8 @@
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <div class="form-check">
-                                <input type="checkbox"  (click)="saveAsSameAddress($event)" class="form-check-input" formControlName="Sameaddress" id="Sameaddress">
+                                <input type="checkbox" (click)="saveAsSameAddress($event)" class="form-check-input"
+                                    formControlName="Sameaddress" id="Sameaddress">
                                 <label class="w-100" for="Sameaddress">Same as address above</label>
                             </div>
                         </div>
@@ -548,26 +622,31 @@
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Address</label>
-                            <textarea class="form-control mb-0" formControlName="BillingBusinessAddress" placeholder="Enter your address here"></textarea>
+                            <textarea class="form-control mb-0" formControlName="BillingBusinessAddress"
+                                placeholder="Enter your address here"></textarea>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Country</label>
-                            <select class="form-select" formControlName="BillingCountryID" id="BillingCountryID" (change)="getState($event)">
+                            <select class="form-select" formControlName="BillingCountryID" id="BillingCountryID"
+                                (change)="getState($event)">
                                 <option value="undefined">Country</option>
-                               <option value="{{countryItem.rowID}}" *ngFor="let countryItem of countryList">{{countryItem.name}}</option>
+                                <option value="{{countryItem.rowID}}" *ngFor="let countryItem of countryList">
+                                    {{countryItem.name}}</option>
                             </select>
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">State</label>
-                            <select class="form-select" formControlName="BillingStateID" id="BillingStateID" (change)="getCity($event)">
-                                  
+                            <select class="form-select" formControlName="BillingStateID" id="BillingStateID"
+                                (change)="getCity($event)">
+
                                 <option value="undefiend">State</option>
-                                <option value="{{stateitem.rowID}}"  *ngFor="let stateitem of stateList">{{stateitem.name}}</option>
-                               
+                                <option value="{{stateitem.rowID}}" *ngFor="let stateitem of stateList">
+                                    {{stateitem.name}}</option>
+
                             </select>
                         </div>
 
@@ -577,15 +656,17 @@
                                 <option  *ngFor="let item of cityList">{{item}}</option>
                             </select> -->
 
-                            <select class="form-select" formControlName="BillingCityID" id="BillingCityID" >
+                            <select class="form-select" formControlName="BillingCityID" id="BillingCityID">
                                 <option value="undefiend">Select City</option>
-                                <option value="{{cityItem.rowID}}"  *ngFor="let cityItem of cityList">{{cityItem.name}}</option>
+                                <option value="{{cityItem.rowID}}" *ngFor="let cityItem of cityList">{{cityItem.name}}
+                                </option>
                             </select>
                         </div>
 
                         <div class="form-group col-sm-3 mb-2">
                             <label for="simpleinput" class="form-label w-100">Zip</label>
-                            <input type="text" formControlName="BillingZipCode" id="BillingZipCode" class="form-control" placeholder="Zip">
+                            <input type="text" formControlName="BillingZipCode" id="BillingZipCode" class="form-control"
+                                placeholder="Zip">
                         </div>
                     </div>
 
@@ -626,27 +707,36 @@
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" formControlName="PrivacyPolicy" id="PrivacyPolicy">
+                                <input type="checkbox" class="form-check-input" formControlName="PrivacyPolicy"
+                                    id="PrivacyPolicy">
 
-                                <label class="w-100" for="PrivacyPolicy">I agree to BuyScrapApp’s <a href="#">Privacy Policy</a></label>
-                                <app-form-error-message msg="Click on Agree" *ngIf="submitted && registrationForm?.get('PrivacyPolicy')?.errors?.required"></app-form-error-message>
-
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" formControlName="TermsAndCondition" id="TermsAndCondition">
-                                <label class="w-100" for="TermsAndCondition">I agree to BuyScrapApp’s <a href="#">Terms of Service</a></label>
-                                <app-form-error-message msg="Click on Terms of Service " *ngIf="submitted && registrationForm?.get('TermsAndCondition')?.errors?.required"></app-form-error-message>
+                                <label class="w-100" for="PrivacyPolicy">I agree to BuyScrapApp’s <a
+                                        href="javascript:void(0)" (click)="showPrivacy=true">Privacy
+                                        Policy</a></label>
+                                <app-form-error-message msg="Click on Agree"
+                                    *ngIf="submitted && registrationForm?.get('PrivacyPolicy')?.errors?.required"></app-form-error-message>
 
                             </div>
 
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" formControlName="Communications" id="Communications">
-                                <label class="w-100" for="Communications">I would like BuyScrapApp to send me communications</label>
+                                <input type="checkbox" class="form-check-input" formControlName="TermsAndCondition"
+                                    id="TermsAndCondition">
+                                <label class="w-100" for="TermsAndCondition">I agree to BuyScrapApp’s <a href="#">Terms
+                                        of Service</a></label>
+                                <app-form-error-message msg="Click on Terms of Service "
+                                    *ngIf="submitted && registrationForm?.get('TermsAndCondition')?.errors?.required"></app-form-error-message>
+
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" formControlName="Communications"
+                                    id="Communications">
+                                <label class="w-100" for="Communications">I would like BuyScrapApp to send me
+                                    communications</label>
                             </div>
                         </div>
                     </div>
-<!-- 
+                    <!-- 
                     <div class="row">
                         <div class="form-group col-sm-12 mb-2">
                             <form action="?" method="POST">
@@ -657,21 +747,276 @@
 
                     <div class="row">
                         <div class="col-sm-6">
-                            <button type="submit"  (click)="makePayment()" class="btn btn-primary-popup-1">I'M ALL SET</button>
+                            <button type="submit" (click)="makePayment()" class="btn btn-primary-popup-1">I'M ALL
+                                SET</button>
                         </div>
 
                         <div class="col-sm-6">
                             <a class="btn btn-primary-popup-2">GET 7 DAY FREE TRIAL</a>
                         </div>
-                    </div>                                          
+                    </div>
 
-                    
+
                 </form>
 
             </div>
-        </div>          
+        </div>
     </p-dialog>
-    
+
+
+
+
+    <p-dialog [modal]="true" header="Privacy Policy" (onHide)="cancelImage()" [(visible)]="showPrivacy"
+        [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
+
+        <div class="row">
+            <div class="h3">Privacy Policy for BuyScrapApp Online Application</div>
+            <div class="h3">
+                Effective Date: 20 th April 2024
+            </div>
+            <p>
+
+                Thank you for using the BuyScrapApp Online Application (&quot;the App&quot;). This Privacy Policy
+                outlines
+                how we collect, use, and protect your and your customers’ personal information when you use our
+                services. By using the App, you agree to the terms of this Privacy Policy.
+
+            </p>
+
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-item">
+                    <span class="h-title">Information We Collect</span>
+                    <ul class="info-desc">
+                        <li>
+                            <span class="p-title">Personal Information:</span> When you sign up for an account or use
+                            our services, we may
+                            collect personal information such as your name, email address, phone number, and payment
+                            information.
+                        </li>
+                        <li>
+                            <span class="p-title">Transaction Information:</span> We collect information related to your
+                            transactions on the
+                            platform, including details of scrap items bought or sold, transaction amounts, and shipping
+                            information.
+                        </li>
+                        <li>
+
+                            <span class="p-title">Device Information:</span> We may collect device-specific information
+                            such as your device
+                            model, operating system, IP address, and browser type.
+                        </li>
+
+                    </ul>
+
+
+
+
+                </li>
+                <li class="list-group-item">
+                    <span class="h-title">How We Use Your Information</span>
+                    <div>
+                        <h5>We use the information we collect for the following purposes:</h5>
+                        <ul class="info-desc">
+
+                            <li>Facilitating transactions and providing our services.</li>
+                            <li>Communicating with you about your account, transactions, and updates.</li>
+                            <li>Improving our services and user experience.</li>
+                            <li>Complying with legal and regulatory requirements.</li>
+                        </ul>
+                    </div>
+
+
+                </li>
+                <li class="list-group-item">
+                    <span class="h-title">Types of Information Collected</span>
+                    <p>In addition to the standard information outlined in our general Privacy Policy, we may collect
+                        the
+                        following sensitive personal information from users:</p>
+                    <ul class="info-desc">
+                        <li>
+                            <span class="p-title">Biometric Data:</span> This may include fingerprints, signatures, or
+                            other biometric identifiers
+                            provided by users for identity verification purposes.
+                        </li>
+                        <li>
+                            <span class="p-title">Government ID Copies:</span> Users may be required to submit copies of
+                            their government-
+                            issued identification documents (e.g., driver&#39;s license) for verification purposes.
+                        </li>
+
+
+                    </ul>
+
+
+
+
+                </li>
+
+
+                <li class="list-group-item">
+                    <span class="h-title">Purpose of Biometric Data and ID Copies</span>
+                    <p>We collect and use biometric data and ID copies solely for the following purposes:</p>
+                    <ul class="info-desc">
+                        <li>
+                            <span class="p-title">Identity Verification::</span>
+                            Biometric data and ID copies are used to verify the identity of
+                            users and prevent fraudulent activities on our platform.
+                        </li>
+                        <li>
+                            <span class="p-title">Compliance: </span>We may collect and retain this information to
+                            comply with legal and
+                            regulatory requirements related to scrap buying and selling.
+                        </li>
+
+
+                    </ul>
+
+
+
+
+                </li>
+
+                <li class="list-group-item">
+                    <span class="h-title">Use and Disclosure of Biometric Data</span>
+                    <p>We use biometric data only for the specific purposes for which it was collected, such as user
+                        authentication and identity verification.</p>
+                    <p>
+                        We do not disclose biometric data to third parties except as required by law or with explicit
+                        user consent.
+                    </p>
+
+                </li>
+
+                <li class="list-group-item">
+                    <span class="h-title">Sharing of Information</span>
+                    <p>We may share your information with third parties under the following circumstances:</p>
+                    <ul class="info-desc">
+
+                        <li>With service providers and partners who assist us in providing and improving our services.
+                        </li>
+                        <li>
+                            With law enforcement or government authorities if required by law or to protect our legal
+                            rights.
+                        </li>
+
+                        <li>
+                            With your consent or as otherwise disclosed at the time of data collection.
+
+                        </li>
+                    </ul>
+
+
+
+                </li>
+                <li class="list-group-item">
+                    <span class="h-title">Data Retention and Security</span>
+                    <ul>
+                        <li>
+                            We retain biometric data and ID copies only for as long as necessary to fulfil the purposes
+                            outlined above or as required by law.
+                        </li>
+                        <li>
+                            We implement strict security measures to protect personal information, biometric data and
+                            ID copies from unauthorized access, use, or disclosure. This includes separation of data
+                            based on organisation by maintaining different database, access controls, and regular
+                            security audits.
+                        </li>
+                    </ul>
+                </li>
+                <li class="list-group-item">
+                    <span class="h-title">User Consent</span>
+                            <p>By using our services and submitting personal information, biometric data or ID copies of
+                        your customers, you consent to the collection, use, and retention of this information as
+                        described in this Privacy Policy.</p>
+                        <ul class="info-desc">
+                            <li><span class="p-title">Consent for Collection:</span> Before collecting any personal information, biometric data, or
+                                ID copies from customers, you will obtain explicit consent from them.</li>
+                            <li><span class="p-title">Withdrawal of Consent:</span> You have the right to withdraw your consent at any time.
+                                However, please note that withdrawing consent may impact your ability to use certain
+                                features of our services.</li>
+                            <li><span class="p-title">How to Withdraw Consent: </span>To withdraw consent or for any questions regarding the
+                                handling of your sensitive</li>
+
+                        </ul>
+
+                </li>
+
+                <li class="list-group-item">
+                    <span class="h-title">Your Rights</span>
+                    <ul class="info-desc">
+                            <li>You have the right to request access to, correction of, or deletion of your customer personal
+                                information, biometric data and ID copies.</li>
+                                <li>To exercise these rights or for any questions regarding the handling of your sensitive
+                                    information, please contact us using the contact information provided below.</li>
+
+                    </ul>
+
+                </li>
+                <li class="list-group-item">
+                    <span class="h-title">Cookies and Tracking<</span>
+                    <ul class="info-desc">
+                        <li>    We use cookies and similar tracking technologies to analyse usage patterns, personalize
+                            content, and improve our services. You can manage your cookie preferences through your
+                            browser settings.</li>
+                    </ul>
+                    
+
+                </li>
+                <li class="list-group-item">
+                    <span class="h-title">Policy Updates</span>
+                    <ul class="info-desc">
+                        <li>We may update this section of our Privacy Policy to reflect changes in our practices or
+                            applicable laws. We will notify you of any material changes to our handling of personal</li>
+                        <li>
+                            information, biometric data or ID copies or any changes by posting the updated policy on
+                            our website or within the App.</li>
+                    </ul>
+
+                    
+
+                </li>
+
+                <li class="list-group-item">
+                  <p>If you have any questions or concerns about our Privacy Policy or data practices, please
+                    contact us at:</p>  
+                <ul class="info-desc">
+                    <li>
+                       [Your Company Name]
+                    </li>
+                    <li>[Address]</li>
+                    <li>Email: Contactus@buyscrapapp.com</li>
+                  <li>510-372-0872</li>
+                </ul>
+              
+            
+             
+                
+                </li>
+
+                <li class="list-group-item">
+                  <p><span class="p-title text-primary">Note: </span> Handling biometric data requires strict adherence to privacy laws and regulations, such as
+the GDPR or the Biometric Information Privacy Act (BIPA) in the United States. Be sure to consult
+with legal professionals to ensure compliance with relevant laws and to implement appropriate
+measures to protect sensitive information.</p>
+
+
+                </li>
+
+            </ol>
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+    </p-dialog>
 
 
 
@@ -686,8 +1031,6 @@
 
 
 
-
-      
 
 </div>
 
