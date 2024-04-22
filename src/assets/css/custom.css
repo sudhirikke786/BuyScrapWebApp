@@ -1,12 +1,8 @@
-html {
-  font-size: 100%
-}
-
-
-.dash-icons{
+.dash-icons {
   height: 20px !important;
   width: 20px !important;
 }
+
 .box {
   display: block;
   /* min-width: 300px;*/
@@ -1393,7 +1389,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
     background-color: #bbdaeb;
     color: #000;
     padding: 30px 20px 30px 20px;
-    
+
     text-transform: capitalize;
     min-height: 90px;
     text-align: center;
@@ -1799,7 +1795,7 @@ hr {
   color: #fff !important;
   width: 190px;
   height: 52px;
-  
+
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -2235,10 +2231,7 @@ select optgroup option {
 
 @media screen and (min-width: 1920px) {
 
-  html {
-    font-size: 110%
-  }
-  
+
   body {
     font-size: 1.2rem !important
   }
@@ -2258,10 +2251,11 @@ select optgroup option {
     font-size: 1.2rem !important
   }
 
-  .p-datatable .p-datatable-thead > tr > th{
+  .p-datatable .p-datatable-thead>tr>th {
     font-size: 1.2rem !important
   }
-  .p-datatable .p-datatable-thead > tr > td{
+
+  .p-datatable .p-datatable-thead>tr>td {
     font-size: 1.2rem !important
   }
 
@@ -2271,7 +2265,7 @@ select optgroup option {
 
   }
 
-  .fz-14{
+  .fz-14 {
     font-size: 1.2rem !important;
   }
 
@@ -2297,13 +2291,12 @@ select optgroup option {
     width: 100%;
   }
 
-  .balance-details-ul li{
+  .balance-details-ul li {
     font-size: 1.2rem !important
   }
 
-  .pro-user-name{
+  .pro-user-name {
     font-size: 1.2rem !important
-
   }
 
 
@@ -2312,9 +2305,7 @@ select optgroup option {
 
 
 @media only screen and (min-width:2560px) {
-  html {
-    font-size: 120%
-  }
+
   body {
     font-size: 1.7rem !important
   }
@@ -2335,33 +2326,33 @@ select optgroup option {
     font-size: 1.7rem !important
   }
 
-  .p-datatable .p-datatable-thead > tr > th{
+  .p-datatable .p-datatable-thead>tr>th {
     font-size: 1.7rem !important
   }
 
-  .p-datatable .p-datatable-thead > tr > td{
+  .p-datatable .p-datatable-thead>tr>td {
     font-size: 1.7rem !important
   }
-  .ticket-details-tbl th{
+
+  .ticket-details-tbl th {
     font-size: 1.7rem !important
   }
 
   .btn {
     font-size: 1.7rem !important;
-    line-height: 1.7rem!important;
+    line-height: 1.7rem !important;
   }
 
   .payment-ticket {
     bottom: 170px;
   }
 
-  .balance-details-ul li{
+  .balance-details-ul li {
     font-size: 1.7rem !important
   }
 
-  .pro-user-name{
+  .pro-user-name {
     font-size: 1.7rem !important
-
   }
 
   .form-floating>.form-control {
@@ -2393,9 +2384,9 @@ select optgroup option {
     font-size: 1.7rem !important;
   }
 
-  
 
-  
+
+
   .h-40 {
     height: auto;
   }
@@ -2425,16 +2416,16 @@ select optgroup option {
     font-size: 1.7rem !important;
   }
 
-  .menu .menu-item .menu-link>.menu-text{
+  .menu .menu-item .menu-link>.menu-text {
     font-size: 1.5rem !important;
   }
 
-  .dash-icons{
-    width:45px;
+  .dash-icons {
+    width: 45px;
   }
 
 
-  
+
 
 }
 
@@ -2455,22 +2446,26 @@ select optgroup option {
   h3,
   h4,
   h5 {
-    font-size:  2.7rem !important
+    font-size: 2.3rem !important
   }
 
   table tr td {
-    font-size:  2.3rem !important
+    font-size: 2.3rem !important
   }
 
 
-    .btn {
-      font-size: 2.3rem !important;
-      line-height: 3.7rem !important;
+  .btn {
+    font-size: 2.3rem !important;
+    line-height: 3.0rem !important;
   }
- 
 
-  .payment-ticket {
+
+  .p-open {
     bottom: 440px !important;
+  }
+
+  .p-close {
+    bottom: 227px !important;
   }
 
 
@@ -2479,37 +2474,41 @@ select optgroup option {
   }
 
   .form-floating>.form-control {
-    height: calc(6.0rem + 2.36px) !important;
+    height: calc(4.0rem + 2.36px) !important;
   }
-  .dl-img1{
+
+  .dl-img1 {
     min-height: 400px;
   }
-  .mdi-cust-upload{
+
+  .mdi-cust-upload {
     font-size: 3.3rem !important
   }
 
   .form-control {
-    font-size: 3.0rem !important;
+    font-size: 2.1rem !important;
   }
 
-  .form-select{
-    font-size: 3.0rem !important;
+  .form-select {
+    font-size: 2.1rem !important;
     height: 100% !important
   }
+
   select option {
-    font-size:4.0rem !important;
+    font-size: 3.0rem !important;
   }
 
-  .form-label{
-    width:100% !important
-}
-.m-button{
-  height: 100% !important;
-}
+  .form-label {
+    width: 100% !important
+  }
 
-.p-dialog .p-dialog-header .p-dialog-title{
-  font-size: 3.0rem !important;
-}
+  .m-button {
+    height: 100% !important;
+  }
+
+  .p-dialog .p-dialog-header .p-dialog-title {
+    font-size: 3.0rem !important;
+  }
 
   .p-component {
     font-size: 2.3rem !important;
@@ -2524,7 +2523,7 @@ select optgroup option {
     font-size: 2. !important
   }
 
-  
+
 
   .h-40 {
     height: auto !important
@@ -2538,22 +2537,29 @@ select optgroup option {
     min-height: 30vw !important;
   }
 
- 
-  
+  .mdi-menu{
+    font-size: 3.3rem !important
+  }
+
+  .logo-box .logo-sm{
+    width: 90% !important;
+    height: 100% !important;
+  }
 
 
   table tr td {
     font-size: 2.3rem !important
   }
 
-  .p-datatable .p-datatable-thead > tr > th{
+  .p-datatable .p-datatable-thead>tr>th {
     font-size: 2.3rem !important
   }
 
-  .p-datatable .p-datatable-thead > tr > td{
+  .p-datatable .p-datatable-thead>tr>td {
     font-size: 2.3rem !important
   }
-  .ticket-details-tbl th{
+
+  .ticket-details-tbl th {
     font-size: 2.3rem !important
   }
 
@@ -2562,8 +2568,8 @@ select optgroup option {
     padding: 10px !important;
   }
 
-  .menu .menu-item .menu-link>.menu-text{
-    font-size:2.3rem !important
+  .menu .menu-item .menu-link>.menu-text {
+    font-size: 2.3rem !important
   }
 
 
@@ -2584,14 +2590,14 @@ select optgroup option {
     font-size: 2.5rem !important;
   }
 
-  .menu .menu-item .menu-link>.menu-text{
+  .menu .menu-item .menu-link>.menu-text {
     font-size: 2.5rem !important;
   }
 
 
 
 
-  .p-paginator .p-paginator-current{
+  .p-paginator .p-paginator-current {
     font-size: 2.5rem !important;
   }
 
@@ -2599,45 +2605,55 @@ select optgroup option {
     min-width: 3.5rem;
     height: 3.5rem;
     font-size: 2.5rem !important;
+  }
+
+  .p-component {
+    font-size: 2.7rem !important;
+  }
+
+  .p-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .p-paginator .p-dropdown {
+    height: 3.7rem !important;
+  }
+
+  .p-dropdown-label {
+    font-size: 2.7rem !important;
+  }
+
+  .dash-icons {
+    width: 70px !important;
+    height: 70px !important;
+    margin-bottom: 10px;
+  }
+
+  .money-button {
+    font-size: 3.7rem !important;
+  }
+
+  .balance-details-ul li {
+    font-size: 2.4rem !important;
+  }
+
+  .pro-user-name {
+    font-size: 2.4rem !important;
+  }
+
+  .report-button {
+    font-size: 3.7rem !important;
+  }
+
+
 }
 
-.p-component {
-  font-size: 2.7rem !important;
-}
+@media only screen and (min-width:4200px) {
 
-.p-icon {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
-.p-paginator .p-dropdown{
-  height:3.7rem !important;
-}
-.p-dropdown-label{
-  font-size: 2.7rem !important;
-}  
-
-.dash-icons {
-  width: 70px;
-  height: 70px;
-  margin-bottom: 10px;
-}
-
-.money-button{
-  font-size: 3.7rem !important;
-}
-
-.balance-details-ul li{
-  font-size: 2.4rem !important;
-}
-.pro-user-name{
-  font-size: 2.4rem !important;
-}
-
-.report-button{
-  font-size: 3.7rem !important;
-}
-
+  .payment-ticket {
+    bottom: 440px !important;
+  }
 
 }
 
@@ -2646,9 +2662,7 @@ select optgroup option {
 
 @media only screen and (min-width:7000px) {
 
-  html {
-    font-size: 140%
-  }
+
 
 
   body {
@@ -2682,7 +2696,7 @@ select optgroup option {
   }
 
   .payment-ticket {
-    bottom: 240px;
+    bottom: 340px;
   }
 
   b,
@@ -2731,7 +2745,7 @@ select optgroup option {
     font-size: 3rem !important;
   }
 
-  
+
 
   select option {
     font-size: 3rem !important;

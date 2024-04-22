@@ -208,7 +208,7 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98' : 'w-75'" >
+                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98 p-open' : 'w-75 p-close'" >
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
                                                 <p class="ticket-details-p fz-14"><b>Adjustment : {{totalAdjustment | currency:'USD':'symbol': '1.3-3'}}</b></p>
@@ -404,8 +404,9 @@
 
 <ng-container *ngIf="editItemVisible">
 
-    <p-dialog [modal]="true" [header]="subScriptionType?.organisationPlan=='pro' ? 'Item Details' : ''" [(visible)]="editItemVisible" [style]="{width: '80vw'}"
- [breakpoints]="{'767px': '100vw'}">
+    <p-dialog [modal]="true" [header]="subScriptionType?.organisationPlan=='pro' ? 'Item Details' : ''" [(visible)]="editItemVisible"
+ [breakpoints]="{'1199px': '75vw', '1920px': '75vw','767px': '100vw','3000px': '55vw',}" >
+
         
     <div class="row">
                                 

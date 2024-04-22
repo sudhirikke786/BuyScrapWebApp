@@ -7073,8 +7073,8 @@ span.flatpickr-weekday {
     --ct-twocolumn-sidebar-width: 600px;
     --ct-twocolumn-sidebar-iconview-width: 100px;
     --ct-twocolumn-sidebar-iconview-size: 50px;
-    --ct-topbar-height: 150px;
-    --ct-horizontal-menu-height: 200px;
+    --ct-topbar-height: 130px;
+    --ct-horizontal-menu-height: 130px;
     --ct-menu-transition: all 0.1s ease-in-out;
     --ct-menu-item-padding-x: 10px;
     --ct-menu-item-gap: 0px;
@@ -7083,7 +7083,7 @@ span.flatpickr-weekday {
     --ct-menu-link-item-gap: 0px;
     --ct-menu-item-icon-size: 40x;
     --ct-menu-item-font-size: 40px;
-    --ct-footer-height: 100px;
+    --ct-footer-height: 130px;
     --ct-boxed-layout-width: 1300px;
 
   }
