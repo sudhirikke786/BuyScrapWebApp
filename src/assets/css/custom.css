@@ -1015,6 +1015,10 @@ i.material-icons {
     margin-top: 5px;
   }
 
+  .payment-ticket{
+    position: relative;
+  }
+
 
 }
 
@@ -1939,9 +1943,7 @@ hr {
   margin-bottom: 10px !important;
 }
 
-.footer {
-  height: 40px !important;
-}
+
 
 .ticket-number {
   font-size: 1px;
@@ -2608,7 +2610,7 @@ select optgroup option {
   }
 
   .p-component {
-    font-size: 2.7rem !important;
+    font-size: 2.1rem !important;
   }
 
   .p-icon {
