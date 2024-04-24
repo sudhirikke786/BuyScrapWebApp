@@ -183,7 +183,10 @@
 
 .footer {
     position: fixed !important;
-    left: 25px !important;
+    left: 34px !important;
+    bottom: 0px !important;
+    background-color: rgba(108, 117, 125, 0.1098039216) !important;
+  
 }
 
 .p-paginator .p-paginator-pages .p-paginator-page {
@@ -243,10 +246,6 @@ a {
 
 }
 
-// .calc {
-//     position: absolute;
-//     top: -40px
-// }
 
 .payment-ticket{
     position: absolute;
@@ -302,12 +301,6 @@ a {
 
 
 
-    .footer {
-        bottom: 20px !important;
-        width: 100%;
-        left: 0px !important;
-        position: absolute !important;
-    }
 
 
     ::-webkit-scrollbar {

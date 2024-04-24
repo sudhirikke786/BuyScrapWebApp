@@ -196,11 +196,7 @@
     min-height: 300px;
     width: auto;
     overflow: hidden;
-      img{
-        width: 100%;
-        height: auto; /* Maintain aspect ratio */
-        display: block; /* Ensures no extra space below the image */
-      }
+     
   
   }
   .btn-cal {
@@ -251,11 +247,7 @@
   min-height: 300px !important;
   width: auto;
   overflow: hidden;
-    img{
-      width: 100%;
-      height: auto; /* Maintain aspect ratio */
-      display: block; /* Ensures no extra space below the image */
-    }
+   
 
 }
 

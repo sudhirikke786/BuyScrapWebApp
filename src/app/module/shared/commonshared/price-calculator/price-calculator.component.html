@@ -14,9 +14,11 @@
       <div class="row">
 
         <div class="col-sm-12">
-          <div  class="m-image">
+
+          <img [src]="itemImagePath" class="card-img-top" alt="...">
+          <!-- <div  class="m-image">
             <img [src]="itemImagePath" alt="Image">
-          </div>
+          </div> -->
           <!-- <div class="col-md-12 col-sm-12">
            
           </div> -->
@@ -59,7 +61,7 @@
                 <div>
                   <div class="input-group price-d ">
                    
-                    <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
+                    <input type="text" inputmode='none' (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
                       [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
                       (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
                   </div>
@@ -73,7 +75,7 @@
                 </div>
                 <div>
                   <div class="input-group">
-                    <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
+                    <input type="text" inputmode='none' (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
                       [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'" id="tear"
                       class="form-control   mb-1 ps-0">
                   </div>
@@ -105,7 +107,7 @@
                 <div>
                   <div class="input-group price-d">
                     
-                    <input type="text" [readonly]="isVirtual" #inputBox4 [(ngModel)]="priceInput"
+                    <input type="text" inputmode='none'  #inputBox4 [(ngModel)]="priceInput"
                       (focus)="focusedInput = 'inputBox4'" id="price" class="form-control   mb-1 ps-0">
 
                   </div>

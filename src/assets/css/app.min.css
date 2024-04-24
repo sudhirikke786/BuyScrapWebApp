@@ -643,7 +643,6 @@ html[data-menu-color="gradient"] .app-menu .logo-box .logo-dark {
 .content-page {
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
@@ -652,7 +651,6 @@ html[data-menu-color="gradient"] .app-menu .logo-box .logo-dark {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
   width: 100%;
-  position: relative;
   -webkit-transition: var(--ct-menu-transition);
   transition: var(--ct-menu-transition);
 }
@@ -1623,7 +1621,6 @@ html[data-layout="horizontal"] .menu-title {
   right: 0;
   bottom: 0;
   left: 0;
-  height: var(--ct-footer-height);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

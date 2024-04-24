@@ -1939,9 +1939,6 @@ hr {
   margin-bottom: 10px !important;
 }
 
-.footer {
-  height: 40px !important;
-}
 
 .ticket-number {
   font-size: 1px;
@@ -2409,7 +2406,7 @@ select optgroup option {
   }
 
   .add-footer .footer-text {
-    padding-left: 420px !important;
+    padding-left: 30% !important;
   }
 
   .fz-14 {
@@ -2457,6 +2454,7 @@ select optgroup option {
   .btn {
     font-size: 2.3rem !important;
     line-height: 3.0rem !important;
+    padding: 0.6rem !important;
   }
 
 
@@ -2605,10 +2603,6 @@ select optgroup option {
     min-width: 3.5rem;
     height: 3.5rem;
     font-size: 2.5rem !important;
-  }
-
-  .p-component {
-    font-size: 2.7rem !important;
   }
 
   .p-icon {
