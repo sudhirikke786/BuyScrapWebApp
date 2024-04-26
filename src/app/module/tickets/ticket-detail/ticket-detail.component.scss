@@ -11,6 +11,14 @@ h4{
     overflow-y: scroll !important;
 }
 
+.ticket-card{
+  height: calc(100vh - 132px);
+}
+.card-ticket-table{
+  overflow-y: auto;
+  height:calc(100vh - 425px);
+}
+
 .cod-item {
     color: darkred !important;
 }
