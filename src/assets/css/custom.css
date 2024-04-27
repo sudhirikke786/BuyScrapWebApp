@@ -2206,13 +2206,14 @@ select optgroup option {
 }
 
 .pricing-box {
-  min-height: 490px;
+  min-height: 603px;
   height: auto;
+  padding-bottom: 30px;
   position: relative;
   min-width: 360px;
   width: auto;
-
 }
+
 
 
 
