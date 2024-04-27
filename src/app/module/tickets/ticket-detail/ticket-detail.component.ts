@@ -1024,7 +1024,7 @@ export class TicketDetailComponent implements OnInit {
 
   
   deleteItem(i: number) {
-    alert(i);
+    //alert(i);
     this.ticketObj.splice(i, 1);
 
     
@@ -1154,7 +1154,7 @@ export class TicketDetailComponent implements OnInit {
       rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
       rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
       rowData.codNote = '';
-      rowData.materialNote = (this.materialNote ? null : this.materialNote);
+      rowData.materialNote = (this.materialNote ? this.materialNote : null );
 
 
       rowData.createdBy = this.logInUserId;
@@ -1182,7 +1182,7 @@ export class TicketDetailComponent implements OnInit {
           rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
           rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
           rowData.codNote = this.itemCodNote;
-          rowData.materialNote = (this.materialNote ? null : this.materialNote);
+          rowData.materialNote = (this.materialNote ? this.materialNote : null);
 
           // TO DO:: does not required. need to verify;
           rowData.updatedBy = this.logInUserId;

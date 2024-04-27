@@ -129,6 +129,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       this.grossInput = '';
       this.tareInput = ''; 
       this.netInput = 0; 
+      this.materialNote = '';
       this.calculateObj.emit(obj);
      }
       this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
@@ -257,15 +258,15 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       }
 
     }else if (this.focusedInput === 'inputBox3') {
-      if (this.netInput.length > 1) {
-        this.netInput = this.netInput.slice(0, -1);
+      if (this.netInput.toString().length > 1) {
+        this.netInput = this.netInput.toString().slice(0, -1);
       } else {
         this.netInput = '';
       }
       
     }else if (this.focusedInput === 'inputBox4') {
-      if (this.grossInput.length > 1) {
-        this.priceInput = this.grossInput.slice(0, -1);
+      if (this.priceInput.toString().length > 1) {
+        this.priceInput = this.priceInput.toString().slice(0, -1);
       } else {
         this.priceInput = '';
       }
