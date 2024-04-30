@@ -109,7 +109,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox4,this.inputBox3];
+    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox3, this.inputBox4];
     setTimeout(()=>{
       this.inputBoxes[this.currentFocusIndex]?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     },100)
@@ -118,7 +118,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   changeFocus() {
     // Set focus on the current input
 
-    if (this.currentFocusIndex === this.inputBoxes.length-1) {
+    if (this.currentFocusIndex === this.inputBoxes.length-2) {
       const obj = {
         itemGross: this.grossInput,
         itemTare: isNaN(this.tareInput)?0:this.tareInput,
@@ -132,10 +132,15 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       this.materialNote = '';
       this.calculateObj.emit(obj);
      }
-      this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
      
-      // Increment the focus index, resetting to 0 if it exceeds the number of inputs
-      this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
+     // Increment the focus index, resetting to 0 if it exceeds the number of inputs
+     this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
+
+    //  if (this.currentFocusIndex == 3) {
+    //   this.currentFocusIndex = this.currentFocusIndex + 1;
+    //  }
+     this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
+     
   }
 
   changeItem() {
@@ -171,16 +176,16 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       } else {
         this.tareInput += number.toString().trim();
       }
-    } else if (this.focusedInput === 'inputBox3') {
-      this.renderer.selectRootElement(this.inputBox3?.nativeElement).focus();
+    } else if (this.focusedInput === 'inputBox4') {
+      this.renderer.selectRootElement(this.inputBox4?.nativeElement).focus();
       let data = this.netInput ?? '';;
       if (data === '') {
         this.netInput = number.toString().trim();
       } else {
         this.netInput += number.toString().trim();
       }
-    } else if (this.focusedInput === 'inputBox4') {
-      this.renderer.selectRootElement(this.inputBox4?.nativeElement).focus();
+    } else if (this.focusedInput === 'inputBox3') {
+      this.renderer.selectRootElement(this.inputBox3?.nativeElement).focus();
       let data = this.priceInput ?? '';
       if (data === '') {
         this.priceInput = number.toString().trim();
@@ -229,6 +234,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   }
 
   deleteNote() {
+    this.materialNote = '';
     this.addNoteSectionVisible = false;
   }
 
@@ -257,14 +263,14 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
         this.tareInput = '';
       }
 
-    }else if (this.focusedInput === 'inputBox3') {
+    }else if (this.focusedInput === 'inputBox4') {
       if (this.netInput.toString().length > 1) {
         this.netInput = this.netInput.toString().slice(0, -1);
       } else {
         this.netInput = '';
       }
       
-    }else if (this.focusedInput === 'inputBox4') {
+    }else if (this.focusedInput === 'inputBox3') {
       if (this.priceInput.toString().length > 1) {
         this.priceInput = this.priceInput.toString().slice(0, -1);
       } else {

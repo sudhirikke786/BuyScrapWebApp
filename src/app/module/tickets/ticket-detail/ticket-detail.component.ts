@@ -11,6 +11,7 @@ import { Ticket } from 'src/app/core/model/ticket.model';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { PriceCalculatorComponent } from '../../shared/commonshared/price-calculator/price-calculator.component';
 import { DataService } from 'src/app/core/services/data.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -146,6 +147,7 @@ export class TicketDetailComponent implements OnInit {
   alertVisible = false;
   alertMessage: any;
   subScriptionType:any;
+  currentRole: any;
 
   @ViewChild(PriceCalculatorComponent) priceCalculatorComponent!: PriceCalculatorComponent;
   
@@ -154,6 +156,7 @@ export class TicketDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
+    private authService: AuthService,
     private messageService: MessageService,
     private stroarge: StorageService,
     public dtService:DataService,
@@ -161,7 +164,7 @@ export class TicketDetailComponent implements OnInit {
     private commonService: CommonService) { }
 
   ngOnInit() {
-
+    this.currentRole = this.authService.userCurrentRole();
 
     this.orgName = localStorage.getItem('orgName');
     this.subScriptionType = this.dtService.getActivePlan();
@@ -544,7 +547,7 @@ export class TicketDetailComponent implements OnInit {
     this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
     this.totalAdjustment = tickets.reduce(function (sum: any, tickets: any) {
       // return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : 0);
-      return sum + (tickets.isAdjusmentSet ? tickets.amount : 0);
+      return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : 0);
     }, 0);
   }
 
@@ -939,8 +942,12 @@ export class TicketDetailComponent implements OnInit {
     }
     if (isReceiptPrint) {
       this.generateSingleTicketReport(ticketId);
-    } else {      
-      this.checkPrintAction(); 
+    } else {
+      if (this.isCheckPrint) {
+        this.checkPrintAction();
+      } else {
+        this.router.navigateByUrl(`${this.orgName}/home`);
+      }       
     }
   }
 
@@ -972,7 +979,7 @@ export class TicketDetailComponent implements OnInit {
     this.itemCodNote = '';    
     this.itemGross = '';
     this.itemTare = '';
-    // this.materialNote = '';
+    this.materialNote = '';
   }
 
   updateExistingItem(materialId: any, materialName: string, selectedMaterial: string, scrapPrice: any) {
@@ -999,7 +1006,7 @@ export class TicketDetailComponent implements OnInit {
 
     } else {
       this.modalHeader =  'Edit Item Details';
-      this.editItemVisible = true;
+      //this.editItemVisible = true;
 
       this.editItemCloseImageCapture = false;
       this.itemLeveloperationPerform = 'Edit';
@@ -1018,6 +1025,7 @@ export class TicketDetailComponent implements OnInit {
       this.materialNote = rowData.materialNote;
 
       this.imageUrl = (this.itemImagePath ? this.itemImagePath : 'assets/images/custom/id_scan.png');
+      this.closeCapturedImage(1);
     }
 
   }

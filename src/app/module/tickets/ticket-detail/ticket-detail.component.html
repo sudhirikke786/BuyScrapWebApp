@@ -120,7 +120,7 @@
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
-                                                            <td class="cod-item">{{ ticket?.amount * -1 }}| currency:'USD':'symbol': '1.3-3'
+                                                            <td class="cod-item">{{ ticket?.amount * -1 | currency:'USD':'symbol': '1.3-3'}}
                                                         </ng-container>
                                                         <ng-template #otherThanCOD >
                                                             <td style="width: 25%;">{{ ticket?.materialName }}</td>
@@ -145,26 +145,26 @@
                                                           
                                                         </td>
                                                     </tr>
-                                                    <tr [ngClass]="{'no-border-tr': ticket?.codNote != '' || ticket.materialNote !=''}"  *ngIf="ticket.codNote != '' || ticket.materialNote != ''">
-                                                          <td class="cod-item">
+                                                    <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}"  *ngIf="ticket.materialNote != ''">
+                                                        <!-- <td class="cod-item">
                                                             {{ ticket?.codNote }}
-                                                        </td>                                                    
+                                                        </td> -->
                                                         <td colspan="7">
-                                                            {{ ticket?.materialNote }}
+                                                            Note : {{ ticket?.materialNote }}
                                                         </td>
                                                     </tr>
                                                 </ng-container>
 
                                                 <ng-container *ngIf="!isEditModeOn" >
 
-                                                    <tr class="border-tr" [ngClass]="{'border-tr': ticket.codNote == '' || ticket.materialNote ==''}" >
+                                                    <tr class="border-tr" [ngClass]="{'border-tr': ticket.materialNote ==''}" >
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
                                                             <td class="cod-item" style="width: 25%;">{{ ticket.materialName }}</td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
-                                                            <td class="cod-item">{{ ticket.amount * -1 }}</td>
+                                                            <td class="cod-item">{{ ticket.amount * -1 | currency:'USD':'symbol': '1.3-3'}}</td>
                                                         </ng-container>
                                                         <ng-template #otherThanCOD >
                                                             <td style="width: 25%;">{{ ticket.materialName }}</td>
@@ -179,12 +179,12 @@
                                                         </td>
                                                         
                                                     </tr>
-                                                    <tr [ngClass]="{'no-border-tr': ticket.codNote != '' || ticket.materialNote !=''}"  *ngIf="ticket.codNote != '' || ticket.materialNote != ''">
-                                                        <td class="cod-item">
+                                                    <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}"  *ngIf="ticket.materialNote != ''">
+                                                        <!-- <td class="cod-item">
                                                             {{ ticket.codNote }}
-                                                        </td>                                                    
+                                                        </td> -->
                                                         <td colspan="7">
-                                                            {{ ticket.materialNote }}
+                                                            Note : {{ ticket.materialNote }}
                                                         </td>
                                                     </tr>
                                                 </ng-container>
@@ -242,7 +242,7 @@
                                                         </div>
             
                                                         <div class="ms-2 me-2">
-                                                            <b class="fz-14">Balance Amount  {{totalAmount - ticketData?.paidAmount | currency:'USD':'symbol': '1.3-3'}}</b>
+                                                            <b class="fz-14">Balance Amount  {{totalAmount + totalAdjustment - ticketData?.paidAmount | currency:'USD':'symbol': '1.3-3'}}</b>
                                                         </div> 
                                                         <div class="ms-2" *ngIf="!isEditModeOn">
                                                             <div class="d-flex justify-content-start align-items-center">
@@ -271,7 +271,7 @@
                                                  
         
                                                     <div *ngIf="!isEditModeOn" class="pay-print-box">
-                                                        <a *ngIf="ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid'" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
+                                                        <a *ngIf="(ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid') && (currentRole!== 'Scale')" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
                                                         <a class="btn btn-primary" (click)="generateSingleTicketReport(ticketId)">Printout</a>
                                                     </div>        
         
@@ -427,7 +427,7 @@
 
 
 
-</p-dialog>
+    </p-dialog>
 
 </ng-container>
 
@@ -482,9 +482,9 @@
         <span class="text-xl font-bold text-info text-center" style="font-size: 14px;"> Please select Option</span>  
     </div>
     <div class="d-flex justify-content-center">
-        <div> <button class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">Pay Amount without printing</button></div>
+        <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">{{currentRole}} - Pay Amount without printing</button></div>
         <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveTicketDetails(0, true)" style="line-height: 18px  !important;">Print and Save</button></div>
-        <div><button class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)"  style="line-height: 18px  !important;">Pay Amount and Print </button></div>
+        <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)"  style="line-height: 18px  !important;">Pay Amount and Print </button></div>
     </div>
 
     <div class="d-flex justify-content-center mt-2">
