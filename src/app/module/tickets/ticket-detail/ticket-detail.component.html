@@ -39,8 +39,12 @@
         
                                         <div class="row">
                                            <div class="col-sm-6 col-md-3 d-flex">
-                                                <h4 class="ticket-number me-1">Ticket# - {{ticketId}}</h4>
-                                             
+                                            <div *ngIf="isEditModeOn" >
+                                                <a  class="btn btn-primary me-1" (click)="editSeller()">
+                                                    Edit
+                                                </a>
+                                            </div>
+                                            <h4 class="ticket-number me-1">Ticket# - {{ticketId}}</h4>
                                            </div>
         
                                            <div class="col-sm-6 col-md-9 d-flex justify-content-end">
@@ -729,4 +733,136 @@
     <ng-template pTemplate="footer">
         <button class="btn btn-primary"  (click)="alertVisible = false"> Ok </button>
     </ng-template>
+</p-dialog>
+
+
+
+<p-dialog [modal]="true" 
+header="Edit Seller"
+[(visible)]="dialogPopupVisible" [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
+
+
+<div class="row" *ngIf="sellerLoader">
+ 
+        <app-page-loader type="ftable"></app-page-loader>
+   
+</div>
+
+
+<div class="row" *ngIf="!sellerLoader">
+
+    <div class="col-md-6">
+        <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control"
+            placeholder="Search for Sellers, Address, License and License Plate">
+    </div>
+    <div class="col-md-6">
+        <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newTicketList"></app-actionbar>
+
+        <!-- <a  type="button" (click)="addNewSeller()" 
+        class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
+        New Customer
+        </a> -->
+    </div>
+
+</div>
+
+<div class="row mt-3"  *ngIf="!sellerLoader">
+
+    <p-table [value]="sellers" [scrollable]="true" scrollHeight="40vh" [paginator]="true" [rows]="10"
+        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
+
+
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Seller</th>
+                <th>Driver's License</th>
+                <th>Address</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-seller>
+            <tr (click)="clickOnSeller(seller.rowId)"  style="cursor: pointer;">
+                <td>{{ seller.fullName }}</td>
+                <td>{{ seller.driverLicenseNumber }}</td>
+                <td>{{ seller.streetAddress }}</td>
+            </tr>
+        </ng-template>
+      
+    </p-table>
+</div>
+
+
+</p-dialog>
+
+
+<p-dialog header="Header" [(visible)]="addSellerPopupVisible" [modal]="true" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [style]="{width: '500'}">
+    <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <span class="font-bold white-space-nowrap">Add New Customer</span>
+        </div>
+    </ng-template>
+        <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()">
+            <div class="row" style="min-width: 500px;">
+                <div class="d-flex row align-items-center">
+                    <div class="col-sm-3">
+                     <label for="example-select" class="form-label">Select Type</label></div>
+
+                    <div class="form-group" >
+                           <select formControlName="sellerType" class="form-select" id="example-select"
+                        (change)="changeSellerType()">
+                        <option>Personal</option>
+                        <option>Business</option>
+                    </select> 
+                 </div>
+                </div>
+                
+            </div>
+            <hr>
+            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
+                <h4>Personal Information</h4>
+
+                <div class="form-group col-sm-4 mt-1">
+                    <div class="form-floating">
+                        <input type="text" formControlName="firstName" class="form-control"
+                            id="firstname" placeholder="First Name">
+                        <label for="floatingInput">First Name</label>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4 mt-1">
+                    <div class="form-floating">
+                        <input type="text" formControlName="middleName" class="form-control"
+                            id="middlename" placeholder="Middle Name">
+                        <label for="floatingInput">Middle Name</label>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4 mt-1">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" formControlName="lastName" id="lastname"
+                            placeholder="Last Name">
+                        <label for="floatingInput">Last Name</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
+                <h4>Business Information</h4>
+
+                <div class="form-group col-sm-6 mt-1">
+                    <div class="form-floating">
+                        <input type="text" formControlName="firstName" class="form-control"
+                            id="bfirstName" placeholder="Business Name">
+                        <label for="floatingInput">Business Name</label>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+    
+        <ng-template pTemplate="footer">
+            <button class="btn btn-primary me-1" (click)="onSubmit()">Save</button>
+        </ng-template>
 </p-dialog>

@@ -12,6 +12,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { PriceCalculatorComponent } from '../../shared/commonshared/price-calculator/price-calculator.component';
 import { DataService } from 'src/app/core/services/data.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -149,19 +150,44 @@ export class TicketDetailComponent implements OnInit {
   subScriptionType:any;
   currentRole: any;
 
+  dialogPopupVisible: boolean = false;
+  sellerLoader: boolean = false;
+  searchSellerInput: any = '';
+
+  addSellerPopupVisible = false;
+  sellerForm!: FormGroup;
+  sellerType: string = 'Personal';
+  
+  newTicketList = [{
+    iconcode: 'mdi-magnify',
+    title: 'Search'
+  },
+  {
+    iconcode: 'mdi-refresh',
+    title: 'Refresh'
+  },
+  {
+    iconcode: 'mdi-account',
+    title: 'New Customer',
+    label:'New Customer'
+  }
+  ];
+
+
   @ViewChild(PriceCalculatorComponent) priceCalculatorComponent!: PriceCalculatorComponent;
   
 
 
   constructor(private route: ActivatedRoute,
     private router: Router,
+    private fb: FormBuilder,
     private datePipe: DatePipe,
     private authService: AuthService,
     private messageService: MessageService,
     private stroarge: StorageService,
     public dtService:DataService,
     private confirmationService: ConfirmationService,
-    private commonService: CommonService) { }
+    public commonService: CommonService) { }
 
   ngOnInit() {
     this.currentRole = this.authService.userCurrentRole();
@@ -201,6 +227,13 @@ export class TicketDetailComponent implements OnInit {
       this.processDataBasedOnTicketId();
       this.GetAllAdjustmentType();
       this.getTicketTransactions();
+    });
+
+    this.sellerForm = this.fb.group({
+      firstName : ['',Validators.required],
+      sellerType:[this.sellerType],
+      middleName : [''],
+      lastName : ['']
     });
 
 
@@ -477,7 +510,117 @@ export class TicketDetailComponent implements OnInit {
     this.getAllTicketsDetails();
   }
 
+  editSeller() {    
+    this.dialogPopupVisible = true;
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId
+    };
+    this.getAllsellersDetails(paramObject);
+  }
 
+  getSellerAction(actionCode: any) {
+
+    switch (actionCode?.iconcode) {
+      case 'mdi-magnify':
+        this.searchSeller();
+        break;
+      case 'mdi-refresh':
+        this.refreshSellerData();
+        break;
+      case 'mdi-account':
+        this.addNewSeller();
+        break;
+      default:
+        break;
+    }
+
+  }
+
+  searchSeller() {
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 10,
+      LocationId: this.locId,
+      SerachText: this.searchSellerInput
+    };
+    this.getAllsellersDetails(paramObject);
+
+  }
+
+  refreshSellerData() {
+    this.searchSellerInput = '';
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 10,
+      LocationId: this.locId
+    };
+    this.getAllsellersDetails(paramObject);
+  }
+
+  addNewSeller() {
+    // this.router.navigateByUrl(`${this.orgName}/sellers-buyers/add-seller`);
+    this.addSellerPopupVisible = true;
+  }
+
+
+  onSubmit() {
+    const reqObj = {
+      ...this.sellerForm.value,
+      ...{ 
+        rowId: 0,
+        locID: this.locId,
+        createdBy: this.logInUserId,
+        createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+        updatedBy: this.logInUserId,
+        updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+      }
+    }
+    console.log(reqObj);
+    this.commonService.addSeller(reqObj).subscribe(data =>{
+      console.log(data);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller updated Successfully' });
+        const sellerFullname = reqObj.firstName + (reqObj.middleName != '' ? ' ' + reqObj.middleName : '') 
+        + (reqObj.lastName != '' ? ' ' + reqObj.lastName : '') ;
+           
+        this.addSellerPopupVisible = false;
+        this.sellerForm.patchValue({
+          firstName: '',
+          middleName: '',
+          lastName: ''
+        });
+        
+        this.clickOnSeller(data.body.insertedRow);
+      },(error: any) =>{
+      console.log(error);
+    })
+
+  }
+
+  clickOnSeller(sellerId: any) {
+    this.dialogPopupVisible = false;
+    this.sellerId = sellerId;
+    this.getSellerById();
+  }
+
+  getAllsellersDetails(paramObject: any) {
+    this.sellerLoader = true;
+    this.commonService.getAllsellersDetails(paramObject)
+      .subscribe(data => {
+        console.log('getAllsellersDetails :: ');
+        console.log(data);
+        this.sellers = data.body.data;
+      },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+          this.sellerLoader = false;
+        },
+        () => {
+          this.sellerLoader = false;
+        }
+      );
+  }
 
   getSellerById() {
     const paramObject = {
@@ -606,7 +749,7 @@ export class TicketDetailComponent implements OnInit {
       this.saveConfirmVisible = true;
       this.signaturePadVisible = false;
     } else {
-      if (this.signPadVisible) {
+      if (this.signPadVisible && this.currentRole !== 'Scale') {
         this.saveConfirmVisible = false;
         this.signaturePadVisible = true;
       } else {
@@ -873,6 +1016,7 @@ export class TicketDetailComponent implements OnInit {
       this.ticketData.amount = parseFloat(this.totalAmount.toFixed(3));
       this.ticketData.paidAmount = parseFloat(paidAmount.toString());
       this.ticketData.lstttransactionMasterDTO = this.ticketObj;
+      this.ticketData.customerId = parseFloat(this.sellerId);
     } else {
       const newTicket = new Ticket();
       newTicket.rowId = 0;
@@ -1162,7 +1306,7 @@ export class TicketDetailComponent implements OnInit {
       rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
       rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
       rowData.codNote = '';
-      rowData.materialNote = (this.materialNote ? this.materialNote : null );
+      rowData.materialNote = (this.materialNote || this.materialNote == '' ? this.materialNote : null );
 
 
       rowData.createdBy = this.logInUserId;
@@ -1190,7 +1334,7 @@ export class TicketDetailComponent implements OnInit {
           rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
           rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
           rowData.codNote = this.itemCodNote;
-          rowData.materialNote = (this.materialNote ? this.materialNote : null);
+          rowData.materialNote = (this.materialNote || this.materialNote == '' ? this.materialNote : null);
 
           // TO DO:: does not required. need to verify;
           rowData.updatedBy = this.logInUserId;
