@@ -2437,11 +2437,11 @@ select optgroup option {
 
 
   body {
-    font-size: 2.3rem !important
+    font-size: 2.8rem !important
   }
 
   a {
-    font-size: 2.3rem !important
+    font-size: 2.8rem !important
   }
 
   h1,
@@ -2449,11 +2449,11 @@ select optgroup option {
   h3,
   h4,
   h5 {
-    font-size: 2.3rem !important
+    font-size: 3.0rem !important
   }
 
   table tr td {
-    font-size: 2.3rem !important
+    font-size: 2.8rem !important
   }
 
 
@@ -2492,6 +2492,10 @@ select optgroup option {
     font-size: 3.1rem !important;
   }
 
+  .form-label {
+    font-size: 3.0rem !important;
+  }
+
   .form-select {
     font-size: 3.1rem !important;
     height: 100% !important
@@ -2504,10 +2508,15 @@ select optgroup option {
   select option {
     font-size: 3.0rem !important;
   }
-
-  .form-label {
-    width: 100% !important
+  .p-dialog .p-dialog-header{
+    font-size: 3.0rem !important;
+    font-weight: 700;
+    padding: 1.5rem 1rem !important;
   }
+
+  /* .form-label {
+    width: 100% !important
+  } */
 
   .m-button {
     height: 100% !important;
@@ -2554,20 +2563,17 @@ select optgroup option {
   }
 
 
-  table tr td {
-    font-size: 2.3rem !important
-  }
 
   .p-datatable .p-datatable-thead>tr>th {
-    font-size: 2.3rem !important
+    font-size: 2.8rem !important
   }
 
   .p-datatable .p-datatable-thead>tr>td {
-    font-size: 2.3rem !important
+    font-size: 2.8rem !important
   }
 
   .ticket-details-tbl th {
-    font-size: 2.3rem !important
+    font-size: 2.8rem !important
   }
 
 
