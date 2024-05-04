@@ -42,9 +42,16 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   isNaN: Function = Number.isNaN;
 
   isVirtual = true;
+  dCamera: any;
+  imageUrl: any;
 
   constructor(private renderer: Renderer2,private elementRef: ElementRef,private stroarge: StorageService) {
 
+  }
+
+  handleImage(imageUrl: string) {
+    // alert(imageUrl);
+    this.imageUrl = imageUrl;
   }
 
 
@@ -78,6 +85,11 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       // this.isVirtual = checkKeyboard?.values == 'True' ? true : false ;
       // console.log(this.isVirtual)
     }
+    const mCamera =  localStorage.getItem('metarialCamera') ;
+    if(mCamera) {
+      this.dCamera = mCamera;
+    }
+
    
 
   }
@@ -109,7 +121,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox4,this.inputBox3];
+    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox3,this.inputBox4];
     setTimeout(()=>{
       this.inputBoxes[this.currentFocusIndex]?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     },100)
@@ -132,10 +144,19 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       this.materialNote = '';
       this.calculateObj.emit(obj);
      }
-      this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
+     
      
       // Increment the focus index, resetting to 0 if it exceeds the number of inputs
-      this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
+      if(this.currentFocusIndex > 3){
+        this.currentFocusIndex = 0;
+      }else{
+        this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
+      }
+
+      this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
+
+    //  
+      console.log(this.currentFocusIndex);
   }
 
   changeItem() {

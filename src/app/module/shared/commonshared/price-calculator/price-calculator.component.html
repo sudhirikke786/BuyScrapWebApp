@@ -16,6 +16,9 @@
         <div class="col-sm-12">
           <div  class="m-image">
             <img [src]="itemImagePath" alt="Image">
+            <!-- <app-camera (getPicture)="handleImage($event)" [defaultCamera]="dCamera"></app-camera> -->
+
+            <!-- <img [src]="itemImagePath" alt="Image"> -->
           </div>
           <!-- <div class="col-md-12 col-sm-12">
            
@@ -59,7 +62,7 @@
                
                   <div class="input-group price-d ">
                   
-                    <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
+                    <input type="text"  (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
                       [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
                       (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
                   </div>

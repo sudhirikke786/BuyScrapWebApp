@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit {
   wHeiht: any;
   wWidth: any;
   wHeight: any;
+  defulatFontSize = 100;
   constructor(private route: ActivatedRoute,
     private router: Router,
     public dataService: DataService,
@@ -56,6 +57,17 @@ export class HeaderComponent implements OnInit {
       }
 
 
+    }
+
+
+    fontIncrease() {
+        const fSize:any  = document.getElementById('main-body');
+        this.defulatFontSize = this.defulatFontSize + 10;
+        fSize.style.fontSize = this.defulatFontSize + '%';
+    }
+
+    fontDecrease() {
+      
     }
 
   ngOnInit() {

@@ -2342,8 +2342,8 @@ select optgroup option {
   }
 
   .btn {
-    font-size: 1.7rem !important;
-    line-height: 1.7rem !important;
+    font-size: 2.7rem !important;
+    line-height: 2.7rem !important;
   }
 
   .payment-ticket {
@@ -2379,8 +2379,8 @@ select optgroup option {
   }
 
   .mdi-cust {
-    font-size: 1.7rem !important;
-    line-height: 1.7rem !important;
+    font-size: 2rem !important;
+    line-height: 2rem !important;
   }
 
   select option {
@@ -2458,13 +2458,13 @@ select optgroup option {
 
 
   .btn {
-    font-size: 2.3rem !important;
-    line-height: 3.0rem !important;
+    font-size: 4rem !important;
+    line-height: 4rem !important;
   }
 
 
   .p-open {
-    bottom: 440px !important;
+    bottom:120px !important;
   }
 
   .p-close {
@@ -2476,8 +2476,8 @@ select optgroup option {
     font-size: 2.3rem !important
   }
 
-  .form-floating>.form-control {
-    height: calc(4.0rem + 2.36px) !important;
+  .form-floating>.form-control { 
+    height: calc(8.0rem + 2.36px) !important;
   }
 
   .dl-img1 {
@@ -2489,12 +2489,16 @@ select optgroup option {
   }
 
   .form-control {
-    font-size: 2.1rem !important;
+    font-size: 3.1rem !important;
   }
 
   .form-select {
-    font-size: 2.1rem !important;
+    font-size: 3.1rem !important;
     height: 100% !important
+  }
+
+  .p-inputwrapper-filled .p-multiselect.p-multiselect-chip .p-multiselect-label{
+    padding: 0.7rem !important;
   }
 
   select option {
@@ -2518,8 +2522,8 @@ select optgroup option {
   }
 
   .mdi-cust {
-    font-size: 2.3rem !important;
-    line-height: 2.3rem !important;
+    font-size: 3rem !important;
+    line-height: 3rem !important;
   }
 
   .button-toggle-menu {
@@ -2649,6 +2653,33 @@ select optgroup option {
     font-size: 3.7rem !important;
   }
 
+  .custom-lh {
+    
+    border: 1px solid #a19898;
+    font-size: 3.5rem !important;
+   
+  }
+
+  .btn-primary-bsa-get-started {
+    height: auto !important;
+    width: auto !important;
+  }
+
+  .pricing-sub-heading {
+    font-size: 3rem;
+    font-style: italic;
+  }
+
+  .btn-primary-popup-1{
+    height: auto !important;
+  }
+
+  .btn-login{
+    height: 180px !important;
+    font-size: 6rem !important;
+   }
+
+
 
 }
 
@@ -2694,8 +2725,8 @@ select optgroup option {
   }
 
   .btn {
-    font-size: 3.1rem !important;
-    line-height: 70px !important;
+    font-size: 5rem !important;
+    line-height: 5px !important;
   }
 
   .payment-ticket {
@@ -2759,8 +2790,8 @@ select optgroup option {
   }
 
   .mdi-cust {
-    font-size: 3rem !important;
-    line-height: 3rem !important;
+    font-size: 4rem !important;
+    line-height: 4rem !important;
   }
 
   .h-40 {
@@ -2795,8 +2826,30 @@ select optgroup option {
   .custom-lh {
     border-bottom: 1px solid #ccc;
     width: 100%;
+    font-size: 3.5rem !important;
     line-height: 150px !important;
   }
+
+
+  .btn-primary-bsa-get-started {
+    height: auto !important;
+    width: auto !important;
+  }
+
+  .pricing-sub-heading {
+    font-size: 3rem;
+    font-style: italic;
+  }
+
+  .btn-primary-popup-1{
+    height: auto !important;
+  }
+
+  .btn-login{
+    height: 180px !important;
+    font-size: 6rem !important;
+   }
+
 
 }
 
