@@ -9,11 +9,17 @@
         <div class="col-sm-12">
 
           <div class="col-sm-12">
-            <div class="col-12">
-              <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom"> {{itemGroupName}} -
-                {{itemMaterialName}}</div>
+            <div class="col-12 d-flex justify-content-between">
+              <div>
+                  <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom"> {{itemGroupName}} -
+                    {{itemMaterialName}}
+                  </div>
+              </div>
+             
     
-    
+                <div>
+                  <a (click)="op.toggle($event)"><i class="bi bi-gear text-primary fz-16"></i></a>
+                </div>
             </div>
           </div>
           <div  class="col-sm-12">
@@ -27,7 +33,7 @@
               [switchCamera]="nextWebcamObservable"
             ></webcam>
 
-              <img  *ngIf="imageUrl!=''" [src]="imageUrl" alt="Image">
+              <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image">
             </div>
             
             <!-- <app-camera (getPicture)="handleImage($event)" [defaultCamera]="dCamera"></app-camera> -->
@@ -187,3 +193,18 @@
     <a href="javascript:void(0)" class="btn btn-danger" aria-label="Delete Note" (click)="deleteNote()">Delete Note</a>
   </ng-template>
 </p-dialog>
+
+
+
+<p-overlayPanel #op>
+  <div class="flex flex-column gap-3 w-25rem">
+    <div class="form-group">
+      <select class="form-select" [(ngModel)]="selectedCamera" (change)="changeWebCame(selectedCamera)">
+        <option value="undefined">Select a camera</option>            
+        <option *ngFor="let option of allMediaDevices" [value]="option.deviceId"> {{ option.label }} </option>
+        <!-- <option value="cd857abbf36b2b1511ae171f1778ffb3cc19c0240e6accda93c40162dc3e0dd1">HP HD Camera (05c8:0397)</option> -->
+       </select>
+    </div>
+   
+    </div>
+</p-overlayPanel>
