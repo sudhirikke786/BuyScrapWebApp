@@ -72,11 +72,12 @@ export class SubscriptionComponent implements OnInit {
       this.organizationPlanDetails.defaultMonthPrice = 15;
       console.log(this.organizationPlanDetails);
 
-      this.planObj =  res[0].body.data.map((res:any) => {
-        res.planDesc =  this.addCrossMark(res.planHighlights);
-      
+      this.planObj =  res[0].body.data.map((res: any) => {
+        const planType = this.getPlanType(res);;
+        res.planDesc = this.addCrossMark(res?.planHighlights);
+        res.planDetails = this.radiogetSelectedObj(res);
         res.isselected = (this.organizationPlanDetails.subscriptionPlanId == res.subscriptionPlanId) ? true : false;
-        return res;
+        return { ...res, ...planType };
       });
 
       this.extraMOnthlyobj =   res[1].body.data.map((res:any) => {
@@ -97,6 +98,90 @@ export class SubscriptionComponent implements OnInit {
   
 
   }
+
+  getPlanType(res: any) {
+    let pType = {
+      IsFreeVersion: false,
+      IsLightVersion: false,
+      IsProVersion: false,
+    };
+    if (res.planTitle.includes('Free')) {
+      pType.IsFreeVersion = true;
+    } else if (res.planTitle.includes('Lite')) {
+      pType.IsLightVersion = true;
+    } else if (res.planTitle.includes('Plus')) {
+      pType.IsProVersion = true;
+    }
+    return pType;
+
+
+
+  }
+
+
+  radiogetSelectedObj(res: any) {
+    return [{
+      amount: res?.planCostMonthly,
+      type: 'Monthly',
+      RecursiveType:1,
+      isSelcted: true
+    }, {
+      amount: res?.planCostYearly,
+      type: 'Yearly',
+      RecursiveType:2,
+      isSelcted: false
+    }]
+
+
+
+  }
+
+  getSelectedPlan(planName: any, type: number) {
+    if (type == 1) {
+      planName[0]['isSelcted'] = true;
+      planName[1]['isSelcted'] = false;
+    } else {
+      planName[0]['isSelcted'] = false;
+      planName[1]['isSelcted'] = true;
+    }
+
+    //this.selectedTimePeriod  = planName
+  }
+
+
+
+
+  // getSubscription() {
+
+  //   this.showLoder = true;
+
+  //   this.commonService.getAllSubscriptionPlan({ SubscriptionPlanID: 0 }).subscribe((res) => {
+  //     this.showLoder = false;
+  //     this.planObj = res.body.data.map((res: any) => {
+  //       const planType = this.getPlanType(res);;
+  //       res.planDesc = this.addCrossMark(res?.planHighlights);
+  //       res.planDetails = this.radiogetSelectedObj(res);
+  //       res.isselected = false;
+  //       return { ...res, ...planType };
+  //     });
+
+  //     console.log(this.planObj);
+
+  //   }, (error) => {
+  //     this.showLoder = false;
+  //   }, () => {
+  //     this.showLoder = false;
+  //   })
+
+
+
+
+
+
+
+
+
+  // }
 
 
   addCrossMark(descp:any) {

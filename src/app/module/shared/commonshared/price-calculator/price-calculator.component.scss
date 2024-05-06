@@ -4,6 +4,11 @@
   margin-bottom: 10px;
 }
 
+.form-control:focus{
+  border: 1px solid #4a81d4;
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+}
+
 .price-d ::before{
   content: '$';
   top: 11px;
@@ -13,9 +18,9 @@
 
 .m-image{
  
-  height:120px;
+  max-height:100px;
   width: auto;
-  overflow: hidden;
+  overflow-y: scroll;
     img{
       width: 100%;
       height: auto; /* Maintain aspect ratio */
@@ -168,9 +173,9 @@
   
 .m-image{
  
-  height:150px;
+  max-height:150px;
   width: auto;
-  overflow: hidden;
+  overflow-x: scroll;
     img{
       width: 100%;
       height: auto; /* Maintain aspect ratio */
@@ -195,13 +200,13 @@
     height:300px;
     min-height: 300px;
     width: auto;
-    overflow: hidden;
+    overflow-y: scroll;
      
   
   }
   .btn-cal {
     
-    font-size: 2.1rem !important;
+    font-size: 3.1rem !important;
   }
   .bi-keyboard{
     font-size: 3.1rem;
@@ -244,9 +249,9 @@
 .m-image{
  
   height:400px !important;
-  min-height: 300px !important;
+  max-height: 300px !important;
   width: auto;
-  overflow: hidden;
+  overflow-y: scroll;
    
 
 }

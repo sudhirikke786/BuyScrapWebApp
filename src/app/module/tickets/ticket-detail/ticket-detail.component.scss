@@ -12,11 +12,12 @@ h4{
 }
 
 .ticket-card{
-  height: calc(100vh - 132px);
+  height: calc(100vh - 100px);
+  overflow-y: auto;
 }
 .card-ticket-table{
   overflow-y: auto;
-  height:calc(100vh - 425px);
+  height: calc(100vh - 441px);
 }
 
 .cod-item {
@@ -36,12 +37,13 @@ h4{
         // align-items: top;
         justify-content: center;
         text-align: left;
-        margin: 1px;
+      
         background: #02659d;
        a {
           padding: 1em;
           display: flex;
           height: 100%;
+          border: 1px solid #ccc !important;
           justify-content: center;
        }
 

@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-price-calculator',
@@ -7,6 +9,51 @@ import { StorageService } from 'src/app/core/services/storage.service';
   styleUrls: ['./price-calculator.component.scss']
 })
 export class PriceCalculatorComponent implements OnInit, AfterViewInit {
+
+  @Output() getPicture = new EventEmitter<string>();
+  showWebcam = false;
+  isCameraExist = true;
+  allMediaDevices: any;
+
+  @Input() defaultCamera:any;
+  
+  webcamImage: WebcamImage | undefined;
+  selectedCamera: any = '';
+  imageUrl: any;
+
+  errors: WebcamInitError[] = [];
+
+  // webcam snapshot trigger
+  private trigger: Subject<void> = new Subject<void>();
+  private nextWebcam: Subject<boolean | string> = new Subject<
+    boolean | string
+  >();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   @ViewChild('inputBox1') inputBox1: ElementRef | undefined;
   @ViewChild('inputBox2') inputBox2: ElementRef | undefined;
@@ -16,7 +63,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   @Input() materialNote = '';
   @Input() itemGroupName = 'Motors/Motores';
   @Input() itemMaterialName = 'Aluminum Motors (Clean/Limpios)';
-  @Input() itemImagePath = 'assets/images/custom/id_scan.png';
+  @Input() itemImagePath = '';
 
 
   @Input() itemGross: any;
@@ -42,10 +89,13 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   isNaN: Function = Number.isNaN;
 
   isVirtual = true;
+  dCamera: any;
 
   constructor(private renderer: Renderer2,private elementRef: ElementRef,private stroarge: StorageService) {
 
   }
+
+  
 
 
   onKeyPress(event: KeyboardEvent) {
@@ -78,6 +128,11 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       // this.isVirtual = checkKeyboard?.values == 'True' ? true : false ;
       // console.log(this.isVirtual)
     }
+    const mCamera =  localStorage.getItem('metarialCamera') ;
+    if(mCamera) {
+      this.dCamera = mCamera;
+    }
+
    
 
   }
@@ -108,13 +163,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     console.log(this.isKeyboard);
   }
 
-  ngAfterViewInit(): void {
-    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox3, this.inputBox4];
-    setTimeout(()=>{
-      this.inputBoxes[this.currentFocusIndex]?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    },100)
-  }
-
+ 
   changeFocus() {
     // Set focus on the current input
 
@@ -133,14 +182,18 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       this.calculateObj.emit(obj);
      }
      
-     // Increment the focus index, resetting to 0 if it exceeds the number of inputs
-     this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
-
-    //  if (this.currentFocusIndex == 3) {
-    //   this.currentFocusIndex = this.currentFocusIndex + 1;
-    //  }
-     this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
      
+      // Increment the focus index, resetting to 0 if it exceeds the number of inputs
+      if(this.currentFocusIndex > 3){
+        this.currentFocusIndex = 0;
+      }else{
+        this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
+      }
+
+      this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
+
+    //  
+      console.log(this.currentFocusIndex);
   }
 
   changeItem() {
@@ -288,4 +341,124 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     // }
    
   }
+
+
+  
+  ngAfterViewInit(): void {
+
+
+
+    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox3,this.inputBox4];
+    setTimeout(()=>{
+      this.inputBoxes[this.currentFocusIndex]?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    },100);
+
+
+    
+    navigator.mediaDevices.getUserMedia({video: true}); 
+    (async () => {     
+      let devices = await navigator.mediaDevices.enumerateDevices(); 
+      console.log('mediaDevices 1111111111111');
+      console.log(devices); 
+      console.log('mediaDevices 2222222222222222');
+      this.allMediaDevices = devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput");
+      console.log('mediaDevices' + JSON.stringify(this.allMediaDevices));
+      this.isCameraExist = this.allMediaDevices && this.allMediaDevices.length > 0;
+      const deviceId =  localStorage.getItem('metarialCamera');
+      if(localStorage.getItem('metarialCamera')){
+        setTimeout(() =>{
+           this.selectedCamera =  deviceId; 
+           this.changeWebCame(this.selectedCamera);
+        },100)
+       
+      }else{
+        this.selectedCamera =  this.allMediaDevices[0].deviceId;
+        this.changeWebCame(this.selectedCamera);
+      }
+
+    //  this.showWebcam = false;
+    })();
+  }
+
+  ngOnDestroy() {
+    this.showWebcam = false;
+    this.imageUrl = '';
+    console.log('Destory------->>')
+  }
+
+
+
+
+
+  takeSnapshot(): void {
+    this.trigger.next();
+  }
+
+  onOffWebCame() {
+    if (this.selectedCamera != '') {
+      this.showWebcam = !this.showWebcam;
+    }
+  }
+
+  handleInitError(error: WebcamInitError) {
+    this.errors.push(error);
+  }
+
+  changeWebCame(directionOrDeviceId: boolean | string) {    
+    if (this.selectedCamera != '') {
+      console.log('directionOrDeviceId' + JSON.stringify(directionOrDeviceId));
+      this.nextWebcam.next(directionOrDeviceId);
+      this.showWebcam = true;
+    } else {      
+      this.showWebcam = false;
+    }
+  }
+
+
+   async convertIntoOCR(imgUrl:any) {
+    const index =  imgUrl.indexOf('base64,') + 7; // Find the position of ','
+    const base64Data = imgUrl.substring(index); // Extract base64 data
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+  
+    // Create a Blob from the binary data
+    const blob = new Blob([byteArray], { type: 'image/jpeg' }); // Change the type if necessary
+    
+    // Generate a local URL for the Blob
+    const url = URL.createObjectURL(blob);
+
+    try {
+    //  // const result =  await Tesseract.recognize(url);
+    
+    
+    } catch (error) {
+      console.error('Error during OCR:', error);
+    }
+  }
+
+
+
+  handleImage(webcamImage: WebcamImage) {
+    
+    this.webcamImage = webcamImage;
+    this.imageUrl = webcamImage.imageAsDataUrl;
+    this.showWebcam = false;
+    this.getPicture.emit(this.imageUrl);
+  }
+
+  get triggerObservable(): Observable<void> {
+    return this.trigger.asObservable();
+  }
+
+  get nextWebcamObservable(): Observable<boolean | string> {
+    return this.nextWebcam.asObservable();
+  }
+  
+
+
+
 }

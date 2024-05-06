@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit {
   wHeiht: any;
   wWidth: any;
   wHeight: any;
+  defulatFontSize = 100;
   constructor(private route: ActivatedRoute,
     private router: Router,
     public dataService: DataService,
@@ -57,6 +58,9 @@ export class HeaderComponent implements OnInit {
 
 
     }
+
+
+ 
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -177,7 +181,7 @@ export class HeaderComponent implements OnInit {
   }
 
   
-    successAlert(msg:any){
+  successAlert(msg:any){
     this.messageService.add({ severity: 'success', summary: 'success', detail: msg });
   }
 

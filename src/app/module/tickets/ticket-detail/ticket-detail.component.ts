@@ -1112,7 +1112,7 @@ export class TicketDetailComponent implements OnInit {
 
   addItem(materialId: any, materialName: any, selectedMaterial: string, scrapPrice: any) {
     this.modalHeader = 'Add Item Details';
-    this.editItemVisible = true;
+    this.editItemVisible = false;
     this.editItemCloseImageCapture = false;
     this.imageUrl = null;
     this.itemMaterialId = materialId;
@@ -1123,7 +1123,8 @@ export class TicketDetailComponent implements OnInit {
     this.itemCodNote = '';    
     this.itemGross = '';
     this.itemTare = '';
-    this.materialNote = '';
+    this.closeCapturedImage(1)
+    // this.materialNote = '';
   }
 
   updateExistingItem(materialId: any, materialName: string, selectedMaterial: string, scrapPrice: any) {
@@ -1150,8 +1151,8 @@ export class TicketDetailComponent implements OnInit {
 
     } else {
       this.modalHeader =  'Edit Item Details';
-      //this.editItemVisible = true;
-
+      this.editItemVisible = true;
+      
       this.editItemCloseImageCapture = false;
       this.itemLeveloperationPerform = 'Edit';
 
@@ -1166,7 +1167,7 @@ export class TicketDetailComponent implements OnInit {
       this.itemPrice = rowData.price;
       this.itemImagePath = rowData.imagePath;
       this.itemCodNote = rowData.codNote;
-      this.materialNote = rowData.materialNote;
+      this.materialNote = rowData.materialNote;  
 
       this.imageUrl = (this.itemImagePath ? this.itemImagePath : 'assets/images/custom/id_scan.png');
       this.closeCapturedImage(1);
