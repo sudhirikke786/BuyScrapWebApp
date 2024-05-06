@@ -702,7 +702,7 @@ html[data-sidenav-user="true"] .user-box {
   flex-direction: column;
   list-style-type: none;
   gap: var(--ct-menu-item-gap);
-  padding-top: var(--ct-menu-item-gap);
+  padding-top: calc(var(--ct-topbar-height) + 10px)
 }
 
 .menu ul {
@@ -7013,8 +7013,8 @@ span.flatpickr-weekday {
 @media only screen and (max-width:3000px) and (min-width: 2600px) {
 
   .dash-icons {
-    width: 30px;
-    height: 30px;
+    width: 40px !important;
+    height: 40px !important;
   }
 
 
@@ -7054,8 +7054,8 @@ span.flatpickr-weekday {
 @media only screen and (max-width:7000px) and (min-width: 3100px) {
 
   .dash-icons {
-    width: 40px;
-    height: 40px;
+    width: 40px !important;
+    height: 40px !important;
   }
 
 

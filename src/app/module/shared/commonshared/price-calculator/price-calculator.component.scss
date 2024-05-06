@@ -18,9 +18,9 @@
 
 .m-image{
  
-  height:120px;
+  max-height:100px;
   width: auto;
-  overflow: hidden;
+  overflow-y: scroll;
     img{
       width: 100%;
       height: auto; /* Maintain aspect ratio */
@@ -173,9 +173,9 @@
   
 .m-image{
  
-  height:150px;
+  max-height:150px;
   width: auto;
-  overflow: hidden;
+  overflow-x: scroll;
     img{
       width: 100%;
       height: auto; /* Maintain aspect ratio */
@@ -200,13 +200,13 @@
     height:300px;
     min-height: 300px;
     width: auto;
-    overflow: hidden;
+    overflow-y: scroll;
      
   
   }
   .btn-cal {
     
-    font-size: 2.1rem !important;
+    font-size: 3.1rem !important;
   }
   .bi-keyboard{
     font-size: 3.1rem;
@@ -249,9 +249,9 @@
 .m-image{
  
   height:400px !important;
-  min-height: 300px !important;
+  max-height: 300px !important;
   width: auto;
-  overflow: hidden;
+  overflow-y: scroll;
    
 
 }

@@ -1,6 +1,6 @@
 .dash-icons {
-  height: 20px !important;
-  width: 20px !important;
+  height: 20px;
+  width: 20px;
 }
 
 .box {
@@ -1248,6 +1248,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
   background: #02659d;
   padding: 0 10px;
   box-shadow: 0px 0px 3px grey;
+ /* margin-top: calc(var(--ct-topbar-height) + 5px) !important;*/
 }
 
 .b-links {

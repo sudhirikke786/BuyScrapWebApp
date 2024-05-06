@@ -60,15 +60,7 @@ export class HeaderComponent implements OnInit {
     }
 
 
-    fontIncrease() {
-        const fSize:any  = document.getElementById('main-body');
-        this.defulatFontSize = this.defulatFontSize + 10;
-        fSize.style.fontSize = this.defulatFontSize + '%';
-    }
-
-    fontDecrease() {
-      
-    }
+ 
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -189,7 +181,7 @@ export class HeaderComponent implements OnInit {
   }
 
   
-    successAlert(msg:any){
+  successAlert(msg:any){
     this.messageService.add({ severity: 'success', summary: 'success', detail: msg });
   }
 

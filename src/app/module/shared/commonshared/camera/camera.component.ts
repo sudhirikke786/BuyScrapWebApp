@@ -2,7 +2,6 @@ import { Component, EventEmitter, AfterViewInit, Output, OnDestroy, Input } from
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 
-// declare var Tesseract:any 
 
 @Component({
   selector: 'app-camera',
@@ -32,16 +31,7 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
   constructor() {}
 
   ngAfterViewInit(): void {
-    // WebcamUtil.getAvailableVideoInputs().then(
-    //   (mediaDevices: MediaDeviceInfo[]) => {
-    //     this.allMediaDevices = mediaDevices;
-    //     console.log('mediaDevices' + JSON.stringify(mediaDevices));
-    //     this.isCameraExist = mediaDevices && mediaDevices.length > 0;
-    //   }
-    // );
-
-    // devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput")
-
+    
     navigator.mediaDevices.getUserMedia({video: true}); 
     (async () => {     
       let devices = await navigator.mediaDevices.enumerateDevices(); 
@@ -153,18 +143,7 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
   }
   
 
-  // async  recognizeText(image: string): Promise<string> {
-  //   const result = await Tesseract.recognize(image);
-  //   return result.text;
-  // }
-
-
-
-  // async recognizeText() {
-  //   const image = 'assets/img/my-image.jpg';
-  //   const text = await recognizeText(image);
-  //   console.log(text);
-  // }
+ 
 
   
    onFileChanged(event: any) {
