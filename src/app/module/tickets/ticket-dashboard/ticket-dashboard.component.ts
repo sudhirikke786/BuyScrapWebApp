@@ -1482,7 +1482,7 @@ export class TicketDashboardComponent implements OnInit {
       PageNumber: 1,
       RowOfPage: 10,
       LocationId: this.locId,
-      SerachText: this.searchSellerInput
+      SerachText: this.searchSellerInput.replace(/ /g, "%")
     };
     this.getAllsellersDetails(paramObject);
 

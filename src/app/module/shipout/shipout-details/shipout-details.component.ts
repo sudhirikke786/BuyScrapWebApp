@@ -80,7 +80,8 @@ export class ShipoutDetailsComponent implements OnInit {
   pageSize = 10;
 
   selectedRowObj: any;
-  isReceiptPrint = false;
+  isReceiptPrint = true;
+  isNewShipOut = false;
 
   fileDataObj: any;
   showDownload = false;
@@ -108,10 +109,12 @@ export class ShipoutDetailsComponent implements OnInit {
       }
       if (parseInt(this.shipoutId)) {
         this.getShipOutDetailsByID();
+        this.isNewShipOut = false;
       }
       else {
         this.shipOutDetails = this.dataService.getNewShipOut();
         this.getAllUsers(this.logInUserId);
+        this.isNewShipOut = true;
       }
       this.processDataBasedOnTicketId();
     });
@@ -294,7 +297,8 @@ export class ShipoutDetailsComponent implements OnInit {
     //   return sum + tickets.net;
     // }, 0);
        
-    this.isEditModeOn = false;
+    // this.isEditModeOn = false;
+    this.shipOutDetails.LocID = this.locId;
     this.shipOutDetails.totalGross = this.totalGross;
     this.shipOutDetails.totalTare = this.totalTare;
     this.shipOutDetails.totalNet = this.totalNet;
@@ -302,15 +306,21 @@ export class ShipoutDetailsComponent implements OnInit {
     
     console.log("Final shipOutDetails :: " + JSON.stringify(this.shipOutDetails));
     
-    this.commonService.insertShipOutDTO(this.shipOutDetails).subscribe(data =>{    
+    this.commonService.insertShipOutDTO(this.shipOutDetails).subscribe(data =>{
+      if (parseInt(this.shipoutId)) {
+        this.isNewShipOut = false;
+      } else {
+        this.isNewShipOut = true;
+      }
       console.log(data); 
+      this.shipoutId = data.body;
 
       // this.confirmSave();
       // alert('Ticket Inserted/ updated successfully');
-     // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
-      this.cancelEditTicket();
+      // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
+      // this.cancelEditTicket();
       if (this.isReceiptPrint) {
-        // this.generateShipOutReport();
+        this.generateShipOutReport();
       }
     },(error: any) =>{  
       console.log(error);  
@@ -328,10 +338,18 @@ export class ShipoutDetailsComponent implements OnInit {
       this.isEditModeOn = false;
       this.editItemCloseImageCapture = false;
       this.processDataBasedOnTicketId();
-    } else {
-      console.log('222222');
+    } 
+    // else {
+    //   console.log('222222');
+    //   this.router.navigateByUrl(`${this.orgName}/ship-out`);
+    // }    
+  }
+
+  closePdfReport() {
+    this.showDownload = false;    
+    if (this.isEditModeOn && this.isNewShipOut) {
       this.router.navigateByUrl(`${this.orgName}/ship-out`);
-    }    
+    }
   }
 
   addItem(materialId: any, materialName: any, selectedMaterial: string, availableStock: any) {

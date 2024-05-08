@@ -38,7 +38,7 @@
                                     <div class="col-sm-10">
         
                                         <div class="row">
-                                           <div class="col-sm-6 col-md-3 d-flex">
+                                           <div class="col-sm-6 col-md-4 d-flex">
                                             <div *ngIf="isEditModeOn" >
                                                 <a  class="btn btn-primary me-1" (click)="editSeller()">
                                                     Edit
@@ -47,7 +47,7 @@
                                             <h4 class="ticket-number me-1">Ticket# - {{ticketId}}</h4>
                                            </div>
         
-                                           <div class="col-sm-6 col-md-9 d-flex justify-content-end">
+                                           <div class="col-sm-6 col-md-8 d-flex justify-content-end">
                                                 <a  class="btn btn-primary me-1" routerLink="/{{orgName}}/home">
                                                     Back
                                                 </a>
@@ -207,19 +207,19 @@
                                     <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98 p-open' : 'w-75 p-close'" >
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
-                                                <p class="ticket-details-p fz-14"><b>Adjustment : {{totalAdjustment | currency:'USD':'symbol': '1.3-3'}}</b></p>
-        
+                                                <!-- <p class="ticket-details-p fz-14"><b>Adjustment : {{(totalAdjustment * -1) | currency:'USD':'symbol': '1.3-3'}}</b></p> -->
                                                 <p class="ticket-details-p fz-14"><b>Total LBS</b></p>
         
                                                 <table class="ticket-details-tbl">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 12%;">Material</th>
-                                                            <th style="width: 12%;">Gross(M)</th>
-                                                            <th style="width: 12%;">Tare</th>
-                                                            <th style="width: 12%;">Net</th>
-                                                            <th style="width: 12%;">Rounding</th>
-                                                            <th style="width: 20%;">Amount</th>
+                                                            <th style="width: 10%;">Material</th>
+                                                            <th style="width: 10%;">Gross(M)</th>
+                                                            <th style="width: 10%;">Tare</th>
+                                                            <th style="width: 10%;">Net</th>
+                                                            <th style="width: 10%;">Rounding</th>
+                                                            <th style="width: 15%;">Amount</th>
+                                                            <th style="width: 15%;">Adjustment</th>
                                                             <th style="width: 20%;">Actual Amount</th>
                                                     </tr></thead>
         
@@ -231,6 +231,7 @@
                                                             <td>{{totalNet}}</td>
                                                             <td>{{totalRoundingAmount | currency:'USD':'symbol': '1.3-3'}}</td>
                                                             <td>{{totalAmount | currency:'USD':'symbol': '1.3-3'}}</td>
+                                                            <td>{{(totalAdjustment * -1) | currency:'USD':'symbol': '1.3-3'}}</td>
                                                             <td>{{totalActualAmount | currency:'USD':'symbol': '1.3-3'}}</td>
                                                         </tr>                                                     
                                                     </tbody>
@@ -249,7 +250,7 @@
                                                         </div>
             
                                                         <div class="ms-2 me-2">
-                                                            <b class="fz-14">Balance Amount  {{totalAmount + totalAdjustment - ticketData?.paidAmount | currency:'USD':'symbol': '1.3-3'}}</b>
+                                                            <b class="fz-14">Balance Amount  {{totalAmount - totalAdjustment - ticketData?.paidAmount | currency:'USD':'symbol': '1.3-3'}}</b>
                                                         </div> 
                                                         <div class="ms-2" *ngIf="!isEditModeOn">
                                                             <div class="d-flex justify-content-start align-items-center">
@@ -885,3 +886,13 @@ header="Edit Seller"
             <button class="btn btn-primary me-1" (click)="onSubmit()">Save</button>
         </ng-template>
 </p-dialog>
+
+<!-- <p-confirmDialog  [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+        <h3>Delete Project</h3>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="confirmPosition"></button>
+        <button type="button" pButton icon="pi pi-check" label="Yes" (click)="confirmPosition"></button>
+    </ng-template>
+</p-confirmDialog> -->

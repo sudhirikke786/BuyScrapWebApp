@@ -132,7 +132,7 @@ export class ShipoutDashboardComponent implements OnInit {
       RowOfPage: 1000,
       LocationId: this.locId,
       SellerType: 'Business',
-      SerachText: this.searchSellerInput
+      SerachText: this.searchSellerInput.replace(/ /g, "%")
     };
     this.commonService.getAllsellersDetails(paramObject)
       .subscribe(data => {

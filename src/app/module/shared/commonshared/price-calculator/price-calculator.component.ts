@@ -143,7 +143,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   calcNetFromGross(gross: any) {    
     this.grossInput = (isNaN(gross) || gross == '') ?  0 : gross;
-    this.tareInput = (isNaN(this.tareInput) || this.tareInput == '') ?  0 : this.tareInput;
+    // this.tareInput = (isNaN(this.tareInput) || this.tareInput == '') ?  0 : this.tareInput;
     this.netInput = gross - this.tareInput;
   }
 
@@ -168,9 +168,10 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     // Set focus on the current input
 
     if (this.currentFocusIndex === this.inputBoxes.length-2) {
+      this.tareInput = (isNaN(this.tareInput) || this.tareInput == '') ? 0 : this.tareInput;
       const obj = {
         itemGross: this.grossInput,
-        itemTare: isNaN(this.tareInput)?0:this.tareInput,
+        itemTare: this.tareInput,
         itemNet: isNaN(this.grossInput - this.tareInput) ?  0 : (this.grossInput - this.tareInput),
         itemPrice: this.priceInput,
         materialNote: this.materialNote

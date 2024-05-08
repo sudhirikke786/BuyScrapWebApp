@@ -51,9 +51,9 @@
                                             </div>
         
                                             
-                                            <!-- <div class="waves-effect waves-light ticket-edit flt-right">
+                                            <div *ngIf="!isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
                                                 <a class="btn btn-primary" (click)="generateShipOutReport()">Print</a>
-                                            </div> -->
+                                            </div>
         
                                            </div> 
                                         </div>
@@ -259,7 +259,7 @@
 
 
 
-<p-dialog header="Shipout Report" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
+<p-dialog header="Shipout Report" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
     <div class="row" >
       <div style="height: 500px;" *ngIf="showDownload">                
         <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>

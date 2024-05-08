@@ -230,6 +230,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Materialss/InsertUpdateGroupMaterials', 'POST', requestObj);
   }
 
+  updateBulkSubMaterial(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Materialss/UpdateBulkSubMaterial', 'POST', requestObj);
+  }
+
   getSubMaterials(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Materialss/GetSubMaterials', 'GET', paramObj);
   } 

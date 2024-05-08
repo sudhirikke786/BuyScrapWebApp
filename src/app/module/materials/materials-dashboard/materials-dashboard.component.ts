@@ -238,11 +238,25 @@ export class MaterialsDashboardComponent implements OnInit {
   }
 
   updateBulkMaterial() {
+    console.log(this.subMaterialList); 
+    const selectedFields = this.subMaterialList.map((obj:any) => ({ 
+      rowId: obj.rowId, 
+      materialName: obj.materialName, 
+      scrapPrice: parseFloat(obj.scrapPrice) 
+    }));
+    console.log(selectedFields); 
     
-    const containerElement = this.subMaterialContainer.nativeElement;
-    const data = containerElement.textContent;
+    
+    this.commonService.updateBulkSubMaterial(selectedFields).subscribe(data =>{    
+      console.log(data); 
+      this.bulkvisible = false;      
+      this.successAlert('Bulk Material updated successfully');
+    },(error: any) =>{  
+      console.log(error);  
 
-    console.log(data); 
+      this.errorAlert(error);
+      // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+    });
   }
   
   onMaterialChange(value: any) {
@@ -267,6 +281,22 @@ export class MaterialsDashboardComponent implements OnInit {
           // this.errorMsg = 'Error occured';
         }
       );
+  }
+
+  onScrapPriceChange(event: any, item: any) {
+    // Update the item's scrapPrice property with the new input value
+    item.scrapPrice = event.target.value;
+    
+    // You can perform additional actions here if needed
+    console.log(`Item ${item.rowId} Scrap Price changed to: ${item.scrapPrice}`);
+  }
+
+  // Method to capture data from textboxes
+  captureData(value: any, index: number) {
+    console.log(value);
+    console.log(index);
+    this.subMaterialList[index].scrapPrice = value;
+    // console.log(`Textbox ${index + 1} value: ${value}`);
   }
 
   getAction(actionCode:any){

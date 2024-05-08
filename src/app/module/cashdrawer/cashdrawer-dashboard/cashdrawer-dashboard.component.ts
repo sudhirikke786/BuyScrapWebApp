@@ -142,7 +142,7 @@ export class CashdrawerDashboardComponent implements OnInit {
     newCashDrawerTransaction.createdDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerTransaction.updatedBy = this.logInUserId;
     newCashDrawerTransaction.updatedDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-    newCashDrawerTransaction.amount = parseFloat(this.enterAmount.toString());
+    newCashDrawerTransaction.amount = parseFloat(this.enterAmount.toString().replace(/,/g,''));
     newCashDrawerTransaction.reason = this.addReason;
     newCashDrawerTransaction.locID = this.locId;
     newCashDrawerTransaction.type = this.cashDrawerAction;      

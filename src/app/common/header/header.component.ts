@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
   cashdrawerdetail: CashDrawer = new CashDrawer();
   totalAmount: number = 0.00;
   cashDrawerBalanceAmount: number = 0.00;
+  previousDayCDBalanceAmount: number = 0.00;
   closeRegisterWithDiffernceVisible = false;
   closeRegisterWithDiffernceExplaination = '';
   differntOpeningAmount: number = 0.00;
@@ -126,6 +127,7 @@ export class HeaderComponent implements OnInit {
           console.log(data);
           // this.dataService.cashDrawerAmountDTO(data);
           this.cashDrawerBalanceAmount = data.body.data.balanceAmount;
+          this.previousDayCDBalanceAmount = this.cashDrawerBalanceAmount;
 
           if (data.body.data.status.toUpperCase() === 'CLOSE') {
             this.isReopenRegister = true;
@@ -162,7 +164,7 @@ export class HeaderComponent implements OnInit {
                                 (this.cashdrawerdetail.cent1 * .01) + (this.cashdrawerdetail.cent5 * .05) + (this.cashdrawerdetail.cent10 * .1) + 
                                 (this.cashdrawerdetail.cent25 * .25));
 
-    if (this.cashDrawerBalanceAmount == totalAmount) {      
+    if (this.previousDayCDBalanceAmount == totalAmount) {      
       this.cashdrawerdetail.totalAmount = totalAmount;
       this.cashdrawerdetail.notMatchedAmount = totalAmount - this.cashDrawerBalanceAmount;
       this.cashdrawerdetail.notMatchedAmountReason = '';
@@ -255,8 +257,8 @@ export class HeaderComponent implements OnInit {
                                 (this.cashdrawerdetail.cent1 * .01) + (this.cashdrawerdetail.cent5 * .05) + (this.cashdrawerdetail.cent10 * .1) + 
                                 (this.cashdrawerdetail.cent25 * .25));
 
-    this.cashdrawerdetail.totalAmount = parseFloat(this.differntOpeningAmount.toString());
-    this.cashdrawerdetail.notMatchedAmount = parseFloat(this.differntOpeningAmount.toString()) - this.cashDrawerBalanceAmount;
+    this.cashdrawerdetail.totalAmount = parseFloat(this.differntOpeningAmount.toString().replace(/,/g,''));
+    this.cashdrawerdetail.notMatchedAmount = parseFloat(this.differntOpeningAmount.toString().replace(/,/g,'')) - this.cashDrawerBalanceAmount;
     this.cashdrawerdetail.notMatchedAmountReason = this.closeRegisterWithDiffernceExplaination;
     this.cashdrawerdetail.action = 'Open';
     // POST call

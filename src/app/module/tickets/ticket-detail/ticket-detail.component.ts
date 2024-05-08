@@ -543,7 +543,7 @@ export class TicketDetailComponent implements OnInit {
       PageNumber: 1,
       RowOfPage: 10,
       LocationId: this.locId,
-      SerachText: this.searchSellerInput
+      SerachText: this.searchSellerInput.replace(/ /g, "%")
     };
     this.getAllsellersDetails(paramObject);
 
@@ -690,7 +690,7 @@ export class TicketDetailComponent implements OnInit {
     this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
     this.totalAdjustment = tickets.reduce(function (sum: any, tickets: any) {
       // return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : 0);
-      return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : 0);
+      return sum + (tickets.isAdjusmentSet ? tickets.amount : 0);
     }, 0);
   }
 
@@ -1014,8 +1014,14 @@ export class TicketDetailComponent implements OnInit {
       this.ticketData.isCOD = this.isCODRequired;
       this.ticketData.status = ticketStatus;
       this.ticketData.amount = parseFloat(this.totalAmount.toFixed(3));
+      this.ticketData.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
+      this.ticketData.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
+      this.ticketData.ticketAmount = parseFloat(this.totalActualAmount.toFixed(3));
       this.ticketData.paidAmount = parseFloat(paidAmount.toString());
+      this.ticketData.adjustmentAmount = parseFloat(this.totalAdjustment.toFixed(3));
       this.ticketData.lstttransactionMasterDTO = this.ticketObj;
+      this.ticketData.updatedBy = this.logInUserId;
+      this.ticketData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       this.ticketData.customerId = parseFloat(this.sellerId);
     } else {
       const newTicket = new Ticket();
