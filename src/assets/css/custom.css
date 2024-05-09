@@ -2309,6 +2309,13 @@ select optgroup option {
     max-width: 600px !important;
   }
 
+  .equal-h{
+    width: auto !important;
+   }
+
+   .fz-16 {
+    font-size: 1.2rem;
+  }
 
 }
 
@@ -2440,7 +2447,14 @@ select optgroup option {
   }
 
 
+  .equal-h{
+    width: auto !important;
+   }
 
+
+   .fz-16 {
+    font-size: 1.7rem;
+  }
 
 }
 
@@ -2615,6 +2629,10 @@ select optgroup option {
     font-size: 2.5rem !important;
   }
 
+  .fz-16 {
+    font-size: 2.5rem;
+  }
+
   .menu .menu-item .menu-link>.menu-text {
     font-size: 2.5rem !important;
   }
@@ -2697,7 +2715,10 @@ select optgroup option {
     font-size: 6rem !important;
    }
 
-
+   
+   .equal-h{
+    width: auto !important;
+   }
 
 }
 
@@ -2706,6 +2727,10 @@ select optgroup option {
   .payment-ticket {
     bottom: 440px !important;
   }
+
+  .equal-h{
+    width: auto !important;
+   }
 
 }
 
@@ -2867,8 +2892,12 @@ select optgroup option {
     height: 180px !important;
     font-size: 6rem !important;
    }
-
-
+   .equal-h{
+    width: auto !important;
+   }
+   .fz-16 {
+    font-size:3rem;
+  }
 }
 
 /** 
