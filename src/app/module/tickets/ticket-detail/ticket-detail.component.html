@@ -48,12 +48,19 @@
                                            </div>
         
                                            <div class="col-sm-6 col-md-8 d-flex justify-content-end">
+                                            <div>
                                                 <a  class="btn btn-primary me-1" routerLink="/{{orgName}}/home">
                                                     Back
                                                 </a>
+
+                                            </div>
+                                            <div>
                                                 <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary flt-right" (click)="editTicketDetails()">
                                                     <i class="mdi mdi-pencil"></i> Edit
                                                 </a>
+                                            </div>
+                                               
+                                              
                                                 <div *ngIf="isEditModeOn" >
                                                     <a class="btn btn-danger me-1" (click)="cancelEditTicket(false, 0)">Cancel</a>
                                                     <a class="btn btn-primary" (click)="confirmSave()">Save</a>
@@ -333,7 +340,7 @@
 
                             <div class="col-sm-4 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
-                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
+                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 160px)">
                                     <h4 class="materials-heading">Materials</h4>
   
                                     <ul class="main-ul">
@@ -351,7 +358,7 @@
                                     
                                 </div>
   
-                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row" style="height:calc(100vh - 200px)">
+                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row" style="height:calc(100vh - 160px)">
                                     <h1 class="materials-heading">
                                       <span>
                                           <a id="backToMainBox1" class="btn btn-primary " (click)="backToMainMaterials()"><i class="mdi mdi-keyboard-backspace"></i></a>

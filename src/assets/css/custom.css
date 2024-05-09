@@ -2236,6 +2236,7 @@ select optgroup option {
 @media screen and (min-width: 1920px) {
 
 
+
   body {
     font-size: 1.2rem !important
   }
@@ -2304,11 +2305,21 @@ select optgroup option {
   }
 
 
+  .login-box{
+    max-width: 600px !important;
+  }
+
+
 }
 
 
 
 @media only screen and (min-width:2560px) {
+
+
+  .showInnerDiv1{
+    font-size: 1.7rem !important
+  }
 
   body {
     font-size: 1.7rem !important

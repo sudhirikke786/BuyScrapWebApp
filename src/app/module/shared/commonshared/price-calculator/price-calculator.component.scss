@@ -1,5 +1,25 @@
 
 
+.webcam-container {
+  width: 100%;
+  max-width: 640px; /* Optional: Limit maximum width */
+  height: auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
+
 .form-box{
   margin-bottom: 10px;
 }
@@ -55,7 +75,7 @@
     background-color: var(--ct-blue);
     color: var(--ct-white);
     border: none;
-    font-size: 1.1rem;
+    font-size: 1.1rem !important;
     
     cursor: pointer;
   }
@@ -83,6 +103,12 @@
   .bi-keyboard{
     font-size: 30px;
   }
+
+  .bi-gear {
+    font-size: 1.3rem;
+    margin-left: 5px;
+  }
+
 
   .c-title{
     width: 50px;
@@ -126,12 +152,8 @@
 }
 
 
- @media (max-width:1024px) {
 
-
-}
-
-@media only screen and (max-width: 2000px) and (min-width: 1600px) {
+@media  screen and (max-width: 2000px)  {
 
   
 .m-image{
@@ -152,7 +174,7 @@
   }
 
   .btn-cal {
-    font-size: 2.1rem;
+    font-size: 2.1rem !important;
   }
 
 }
@@ -160,12 +182,12 @@
 
 
 
-@media only screen and (min-width: 2050px) and (min-height: 2732px) {
+@media  screen and (min-width: 2050px) {
   .btn-cal {
     background-color: var(--ct-blue);
     color: var(--ct-white);
     border: none;
-    font-size: 3.5rem !important;
+    font-size: 3.1rem !important;
     
     cursor: pointer;
   } 
@@ -188,11 +210,16 @@
     font-size: 50px;
   }
 
+  .bi-gear{
+    font-size: 2.1rem;
+  }
+
+
 }
 
 
 
-@media only screen and (max-width:3840px) and (min-width:2060px){
+@media  screen and (min-width:3840px){
 
   
   .m-image{
@@ -211,6 +238,13 @@
   .bi-keyboard{
     font-size: 3.1rem;
   }
+
+  
+  .bi-gear{
+    font-size: 2.2rem;
+    margin-left: 5px;
+  }
+
   .c-title{
     width:120px;
   }
@@ -219,12 +253,17 @@
 }
 
 
-@media only screen and (max-width:7000px) and (min-width:3500px){
-  .bi-keyboard{
+@media  screen and (min-width:7000px){
+
+  .bi-keyboard {
     font-size: 5rem;
   }
 
-  .c-title{
+  .bi-gear {
+    font-size: 5rem;
+  }
+
+  .c-title {
     width:160px;
   }
  
@@ -232,10 +271,10 @@
     font-size:3.1rem!important;
   }
 
-  .form-box{
+  .form-box {
     margin-bottom: 20px;
   }
-  .form-control{
+  .form-control {
     height: 100px;
     margin-bottom: 5px;
   }

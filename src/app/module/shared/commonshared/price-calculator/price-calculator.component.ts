@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
@@ -91,9 +91,29 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   isVirtual = true;
   dCamera: any;
 
+  wHeight = 250;
+  wWidth = 250;
+
   constructor(private renderer: Renderer2,private elementRef: ElementRef,private stroarge: StorageService) {
 
   }
+
+
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?:any) {
+   
+    this.wWidth =  this.elementRef.nativeElement.querySelector('.webcam-container').offsetWidth;
+    this.wHeight =  this.elementRef.nativeElement.querySelector('.webcam-container').offsetHeight;
+  }
+  currentSize(){
+    this.wWidth = this.elementRef.nativeElement.querySelector('.webcam-container').offsetWidth-10;
+    this.wHeight = 300;
+  
+    console.log(this.wWidth,this.wHeight);
+  }
+
 
   
 
@@ -108,6 +128,8 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
+
+   
   
     this.grossInput = this.itemGross;
     this.tareInput = this.itemTare;
@@ -355,7 +377,9 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     },100);
 
 
-    
+    this.currentSize();
+    console.log(this.wHeight,this.wWidth);
+
     navigator.mediaDevices.getUserMedia({video: true}); 
     (async () => {     
       let devices = await navigator.mediaDevices.enumerateDevices(); 
@@ -376,6 +400,8 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
         this.selectedCamera =  this.allMediaDevices[0].deviceId;
         this.changeWebCame(this.selectedCamera);
       }
+    
+     
 
     //  this.showWebcam = false;
     })();
