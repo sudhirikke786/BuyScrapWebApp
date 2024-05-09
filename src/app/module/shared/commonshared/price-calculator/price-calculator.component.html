@@ -23,130 +23,98 @@
             </div>
           </div>
           <div  class="col-sm-12">
-            <div class="m-image">
-              <webcam
-             
-              [trigger]="triggerObservable"
-              (imageCapture)="handleImage($event)"
-              *ngIf="showWebcam"
-              mirror="true"
-              [switchCamera]="nextWebcamObservable"
-            ></webcam>
-
-              <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image">
+            <div class="row">              
+              <div  class="col-sm-8">
+                <div class="row" >                 
+                  <div class="m-image">
+                    <webcam                    
+                        [height]="100"
+                        [width]="150"           
+                        [trigger]="triggerObservable"
+                        (imageCapture)="handleImage($event)"
+                        *ngIf="showWebcam"
+                        mirror="true"
+                        [switchCamera]="nextWebcamObservable">
+                    </webcam>    
+                    <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="d-flex justify-content-start align-items-center">
+                    <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
+                    <button type="button" class="btn btn-danger" (click)="takeSnapshot()">Capture Img</button>    
+                  </div>
+                </div>
+              </div>
+              <div  class="col-sm-4">
+                <!-- <div class="row">
+                  <div class="d-flex justify-content-center align-items-center flex-wrap">
+                    <div class="ms-2">
+                      <i pTooltip="Virtual Keyboard" tooltipPosition="bottom" class="bi bi-keyboard"
+                      ></i>
+                    </div>
+                    <div class="t-on">OFF </div>
+                    <div> <p-inputSwitch [(ngModel)]="isVirtual"
+                        (onChange)="showKeyboard($event)"></p-inputSwitch>
+                    </div>
+                    <div class="t-on"> ON</div>    
+                  </div>
+                </div> -->
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-lg-12">
+                    <div>
+                      Gross
+                    </div>                 
+                    <div class="input-group price-d ">                  
+                      <input type="text"  (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
+                        [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
+                        (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
+                    </div>  
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-lg-12">
+                    <div >
+                      Tare
+                    </div>
+                    <div>
+                      <div class="input-group">
+                        <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
+                          [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'" id="tear"
+                          class="form-control   mb-1 ps-0">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-lg-12">                 
+                      <div>Net</div>
+                      <div class="input-group">
+                        <input type="text" readonly placeholder="Net Weight" #inputBox4 [(ngModel)]="netInput"
+                          value="{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox4'" id="net"
+                          class="form-control   mb-1 ps-0">
+                      </div>                  
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-lg-12">  
+                    <div>
+                      Price (in $):
+                    </div>                    
+                      <div class="input-group">
+                        <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
+                          [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price"
+                          class="form-control   mb-1 ps-0">
+                      </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            
-            <!-- <app-camera (getPicture)="handleImage($event)" [defaultCamera]="dCamera"></app-camera> -->
-
-            <!-- <img [src]="itemImagePath" alt="Image"> -->
           </div>
-          <!-- <div class="col-md-12 col-sm-12">
-           
+          <!-- <div class="col-md-12 col-sm-12 d-flex justify-content-between flex-wrap">
           </div> -->
-          <div class="col-md-12 col-sm-12 d-flex justify-content-between flex-wrap">
-            <div class="d-flex justify-content-start align-items-center">
-
-              <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
-              <button type="button" class="btn btn-danger" (click)="takeSnapshot()">Capture Img</button>
-
-            </div>
-
-            <div class="d-flex justify-content-center align-items-center flex-wrap">
-              <div class="ms-2">
-                <i pTooltip="Virtual Keyboard" tooltipPosition="bottom" class="bi bi-keyboard"
-                 ></i>
-              </div>
-              <div class="t-on">OFF</div>
-              <div> <p-inputSwitch [(ngModel)]="isVirtual"
-                  (onChange)="showKeyboard($event)"></p-inputSwitch>
-              </div>
-              <div class="t-on">ON</div>
-
-            </div>
-
-
-          </div>
 
         </div>
-
-        <div class="col-sm-12">
-
-
-
-          <div class="container px-0 py-0">
-            <div class="row">
-              <div class="col-6 col-sm-12 col-lg-6">
-                <div>
-                  Gross
-                </div>
-               
-                  <div class="input-group price-d ">
-                  
-                    <input type="text"  (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
-                      [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
-                      (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
-                  </div>
-
-              </div>
-
-              <div class="col-6 col-sm-12 col-lg-6">
-                <div >
-                  Tare
-                </div>
-                <div>
-                  <div class="input-group">
-                    <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
-                      [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'" id="tear"
-                      class="form-control   mb-1 ps-0">
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Add more rows for additional input boxes -->
-            <div class="row form-box">
-              <div class="col-6 col-sm-12 col-lg-6">
-               
-                  <div>Net</div>
-                
-            
-                  <div class="input-group">
-                    <input type="text" readonly placeholder="Net Weight" #inputBox4 [(ngModel)]="netInput"
-                      value="{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox4'" id="net"
-                      class="form-control   mb-1 ps-0">
-                  </div>
-                
-              </div>
-
-              <div class="col-6 col-sm-12 col-lg-6">
-
-                <div>
-                  Price (in $):
-                </div>
-           
-                  <!-- <div class="input-group price-d">
-                    
-                    <input type="text" [readonly]="isVirtual" #inputBox4 [(ngModel)]="priceInput"
-                      (focus)="focusedInput = 'inputBox4'" id="price" class="form-control   mb-1 ps-0">
-
-                  </div> -->
-                  
-                  <div class="input-group">
-                    <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
-                      [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price"
-                      class="form-control   mb-1 ps-0">
-                  </div>
-              </div>
-
-            </div>
-
-
-
-            <!-- Add more rows as needed for additional input boxes -->
-          </div>
-        </div>
-
 
       </div>
 
