@@ -10,7 +10,7 @@
 
           <div class="col-sm-12">
             <div class="col-12 d-flex justify-content-between">
-              <div>
+              <div class="p-lable">
                   <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom"> {{itemGroupName}} -
                     {{itemMaterialName}}
                   </div>
@@ -64,7 +64,7 @@
                 </div> -->
                 <div class="row">
                   <div class="col-12 col-sm-12 col-lg-12">
-                    <div>
+                    <div class="p-lable">
                       Gross
                     </div>                 
                     <div class="input-group price-d ">                  
@@ -76,7 +76,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 col-sm-12 col-lg-12">
-                    <div >
+                    <div class="p-lable" >
                       Tare
                     </div>
                     <div>
@@ -90,7 +90,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 col-sm-12 col-lg-12">                 
-                      <div>Net</div>
+                      <div class="p-lable">Net</div>
                       <div class="input-group">
                         <input type="text" readonly placeholder="Net Weight" #inputBox4 [(ngModel)]="netInput"
                           value="{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox4'" id="net"
@@ -100,7 +100,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 col-sm-12 col-lg-12">  
-                    <div>
+                    <div class="p-lable">
                       Price (in $):
                     </div>                    
                       <div class="input-group">
