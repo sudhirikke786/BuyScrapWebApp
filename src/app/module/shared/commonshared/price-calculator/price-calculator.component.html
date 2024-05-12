@@ -38,8 +38,8 @@
                         mirror="true"
                         [switchCamera]="nextWebcamObservable">
                     </webcam> 
-                     <div>
-                      <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image" [ngStyle]="{width: wWidth +'px', height:wHeight+'px'}">
+                     <div style="overflow: hidden;">
+                      <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image" [ngStyle]="{width: wWidth +'px', height:'auto'}">
                     </div>   
                   
                   </div>
