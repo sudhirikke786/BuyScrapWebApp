@@ -151,7 +151,7 @@
   
 }
 
-@media  screen and (max-width: 1300px)  {
+@media  screen and (max-width: 1600px)  {
 
   .btn-cal {
     font-size: 1.1rem !important;
@@ -160,8 +160,18 @@
   .p-lable {
     font-size: 1.0rem !important;
   }
+  .t-lable{
+    font-size: 0.9rem !important;
+  }
   .form-control {
     font-size: 0.8rem !important;
+  }
+  .bi-keyboard{
+    font-size: 1rem !important;
+  }
+
+  .bi-gear{
+    font-size:1rem !important;
   }
 
 
