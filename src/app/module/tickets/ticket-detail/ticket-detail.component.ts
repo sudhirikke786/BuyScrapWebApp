@@ -1129,6 +1129,7 @@ export class TicketDetailComponent implements OnInit {
     this.itemCodNote = '';    
     this.itemGross = '';
     this.itemTare = '';
+    this.itemImagePath = '';
     this.closeCapturedImage(1)
     // this.materialNote = '';
   }
@@ -1274,6 +1275,8 @@ export class TicketDetailComponent implements OnInit {
   }
 
   calculation(rowData: any) {
+    console.log('Calculation data ::');
+    console.log(rowData);
     this.editItemCloseImageCapture = false;
     this.mainMaterialsVisible = true;
     this.itemGross = rowData.itemGross;
@@ -1282,6 +1285,7 @@ export class TicketDetailComponent implements OnInit {
     this.itemNet = isNaN(netQty) ?  0 : netQty;
     this.itemPrice = rowData.itemPrice;
     this.materialNote = rowData.materialNote;
+    this.itemImagePath = rowData.itemImagePath;
     this.updateExistingItemDataResponse();
   }
 

@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input
 import { StorageService } from 'src/app/core/services/storage.service';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-price-calculator',
@@ -78,6 +79,10 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   @Output() changeItemEvent = new EventEmitter<any>();
   @Output() changeImageEvent = new EventEmitter<any>();
 
+  orgName: any;
+  locId: any;
+  logInUserId: any;
+  locationName: any;
   grossInput:any;
   tareInput:any;
   netInput:any = 0;
@@ -95,7 +100,10 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   wHeight = 250;
   wWidth = 250;
 
-  constructor(private renderer: Renderer2,private elementRef: ElementRef,private stroarge: StorageService) {
+  constructor(private renderer: Renderer2,
+    private elementRef: ElementRef,
+    private stroarge: StorageService,
+    public commonService: CommonService) {
 
   }
 
@@ -132,6 +140,11 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
    
   
+    this.orgName = localStorage.getItem('orgName');
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    this.locationName = localStorage.getItem('locationName');
+    
     this.grossInput = this.itemGross;
     this.tareInput = this.itemTare;
     const netQty = this.grossInput - this.tareInput
@@ -173,7 +186,12 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   ngOnChanges(changes: SimpleChanges): void {
 
     if(changes && changes.itemImagePath){
-      this.imageUrl =  changes.itemImagePath.currentValue;
+      if (changes.itemImagePath.currentValue != 'assets/images/custom/id_scan.png') {
+        this.imageUrl =  changes.itemImagePath.currentValue;
+      } else {
+        this.imageUrl =  '';
+        this.showWebcam = true;
+      }
     }
     
   }
@@ -194,12 +212,15 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
         itemTare: this.tareInput,
         itemNet: isNaN(this.grossInput - this.tareInput) ?  0 : (this.grossInput - this.tareInput),
         itemPrice: this.priceInput,
-        materialNote: this.materialNote
+        materialNote: this.materialNote,
+        itemImagePath: this.itemImagePath
       }
       this.grossInput = '';
       this.tareInput = ''; 
       this.netInput = 0; 
       this.materialNote = '';
+      this.imageUrl = '';
+      this.itemImagePath = '';
       this.calculateObj.emit(obj);
      }
      
@@ -413,6 +434,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     this.showWebcam = false;
     this.imageUrl = '';
+    this.itemImagePath = '';
     console.log('Destory------->>')
   }
 
@@ -479,6 +501,33 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     this.imageUrl = webcamImage.imageAsDataUrl;
     this.showWebcam = false;
     this.getPicture.emit(this.imageUrl);
+    this.SaveImage(1);
+  }
+
+  SaveImage(type: number) {
+
+    let requestObj: any = {
+
+      organisationName: this.orgName,
+      locationName: this.locationName,
+      imagetype: type,
+      base64Data: this.imageUrl?.split(';base64,')[1]
+    };
+
+    // this.itemImagePath = this.imageUrl;
+
+    this.commonService.FileUploadFromWeb(requestObj).subscribe((res: any) => {
+      console.log('Image url path :: {}', res.body.data);
+      console.log(res.body.data);
+      this.imageUrl = res.body.data;
+      if (type == 1) {
+        this.itemImagePath = this.imageUrl;
+      } 
+      // this.imageUrl = null;
+    })
+
+    // this.imageUrl = null;
+    // this.closeCapturedImage(type);
   }
 
   get triggerObservable(): Observable<void> {
