@@ -415,7 +415,7 @@ export class TicketDetailComponent implements OnInit {
       return false;
     }
 
-    this.remainingAmount = this.totalAmount - this.ticketData?.paidAmount - this.getTotal();
+    this.remainingAmount = this.totalAmount - this.totalAdjustment - this.ticketData?.paidAmount - this.getTotal();
     this.selectedPayAmount = this.remainingAmount;
 
 
@@ -449,7 +449,7 @@ export class TicketDetailComponent implements OnInit {
   removeItem(i: number) {
     this.transactionPaymentType.splice(i, 1);
     
-    this.remainingAmount = this.totalAmount - this.ticketData?.paidAmount - this.getTotal();
+    this.remainingAmount = this.totalAmount - this.totalAdjustment - this.ticketData?.paidAmount - this.getTotal();
     this.selectedPayAmount = this.remainingAmount;
   }
 
@@ -762,7 +762,7 @@ export class TicketDetailComponent implements OnInit {
   showPayment(isReceiptPrint: boolean) {
     this.isReceiptPrint = isReceiptPrint;
     this.paymentVisible = true;
-    this.selectedPayAmount = this.remainingAmount = this.payAmount = this.totalAmount - this.ticketData?.paidAmount;
+    this.selectedPayAmount = this.remainingAmount = this.payAmount = this.totalAmount - this.totalAdjustment - this.ticketData?.paidAmount;
     this.showSection('Cash');
   }
 
