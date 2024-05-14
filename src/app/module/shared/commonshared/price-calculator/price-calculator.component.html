@@ -45,9 +45,11 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="d-flex justify-content-start align-items-center">
-                    <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
-                    <button type="button" class="btn btn-danger" (click)="takeSnapshot()">Capture Img</button>    
+                  <div class="d-flex justify-content-start align-items-center mt-1">
+                    <!-- <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Stop Capture</button> -->
+                    <button type="button" class="btn  btn-primary me-1" *ngIf="!showWebcam" (click)="changeItem()">Change Item</button>
+                    <button type="button" class="btn  btn-primary me-1" (click)="startCpatureImage()">Start Capture</button>
+                    <button type="button" class="btn btn-danger" *ngIf="showWebcam" (click)="takeSnapshot()">Capture Img</button>    
                   </div>
                 </div>
               </div>

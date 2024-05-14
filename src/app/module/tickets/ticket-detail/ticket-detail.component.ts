@@ -1225,6 +1225,11 @@ export class TicketDetailComponent implements OnInit {
     this.imageUrl = imageUrl;
   }
 
+
+  captureImage(imageUrlString: string){
+    this.itemImagePath = imageUrlString
+  }
+
   setSignature($event: any) {
     // alert($event);
     this.imageUrl = $event;

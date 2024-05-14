@@ -17,6 +17,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   @Input() defaultCamera:any;
   
+  
   webcamImage: WebcamImage | undefined;
   selectedCamera: any = '';
   imageUrl: any;
@@ -63,7 +64,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   @Input() materialNote = '';
   @Input() itemGroupName = 'Motors/Motores';
   @Input() itemMaterialName = 'Aluminum Motors (Clean/Limpios)';
-  @Input() itemImagePath = '';
+  @Input() itemImagePath :any
 
 
   @Input() itemGross: any;
@@ -169,16 +170,13 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     this.netInput = gross - this.tareInput;
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
 
-  //   if(changes){
-  //     this.grossInput = changes['itemGross'].currentValue;
-  //     this.tareInput =changes['itemTare'].currentValue;
-  //     this.netInput = this.grossInput - this.tareInput;
-  //     this.priceInput = changes['itemPrice'].currentValue;
-  //   }
+    if(changes && changes.itemImagePath){
+      this.imageUrl =  changes.itemImagePath.currentValue;
+    }
     
-  // }
+  }
 
   showKeyboard(val:any){
     this.isVirtual = val.checked
@@ -220,6 +218,8 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   }
 
   changeItem() {
+    this.imageUrl = '';
+    this.itemImagePath = '';
     this.changeItemEvent.emit();
   }
 
@@ -377,9 +377,15 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     },100);
 
 
-    this.currentSize();
+   
     console.log(this.wHeight,this.wWidth);
 
+  
+  }
+
+
+  startCpatureImage(){
+    this.currentSize();
     navigator.mediaDevices.getUserMedia({video: true}); 
     (async () => {     
       let devices = await navigator.mediaDevices.enumerateDevices(); 
@@ -401,9 +407,6 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
         this.changeWebCame(this.selectedCamera);
       }
     
-     
-
-    //  this.showWebcam = false;
     })();
   }
 
@@ -419,6 +422,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   takeSnapshot(): void {
     this.trigger.next();
+    this.currentSize();
   }
 
   onOffWebCame() {
