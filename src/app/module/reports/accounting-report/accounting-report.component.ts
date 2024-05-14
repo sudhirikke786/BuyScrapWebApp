@@ -14,15 +14,18 @@ export class AccountingReportComponent implements OnInit {
   actionList = [
     {
       iconcode: 'mdi-magnify',
-      title: 'Search'
+      title: 'Search',
+      isDisable: false
     },
     {
       iconcode: 'mdi-refresh',
-      title: 'Refresh'
+      title: 'Refresh',
+      isDisable: false
     },
     {
       iconcode: 'mdi-download',
-      title: 'Download'
+      title: 'Download',
+      isDisable: true
     },
   ];
 
