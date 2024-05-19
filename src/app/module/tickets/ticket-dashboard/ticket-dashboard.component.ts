@@ -625,6 +625,21 @@ export class TicketDashboardComponent implements OnInit {
 
   }
 
+
+  onKeydown(event: KeyboardEvent, searchValue: string): void {
+    // Check for specific key events, e.g., Enter key
+    if (event.key === 'Enter') {
+      this.searchSeller()
+      // Add your search logic here
+    }
+
+    // Optionally handle other keys
+    // if (event.key === 'ArrowDown') {
+    //   console.log('ArrowDown key pressed');
+    // }
+  }
+
+ 
   getAllTicketsByParentID(parentTicketID: string) {
 
 

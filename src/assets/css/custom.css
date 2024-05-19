@@ -2443,7 +2443,12 @@ select optgroup option {
   }
 
   .dash-icons {
-    width: 45px;
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .p-dialog .p-dialog-header .p-dialog-title {
+    font-size: 2rem !important;
   }
 
 
@@ -2490,7 +2495,7 @@ select optgroup option {
 
 
   .p-open {
-    bottom:120px !important;
+    bottom:170px !important;
   }
 
   .p-close {

@@ -166,7 +166,7 @@
         <div class="row" *ngIf="!sellerLoader">
 
             <div class="col-md-6">
-                <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control"
+                <input type="text" #searchBox id="example-palaceholder"  (keydown)="onKeydown($event, searchBox.value)"  [(ngModel)]="searchSellerInput" class="form-control"
                     placeholder="Search for Sellers, Address, License and License Plate">
             </div>
             <div class="col-md-6">
