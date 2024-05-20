@@ -173,6 +173,8 @@ export class TicketDetailComponent implements OnInit {
   }
   ];
 
+  backUrl = '';
+
 
   @ViewChild(PriceCalculatorComponent) priceCalculatorComponent!: PriceCalculatorComponent;
   
@@ -223,6 +225,15 @@ export class TicketDetailComponent implements OnInit {
     this.route.params.subscribe((param) => {
       this.ticketId = param["ticketId"];
       this.sellerId = param["customerId"];
+      const types  = param['type'];
+      if(types=='seller'){
+        this.backUrl = `/${this.orgName}/sellers-buyers`;
+        
+      }else{
+        this.backUrl = `/${this.orgName}/home`;
+        // /ProdTest/sellers-buyers
+       
+      }
       this.getSellerById();
       this.processDataBasedOnTicketId();
       this.GetAllAdjustmentType();

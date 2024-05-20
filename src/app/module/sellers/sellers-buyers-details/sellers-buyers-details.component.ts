@@ -81,7 +81,7 @@ export class SellersBuyersDetailsComponent implements OnInit {
   showTicketDetails(ticketData: any) {
    
    
-      this.router.navigateByUrl(`/${this.orgName}/home/detail/${ticketData.rowId}/${ticketData.customerId}&type='seller'`);
+      this.router.navigateByUrl(`/${this.orgName}/home/detail/${ticketData.rowId}/${ticketData.customerId}?type=seller`);
 
 
   }
