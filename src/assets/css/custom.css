@@ -2090,7 +2090,10 @@ select optgroup option {
   height: 40px;
 }
 
-
+.card-ticket-table {
+  overflow-y: auto;
+  height: calc(100vh - 500px) !important;
+}
 
 
 /* @media only screen and (min-width:576px){
@@ -2233,9 +2236,15 @@ select optgroup option {
 
 
 
+
+
 @media screen and (min-width: 1920px) {
 
 
+  .card-ticket-table {
+    overflow-y: auto;
+    height: calc(100vh - 600px) !important;
+  }
 
   body {
     font-size: 1.2rem !important
@@ -2319,6 +2328,14 @@ select optgroup option {
 
 }
 
+
+@media screen and (min-width: 2550px){
+  .card-ticket-table {
+    overflow-y: auto;
+    height: calc(100vh - 600px) !important;
+  }
+  
+}
 
 
 @media only screen and (min-width:2561px) {
@@ -2459,6 +2476,12 @@ select optgroup option {
 
    .fz-16 {
     font-size: 1.7rem;
+  }
+
+
+  .card-ticket-table {
+    overflow-y: auto;
+    height: calc(100vh - 600px) !important;
   }
 
 }
