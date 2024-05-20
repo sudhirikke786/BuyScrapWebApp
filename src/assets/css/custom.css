@@ -2321,7 +2321,7 @@ select optgroup option {
 
 
 
-@media only screen and (min-width:2560px) {
+@media only screen and (min-width:2561px) {
 
 
   .showInnerDiv1{
@@ -2366,7 +2366,7 @@ select optgroup option {
   }
 
   .payment-ticket {
-    bottom: 170px;
+    bottom: 170px !important;
   }
 
   .balance-details-ul li {
@@ -2514,6 +2514,12 @@ select optgroup option {
   .dl-img1 {
     min-height: 400px;
   }
+
+
+  .login-box{
+    max-width: auto !important;
+  }
+
 
   .mdi-cust-upload {
     font-size: 3.3rem !important
@@ -2744,6 +2750,10 @@ select optgroup option {
 
 @media only screen and (min-width:7000px) {
 
+
+  .login-box{
+    max-width: auto !important;
+  }
 
 
 

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Route, Router, RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 
@@ -9,7 +10,8 @@ import { CommonService } from 'src/app/core/services/common.service';
 })
 export class SideMenuComponent {
 
-  constructor(public commonService:CommonService,private authService: AuthService){
+  constructor(public commonService:CommonService,private authService: AuthService,private route: ActivatedRoute,
+    private router: Router){
 
   }
   organizationName: any = localStorage.getItem('orgName');
@@ -80,6 +82,19 @@ export class SideMenuComponent {
 
   showMenu(roleName:any):boolean{
     return this.authService.hasRoleActive(roleName)
+  }
+
+  navigatePage(item:any){
+    this.commonService.showHidePanel('sidemenu');
+    if(item.url == '/home'){
+      this.router.navigate(['/home']);
+      window.location.href = '/home';
+    }else{
+      this.router.navigate([`/${this.organizationName}/${item.url}`]);
+    }
+   
+  //  this.route.navigate(`${organizationName}/${item.url}`)
+   // routerLink="/{{organizationName}}{{item.url}}"
   }
 
 }

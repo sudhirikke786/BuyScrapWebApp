@@ -192,6 +192,19 @@ export class TicketDashboardComponent implements OnInit {
     private messageService: MessageService,
     public commonService: CommonService) {
      // this.setPageSize();
+      this.route.params.subscribe((res) =>{
+        this.pagination = {
+          SerachText: '',
+          SearchOrder: 'TicketId',
+          Status: this.defaultSelectedTicketsTypes.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(','),
+          PageNumber: 1,
+          RowOfPage: 10,
+          LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
+          first: 0,
+        }
+        this.getAllTicketsDetails(this.pagination);
+      })
+
      }
 
   ngOnInit() {
@@ -1499,6 +1512,16 @@ export class TicketDashboardComponent implements OnInit {
       LocationId: this.locId,
       SerachText: this.searchSellerInput.replace(/ /g, "%")
     };
+
+    this.pagination = {
+      SerachText: '',
+      SearchOrder: 'TicketId',
+      Status: this.defaultSelectedTicketsTypes.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(','),
+      PageNumber: 1,
+      RowOfPage: 10,
+      LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
+      first: 0,
+    }
     this.getAllsellersDetails(paramObject);
 
   }
@@ -1510,6 +1533,16 @@ export class TicketDashboardComponent implements OnInit {
       RowOfPage: 10,
       LocationId: this.locId
     };
+
+    this.pagination = {
+      SerachText: '',
+      SearchOrder: 'TicketId',
+      Status: this.defaultSelectedTicketsTypes.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(','),
+      PageNumber: 1,
+      RowOfPage: 10,
+      LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
+      first: 0,
+    }
     this.getAllsellersDetails(paramObject);
   }
 
