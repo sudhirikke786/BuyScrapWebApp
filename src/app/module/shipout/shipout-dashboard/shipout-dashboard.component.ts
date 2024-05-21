@@ -104,7 +104,7 @@ export class ShipoutDashboardComponent implements OnInit {
     this.getAllShipOutDetails(this.pagination);
   }
 
-  getAllShipOutDetails(pagination: any) {   
+  getAllShipOutDetails(pagination: any = this.pagination) {   
     pagination.SerachText = this.serachText;
     this.showLoader = true;
 

@@ -2284,7 +2284,7 @@ select optgroup option {
   }
 
   .payment-ticket {
-    bottom: 50px;
+    bottom: 90px !important;
   }
 
 
@@ -2338,7 +2338,7 @@ select optgroup option {
 }
 
 
-@media only screen and (min-width:2561px) {
+@media only screen and (min-width:3000px) {
 
 
   .showInnerDiv1{

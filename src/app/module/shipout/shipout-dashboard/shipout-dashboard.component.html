@@ -22,7 +22,7 @@
 
       <div class="row mt-2">
         <div class="col-md-6 d-flex">
-          <input type="text" id="example-palaceholder" [(ngModel)]="serachText" class="form-control"
+          <input type="text" id="example-palaceholder" [(ngModel)]="serachText" class="form-control" (keyup.enter)="getAllShipOutDetails()"
               placeholder="Search ...">    
         </div>
         <div class="col-md-6">
@@ -153,7 +153,7 @@
   <div class="row">
     <div class="col-md-6">
       <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control"
-          placeholder="Search for Sellers, Address, License and License Plate">
+          placeholder="Search for Sellers, Address, License and License Plate" (keyup.enter)="getAllsellersDetails()">
     </div>
     <div class="col-md-6">
         <app-actionbar (iconAction)="getSellerAction($event)"  [actions]="newButtonList"></app-actionbar>
