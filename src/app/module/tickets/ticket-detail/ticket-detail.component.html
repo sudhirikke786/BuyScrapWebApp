@@ -512,7 +512,7 @@
         <span class="text-xl font-bold text-info text-center" style="font-size: 14px;"> Please select Option</span>  
     </div>
     <div class="d-flex justify-content-center">
-        <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">{{currentRole}} - Pay Amount without printing</button></div>
+        <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">Pay Amount without printing</button></div>
         <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveTicketDetails(0, true)" style="line-height: 18px  !important;">Print and Save</button></div>
         <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)"  style="line-height: 18px  !important;">Pay Amount and Print </button></div>
     </div>

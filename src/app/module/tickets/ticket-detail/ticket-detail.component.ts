@@ -191,7 +191,8 @@ export class TicketDetailComponent implements OnInit {
     private confirmationService: ConfirmationService,
     public commonService: CommonService) { }
 
-  ngOnInit() {
+  ngOnInit() {    
+    window.addEventListener('afterprint', this.afterPrintHandler);
     this.currentRole = this.authService.userCurrentRole();
 
     this.orgName = localStorage.getItem('orgName');
@@ -880,6 +881,7 @@ export class TicketDetailComponent implements OnInit {
       this.messageAlert(msg);
     }
     
+    this.isReceiptPrint = true;
     this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
   }
 
@@ -993,7 +995,6 @@ export class TicketDetailComponent implements OnInit {
       this.cancelEditTicket(this.isReceiptPrint, this.ticketId); 
 
     }, (error: any) => {
-      // this.saveTicketDetails(0, false);
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
@@ -1527,6 +1528,7 @@ export class TicketDetailComponent implements OnInit {
 
   loadAndPrintBase64Pdf(base64Data: string): void {
     const iframe = document.createElement('iframe');
+    iframe.id = 'print-iframe';
     document.body.appendChild(iframe);
 
     const byteCharacters = atob(base64Data);
@@ -1544,9 +1546,40 @@ export class TicketDetailComponent implements OnInit {
 
     iframe.onload = () => {
       iframe.contentWindow?.print();
+      this.pollPrintStatus();
       //redirct to home page
-      this.router.navigateByUrl(`${this.orgName}/home`);
+      //this.router.navigateByUrl(`${this.orgName}/home`);
     };
+  }
+
+  pollPrintStatus() {
+    const checkPrintStatus = () => {
+      // You can implement a condition to check if the print dialog is closed
+      // For example, check if the browser is active again
+      if (document.hidden) {
+        setTimeout(checkPrintStatus, 5000);
+      } else {
+        this.afterPrintHandler();
+        // Add your post-print logic here
+      }
+    };
+    setTimeout(checkPrintStatus, 5000);
+  }
+  
+
+  afterPrintHandler() {
+    console.log('Print dialog closed.');
+    const existingIframe = document.getElementById('print-iframe');
+    if (existingIframe) {
+      existingIframe.remove();
+    }
+    console.log(existingIframe);
+    // Perform your actions here
+    if (this.isCheckPrint) {
+      this.checkPrintAction();
+    } else {
+      this.router.navigateByUrl(`${this.orgName}/home`);
+    } 
   }
 
   closePdfReport() {
