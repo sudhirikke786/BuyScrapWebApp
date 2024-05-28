@@ -100,6 +100,8 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   wHeight = 250;
   wWidth = 250;
 
+  passwordmode = true;
+
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef,
     private stroarge: StorageService,
@@ -129,7 +131,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   onKeyPress(event: KeyboardEvent) {
 
-    if(this.isVirtual){
+    if(this.isVirtual && this.passwordmode){
       event.preventDefault();
     }
    
@@ -538,6 +540,10 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     return this.nextWebcam.asObservable();
   }
   
+
+  priceModify(){
+    this.passwordmode = false;
+  }
 
 
 

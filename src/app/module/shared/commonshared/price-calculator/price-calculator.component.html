@@ -113,7 +113,7 @@
 
                     </div>                    
                       <div class="input-group">
-                        <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
+                        <input type="text" [readonly]="passwordmode" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
                           [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price"
                           class="form-control   mb-1 ps-0">
                       </div>
@@ -230,13 +230,14 @@
         </div>
         
       </div>
-      <a
+      <button
         name="submitpass"
         id="submitpass"
         class="btn btn-primary mt-1"
-        href="#"
-        role="button"
-        >Submit</a
+
+        type="button"
+        (click)="priceModify();op2.hide()"
+        >Submit</button
       >
       
       
