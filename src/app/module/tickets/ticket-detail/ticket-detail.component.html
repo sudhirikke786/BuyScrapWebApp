@@ -379,7 +379,11 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4 col-xs-12 col-sm-4" *ngIf="isEditModeOn && editItemCloseImageCapture">
+                            <div class="col-lg-4 col-xs-12 col-sm-4  position-releative" *ngIf="isEditModeOn && editItemCloseImageCapture">
+
+                                <button type="button" class="close position-absolute bg-primary" aria-label="Close" (click)="backToChangeItemMainMaterials()">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
                                     <app-price-calculator  (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()"
                                 [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
                                         [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">

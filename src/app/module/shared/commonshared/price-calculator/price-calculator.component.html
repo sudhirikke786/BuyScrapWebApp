@@ -105,11 +105,15 @@
                 </div>
                 <div class="row">
                   <div class="col-12 col-sm-12 col-lg-12">  
-                    <div class="p-lable">
-                      Price (in $):
+                    <div class="p-lable d-flex align-items-center">
+                     <div> Price (in $): </div><a (click)="op2.toggle($event)" class="close btn-primary">
+
+                          <i class="mdi mdi-pencil" pTooltip="Click on edit to modify the price"></i>
+                      </a>
+
                     </div>                    
                       <div class="input-group">
-                        <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
+                        <input type="text" [readonly]="passwordmode" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
                           [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price"
                           class="form-control   mb-1 ps-0">
                       </div>
@@ -200,6 +204,43 @@
         </div>
       </div>
     </div>
+  </div>
+ 
+     
+   
+   
+</p-overlayPanel>
+
+
+<p-overlayPanel #op2>
+  <div style="min-width: 150px; padding:5px">
+    
+      <div class="form-group">
+        
+        <div class="mt-1">
+          <input
+            type="text"
+            class="form-control"
+            name=""
+            id=""
+            aria-describedby="helpId"
+            placeholder="Enter Password"
+          />
+         
+        </div>
+        
+      </div>
+      <button
+        name="submitpass"
+        id="submitpass"
+        class="btn btn-primary mt-1"
+
+        type="button"
+        (click)="priceModify();op2.hide()"
+        >Submit</button
+      >
+      
+      
   </div>
  
      
