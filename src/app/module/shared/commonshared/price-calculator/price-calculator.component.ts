@@ -79,6 +79,8 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   @Output() changeItemEvent = new EventEmitter<any>();
   @Output() changeImageEvent = new EventEmitter<any>();
 
+  @Output()  backClose =  new EventEmitter<any>();
+
   orgName: any;
   locId: any;
   logInUserId: any;
@@ -543,6 +545,10 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   priceModify(){
     this.passwordmode = false;
+  }
+
+  backToChangeItemMainMaterials(){
+    this.backClose.emit(true);
   }
 
 
