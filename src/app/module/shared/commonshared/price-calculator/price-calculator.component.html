@@ -10,7 +10,11 @@
 
           <div class="col-sm-12">
             <div class="col-12 d-flex justify-content-between align-items-start">
-              <div class="t-lable">
+              <div class="t-lable d-flex">
+
+                <button type="button" class="close bg-primary" aria-label="Close" (click)="backToChangeItemMainMaterials()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
                   <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom"> {{itemGroupName}} -
                     {{itemMaterialName}}
                   </div>
@@ -106,9 +110,9 @@
                 <div class="row">
                   <div class="col-12 col-sm-12 col-lg-12">  
                     <div class="p-lable d-flex align-items-center">
-                     <div> Price (in $): </div><a (click)="op2.toggle($event)" class="close btn-primary">
-
-                          <i class="mdi mdi-pencil" pTooltip="Click on edit to modify the price"></i>
+                     <div> Price (in $): </div><a (click)="op2.toggle($event)">
+                      <!-- <i class="bi bi-unlock-fill"></i> -->
+                          <i class="bi bi-unlock-fill fz-14" pTooltip="Click on edit to modify the price"></i>
                       </a>
 
                     </div>                    
