@@ -187,7 +187,7 @@ export class TicketDetailComponent implements OnInit {
     private authService: AuthService,
     private messageService: MessageService,
     private stroarge: StorageService,
-    public dtService:DataService,
+    private dataService: DataService,
     private confirmationService: ConfirmationService,
     public commonService: CommonService) { }
 
@@ -196,7 +196,7 @@ export class TicketDetailComponent implements OnInit {
     this.currentRole = this.authService.userCurrentRole();
 
     this.orgName = localStorage.getItem('orgName');
-    this.subScriptionType = this.dtService.getActivePlan();
+    this.subScriptionType = this.dataService.getActivePlan();
 
 
     const mCamera =  localStorage.getItem('metarialCamera') ;
@@ -877,8 +877,9 @@ export class TicketDetailComponent implements OnInit {
         return;
       }
     } else {
-      msg = 'You selected as Cash as payment mode please confirm ?';
-      this.messageAlert(msg);
+      // TO DO:: Needs to check condition when directly hitting to pay amount
+      // msg = 'You selected as Cash as payment mode please confirm ?';
+      // this.messageAlert(msg);
     }
     
     this.isReceiptPrint = true;
@@ -993,6 +994,7 @@ export class TicketDetailComponent implements OnInit {
     this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {
      
       this.cancelEditTicket(this.isReceiptPrint, this.ticketId); 
+      this.getCashDrawerAmountAndPaidTicketCount();
 
     }, (error: any) => {
       console.log(error);
@@ -1004,6 +1006,25 @@ export class TicketDetailComponent implements OnInit {
   }
 
 
+  getCashDrawerAmountAndPaidTicketCount() {
+    const paramObject = {
+      LocationId: this.locId
+    };
+    this.commonService.getCashDrawerAmountAndPaidTicketCount(paramObject)
+      .subscribe((data: any) => {
+          console.log('getCashDrawerAmountAndPaidTicketCount :: ');
+          console.log(data);
+          // this.dataService.cashDrawerAmountAndPaidTicketCount(data);
+          const cashDrawerBalanceAmount = data.body.cashDrawerbalance;
+          const paidTicketCount = data.body.paidTicketCount;
+          this.dataService.setCashDrawerAmountDTO(cashDrawerBalanceAmount);
+          this.dataService.setPaidCount(paidTicketCount);
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
 
 
 
@@ -1283,7 +1304,14 @@ export class TicketDetailComponent implements OnInit {
   }
 
   backToChangeItemMainMaterials() {
-    this.changeItemMaterialsVisible = true;
+    // alert('Sudhir');    
+    // this.isEditModeOn = true;
+    
+    this.editItemCloseImageCapture = false;
+    this.mainMaterialsVisible = true;
+    this.itemLeveloperationPerform = '';    
+    // this.editItemVisible = false;
+    //this.changeItemMaterialsVisible = true;
   }
 
   calculation(rowData: any) {
@@ -1557,13 +1585,15 @@ export class TicketDetailComponent implements OnInit {
       // You can implement a condition to check if the print dialog is closed
       // For example, check if the browser is active again
       if (document.hidden) {
-        setTimeout(checkPrintStatus, 5000);
+        //alert('1111');
+        setTimeout(checkPrintStatus, 1000);
       } else {
+        alert('Tiket Receipt Print');
         this.afterPrintHandler();
         // Add your post-print logic here
       }
     };
-    setTimeout(checkPrintStatus, 5000);
+    setTimeout(checkPrintStatus, 1000);
   }
   
 
@@ -1595,7 +1625,9 @@ export class TicketDetailComponent implements OnInit {
     this.router.navigateByUrl(`${this.orgName}/home`);
   }
 
-
+  checkReprint(ticketsTransaction: any) {
+    alert('Testing Check re-print');
+  }
 
 
   getTicketTransactions() {
@@ -1647,7 +1679,7 @@ export class TicketDetailComponent implements OnInit {
       FullName: this.customer?.fullName.toUpperCase(),
       PrintDate: this.formatDate(new Date()),
       CheckDate: this.formatDate(this.selectedCheckDate),
-      CheckAmount: '$' + (Math.round(checkAmount*100)/100).toFixed(2),
+      CheckAmount: (Math.round(checkAmount*100)/100).toFixed(2),
       AmountInWord: amountInWord
     }
 

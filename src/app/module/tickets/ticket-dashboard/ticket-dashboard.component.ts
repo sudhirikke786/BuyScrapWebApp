@@ -129,6 +129,7 @@ export class TicketDashboardComponent implements OnInit {
 
   /**Print out Variable */
   ticketId: any;
+  customerId: any;
   activeSection: string = '';
 
   totalAmount: any;
@@ -604,6 +605,7 @@ export class TicketDashboardComponent implements OnInit {
 
   closeChildTicketMessage() {
     this.parentTicketIDVisible = false;
+    this.router.navigateByUrl(`/${this.orgName}/home/detail/${this.ticketId}/${this.customerId}`);
   }
 
   clickOnSeller(sellerId: any, sellerFullname: any) {
@@ -624,6 +626,7 @@ export class TicketDashboardComponent implements OnInit {
     this.tiketSelectedObj = ticketData;
     this.ticketId = ticketData.rowId;
     this.isParent = ticketData.isParent;
+    this.customerId = ticketData.customerId;
     if (this.parentTicketId) {
       this.parentTicketIDVisible = true;
       this.isParentTicketVisible = false;
@@ -633,7 +636,7 @@ export class TicketDashboardComponent implements OnInit {
       this.isParentTicketVisible = true;
     } else {
       this.parentTicketIDVisible = false;
-      this.router.navigateByUrl(`/${this.orgName}/home/detail/${ticketData.rowId}/${ticketData.customerId}`);
+      this.router.navigateByUrl(`/${this.orgName}/home/detail/${this.ticketId}/${this.customerId}`);
     }
 
   }
@@ -1319,7 +1322,7 @@ export class TicketDashboardComponent implements OnInit {
       FullName: customerFullName.toUpperCase(),
       PrintDate: this.formatDate(new Date()),
       CheckDate: this.formatDate(this.selectedCheckDate),
-      CheckAmount: '$' + (Math.round(checkAmount*100)/100).toFixed(2),
+      CheckAmount: (Math.round(checkAmount*100)/100).toFixed(2),
       AmountInWord: amountInWord
     }
 
