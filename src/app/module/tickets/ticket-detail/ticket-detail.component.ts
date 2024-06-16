@@ -13,6 +13,7 @@ import { PriceCalculatorComponent } from '../../shared/commonshared/price-calcul
 import { DataService } from 'src/app/core/services/data.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { tick } from '@angular/core/testing';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -175,6 +176,8 @@ export class TicketDetailComponent implements OnInit {
 
   backUrl = '';
 
+  printCheckNo!:string;
+  checkVisible = false;
 
   @ViewChild(PriceCalculatorComponent) priceCalculatorComponent!: PriceCalculatorComponent;
   
@@ -242,7 +245,7 @@ export class TicketDetailComponent implements OnInit {
         this.backUrl = `/${this.orgName}/home`;
  
       }
-      
+
     });
 
     this.sellerForm = this.fb.group({
@@ -1630,7 +1633,13 @@ export class TicketDetailComponent implements OnInit {
   }
 
   checkReprint(ticketsTransaction: any) {
-    alert('Testing Check re-print');
+    this.checkVisible = true;
+    this.printCheckNo =  ticketsTransaction.checkNumber;
+
+  }
+
+  generateCheck(){
+    this.checkVisible = false;
   }
 
 

@@ -402,6 +402,8 @@
 </div>
 
 
+
+
 <div class="content" *ngIf="isLoading">
   <app-page-loader type="ftable"></app-page-loader>
 </div>
@@ -894,6 +896,21 @@ header="Edit Seller"
             <button class="btn btn-primary me-1" (click)="onSubmit()">Save</button>
         </ng-template>
 </p-dialog>
+
+
+
+<p-dialog header="Update your Check No" [modal]="true" [(visible)]="checkVisible" [style]="{ width: '50 rem' }">
+    <div class="flex align-items-center gap-3 mb-3 form-group">
+        <label for="username" class="font-semibold w-6rem">Check No</label>
+        <input id="checkNo" [(ngModel)]="printCheckNo" class=" form-control flex-auto" autocomplete="off" />
+    </div>
+    
+    <div class="flex justify-content-end gap-2">
+        <button  class="btn btn-primary me-2" (click)="generateCheck()">Print</button>
+        <button  class="btn btn-outline-primary"  (click)="checkVisible = false" >Cancel </button>
+    </div>
+</p-dialog>
+
 
 <!-- <p-confirmDialog  [style]="{width: '50vw'}">
     <ng-template pTemplate="header">

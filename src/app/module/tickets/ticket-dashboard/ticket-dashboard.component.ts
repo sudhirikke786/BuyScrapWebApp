@@ -182,6 +182,9 @@ export class TicketDashboardComponent implements OnInit {
   sellerForm!: FormGroup;
   sellerType: string = 'Personal';
 
+
+  checkVisible =  false;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
@@ -1343,6 +1346,7 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   generateSingleTicketReport(ticketId: any) {
+
     // alert(ticketId);
     const param = {
       TicketId: ticketId,
@@ -1642,7 +1646,7 @@ export class TicketDashboardComponent implements OnInit {
       default:
         break;
     }
-    
+
 
   }
 
