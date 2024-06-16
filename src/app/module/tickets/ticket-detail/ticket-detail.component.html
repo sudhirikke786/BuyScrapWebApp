@@ -224,10 +224,10 @@
                                                             <th style="width: 10%;">Gross(M)</th>
                                                             <th style="width: 10%;">Tare</th>
                                                             <th style="width: 10%;">Net</th>
-                                                            <th style="width: 10%;">Rounding</th>
+                                                            <th style="width: 15%;">Actual Amount</th>
+                                                            <th style="width: 15%;">Rounding</th>
                                                             <th style="width: 15%;">Amount</th>
                                                             <th style="width: 15%;">Adjustment</th>
-                                                            <th style="width: 20%;">Actual Amount</th>
                                                     </tr></thead>
         
                                                     <tbody> 
@@ -236,10 +236,10 @@
                                                             <td>{{totalGross}}</td>
                                                             <td>{{totalTare}}</td>
                                                             <td>{{totalNet}}</td>
+                                                            <td>{{totalActualAmount | currency:'USD':'symbol': '1.3-3'}}</td>
                                                             <td>{{totalRoundingAmount | currency:'USD':'symbol': '1.3-3'}}</td>
                                                             <td>{{totalAmount | currency:'USD':'symbol': '1.3-3'}}</td>
                                                             <td>{{(totalAdjustment * -1) | currency:'USD':'symbol': '1.3-3'}}</td>
-                                                            <td>{{totalActualAmount | currency:'USD':'symbol': '1.3-3'}}</td>
                                                         </tr>                                                     
                                                     </tbody>
                                                     
@@ -324,7 +324,7 @@
                                                 <ng-template pTemplate="body" let-ticketsTransaction>
                                                     <tr>
                                                         <td># </td>
-                                                        <td>{{ ticketsTransaction?.type }}</td>
+                                                        <td>{{ ticketsTransaction?.type }} <a pTooltip="Check reprint" href="javascript:void()" *ngIf="ticketsTransaction?.type == 'Check'" (click)="checkReprint(ticketsTransaction)" ><i class="bi bi-printer-fill ms-1"></i></a></td>
                                                         <td>{{ ticketsTransaction?.amount | currency:'USD':'symbol': '1.3-3' }}</td>
                                                         <td>{{ ticketsTransaction?.checkNumber }}</td>
                                                     </tr>
@@ -514,7 +514,7 @@
         <span class="text-xl font-bold text-info text-center" style="font-size: 14px;"> Please select Option</span>  
     </div>
     <div class="d-flex justify-content-center">
-        <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">{{currentRole}} - Pay Amount without printing</button></div>
+        <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">Pay Amount without printing</button></div>
         <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveTicketDetails(0, true)" style="line-height: 18px  !important;">Print and Save</button></div>
         <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)"  style="line-height: 18px  !important;">Pay Amount and Print </button></div>
     </div>

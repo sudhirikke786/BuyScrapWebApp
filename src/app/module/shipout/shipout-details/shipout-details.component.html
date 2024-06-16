@@ -105,7 +105,7 @@
                                                     <th *ngIf="isEditModeOn">Action</th>
                                                 </tr>
                                             </ng-template>
-                                            <ng-template pTemplate="body" let-ticket>
+                                            <ng-template pTemplate="body" let-ticket let-rowIndex="rowIndex">
 
                                                 <ng-container *ngIf="isEditModeOn">
                                                     <tr class='border-tr'>
@@ -120,7 +120,7 @@
                                                                 <i class="mdi mdi-pencil"></i> Edit
                                                             </a> 
                                                             
-                                                            <a class="btn btn-grid btn-danger waves-effect waves-light">
+                                                            <a class="btn btn-grid btn-danger waves-effect waves-light" (click)="deleteItem(rowIndex)">
                                                                 <i class="mdi mdi-trash-can-outline"></i> Delete
                                                             </a>
                                                         </td>
@@ -224,13 +224,6 @@
 
                             <div class="col-sm-4 " *ngIf="isEditModeOn && editItemCloseImageCapture">
                                 <div class="calc" style="height:calc(100vh - 150px);width:100%;overflow: hidden;">
-
-                                    <!-- <div class="calc" style="height:calc(100vh - 150px);width:100%;overflow: hidden;">
-                                        <app-price-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()"
-                                    [itemPrice]="itemPrice" [itemAvailableNet]="itemAvailableNet" [itemTare]="itemTare" [itemGross]="itemGross" 
-                                            [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
-                                        </app-price-calculator>
-                                    </div> -->
 
                                     <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()"
                                         [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 

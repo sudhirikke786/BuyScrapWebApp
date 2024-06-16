@@ -9,9 +9,17 @@
         </div>
     
       <div class="row">
-          <div class="col-12"   >
-            <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom" > {{itemGroupName}} - {{itemMaterialName}}</div>
-                     
+          <div class="col-sm-12">
+            <div class="col-12 d-flex justify-content-between align-items-start">
+              <div class="t-lable">
+                  <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom"> {{itemGroupName}} -
+                    {{itemMaterialName}}
+                  </div>
+              </div> 
+              <div class="d-flex justify-content-between align-items-start"> 
+                <a (click)="op1.toggle($event)"  pTooltip="Virtual Keyboard"><i class="bi bi-keyboard text-primary fz-16"></i></a>
+              </div>
+            </div>
           </div>
           <div class="col-12"   >
             <button type="button" class="btn btn-primary mb-1" (click)="changeItem()">Change Item</button>          
@@ -24,16 +32,11 @@
               <label for="gross">Gross:</label>
           </div>
           <div class="col-md-8">
-              <div class="input-group">
-                  <input type="text" placeholder="Enter Gross Weight" #inputBox1 [(ngModel)]="grossInput" (focus)="focusedInput = 'inputBox1'" 
-                  (ngModelChange)="calcNetFromGross($event)" id="inputBox1" name="inputBox1" class="form-control  h-30 mb-1 ps-0">
-                  <div class="input-group-append" *ngIf="grossInput">
-                    <!-- <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="grossInput ='0'">
-                      <i class="bi bi-x"></i>
-                    </button> -->
-                  </div>
-                </div>
-             
+            <div class="input-group price-d ">                  
+              <input type="text"  (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
+                [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
+                (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
+            </div>              
           </div>
       </div>
     
@@ -43,14 +46,11 @@
               <label for="Tare">Tare:</label>
           </div>
           <div class="col-md-8">
-              <div class="input-group">
-                  <input type="text" placeholder="Enter Tare Weight" #inputBox2  [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'"   id="tear" class="form-control  h-30 mb-1 ps-0">
-                  <div class="input-group-append" *ngIf="tareInput">
-                    <!-- <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="tareInput ='0'">
-                      <i class="bi bi-x"></i>
-                    </button> -->
-                  </div>
-                </div>
+            <div class="input-group">
+              <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
+                [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'" id="tear"
+                class="form-control   mb-1 ps-0">
+            </div>
           </div>
       </div>
       <div class="row">
@@ -58,14 +58,11 @@
               <label for="Net">Net:</label>
           </div>
           <div class="col-md-8">
-              <div class="input-group">
-                  <input type="text" readonly placeholder="Net Weight" #inputBox3  [(ngModel)]="netInput" value = "{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox3'"   id="net" class="form-control  h-30 mb-1 ps-0">
-                  <!-- <div class="input-group-append" *ngIf="netInput">
-                    <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="netInput =''">
-                      <i class="bi bi-x"></i>
-                    </button>
-                  </div> -->
-                </div>
+            <div class="input-group">
+              <input type="text" readonly placeholder="Net Weight" #inputBox4 [(ngModel)]="netInput"
+                value="{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox4'" id="net"
+                class="form-control   mb-1 ps-0">
+            </div> 
           </div>
       </div>
       <div class="row">
@@ -74,12 +71,9 @@
           </div>
           <div class="col-md-8">
               <div class="input-group">
-                  <input type="text" #inputBox4 [(ngModel)]="availableNetInput" (focus)="focusedInput = 'inputBox4'"   id="availanleNet" class="form-control  h-30 mb-1 ps-0">
-                  <!-- <div class="input-group-append" *ngIf="availableNetInput">
-                    <button class="btn btn-outline-secondary h-30 px-0 py-0" type="button" (click)="availableNetInput ='0'">
-                      <i class="bi bi-x"></i>
-                    </button>
-                  </div> -->
+                <input type="text" (keypress)="onKeyPress($event)" #inputBox3
+                  [(ngModel)]="availableNetInput" (focus)="focusedInput = 'inputBox3'" id="availanleNet"
+                  class="form-control   mb-1 ps-0">
               </div>
           </div>
       </div>
@@ -108,3 +102,22 @@
     </div>
     </div>    
     
+
+    
+
+<p-overlayPanel #op1>
+  <div style="min-width: 150px;">
+    <div class="row">
+      <div class="col-sm-12 col-xs-12">
+        <div class="d-flex justify-content-between align-items-center flex-wrap onoffbox">
+       
+          <div class="t-on">OFF </div>
+          <div> <p-inputSwitch [(ngModel)]="isVirtual"
+              (onChange)="showKeyboard($event)"></p-inputSwitch>
+          </div>
+          <div class="t-on"> ON</div>    
+        </div>
+      </div>
+    </div>
+  </div>
+</p-overlayPanel>

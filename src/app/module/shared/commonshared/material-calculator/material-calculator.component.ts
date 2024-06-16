@@ -34,14 +34,23 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   inputBoxes: any[] = [];
   private currentFocusIndex = 0;
 
-  displayValue: string = '0';
+  displayValue: string = '';
 
   isNaN: Function = Number.isNaN;
 
-  constructor(private renderer: Renderer2) {
+  isVirtual = true;
+  isKeyboard = true;
+
+  constructor(private renderer: Renderer2,
+    private elementRef: ElementRef) {
 
   }
 
+  onKeyPress(event: KeyboardEvent) {
+    if(this.isVirtual){
+      event.preventDefault();
+    }   
+  }
 
   ngOnInit(): void {
   
@@ -54,6 +63,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
       this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
     }
    
+    this.isVirtual = true;
 
   }
 
@@ -80,32 +90,48 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
     },100)
   }
 
+  showKeyboard(val:any){
+    this.isVirtual = val.checked
+    console.log(this.isKeyboard);
+  }
+
+  focusInput() {
+    this.elementRef.nativeElement.querySelector('.inputone').focus();
+  }
+
   changeFocus() {
     // Set focus on the current input
 
-    if (this.currentFocusIndex === this.inputBoxes.length-1) {
+    if (this.currentFocusIndex === this.inputBoxes.length-2) {
+      this.tareInput = (isNaN(this.tareInput) || this.tareInput == '') ? 0 : this.tareInput;
       const obj = {
         itemGross: this.grossInput,
-        itemTare: isNaN(this.tareInput)?0:this.tareInput,
+        itemTare: this.tareInput,
         itemNet: isNaN(this.grossInput - this.tareInput) ?  0 : (this.grossInput - this.tareInput),
         itemAvailableNet: this.availableNetInput,
         materialNote: this.materialNote
       }
-      if (obj.itemNet > obj.itemAvailableNet) {
-        alert('Shipout Net is more than Available net.');
-        return;
-      }
+      // if (obj.itemNet > obj.itemAvailableNet) {
+      //   alert('Shipout Net is more than Available net.');
+      //   return;
+      // }
       this.grossInput = '';
       this.tareInput = ''; 
       this.netInput = 0;
       this.calculateObj.emit(obj);
      }
-      this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
+     
+     
+     // Increment the focus index, resetting to 0 if it exceeds the number of inputs
+     if(this.currentFocusIndex > 3){
+       this.currentFocusIndex = 0;
+     }else{
+       this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
+     }
 
-      // Increment the focus index, resetting to 0 if it exceeds the number of inputs
-      this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
-    
-  
+     this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
+
+     console.log(this.currentFocusIndex);
   }
 
   changeItem() {
@@ -113,16 +139,15 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   }
 
   clearDisplay() {
-    this.displayValue = '0';
+    this.displayValue = '';
   }
 
   appendNumber(number: any) {
    
-  
     if (this.focusedInput === 'inputBox1') {
       this.renderer.selectRootElement(this.inputBox1?.nativeElement).focus();
       let data = this.grossInput ?? '';
-      if (data === '') {
+      if (data === '' || data == '0') {
         this.grossInput = number.toString().trim();
       } else {
         this.grossInput += number.toString().trim();
@@ -135,16 +160,16 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
       } else {
         this.tareInput += number.toString().trim();
       }
-    } else if (this.focusedInput === 'inputBox3') {
-      this.renderer.selectRootElement(this.inputBox3?.nativeElement).focus();
+    } else if (this.focusedInput === 'inputBox4') {
+      this.renderer.selectRootElement(this.inputBox4?.nativeElement).focus();
       let data = this.netInput ?? '';;
       if (data === '') {
         this.netInput = number.toString().trim();
       } else {
         this.netInput += number.toString().trim();
       }
-    } else if (this.focusedInput === 'inputBox4') {
-      this.renderer.selectRootElement(this.inputBox4?.nativeElement).focus();
+    } else if (this.focusedInput === 'inputBox3') {
+      this.renderer.selectRootElement(this.inputBox3?.nativeElement).focus();
       let data = this.availableNetInput ?? '';
       if (data === '') {
         this.availableNetInput = number.toString().trim();
@@ -184,9 +209,11 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   }
 
   enter() {    
-    if ((this.grossInput - this.tareInput) > this.availableNetInput) {
+    const tareInputVar = (isNaN(this.tareInput) || this.tareInput == '') ? 0 : this.tareInput;
+      
+    if ((this.grossInput - tareInputVar) > this.availableNetInput) {
       alert('Shipout Net is more than Available net.');
-      // return;
+      return;
     }
 
     this.changeFocus();

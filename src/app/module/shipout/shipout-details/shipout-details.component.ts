@@ -11,6 +11,7 @@ import { Ticket } from 'src/app/core/model/ticket.model';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { ShipOut } from 'src/app/core/model/ship-out.model';
 import { DataService } from 'src/app/core/services/data.service';
+import { MaterialCalculatorComponent } from '../../shared/commonshared/material-calculator/material-calculator.component';
 
 @Component({
   selector: 'app-shipout-details',
@@ -87,7 +88,8 @@ export class ShipoutDetailsComponent implements OnInit {
   showDownload = false;
   isLoading = false;
 
-
+  @ViewChild(MaterialCalculatorComponent) materialCalculatorComponent!: MaterialCalculatorComponent;
+ 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
@@ -239,6 +241,15 @@ export class ShipoutDetailsComponent implements OnInit {
     this.getAllGroupMaterial();
   }
 
+  
+  deleteItem(i: number) {
+    //alert(i);
+    this.ticketObj.splice(i, 1);    
+    console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
+
+    this.calculateTotal(this.ticketObj);
+  }
+
   getAllGroupMaterial() {
     const paramObject = {
       LocationId: this.locId
@@ -361,8 +372,17 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemMaterialName = materialName;
     this.itemAvailableNet = availableStock;
     this.itemLeveloperationPerform = this.itemLeveloperationPerform == '' ? 'Add' : this.itemLeveloperationPerform;
-    this.itemCodNote = '';    
+    this.itemCodNote = '';      
+    this.itemGross = '';
+    this.itemTare = '';
     // this.materialNote = '';
+    setTimeout(() =>{
+      this.focusChildInput()
+    },100);
+  }
+
+  focusChildInput() {
+    this.materialCalculatorComponent.focusInput();
   }  
 
   updateExistingItem(materialId: any, materialName: string, selectedMaterial: string, availableStock: any) {
@@ -467,8 +487,8 @@ export class ShipoutDetailsComponent implements OnInit {
     this.calculateTotal(this.ticketObj);
     this.backToChangeItemMainMaterials();
     this.backToMainMaterials();
-    this.itemGross = 0;
-    this.itemTare = 0;
+    this.itemGross = '';
+    this.itemTare = '';
 
   }
 

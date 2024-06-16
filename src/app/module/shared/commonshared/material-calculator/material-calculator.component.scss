@@ -1,3 +1,20 @@
+
+.form-box{
+  margin-bottom: 10px;
+}
+
+.form-control:focus{
+  border: 1px solid #4a81d4;
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+}
+
+.price-d ::before{
+  content: '$';
+  top: 11px;
+    position: absolute;
+}
+
+
 .calculator {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -22,7 +39,7 @@
   background-color: var(--ct-blue);
   color: var(--ct-white);
   border: none;
-  font-size: 1.4rem;
+  font-size: 1.1rem !important;
   
   cursor: pointer;
 }
@@ -34,11 +51,6 @@
 .enter {
   grid-column: 3 / span 2;
 }
-
-/* On hover styles for buttons */
-//   .btn:hover {
-//     background-color: var(--ct-white);
-//   }
 
 .h-30{
   height: 30px;
