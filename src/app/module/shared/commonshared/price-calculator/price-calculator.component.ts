@@ -133,7 +133,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   onKeyPress(event: KeyboardEvent) {
 
-    if(this.isVirtual && this.passwordmode){
+    if(this.isVirtual){
       event.preventDefault();
     }
    
@@ -286,13 +286,16 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
         this.netInput += number.toString().trim();
       }
     } else if (this.focusedInput === 'inputBox3') {
-      this.renderer.selectRootElement(this.inputBox3?.nativeElement).focus();
-      let data = this.priceInput ?? '';
-      if (data === '') {
-        this.priceInput = number.toString().trim();
-      } else {
-        this.priceInput += number.toString().trim();
+      if(!this.passwordmode){
+        this.renderer.selectRootElement(this.inputBox3?.nativeElement).focus();
+        let data = this.priceInput ?? '';
+        if (data === '') {
+          this.priceInput = number.toString().trim();
+        } else {
+          this.priceInput += number.toString().trim();
+        }
       }
+      
     } else {
       console.log('No input box is currently focused');
     }
