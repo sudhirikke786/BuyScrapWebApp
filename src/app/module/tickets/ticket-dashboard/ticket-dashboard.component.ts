@@ -1294,6 +1294,7 @@ export class TicketDashboardComponent implements OnInit {
   }
 
 
+
   generateCheckPrintReport(ticketId: any, checkAmount: any, customerFullName: any) {
     this.showLoaderReport = true;
     this.showDownload = true;
@@ -1638,7 +1639,10 @@ export class TicketDashboardComponent implements OnInit {
       default:
         break;
     }
+    
 
   }
+
+  
 
 }
