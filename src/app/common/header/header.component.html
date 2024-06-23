@@ -31,7 +31,7 @@
                         <a class="font-less" (click)="fontDecrease()">A+</a>
                     </li> -->
 
-                    <li><b>{{wWidth}} * {{wHeight}} </b></li>
+                  
 
                     <li class="dropdown d-inline-block">
                         <ul class="balance-details-ul balance-bar-desktop">
@@ -96,6 +96,11 @@
                                 <span>Logout</span>
                             </a>
 
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a (click)="$event.stopPropagation();op2.toggle($event)"> <i class="bi bi-geo-alt-fill text-primary" ></i> </a> 
                         </div>
                     </li>
 
@@ -276,5 +281,34 @@
 
         </p-dialog>
 
+
+
+        
+<p-overlayPanel #op2>
+    <div style="min-width: 200px; padding:5px">
+      
+        <div class="form-group">
+          
+            <div class="form-group mb-3">
+            <label for="locationId" class="dark-color">Select Location</label>
+            <div class="input-group input-group-merge" >
+                <select required class="form-control" [(ngModel)]="locationId" id="locationId" name="locationId" (onSelectChange)="changeLocation($event)">
+                    <option value="null" [selected]="true">-- Select State --</option>
+                    <option *ngFor="let option of locations" [value]="option.rowId"> {{ option.locationName }} </option>
+                </select>
+
+            </div>
+        </div>
+          
+        </div>
+      
+        
+        
+    </div>
+   
+       
+     
+     
+  </p-overlayPanel>
 
         <p-toast></p-toast>

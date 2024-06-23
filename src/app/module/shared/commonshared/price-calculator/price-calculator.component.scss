@@ -214,7 +214,17 @@
 }
 
 
-@media  screen and (min-width: 2000px)  {
+@media screen and (min-width: 1920px) and (min-height: 953px) {
+  /* Your styles here */
+
+  .btn-cal {
+    font-size: 2.5rem !important;
+  }
+
+}
+
+
+@media screen and (max-width:1920px) {
 
   
 .m-image{
@@ -235,7 +245,7 @@
   }
 
   .btn-cal {
-    font-size: 2.1rem !important;
+    font-size: 2.5rem !important;
   }
 
 }
