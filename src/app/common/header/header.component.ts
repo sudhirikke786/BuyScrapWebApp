@@ -45,7 +45,7 @@ export class HeaderComponent implements OnInit {
   defulatFontSize = 100;
 
   locations :any;
-  constructor(private route: ActivatedRoute,
+  constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
     public dataService: DataService,
     private stroarge:StorageService,
@@ -110,7 +110,14 @@ export class HeaderComponent implements OnInit {
 
   changeLocation($event:any){
     localStorage.setItem("locId",$event.target.value);
-    this.router.navigateByUrl('/home')
+    const URl  = window.location.href;
+    console.log(URl);
+    if(window.location.origin + '/home' == URl){
+      window.location.reload()
+    }else{
+      this.router.navigateByUrl('/home')
+    }
+   
   }
   
   getCashDrawerAmountAndPaidTicketCount(paramObject: any) {
