@@ -110,6 +110,7 @@ export class HeaderComponent implements OnInit {
 
   changeLocation($event:any){
     localStorage.setItem("locId",$event.target.value);
+    this.router.navigateByUrl('/home')
   }
   
   getCashDrawerAmountAndPaidTicketCount(paramObject: any) {

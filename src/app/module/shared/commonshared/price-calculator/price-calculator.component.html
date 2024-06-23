@@ -139,7 +139,7 @@
                   <div class="col-12 col-sm-12 col-lg-12">  
                     <div class="p-lable d-flex align-items-center">
                      <div> Price (in $)</div>
-                     <a (click)="op2.toggle($event)">
+                     <a (click)="op2.toggle($event)" *ngIf="currentRole=='Cashier'">
                       <!-- <i class="bi bi-unlock-fill"></i> -->
                           <i class="bi bi-unlock-fill fz-14"  tooltipPosition="left"   pTooltip="Click on edit to modify the price"></i>
                       </a>

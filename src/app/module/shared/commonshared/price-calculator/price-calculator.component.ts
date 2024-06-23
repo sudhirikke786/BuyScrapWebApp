@@ -3,6 +3,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 import { CommonService } from 'src/app/core/services/common.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-price-calculator',
@@ -103,10 +104,12 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   wWidth = 250;
 
   passwordmode = true;
+  currentRole: any;
 
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef,
     private stroarge: StorageService,
+    private authService:AuthService,
     public commonService: CommonService) {
 
   }
@@ -148,7 +151,11 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
-    
+    this.currentRole = this.authService.userCurrentRole();
+
+    if(this.currentRole?.toLowerCase()=='administrator'){
+      this.passwordmode = false;
+    }
     this.grossInput = this.itemGross;
     this.tareInput = this.itemTare;
     const netQty = this.grossInput - this.tareInput
@@ -405,8 +412,28 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     },100);
 
 
+    (async () => {     
+      let devices = await navigator.mediaDevices.enumerateDevices(); 
+     
+      this.allMediaDevices = devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput");
+    
+      this.isCameraExist = this.allMediaDevices && this.allMediaDevices.length > 0;
+      const deviceId =  localStorage.getItem('metarialCamera');
+      if(localStorage.getItem('metarialCamera')){
+        setTimeout(() =>{
+           this.selectedCamera =  deviceId; 
+           this.changeWebCame(this.selectedCamera);
+        },100)
+       
+      }else{
+        this.selectedCamera =  this.allMediaDevices[0].deviceId;
+        this.changeWebCame(this.selectedCamera);
+      }
+    
+    })();
+
    
-    console.log(this.wHeight,this.wWidth);
+    
 
   
   }
