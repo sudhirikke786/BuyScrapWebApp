@@ -8,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ViewCartComponent } from './view-cart/view-cart.component';
 import { CommonsharedModule } from '../module/shared/commonshared/commonshared.module';
+import { ChangeLocationComponent } from './change-location/change-location.component';
 
 export const routes: Routes = [{
   path: 'subscription',
@@ -21,6 +22,10 @@ export const routes: Routes = [{
   path: 'change-password',
   component: ChangePasswordComponent
 },
+{
+  path: 'change-location',
+  component:ChangeLocationComponent
+},
 
 ]
 
@@ -30,6 +35,7 @@ export const routes: Routes = [{
     SubscriptionComponent,
     ChangePasswordComponent,
     ViewCartComponent,
+    ChangeLocationComponent,
   ],
   imports: [
     CommonModule,

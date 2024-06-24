@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit {
       
       const _userRole =  this.authService.userCurrentRole();
 
-      this.locationId = Number(localStorage.getItem("locId"));
+    
 
       if(_userRole){
         this.currentRole  = _userRole;
@@ -66,22 +66,7 @@ export class HeaderComponent implements OnInit {
 
     }
 
-    getOrgLocation() {
-     
-      this.commonService.getOrgLocation()
-        .subscribe(data => {
-    
-            console.log('getOrgLocation :: ');
-            console.log(data);
-            this.locations = data.body.data;
    
-          },
-          (err: any) => {
-         
-            // this.errorMsg = 'Error occured';
-          }
-        );
-    }
     
  
 
@@ -90,7 +75,7 @@ export class HeaderComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
 
      this.currentSize()
-     this.getOrgLocation();
+     
     
     this.userFullName = this.stroarge.getLocalStorage('userObj').userdto?.firstName;
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
@@ -108,17 +93,7 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  changeLocation($event:any){
-    localStorage.setItem("locId",$event.target.value);
-    const URl  = window.location.href;
-    console.log(URl);
-    if(window.location.origin + '/home' == URl){
-      window.location.reload()
-    }else{
-      this.router.navigateByUrl('/home')
-    }
-   
-  }
+
   
   getCashDrawerAmountAndPaidTicketCount(paramObject: any) {
     this.commonService.getCashDrawerAmountAndPaidTicketCount(paramObject)

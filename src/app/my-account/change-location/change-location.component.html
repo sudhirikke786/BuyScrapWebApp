@@ -1,0 +1,78 @@
+<div class="content">
+
+    <!-- Start Content-->
+    <div class="container-fluid">
+
+        <!-- <div class="row mt-2">
+            <div class="col text-center">
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> New Ticket</button> 
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> Merge Ticket and Pay</button>
+            </div>
+            
+        </div> -->
+
+        <div class="bdcmb mt-2">
+            <div class="row">
+                <div class="col-sm-6 col-6">
+                    <h4 class="page-title">Change Location</h4>
+                </div>
+
+                <div class="col-sm-6 col-6">
+                    <div class="b-links">
+                        <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/change-password">Change Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <div class="container-fluid">
+                                <h4 class="title-plus-border">Change Location</h4>
+                            </div>
+
+                            <!-- <div class="form-group col-sm-4 mt-mob-10">
+                                <label for="simpleinput" class="form-label w-100">Old Password</label>
+                                <input type="password" id="newpassword" class="form-control" value="sanket">
+                            </div> -->
+
+                            <div class="form-group">
+          
+                                <div class="form-group  col-sm-4 mb-3">
+                                <label for="locationId" class="dark-color">Select Location</label>
+                                <div class="input-group input-group-merge" >
+                                    <select  class="form-control" [(ngModel)]="locationId" id="locationId" name="locationId">
+                                        <option value="null" [selected]="true">-- Select State --</option>
+                                        <option *ngFor="let option of locations" [value]="option.rowId"> {{ option.locationName }} </option>
+                                    </select>
+                    
+                                </div>
+                            </div>
+                              
+                            </div>
+                          
+
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="col-sm-12">
+                                <a href="" class="btn btn-primary" (click)="changeLocation()">SAVE</a> 
+                            </div>
+                        </div>
+                    
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div>
+        <!-- end row-->     
+        
+    </div> <!-- container -->
+
+</div> <!-- content -->
+
+

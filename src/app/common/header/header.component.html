@@ -37,7 +37,7 @@
                         <ul class="balance-details-ul balance-bar-desktop">
                             <li *ngIf="currentRole!='Scale' "><strong>Balance</strong>: {{ cashDrawerBalanceAmount | currency:'USD':'symbol': numberFormat}}</li>
                             <li><strong>PaidCount</strong>: {{paidTicketCount}}</li>
-                        </ul>
+                        </ul> 
                     </li>
 
                     <!-- User Dropdown -->
@@ -77,6 +77,13 @@
                                 <i class="fe-lock"></i>
                                 <span>Change Password</span>
                             </a>
+
+                            <a routerLink="/{{orgName}}/my-account/change-location" routerLinkActive="router-link-active" class="dropdown-item notify-item">
+                                <i class="fe-lock"></i>
+                                <span>Change Location</span>
+                            </a>
+
+                        
                             <a (click)="toggleFullscreen()" routerLinkActive="router-link-active" class="dropdown-item notify-item">
                                 <i class="fe-lock"></i>
                                 <span>Full screen</span>
@@ -98,11 +105,11 @@
 
                         </div>
                     </li>
-                    <li>
+                    <!-- <li>
                         <div class="d-flex align-items-center justify-content-center">
-                            <a (click)="op2.toggle($event)"> <i class="bi bi-geo-alt-fill text-primary" ></i> </a> 
+                            <a (click)="panleDemo.toggle($event)"> <i class="bi bi-geo-alt-fill text-primary" ></i> </a> 
                         </div>
-                    </li>
+                    </li> -->
 
                     <!-- Right Bar offcanvas button (Theme Customization Panel) -->
                     <!-- <li>
@@ -283,32 +290,6 @@
 
 
 
-        
-<p-overlayPanel #op2>
-    <div style="min-width: 200px; padding:5px">
-      
-        <div class="form-group">
-          
-            <div class="form-group mb-3">
-            <label for="locationId" class="dark-color">Select Location</label>
-            <div class="input-group input-group-merge" >
-                <select  class="form-control" [(ngModel)]="locationId" id="locationId" name="locationId" (change)="changeLocation($event)">
-                    <option value="null" [selected]="true">-- Select State --</option>
-                    <option *ngFor="let option of locations" [value]="option.rowId"> {{ option.locationName }} </option>
-                </select>
 
-            </div>
-        </div>
-          
-        </div>
-      
-        
-        
-    </div>
-   
-       
-     
-     
-  </p-overlayPanel>
 
         <p-toast></p-toast>
