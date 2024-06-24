@@ -47,6 +47,8 @@ export class AccountingReportComponent implements OnInit {
   toDate: any;
   fileDataObj: any;
   showDownload: boolean = false;
+  numberFormat: string = '1.2-2';
+  currencySymbol: string = 'USD';
 
   showLoader = false;
   constructor(private route: ActivatedRoute,

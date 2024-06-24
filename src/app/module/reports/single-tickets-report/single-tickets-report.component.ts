@@ -54,6 +54,8 @@ export class SingleTicketsReportComponent implements OnInit {
   showLoaderReport = false;
   isReportShow = false;
   customerObj:any;
+  numberFormat: string = '1.2-2';
+  currencySymbol: string = 'USD';
 
   constructor(private route: ActivatedRoute,
     private router: Router,

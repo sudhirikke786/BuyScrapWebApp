@@ -62,7 +62,7 @@
                               <tr>
                                 <td>{{ rowData.TicketId }}</td>
                                 <td>{{ rowData.CheckDate | date: 'MM/dd/yyyy' }}</td>
-                                <td>{{ rowData.Amount | currency:'USD':'symbol': '1.3-3' }}</td>
+                                <td>{{ rowData.Amount | currency: currencySymbol :'symbol': numberFormat }}</td>
                                 <td>{{ rowData.Type }}</td>
                                 <td>{{ typeOf(rowData.CheckNumber) === 'object' ? '' : rowData.CheckNumber }}</td>
                               </tr>

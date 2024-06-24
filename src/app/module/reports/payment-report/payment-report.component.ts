@@ -52,6 +52,9 @@ export class PaymentReportComponent implements OnInit {
   showLoader = false;
   isReportShow = false;
   showLoaderReport = false;
+  numberFormat: string = '1.2-2';
+  currencySymbol: string = 'USD';
+  
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,

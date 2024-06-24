@@ -84,6 +84,8 @@ export class MaterialsDetailsComponent implements OnInit {
   subMaterialListCopy: any;
   mainMaterialsVisible = true;
   currentRole:any;
+  numberFormat: string = '1.2-2';
+  currencySymbol: string = 'USD';
 
   systemPerfForm!:FormGroup;
   constructor(private route: ActivatedRoute,

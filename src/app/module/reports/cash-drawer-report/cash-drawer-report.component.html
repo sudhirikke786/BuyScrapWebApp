@@ -58,10 +58,10 @@
                               <ng-template pTemplate="body" let-rowData>
                                 <tr>
                                   <td>{{ rowData.opendate | date: 'MM/dd/yyyy' }}</td>
-                                  <td>{{ rowData.openingBalance | currency:'USD':'symbol': '1.3-3' }}</td>
-                                  <td>{{ rowData.iN_Amount | currency:'USD':'symbol': '1.3-3' }}</td>
-                                  <td>{{ rowData.ouT_Amount | currency:'USD':'symbol': '1.3-3' }}</td>
-                                  <td>{{ rowData.closingBalance | currency:'USD':'symbol': '1.3-3' }}</td>
+                                  <td>{{ rowData.openingBalance | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                  <td>{{ rowData.iN_Amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                  <td>{{ rowData.ouT_Amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                  <td>{{ rowData.closingBalance | currency: currencySymbol :'symbol': numberFormat }}</td>
                                 </tr>
                               </ng-template>
                             </p-table>

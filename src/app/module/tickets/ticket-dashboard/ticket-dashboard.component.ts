@@ -181,6 +181,9 @@ export class TicketDashboardComponent implements OnInit {
   addSellerPopupVisible = false;
   sellerForm!: FormGroup;
   sellerType: string = 'Personal';
+  
+  numberFormat: string = '1.2-2';
+  currencySymbol: string = 'USD';
 
 
   checkVisible =  false;

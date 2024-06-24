@@ -47,6 +47,9 @@ export class CashdrawerDashboardComponent implements OnInit {
   showLoaderReport = false;
   pdfViwerTitle = 'Cash Drawer Closer Receipt';
   
+  numberFormat: string = '1.2-2';
+  currencySymbol: string = 'USD';
+  
   constructor(private route: ActivatedRoute,
     private router: Router,
     private commonService: CommonService,

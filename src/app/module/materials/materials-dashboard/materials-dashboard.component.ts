@@ -213,6 +213,7 @@ export class MaterialsDashboardComponent implements OnInit {
     const source = this.form.value;
 
     const returnedTarget = Object.assign(target, source);
+    returnedTarget.uomId = parseInt(returnedTarget.uomId);
     // alert(JSON.stringify(returnedTarget));
     
     this.commonService.insertUpdateGroupMaterials(returnedTarget).subscribe(data =>{    

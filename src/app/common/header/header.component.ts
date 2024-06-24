@@ -38,7 +38,8 @@ export class HeaderComponent implements OnInit {
 
   locationId :any;
   // cashAmount:any;
-  numberFormat: string = '1.3-3';
+  numberFormat: string = '1.2-2';
+  currencySymbol: string = 'USD';
   wHeiht: any;
   wWidth: any;
   wHeight: any;
@@ -81,15 +82,17 @@ export class HeaderComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.mobileName = this.userFullName?.split(" ").map((name :any) => name.charAt(0).toUpperCase()).join("");
 
-    const paramObject = {
-      LocationId: this.locId
-    };
-    this.getCashDrawerAmountAndPaidTicketCount(paramObject);
-    this.getCashdrawerdetails(paramObject);
-      this.dataService.getCashDrawerAmountDTO().subscribe((amount:any) =>{
-        this.cashDrawerBalanceAmount = amount;
-     });
-    this.getCashDrawerAmountDTO(paramObject);
+    if (this.currentRole !== 'Scale') {
+      const paramObject = {
+        LocationId: this.locId
+      };
+      this.getCashDrawerAmountAndPaidTicketCount(paramObject);
+      this.getCashdrawerdetails(paramObject);
+        this.dataService.getCashDrawerAmountDTO().subscribe((amount:any) =>{
+          this.cashDrawerBalanceAmount = amount;
+       });
+      this.getCashDrawerAmountDTO(paramObject);
+    }
   }
 
 

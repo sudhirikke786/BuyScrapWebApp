@@ -84,7 +84,7 @@
                                                             {{item.materialName}}
                                                         </div>
                                                         <div class="d-flex justify-content-between px-2 py-1">
-                                                            <div>Scrap Price - {{item.scrapPrice}}</div>
+                                                            <div>Scrap Price - {{item.scrapPrice | currency: currencySymbol :'symbol': numberFormat}}</div>
                                                             <div><a (click)="showDialog(item)"class="btn btn-outline-primary" ><i class="mdi mdi-pencil"></i> Edit</a></div>
                                                         </div>
                                                        

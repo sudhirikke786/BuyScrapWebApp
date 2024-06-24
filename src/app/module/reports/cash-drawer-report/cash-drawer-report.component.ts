@@ -46,6 +46,9 @@ export class CashDrawerReportComponent implements OnInit {
   showDownload = false;
   showLoader = false;
   isReportShow = false;
+  
+  numberFormat: string = '1.2-2';
+  currencySymbol: string = 'USD';
 
   constructor(private route: ActivatedRoute,
     private router: Router,

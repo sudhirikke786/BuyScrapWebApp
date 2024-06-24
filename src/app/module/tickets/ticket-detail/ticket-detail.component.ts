@@ -178,6 +178,9 @@ export class TicketDetailComponent implements OnInit {
 
   printCheckNo!:string;
   checkVisible = false;
+  
+  numberFormat: string = '1.2-2';
+  currencySymbol: string = 'USD';
 
   @ViewChild(PriceCalculatorComponent) priceCalculatorComponent!: PriceCalculatorComponent;
   
@@ -1635,11 +1638,17 @@ export class TicketDetailComponent implements OnInit {
   checkReprint(ticketsTransaction: any) {
     this.checkVisible = true;
     this.printCheckNo =  ticketsTransaction.checkNumber;
-
+    // this.ticketId =  ticketsTransaction.
+    this.checkAmount =  ticketsTransaction.amount
+    this.selectedCheckDate =  ticketsTransaction.checkDate;
   }
 
   generateCheck(){
+    // alert('Sudhir');
+    this.isCheckPrint = true;
     this.checkVisible = false;
+    this.checkPrintAction();
+
   }
 
 
