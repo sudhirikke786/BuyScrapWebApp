@@ -18,6 +18,8 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
   allMediaDevices: any;
 
   @Input() defaultCamera:any;
+
+  addMetarialInput:any = '';
   
   
   webcamImage: WebcamImage | undefined;
@@ -307,16 +309,13 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
       console.log('No input box is currently focused');
     }
     
-    const netQty = (isNaN(this.grossInput) ?  0 : this.grossInput) - (isNaN(this.tareInput) ?  0 : this.tareInput)
-    this.netInput = isNaN(netQty) ?  0 : netQty;
+    this.priceInput =  isNaN(Number(this.grossInput) *  Number(this.grossInput));
+    // const netQty = (isNaN(this.grossInput) ?  0 : this.grossInput) - (isNaN(this.tareInput) ?  0 : this.tareInput)
+    // this.netInput = isNaN(netQty) ?  0 : netQty;
 
   }
 
-  // appendOperator(operator: string) {
-  //   if (this.displayValue[this.displayValue.length - 1] !== operator) {
-  //     this.displayValue += operator;
-  //   }
-  // }
+
 
   calculate() {
     try {

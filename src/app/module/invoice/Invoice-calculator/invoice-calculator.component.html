@@ -10,12 +10,24 @@
 
           <div class="col-sm-12">
             <div class="col-12 d-flex justify-content-between align-items-start">
-              <div class="t-lable d-flex">
+              <div class="t-lable d-flex w-100">
 
                 <!-- <button type="button" class=" bg-primary" aria-label="Close" (click)="backToChangeItemMainMaterials()">
                
                 </button> -->
-                  <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom"> {{itemGroupName}} -
+                  <div *ngIf="itemGroupName=='Other'" class="w-90">
+                    <input
+                    type="text"
+                    
+                    [(ngModel)]="addMetarialInput"
+                   class="form-control w-100"
+                   placeholder="Add Item Name"
+                   aria-describedby="itemName"
+               />
+                  </div>
+
+                  <div *ngIf="itemGroupName!='Other'" pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom"> 
+                    {{itemGroupName}} -
                     {{itemMaterialName}}
                   </div>
               </div>
@@ -125,16 +137,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-12 col-sm-12 col-lg-12">                 
-                      <div class="p-lable">Net</div>
-                      <div class="input-group">
-                        <input type="text" readonly placeholder="Net Weight" #inputBox4 [(ngModel)]="netInput"
-                          value="{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox4'" id="net"
-                          class="form-control   mb-1 ps-0">
-                      </div>                  
-                  </div>
-                </div>
+            
                 <div class="row">
                   <div class="col-12 col-sm-12 col-lg-12">  
                     <div class="p-lable d-flex align-items-center">
@@ -147,7 +150,7 @@
                     </div>                    
                       <div class="input-group">
                         <input type="text" [readonly]="passwordmode" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
-                          [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price"
+                          [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price" value="{{grossInput * tareInput }}"
                           class="form-control   mb-1 ps-0">
                       </div>
                   </div>
