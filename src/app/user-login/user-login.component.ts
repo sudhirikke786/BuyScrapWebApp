@@ -19,6 +19,7 @@ export class UserLoginComponent implements OnInit {
   
   organizationName: any;
   locations: any;
+  selectedLocation: any;
   errorMsg: any;
   user: User = {
     userName: '',
@@ -29,10 +30,11 @@ export class UserLoginComponent implements OnInit {
     isActive: true,
     isConfirm: true
   };
-  locationId: number = 0;
+  locationId: number = 1;
   inputType: string  = 'password';
   isSubmit: boolean = false;
   isShow = false;
+  currencyCode: string  = 'USD';
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -104,7 +106,8 @@ export class UserLoginComponent implements OnInit {
           console.log('getOrgLocation :: ');
           console.log(data);
           this.locations = data.body.data;
-       //   this.locationId =  this.locations[0].rowId;
+          this.selectedLocation = this.locations[0];
+          this.locationId =  this.locations[0].rowId;
           this.user.locID = this.locations[0].rowId;
           this.user.locationName = this.locations[0].locationName;
           this.loginForm.patchValue(this.user)
@@ -114,6 +117,12 @@ export class UserLoginComponent implements OnInit {
           // this.errorMsg = 'Error occured';
         }
       );
+  }
+
+  changeLocationChange(locationId: any) {
+    // alert(locationId);
+    this.selectedLocation = this.locations.filter((item:any) => item.rowId == locationId)[0];
+    // alert(JSON.stringify(this.selectedLocation));
   }
   
   validateUser() { 
@@ -126,9 +135,10 @@ export class UserLoginComponent implements OnInit {
     const req = {...this.loginForm.value,locID:Number(this.loginForm.value.locID)};
     this.commonService.validateUserCredentials(req).subscribe(async(data) => {
       this.localService.setLocalStorage('locId',Number(this.loginForm.value.locID)); 
-      localStorage.setItem('locationName',locationName)
+      localStorage.setItem('locationName',locationName);
+      localStorage.setItem('currencyCode',this.selectedLocation?.currencyCode); 
           if (data?.body.token!='' && data?.body.userdto.userName) {
-            this.localService.setLocalStorage('userObj',data?.body);   
+            this.localService.setLocalStorage('userObj',data?.body);     
             
                const systemInfo = await this.getSystemPreferencesValue(); 
 

@@ -227,6 +227,7 @@ export class TicketDetailComponent implements OnInit {
 
 
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.route.params.subscribe((param) => {

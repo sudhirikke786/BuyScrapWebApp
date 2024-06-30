@@ -102,6 +102,7 @@ export class MaterialsDetailsComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     const datePipe = new DatePipe('en-US');
+    this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     
     this.form = this.formBuilder.group({
       rowId: 0,

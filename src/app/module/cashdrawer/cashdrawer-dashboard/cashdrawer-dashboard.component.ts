@@ -61,6 +61,7 @@ export class CashdrawerDashboardComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
         
     const paramObject = {
       LocationId: this.locId

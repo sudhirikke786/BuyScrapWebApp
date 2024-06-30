@@ -50,7 +50,7 @@
                             <div class="form-group mb-3">
                                 <label for="locationId" class="dark-color">Select Location</label>
                                 <div class="input-group input-group-merge" >
-                                    <select required class="form-control" formControlName="locID" id="locationId" name="locationId" >
+                                    <select required class="form-control" formControlName="locID" id="locationId" name="locationId"  [(ngModel)]="locationId" (change)="changeLocationChange(locationId)" >
                                         <option value="null" [selected]="true">-- Select State --</option>
                                         <option *ngFor="let option of locations" [value]="option.rowId"> {{ option.locationName }} </option>
                                     </select>

@@ -57,6 +57,7 @@ export class MaterialReportComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.setDefaultDate();
     this.getMaterialReport();
   }

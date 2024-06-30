@@ -87,8 +87,8 @@ export class SideMenuComponent {
   navigatePage(item:any){
     this.commonService.showHidePanel('sidemenu');
     if(item.url == '/home'){
-      this.router.navigate(['/home']);
-      window.location.href = '/home';
+      this.router.navigate([`/${this.organizationName}/home`]);
+      // window.location.href = '/home';
     }else{
       this.router.navigate([`/${this.organizationName}/${item.url}`]);
     }

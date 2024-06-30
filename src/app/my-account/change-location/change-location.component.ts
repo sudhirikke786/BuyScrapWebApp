@@ -10,7 +10,8 @@ import { CommonService } from 'src/app/core/services/common.service';
 export class ChangeLocationComponent implements OnInit {
 
 
-  locations :any =  [];
+  locations :any =  [];  
+  selectedLocation: any;
   orgName :any;
   locationId:any;
   constructor(private router:Router,private commonService:CommonService){
@@ -27,6 +28,9 @@ export class ChangeLocationComponent implements OnInit {
 
   changeLocation(){
     localStorage.setItem("locId",this.locationId);
+    this.selectedLocation = this.locations.filter((item:any) => item.rowId == this.locationId)[0];
+    localStorage.setItem('currencyCode',this.selectedLocation?.currencyCode); 
+      
     const URl  = window.location.href;
     console.log(URl);
     this.router.navigateByUrl(`${this.orgName}/home`);
@@ -41,6 +45,7 @@ export class ChangeLocationComponent implements OnInit {
           console.log('getOrgLocation :: ');
           console.log(data);
           this.locations = data.body.data;
+          this.selectedLocation = this.locations[0];
  
         },
         (err: any) => {

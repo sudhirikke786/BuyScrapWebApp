@@ -74,8 +74,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
-
-     this.currentSize()
+    this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
+    this.currentSize()
      
     
     this.userFullName = this.stroarge.getLocalStorage('userObj').userdto?.firstName;
@@ -290,6 +290,8 @@ export class HeaderComponent implements OnInit {
     const orgName = localStorage.getItem('orgName');
     localStorage.removeItem('userObj');
     localStorage.removeItem('locId');
+    localStorage.removeItem('locationName');
+    localStorage.removeItem('currencyCode');
     this.router.navigateByUrl(`${orgName}/user-login`);
   }
 
