@@ -6,7 +6,7 @@
         <div class="bdcmb">
             <div class="row">
                 <div class="col-sm-6 col-6">
-                    <h4 class="page-title">Ticket Details</h4>
+                    <h4 class="page-title">Invoice Details</h4>
                 </div>
 
                 <div class="col-sm-6 col-6">
@@ -110,11 +110,10 @@
                 
                                             <ng-template pTemplate="header">
                                                 <tr>
-                                                    <th style="width: 25%;">Material</th>
-                                                    <th>Gross(M)</th>
-                                                    <th>Tare</th>
-                                                    <th>Net</th>
-                                                    <th>Price</th>
+                                                    <th style="width: 25%;">Material Item</th>
+                    
+                                                    <th>Quantity</th>
+                                                    <th>Rate</th>
                                                     <th>Amount</th>
                                                     <th>Image</th>
                                                     <th *ngIf="isEditModeOn">Action</th>
@@ -136,8 +135,6 @@
                                                         <ng-template #otherThanCOD >
                                                             <td style="width: 25%;">{{ ticket?.materialName }}</td>
                                                             <td>{{ ticket?.gross  }}</td>
-                                                            <td>{{ ticket?.tare }}</td>
-                                                            <td>{{ ticket?.net }}</td>
                                                             <td>{{ ticket?.price | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                             <td>{{ ticket?.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                         </ng-template>
@@ -342,7 +339,18 @@
                                 
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 160px)">
                                     <h4 class="materials-heading">Materials</h4>
-  
+                                    <div>
+                                        <input
+                                         type="text"
+                                         id="searchMaterialInput"
+                                         #searchMaterialInput
+                                         (keyup)="searchMaterial($event)"
+                                        class="form-control w-100"
+                                        placeholder="Search  Material"
+                                        aria-describedby="helpId"
+                                    />
+                                        
+                                    </div>
                                     <ul class="main-ul">
                                       
                                       <ng-container  *ngFor="let item of materialList" >
@@ -365,6 +373,19 @@
                                       </span>
                                        <div class="main-material"> Main Material - {{selectedMaterial}}</div>
                                   </h1>
+
+                                  <div>
+                                    <input
+                                     type="text"
+                                     
+                                     #searchsubMaterialInput
+                                     (keyup)="searchSubMaterial($event)"
+                                    class="form-control w-100"
+                                    placeholder="Search  Material"
+                                    aria-describedby="helpId"
+                                />
+                                    
+                                </div>
                        
                                     <ul class="main-ul">
                                       <ng-container  *ngFor="let item of subMaterialList" >

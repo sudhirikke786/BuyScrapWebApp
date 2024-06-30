@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -16,15 +16,28 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tick } from '@angular/core/testing';
 import { InvoiceCalculatorComponent } from '../Invoice-calculator/invoice-calculator.component';
 
+import { fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+
+
+
+
 @Component({
   selector: 'app-ticket-detail',
   templateUrl: './ticket-detail.component.html',
   styleUrls: ['./ticket-detail.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class TicketDetailComponent implements OnInit {
+export class TicketDetailComponent implements OnInit , AfterViewInit {
   [x: string]: any;
   @ViewChild('htmlData') htmlData!: ElementRef;
+
+  @ViewChild('searchMaterialInput' , { static: false }) searchMaterialInput!: ElementRef;
+
+  @ViewChild('searchsubMaterialInput' , { static: false }) searchsubMaterialInput!: ElementRef;
+
+  
+
 
   showCalculator = false;
   @ViewChild('inputFile')
@@ -183,6 +196,11 @@ export class TicketDetailComponent implements OnInit {
   numberFormat: string = '1.2-2';
   currencySymbol: string = 'USD';
 
+  copyMaterialData:any[]  = [];
+  copySubMaterialData:any[]  = [];
+
+
+
   @ViewChild(InvoiceCalculatorComponent) InvoiceCalculatorComponent!:InvoiceCalculatorComponent;
   
 
@@ -262,6 +280,28 @@ export class TicketDetailComponent implements OnInit {
 
 
   }
+
+
+  ngAfterViewInit() {
+    // if(this.searchMaterialInput){
+    //   fromEvent(this.searchMaterialInput.nativeElement, 'input')
+    //   .pipe(
+    //     map((event: any) => event.target.value),
+    //     debounceTime(300),
+    //     distinctUntilChanged()
+    //   )
+    //   .subscribe((term: string) => {
+    //     this.searchMaterial(term);
+    //   });
+    // }
+  
+  }
+
+
+
+
+
+
 
   focusChildInput() {
     this.priceCalculatorComponent.focusInput();
@@ -723,6 +763,31 @@ export class TicketDetailComponent implements OnInit {
     this.getAllGroupMaterial();
   }
 
+
+  searchMaterial(searchTerm:any){
+
+    const inputParms =  searchTerm.target.value.toLowerCase();
+    if(inputParms){
+      this.materialList = this.copyMaterialData.filter((item) => item?.groupName?.toLowerCase().includes(inputParms))
+    }else{
+      this.materialList = this.copyMaterialData 
+    }
+
+  }
+
+
+  
+  searchSubMaterial(searchTerm:any){
+
+    const inputParms =  searchTerm.target.value.toLowerCase();
+    if(inputParms){
+      this.subMaterialList = this.copySubMaterialData.filter((item) => item?.materialName?.toLowerCase().includes(inputParms))
+    }else{
+      this.subMaterialList = this.copySubMaterialData 
+    }
+
+  }
+
   getAllGroupMaterial() {
     const paramObject = {
       LocationId: this.locId
@@ -732,6 +797,7 @@ export class TicketDetailComponent implements OnInit {
         console.log('getAllGroupMaterial :: ');
         console.log(data);
         this.materialList = data.body.data;
+        this.copyMaterialData = data.body.data;
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -759,7 +825,8 @@ export class TicketDetailComponent implements OnInit {
       .subscribe(data => {
         console.log('getAllSubMaterials :: ');
         console.log(data);
-        this.subMaterialList = data.body.data;
+        this.subMaterialList = data?.body?.data;
+        this.copySubMaterialData = data?.body?.data;
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
