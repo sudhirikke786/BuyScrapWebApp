@@ -136,7 +136,7 @@ export class UserLoginComponent implements OnInit {
     this.commonService.validateUserCredentials(req).subscribe(async(data) => {
       this.localService.setLocalStorage('locId',Number(this.loginForm.value.locID)); 
       localStorage.setItem('locationName',locationName);
-      localStorage.setItem('currencyCode',this.selectedLocation?.currencyCode); 
+      localStorage.setItem('currencyCode',this.selectedLocation?.currencyCode || 'USD'); 
           if (data?.body.token!='' && data?.body.userdto.userName) {
             this.localService.setLocalStorage('userObj',data?.body);     
             
