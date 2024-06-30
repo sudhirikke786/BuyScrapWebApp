@@ -56,6 +56,12 @@ const routes: Routes = [
           canActivate: [RoleGuard],
           data: { requiredRole:['Administrator','Scale','Cashier']},
         },
+        { 
+          path: 'invoice', 
+          loadChildren:() => import('./module/invoice/tickets-invoice.module').then((m =>m.TicketsInvoiceModule)),
+          canActivate: [RoleGuard],
+          data: { requiredRole:['Administrator','Scale','Cashier']},
+        },
         {
           path:'sellers-buyers',
           loadChildren:() => import('./module/sellers/sellers.module').then(m => m.SellersModule),

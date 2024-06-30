@@ -1,0 +1,375 @@
+
+
+.webcam-container {
+  width: 100%;
+  
+  height: auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+// .btn-box{
+//   background-color: #ccc;
+//   a {
+//     padding: 5px;
+//     border-right: 1px solid #000;
+//   }
+// }
+
+
+
+
+.btn-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color:#eff0f2;
+ 
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #fff;
+  text-decoration: none; /* Remove underline if any */
+  width: 30px;  /* Adjust as needed */
+  height: 30px; /* Adjust as needed */
+}
+
+.icon-container i {
+  font-size: 16px; /* Adjust as needed */
+  color: #007bff; /* Adjust as needed */
+}
+
+
+
+
+
+
+
+
+.form-box{
+  margin-bottom: 10px;
+}
+
+.form-control:focus{
+  border: 1px solid #4a81d4;
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+}
+
+.price-d ::before{
+  content: '$';
+  top: 11px;
+    position: absolute;
+}
+
+
+.m-image{
+ 
+  max-height:235px;
+  width: auto;
+  overflow-y: scroll;
+    img{
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Ensures no extra space below the image */
+    }
+
+}
+
+
+
+.calculator {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 8px;
+    // height:calc(100vh - 590px);
+    width: 100%;
+    margin: 0 auto;
+    padding: 2px;
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  .display {
+    grid-column: 1 / span 4;
+    background-color: #f2f2f2;
+   
+    font-size: 2rem;
+    text-align: right;
+  }
+  
+  .btn-cal {
+    background-color: var(--ct-blue);
+    color: var(--ct-white);
+    border: none;
+    font-size: 1.1rem !important;
+    
+    cursor: pointer;
+  }
+  
+  .operator {
+    grid-row: span 2;
+  }
+  
+  .enter {
+    grid-column: 3 / span 2;
+  }
+  
+
+  
+  .h-30{
+    height: 30px;
+    border-color: #e9ecef;
+  }
+
+ 
+  .custom-file-input {
+    display: none;
+  }
+
+  .bi-keyboard{
+    font-size: 30px;
+  }
+
+  .bi-gear {
+    font-size: 1.3rem;
+    margin-left: 5px;
+  }
+
+
+  .c-title{
+    width: 50px;
+  }
+  
+//   @media (max-width: 1180px) {
+
+//     .cost-image div{
+//       width: 100% !important;
+//     }
+//     .content-container{
+//       margin-top: 5px;
+//       .btn{
+//         margin-bottom: 0px !important;
+//         font-size: 11px;
+//         margin-right: 1px;
+
+//       }
+//     }
+//     .btn-cal{
+//       font-size: 1rem;
+//     }
+
+//  }
+
+@media (max-width: 768px) {
+  .calculator {
+    
+    padding: 5px;
+    font-size: 1rem !important;
+    text-align: center;
+   }
+
+   .btn-cal {
+    font-size: 0.75rem !important;
+   }
+
+ 
+
+  
+}
+
+@media  screen and (max-width: 1600px)  {
+
+  .btn-cal {
+    font-size: 1.1rem !important;
+  }
+
+  .btn{
+    line-height: 1.1rem !important;
+  }
+
+  .p-lable {
+    font-size: 1.0rem !important;
+  }
+  .t-lable{
+    font-size: 0.9rem !important;
+  }
+  .form-control {
+    font-size: 0.8rem !important;
+  }
+  .bi-keyboard{
+    font-size: 1rem !important;
+  }
+
+  .bi-gear{
+    font-size:1rem !important;
+  }
+
+
+}
+
+
+@media screen and (max-width: 1920px) and (min-height: 953px) {
+  /* Your styles here */
+
+  .btn-cal {
+    font-size: 2.1rem !important;
+  }
+
+}
+
+
+@media screen and (max-width:1920px) {
+
+  
+.m-image{
+ 
+  height:240px;
+  width: auto;
+  overflow: hidden;
+    img{
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Ensures no extra space below the image */
+    }
+
+}
+
+  .c-title{
+    width:90px;
+  }
+
+  .btn-cal {
+    font-size: 1.5rem !important;
+  }
+
+}
+
+
+
+
+@media  screen and (min-width: 2050px) {
+  .btn-cal {
+    background-color: var(--ct-blue);
+    color: var(--ct-white);
+    border: none;
+    font-size: 3.1rem !important;
+    
+    cursor: pointer;
+  } 
+
+  
+.m-image{
+ 
+  max-height:230px;
+  width: auto;
+  overflow-x: scroll;
+    img{
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Ensures no extra space below the image */
+    }
+
+}
+
+  .bi-keyboard{
+    font-size: 50px;
+  }
+
+  .bi-gear{
+    font-size: 2.1rem;
+  }
+ .onoffbox{
+  padding: 10px !important;
+  border: 1px solid #ccc;
+  div{
+    padding: 10px 10px  !important ;
+  }
+ }
+
+}
+
+
+
+@media  screen and (min-width:3840px){
+
+  
+  .m-image{
+ 
+    height:350px;
+    min-height: 300px;
+    width: auto;
+    overflow-y: scroll;
+     
+  
+  }
+  .btn-cal {
+    
+    font-size: 3.1rem !important;
+  }
+  .bi-keyboard{
+    font-size: 3.1rem;
+  }
+
+  
+  .bi-gear{
+    font-size: 2.2rem;
+    margin-left: 5px;
+  }
+
+  .c-title{
+    width:120px;
+  }
+ 
+
+}
+
+
+@media  screen and (min-width:7000px){
+
+  .bi-keyboard {
+    font-size: 5rem;
+  }
+
+  .bi-gear {
+    font-size: 5rem;
+  }
+
+  .c-title {
+    width:160px;
+  }
+ 
+  .t-on{
+    font-size:3.1rem!important;
+  }
+
+  .form-box {
+    margin-bottom: 20px;
+  }
+  .form-control {
+    height: 100px;
+    margin-bottom: 5px;
+  }
+
+  
+  .btn-cal {
+    font-size: 5.6rem !important;
+  }
+   
+ 
+.m-image{
+ 
+  height:400px !important;
+  max-height: 300px !important;
+  width: auto;
+  overflow-y: scroll;
+   
+
+}
+
+}

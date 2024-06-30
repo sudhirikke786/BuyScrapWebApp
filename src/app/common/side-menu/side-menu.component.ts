@@ -30,6 +30,12 @@ export class SideMenuComponent {
         role: ['Administrator','Cashier']
       },
       {
+        title:'Invoice',
+        url:'/invoice',
+        icon:'/assets/images/leftmenu/invoice.png',
+        role: ['Administrator','Scale','Cashier']
+      },
+      {
         title:'Ship Out',
         url:'/ship-out',
         icon:'/assets/images/custom/icons/ship-out.png',
@@ -39,6 +45,12 @@ export class SideMenuComponent {
         title:'Materials',
         url:'/materials',
         icon:'/assets/images/custom/icons/materials.png',
+        role: ['Administrator','Cashier']
+      },
+      {
+        title:'Pick up',
+        url:'/pick-up',
+        icon:'/assets/images/custom/icons/ship-out.png',
         role: ['Administrator','Cashier']
       },
       {

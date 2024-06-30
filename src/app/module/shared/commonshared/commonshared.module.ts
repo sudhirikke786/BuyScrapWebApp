@@ -47,7 +47,8 @@ import { PlanUpgradeComponent } from './plan-upgrade/plan-upgrade.component';
     PenSignatureComponent,
     PageLoaderComponent,
     MaterialCalculatorComponent,
-    PlanUpgradeComponent
+    PlanUpgradeComponent,
+    WebcamModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

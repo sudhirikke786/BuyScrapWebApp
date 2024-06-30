@@ -1,0 +1,282 @@
+<div class="card" style="height: calc(100vh - 250px);">
+  <div class="card-body px-1 py-0" style="padding-top: 6px !important; padding-bottom: 6px !important;">
+
+    <div class="px-0 py-0">
+
+      
+      <div class="row">
+
+        <div class="col-sm-12">
+
+          <div class="col-sm-12">
+            <div class="col-12 d-flex justify-content-between align-items-start">
+              <div class="t-lable d-flex">
+
+                <!-- <button type="button" class=" bg-primary" aria-label="Close" (click)="backToChangeItemMainMaterials()">
+               
+                </button> -->
+                  <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom"> {{itemGroupName}} -
+                    {{itemMaterialName}}
+                  </div>
+              </div>
+             
+    
+                <!-- <div class="btn-box d-flex justify-content-between align-items-center  "> 
+                  <a (click)="op1.toggle($event)" tooltipPosition="left"  pTooltip="Virtual Keyboard">
+                    
+                    
+                  <i class="bi  bi-keyboard-fill text-primary fz-16 me-1"></i>
+                
+                </a>
+                  <a (click)="op.toggle($event)" tooltipPosition="left"  pTooltip="Select Camera">
+                    <i class="bi bi-gear text-primary fz-16  me-1"></i>
+                  </a>
+                  <a (click)="op.toggle($event)" tooltipPosition="left" pTooltip="Close Panel" (click)="backToChangeItemMainMaterials() " >
+
+                    <i class="bi bi-x-circle  fz-16  text-primary  me-1"></i>
+                  </a> 
+                  
+                  
+                </div> -->
+
+
+
+                <div class="btn-box d-flex justify-content-between align-items-center"> 
+                  <a (click)="op1.toggle($event)" tooltipPosition="left" pTooltip="Virtual Keyboard" class="icon-container">
+                    <i class="bi bi-keyboard-fill text-primary fz-16"></i>
+                  </a>
+                  <a (click)="op.toggle($event)" tooltipPosition="left" pTooltip="Select Camera" class="icon-container">
+                    <i class="bi bi-gear text-primary fz-16"></i>
+                  </a>
+                  <a (click)="op.toggle($event)" tooltipPosition="left" pTooltip="Close Panel" (click)="backToChangeItemMainMaterials()" class="icon-container">
+                    <i class="bi bi-x-circle text-primary fz-16"></i>
+                  </a>
+                </div>
+                
+            </div>
+          </div>
+          <div  class="col-sm-12">
+            <div class="row">              
+              <div  class="col-sm-8">
+                <div class="row" >                 
+                  <div class="webcam-container">
+                    
+                    <webcam                    
+                        [height]="wHeight"
+                        [width]="wWidth"           
+                        [trigger]="triggerObservable"
+                        (imageCapture)="handleImage($event)"
+                        *ngIf="showWebcam"
+                        mirror="true"
+                        [switchCamera]="nextWebcamObservable">
+                    </webcam> 
+                     <div style="overflow: hidden;">
+                      <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image" [ngStyle]="{width: wWidth +'px', height:'auto'}">
+                    </div>   
+                  
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="d-flex justify-content-start align-items-center mt-1">
+                    <!-- <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Stop Capture</button> -->
+                    <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
+                    <button type="button" class="btn  btn-primary me-1" *ngIf="!showWebcam" (click)="startCpatureImage()">Start Capture</button>
+                    <button type="button" class="btn btn-danger" *ngIf="showWebcam" (click)="takeSnapshot()">Capture Img</button>    
+                  </div>
+                </div>
+              </div>
+              <div  class="col-sm-4">
+                <!-- <div class="row">
+                  <div class="d-flex justify-content-center align-items-center flex-wrap">
+                    <div class="ms-2">
+                      <i pTooltip="Virtual Keyboard" tooltipPosition="bottom" class="bi bi-keyboard"
+                      ></i>
+                    </div>
+                    <div class="t-on">OFF </div>
+                    <div> <p-inputSwitch [(ngModel)]="isVirtual"
+                        (onChange)="showKeyboard($event)"></p-inputSwitch>
+                    </div>
+                    <div class="t-on"> ON</div>    
+                  </div>
+                </div> -->
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-lg-12">
+                    <div class="p-lable">
+                      Gross
+                    </div>                 
+                    <div class="input-group price-d ">                  
+                      <input type="text"  (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
+                        [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
+                        (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
+                    </div>  
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-lg-12">
+                    <div class="p-lable" >
+                      Tare
+                    </div>
+                    <div>
+                      <div class="input-group">
+                        <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
+                          [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'" id="tear"
+                          class="form-control   mb-1 ps-0">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-lg-12">                 
+                      <div class="p-lable">Net</div>
+                      <div class="input-group">
+                        <input type="text" readonly placeholder="Net Weight" #inputBox4 [(ngModel)]="netInput"
+                          value="{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox4'" id="net"
+                          class="form-control   mb-1 ps-0">
+                      </div>                  
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-lg-12">  
+                    <div class="p-lable d-flex align-items-center">
+                     <div> Price (in $)</div>
+                     <a (click)="op2.toggle($event)" *ngIf="currentRole=='Cashier' || currentRole=='Scale'">
+                      <!-- <i class="bi bi-unlock-fill"></i> -->
+                          <i class="bi bi-unlock-fill fz-14"  tooltipPosition="left"   pTooltip="Click on edit to modify the price"></i>
+                      </a>
+
+                    </div>                    
+                      <div class="input-group">
+                        <input type="text" [readonly]="passwordmode" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
+                          [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price"
+                          class="form-control   mb-1 ps-0">
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-12 col-sm-12 d-flex justify-content-between flex-wrap">
+          </div> -->
+
+        </div>
+
+      </div>
+
+
+
+
+    </div>
+
+
+    <div class="calculator">
+      <button class="btn-cal" (click)="appendNumber(1)">1</button>
+      <button class="btn-cal" (click)="appendNumber(2)">2</button>
+      <button class="btn-cal" (click)="appendNumber(3)">3</button>
+      <button class="btn-cal btn-danger" (click)="deleteCharacter()">Del</button>
+      <button class="btn-cal " (click)="appendNumber(4)">4</button>
+      <button class="btn-cal" (click)="appendNumber(5)">5</button>
+      <button class="btn-cal" (click)="appendNumber(6)">6</button>
+      <button class="btn-cal btn-danger" (click)="note()">Notes</button>
+      <button class="btn-cal" (click)="appendNumber(7)">7</button>
+      <button class="btn-cal" (click)="appendNumber(8)">8</button>
+      <button class="btn-cal" (click)="appendNumber(9)">9</button>
+      <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
+      <button class="btn-cal" (click)="appendNumber(0)">0</button>
+      <button class="btn-cal" (click)="appendNumber('00')">00</button>
+      <button class="btn-cal" (click)="appendNumber('.')">.</button>
+
+
+    </div>
+  </div>
+</div>
+
+
+<p-dialog [modal]="true" header="Add Note" [(visible)]="addNoteSectionVisible" [style]="{ width: '30vw' }"
+  [breakpoints]="{'767px': '100vw'}">
+  <div>
+    <div class="input-group">
+      <textarea id="materialNote" [(ngModel)]="materialNote" rows="4" cols="50" class="form-control">
+      </textarea>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <a href="javascript:void(0)" class="btn btn-success me-1" aria-label="Add / Edit Note" (click)="addEditNote()">Add
+      Note</a>
+    <a href="javascript:void(0)" class="btn btn-danger" aria-label="Delete Note" (click)="deleteNote()">Delete Note</a>
+  </ng-template>
+</p-dialog>
+
+
+
+<p-overlayPanel #op>
+  <div class="flex flex-column gap-3 w-25rem">
+    <div class="form-group">
+      <select class="form-select" [(ngModel)]="selectedCamera" (change)="changeWebCame(selectedCamera)">
+        <option value="undefined">Select a camera</option>            
+        <option *ngFor="let option of allMediaDevices" [value]="option.deviceId"> {{ option.label }} </option>
+        <!-- <option value="cd857abbf36b2b1511ae171f1778ffb3cc19c0240e6accda93c40162dc3e0dd1">HP HD Camera (05c8:0397)</option> -->
+       </select>
+    </div>
+   
+    </div>
+</p-overlayPanel>
+
+
+
+<p-overlayPanel #op1>
+  <div style="min-width: 150px;">
+    <div class="row">
+      <div class="col-sm-12 col-xs-12">
+        <div class="d-flex justify-content-between align-items-center flex-wrap onoffbox px-2 py-2">
+       
+          <div class="t-on">OFF </div>
+          <div> <p-inputSwitch [(ngModel)]="isVirtual"
+              (onChange)="showKeyboard($event)"></p-inputSwitch>
+          </div>
+          <div class="t-on"> ON</div>    
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+     
+   
+   
+</p-overlayPanel>
+
+
+<p-overlayPanel #op2>
+  <div style="min-width: 150px; padding:5px">
+    
+      <div class="form-group">
+        
+        <div class="mt-1">
+          <input
+            type="password"
+            class="form-control"
+            name=""
+            id=""
+            aria-describedby="helpId"
+            placeholder="Enter Password"
+          />
+         
+        </div>
+        
+      </div>
+      <button
+        name="submitpass"
+        id="submitpass"
+        class="btn btn-primary mt-1"
+
+        type="button"
+        (click)="priceModify();op2.hide()"
+        >Submit</button
+      >
+      
+      
+  </div>
+ 
+     
+   
+   
+</p-overlayPanel>

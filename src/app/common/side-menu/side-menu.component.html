@@ -70,7 +70,9 @@
                                         <li class="menu-item d-none d-md-block">
                                             <a  (click)="navigatePage(item)"
                                                 routerLinkActive="active" class="menu-link">,
-                                                <span class="menu-icon"><img src="{{item.icon}}" class="dash-icons"></span>
+                                                <span class="menu-icon">
+                                                    <img src="{{item.icon}}" class="dash-icons"> 
+                                                </span>
                                                 <span class="menu-text menu-links-text">{{item.title}}</span>
                                             </a>
                                         </li>

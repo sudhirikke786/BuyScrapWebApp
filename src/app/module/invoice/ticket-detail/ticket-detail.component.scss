@@ -1,0 +1,112 @@
+h4{
+    font-size: 1rem;
+}
+
+// .close{
+//   font-size: 12px;
+//     width: 15px;
+//     height: 15px;
+//     z-index: 9;
+//     display: flex;
+//     justify-content: center;
+//     top: 4px;
+//     align-items: center;
+//     color: #fff;
+//     background: #1988c7 !important;
+//     border: none;
+  
+// }
+
+.fz-14{
+  font-size: 0.9rem;
+}
+
+.mainbox-row{
+    // max-height: 110px;
+    overflow-y: scroll !important;
+}
+
+.ticket-card{
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+
+.cod-item {
+    color: darkred !important;
+}
+
+.main-ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 0.5fr; 
+    padding: 0.25em;
+    list-style-type: none;
+   
+    li {
+       
+     
+        // align-items: top;
+        justify-content: center;
+        text-align: left;
+      
+        background: #02659d;
+       a {
+          padding: 1em;
+          display: flex;
+          height: 100%;
+          border: 1px solid #ccc !important;
+          justify-content: center;
+       }
+
+      }  
+  }
+
+  .border-show {
+    border-bottom: 1px solid #dee2e6 !important;
+  }
+  
+  .border-hide {
+    border-bottom: none !important;
+  }
+
+  .equal-h{
+    width: 160px;
+    height: 60px;
+  }
+
+
+  .button-container {
+    display: flex;
+  }
+
+  .w-98{
+    width: 98%;
+  }
+  .w-75{
+    width:65% !important;
+  }
+  
+
+  @media (max-width: 767px) {
+    .w-98{
+      width: 100% !important ;
+    }
+    .w-75{
+      width:100% !important;
+    }
+
+  }
+
+  @media (max-width: 1024px) {
+
+    
+    
+    .equal-h{
+      width: 114px;
+      height: 60px;
+    }
+    .main-ul{
+      display: block;
+    }
+  }
