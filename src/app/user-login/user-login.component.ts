@@ -90,7 +90,7 @@ export class UserLoginComponent implements OnInit {
   }
   
   getIPAddress(){
-    this.http.get("http://api.ipify.org/?format=json").subscribe((res:any)=>{
+    this.http.get("https://api.ipify.org/?format=json").subscribe((res:any)=>{
       this.user.macID = '131312236';
     });
   }
