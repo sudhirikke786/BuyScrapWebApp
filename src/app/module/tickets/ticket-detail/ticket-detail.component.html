@@ -342,6 +342,20 @@
                                 
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 160px)">
                                     <h4 class="materials-heading">Materials</h4>
+
+                                    <div>
+                                        <input
+                                         type="text"
+                                         id="searchMaterialInput"
+                                         #searchMaterialInput
+                                         (keyup)="searchMaterial($event)"
+                                        class="form-control w-100"
+                                        placeholder="Search  Material"
+                                        aria-describedby="helpId"
+                                    />
+                                        
+                                    </div>
+
   
                                     <ul class="main-ul">
                                       
@@ -365,6 +379,19 @@
                                       </span>
                                        <div class="main-material"> Main Material - {{selectedMaterial}}</div>
                                   </h1>
+
+                                  <div>
+                                    <input
+                                     type="text"
+                                     
+                                     #searchsubMaterialInput
+                                     (keyup)="searchSubMaterial($event)"
+                                    class="form-control w-100"
+                                    placeholder="Search  Material"
+                                    aria-describedby="helpId"
+                                />
+                                    
+                                </div>
                        
                                     <ul class="main-ul">
                                       <ng-container  *ngFor="let item of subMaterialList" >

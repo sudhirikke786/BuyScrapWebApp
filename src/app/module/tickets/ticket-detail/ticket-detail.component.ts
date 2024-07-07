@@ -183,7 +183,12 @@ export class TicketDetailComponent implements OnInit {
   currencySymbol: string = 'USD';
 
   @ViewChild(PriceCalculatorComponent) priceCalculatorComponent!: PriceCalculatorComponent;
-  
+  @ViewChild('searchMaterialInput' , { static: false }) searchMaterialInput!: ElementRef;
+
+  @ViewChild('searchsubMaterialInput' , { static: false }) searchsubMaterialInput!: ElementRef;
+  copyMaterialData:any[]  = [];
+  copySubMaterialData:any[]  = [];
+
 
 
   constructor(private route: ActivatedRoute,
@@ -261,6 +266,32 @@ export class TicketDetailComponent implements OnInit {
 
 
   }
+
+  
+  searchMaterial(searchTerm:any){
+
+    const inputParms =  searchTerm.target.value.toLowerCase();
+    if(inputParms){
+      this.materialList = this.copyMaterialData.filter((item:any) => item?.groupName?.toLowerCase().includes(inputParms))
+    }else{
+      this.materialList = this.copyMaterialData 
+    }
+
+  }
+
+
+  
+  searchSubMaterial(searchTerm:any){
+
+    const inputParms =  searchTerm.target.value.toLowerCase();
+    if(inputParms){
+      this.subMaterialList = this.copySubMaterialData.filter((item:any) => item?.materialName?.toLowerCase().includes(inputParms))
+    }else{
+      this.subMaterialList = this.copySubMaterialData 
+    }
+
+  }
+
 
   focusChildInput() {
     this.priceCalculatorComponent.focusInput();
@@ -731,6 +762,8 @@ export class TicketDetailComponent implements OnInit {
         console.log('getAllGroupMaterial :: ');
         console.log(data);
         this.materialList = data.body.data;
+        this.copyMaterialData = data.body.data;
+
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -759,6 +792,8 @@ export class TicketDetailComponent implements OnInit {
         console.log('getAllSubMaterials :: ');
         console.log(data);
         this.subMaterialList = data.body.data;
+        this.copySubMaterialData = data?.body?.data;
+
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
