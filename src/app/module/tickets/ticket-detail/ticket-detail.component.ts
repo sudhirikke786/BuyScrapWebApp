@@ -179,6 +179,9 @@ export class TicketDetailComponent implements OnInit {
   printCheckNo!:string;
   checkVisible = false;
   
+  showImageHeader = 'Show image';
+  selectedImageUrl: any;
+  
   numberFormat: string = '1.2-2';
   currencySymbol: string = 'USD';
 
@@ -1853,7 +1856,9 @@ export class TicketDetailComponent implements OnInit {
     this.showImage = true;
     if(selectionType=='1') {
       this.showImageHeader = 'Show Material Image';
-    } 
+    } else if(selectionType=='2') {
+      this.showImageHeader = 'Show seller photo';
+    }
   }
 
   cancelImage() {

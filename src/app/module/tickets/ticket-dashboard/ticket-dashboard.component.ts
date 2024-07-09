@@ -185,6 +185,9 @@ export class TicketDashboardComponent implements OnInit {
   numberFormat: string = '1.2-2';
   currencySymbol: string = 'USD';
 
+  showImage = false;
+  showImageHeader = 'Show image';
+  selectedImageUrl: any;
 
   checkVisible =  false;
 
@@ -1610,6 +1613,21 @@ export class TicketDashboardComponent implements OnInit {
     // alert('1111111111111');
     return false;   // Add return false
   }
+
+  
+
+  showSelectedImage(imageUrl: string, selectionType:any) {
+    this.selectedImageUrl = imageUrl;
+    this.showImage = true;
+    if(selectionType=='1') {
+      this.showImageHeader = 'Show seller photo';
+    } 
+  }
+
+  cancelImage() {
+    this.showImage = false;
+  }
+
   /** Seller pop up actions end */
 
 
