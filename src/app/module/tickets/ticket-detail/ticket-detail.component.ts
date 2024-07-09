@@ -1355,7 +1355,9 @@ export class TicketDetailComponent implements OnInit {
     
     this.editItemCloseImageCapture = false;
     this.mainMaterialsVisible = true;
-    this.itemLeveloperationPerform = '';    
+    this.itemLeveloperationPerform = '';  
+    this.materialList =  this.copyMaterialData;
+    this.subMaterialList =  []; 
     // this.editItemVisible = false;
     //this.changeItemMaterialsVisible = true;
   }
