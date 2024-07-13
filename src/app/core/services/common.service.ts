@@ -453,7 +453,7 @@ export class CommonService {
 
   
   UpdateRegradedStatus(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Regrades/UpdateRegradedStatus', 'POST', paramObj);
+    return this.callAPI(environment.baseUrl + '/Regrades/UpdateRegradedStatus', 'POST', null , null, paramObj);
   }
 
 
