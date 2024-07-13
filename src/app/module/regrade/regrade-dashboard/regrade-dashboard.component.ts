@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService,ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-regrade-dashboard',
   templateUrl: './regrade-dashboard.component.html',
   styleUrls: ['./regrade-dashboard.component.scss'],
+  providers: [MessageService,ConfirmationService]
 })
 export class RegradeDashboardComponent implements OnInit {
-  actionList = [
+   lossQuanaty:number = 0;
+    actionList = [
     {
       iconcode: 'mdi-magnify',
       title: 'Search',
@@ -20,7 +24,7 @@ export class RegradeDashboardComponent implements OnInit {
     {
       iconcode: 'mdi-plus',
       title: 'New Regrade',
-      label:'New Regrade'
+      label: 'New Regrade',
     },
   ];
 
@@ -39,15 +43,13 @@ export class RegradeDashboardComponent implements OnInit {
     },
   ];
 
-
-  
   pagination: any = {
     SerachText: '',
     PageNumber: 1,
     RowOfPage: 10,
     LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
     first: 0,
-  }
+  };
 
   currentPage = 1;
   pageSize = 100;
@@ -66,6 +68,7 @@ export class RegradeDashboardComponent implements OnInit {
   currentRegradedMaterialRowID: any = 0;
   newRegradedMaterialName: any;
   newMaterialStock: any;
+  regStock!: number;
   currentRegradedMaterialName: any;
   currentMaterialStock: any;
   stockAfterRegrade: number = 0;
@@ -74,21 +77,31 @@ export class RegradeDashboardComponent implements OnInit {
   materialList: any;
   orgName: any;
   locId: any;
-  metarialObj:any = [];
+  metarialObj: any = [];
   popupAction = 'edit';
-
+  pouplossRegrate = false;
   stockQuanity: number = 0;
 
-  constructor(private route: ActivatedRoute,
+  netLoss:any;
+  netDescription:any;
+  logInUserId: any;
+
+  constructor(
+    private route: ActivatedRoute,
     private router: Router,
-    public commonService: CommonService) { }
+    private storage:StorageService,
+    public commonService: CommonService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+  ) {}
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.storage.getLocalStorage('userObj').userdto?.rowId);
+
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.getAllRegrades(this.pagination);
   }
-
 
   onPageChange(event: any) {
     this.currentPage = event.first / event.rows + 1;
@@ -96,32 +109,30 @@ export class RegradeDashboardComponent implements OnInit {
     let pagObj = {
       PageNumber: this.currentPage,
       RowOfPage: event.rows,
-    }
+    };
     this.pageSize = event.rows;
     this.pagination = { ...this.pagination, ...pagObj };
     this.getAllRegrades(this.pagination);
   }
 
-  
   getAllRegrades(pagination: any) {
     this.isLoading = true;
     console.log(this.pagination);
-    this.commonService.GetAllRegrades(pagination)
-      .subscribe(data => {
-        console.log('GetAllRegrades :: ');
-        console.log(data.body.data);
+    this.commonService.GetAllRegrades(pagination).subscribe(
+      (data) => {
+       
         this.regrades = data.body.data;
         this.pageTotal = data?.body?.totalRecord | 6;
         this.last = data?.body?.totalIndex | 1;
       },
-        (err: any) => {
-          this.isLoading = false;
-          // this.errorMsg = 'Error occured';
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
+      (err: any) => {
+        this.isLoading = false;
+        // this.errorMsg = 'Error occured';
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
   }
 
   getSubMaterials() {
@@ -129,69 +140,73 @@ export class RegradeDashboardComponent implements OnInit {
 
     const paramObject = {
       SearchText: this.searchSubMaterialInput,
-      LocationId: this.locId
+      LocationId: this.locId,
     };
-    this.commonService.getSubMaterials(paramObject)
-      .subscribe(data => {
-          console.log('getSubMaterials :: ');
-          console.log(data);
-          this.subMaterialList = data.body.data;
-          this.defaultSelectedMaterial = this.subMaterialList[0].rowId;
-          // alert(this.defaultSelectedMaterial);
-        },
-        (err: any) => {
-          // this.errorMsg = 'Error occured';
-          this.subMaterialLoader = false;
-        },
-        () => {
-          this.subMaterialLoader = false;
-        }
-      );
+    this.commonService.getSubMaterials(paramObject).subscribe(
+      (data) => {
+        console.log('getSubMaterials :: ');
+        console.log(data);
+        this.subMaterialList = data.body.data;
+        this.defaultSelectedMaterial = this.subMaterialList[0].rowId;
+        // alert(this.defaultSelectedMaterial);
+      },
+      (err: any) => {
+        // this.errorMsg = 'Error occured';
+        this.subMaterialLoader = false;
+      },
+      () => {
+        this.subMaterialLoader = false;
+      }
+    );
   }
-  
 
   getSubMaterialById(regradeId: any, subMaterialId: any) {
     this.subMaterialLoader = true;
 
     const paramObject = {
       SearchText: this.searchSubMaterialInput,
-      LocationId: this.locId
+      LocationId: this.locId,
     };
-    this.commonService.getSubMaterials(paramObject)
-      .subscribe(data => {
-          console.log('getSubMaterials :: ');
-          console.log(data);
-          this.subMaterialList = data.body.data;
-          const subMaterial = data.body.data.filter((item:any) => item.rowId == subMaterialId)[0]
-          
-          console.log('subMaterial :: ');
-          console.log(subMaterial);
-          this.showRegrateDeatilModel(subMaterial);
-          this.GetRegradedMaterialsById(regradeId);
-          // this.defaultSelectedMaterial = this.subMaterialList[0].rowId;
-          // alert(this.defaultSelectedMaterial);
-        },
-        (err: any) => {
-          // this.errorMsg = 'Error occured';
-          this.subMaterialLoader = false;
-        },
-        () => {
-          this.subMaterialLoader = false;
-        }
-      );
+    this.commonService.getSubMaterials(paramObject).subscribe(
+      (data) => {
+        console.log('getSubMaterials :: ');
+        console.log(data);
+        this.subMaterialList = data.body.data;
+        const subMaterial = data.body.data.filter(
+          (item: any) => item.rowId == subMaterialId
+        )[0];
+
+        console.log('subMaterial :: ');
+        console.log(subMaterial);
+        this.showRegrateDeatilModel(subMaterial);
+        this.GetRegradedMaterialsById(regradeId);
+        // this.defaultSelectedMaterial = this.subMaterialList[0].rowId;
+        // alert(this.defaultSelectedMaterial);
+      },
+      (err: any) => {
+        // this.errorMsg = 'Error occured';
+        this.subMaterialLoader = false;
+      },
+      () => {
+        this.subMaterialLoader = false;
+      }
+    );
   }
 
   getAllGroupMaterial() {
-    this.materialList =  JSON.parse(JSON.stringify(this.subMaterialList)); //{ ...this.subMaterialList };
-    this.materialList = this.materialList.filter((subMaterial:any) => subMaterial.rowId != this.currentRegradedMaterialRowID);
-    
+    this.materialList = JSON.parse(JSON.stringify(this.subMaterialList)); //{ ...this.subMaterialList };
+    this.materialList = this.materialList.filter(
+      (subMaterial: any) =>
+        subMaterial.rowId != this.currentRegradedMaterialRowID
+    );
+
     console.log('materialList :: ');
     console.log(this.materialList);
     this.newSelectedMaterial = this.materialList[0].rowId;
   }
-  
+
   showDialog() {
-    this.visibleNewRegrade = true;    
+    this.visibleNewRegrade = true;
     this.metarialObj = [];
     this.getSubMaterials();
   }
@@ -203,70 +218,129 @@ export class RegradeDashboardComponent implements OnInit {
   }
 
   deleteDetails(shipoutId: any) {
-    alert('Delete action Triggered')
+
+
+
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: `Are you sure you want to Delete this value?`,
+      accept: () => {
+        const param = { RowID: shipoutId,Status:true };
+
+        this.commonService.GetRegradedMaterialsById(param).subscribe(
+          (data) => {
+            this.messageService.add({ severity: 'success', summary: 'success', detail: "Deleted Successfully" });
+            this.getAllRegrades(this.pagination);
+    
+        })
+      },
+      reject: () => {
+       
+      },
+    });
+
+   
+
+
+   
   }
 
+  existingMaterialList(item:any) {
+    // const totalcount = this.metarialObj.reduce((acc: number, curr: any) => {
+    //   return (acc = acc + Number(curr.quanitity));
+    // }, 0);
+    // if (totalcount > this.regStock) {
+    //   alert('Regrate items are not more than net ');
+    // } else {
+      this.metarialObj.push({ name: item.materialName, quanitity: item?.stockQuanity , "materialId":item?.rowId,
+        "materialNet": item.stockQuanity});
+    // }
 
-  existingMaterialList(materialName: any, stockQuanity: any) {
-    this.metarialObj.push({name:materialName,quanitity:stockQuanity})
     console.log(this.metarialObj);
   }
 
-  
   GetRegradedMaterialsById(id: any) {
-     this.isLoading = true;
-     const param = {RegradedID : id};
-     console.log(this.pagination);
-     this.commonService.GetRegradedMaterialsById(param)
-       .subscribe(data => {
-          console.log('GetRegradedMaterialsById :: ');
-          console.log(data.body.data);
-          // Iterate through the object
-          this.metarialObj = [];
-          data.body.data.forEach((item: any) => {
-            this.existingMaterialList(item.materialName, item.net);
-          });
-       },
-         (err: any) => {
-           this.isLoading = false;
-           // this.errorMsg = 'Error occured';
-         },
-         () => {
-           this.isLoading = false;
-         }
-       );
+   
+    const param = { RegradedID: id };
+    console.log(this.pagination);
+    this.commonService.GetRegradedMaterialsById(param).subscribe(
+      (data) => {
+        console.log('GetRegradedMaterialsById :: ');
+        console.log(data.body.data);
+        // Iterate through the object
+        this.metarialObj = [];
+        data.body.data.forEach((item: any) => {
+          this.existingMaterialList(item);
+        });
+      },
+      (err: any) => {
+      
+        // this.errorMsg = 'Error occured';
+      },
+      () => {
+       
+      }
+    );
   }
 
-  showRegrateDeatilModel(subMaterial: any){
+  showRegrateDeatilModel(subMaterial: any) {
     this.currentRegradedMaterialRowID = subMaterial.rowId;
     this.newRegradedMaterialName = subMaterial.materialName;
-    this.newMaterialStock = subMaterial.net;
-    this.poupRegrate =  true;
+    this.newMaterialStock = Math.abs(subMaterial.net);
+    this.regStock = Math.abs(subMaterial.net);
+    this.poupRegrate = true;
     this.getAllGroupMaterial();
   }
-  hideRegrateDeatilModel(){
-    this.poupRegrate =  false;
+  hideRegrateDeatilModel() {
+    this.poupRegrate = false;
   }
 
   hideModel() {
     this.ShowmodelRegrate = false;
   }
 
-
   addMetarial() {
-   const _name = this.materialList.filter((item:any)=>item.rowId==this.newSelectedMaterial)[0];
-   this.metarialObj.push({name:_name.materialName,quanitity:this.stockQuanity})
+    const _name = this.materialList.filter(
+      (item: any) => item.rowId == this.newSelectedMaterial
+    )[0];
+
+    const totalcount = this.metarialObj.reduce((acc: number, curr: any) => {
+      return acc + Number(curr.quanitity);
+    }, 0);
+    
+    if(this.stockQuanity <= 0 ){
+      //alert('Please add the quatity');
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add the quatity" });
+      return;
+    }
+    if(this.stockQuanity > this.newMaterialStock ){
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Regrate items are not more than net" });
+      //alert('Regrate items are not more than net ');
+      return;
+    }
+    if ((totalcount + this.regStock) > this.newMaterialStock) {
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Regrate items are not more than net" });
+    } else {
+      this.metarialObj.push({
+        name: _name.materialName,
+        quanitity: this.stockQuanity,
+        "materialId":  _name.rowId,
+        "materialNet": this.stockQuanity,
+      });
+    }
     console.log(this.metarialObj);
   }
-  removeQuantty(index:number){
-
-    this.metarialObj.splice(index,1);
+  removeQuantty(index: number) {
+    this.metarialObj.splice(index, 1);
   }
 
   getAction(actionCode: any) {
     switch (actionCode?.iconcode) {
       case 'mdi-plus':
         this.showDialog();
+        break;
+      case 'mdi-refresh':
+        this.getAllRegrades(this.pagination);
         break;
       default:
         break;
@@ -278,13 +352,75 @@ export class RegradeDashboardComponent implements OnInit {
       case 'mdi-magnify':
         this.showDialog();
         break;
-        case 'mdi-refresh':
-          this.searchSubMaterialInput = '';
-          this.showDialog();
-          break;
+      case 'mdi-refresh':
+        this.searchSubMaterialInput = '';
+        this.showDialog();
+        break;
       default:
         break;
     }
   }
 
+  
+
+
+  saveRegrate() {
+    this.pouplossRegrate =  true;
+    const totalcount = this.metarialObj.reduce((acc: number, curr: any) => {
+      return acc + Number(curr.quanitity);
+    }, 0);
+
+    this.netLoss  = Number(this.newMaterialStock) - Number(totalcount)
+    
+
+  }
+
+
+  submitRegrate() {
+
+    const requestObj = this.metarialObj.map((item:any) => {
+
+           const obj =  {
+                materialId: Number(item.materialId),
+                materialNet: Number(item.materialNet) ,
+                rowId: 0 
+            };
+            return obj
+     })
+    
+    
+         
+    // [
+    //   {
+    //     "rowId": 0,
+    //     "materialId": 43,
+    //     "materialNet": 25
+    //   },
+    //   {
+    //     "rowId": 0,
+    //     "materialId": 45,
+    //     "materialNet": 35
+    //   }
+    // ];
+   
+    const reqParms ={
+      UserId:this.logInUserId,
+      LocID:this.locId,
+      MaterialID:this.currentRegradedMaterialRowID,
+      MaterialNet:this.newMaterialStock,
+      LossMaterialNet:this.netLoss,
+      LossReason:this.netDescription ?? 'Net Loss',
+    }
+
+    this.commonService.InsertUpdateRegradedMaterials(requestObj,reqParms).subscribe((res) =>{
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: "Data Inserted Successfully" });
+      this.poupRegrate = false;
+      this.pouplossRegrate =  false;
+      this.visibleNewRegrade =  false;
+      this.getAllRegrades(this.pagination);
+    //  this.messageService.add({ key: 'bc', severity: 'success', summary: 'Success', detail: 'Data Inserted Successfully' });
+    })
+
+
+  }
 }

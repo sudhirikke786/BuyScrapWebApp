@@ -57,11 +57,11 @@
                                 </ng-template>
                                 <ng-template pTemplate="body" let-regrade>
                                     <tr>
-                                        <td>{{ regrade.createdDate | date: 'MM/dd/yyyy' }}</td>
-                                        <td>{{ regrade.materialName }}</td>
-                                        <td>{{ regrade.formattedText }}</td>
-                                        <td>{{ regrade.sumMaterialNet | number : '1.3-3' }}</td>
-                                        <td>
+                                        <td  [ngClass]="{'bg-danger text-white': regrade.isDeleted}">{{ regrade.createdDate | date: 'MM/dd/yyyy' }}</td>
+                                        <td  [ngClass]="{'bg-danger text-white': regrade.isDeleted}">{{ regrade.materialName }}</td>
+                                        <td  [ngClass]="{'bg-danger text-white': regrade.isDeleted}">{{ regrade.formattedText }}</td>
+                                        <td  [ngClass]="{'bg-danger text-white': regrade.isDeleted}">{{ regrade.sumMaterialNet | number : '1.3-3' }}</td>
+                                        <td  [ngClass]="{'bg-danger text-white': regrade.isDeleted}">
                                             <a type="button"routerLinkActive="router-link-active" (click)="regradeDetails(regrade.rowId, regrade.materialId, 'show')"
                                             class="btn btn-grid btn-success waves-effect waves-light me-1">
                                                 <i class="mdi mdi-eye"></i> Show
@@ -70,7 +70,7 @@
                                             class="btn btn-grid btn-primary waves-effect waves-light me-1">
                                                 <i class="mdi mdi-pencil"></i> Edit
                                             </a>                       
-                                            <a class="btn btn-grid btn-danger waves-effect waves-light" (click)="deleteDetails(regrade.rowId)">
+                                            <a *ngIf="!regrade.isDeleted" class="btn btn-grid btn-danger waves-effect waves-light" (click)="deleteDetails(regrade.rowId)">
                                                 <i class="mdi mdi-trash-can-outline"></i> Delete
                                             </a>
                                         </td>
@@ -105,147 +105,7 @@
 
         </div> <!-- container -->
 
-    </div> <!-- content -->
-
-    <!-- Footer Start -->
-
-    <!-- end Footer -->
-
-    <!--  Modal Regrade - Select Button Click Inside 2nd Modal Popup -->
-    <div class="modal fade" id="modal-regrade-select-btn" tabindex="-1" role="dialog"
-        aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <!-- <h4 class="modal-title" id="myLargeModalLabel">New Regrade</h4> -->
-                    <a data-bs-target="#new-regrade" data-bs-toggle="modal" data-bs-dismiss="modal"
-                        class="btn btn-primary " title="Back to New Regrade"><i
-                            class="mdi mdi-keyboard-backspace"></i></a>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="row">
-
-                        <div class="col-md-12">
-                            <form action="">
-                                <div class="form-group col-sm-12 mb-2 d-flex">
-                                    <label for="simpleinput" class="form-label">Current Regraded Item</label>
-                                    <input type="text" id="currentregradeditem" class="form-control"
-                                        placeholder="Aluminium Extrusion(Clean)">
-                                </div>
-
-                                <div class="form-group col-sm-12 mb-2 d-flex">
-                                    <label for="simpleinput" class="form-label">Current Stock</label>
-                                    <input type="text" id="currentstock" class="form-control" placeholder="33790">
-                                </div>
-
-                                <div class="form-group col-sm-12 mb-2 d-flex">
-                                    <label for="simpleinput" class="form-label">Select Amount to Regrade</label>
-                                    <input type="text" id="selectamounttoregrade" class="form-control"
-                                        placeholder="Select to Regrade Stock">
-                                </div>
-
-                                <div class="form-group col-sm-12 mb-2 d-flex">
-                                    <label for="example-select" class="form-label">Regrade To</label>
-                                    <select class="form-select" id="example-select">
-                                        <option>Aluminium Extrusion(Clean)</option>
-                                        <option>Aluminium Rims(Clean)</option>
-                                        <option>Brass Caulks & Faucets</option>
-                                        <option>Circuit Boards(High Grade)</option>
-                                        <option>Computer Memory</option>
-                                        <option>Computers(Complete)</option>
-                                        <option>Copper #1</option>
-                                        <option>Copper #2</option>
-                                        <option>CRT Monitors</option>
-                                        <option>CRV 1</option>
-                                        <option>Iron 1</option>
-                                        <option>Iron 2</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-sm-12 mb-2 d-flex">
-                                    <label for="simpleinput" class="form-label">Stock After Regrade</label>
-                                    <input type="text" id="stockafterregrade" class="form-control"
-                                        placeholder="Current Stock">
-                                </div>
-
-                                <a class="btn btn-primary ">Save</a>
-                            </form>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
     </div>
-    <!--  Modal Regrade - Select Button Click Inside 2nd Modal Popup -->
-
-    <!--  Regrade Show Button Click Popup -->
-    <div class="modal fade" id="regrade-show-btn" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <!-- <h4 class="modal-title" id="myLargeModalLabel">New Regrade</h4> -->
-                    <a data-bs-dismiss="modal" class="btn btn-primary " title="Back to New Regrade"><i
-                            class="mdi mdi-keyboard-backspace"></i></a>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="row">
-
-                        <div class="col-md-12">
-                            <form action="">
-                                <div class="form-group col-sm-12 mb-2 d-flex">
-                                    <label for="simpleinput" class="form-label">Current Regraded Item</label>
-                                    <input type="text" id="currentregradeditem" class="form-control"
-                                        placeholder="CRV 1">
-                                </div>
-
-                                <div class="form-group col-sm-12 mb-2 d-flex">
-                                    <label for="simpleinput" class="form-label">Select Amount to Regrade</label>
-                                    <input type="text" id="selectamounttoregrade" class="form-control"
-                                        placeholder="500.00">
-                                </div>
-
-                                <div class="form-group col-sm-12 mb-2 d-flex">
-                                    <label for="example-select" class="form-label">Regrade To</label>
-                                    <select class="form-select" id="example-select">
-                                        <option>Aluminium Extrusion(Clean)</option>
-                                        <option>Aluminium Rims(Clean)</option>
-                                        <option>Brass Caulks & Faucets</option>
-                                        <option>Circuit Boards(High Grade)</option>
-                                        <option>Computer Memory</option>
-                                        <option>Computers(Complete)</option>
-                                        <option>Copper #1</option>
-                                        <option>Copper #2</option>
-                                        <option>CRT Monitors</option>
-                                        <option>CRV 1</option>
-                                        <option>Iron 1</option>
-                                        <option>Iron 2</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-sm-12 mb-2 d-flex">
-                                    <label for="simpleinput" class="form-label">Stock After Regrade</label>
-                                    <input type="text" id="stockafterregrade" class="form-control" value="590.00">
-                                </div>
-
-                                <a class="btn btn-primary ">Save</a>
-                            </form>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
-    <!--  Regrade Show Button Click Popup -->
-
 </div>
 
 <div class="content" *ngIf="isLoading">
@@ -288,14 +148,14 @@
             <tr>
                 <th>Material</th>
                 <th>Net Available</th>
-                <th>Action</th>
+                <th pFrozenColumn>Action</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-subMaterial>
             <tr>
-                <td>{{ subMaterial.materialName }}</td>
-                <td>{{ subMaterial.net }}</td>
-                <td>
+                <td style="width:50%">{{ subMaterial.materialName }}</td>
+                <td style="width:30%">{{ subMaterial.net }}</td>
+                <td style="width:20%">
                     <a (click)="showRegrateDeatilModel(subMaterial)"
                         class="btn btn-grid btn-success waves-effect waves-light">Select</a>
                 </td>
@@ -309,7 +169,7 @@
 </p-dialog>
 
 
-<p-dialog header="Show Regrade" [breakpoints]="{'767px': '100vw'}" [(visible)]="ShowmodelRegrate"
+<!-- <p-dialog header="Show Regrade" [breakpoints]="{'767px': '100vw'}" [(visible)]="ShowmodelRegrate"
     [style]="{width: '60vw'}">
 
     <ng-template pTemplate="header">
@@ -324,7 +184,7 @@
     <div class="row">
 
         <div class="col-md-12">
-            <form action="">
+            
                 <div class="form-group col-sm-6 mb-2 d-flex">
                     <label for="simpleinput" class="form-label">Current Regraded Item :</label>                    
                     <input type="text" id="currentRegradedMaterialName" [(ngModel)]="currentRegradedMaterialName" class="form-control"
@@ -352,13 +212,13 @@
                     <input type="text" id="stockafterregrade" class="form-control" value="590.00">
                 </div>
 
-                <a class="btn btn-primary ">Save</a>
-            </form>
+                <button class="btn btn-primary " >Save</button>
+           
         </div>
 
     </div>
 
-</p-dialog>
+</p-dialog> -->
 
 
 
@@ -378,23 +238,31 @@
         <div class="col-md-12">
             <form action="">                
                 <div class="row" >
-                    <div class="form-group col-sm-6 mb-2 d-flex">
+                    <div class="form-group col-sm-12 mb-2 d-flex">
                         <label for="simpleinput" class="form-label">Current Regraded Item</label>                    
                         <input type="text" id="newRegradedMaterialName" name="newRegradedMaterialName" 
                         [(ngModel)]="newRegradedMaterialName" class="form-control"
                         placeholder="Current Regraded Item">
                     </div>
     
-                    <div class="form-group col-sm-6 mb-2 d-flex" *ngIf="popupAction != 'show'" >
+                    <div class="form-group col-sm-12 mb-2 d-flex" *ngIf="popupAction != 'show'" >
                         <label for="simpleinput" class="form-label">Current Stock</label>          
-                        <input type="text" id="newMaterialStock" name="newMaterialStock" 
+                        <input type="number" readonly id="newMaterialStock" name="newMaterialStock" 
                         [(ngModel)]="newMaterialStock" class="form-control"
                         placeholder="Current Stock">
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group col-sm-12 mb-2 d-flex">
+                        <label for="simpleinput" class="form-label">Quantity to  Regrate from Current Stock</label>          
+                        <input  type="number" id="regStock" name="regStock" 
+                        [(ngModel)]="regStock" class="form-control"
+                        placeholder="Current Stock">
+                    </div>
+                </div>
                 <div class="row" *ngIf="popupAction != 'show'" >
-                    <div class="form-group col-sm-6 mb-2 d-flex">
-                        <label for="example-select" class="form-label">Regrade To</label>
+                    <div class="form-group col-sm-12 mb-2 d-flex">
+                        <label for="example-select" class="form-label w-50">Regrade To</label>
                         <select class="form-control" id="newSelectedMaterial" name="newSelectedMaterial" [(ngModel)]="newSelectedMaterial">
                             <option *ngFor="let option of materialList"
                             [value]="option.rowId">
@@ -402,11 +270,11 @@
                             </option>
                         </select>
                     </div>    
-                    <div class="form-group col-sm-6 mb-2 d-flex">
-                        <label for="simpleinput" class="form-label">Stock After Regrade</label>          
-                        <input type="text" id="stockQuanity" name="stockQuanity"
+                    <div class="form-group col-sm-12 mb-2 d-flex">
+                        <label for="simpleinput" class="form-label">Select Quantity for Regrade</label>          
+                        <input required type="number" id="stockQuanity" name="stockQuanity"
                         [(ngModel)]="stockQuanity" class="form-control"
-                        placeholder="Select Amount to Regrade">
+                        placeholder="Select Quantity to Regrade">
                     </div>  
                     
                  
@@ -473,7 +341,7 @@
 
 
                 <div class="col-3" *ngIf="metarialObj.length > 0 && popupAction != 'show'" >
-                    <a class="btn btn-primary"> Save</a>
+                    <a class="btn btn-primary" (click)="saveRegrate()"> Save</a>
                 </div>
               
                 
@@ -484,3 +352,60 @@
     </div>
 
 </p-dialog>
+
+
+
+
+
+
+<p-dialog [modal]="true" header="Regrade Loss Item" [breakpoints]="{'767px': '100vw'}" [(visible)]="pouplossRegrate" [style]="{width: '60vw'}">
+
+    <ng-template pTemplate="header">
+        <div>
+            <a (click)="hideRegrateDeatilModel()" data-bs-dismiss="modal" class="btn btn-primary "
+                title="Back to New Regrade"><i class="mdi mdi-keyboard-backspace"></i></a>
+
+        </div>
+
+    </ng-template>
+
+    <div class="row">
+
+        <div class="col-md-12">
+                  
+                <div class="row" >
+                    <div class="form-group col-sm-12 mb-2 d-flex">
+                        <label for="simpleinput" class="form-label"> Regraded Net Loss </label>                    
+                        <input type="text" readonly id="newRegradedMaterialName" name="newRegradedMaterialName" 
+                        [(ngModel)]="netLoss" class="form-control"
+                        placeholder="Current Regraded Item">
+                    </div>
+    
+                  
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-12 mb-2 d-flex">
+                        <label for="simpleinput" class="form-label">Quantity to  Regrate from Current Stock</label>          
+                        <textarea rows="5" cols="40" [(ngModel)]="netDescription"></textarea>
+                    </div>
+                </div>
+               
+
+
+
+
+                <div class="col-3">
+                    <a class="btn btn-primary" (click)="submitRegrate()"> Save</a>
+                </div>
+              
+                
+            
+           
+        </div>
+
+    </div>
+
+</p-dialog>
+
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
