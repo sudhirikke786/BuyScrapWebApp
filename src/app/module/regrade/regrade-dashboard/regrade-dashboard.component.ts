@@ -370,7 +370,7 @@ export class RegradeDashboardComponent implements OnInit {
       return acc + Number(curr.quanitity);
     }, 0);
 
-    this.netLoss  = Number(this.newMaterialStock) - Number(totalcount)
+    this.netLoss  = Number(this.regStock) - Number(totalcount)
     
 
   }
