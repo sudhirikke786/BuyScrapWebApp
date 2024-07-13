@@ -448,7 +448,7 @@ export class CommonService {
   }
 
   InsertUpdateRegradedMaterials(requestObj:any, postParams: any): Observable<any>{
-    return this.callAPI(environment.baseUrl + '/Regrades/InsertUpdateRegradedMaterials', 'POST', requestObj, null , postParams);
+    return this.callAPI(environment.baseUrl + '/Regrades/InsertUpdateRegradedMaterials', 'POST', requestObj, '' , postParams);
   }
 
   
