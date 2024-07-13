@@ -2092,7 +2092,7 @@ select optgroup option {
 
 .card-ticket-table {
   overflow-y: auto;
-  height: calc(100vh - 500px) !important;
+  height: calc(100vh - 480px) !important;
 }
 
 
