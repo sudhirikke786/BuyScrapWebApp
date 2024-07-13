@@ -227,7 +227,7 @@ export class RegradeDashboardComponent implements OnInit {
       accept: () => {
         const param = { RowID: shipoutId,Status:true };
 
-        this.commonService.GetRegradedMaterialsById(param).subscribe(
+        this.commonService.UpdateRegradedStatus(param).subscribe(
           (data) => {
             this.messageService.add({ severity: 'success', summary: 'success', detail: "Deleted Successfully" });
             this.getAllRegrades(this.pagination);
