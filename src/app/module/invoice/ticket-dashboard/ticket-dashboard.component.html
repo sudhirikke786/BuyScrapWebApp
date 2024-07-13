@@ -258,7 +258,8 @@
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="footer">
-                        <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Pay Remainder" (click)="payRemainder()"
+                        <div class="d-flex">
+                            <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Pay Remainder" (click)="payRemainder()"
                             > Pay Remainder </a>
                         <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Print" (click)="generateSingleTicketReport(ticketId)"
                             > Print </a>
@@ -269,6 +270,8 @@
                             class="btn btn-danger me-1">
                             <i class="mdi mdi-trash-can-outline"></i> Void
                         </a>
+                        </div>
+                      
                     </ng-template>
 
                 </p-table>
