@@ -26,7 +26,7 @@ export class CommonService {
   constructor(private http: HttpClient,private localService:StorageService) { }
 
   /* GET: get the data for type ahead select dropdown based on key passed*/
-    callAPI(path: string, method: string, requestObj?: any, postParams?: any,clientName?: string,): Observable<any> {
+    callAPI(path: string, method: string, requestObj?: any,clientName?: string, postParams?: any): Observable<any> {
     let httpHeader = new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'
     });
@@ -448,7 +448,7 @@ export class CommonService {
   }
 
   InsertUpdateRegradedMaterials(requestObj:any, postParams: any): Observable<any>{
-    return this.callAPI(environment.baseUrl + '/Regrades/InsertUpdateRegradedMaterials', 'POST', requestObj, postParams);
+    return this.callAPI(environment.baseUrl + '/Regrades/InsertUpdateRegradedMaterials', 'POST', requestObj, null , postParams);
   }
 
   

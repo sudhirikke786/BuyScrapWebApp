@@ -261,7 +261,7 @@
                     </div>
                 </div>
                 <div class="row" *ngIf="popupAction != 'show'" >
-                    <div class="form-group col-sm-12 mb-2 d-flex">
+                    <div class="form-group col-sm-6 mb-2 d-flex">
                         <label for="example-select" class="form-label w-50">Regrade To</label>
                         <select class="form-control" id="newSelectedMaterial" name="newSelectedMaterial" [(ngModel)]="newSelectedMaterial">
                             <option *ngFor="let option of materialList"
@@ -270,7 +270,7 @@
                             </option>
                         </select>
                     </div>    
-                    <div class="form-group col-sm-12 mb-2 d-flex">
+                    <div class="form-group col-sm-6 mb-2 d-flex">
                         <label for="simpleinput" class="form-label">Select Quantity for Regrade</label>          
                         <input required type="number" id="stockQuanity" name="stockQuanity"
                         [(ngModel)]="stockQuanity" class="form-control"
