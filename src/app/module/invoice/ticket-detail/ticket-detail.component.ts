@@ -255,7 +255,7 @@ export class TicketDetailComponent implements OnInit , AfterViewInit {
      
       this.getSellerById();
       this.processDataBasedOnTicketId();
-      this.GetAllAdjustmentType();
+    //  this.GetAllAdjustmentType();
       this.getTicketTransactions();
     });
 
@@ -265,7 +265,7 @@ export class TicketDetailComponent implements OnInit , AfterViewInit {
       if(types=='seller'){
         this.backUrl = `/${this.orgName}/sellers-buyers`;
       }else{
-        this.backUrl = `/${this.orgName}/home`;
+        this.backUrl = `/${this.orgName}/invoice`;
  
       }
 
@@ -534,11 +534,11 @@ export class TicketDetailComponent implements OnInit , AfterViewInit {
     const paramObject = {
       LocationId: this.locId,
       SerachText: this.ticketId,
-      SearchOrder: 'TicketId',
+      SearchOrder: 'InvoiceId',
       PageNumber: 1,
       RowOfPage: 10
     };
-    this.commonService.getAllTicketsDetails(paramObject)
+    this.commonService.GetAllInvoiceDetails(paramObject)
       .subscribe(data => {
         console.log('getAllTicketsDetails for ticketId :: ');
         console.log(data);
@@ -1724,14 +1724,15 @@ export class TicketDetailComponent implements OnInit , AfterViewInit {
   getTicketTransactions() {
 
     const param = {
-      TicketId: this.ticketId
+      TicketId: this.ticketId,
+      locid: this.locId,
     };
     this.getAllTicketsTransactionsByTicketId(param);
   }
 
   getAllTicketsTransactionsByTicketId(paramObj: any) {
     console.log(paramObj);
-    this.commonService.getAllTicketsTransactionsByTicketId(paramObj)
+    this.commonService.GetInvoiceMaterialsDetailsByInvoiceId(paramObj)
       .subscribe(data => {
         console.log('getAllTicketsTransactionsByTicketId :: ');
         console.log(data);

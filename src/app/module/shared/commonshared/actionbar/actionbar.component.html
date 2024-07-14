@@ -1,8 +1,10 @@
 <div class="d-flex m-button">
 
-
+    <div class="btn-group" role="group" aria-label="Basic example">
 <ng-container *ngFor="let item of actions">
-    <button [disabled]="item?.isDisable" (click)="actionClick(item)" [attr.title]="item?.title" class="btn me-1  btn-primary d-flex align-items-center" title="Search">
+
+    <button [disabled]="item?.isDisable" (click)="actionClick(item)" [attr.title]="item?.title" class="btn me-1 btn-primary d-flex align-items-center" title="Search">
         <i class="mdi mdi-cust {{item.iconcode}}" class="me-1"></i>{{item?.label}}</button>
 </ng-container>
+</div>
 </div>

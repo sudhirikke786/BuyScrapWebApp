@@ -202,7 +202,7 @@ export class TicketDashboardComponent implements OnInit {
       this.route.params.subscribe((res) =>{
         this.pagination = {
           SerachText: '',
-          SearchOrder: 'TicketId',
+          SearchOrder: 'InvoiceId',
           Status: this.defaultSelectedTicketsTypes.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(','),
           PageNumber: 1,
           RowOfPage: 10,
@@ -291,7 +291,7 @@ export class TicketDashboardComponent implements OnInit {
   getAllTicketsDetails(pagination: Pagination) {
     this.isLoading = true;
     console.log(this.pagination);
-    this.commonService.getAllTicketsDetails(pagination)
+    this.commonService.GetAllInvoiceDetails(pagination)
       .subscribe(data => {
         console.log('getAllTicketsDetails :: ');
         console.log(data);

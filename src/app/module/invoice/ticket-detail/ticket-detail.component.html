@@ -249,7 +249,7 @@
                                                         <div class="ms-2 me-2">
                                                             <b class="fz-14">Balance Amount  {{totalAmount - totalAdjustment - ticketData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
                                                         </div> 
-                                                        <div class="ms-2" *ngIf="!isEditModeOn">
+                                                        <div class="ms-2" *ngIf="!isEditModeOn && false" >
                                                             <div class="d-flex justify-content-start align-items-center">
                                                                 <div><p-inputSwitch [disabled]="true"  [(ngModel)]="isCODRequired"></p-inputSwitch></div>
                                                                 <div class="ms-2" >COD <span *ngIf="!isCODRequired">Required</span></div> 
@@ -257,7 +257,7 @@
                                                           
 
                                                         </div>
-                                                        <div class="ms-2" *ngIf="isEditModeOn">
+                                                        <div class="ms-2" *ngIf="isEditModeOn && false">
                                                             <div class="d-flex justify-content-start align-items-center">
                                                                 <div><p-inputSwitch  [(ngModel)]="isCODRequired"></p-inputSwitch></div>
                                                                 <div class="ms-2" >COD <span *ngIf="!isCODRequired">Required</span></div> 
@@ -276,11 +276,11 @@
                                                  
         
                                                     <div *ngIf="!isEditModeOn" class="pay-print-box">
-                                                        <a *ngIf="(ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid') && (currentRole!== 'Scale')" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
+                                                        <a *ngIf="(ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid') && (currentRole!== 'Scale') && false" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
                                                         <a class="btn btn-primary" (click)="generateSingleTicketReport(ticketId)">Printout</a>
                                                     </div>        
         
-                                                    <div *ngIf="isEditModeOn" class="adjustment-deduction-box">
+                                                    <div *ngIf="isEditModeOn && false" class="adjustment-deduction-box">
                                                         <a data-bs-target="#adjustments-modal" data-bs-toggle="modal" 
                                                         class="btn btn-danger me-1" (click)="addAdjustments()">Adjustments(Deductions)</a>
                                                     </div>

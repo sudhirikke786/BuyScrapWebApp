@@ -169,6 +169,15 @@ export class CommonService {
   getAllTicketsDetails(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsDetails', 'GET', paramObj);
   }
+  
+
+  GetAllInvoiceDetails(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Invoice/GetAllInvoiceDetails', 'GET', paramObj);
+  }
+
+
+
+
 
   getAllTicketsByParentID(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsByParentID', 'GET', paramObj);
@@ -176,6 +185,10 @@ export class CommonService {
 
   getAllTicketsTransactionsByTicketId(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsTransactionsByTicketId', 'GET', paramObj);
+  }
+
+  GetInvoiceMaterialsDetailsByInvoiceId(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InvoiceTransactionMaster/GetInvoiceMaterialsDetailsByInvoiceId', 'GET', paramObj);
   }
 
   insertUpdateTickets(requestObj: any): Observable<any> {

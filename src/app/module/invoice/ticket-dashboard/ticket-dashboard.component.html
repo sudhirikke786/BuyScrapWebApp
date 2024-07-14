@@ -22,7 +22,7 @@
                 <div class="col-xs-12 col-md-3 col-lg-2  mb-1">
                     <select class="form-control" id="example-select" [(ngModel)]="searchOrder">
                         <option value="All">All</option>
-                        <option value="TicketId">Ticket ID</option>
+                        <option value="TicketId">Invoice ID</option>
                         <option value="DateCreatedLatest">Date Created : Latest</option>
                         <option value="DateCreatedOldest">Date Created : Oldest</option>
                         <option value="LowTicketAmount">Low Ticket Amount</option>
@@ -72,7 +72,7 @@
                                         [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']">
                                         <ng-template pTemplate="header">
                                             <tr>
-                                                <th>Ticket ID</th>
+                                                <th>Invoice ID</th>
                                                 <th>Date Created</th>
                                                 <th>Status</th>
                                                 <th>Amount</th>
@@ -86,7 +86,7 @@
                                                 <td>{{ ticket?.rowId }}</td>
                                                 <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy' }}</td>
                                                 <td><span class="{{ticket?.statusClass}}">{{ ticket?.status | uppercase }}</span></td>
-                                                <td>{{ ticket?.ticketAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                                <td>{{ ticket?.totalAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
                                                 <td>{{ ticket?.customerName }}</td>
                                                 <td>{{ ticket?.dateClosed ? (ticket?.dateClosed | date: 'MM/dd/yyyy') : ''}}</td>
                                                 <td>
@@ -105,7 +105,7 @@
                                                        
                                                         <a class="btn btn-grid btn-success"
                                                             (click)="showTicketDetails(ticket)">
-                                                            <i class="mdi mdi-eye pe-1"></i> Open Ticket
+                                                            <i class="mdi mdi-eye pe-1"></i> Open Invoice
                                                         </a>
 
                                                     </div>
@@ -246,7 +246,7 @@
                             <td>{{ childTicket?.rowId }}</td>
                             <td>{{ childTicket?.createdDate | date: 'MM/dd/yyyy' }}</td>
                             <td>{{ childTicket?.status }}</td>
-                            <td>{{ childTicket?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                            <td>{{ childTicket?.totalAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
                             <td>{{ childTicket?.customerName }}</td>
                             <td>{{ childTicket?.dateClosed ? (childTicket?.dateClosed | date: 'MM/dd/yyyy') : '' }}</td>
                             <td>                                
