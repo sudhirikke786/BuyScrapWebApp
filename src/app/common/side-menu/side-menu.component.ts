@@ -48,8 +48,8 @@ export class SideMenuComponent {
         role: ['Administrator','Cashier']
       },
       {
-        title:'Pick up',
-        url:'/pick-up',
+        title:'Dispatch',
+        url:'/dispatch',
         icon:'/assets/images/custom/icons/ship-out.png',
         role: ['Administrator','Cashier']
       },
