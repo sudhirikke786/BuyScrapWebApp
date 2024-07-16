@@ -27,6 +27,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   showWebcam = false;
   isCameraExist = true;
   allMediaDevices: any;
+  isAutocapture = false;
 
   @Input() defaultCamera: any;
 
@@ -126,6 +127,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.isAutocapture = this.stroarge.getLocalStorage('systemInfo').filter((item:any) => item.keys == "AutoCaptureMaterialPhoto")[0].values == "True" ? true : false;
     this.logInUserId = this.commonService.getNumberFromLocalStorage(
       this.stroarge.getLocalStorage('userObj').userdto?.rowId
     );
@@ -190,17 +192,16 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     // Set focus on the current input
 
     if (this.currentFocusIndex === this.inputBoxes.length - 2) {
-      this.takeSnapshot();
+      await this.takeSnapshot();
     }
 
     // Increment the focus index, resetting to 0 if it exceeds the number of inputs
     if (this.currentFocusIndex > 3) {
       this.currentFocusIndex = 0;
     } else {
-      this.currentFocusIndex =
-        (this.currentFocusIndex + 1) % this.inputBoxes.length;
+      this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
     }
-
+    console.log(this.currentFocusIndex );
     this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
 
     //
@@ -419,6 +420,13 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     this.currentSize();
   }
 
+
+  autoCapture(){
+    this.trigger.next();
+    this.currentSize();
+  }
+
+
   onOffWebCame() {
     if (this.selectedCamera != '') {
       this.showWebcam = !this.showWebcam;
@@ -463,38 +471,48 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   }
 
   async handleImage(webcamImage: WebcamImage) {
+
+
+
     this.webcamImage = webcamImage;
     this.imageUrl = webcamImage.imageAsDataUrl;
     this.showWebcam = false;
-    const response = await this.SaveImage(1);
-    try {
-      this.imageUrl = response?.body?.data;
-      this.itemImagePath = this.imageUrl;
 
-      this.tareInput =
-        isNaN(this.tareInput) || this.tareInput == '' ? 0 : this.tareInput;
-      const obj = {
-        itemGross: this.grossInput,
-        itemTare: this.tareInput,
-        itemNet: isNaN(this.grossInput - this.tareInput)
-          ? 0
-          : this.grossInput - this.tareInput,
-        itemPrice: this.priceInput,
-        materialNote: this.materialNote,
-        itemImagePath: this.itemImagePath,
-      };
-      this.grossInput = '';
-      this.tareInput = '';
-      this.netInput = 0;
-      this.materialNote = '';
-      this.imageUrl = this.itemImagePath;
-      this.itemImagePath = '';
-      if(obj.itemGross){
-        this.calculateObj.emit(obj);
-
-      }
+    let response = await this.SaveImage(1);
     
-      this.getPicture.emit(this.imageUrl);
+
+    try {
+      if(this.isAutocapture){
+        this.imageUrl = response?.body?.data;
+        this.itemImagePath = this.imageUrl;
+  
+        this.tareInput =
+          isNaN(this.tareInput) || this.tareInput == '' ? 0 : this.tareInput;
+        const obj = {
+          itemGross: this.grossInput,
+          itemTare: this.tareInput,
+          itemNet: isNaN(this.grossInput - this.tareInput)
+            ? 0
+            : this.grossInput - this.tareInput,
+          itemPrice: this.priceInput,
+          materialNote: this.materialNote,
+          itemImagePath: this.itemImagePath,
+        };
+        this.grossInput = '';
+        this.tareInput = '';
+        this.netInput = 0;
+        this.materialNote = '';
+        this.imageUrl = this.itemImagePath;
+        this.itemImagePath = '';
+        if(obj.itemGross){
+          this.calculateObj.emit(obj);
+        }
+        this.getPicture.emit(this.imageUrl);
+      }else{
+        this.getPicture.emit(this.imageUrl);
+      }
+     
+  
 
       // this.imageUrl = null;
     } catch (error) {}
