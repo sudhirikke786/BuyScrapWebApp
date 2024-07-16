@@ -127,7 +127,12 @@ const routes: Routes = [
           loadChildren:() => import('./module/settings/settings.module').then(m => m.SettingsModule),
           canActivate: [RoleGuard],
           data: { requiredRole: ['Administrator','Cashier','Scale']},
-        }
+        },
+        { 
+          path: 'dispatch', 
+          loadChildren:() => import('./module/dispatch/dispatch.module').then((m =>m.DispatchModule)),
+        
+        },
       ]
   }
 ];

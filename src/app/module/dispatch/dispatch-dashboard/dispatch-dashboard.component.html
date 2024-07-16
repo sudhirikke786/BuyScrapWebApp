@@ -1,0 +1,124 @@
+<div class="content-page">
+    <div class="content">
+        <div class="bdcmb mt-2">
+            <div class="row">
+              <div class="col-sm-6 col-6">
+                <h4 class="page-title">Certificates of Destruction</h4>
+              </div>
+    
+              <div class="col-sm-6 col-6">
+                <div class="b-links">
+                  <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/certificates">Dispatch</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row mt-2">
+            <div class="col-sm-12 d-flex justify-content-end align-items-center">
+               
+               <div class="me-2 col-sm-4">
+                <input
+                type="text" 
+                
+                id="example-palaceholder"
+                class="form-control"
+                placeholder="Search.."
+            />
+               </div>
+               <div>
+                <app-actionbar [actions]="actionList" (iconAction)="getAction($event)"></app-actionbar>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row mt-2">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <p-table
+                    [value]="dispatchRes"
+                    [paginator]="true"
+                    [rows]="10"
+                    [scrollable]="true" 
+                    scrollHeight="50vh"
+                    [showCurrentPageReport]="true"
+                  
+                    [tableStyle]="{ 'min-width': '50rem' }"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" 
+                  >
+                 
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th></th>
+                        <th>Pickup</th>
+                        <th>Pick up Date and Time</th>
+                        <th>Customer</th>
+                        <th>Completed  Date and Time</th>
+                        <th>Action</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-certificate let-rowIndex="rowIndex">
+                      <tr>
+                        <td>
+                          <!-- <p-tableCheckbox [value]="product" [disabled]="isOutOfStock(product)"></p-tableCheckbox> -->
+    
+                          <!-- <p-tableCheckbox   [disabled]="certificate.selected" id="{{'pp'+ rowIndex}}"  (onChange)="onCheckboxChange(certificate)" >
+                          </p-tableCheckbox> -->
+    
+                          <p-checkbox [binary]="true" [disabled]="certificate.selected"  [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
+                          <!-- <p-tableCheckbox  [(ngModel)]="certificate.selected" (onChange)="onCheckboxChange(certificate)"></p-tableCheckbox> -->
+    
+                     
+                          
+                          </td>
+                        <td>{{ certificate.rowId }}</td>
+                        <td>{{ certificate?.dateOpened | date: 'MM/dd/yyyy' }}</td>
+                       
+                        <td>{{ certificate.customerName }}</td>
+                        <td>{{ certificate?.dateOpened | date: 'MM/dd/yyyy' }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <a class="btn  btn-primary me-1">Show</a>
+                                <a  class="btn  btn-primary me-1">Edit</a>
+                                <a  class="btn  btn-danger me-1">Delete</a>
+                                <a  class="btn  btn-primary ">Convert to Ticket</a>
+
+                            </div>
+
+                        </td>
+
+                       
+                      </tr>
+                    </ng-template>
+                   
+                  </p-table>
+                </div>
+                <!-- end card body-->
+              </div>
+              <!-- end card -->
+            </div>
+            <!-- end col-->
+          </div>
+        
+        
+        
+
+
+        
+    </div>
+</div>
+
+<!-- 
+<p-dialog header="Dispatch" [(visible)]="isConfirmModel" [modal]="true" [style]="{ width: '80rem' }" [breakpoints]="{'767px': '100vw'}">
+ 
+        <full-calendar [options]="calendarOptions"></full-calendar>
+   
+
+  </p-dialog>
+   -->

@@ -15,6 +15,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 })
 export class CertificatesDashboardComponent implements OnInit {
 
+
+  showLoader = false;
   actionList = [
     {
       iconcode:'mdi-magnify',
@@ -82,7 +84,6 @@ export class CertificatesDashboardComponent implements OnInit {
   cvisible = false;
   ivisible =  false;
 
-  showLoader = false;
   
   orgName: any;
   locId: any;
