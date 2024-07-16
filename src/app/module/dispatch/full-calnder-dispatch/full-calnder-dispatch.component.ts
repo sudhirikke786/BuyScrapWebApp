@@ -58,12 +58,19 @@ export class FullCalnderDispatchComponent implements OnInit {
   const end = new Date(info.event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   return {
     html: `
-      <div style="display: flex; align-items: center;border:1px solid #6658dd; border-left:3px solid #6658dd;padding:5px;">
+      <div style="border:1px solid #6658dd; border-left:3px solid #6658dd;padding:5px;">
+
         <i class="${info.event.extendedProps.icon} me-2"></i>
-        <div>
+        <div display: flex; align-items: center;">
           <div style="font-weight: bold;">${info.event.title}</div>
           <div>${start} - ${end}</div>
         </div>
+        <div display: flex; align-items: center;">
+         <div style="font-weight: bold;">10 -Appointments</div>
+         <div style="font-weight: bold;">  <a  class="text-primary">View All</a></div>
+
+        </div>
+
       </div>`
   }
 }
