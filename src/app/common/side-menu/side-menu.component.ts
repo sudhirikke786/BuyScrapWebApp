@@ -50,7 +50,7 @@ export class SideMenuComponent {
       {
         title:'Dispatch',
         url:'/dispatch',
-        icon:'/assets/images/custom/icons/ship-out.png',
+        icon:'/assets/images/custom/icons/dispatch.png',
         role: ['Administrator','Cashier']
       },
       {

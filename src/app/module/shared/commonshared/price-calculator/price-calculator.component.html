@@ -81,7 +81,7 @@
                     <!-- <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Stop Capture</button> -->
                     <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
                     <button type="button" class="btn  btn-primary me-1" *ngIf="!showWebcam" (click)="startCpatureImage()">Start Capture</button>
-                    <button type="button" class="btn btn-danger" *ngIf="!isAutocapture"  (click)="autoCapture()">Capture Img</button>    
+                    <button type="button" class="btn btn-danger" *ngIf="showWebcam" (click)="takeSnapshot()">Capture Img</button>    
                   </div>
                 </div>
               </div>

@@ -95,6 +95,11 @@ export class DispatchDashboardComponent implements OnInit {
       title:'Refresh'
     },
     {
+      iconcode:'mdi-calendar',
+      title:'Calendar View',
+      label:'Calendar View'
+    },
+    {
       iconcode:'mdi-plus',
       title:'New Appointment',
       label:'New Appointment'
@@ -181,13 +186,21 @@ toggleAllSelection() {
         break;
       case 'mdi-refresh':
         break;
-      case 'mdi-plus':
+      case 'mdi-calendar':
         this.showDialog();
+        break;
+      case 'mdi-plus':
+        this.openAddUpdateEvent();
         break;
       default:
         break;
     }
 
+  }
+
+  
+  openAddUpdateEvent(){
+    alert('Add / Update Event is in Progress')
   }
 
   showDialog(){

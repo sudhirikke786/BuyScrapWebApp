@@ -310,7 +310,9 @@
                             <th><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
                             <th>Ticket ID</th>
                             <th>Date Created</th>
-                            <th>Ticket Amount</th>
+                            <th>Amount</th>
+                            <th>Balance</th>
+                            <th>Status</th>
                             <th>Seller</th>
                         </tr>
                     </ng-template>
@@ -322,7 +324,9 @@
                             </td>
                             <td>{{ sellerTicket?.rowId }}</td>
                             <td>{{ sellerTicket?.createdDate | date: 'MM/dd/yyyy' }}</td>
+                            <td>{{ sellerTicket?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
                             <td>{{ sellerTicket?.balanceAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                            <td>{{ sellerTicket?.status }}</td>
                             <td>{{ sellerTicket?.customerName }}</td>
                         </tr>
                     </ng-template>

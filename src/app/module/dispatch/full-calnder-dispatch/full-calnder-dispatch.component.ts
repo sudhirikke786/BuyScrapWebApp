@@ -11,7 +11,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 export class FullCalnderDispatchComponent implements OnInit {
 
   
-  constructor( private route:ActivatedRoute,private router:Router){
+  constructor( private route:ActivatedRoute,
+               private router:Router) {
 
   }
 
@@ -25,14 +26,24 @@ export class FullCalnderDispatchComponent implements OnInit {
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin],
     initialView: 'dayGridMonth',
+    customButtons: {
+      myCustomButton: {
+        text: 'Back',
+        click: function () {
+          alert('clicked the back button!');
+        }
+      }
+    },
     headerToolbar: {
-      left: 'prev,next today',
+      left: 'prev,next myCustomButton today',
       center: 'title',
       right: 'dayGridMonth,dayGridWeek,dayGridDay'
     },
+    buttonText: {
+      prev: 'Previous',
+      next: 'Next'
+    },
     events: [
-      { title: 'Collabartion', start: '2024-07-16T10:00:00', end: '2024-07-16T11:00:00', icon: 'fa-solid fa-calendar' },
-      { title: 'Planing', start: '2024-07-16T12:00:00', end: '2024-07-16T13:00:00', icon: 'fa-solid fa-calendar-check' },
       { title: 'Collabartion', start: '2024-07-16T10:00:00', end: '2024-07-16T11:00:00', icon: 'fa-solid fa-calendar' },
       { title: 'Planing', start: '2024-07-18T12:00:00', end: '2024-07-16T18:00:00', icon: 'fa-solid fa-calendar-check' },
       { title: 'Collabartion', start: '2024-07-19T10:00:00', end: '2024-07-19T11:00:00', icon: 'fa-solid fa-calendar' },

@@ -703,7 +703,8 @@ export class TicketDashboardComponent implements OnInit {
         console.log(data);
         this.sellerTickets = data.body.data;
         this.sellerTickets = this.sellerTickets.filter((obj: any) => {
-          return obj.status === 'OPEN' || obj.status === 'Partially Paid' ;
+          return obj.status === 'OPEN' || 
+          (obj.status === 'Partially Paid' && obj.isParent != true ) ;
         }).sort((a: any, b: any) => (a.title > b.title) ? 1 : -1);
       },
         (err: any) => {
@@ -734,7 +735,7 @@ export class TicketDashboardComponent implements OnInit {
     });
     this.isHoldTrue = (this.holdticketObj.length > 0) ? true : false;
 
-    var totalbalanceAmount = this.selectedSellerTickets.reduce((totalAmount: any, item: any) => totalAmount + item.balanceAmount, 0);
+    var totalbalanceAmount = this.selectedSellerTickets.reduce((totalAmount: any, item: any) => totalAmount + item.amount, 0);
     
     // alert(totalbalanceAmount);
 
