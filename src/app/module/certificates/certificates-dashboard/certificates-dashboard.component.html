@@ -143,7 +143,7 @@
   <ng-template pTemplate="header">
     <div class="d-flex justify-content-between col-10">
       <div >   
-        <a (click)="hideCaptureModel()" class="btn btn-primary ">
+        <a (click)="visible = false" class="btn btn-primary ">
           <i class="mdi mdi-keyboard-backspace"></i>
         </a>
       </div>
@@ -169,40 +169,37 @@
     </div>
 
     <div class="col-md-12 mt-1">
+    
     <div class="d-block fz-14">
-      Add Description Photo below
-      <div class="d-flex justify-content-end mb-1">
-        <a (click)="showCaptureModel()" class="btn btn-grid btn-primary waves-effect waves-light ml-10">
+  
+      <div class="d-flex justify-content-between">
+        <div>   Add Description Photo below </div>
+
+        <div  class="d-flex justify-content-end mb-1">  <a (click)="showCaptureModel()" class="btn btn-grid btn-primary waves-effect waves-light ml-10">
           Capture Image
         </a>
         <a (click)="showItemViewModel()" class="btn btn-grid btn-primary waves-effect waves-light ml-10">
           View Item
-        </a>
+        </a></div>
+      
       </div>
     </div>
-    
-      <div class="form-group">        
-          <textarea cols="10" rows="5" [(ngModel)]="certificateDesc" class="form-control"></textarea>
-     </div>
-
-   
-     
-
-    </div>
-  </div>
-
-  <div class="row pd-imgs-box mt-3" *ngIf="!certificateLoader">
+    <div class="d-block fz-14  pd-imgs-box mt-1 border border-secoundary px-2 py-2  d-flex flex-wrap" *ngIf="!certificateLoader">
     <ng-container  *ngFor="let item of certificatesImages">
-    <div class="col-sm-3">
-      <div class="pd-imgs" tabindex="1">
-        <img src="{{item?.codImagePath}}" style="min-height: 150px;" alt="My COD added in role based data" class="img-responsive" />
+      <div class="col-sm-3">
+        <div class="pd-imgs" tabindex="1">
+          <img src="{{item?.codImagePath}}" style="min-height: 150px;" alt="My COD added in role based data" class="img-responsive" />
+        </div>
       </div>
-    </div>
-  </ng-container>
-  
+    </ng-container>
   </div>
 
-  <div class="row pd-imgs-box mt-3" *ngIf="certificateLoader">
+    </div>
+  </div>
+  
+ 
+
+  <div class="row pd-imgs-box mt-2" *ngIf="certificateLoader">
    
     <app-page-loader type="table"></app-page-loader>
   </div>
