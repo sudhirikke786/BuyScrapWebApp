@@ -189,9 +189,7 @@
     font-size: 1.1rem !important;
   }
 
-  .btn{
-    line-height: 1.1rem !important;
-  }
+
 
   .p-lable {
     font-size: 1.0rem !important;
@@ -224,7 +222,7 @@
 }
 
 
-@media screen and (max-width:1920px) {
+@media screen and (min-width:1920px) {
 
   
 .m-image{

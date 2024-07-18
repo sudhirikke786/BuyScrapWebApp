@@ -171,7 +171,7 @@
     <div class="col-md-12 mt-1">
     <div class="d-block fz-14">
       Add Description Photo below
-      <div class="d-flex justify-content-end">
+      <div class="d-flex justify-content-end mb-1">
         <a (click)="showCaptureModel()" class="btn btn-grid btn-primary waves-effect waves-light ml-10">
           Capture Image
         </a>
@@ -182,7 +182,7 @@
     </div>
     
       <div class="form-group">        
-          <textarea cols="10" rows="10" [(ngModel)]="certificateDesc" class="form-control"></textarea>
+          <textarea cols="10" rows="5" [(ngModel)]="certificateDesc" class="form-control"></textarea>
      </div>
 
    
@@ -254,9 +254,9 @@
         </select>
       </div>
 
-      <a class="btn btn-primary ml-10">Save Image</a>
+      <button class="btn btn-grid btn-primary waves-effect waves-light ml-10 ">Save Image</button>
 
-      <a data-bs-dismiss="modal" class="btn btn-primary ml-10">Close</a>
+      <button  class="btn btn-grid btn-primary waves-effect waves-light ml-10" (click)="cvisible = false">Close</button>
     </div>
   </div>
 </p-dialog>
