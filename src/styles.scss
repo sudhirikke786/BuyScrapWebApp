@@ -258,6 +258,13 @@ a {
      left: 5px;
 }
 
+@media (width: 1280px) and (height: 632px) {
+    .payment-ticket{
+    bottom: 50px !important; 
+    }
+}
+
+
 @media (max-width: 767px) {
 
     .balance-details-ul {
