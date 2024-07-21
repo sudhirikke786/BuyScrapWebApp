@@ -1,0 +1,73 @@
+<div class="content-page">
+
+    <div class="content">
+
+        <!-- Start Content-->
+        <div class="container-fluid">
+
+            <div class="bdcmb mt-2">
+                <div class="row">
+                    <div class="col-sm-6 col-6">
+                        <h4 class="page-title">Requisition Report</h4>
+                    </div>
+
+                    <div class="col-sm-6 col-6">
+                        <div class="b-links">
+                            <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()"
+                                >Requisition Report</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Date Acquired</th>
+                                <th>Time</th>
+                                <th>Ticket No.</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>ID Number</th>
+                                <th>Commodity</th>
+                                <th>Quantity/kg</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let row of data; let i = index">
+                                <tr>
+                                    <td *ngIf="isFirstOccurrence(data, 'dateAcquired', i)"
+                                        [attr.rowspan]="getRowSpan(data, 'dateAcquired', row.dateAcquired)">
+                                        {{ row.dateAcquired }}
+                                    </td>
+                                    <td *ngIf="isFirstOccurrence(data, 'time', i)"
+                                        [attr.rowspan]="getRowSpan(data, 'time', row.time)">
+                                        {{ row.time }}
+                                    </td>
+                                    <td *ngIf="isFirstOccurrence(data, 'ticketNo', i)"
+                                        [attr.rowspan]="getRowSpan(data, 'ticketNo', row.ticketNo)">
+                                        {{ row.ticketNo }}
+                                    </td>
+                                    <td *ngIf="isFirstOccurrence(data, 'name', i)"
+                                        [attr.rowspan]="getRowSpan(data, 'name', row.name)">
+                                        {{ row.name }}
+                                    </td>
+                                    <td *ngIf="isFirstOccurrence(data, 'address', i)"
+                                        [attr.rowspan]="getRowSpan(data, 'address', row.address)">
+                                        {{ row.address.split('\n')[0] }}<br>{{ row.address.split('\n')[1] }}
+                                    </td>
+                                    <td *ngIf="isFirstOccurrence(data, 'idNumber', i)"
+                                        [attr.rowspan]="getRowSpan(data, 'idNumber', row.idNumber)">
+                                        {{ row.idNumber }}
+                                    </td>
+                                    <td>{{ row.commodity }}</td>
+                                    <td>{{ row.quantity }}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
