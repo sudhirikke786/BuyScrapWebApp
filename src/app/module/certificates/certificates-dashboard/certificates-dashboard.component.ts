@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -28,58 +30,6 @@ export class CertificatesDashboardComponent implements OnInit {
     }
   ];
 
-  certificates1 = [
-    {
-      ticketID: '463',
-      dateCreated: '04/10/2022',
-      ticketAmount: '30.00',
-      seller: 'Alex Sample Jr.',
-      dateClosed: '04-10-2022'
-    },
-    {
-      ticketID: '452',
-      dateCreated: '04/10/2022',
-      ticketAmount: '305.00',
-      seller: 'Alexander',
-      dateClosed: '04-10-2022'
-    },
-    {
-      ticketID: '451',
-      dateCreated: '04/10/2022',
-      ticketAmount: '300.00',
-      seller: 'Mike Hussey',
-      dateClosed: '04-10-2022'
-    },
-    {
-      ticketID: '455',
-      dateCreated: '04/10/2022',
-      ticketAmount: '99.00',
-      seller: 'Alex Sample Jr.',
-      dateClosed: '04-10-2022'
-    },
-    {
-      ticketID: '480',
-      dateCreated: '04/10/2022',
-      ticketAmount: '55.00',
-      seller: 'John Travolta',
-      dateClosed: '04-10-2022'
-    },
-    {
-      ticketID: '440',
-      dateCreated: '04/10/2022',
-      ticketAmount: '40.00',
-      seller: 'Arnold',
-      dateClosed: '04-10-2022'
-    },
-    {
-      ticketID: '445',
-      dateCreated: '04/10/2022',
-      ticketAmount: '330.00',
-      seller: 'Alex Sample Jr.',
-      dateClosed: '04-10-2022'
-    }
-  ];
-
   visible = false;
   cvisible = false;
   ivisible =  false;
@@ -87,11 +37,13 @@ export class CertificatesDashboardComponent implements OnInit {
   
   orgName: any;
   locId: any;
-
+  logInUserId: any;
+  locationName: any;
   
   certificates: any;
   certificatesImages: any;
 
+  selectedTicketId: any;
   certificateLoader = false;
   selectedProducts:any;
   isShowModel = false;
@@ -100,15 +52,23 @@ export class CertificatesDashboardComponent implements OnInit {
   isConfirmModel: boolean = false;
   certificateDesc:any;
   materialDesc:any;
+  imageUrl: any;
+  imagePath: any;
+  selectedImageType: any = '1';
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private confirmationService: ConfirmationService, 
     private messageService: MessageService,
+    private stroarge:StorageService,
     public commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    this.locationName = localStorage.getItem('locationName');
+    
     this.getAllCODTickets();
   }
 
@@ -132,6 +92,55 @@ export class CertificatesDashboardComponent implements OnInit {
       this.isConfirmModel = false;
   }
 
+
+  
+
+  handleImage(imageUrl: string) {
+    //alert(imageUrl);
+    this.imageUrl = imageUrl;
+  }
+
+  changeType(selectedImageType: any) {    
+    alert(selectedImageType);
+    this.selectedImageType = selectedImageType;
+  }
+  
+  SaveImage() {
+    
+    let  requestObj:any = {    
+      organisationName: this.orgName,
+      locationName: this.locationName,
+      imagetype: 6 //parseInt(this.selectedImageType)
+    };
+    requestObj['base64Data'] =  this.imageUrl.split(';base64,')[1];
+
+    this.commonService.FileUploadFromWeb(requestObj).subscribe((res:any) =>{
+      console.log('Image url path :: {}', res.body.data);
+      console.log(res.body.data);
+      this.imagePath = res.body.data;
+    
+      const datePipe = new DatePipe('en-US');
+
+      let newCODImageObject = 
+      {
+          "rowId": 0,
+          createdBy: this.logInUserId,
+          createdDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          updatedBy: this.logInUserId,
+          updatedDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+          "ticketID": this.selectedTicketId ,
+          "codImagePath": this.imagePath
+      };
+      console.log('this.certificatesImages ::');
+      console.log(this.certificatesImages);
+      this.certificatesImages.push(newCODImageObject);    
+      console.log(this.certificatesImages);
+      this.imagePath = null;
+
+    });
+    this.imageUrl = null;
+    this.cvisible = false;
+  }
 
 
 
@@ -196,8 +205,9 @@ export class CertificatesDashboardComponent implements OnInit {
     }else{
       this.showModel();
     this.certificateLoader = true;
+    this.selectedTicketId = obj?.rowId;
     const paramObject = {
-      TicketID:obj?.rowId
+      TicketID: this.selectedTicketId
     }
     this.certificatesImages = [];
     this.commonService.GetCODImagesbyID(paramObject)
@@ -221,12 +231,8 @@ export class CertificatesDashboardComponent implements OnInit {
     this.visible = true;
   }
 
-  handleImage($event:any){
-
-  }
-
   showCaptureModel(){
-    this.visible = false;
+    // this.visible = false;
     this.cvisible = true;
   }
 

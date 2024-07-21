@@ -81,6 +81,7 @@ export class RegradeDashboardComponent implements OnInit {
   popupAction = 'edit';
   pouplossRegrate = false;
   stockQuanity: number = 0;
+  selectedRegradeId: number = 0;
 
   netLoss:any;
   netDescription:any;
@@ -121,9 +122,13 @@ export class RegradeDashboardComponent implements OnInit {
     this.commonService.GetAllRegrades(pagination).subscribe(
       (data) => {
        
-        this.regrades = data.body.data;
-        this.pageTotal = data?.body?.totalRecord | 6;
-        this.last = data?.body?.totalIndex | 1;
+        this.regrades = data.body.data.map((item: any) => { 
+          item.formattedText = item.formattedText.replace(/(?:\r\n|\r|\n)/g, '<br>');
+          return item;
+        } );
+        this.pageTotal = data?.body?.totalRecord;
+        this.last = data?.body?.totalIndex;
+        console.log(this.regrades);
       },
       (err: any) => {
         this.isLoading = false;
@@ -208,11 +213,15 @@ export class RegradeDashboardComponent implements OnInit {
   showDialog() {
     this.visibleNewRegrade = true;
     this.metarialObj = [];
+    this.selectedRegradeId = 0;
     this.getSubMaterials();
   }
 
-  regradeDetails(regradeId: any, shipoutId: any, action: string) {
+  regradeDetails(regradeId: any, shipoutId: any, materialNet: any, lossReason: string, action: string) {
     this.popupAction = action;
+    this.regStock = materialNet;
+    this.netDescription = lossReason;
+    this.selectedRegradeId = regradeId;
     // alert(action + ' action Triggered :: ' + shipoutId + ' :: ' + regradeId)
     this.getSubMaterialById(regradeId, shipoutId);
   }
@@ -252,8 +261,8 @@ export class RegradeDashboardComponent implements OnInit {
     // if (totalcount > this.regStock) {
     //   alert('Regrate items are not more than net ');
     // } else {
-      this.metarialObj.push({ name: item.materialName, quanitity: item?.stockQuanity , "materialId":item?.rowId,
-        "materialNet": item.stockQuanity});
+      this.metarialObj.push({ name: item.materialName, quanitity: item?.net , materialId: item?.materialId, rowId: item?.rowId,
+        materialNet: item.net});
     // }
 
     console.log(this.metarialObj);
@@ -287,7 +296,7 @@ export class RegradeDashboardComponent implements OnInit {
     this.currentRegradedMaterialRowID = subMaterial.rowId;
     this.newRegradedMaterialName = subMaterial.materialName;
     this.newMaterialStock = Math.abs(subMaterial.net);
-    this.regStock = Math.abs(subMaterial.net);
+    // this.regStock = Math.abs(subMaterial.net);
     this.poupRegrate = true;
     this.getAllGroupMaterial();
   }
@@ -313,22 +322,24 @@ export class RegradeDashboardComponent implements OnInit {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add the quatity" });
       return;
     }
-    if(this.stockQuanity > this.newMaterialStock ){
+    if(this.stockQuanity > this.regStock ){
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Regrate items are not more than net" });
       //alert('Regrate items are not more than net ');
       return;
     }
-    if ((totalcount + this.regStock) > this.newMaterialStock) {
+    if ((totalcount + this.stockQuanity) > this.regStock) {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Regrate items are not more than net" });
     } else {
 
       
       this.metarialObj.push({
+        rowId: 0,
         name: _name.materialName,
         quanitity: this.stockQuanity,
-        "materialId":  _name.rowId,
-        "materialNet": this.stockQuanity,
-      });
+        materialId:  _name.rowId,
+        materialNet: this.stockQuanity,
+      });      
+      this.stockQuanity = 0;
     }
     console.log(this.metarialObj);
   }
@@ -352,11 +363,11 @@ export class RegradeDashboardComponent implements OnInit {
   getSubMaterialAction(actionCode: any) {
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.showDialog();
+        //this.showDialog(); // TO DO:: New regrade pop-up search
         break;
       case 'mdi-refresh':
         this.searchSubMaterialInput = '';
-        this.showDialog();
+        //this.showDialog(); // TO DO:: New regrade pop-up refresh
         break;
       default:
         break;
@@ -385,31 +396,17 @@ export class RegradeDashboardComponent implements OnInit {
            const obj =  {
                 materialId: Number(item.materialId),
                 materialNet: Number(item.materialNet) ,
-                rowId: 0 
+                rowId: item.rowId 
             };
             return obj
      })
-    
-    
-         
-    // [
-    //   {
-    //     "rowId": 0,
-    //     "materialId": 43,
-    //     "materialNet": 25
-    //   },
-    //   {
-    //     "rowId": 0,
-    //     "materialId": 45,
-    //     "materialNet": 35
-    //   }
-    // ];
-   
+       
     const reqParms ={
+      rowId: this.selectedRegradeId,
       UserId:this.logInUserId,
       LocID:this.locId,
       MaterialID:this.currentRegradedMaterialRowID,
-      MaterialNet:this.newMaterialStock,
+      MaterialNet:this.regStock,
       LossMaterialNet:this.netLoss,
       LossReason:this.netDescription ?? 'Net Loss',
     }
@@ -421,7 +418,7 @@ export class RegradeDashboardComponent implements OnInit {
       this.visibleNewRegrade =  false;
       this.getAllRegrades(this.pagination);
     //  this.messageService.add({ key: 'bc', severity: 'success', summary: 'Success', detail: 'Data Inserted Successfully' });
-    })
+    });
 
 
   }
