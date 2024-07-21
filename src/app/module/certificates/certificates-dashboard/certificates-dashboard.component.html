@@ -244,14 +244,14 @@
   <div class="row mt-3">
     <div class="col-sm-12 d-flex">
       <div class="form-group">
-        <select class="form-select" id="example-select">
-          <option>Passport</option>
-          <option>Driver License</option>
-          <option>ID</option>
+        <select class="form-select" id="example-select" [(ngModel)]="selectedImageType" (change)="changeType(selectedImageType)">
+          <option value="1">Passport</option>
+          <option value="2">Driver License</option>
+          <option value="3">ID</option>
         </select>
       </div>
 
-      <button class="btn btn-grid btn-primary waves-effect waves-light ml-10 ">Save Image</button>
+      <button class="btn btn-grid btn-primary waves-effect waves-light ml-10 " (click)="SaveImage()">Save Image</button>
 
       <button  class="btn btn-grid btn-primary waves-effect waves-light ml-10" (click)="cvisible = false">Close</button>
     </div>
