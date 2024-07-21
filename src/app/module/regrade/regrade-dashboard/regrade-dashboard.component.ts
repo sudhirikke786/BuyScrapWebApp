@@ -321,6 +321,8 @@ export class RegradeDashboardComponent implements OnInit {
     if ((totalcount + this.regStock) > this.newMaterialStock) {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Regrate items are not more than net" });
     } else {
+
+      
       this.metarialObj.push({
         name: _name.materialName,
         quanitity: this.stockQuanity,

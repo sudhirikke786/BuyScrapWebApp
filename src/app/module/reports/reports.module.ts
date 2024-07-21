@@ -19,6 +19,7 @@ import { PaymentReportComponent } from './payment-report/payment-report.componen
 import { AccountingReportComponent } from './accounting-report/accounting-report.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { CheckplanGuard } from 'src/app/core/guard/checkplan.guard';
+import { RequisitionReportComponent } from './requisition-report/requisition-report.component';
 
 export const routes: Routes = [
   {
@@ -65,7 +66,12 @@ export const routes: Routes = [
   {
     path:'accounting-report',
     component:AccountingReportComponent
-  }
+  },
+  {
+    path:'requisition-report',
+    component:RequisitionReportComponent
+  },
+
 ]
 
 @NgModule({
@@ -80,7 +86,8 @@ export const routes: Routes = [
     SubMaterialReportComponent,
     VoidTicketReportComponent,
     PaymentReportComponent,
-    AccountingReportComponent
+    AccountingReportComponent,
+    RequisitionReportComponent
   ],
   imports: [
     CommonModule,

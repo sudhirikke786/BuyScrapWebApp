@@ -105,7 +105,7 @@
                       Gross
                     </div>                 
                     <div class="input-group price-d ">                  
-                      <input type="text"  (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
+                      <input type="text"  autocomplete="off"  (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
                         [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
                         (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
                     </div>  
@@ -118,7 +118,7 @@
                     </div>
                     <div>
                       <div class="input-group">
-                        <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
+                        <input type="text"  autocomplete="off" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
                           [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'" id="tear"
                           class="form-control   mb-1 ps-0">
                       </div>
@@ -129,7 +129,7 @@
                   <div class="col-12 col-sm-12 col-lg-12">                 
                       <div class="p-lable">Net</div>
                       <div class="input-group">
-                        <input type="text" readonly placeholder="Net Weight" #inputBox4 [(ngModel)]="netInput"
+                        <input type="text"  autocomplete="off" readonly placeholder="Net Weight" #inputBox4 [(ngModel)]="netInput"
                           value="{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox4'" id="net"
                           class="form-control   mb-1 ps-0">
                       </div>                  
@@ -146,7 +146,7 @@
 
                     </div>                    
                       <div class="input-group">
-                        <input type="text" [readonly]="passwordmode" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
+                        <input type="text"  autocomplete="off" [readonly]="passwordmode" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
                           [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price"
                           class="form-control   mb-1 ps-0">
                       </div>
