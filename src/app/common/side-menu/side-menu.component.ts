@@ -38,7 +38,8 @@ export class SideMenuComponent {
       {
         title:'Ship Out',
         url:'/ship-out',
-        icon:'/assets/images/custom/icons/ship-out.png',
+        icon:'/assets/images/custom/icons/dispatch.png',
+       
         role: ['Administrator','Cashier']
       },
       {
@@ -50,7 +51,7 @@ export class SideMenuComponent {
       {
         title:'Dispatch',
         url:'/dispatch',
-        icon:'/assets/images/custom/icons/dispatch.png',
+        icon:'/assets/images/custom/icons/ship-out.png',
         role: ['Administrator','Cashier']
       },
       {
