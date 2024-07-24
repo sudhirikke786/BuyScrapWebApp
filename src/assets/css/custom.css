@@ -1194,9 +1194,11 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 /*.upload-options-ul{background: #02659d; position: relative; bottom: -36px; text-align: center; padding-left: 0; height: 48px;}*/
 .upload-options-ul {
   background: #02659d;
-  position: relative;
+  position: absolute;
   text-align: center;
   padding-left: 0;
+  bottom: 0px;
+  width: 100%;
   margin-bottom: 0 !important;
 }
 

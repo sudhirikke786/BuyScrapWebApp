@@ -56,7 +56,7 @@
                                     <div class="col-md-3 col-sm-6">
 
 
-                                        <div class="card">
+                                        <div class="card h-100">
                                             <div class="card-body  py-0 px-0">
                                               <!-- Image Box -->
                                               <div class="image-box">
@@ -80,7 +80,7 @@
                                         
                                     </div>
                                     <div class="col-md-3 col-sm-6">
-                                        <div class="card">
+                                        <div class="card h-100">
                                             <div class="card-body py-0 px-0">
                                               <!-- Image Box -->
                                               <div class="image-box">
@@ -121,7 +121,7 @@
                                     </div>
                                     <div class="col-md-3 col-sm-6">
     
-                                        <div class="card">
+                                        <div class="card h-100">
                                             <div class="card-body  py-0 px-0">
                                               <!-- Image Box -->
                                               <div class="image-box">
@@ -162,7 +162,7 @@
                                     <div class="col-md-3 col-sm-6">
     
     
-                                        <div class="card">
+                                        <div class="card h-100">
                                             <div class="card-body  py-0 px-0">
                                               <!-- Image Box -->
                                               <div class="image-box">
@@ -319,35 +319,35 @@
                                 <h4>Personal Information</h4>
 
                                 <div class="form-group col-sm-3 mt-1">
-                                    <div class="form-floating">
-                                        <input type="text" formControlName="firstName" class="form-control"
+                                   <label for="floatingInput" class="form-label w-100">First Name</label>
+                                  <input type="text" formControlName="firstName" class="form-control"
                                             id="firstname" placeholder="First Name">
-                                        <label for="floatingInput">First Name</label>
-                                    </div>
+                                   
+                                   
                                 </div>
 
                                 <div class="form-group col-sm-3 mt-1">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Middle Name</label>
                                         <input type="text" formControlName="middleName" class="form-control"
                                             id="middlename" placeholder="Middle Name">
-                                        <label for="floatingInput">Middle Name</label>
-                                    </div>
+                                     
+                                    
                                 </div>
 
                                 <div class="form-group col-sm-3 mt-1">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Last Name</label>
                                         <input type="text" class="form-control" formControlName="lastName" id="lastname"
                                             placeholder="Last Name">
-                                        <label for="floatingInput">Last Name</label>
-                                    </div>
+                                   
+                                   
                                 </div>
 
                                 <div class="form-group col-sm-3 mt-1">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Date of Birth</label>
                                         <input type="date" class="form-control" formControlName="dob" id="birthdate"
                                             placeholder="Date of Birth">
-                                        <label for="floatingInput">Date of Birth</label>
-                                    </div>
+                                     
+                                  
                                 </div>
                             </div>
 
@@ -355,78 +355,80 @@
                                 <h4>Business Information</h4>
 
                                 <div class="form-group col-sm-6 mt-1">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Business Name</label>
                                         <input type="text" formControlName="firstName" class="form-control"
                                             id="bfirstName" placeholder="Business Name">
-                                        <label for="floatingInput">Business Name</label>
-                                    </div>
+                                     
+                                 
                                 </div>
                             </div>
 
                             <div class="row mt-2">
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Street Address</label>
                                         <input type="text" class="form-control" formControlName="streetAddress"
                                             id="streetaddress" placeholder="Street Address">
-                                        <label for="floatingInput">Street Address</label>
-                                    </div>
+                                      
+                                   
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">City</label>
                                         <input type="text" class="form-control" formControlName="city" id="city"
                                             placeholder="City">
-                                        <label for="floatingInput">City</label>
-                                    </div>
+                                      
+                                  
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">State</label>
+
                                         <input type="text" class="form-control" formControlName="state" id="state"
                                             placeholder="State">
-                                        <label for="floatingInput">State</label>
-                                    </div>
+                                  
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Zip Code</label>
                                         <input type="text" class="form-control" formControlName="zipCode" id="zipcode"
                                             placeholder="Zip Code">
-                                        <label for="floatingInput">Zip Code</label>
-                                    </div>
+                                 
+                                   
                                 </div>
                             </div>
 
                             <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">ID/License Number</label>
                                         <input type="text" class="form-control" formControlName="driverLicenseNumber"
                                             id="driverLicenseNumber" placeholder="ID/License Number">
-                                        <label for="floatingInput">ID/License Number</label>
-                                    </div>
+                                     
+                                    
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Expiration Date</label>
                                         <input type="date" class="form-control" formControlName="expiryDate"
                                             id="expiryDate" placeholder="Expiration Date">
-                                        <label for="floatingInput">Expiration Date</label>
-                                    </div>
+                             
+                                  
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Class</label>
                                         <input type="text" class="form-control" formControlName="class" id="class"
                                             placeholder="Class">
-                                        <label for="floatingInput">Class</label>
-                                    </div>
+                                      
+                                  
                                 </div>
 
                                 <div class="form-group col-sm-3">
+                                    <label for="floatingInput"  class="form-label w-100">Gender</label>
+                                   
                                     <select class="form-select" id="example-select" formControlName="gender">
-                                        <option value="">Gender</option>
+                                        <option value="undefind">Select Gender</option>
                                         <option>Male</option>
                                         <option>Female</option>
                                     </select>
@@ -437,35 +439,35 @@
                             <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Vehicle Make</label>
                                         <input type="text" class="form-control" formControlName="vehicleType"
                                             id="vehiclemake" placeholder="Vehicle Make">
-                                        <label for="floatingInput">Vehicle Make</label>
-                                    </div>
+                                     
+                                    
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Vehicle Colour</label>
                                         <input type="text" class="form-control" formControlName="vehicleColor"
                                             id="vehiclecolour" placeholder="Vehicle Colour">
-                                        <label for="floatingInput">Vehicle Colour</label>
-                                    </div>
+                                     
+                                    
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">License Plate Number</label>
                                         <input type="text" class="form-control" formControlName="licensePlateNumber"
                                             id="licenseplatenumber" placeholder="License Plate Number">
-                                        <label for="floatingInput">License Plate Number</label>
-                                    </div>
+                                      
+                                 
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Vehicle Identification No.</label>
                                         <input type="text" class="form-control" formControlName="vehicleName"
                                             id="vehicleidno" placeholder="Vehicle Identification No.">
-                                        <label for="floatingInput">Vehicle Identification No.</label>
-                                    </div>
+                                     
+                                  
                                 </div>
 
                             </div>
@@ -473,38 +475,42 @@
                             <div class="row mt-2">
 
                                 <div class="form-group col-sm-3" *ngIf="this.sellerType == 'Personal'">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Vehicle Model</label>
+
                                         <input type="text" class="form-control" formControlName="vehicleModel"
                                             id="vehiclemodel" placeholder="Vehicle Model">
-                                        <label for="floatingInput">Vehicle Model</label>
-                                    </div>
+                                  
                                 </div>
 
                                 <div class="form-group col-sm-3" *ngIf="this.sellerType == 'Business'">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Tax ID Number</label>
                                         <input type="text" class="form-control" formControlName="idnumber"
                                             id="taxIdNumber" placeholder="Tax ID Number">
-                                        <label for="floatingInput">Tax ID Number</label>
-                                    </div>
+                                       
+                                  
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Cell Number</label>
                                         <input type="text" class="form-control" formControlName="cellNumber"
                                             id="cellnumber" placeholder="Cell Number">
-                                        <label for="floatingInput">Cell Number</label>
-                                    </div>
+                                      
+                                   
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <div class="form-floating">
+                                    <label for="floatingInput"  class="form-label w-100">Email ID</label>
+                                   
                                         <input type="text" class="form-control" formControlName="emailId" id="emailid"
                                             placeholder="Email ID">
-                                        <label for="floatingInput">Email ID</label>
-                                    </div>
+                                       
+                                  
                                 </div>
 
                                 <div class="form-group col-sm-3">
+                                    <label for="floatingInput"  class="form-label w-100"> Dealer's Type</label>
+
+                                   
                                     <select class="form-select" id="example-select" formControlName="dealerType">
                                         <option value="">Choose Dealer's Type</option>
                                         <option>Dealer 1</option>

@@ -109,7 +109,7 @@ export class AddSellersComponent implements OnInit {
        idnumber : [''],
        expiryDate : [],
        class : [],
-       gender : [''],
+       gender : ['undefind'],
        vehicleColor : [],
        vehicleType : [],
        vehicleName : [],

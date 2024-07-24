@@ -19,10 +19,15 @@
     }
 }
 
+.image-box{
+    height: auto;
+    min-height: 150px;
+     height: 100%;
+}
+
 .dl-img1 {
     width: 100%;
-    max-height:150px;
-    height: auto;
+    height: 100%;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -34,3 +39,8 @@
     margin-left: auto !important;
     margin-right: auto !important;
 }
+
+.card-body {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
