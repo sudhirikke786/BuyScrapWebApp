@@ -107,6 +107,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   passwordmode = true;
   currentRole: any;
   i = 0 ;
+  showCamera = true;
 
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef,
@@ -201,7 +202,10 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
     if(changes && changes.itemImagePath){
       if (changes.itemImagePath.currentValue != 'assets/images/custom/id_scan.png') {
+        this.showWebcam = false;
+        this.showCamera = false; 
         this.imageUrl =  changes.itemImagePath.currentValue;
+        
       } else {
         this.imageUrl =  '';
         this.showWebcam = true;
@@ -418,26 +422,32 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       this.inputBoxes[this.currentFocusIndex]?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     },100);
 
-
-    (async () => {     
-      let devices = await navigator.mediaDevices.enumerateDevices(); 
-     
-      this.allMediaDevices = devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput");
-    
-      this.isCameraExist = this.allMediaDevices && this.allMediaDevices.length > 0;
-      const deviceId =  localStorage.getItem('metarialCamera');
-      if(localStorage.getItem('metarialCamera')){
-        setTimeout(() =>{
-           this.selectedCamera =  deviceId; 
-           this.changeWebCame(this.selectedCamera);
-        },100)
+    /**
+     * On edit if image came default camera stop
+     * 
+     */
+    if(this.showCamera){
+      (async () => {     
+        let devices = await navigator.mediaDevices.enumerateDevices(); 
        
-      }else{
-        this.selectedCamera =  this.allMediaDevices[0].deviceId;
-        this.changeWebCame(this.selectedCamera);
-      }
-    
-    })();
+        this.allMediaDevices = devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput");
+      
+        this.isCameraExist = this.allMediaDevices && this.allMediaDevices.length > 0;
+        const deviceId =  localStorage.getItem('metarialCamera');
+        if(localStorage.getItem('metarialCamera')){
+          setTimeout(() =>{
+             this.selectedCamera =  deviceId; 
+             this.changeWebCame(this.selectedCamera);
+          },100)
+         
+        }else{
+          this.selectedCamera =  this.allMediaDevices[0].deviceId;
+          this.changeWebCame(this.selectedCamera);
+        }
+      
+      })();
+    }
+ 
 
    
     
