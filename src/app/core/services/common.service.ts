@@ -289,6 +289,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllCODTickets', 'GET', pagination);
   }
 
+  MaterialCODImageUpdate(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Materialss/MaterialCODImageUpdate', 'POST', requestObj);
+  }
+
   /** settings page */
 
   getAllSettingsTicketDetails(paramObj: any){

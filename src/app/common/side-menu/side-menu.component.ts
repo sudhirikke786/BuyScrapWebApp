@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router, RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -8,7 +8,7 @@ import { CommonService } from 'src/app/core/services/common.service';
   templateUrl: './side-menu.component.html',
   styleUrls: ['./side-menu.component.scss']
 })
-export class SideMenuComponent {
+export class SideMenuComponent implements OnInit {
 
   constructor(public commonService:CommonService,private authService: AuthService,private route: ActivatedRoute,
     private router: Router){
@@ -16,7 +16,7 @@ export class SideMenuComponent {
   }
   organizationName: any = localStorage.getItem('orgName');
 
-  menuList = [
+  menuItemList = [
       {
         title: 'Home/Tickets',
         url: '/home',
@@ -92,6 +92,19 @@ export class SideMenuComponent {
       }
   ]
 
+  orgName: any;
+
+  menuList: any = [];
+
+
+  ngOnInit() {
+    this.orgName = localStorage.getItem('orgName');
+    if (this.orgName.toLowerCase() != 'prodtest') {
+      this.menuList = this.menuItemList.filter(function(el) { return (el.title.toString() != "Invoice" && el.title.toString() != "Dispatch"); }); 
+    } else {
+      this.menuList = this.menuItemList;
+    }
+  }
 
   showMenu(roleName:any):boolean{
     return this.authService.hasRoleActive(roleName)

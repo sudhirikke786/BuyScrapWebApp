@@ -30,9 +30,9 @@ export class TicketDashboardComponent implements OnInit {
     title: 'Refresh', 
   },
   {
-    iconcode: 'mdi-ticket',
-    title: 'New Ticket',
-    label:'New Ticket'
+    iconcode: 'mdi-ticket-account',
+    title: 'New Invoice',
+    label:'New Invoice'
   },
   
  
@@ -217,15 +217,15 @@ export class TicketDashboardComponent implements OnInit {
   ngOnInit() {
     this.currentRole = this.authService.userCurrentRole();
 
-    ['Administrator','Scale','Cashier']
-    if (['Administrator', 'Cashier'].includes(this.currentRole)) {
-      let actionButton = [{
-        iconcode: 'mdi-merge',
-        label:'Merge Ticket',
-        title: 'Merge Ticket and Pay'
-      }]
-      this.actionList = [...this.actionList,...actionButton];
-    }
+    // ['Administrator','Scale','Cashier']
+    // if (['Administrator', 'Cashier'].includes(this.currentRole)) {
+    //   let actionButton = [{
+    //     iconcode: 'mdi-merge',
+    //     label:'Merge Ticket',
+    //     title: 'Merge Ticket and Pay'
+    //   }]
+    //   this.actionList = [...this.actionList,...actionButton];
+    // }
 
     this.selectedTickets = this.defaultSelectedTicketsTypes;
 
@@ -1622,7 +1622,7 @@ export class TicketDashboardComponent implements OnInit {
       case 'mdi-refresh':
         this.refreshData();
         break;
-      case 'mdi-ticket':
+      case 'mdi-ticket-account':
         this.addNewTicket();
         break;
       case 'mdi-merge':

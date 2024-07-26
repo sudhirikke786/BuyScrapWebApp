@@ -123,13 +123,13 @@ export class CertificatesDashboardComponent implements OnInit {
 
       let newCODImageObject = 
       {
-          "rowId": 0,
+          rowId: 0,
           createdBy: this.logInUserId,
           createdDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
           updatedBy: this.logInUserId,
           updatedDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-          "ticketID": this.selectedTicketId ,
-          "codImagePath": this.imagePath
+          ticketID: this.selectedTicketId ,
+          codImagePath: this.imagePath
       };
       console.log('this.certificatesImages ::');
       console.log(this.certificatesImages);
@@ -210,6 +210,7 @@ export class CertificatesDashboardComponent implements OnInit {
       TicketID: this.selectedTicketId
     }
     this.certificatesImages = [];
+    this.materialDesc = obj.codDescription;
     this.commonService.GetCODImagesbyID(paramObject)
       .subscribe(data => {
         
@@ -226,8 +227,39 @@ export class CertificatesDashboardComponent implements OnInit {
       );
     }
   }
+  
+  saveCOD() {
+
+    const lstMaterialsDTOObj = this.certificatesImages.map((item:any) => {
+           const obj =  {
+              rowId: item.rowId,
+              codImagePath: item.codImagePath
+            };
+            return obj
+     });
+       
+    const requestObj ={
+      rowId: 0,      
+      userID: Number(this.logInUserId),
+      ticketID: Number(this.selectedTicketId),
+      codImagePath: '',
+      codDescription: this.materialDesc ?? '',
+      lstMaterialsDTO: lstMaterialsDTOObj
+    }
+
+    this.commonService.MaterialCODImageUpdate(requestObj).subscribe((res) =>{
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: "Data Inserted Successfully" });
+      this.visible = false;
+      this.getAllCODTickets();
+      this.certificatesImages = [];
+      this.materialDesc = '';
+    });
+
+  }
 
   showModel(){
+    this.certificatesImages = [];
+    this.materialDesc = '';
     this.visible = true;
   }
 
@@ -252,6 +284,8 @@ export class CertificatesDashboardComponent implements OnInit {
 
   hideModel(){
     this.visible = false;
+    this.certificatesImages = [];
+    this.materialDesc = '';
   }
   
 }

@@ -2941,5 +2941,16 @@ select optgroup option {
 }
 
 /** 
-  Ipad PROD
+  Tablet PROD
 */
+
+@media (width: 1280px) and (height: 632px) {
+  .payment-ticket{
+  bottom: 120px !important; 
+  }
+
+  .card-ticket-table {
+    overflow-y: auto;
+    height: calc(100vh - 530px)!important;
+  }
+}

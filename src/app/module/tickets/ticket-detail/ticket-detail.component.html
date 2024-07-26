@@ -840,23 +840,24 @@ header="Edit Seller"
                 <th>Seller</th>
                 <th>Driver's License</th>
                 <th>Address</th>
-                <th>Action</th>
+                <!-- <th>Action</th> -->
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-seller>
-            <tr style="cursor: pointer;">
+            <tr style="cursor: pointer;" (click)="clickOnSeller(seller.rowId)">
                 <td>
-                    <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" (click)="showSelectedImage(seller.idfaceShotImage, '2')"></a>
+                    <!-- <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" (click)="showSelectedImage(seller.idfaceShotImage, '2')"></a> -->
+                    <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img"></a>
                 </td>
                 <td>{{ seller.fullName }}</td>
                 <td>{{ seller.driverLicenseNumber }}</td>
                 <td>{{ seller.streetAddress }}</td>
-                <td>                                                           
+                <!-- <td>                                                           
                     <a class="btn btn-grid btn-success"
                         (click)="clickOnSeller(seller.rowId)">
                         <i class="mdi mdi-eye pe-1"></i> Select
                     </a>
-                </td>
+                </td> -->
             </tr>
         </ng-template>
       

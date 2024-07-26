@@ -153,7 +153,14 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
-    this.isAutocapture = this.stroarge.getLocalStorage('systemInfo').filter((item:any) => item.keys == "AutoCaptureMaterialPhoto")[0].values == "True" ? true : false;
+
+    const autoCaptureMaterialPhotoItem = this.stroarge.getLocalStorage('systemInfo').find((item: any) => item.keys === "AutoCaptureMaterialPhoto");
+    if (autoCaptureMaterialPhotoItem) {
+      this.isAutocapture = this.stroarge.getLocalStorage('systemInfo').filter((item:any) => item.keys == "AutoCaptureMaterialPhoto")[0].values == "True" ? true : false;
+    } else {
+      this.isAutocapture = false;
+    }
+    
     this.locationName = localStorage.getItem('locationName');
     this.currentRole = this.authService.userCurrentRole();
 
