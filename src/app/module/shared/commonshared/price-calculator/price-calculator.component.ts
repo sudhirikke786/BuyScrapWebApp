@@ -464,7 +464,10 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
 
   startCpatureImage(){
+
+    this.imageUrl = '';
     this.currentSize();
+
     navigator.mediaDevices.getUserMedia({video: true}); 
     (async () => {     
       let devices = await navigator.mediaDevices.enumerateDevices(); 
