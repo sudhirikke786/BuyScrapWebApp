@@ -146,11 +146,11 @@
 
                                                 <ng-container *ngIf="isEditModeOn">
                                                     <!-- (contextmenu)="onContextMenu($event,ticket) ; op?.toggle($event)"  -->
-                                                    <tr  style="background-color: #f0f0f0; "   [ngClass]="{'border-tr': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
+                                                    <!-- <tr  style="background-color: #f0f0f0; "   [ngClass]="{'border-tr': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
                                                         <td colspan="7" style="color: #02659d;">
                                                             {{ ticket.materialName }}
                                                         </td>
-                                                    </tr>
+                                                    </tr> -->
 
                                                     <tr    [ngClass]="{'border-tr': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
@@ -162,12 +162,27 @@
                                                             <td class="cod-item">{{ ticket?.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}
                                                         </ng-container>
                                                         <ng-template #otherThanCOD >
-                                                       
-                                                            <td>{{ ticket?.gross  }}</td>
-                                                            <td>{{ ticket?.tare }}</td>
-                                                            <td>{{ ticket?.net }}</td>
-                                                            <td>{{ ticket?.price | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                            <td>{{ ticket?.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                            <td colspan="5">
+                                                                <table style="width: 100%;">
+                                                                    <tr>
+                                                                        <td colspan="5">
+                                                                            {{ ticket.materialName }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                       
+                                                                        <td>{{ ticket?.gross  }}</td>
+                                                                        <td>{{ ticket?.tare }}</td>
+                                                                        <td>{{ ticket?.net }}</td>
+                                                                        <td>{{ ticket?.price | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                                        <td>{{ ticket?.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                                    </tr>
+
+                                                                </table>
+
+                                                            </td>
+                                                        
+                                                          
                                                         </ng-template>
                                                         <td>
                                                             <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img" (click)="showSelectedImage(ticket.imagePath, '1')"></a>
@@ -385,7 +400,7 @@
                                     </div>
 
   
-                                    <ul class="main-ul">
+                                    <ul class="main-ul mt-1">
                                       
                                       <ng-container  *ngFor="let item of materialList" >
                                           <li>
@@ -421,7 +436,7 @@
                                     
                                 </div>
                        
-                                    <ul class="main-ul">
+                                    <ul class="main-ul mt-1">
                                       <ng-container  *ngFor="let item of subMaterialList" >
                                           <li>
                                               <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
