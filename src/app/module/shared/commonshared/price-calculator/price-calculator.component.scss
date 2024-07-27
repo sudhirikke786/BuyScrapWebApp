@@ -2,7 +2,6 @@
 
 .webcam-container {
   width: 100%;
-  
   height: auto;
   position: relative;
   display: flex;
@@ -107,7 +106,7 @@
     background-color: var(--ct-blue);
     color: var(--ct-white);
     border: none;
-    font-size: 1.1rem !important;
+    font-size:2.5em !important;
     
     cursor: pointer;
   }
@@ -186,7 +185,7 @@
 @media  screen and (max-width: 1600px)  {
 
   .btn-cal {
-    font-size: 1.1rem !important;
+    font-size:2rem !important;
   }
 
 
@@ -243,7 +242,7 @@
   }
 
   .btn-cal {
-    font-size: 1.5rem !important;
+    font-size: 2rem !important;
   }
 
 }

@@ -56,49 +56,10 @@
             </div>
           </div>
           <div  class="col-sm-12">
-            <div class="row">              
-              <div  class="col-sm-6">
-                <div class="row" >                 
-                  <div class="webcam-container">
-                    
-                    <webcam                    
-                        [height]="wHeight"
-                        [width]="wWidth"           
-                        [trigger]="triggerObservable"
-                        (imageCapture)="handleImage($event)"
-                        *ngIf="showWebcam"
-                        mirror="true"
-                        [switchCamera]="nextWebcamObservable">
-                    </webcam> 
-                     <div style="overflow: hidden;">
-                      <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image" [ngStyle]="{width: wWidth +'px', height:'auto'}">
-                    </div>   
-                  
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="d-flex justify-content-start align-items-center mt-1">
-                    <!-- <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Stop Capture</button> -->
-                    <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
-                    <button type="button" class="btn  btn-primary me-1" *ngIf="!showWebcam" (click)="startCpatureImage()">Start Capture</button>
-                    <button type="button" class="btn btn-danger" *ngIf="showWebcam" (click)="takeSnapshot()">Capture Img</button>    
-                  </div>
-                </div>
-              </div>
-              <div  class="col-sm-6">
-                <!-- <div class="row">
-                  <div class="d-flex justify-content-center align-items-center flex-wrap">
-                    <div class="ms-2">
-                      <i pTooltip="Virtual Keyboard" tooltipPosition="bottom" class="bi bi-keyboard"
-                      ></i>
-                    </div>
-                    <div class="t-on">OFF </div>
-                    <div> <p-inputSwitch [(ngModel)]="isVirtual"
-                        (onChange)="showKeyboard($event)"></p-inputSwitch>
-                    </div>
-                    <div class="t-on"> ON</div>    
-                  </div>
-                </div> -->
+            <div class="row"> 
+
+              <div  class="col-sm-4">
+              
                 <div class="row">
                   <div class="col-12 col-sm-12 col-lg-12">
                     <div class="p-lable">
@@ -153,8 +114,66 @@
                   </div>
                 </div>
               </div>
+
+              <div  class="col-sm-8">
+                <div class="calculator">
+                  <button class="btn-cal" (click)="appendNumber(1)">1</button>
+                  <button class="btn-cal" (click)="appendNumber(2)">2</button>
+                  <button class="btn-cal" (click)="appendNumber(3)">3</button>
+                  <button class="btn-cal btn-danger" (click)="deleteCharacter()">Del</button>
+                  <button class="btn-cal " (click)="appendNumber(4)">4</button>
+                  <button class="btn-cal" (click)="appendNumber(5)">5</button>
+                  <button class="btn-cal" (click)="appendNumber(6)">6</button>
+                  <button class="btn-cal btn-danger" (click)="note()">Notes</button>
+                  <button class="btn-cal" (click)="appendNumber(7)">7</button>
+                  <button class="btn-cal" (click)="appendNumber(8)">8</button>
+                  <button class="btn-cal" (click)="appendNumber(9)">9</button>
+                  <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
+                  <button class="btn-cal" (click)="appendNumber(0)">0</button>
+                  <button class="btn-cal" (click)="appendNumber('00')">00</button>
+                  <button class="btn-cal" (click)="appendNumber('.')">.</button>
+            
+            
+                </div>
+              </div>
+              
+
+
+             
+             
             </div>
           </div>
+
+          <div  class="col-sm-7">
+            <div class="row" >                 
+              <div class="webcam-container">
+                
+                <webcam                    
+                    [height]="wHeight"
+                    [width]="wWidth"           
+                    [trigger]="triggerObservable"
+                    (imageCapture)="handleImage($event)"
+                    *ngIf="showWebcam"
+                    mirror="true"
+                    [switchCamera]="nextWebcamObservable">
+                </webcam> 
+                 <div style="overflow: hidden;">
+                  <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image" [ngStyle]="{width: wWidth +'px', height:'auto'}">
+                </div>   
+              
+              </div>
+            </div>
+            <div class="row">
+              <div class="d-flex justify-content-start align-items-center mt-1">
+                <!-- <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Stop Capture</button> -->
+                <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
+                <button type="button" class="btn  btn-primary me-1" *ngIf="!showWebcam" (click)="startCpatureImage()">Start Capture</button>
+                <button type="button" class="btn btn-danger" *ngIf="showWebcam" (click)="takeSnapshot()">Capture Img</button>    
+              </div>
+            </div>
+          </div>
+
+
           <!-- <div class="col-md-12 col-sm-12 d-flex justify-content-between flex-wrap">
           </div> -->
 
@@ -168,25 +187,7 @@
     </div>
 
 
-    <div class="calculator">
-      <button class="btn-cal" (click)="appendNumber(1)">1</button>
-      <button class="btn-cal" (click)="appendNumber(2)">2</button>
-      <button class="btn-cal" (click)="appendNumber(3)">3</button>
-      <button class="btn-cal btn-danger" (click)="deleteCharacter()">Del</button>
-      <button class="btn-cal " (click)="appendNumber(4)">4</button>
-      <button class="btn-cal" (click)="appendNumber(5)">5</button>
-      <button class="btn-cal" (click)="appendNumber(6)">6</button>
-      <button class="btn-cal btn-danger" (click)="note()">Notes</button>
-      <button class="btn-cal" (click)="appendNumber(7)">7</button>
-      <button class="btn-cal" (click)="appendNumber(8)">8</button>
-      <button class="btn-cal" (click)="appendNumber(9)">9</button>
-      <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
-      <button class="btn-cal" (click)="appendNumber(0)">0</button>
-      <button class="btn-cal" (click)="appendNumber('00')">00</button>
-      <button class="btn-cal" (click)="appendNumber('.')">.</button>
-
-
-    </div>
+   
   </div>
 </div>
 
