@@ -50,18 +50,21 @@ h4{
         // align-items: top;
         justify-content: center;
         text-align: left;
-      
-        background: #02659d;
+        background: #fff;
+        box-shadow: 1px 2px 0px 0px #03659b;
        a {
           padding: 2em;
           display: flex;
           height: 100%;
-          border: 1px solid #ccc !important;
+          color: #03659b;
+          font-size: 2.1rem;
+          font-weight: 500;
           justify-content: center;
-          color: #fff;
+         
        }
        &:hover {
-        background-color: #cd303f;
+          background-color: #cd303f;
+          color: #fff !important;
 
        }
 
