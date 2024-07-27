@@ -6,7 +6,7 @@
         <div class="bdcmb">
             <div class="row">
                 <div class="col-sm-6 col-6">
-                    <h4 class="page-title">Ticket Details</h4>
+                    <h4 class="page-title">Ticket Details  </h4>
                 </div>
 
                 <div class="col-sm-6 col-6">
@@ -28,45 +28,67 @@
 
                         <div class="row">
 
-                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  ticketData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-8'">
+                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  ticketData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-6'">
                                 
                                 <div class="row">
-                                    <div class="col-sm-2">
-                                        <img src="{{customer?.idfaceShotImage}}" class="dl-img">
+                                    <div class="col-sm-2 d-flex justify-content-center align-items-center">
+                                       
+                                            <img src="{{customer?.idfaceShotImage}}" class="dl-img">
+                                    
+                                       
                                     </div>
         
                                     <div class="col-sm-10">
         
                                         <div class="row">
-                                           <div class="col-sm-6 col-md-4 d-flex">
-                                            <div *ngIf="isEditModeOn" >
-                                                <a  class="btn btn-primary me-1 mb-1" (click)="editSeller()">
-                                                    Edit
-                                                </a>
-                                            </div>
-                                            <h4 class="ticket-number me-1">Ticket# - {{ticketId}}</h4>
-                                           </div>
-        
-                                           <div class="col-sm-6 col-md-8 d-flex justify-content-end mb-1">
-                                            <div>
-                                                <a  class="btn btn-primary me-1" [routerLink]="backUrl">
-                                                    Back
-                                                </a>
+                                         
+                                         
+                                            <div class="col-sm-12 d-flex justify-content-between  mb-1">
 
-                                            </div>
-                                            <div>
-                                                <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary flt-right" (click)="editTicketDetails()">
-                                                    <i class="mdi mdi-pencil"></i> Edit
-                                                </a>
-                                            </div>
-                                               
-                                              
-                                                <div *ngIf="isEditModeOn" >
-                                                    <a class="btn btn-danger me-1" (click)="cancelEditTicket(false, 0)">Cancel</a>
-                                                    <a class="btn btn-primary" (click)="confirmSave()">Save</a>
+                                                <div>
+                                                    Ticket Id : {{ticketId}} / {{ticketData?.status}}   
                                                 </div>
-        
-                                           </div> 
+                                                <div class="d-flex justify-content-end">
+                                                    
+                                                <div>
+                                                    <a  class="btn btn-primary me-1" [routerLink]="backUrl">
+                                                        Back
+                                                    </a>
+    
+                                                </div>
+    
+                                                <div *ngIf="isEditModeOn" >
+                                                    <a  class="btn btn-primary me-1 mb-1" (click)="editSeller()">
+                                                        Edit
+                                                    </a>
+                                                </div>
+    
+                                                <div>
+                                                    <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary flt-right" (click)="editTicketDetails()">
+                                                        <i class="mdi mdi-pencil"></i> Edit
+                                                    </a>
+                                                </div>
+                                                   
+                                                  
+                                                    <div *ngIf="isEditModeOn" >
+                                                        <a class="btn btn-danger me-1" (click)="cancelEditTicket(false, 0)">Cancel</a>
+                                                        <a class="btn btn-primary" (click)="confirmSave()">Save</a>
+                                                    </div>
+    
+                                                </div>
+    
+    
+    
+    
+    
+            
+                                               </div> 
+
+
+
+
+
+
                                         </div>
         
                                         <table class="seller-view-tbl">
@@ -87,14 +109,14 @@
                                     </div>
                                 </div>
                                 
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-sm-4">
                                         <h4 class="title-plus-border">Particulars</h4>                                                
                                     </div>
                                     <div class="col-sm-4">
                                         <h4 class="title-plus-border">Status - <span class="color-green">{{ticketData?.status}}</span></h4>                                                
                                     </div>
-                                </div>
+                                </div> -->
 
 
                                 <div class="row">
@@ -110,8 +132,8 @@
                 
                                             <ng-template pTemplate="header">
                                                 <tr>
-                                                    <th style="width: 25%;">Material</th>
-                                                    <th>Gross(M)</th>
+                                                  
+                                                    <th >Gross(M)</th>
                                                     <th>Tare</th>
                                                     <th>Net</th>
                                                     <th>Price</th>
@@ -124,9 +146,15 @@
 
                                                 <ng-container *ngIf="isEditModeOn">
                                                     <!-- (contextmenu)="onContextMenu($event,ticket) ; op?.toggle($event)"  -->
+                                                    <tr  style="background-color: #f0f0f0; "   [ngClass]="{'border-tr': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
+                                                        <td colspan="7" style="color: #02659d;">
+                                                            {{ ticket.materialName }}
+                                                        </td>
+                                                    </tr>
+
                                                     <tr    [ngClass]="{'border-tr': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
-                                                            <td class="cod-item" style="width: 25%;">{{ ticket.materialName }}</td>
+                                                
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
@@ -134,7 +162,7 @@
                                                             <td class="cod-item">{{ ticket?.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}
                                                         </ng-container>
                                                         <ng-template #otherThanCOD >
-                                                            <td style="width: 25%;">{{ ticket?.materialName }}</td>
+                                                       
                                                             <td>{{ ticket?.gross  }}</td>
                                                             <td>{{ ticket?.tare }}</td>
                                                             <td>{{ ticket?.net }}</td>
@@ -148,11 +176,11 @@
                                                             <div class="d-flex justify-content-center align-items-center">
                                                                 <a  (click)="editItem(ticket)"
                                                                 class="btn btn-grid btn-primary waves-effect waves-light me-1">
-                                                                    <i class="mdi mdi-pencil"></i>Edit
+                                                                   Edit
                                                                 </a> 
                                                                 
                                                                 <a class="btn btn-grid btn-danger waves-effect waves-light" (click)="deleteItem(rowIndex)">
-                                                                    <i class="mdi mdi-trash-can-outline"></i>Delete
+                                                                    Delete
                                                                 </a>
                                                             </div>
                                                             
@@ -211,7 +239,7 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98 p-open' : 'w-75 p-close'" >
+                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98 p-open' : 'col-sm-6 p-close'" >
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
                                                 <!-- <p class="ticket-details-p fz-14"><b>Adjustment : {{(totalAdjustment * -1) | currency: currencySymbol :'symbol': numberFormat}}</b></p> -->
@@ -251,7 +279,7 @@
                                         <div class="row mt-2">   
                                             <div class="col-md-7 col-lg-7 col-sm-7">    
                                          
-                                                    <div class="ticket-summary-div d-flex justify-content-start align-item-center">
+                                                    <div class="ticket-summary-div d-flex justify-content-between align-item-center">
                                                         <div class="me-2">
                                                             <b class="fz-14">Paid Amount  {{ticketData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
                                                         </div>
@@ -304,7 +332,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
+                            <div class="col-sm-6" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
 
                                 <!-- <div class="col-12">  -->
                                 <div id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
@@ -338,7 +366,7 @@
 
                             </div>
 
-                            <div class="col-sm-4 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
+                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 160px)">
                                     <h4 class="materials-heading">Materials</h4>
@@ -406,7 +434,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4 col-xs-12 col-sm-4  position-releative" *ngIf="isEditModeOn && editItemCloseImageCapture">
+                            <div class="col-lg-6 col-xs-12 col-sm-6 position-releative" *ngIf="isEditModeOn && editItemCloseImageCapture">
                                 <div  pDraggable dragHandle=".p-panel-header">
                                     <app-price-calculator  (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()" (backClose)="backToChangeItemMainMaterials()"
                                     [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 

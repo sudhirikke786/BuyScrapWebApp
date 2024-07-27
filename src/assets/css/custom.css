@@ -1339,6 +1339,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 
 .ticket-details-tbl {
   width: 100%;
+  table-layout: fixed;
 }
 
 .materials-ul li {
