@@ -102,7 +102,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   dCamera: any;
 
   wHeight = 210;
-  wWidth = 210;
+  wWidth :any
 
   passwordmode = true;
   currentRole: any;
@@ -123,11 +123,22 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize(event?:any) {
    
-    this.wWidth =  this.elementRef.nativeElement.querySelector('.webcam-container').offsetWidth;
-    this.wHeight =  this.elementRef.nativeElement.querySelector('.webcam-container').offsetHeight;
+    // this.wWidth =  this.elementRef.nativeElement.querySelector('.calculator').offsetWidth;
+    // this.wHeight =  this.elementRef.nativeElement.querySelector('.calculator').offsetHeight;
+
+    const totalWidth = this.elementRef.nativeElement.querySelector('.main-cal').offsetWidth;
+    const cal = this.elementRef.nativeElement.querySelector('.cal').offsetWidth;
+    this.wWidth = (totalWidth - cal)-10;
+
   }
   currentSize(){
-    this.wWidth = this.elementRef.nativeElement.querySelector('.webcam-container').offsetWidth-10;
+
+    const totalWidth = this.elementRef.nativeElement.querySelector('.main-cal').offsetWidth;
+    const cal = this.elementRef.nativeElement.querySelector('.cal').offsetWidth;
+
+
+
+    this.wWidth = (totalWidth - cal)-10;
     this.wHeight = 300;
   
     console.log(this.wWidth,this.wHeight);
@@ -191,7 +202,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       this.dCamera = mCamera;
     }
 
-   
+    this.currentSize();
 
   }
 
@@ -206,6 +217,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.currentSize();
 
     if(changes && changes.itemImagePath){
       if (changes.itemImagePath.currentValue != 'assets/images/custom/id_scan.png') {
