@@ -56,66 +56,95 @@
             </div>
           </div>
           <div  class="col-sm-12">
+            <div class="row">
+
+             
+                <div class="col-3 col-sm-3 col-lg-3">
+                  <div class="p-lable">
+                    Gross
+                  </div>                 
+                  <div class="input-group price-d ">                  
+                    <input type="text" inputmode="none"   autocomplete="off"  (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
+                      [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
+                      (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
+                  </div>  
+                </div>
+             
+            
+                <div class="col-3 col-sm-3 col-lg-3">
+                  <div class="p-lable" >
+                    Tare
+                  </div>
+                  <div>
+                    <div class="input-group">
+                      <input type="text" inputmode="none"   autocomplete="off" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
+                        [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'" id="tear"
+                        class="form-control   mb-1 ps-0">
+                    </div>
+                  </div>
+                </div>
+           
+           
+                <div class="col-3 col-sm-3 col-lg-3">                 
+                    <div class="p-lable">Net</div>
+                    <div class="input-group">
+                      <input type="text" inputmode="none"   autocomplete="off" readonly placeholder="Net Weight" #inputBox4 [(ngModel)]="netInput"
+                        value="{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox4'" id="net"
+                        class="form-control   mb-1 ps-0">
+                    </div>                  
+                </div>
+             
+                <div class="col-3 col-sm-3 col-lg-3">  
+                  <div class="p-lable d-flex align-items-center">
+                   <div> Price (in $)</div>
+                   <a (click)="op2.toggle($event)" *ngIf="currentRole=='Cashier' || currentRole=='Scale'">
+                    <!-- <i class="bi bi-unlock-fill"></i> -->
+                        <i class="bi bi-unlock-fill fz-14"  tooltipPosition="left"   pTooltip="Click on edit to modify the price"></i>
+                    </a>
+
+                  </div>                    
+                    <div class="input-group">
+                      <input type="text" inputmode="none"  autocomplete="off" [readonly]="passwordmode" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
+                        [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price"
+                        class="form-control   mb-1 ps-0">
+                    </div>
+                </div>
+            
+            </div>
             <div class="row"> 
 
-              <div  class="col-sm-4">
-              
-                <div class="row">
-                  <div class="col-12 col-sm-12 col-lg-12">
-                    <div class="p-lable">
-                      Gross
-                    </div>                 
-                    <div class="input-group price-d ">                  
-                      <input type="text" inputmode="none"   autocomplete="off"  (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
-                        [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
-                        (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
-                    </div>  
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12 col-sm-12 col-lg-12">
-                    <div class="p-lable" >
-                      Tare
-                    </div>
-                    <div>
-                      <div class="input-group">
-                        <input type="text" inputmode="none"   autocomplete="off" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
-                          [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'" id="tear"
-                          class="form-control   mb-1 ps-0">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12 col-sm-12 col-lg-12">                 
-                      <div class="p-lable">Net</div>
-                      <div class="input-group">
-                        <input type="text" inputmode="none"   autocomplete="off" readonly placeholder="Net Weight" #inputBox4 [(ngModel)]="netInput"
-                          value="{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox4'" id="net"
-                          class="form-control   mb-1 ps-0">
-                      </div>                  
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12 col-sm-12 col-lg-12">  
-                    <div class="p-lable d-flex align-items-center">
-                     <div> Price (in $)</div>
-                     <a (click)="op2.toggle($event)" *ngIf="currentRole=='Cashier' || currentRole=='Scale'">
-                      <!-- <i class="bi bi-unlock-fill"></i> -->
-                          <i class="bi bi-unlock-fill fz-14"  tooltipPosition="left"   pTooltip="Click on edit to modify the price"></i>
-                      </a>
+              <div  class="col-sm-5">
 
-                    </div>                    
-                      <div class="input-group">
-                        <input type="text" inputmode="none"  autocomplete="off" [readonly]="passwordmode" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
-                          [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price"
-                          class="form-control   mb-1 ps-0">
-                      </div>
-                  </div>
+
+                <div class="webcam-container">
+                
+                  <webcam                    
+                      [height]="wHeight"
+                      [width]="wWidth"           
+                      [trigger]="triggerObservable"
+                      (imageCapture)="handleImage($event)"
+                      *ngIf="showWebcam"
+                      mirror="true"
+                      [switchCamera]="nextWebcamObservable">
+                  </webcam> 
+                   <div style="overflow: hidden;">
+                    <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image" [ngStyle]="{width: wWidth +'px', height:'auto'}">
+                  </div>   
+                
                 </div>
+            
+              
+                <div class="d-flex justify-content-between align-items-center mt-1 ms-1">
+                  <!-- <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Stop Capture</button> -->
+                  <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
+                  <button type="button" class="btn  btn-primary me-1" *ngIf="!showWebcam" (click)="startCpatureImage()">Start Capture</button>
+                  <button type="button" class="btn btn-danger" *ngIf="showWebcam" (click)="takeSnapshot()">Capture Img</button>    
+                </div>
+              
+            
               </div>
 
-              <div  class="col-sm-8">
+              <div  class="col-sm-7">
                 <div class="calculator">
                   <button class="btn-cal" (click)="appendNumber(1)">1</button>
                   <button class="btn-cal" (click)="appendNumber(2)">2</button>
@@ -145,32 +174,9 @@
           </div>
 
           <div  class="col-sm-8 d-flex">
-            <div >                 
-              <div class="webcam-container">
-                
-                <webcam                    
-                    [height]="wHeight"
-                    [width]="wWidth"           
-                    [trigger]="triggerObservable"
-                    (imageCapture)="handleImage($event)"
-                    *ngIf="showWebcam"
-                    mirror="true"
-                    [switchCamera]="nextWebcamObservable">
-                </webcam> 
-                 <div style="overflow: hidden;">
-                  <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image" [ngStyle]="{width: wWidth +'px', height:'auto'}">
-                </div>   
-              
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex justify-content-between align-items-center mt-1 ms-1">
-                <!-- <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Stop Capture</button> -->
-                <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
-                <button type="button" class="btn  btn-primary me-1" *ngIf="!showWebcam" (click)="startCpatureImage()">Start Capture</button>
-                <button type="button" class="btn btn-danger" *ngIf="showWebcam" (click)="takeSnapshot()">Capture Img</button>    
-              </div>
-            </div>
+                       
+             
+           
           </div>
 
 

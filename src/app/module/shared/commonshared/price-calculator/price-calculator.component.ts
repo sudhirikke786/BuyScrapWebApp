@@ -101,8 +101,8 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   isVirtual = true;
   dCamera: any;
 
-  wHeight = 250;
-  wWidth = 250;
+  wHeight = 210;
+  wWidth = 210;
 
   passwordmode = true;
   currentRole: any;

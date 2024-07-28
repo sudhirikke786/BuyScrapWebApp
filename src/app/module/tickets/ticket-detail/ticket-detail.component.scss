@@ -38,7 +38,7 @@ h4{
 
 .main-ul {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: 0.5fr; 
     gap: 0.5rem;
     padding: 2px;
@@ -56,11 +56,11 @@ h4{
         border-radius: 10px 10px 10px 10px;
         cursor: pointer;
        a {
-          padding: 2em;
+          padding:1.2rem !important;
           display: flex;
           height: 100%;
           color: #fff;
-          font-size: 2.1rem;
+          font-size: 0.9rem !important;
           font-weight: 500;
           cursor: pointer;
           justify-content: center;
