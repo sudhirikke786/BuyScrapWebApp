@@ -120,7 +120,7 @@
 
 
                                 <div class="row">
-                                    <div class="card-ticket-table">
+                                    <div class="card-ticket-table mt-2">
                                         <p-table class="ticket-table" #dt1 [value]="ticketObj" 
                                             [paginator]="false" 
                                             [rows]="10"
@@ -131,8 +131,8 @@
                                             >
                 
                                             <ng-template pTemplate="header">
-                                                <tr>
-                                                  
+                                                <tr>                                                    
+                                                    <th *ngIf="!isEditModeOn">Material Name</th>
                                                     <th >Gross(M)</th>
                                                     <th>Tare</th>
                                                     <th>Net</th>
@@ -265,11 +265,11 @@
                                                         <tr>
                                                             <th style="width: 10%;">Material</th>
                                                             <th style="width: 10%;">Gross(M)</th>
-                                                            <th style="width: 10%;">Tare</th>
-                                                            <th style="width: 10%;">Net</th>
-                                                            <th style="width: 15%;">Actual Amount</th>
-                                                            <th style="width: 15%;">Rounding</th>
-                                                            <th style="width: 15%;">Amount</th>
+                                                            <th style="width: 7%;">Tare</th>
+                                                            <th style="width: 8%;">Net</th>
+                                                            <th style="width: 20%;">Actual Amount</th>
+                                                            <th style="width: 12%;">Rounding</th>
+                                                            <th style="width: 18%;">Amount</th>
                                                             <th style="width: 15%;">Adjustment</th>
                                                     </tr></thead>
         
