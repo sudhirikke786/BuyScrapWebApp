@@ -6,8 +6,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { PrimengModule } from '../shared/primeng/primeng.module';
 import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 
-import { TicketDashboardComponent } from './ticket-dashboard/ticket-dashboard.component';
-import { TicketDetailComponent } from './ticket-detail/ticket-detail.component';
+import { InvoiceTicketDashboardComponent } from './invoice-ticket-dashboard/invoice-ticket-dashboard.component';
+import { InvoiceTicketDetailComponent } from './invoice-ticket-detail/invoice-ticket-detail.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { CheckplanGuard } from 'src/app/core/guard/checkplan.guard';
 import { InvoiceCalculatorComponent } from './Invoice-calculator/invoice-calculator.component';
@@ -15,19 +15,19 @@ import { InvoiceCalculatorComponent } from './Invoice-calculator/invoice-calcula
 export const routes: Routes = [
   {
     path:'',
-    component:TicketDashboardComponent
+    component:InvoiceTicketDashboardComponent
   },
   {
     path:'detail/:ticketId/:customerId',
     canActivate: [CheckplanGuard],
-    component:TicketDetailComponent
+    component:InvoiceTicketDetailComponent
   }
 ]
 
 @NgModule({
   declarations: [
-    TicketDashboardComponent,
-    TicketDetailComponent,
+    InvoiceTicketDashboardComponent,
+    InvoiceTicketDetailComponent,
     InvoiceCalculatorComponent
   ],
   imports: [

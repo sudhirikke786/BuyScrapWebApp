@@ -24,11 +24,11 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ticket-detail',
-  templateUrl: './ticket-detail.component.html',
-  styleUrls: ['./ticket-detail.component.scss'],
+  templateUrl: './invoice-ticket-detail.component.html',
+  styleUrls: ['./invoice-ticket-detail.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class TicketDetailComponent implements OnInit , AfterViewInit {
+export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   [x: string]: any;
   @ViewChild('htmlData') htmlData!: ElementRef;
 
@@ -266,7 +266,6 @@ export class TicketDetailComponent implements OnInit , AfterViewInit {
         this.backUrl = `/${this.orgName}/sellers-buyers`;
       }else{
         this.backUrl = `/${this.orgName}/invoice`;
- 
       }
 
     });

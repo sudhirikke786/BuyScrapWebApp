@@ -12,11 +12,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-ticket-dashboard',
-  templateUrl: './ticket-dashboard.component.html',
-  styleUrls: ['./ticket-dashboard.component.scss'],
+  templateUrl: './invoice-ticket-dashboard.component.html',
+  styleUrls: ['./invoice-ticket-dashboard.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class TicketDashboardComponent implements OnInit {
+export class InvoiceTicketDashboardComponent implements OnInit {
   sellerTicketsloader: boolean = false;
 
   selectedTickets: any;
