@@ -121,7 +121,7 @@
 
                                 <div class="row">
                                     <div class="card-ticket-table mt-2">
-                                        <p-table class="ticket-table" #dt1 [value]="ticketObj" 
+                                        <p-table class="ticket-table parent-table" #dt1 [value]="ticketObj" 
                                             [paginator]="false" 
                                             [rows]="10"
                                             [loading]="isLoading"
@@ -152,7 +152,7 @@
                                                         </td>
                                                     </tr> -->
 
-                                                    <tr    [ngClass]="{'border-tr': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
+                                                    <tr    [ngClass]="{'border-tr nested-table': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
                                                 
                                                             <td class="cod-item"></td>
