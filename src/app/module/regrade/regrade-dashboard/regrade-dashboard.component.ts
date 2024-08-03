@@ -219,8 +219,8 @@ export class RegradeDashboardComponent implements OnInit {
 
   regradeDetails(regradeId: any, shipoutId: any, materialNet: any, lossReason: string, action: string) {
     this.popupAction = action;
-    this.regStock = materialNet;
-    this.netDescription = lossReason;
+    // this.regStock = materialNet;
+    // this.netDescription = lossReason;
     this.selectedRegradeId = regradeId;
     // alert(action + ' action Triggered :: ' + shipoutId + ' :: ' + regradeId)
     this.getSubMaterialById(regradeId, shipoutId);
@@ -322,13 +322,13 @@ export class RegradeDashboardComponent implements OnInit {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add the quatity" });
       return;
     }
-    if(this.stockQuanity > this.regStock ){
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Regrate items are not more than net" });
+    if(this.stockQuanity > this.newMaterialStock ){
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Regrate items are not more than current stock" });
       //alert('Regrate items are not more than net ');
       return;
     }
-    if ((totalcount + this.stockQuanity) > this.regStock) {
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Regrate items are not more than net" });
+    if ((totalcount + this.stockQuanity) > this.newMaterialStock) {
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Regrate items are not more than current stock" });
     } else {
 
       
@@ -378,13 +378,14 @@ export class RegradeDashboardComponent implements OnInit {
 
 
   saveRegrate() {
-    this.pouplossRegrate =  true;
-    const totalcount = this.metarialObj.reduce((acc: number, curr: any) => {
-      return acc + Number(curr.quanitity);
-    }, 0);
+    // this.pouplossRegrate =  true;
+    // const totalcount = this.metarialObj.reduce((acc: number, curr: any) => {
+    //   return acc + Number(curr.quanitity);
+    // }, 0);
 
-    this.netLoss  = Number(this.regStock) - Number(totalcount)
+    // this.netLoss  = Number(this.regStock) - Number(totalcount)
     
+    this.submitRegrate();
 
   }
 
@@ -406,9 +407,9 @@ export class RegradeDashboardComponent implements OnInit {
       UserId:this.logInUserId,
       LocID:this.locId,
       MaterialID:this.currentRegradedMaterialRowID,
-      MaterialNet:this.regStock,
-      LossMaterialNet:this.netLoss,
-      LossReason:this.netDescription ?? 'Net Loss',
+      // MaterialNet:this.regStock,
+      // LossMaterialNet:this.netLoss,
+      // LossReason:this.netDescription ?? 'Net Loss',
     }
 
     this.commonService.InsertUpdateRegradedMaterials(requestObj,reqParms).subscribe((res) =>{

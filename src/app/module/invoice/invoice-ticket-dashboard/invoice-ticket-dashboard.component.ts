@@ -1520,7 +1520,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   searchSeller() {
     const paramObject = {
       PageNumber: 1,
-      RowOfPage: 10,
+      RowOfPage: 1000,
       LocationId: this.locId,
       SerachText: this.searchSellerInput.replace(/ /g, "%")
     };
@@ -1542,7 +1542,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
     this.searchSellerInput = '';
     const paramObject = {
       PageNumber: 1,
-      RowOfPage: 10,
+      RowOfPage: 1000,
       LocationId: this.locId
     };
 
