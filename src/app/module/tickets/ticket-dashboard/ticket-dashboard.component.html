@@ -184,7 +184,7 @@
 
         <div class="row mt-3 seller-table "  *ngIf="!sellerLoader"  style="height: 650px;">
 
-            <p-table [value]="sellers" [scrollable]="true" scrollHeight="30vh" [paginator]="true" [rows]="10"
+            <p-table [value]="sellers" [scrollable]="true" scrollHeight="50vh" [paginator]="true" [rows]="10"
                 [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
