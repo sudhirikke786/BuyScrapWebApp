@@ -51,6 +51,7 @@ h4{
       // align-items: top;
       justify-content: center;
       text-align: left;
+      align-items: center;
     
       background-color:#03659c;
       box-shadow: inset -1px 0px 1px 4px #ccc;
@@ -75,6 +76,7 @@ h4{
 
     }  
 }
+
 
 
 
@@ -129,3 +131,36 @@ h4{
       display: block;
     }
   }
+
+
+
+
+
+/* Media query for screens wider than 3000px */
+@media (min-width: 3000px) {
+ 
+    .main-ul  li a {
+      padding:1.5rem !important;
+      font-size: 1.5rem !important;
+      line-height: 1.5rem !important;  
+    }
+}
+
+/* Media query for screens wider than 4000px */
+@media (min-width: 4000px) {
+  .main-ul  li a {
+    padding:1.5rem !important;
+    font-size: 2rem !important;
+    line-height: 2rem !important;  
+  }
+}
+
+/* Media query for screens wider than 5000px */
+@media (min-width: 5000px) {
+  .main-ul  li a {
+    padding:1.5rem !important;
+    font-size:2rem !important;
+    line-height: 2rem !important;  
+  }
+}
+  

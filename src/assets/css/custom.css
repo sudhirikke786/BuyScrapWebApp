@@ -2517,6 +2517,8 @@ select optgroup option {
   .btn {
     font-size: 4rem !important;
     line-height: 4rem !important;
+    padding: 1.5rem !important;
+    border-radius: 25px !important;
   }
 
 
