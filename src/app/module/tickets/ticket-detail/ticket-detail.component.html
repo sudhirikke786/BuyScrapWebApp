@@ -132,14 +132,14 @@
                 
                                             <ng-template pTemplate="header">
                                                 <tr>                                                    
-                                                    <th *ngIf="!isEditModeOn">Material Name</th>
-                                                    <th >Gross(M)</th>
-                                                    <th>Tare</th>
-                                                    <th>Net</th>
-                                                    <th>Price</th>
-                                                    <th>Amount</th>
-                                                    <th>Image</th>
-                                                    <th *ngIf="isEditModeOn">Action</th>
+                                                    <th  *ngIf="!isEditModeOn">Material Name</th>
+                                                    <th style="width: 25%;" >Gross(M)</th>
+                                                    <th style="width: 25%;">Tare</th>
+                                                    <th style="width: 25%;">Net</th>
+                                                    <th style="width: 25%;">Price</th>
+                                                    <th style="width: 25%;">Amount</th>
+                                                    <th style="width: 25%;" >Image</th>
+                                                    <th style="width: 25%;" *ngIf="isEditModeOn">Action</th>
                                                 </tr>
                                             </ng-template>
                                             <ng-template pTemplate="body" let-ticket let-rowIndex="rowIndex">
