@@ -52,7 +52,7 @@
                                                     Edit
                                                 </a>
                                             </div>
-                                            
+
                                             <div>
                                                 <a  class="btn btn-primary me-1" [routerLink]="backUrl">
                                                     Back
@@ -355,7 +355,7 @@
                                       
                                       <ng-container  *ngFor="let item of materialList" >
                                           <li>
-                                              <a id="showInnerDiv1" class="btn btn-primary custom-lh"  
+                                              <a id="showInnerDiv1" class="btn  custom-lh"  
                                               pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
                                               (click)="getSubMaterials(item.rowId, item.groupName, false)">
                                                   {{item.groupName}}
@@ -392,7 +392,7 @@
                                           <li>
                                               <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
                                               pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
-                                              class="btn btn-primary custom-lh">{{item.materialName}}</a>
+                                              class="btn  custom-lh">{{item.materialName}}</a>
                                           </li>
                                       </ng-container>                                     
                                     </ul>

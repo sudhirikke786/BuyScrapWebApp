@@ -214,7 +214,7 @@ html[data-topbar-color="brand"] {
   -ms-flex-align: center;
   align-items: center;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0px 1.5rem 0px 0px;
 }
 
 .navbar-custom .topbar ul {
