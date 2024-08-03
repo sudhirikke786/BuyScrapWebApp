@@ -28,7 +28,7 @@
 
                         <div class="row">
 
-                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  ticketData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-8'">
+                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  ticketData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-6'">
                                 
                                 <div class="row">
                                     <div class="col-sm-2">
@@ -39,15 +39,20 @@
         
                                         <div class="row">
                                            <div class="col-sm-6 col-md-4 d-flex">
+                                            
+                                            <h4 class="ticket-number me-1">Ticket# -{{ticketId}} / {{ticketData?.status}}   </h4>
+
+                                           
+                                           </div>
+        
+                                           <div class="col-sm-6 col-md-8 d-flex justify-content-end mb-1">
+
                                             <div *ngIf="isEditModeOn" >
                                                 <a  class="btn btn-primary me-1 mb-1" (click)="editSeller()">
                                                     Edit
                                                 </a>
                                             </div>
-                                            <h4 class="ticket-number me-1">Ticket# - {{ticketId}}</h4>
-                                           </div>
-        
-                                           <div class="col-sm-6 col-md-8 d-flex justify-content-end mb-1">
+                                            
                                             <div>
                                                 <a  class="btn btn-primary me-1" [routerLink]="backUrl">
                                                     Back
@@ -87,14 +92,16 @@
                                     </div>
                                 </div>
                                 
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-sm-4">
                                         <h4 class="title-plus-border">Particulars</h4>                                                
                                     </div>
                                     <div class="col-sm-4">
+
+                                        
                                         <h4 class="title-plus-border">Status - <span class="color-green">{{ticketData?.status}}</span></h4>                                                
                                     </div>
-                                </div>
+                                </div> -->
 
 
                                 <div class="row">
@@ -207,7 +214,7 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98 p-open' : 'w-75 p-close'" >
+                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98 p-open' : 'col-6 p-close'" >
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
                                                 <!-- <p class="ticket-details-p fz-14"><b>Adjustment : {{(totalAdjustment * -1) | currency: currencySymbol :'symbol': numberFormat}}</b></p> -->
@@ -294,7 +301,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
+                            <div class="col-sm-6" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
 
                                 <!-- <div class="col-12">  -->
                                 <div id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
@@ -328,7 +335,7 @@
 
                             </div>
 
-                            <div class="col-sm-4 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
+                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 160px)">
                                     <h4 class="materials-heading">Materials</h4>
@@ -393,7 +400,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4 col-xs-12 col-sm-4  position-releative" *ngIf="isEditModeOn && editItemCloseImageCapture">
+                            <div class="col-lg-6 col-xs-12 col-sm-6 position-releative" *ngIf="isEditModeOn && editItemCloseImageCapture">
 
                                
                                     <app-invoice-calculator  (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()" (backClose)="backToChangeItemMainMaterials()"

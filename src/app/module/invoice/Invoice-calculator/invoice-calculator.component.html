@@ -10,24 +10,12 @@
 
           <div class="col-sm-12">
             <div class="col-12 d-flex justify-content-between align-items-start">
-              <div class="t-lable d-flex w-100">
+              <div class="t-lable d-flex">
 
                 <!-- <button type="button" class=" bg-primary" aria-label="Close" (click)="backToChangeItemMainMaterials()">
                
                 </button> -->
-                  <div *ngIf="itemGroupName=='Other'" class="w-90">
-                    <input
-                    type="text"
-                    
-                    [(ngModel)]="addMetarialInput"
-                   class="form-control w-100"
-                   placeholder="Add Item Name"
-                   aria-describedby="itemName"
-               />
-                  </div>
-
-                  <div *ngIf="itemGroupName!='Other'" pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom"> 
-                    {{itemGroupName}} -
+                  <div pTooltip="{{itemGroupName}} ==> {{itemMaterialName}}" tooltipPosition="bottom"> {{itemGroupName}} -
                     {{itemMaterialName}}
                   </div>
               </div>
@@ -68,96 +56,130 @@
             </div>
           </div>
           <div  class="col-sm-12">
-            <div class="row">              
-              <div  class="col-sm-8">
-                <div class="row" >                 
-                  <div class="webcam-container">
-                    
-                    <webcam                    
-                        [height]="wHeight"
-                        [width]="wWidth"           
-                        [trigger]="triggerObservable"
-                        (imageCapture)="handleImage($event)"
-                        *ngIf="showWebcam"
-                        mirror="true"
-                        [switchCamera]="nextWebcamObservable">
-                    </webcam> 
-                     <div style="overflow: hidden;">
-                      <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image" [ngStyle]="{width: wWidth +'px', height:'auto'}">
-                    </div>   
-                  
+            <div class="row">
+
+             
+                <div class="col-3 col-sm-3 col-lg-3">
+                  <div class="p-lable">
+                    Quantity
+                  </div>                 
+                  <div class="input-group price-d ">                  
+                    <input type="text" inputmode="none"   autocomplete="off"  (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
+                      [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
+                      (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
+                  </div>  
+                </div>
+             
+            
+                <div class="col-3 col-sm-3 col-lg-3">
+                  <div class="p-lable" >
+                    Rate
+                  </div>
+                  <div>
+                    <div class="input-group">
+                      <input type="text" inputmode="none"   autocomplete="off" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
+                        [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'" id="tear"
+                        class="form-control   mb-1 ps-0">
+                    </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="d-flex justify-content-start align-items-center mt-1">
-                    <!-- <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Stop Capture</button> -->
-                    <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
-                    <button type="button" class="btn  btn-primary me-1" *ngIf="!showWebcam" (click)="startCpatureImage()">Start Capture</button>
-                    <button type="button" class="btn btn-danger" *ngIf="showWebcam" (click)="takeSnapshot()">Capture Img</button>    
-                  </div>
+           
+           
+                <div class="col-3 col-sm-3 col-lg-3">                 
+                    <div class="p-lable">Net</div>
+                    <div class="input-group">
+                      <input type="text" inputmode="none"   autocomplete="off" readonly placeholder="Net Weight" #inputBox4 [(ngModel)]="netInput"
+                        value="{{grossInput - tareInput}}" (focus)="focusedInput = 'inputBox4'" id="net"
+                        class="form-control   mb-1 ps-0">
+                    </div>                  
                 </div>
-              </div>
-              <div  class="col-sm-4">
-                <!-- <div class="row">
-                  <div class="d-flex justify-content-center align-items-center flex-wrap">
-                    <div class="ms-2">
-                      <i pTooltip="Virtual Keyboard" tooltipPosition="bottom" class="bi bi-keyboard"
-                      ></i>
+             
+                <div class="col-3 col-sm-3 col-lg-3">  
+                  <div class="p-lable d-flex align-items-center">
+                   <div> Price (in $)</div>
+                   <a (click)="op2.toggle($event)" *ngIf="currentRole=='Cashier' || currentRole=='Scale'">
+                    <!-- <i class="bi bi-unlock-fill"></i> -->
+                        <i class="bi bi-unlock-fill fz-14"  tooltipPosition="left"   pTooltip="Click on edit to modify the price"></i>
+                    </a>
+
+                  </div>                    
+                    <div class="input-group">
+                      <input type="text" inputmode="none"  autocomplete="off" [readonly]="passwordmode" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
+                        [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price"
+                        class="form-control   mb-1 ps-0">
                     </div>
-                    <div class="t-on">OFF </div>
-                    <div> <p-inputSwitch [(ngModel)]="isVirtual"
-                        (onChange)="showKeyboard($event)"></p-inputSwitch>
-                    </div>
-                    <div class="t-on"> ON</div>    
-                  </div>
-                </div> -->
-                <div class="row">
-                  <div class="col-12 col-sm-12 col-lg-12">
-                    <div class="p-lable">
-                      Quantity
-                    </div>                 
-                    <div class="input-group price-d ">                  
-                      <input type="text"  (keypress)="onKeyPress($event)" placeholder="Enter Gross Weight" #inputBox1
-                        [(ngModel)]="grossInput" id="inputBox1" name="inputBox1" (focus)="focusedInput = 'inputBox1'"
-                        (ngModelChange)="calcNetFromGross($event)" class="form-control inputone   mb-1 ps-0">
-                    </div>  
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12 col-sm-12 col-lg-12">
-                    <div class="p-lable" >
-                      Rate
-                    </div>
-                    <div>
-                      <div class="input-group">
-                        <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Tare Weight" #inputBox2
-                          [(ngModel)]="tareInput" (focus)="focusedInput = 'inputBox2'" id="tear"
-                          class="form-control   mb-1 ps-0">
-                      </div>
-                    </div>
-                  </div>
                 </div>
             
-                <div class="row">
-                  <div class="col-12 col-sm-12 col-lg-12">  
-                    <div class="p-lable d-flex align-items-center">
-                     <div> Price (in $)</div>
-                     <a (click)="op2.toggle($event)" *ngIf="currentRole=='Cashier' || currentRole=='Scale'">
-                      <!-- <i class="bi bi-unlock-fill"></i> -->
-                          <i class="bi bi-unlock-fill fz-14"  tooltipPosition="left"   pTooltip="Click on edit to modify the price"></i>
-                      </a>
+            </div>
+            <div class="row main-cal"> 
 
-                    </div>                    
-                      <div class="input-group">
-                        <input type="text" [readonly]="passwordmode" (keypress)="onKeyPress($event)" placeholder="Enter price" #inputBox3
-                          [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox3'" id="price" value="{{grossInput * tareInput }}"
-                          class="form-control   mb-1 ps-0">
-                      </div>
-                  </div>
+              <div  class="col-sm-5 camera">
+
+
+                <div class="webcam-container">
+                
+                  <webcam                    
+                      [height]="wHeight"
+                      [width]="wWidth"           
+                      [trigger]="triggerObservable"
+                      (imageCapture)="handleImage($event)"
+                      *ngIf="showWebcam"
+                      mirror="true"
+                      [switchCamera]="nextWebcamObservable">
+                  </webcam> 
+                   <div style="overflow: hidden;">
+                    <img  *ngIf="imageUrl" [src]="imageUrl" alt="Image" [ngStyle]="{width: wWidth +'px', height:'auto'}">
+                  </div>   
+                
+                </div>
+            
+              
+                <div class="d-flex justify-content-between align-items-center mt-1 ms-1">
+                  <!-- <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Stop Capture</button> -->
+                  <button type="button" class="btn  btn-primary me-1" (click)="changeItem()">Change Item</button>
+                  <button type="button" class="btn  btn-primary me-1" *ngIf="!showWebcam" (click)="startCpatureImage()">Start Capture</button>
+                  <button type="button" class="btn btn-danger" *ngIf="showWebcam" (click)="takeSnapshot()">Capture Img</button>    
+                </div>
+              
+            
+              </div>
+
+              <div  class="col-sm-7 cal">
+                <div class="calculator">
+                  <button class="btn-cal" (click)="appendNumber(1)">1</button>
+                  <button class="btn-cal" (click)="appendNumber(2)">2</button>
+                  <button class="btn-cal" (click)="appendNumber(3)">3</button>
+                  <button class="btn-cal btn-danger" (click)="deleteCharacter()">Del</button>
+                  <button class="btn-cal " (click)="appendNumber(4)">4</button>
+                  <button class="btn-cal" (click)="appendNumber(5)">5</button>
+                  <button class="btn-cal" (click)="appendNumber(6)">6</button>
+                  <button class="btn-cal btn-danger" (click)="note()">Notes</button>
+                  <button class="btn-cal" (click)="appendNumber(7)">7</button>
+                  <button class="btn-cal" (click)="appendNumber(8)">8</button>
+                  <button class="btn-cal" (click)="appendNumber(9)">9</button>
+                  <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
+                  <button class="btn-cal" (click)="appendNumber(0)">0</button>
+                  <button class="btn-cal" (click)="appendNumber('00')">00</button>
+                  <button class="btn-cal" (click)="appendNumber('.')">.</button>
+            
+            
                 </div>
               </div>
+              
+
+
+             
+             
             </div>
           </div>
+
+          <div  class="col-sm-8 d-flex">
+                       
+             
+           
+          </div>
+
+
           <!-- <div class="col-md-12 col-sm-12 d-flex justify-content-between flex-wrap">
           </div> -->
 
@@ -171,25 +193,7 @@
     </div>
 
 
-    <div class="calculator">
-      <button class="btn-cal" (click)="appendNumber(1)">1</button>
-      <button class="btn-cal" (click)="appendNumber(2)">2</button>
-      <button class="btn-cal" (click)="appendNumber(3)">3</button>
-      <button class="btn-cal btn-danger" (click)="deleteCharacter()">Del</button>
-      <button class="btn-cal " (click)="appendNumber(4)">4</button>
-      <button class="btn-cal" (click)="appendNumber(5)">5</button>
-      <button class="btn-cal" (click)="appendNumber(6)">6</button>
-      <button class="btn-cal btn-danger" (click)="note()">Notes</button>
-      <button class="btn-cal" (click)="appendNumber(7)">7</button>
-      <button class="btn-cal" (click)="appendNumber(8)">8</button>
-      <button class="btn-cal" (click)="appendNumber(9)">9</button>
-      <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
-      <button class="btn-cal" (click)="appendNumber(0)">0</button>
-      <button class="btn-cal" (click)="appendNumber('00')">00</button>
-      <button class="btn-cal" (click)="appendNumber('.')">.</button>
-
-
-    </div>
+   
   </div>
 </div>
 
