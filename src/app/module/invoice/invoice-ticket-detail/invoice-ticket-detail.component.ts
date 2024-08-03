@@ -175,11 +175,13 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   
   newTicketList = [{
     iconcode: 'mdi-magnify',
-    title: 'Search'
+    title: 'Search',
+    label: 'Search'
   },
   {
     iconcode: 'mdi-refresh',
-    title: 'Refresh'
+    title: 'Refresh',
+    label: 'Refresh'
   },
   {
     iconcode: 'mdi-account',
