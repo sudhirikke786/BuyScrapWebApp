@@ -316,39 +316,53 @@
                             <hr>
 
                             <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
+
+                                <div *ngIf="loaderShow" >
+                                    <app-page-loader type="table"></app-page-loader>
+                                </div>
+
+                               <ng-container *ngIf="!loaderShow" >
+
                                 <h4>Personal Information</h4>
-
                                 <div class="form-group col-sm-3 mt-1">
-                                   <label for="floatingInput" class="form-label w-100">First Name</label>
-                                  <input type="text" formControlName="firstName" class="form-control"
-                                            id="firstname" placeholder="First Name">
-                                   
-                                   
-                                </div>
-
-                                <div class="form-group col-sm-3 mt-1">
-                                    <label for="floatingInput"  class="form-label w-100">Middle Name</label>
-                                        <input type="text" formControlName="middleName" class="form-control"
-                                            id="middlename" placeholder="Middle Name">
-                                     
+                                    <label for="floatingInput" class="form-label w-100">First Name</label>
+                                   <input type="text" formControlName="firstName" class="form-control"
+                                             id="firstname" placeholder="First Name">
                                     
-                                </div>
-
-                                <div class="form-group col-sm-3 mt-1">
-                                    <label for="floatingInput"  class="form-label w-100">Last Name</label>
-                                        <input type="text" class="form-control" formControlName="lastName" id="lastname"
-                                            placeholder="Last Name">
-                                   
-                                   
-                                </div>
-
-                                <div class="form-group col-sm-3 mt-1">
-                                    <label for="floatingInput"  class="form-label w-100">Date of Birth</label>
-                                        <input type="date" class="form-control" formControlName="dob" id="birthdate"
-                                            placeholder="Date of Birth">
+                                    
+                                 </div>
+ 
+                                 <div class="form-group col-sm-3 mt-1">
+                                     <label for="floatingInput"  class="form-label w-100">Middle Name</label>
+                                         <input type="text" formControlName="middleName" class="form-control"
+                                             id="middlename" placeholder="Middle Name">
+                                      
                                      
-                                  
-                                </div>
+                                 </div>
+ 
+                                 <div class="form-group col-sm-3 mt-1">
+                                     <label for="floatingInput"  class="form-label w-100">Last Name</label>
+                                         <input type="text" class="form-control" formControlName="lastName" id="lastname"
+                                             placeholder="Last Name">
+                                    
+                                    
+                                 </div>
+ 
+                                 <div class="form-group col-sm-3 mt-1">
+                                     <label for="floatingInput"  class="form-label w-100">Date of Birth</label>
+                                         <input type="date" class="form-control" formControlName="dob" id="birthdate"
+                                             placeholder="Date of Birth">
+                                      
+                                   
+                                 </div>
+
+
+
+                               </ng-container>
+
+                            
+
+                               
                             </div>
 
                             <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
@@ -520,12 +534,7 @@
                                 </div>
                             </div>
 
-                            <!-- <div class="row mt-2 flt-right">
-                                <div class="col-sm-12">
-                                    <a href="#" class="btn btn-success">Save</a>
-                                    <a href="#" class="btn btn-primary">Print</a>
-                                </div>
-                            </div> -->
+                       
 
                         </form>
 
@@ -588,7 +597,7 @@
 
                 <div style="border: 1px solid black;">
                     <div class="col-sm-12" style="border: 1px solid black;  display:inline-block;">
-                        <app-camera  *ngIf="captureType==='Capture Image'" [defaultCamera]="meTarialCamera"  (getPicture)="handleImage($event)"></app-camera>
+                        <app-camera  *ngIf="captureType==='Capture Image'" [defaultCamera]="meTarialCamera"  (getPicture)="handleImage($event)" (userInfo)="getSelData($event)"></app-camera>
                     </div>
                 </div>
 

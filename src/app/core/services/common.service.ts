@@ -74,6 +74,10 @@ export class CommonService {
     return new Observable<any>(x => x.next(null));
   }
 
+
+
+ 
+
   get tableConfig(){
     return this.dataTableConfig
   }
@@ -555,7 +559,9 @@ export class CommonService {
   getAllCity(paramObj: any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Master/GetAllCity', 'GET', paramObj);
   }
-    
+  
+  
+  // http://18.222.119.98/process-image/
     
 
 

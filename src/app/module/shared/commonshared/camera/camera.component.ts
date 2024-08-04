@@ -1,7 +1,7 @@
-import { Component, EventEmitter, AfterViewInit, Output, OnDestroy, Input } from '@angular/core';
+import { Component, EventEmitter, AfterViewInit, Output, OnDestroy, Input , } from '@angular/core';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
-
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-camera',
@@ -10,6 +10,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class CameraComponent implements AfterViewInit ,OnDestroy {
   @Output() getPicture = new EventEmitter<string>();
+  @Output() userInfo =  new EventEmitter<any>();
   showWebcam = false;
   isCameraExist = true;
   allMediaDevices: any;
@@ -144,7 +145,7 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
   
 
  
-
+ 
   
    onFileChanged(event: any) {
     this.imageUrl = null;
@@ -160,7 +161,9 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
 
       //  console.log(_textData);
 
+        
         this.getPicture.emit(this.imageUrl);
+        this.userInfo.emit(file);
 
         // const index = this.imageUrl.indexOf('base64,') + 7; // Find the position of ','
         // const base64Data = this.imageUrl.substring(index); // Extract base64 data

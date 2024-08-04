@@ -5,6 +5,7 @@ import { MessageService,ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DataService } from 'src/app/core/services/data.service';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-sellers',
@@ -47,12 +48,16 @@ export class AddSellersComponent implements OnInit {
   meTarialCamera :any;
   subScriptionType:any;
   showPlan =  false;
+  fileObj: any;
+
+  loaderShow = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private _sanitizer: DomSanitizer,
     public dtService:DataService,
+    private http:HttpClient,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private commonService: CommonService) { 
@@ -124,6 +129,11 @@ export class AddSellersComponent implements OnInit {
        cellNumber : ['']
     })
 
+   
+
+
+
+
 
   }
 
@@ -168,6 +178,54 @@ export class AddSellersComponent implements OnInit {
       );
 
   }
+
+
+  getUserInfo(file:any){
+
+    const formData = new FormData();
+
+    formData.append('file', file);   
+    formData.append('document_type', "ID");  
+    this.loaderShow =  true;
+     this.http.post('http://18.222.119.98/process-image/', formData)
+       .subscribe(res1 => {
+        const res:any = res1;
+
+        this.loaderShow =  false;
+        if(res){
+        const userObj =  {
+          licensePlateNumber : res["id"],
+          lastName: res["LN"],
+          firstName : res["FN"],
+          middleName:res["MN"],
+          streetAddress:res["STREET"],
+          city: res["CITY"],
+          state:res["STATE"],
+          zipCode:res["ZIP"],
+          dob: this.formatDate(res["DOB"]),
+          gender:res["SEX"],
+  
+         }   
+         this.sellerForm.patchValue({...userObj})
+        }
+  
+    
+  },(error) =>{
+    this.loaderShow =  false;
+  })
+
+
+  }
+
+
+
+  getSelData(event:any) {
+
+    this.fileObj = event;
+   // this.getUserInfo(event)
+   
+  }
+
 
   goBack(){
     this.router.navigateByUrl(`/${this.orgName}/sellers-buyers`);
@@ -325,9 +383,15 @@ export class AddSellersComponent implements OnInit {
   handleImage(imageUrl: string) {
     // alert(imageUrl);
     this.imageUrl = imageUrl;
+  //  this.fileObj = imgObj;
   }
   
   SaveImage() {
+
+    if(this.fileObj) {
+      this.getUserInfo(this.fileObj)
+    }
+   
     
     let  requestObj:any = {
     
