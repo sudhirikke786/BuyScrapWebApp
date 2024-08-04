@@ -194,7 +194,7 @@ export class AddSellersComponent implements OnInit {
         this.loaderShow =  false;
         if(res){
         const userObj =  {
-          licensePlateNumber : res["id"],
+          licensePlateNumber : res["ID"],
           lastName: res["LN"],
           firstName : res["FN"],
           middleName:res["MN"],
