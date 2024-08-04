@@ -132,14 +132,14 @@
                 
                                             <ng-template pTemplate="header">
                                                 <tr>                                                    
-                                                    <th  *ngIf="!isEditModeOn">Material Name</th>
-                                                    <th style="width: 25%;" >Gross(M)</th>
-                                                    <th style="width: 25%;">Tare</th>
-                                                    <th style="width: 25%;">Net</th>
-                                                    <th style="width: 25%;">Price</th>
-                                                    <th style="width: 25%;">Amount</th>
-                                                    <th style="width: 25%;" >Image</th>
-                                                    <th style="width: 25%;" *ngIf="isEditModeOn">Action</th>
+                                                    <th *ngIf="!isEditModeOn">Material Name</th>
+                                                    <th>Gross(M)</th>
+                                                    <th>Tare</th>
+                                                    <th>Net</th>
+                                                    <th>Price</th>
+                                                    <th>Amount</th>
+                                                    <th>Image</th>
+                                                    <th *ngIf="isEditModeOn">Action</th>
                                                 </tr>
                                             </ng-template>
                                             <ng-template pTemplate="body" let-ticket let-rowIndex="rowIndex">
@@ -154,12 +154,28 @@
 
                                                     <tr    [ngClass]="{'border-tr nested-table': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
+                                                            <td colspan="5">
+                                                                <table style="width: 100%;">
+                                                                    <tr>
+                                                                        <td class="cod-item" colspan="5">
+                                                                            {{ ticket.materialName }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>                                                                       
+                                                                        <td class="cod-item" style="width: 25%;"></td>
+                                                                        <td class="cod-item" style="width: 25%;"></td>
+                                                                        <td class="cod-item" style="width: 25%;"></td>
+                                                                        <td class="cod-item" style="width: 25%;"></td>
+                                                                        <td class="cod-item" style="width: 25%;">{{ ticket?.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
                                                 
+                                                            <!-- <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
-                                                            <td class="cod-item"></td>
-                                                            <td class="cod-item">{{ ticket?.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}
+                                                            <td class="cod-item">{{ ticket?.amount * -1 | currency: currencySymbol :'symbol': numberFormat}} -->
                                                         </ng-container>
                                                         <ng-template #otherThanCOD >
                                                             <td colspan="5">
@@ -169,20 +185,15 @@
                                                                             {{ ticket.materialName }}
                                                                         </td>
                                                                     </tr>
-                                                                    <tr>
-                                                                       
+                                                                    <tr>                                                                       
                                                                         <td style="width: 25%;">{{ ticket?.gross  }}</td>
                                                                         <td style="width: 25%;">{{ ticket?.tare }}</td>
                                                                         <td style="width: 25%;">{{ ticket?.net }}</td>
                                                                         <td style="width: 25%;">{{ ticket?.price | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                                         <td style="width: 25%;">{{ ticket?.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                                     </tr>
-
                                                                 </table>
-
                                                             </td>
-                                                        
-                                                          
                                                         </ng-template>
                                                         <td>
                                                             <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img" (click)="showSelectedImage(ticket.imagePath, '1')"></a>
@@ -292,7 +303,7 @@
                                         </div>
                                         
                                         <div class="row mt-2">   
-                                            <div class="col-md-7 col-lg-7 col-sm-7">    
+                                            <div class="col-md-9 col-lg-9 col-sm-9">    
                                          
                                                     <div class="ticket-summary-div d-flex justify-content-between align-item-center">
                                                         <div class="me-2">
@@ -324,7 +335,7 @@
                                                 
                                             </div>
         
-                                            <div class="col-md-5 col-lg-5 col-sm-5">    
+                                            <div class="col-md-3 col-lg-3 col-sm-3">    
                                                 <div class="d-flex justify-content-end">
                                                  
         
@@ -335,7 +346,7 @@
         
                                                     <div *ngIf="isEditModeOn" class="adjustment-deduction-box">
                                                         <a data-bs-target="#adjustments-modal" data-bs-toggle="modal" 
-                                                        class="btn btn-danger me-1" (click)="addAdjustments()">Adjustments(Deductions)</a>
+                                                        class="btn btn-danger me-1" (click)="addAdjustments()">Adjustments</a>
                                                     </div>
                                                 </div>
                                             </div>

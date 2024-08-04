@@ -161,11 +161,13 @@ export class TicketDetailComponent implements OnInit {
   
   newTicketList = [{
     iconcode: 'mdi-magnify',
-    title: 'Search'
+    title: 'Search',
+    label: 'Search'
   },
   {
     iconcode: 'mdi-refresh',
-    title: 'Refresh'
+    title: 'Refresh',
+    label: 'Refresh'
   },
   {
     iconcode: 'mdi-account',
@@ -598,7 +600,7 @@ export class TicketDetailComponent implements OnInit {
   searchSeller() {
     const paramObject = {
       PageNumber: 1,
-      RowOfPage: 10,
+      RowOfPage: 1000,
       LocationId: this.locId,
       SerachText: this.searchSellerInput.replace(/ /g, "%")
     };
@@ -610,7 +612,7 @@ export class TicketDetailComponent implements OnInit {
     this.searchSellerInput = '';
     const paramObject = {
       PageNumber: 1,
-      RowOfPage: 10,
+      RowOfPage: 1000,
       LocationId: this.locId
     };
     this.getAllsellersDetails(paramObject);
