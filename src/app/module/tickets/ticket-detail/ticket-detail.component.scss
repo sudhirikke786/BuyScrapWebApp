@@ -176,17 +176,17 @@ h4{
   }
 
 
-  .parent-table, .nested-table {
-    border-collapse: collapse;
-    width: 100%;
-  }
+  // .parent-table, .nested-table {
+  //   border-collapse: collapse;
+  //   width: 100%;
+  // }
 
-  .parent-table th, .parent-table td,
-  .nested-table th, .nested-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
+  // .parent-table th, .parent-table td,
+  // .nested-table th, .nested-table td {
+  //   border: 1px solid #ddd;
+  //   padding: 8px;
+  // }
 
-  .nested-table td {
-    text-align: center; /* Adjust as needed */
-  }
+  // .nested-table td {
+  //   text-align: center; /* Adjust as needed */
+  // }

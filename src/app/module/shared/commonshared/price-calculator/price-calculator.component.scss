@@ -173,16 +173,39 @@
     text-align: center;
    }
 
-   .btn-cal {
-    font-size: 0.75rem !important;
+  
+
+   .form-section .col-sm-3{
+    width: 45%;
+
+    .input-group{
+      width: 100% !important;
+      .form-control{
+        width: 100% !important;
+      }
+    }
+    .p-lable {
+      width: 100% !important;
+      font-size: 0.9rem !important;
+    }
+  }
+
+  .btn-cal {
+    font-size: 1.1rem !important;
    }
 
+   .main-cal{
+      div{
+        width: 100%;
+      }
+     
+   }
  
 
   
 }
 
-@media  screen and (max-width: 1600px)  {
+@media  screen and (min-width: 1600px)  {
 
   .btn-cal {
     font-size:2rem !important;
@@ -211,14 +234,7 @@
 }
 
 
-@media screen and (max-width: 1920px) and (min-height: 953px) {
-  /* Your styles here */
 
-  .btn-cal {
-    font-size: 2.1rem !important;
-  }
-
-}
 
 
 @media screen and (min-width:1920px) {
