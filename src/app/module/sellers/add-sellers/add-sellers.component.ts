@@ -203,7 +203,7 @@ export class AddSellersComponent implements OnInit {
           state:res["STATE"],
           zipCode:res["ZIP"],
           dob: this.formatDate(res["DOB"]),
-          gender:res["SEX"],
+          gender:res["SEX"] == '' ? 'undefind' : res["SEX"] == 'M' ? 'Male' : 'Female',
   
          }   
          this.sellerForm.patchValue({...userObj})
