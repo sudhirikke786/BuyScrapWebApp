@@ -364,8 +364,9 @@
 
                                
                             </div>
-
+                            <ng-container *ngIf="!loaderShow" >
                             <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
+
                                 <h4>Business Information</h4>
 
                                 <div class="form-group col-sm-6 mt-1">
@@ -376,7 +377,8 @@
                                  
                                 </div>
                             </div>
-
+                            </ng-container>
+                            <ng-container *ngIf="!loaderShow" >
                             <div class="row mt-2">
 
                                 <div class="form-group col-sm-3">
@@ -533,7 +535,7 @@
                                     </select>
                                 </div>
                             </div>
-
+                            </ng-container>
                        
 
                         </form>
