@@ -2250,40 +2250,40 @@ select optgroup option {
   }
 
   body {
-    font-size: 1.2rem !important
+    font-size: 1.5rem !important
   }
 
   a {
-    font-size: 1.2rem !important;
+    font-size: 1.5rem !important;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    font-size: 1.2rem !important
+    font-size: 1.5rem !important
   }
 
   table tr td {
-    font-size: 1.2rem !important
+    font-size: 1.5rem !important
   }
 
   .p-datatable .p-datatable-thead>tr>th {
-    font-size: 1.2rem !important
+    font-size: 1.5rem !important
   }
 
   .p-datatable .p-datatable-thead>tr>td {
-    font-size: 1.2rem !important
+    font-size: 1.5rem !important
   }
 
   .btn {
-    font-size: 1.2rem !important;
+    font-size: 1.5rem !important;
     line-height: 20px !important;
 
   }
 
   .fz-14 {
-    font-size: 1.2rem !important;
+    font-size: 1.5rem !important;
   }
 
   .payment-ticket {
@@ -2292,7 +2292,7 @@ select optgroup option {
 
 
   .form-select {
-    font-size: 1.2rem !important;
+    font-size: 1.5rem !important;
   }
 
   .mdi-cust {
@@ -2309,11 +2309,11 @@ select optgroup option {
   }
 
   .balance-details-ul li {
-    font-size: 1.2rem !important
+    font-size: 1.5rem !important
   }
 
   .pro-user-name {
-    font-size: 1.2rem !important
+    font-size: 1.5rem !important
   }
 
 
@@ -2326,7 +2326,7 @@ select optgroup option {
    }
 
    .fz-16 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 
 }
@@ -2776,7 +2776,7 @@ select optgroup option {
 
 
 
-@media only screen and (min-width:7000px) {
+@media only screen and (min-width:6000px) {
 
 
   .login-box{
@@ -2894,9 +2894,6 @@ select optgroup option {
     min-height: 30vw !important;
   }
 
-  .btn-cal {
-    font-size: 6.1rem !important;
-  }
 
   .container {
     width: 100% !important;
@@ -2942,6 +2939,12 @@ select optgroup option {
    }
    .fz-16 {
     font-size:3rem;
+  }
+
+
+  .card-ticket-table {
+    overflow-y: auto;
+    height: calc(100vh - 600px) !important;
   }
 }
 
