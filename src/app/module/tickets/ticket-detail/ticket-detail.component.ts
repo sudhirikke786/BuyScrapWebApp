@@ -386,58 +386,69 @@ export class TicketDetailComponent implements OnInit {
       return;
     }
 
-    if (!this.isInputValid(this.selectedPayAmount)) {
-   
+    if (!this.isInputValid(this.selectedPayAmount)) {   
       this.messageAlert('Add valid input')
       return;
     }
 
-    const findItemExist = this.transactionPaymentType.findIndex((item: any) => item.typeofPayment?.toLowerCase() == this.activeSection?.toLowerCase())
     const checkPrice = this.checkTotalAmount();
 
     if (checkPrice) {
-
-      this.messageAlert('adding amount is greter than total amount')
-    
+      this.messageAlert('adding amount is greter than total amount');    
       return;
     }
 
     
     if (this.activeSection == 'Check') {
       if (this.checkNumber.length == 0) {
-      
-
         this.messageAlert('Enter Check Number')
         return;
       }
+      this.proceedWithAddTransaction();
     } else if (this.activeSection == 'Electronic Payment') {
       if (this.ePaymentType?.length == 0) {
         this.messageAlert('Enter Electronic Payment Type')
-      //  alert('Enter Electronic Payment Type');
         return;
       }
+      this.proceedWithAddTransaction();
     } else if (this.activeSection == 'Cash') {
-      let text = 'You selected as Cash as payment mode please confirm ?';
-      if (confirm(text) != true) {
-        return;
-      }
-
+      let text = 'You selected as Cash as payment mode, please confirm?';
+      this.confirmationMessage(text, 'cashTransaction', null);
     }
+  }
 
+  
+  confirmationMessage(msg: any, triggerPoint: any, additionData: any) {
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: msg,
+      accept: () => {
+        if (triggerPoint == 'cashTransaction') {
+          this.proceedWithAddTransaction();
+        } else if (triggerPoint == 'payAndSave') {
+          this.proceedPayAndSave(additionData);
+        }
+      },
+      reject: () => {       
+        return false;
+      },
+    });
+  }
 
+  proceedWithAddTransaction() {
+    const findItemExist = this.transactionPaymentType.findIndex((item: any) => item.typeofPayment?.toLowerCase() == this.activeSection?.toLowerCase())
+    
     switch (this.selectedHoldAmount) {
       case 'Partial Pay Amount':
         const total = this.getTotal();
         const eligiblePayAmount = this.totalAmount - total - this.totalHoldAmount;
         if (this.selectedPayAmount > eligiblePayAmount) {
-          //alert('Exclude hold item amount');
           this.messageAlert('Exclude hold item amount')
           this.selectedPayAmount = eligiblePayAmount;
           return;
         }
         break;
       case 'Hold All Amount':
-      //  alert('You have selected option as "Hold All Amount"!!!');
         this.messageAlert('You have selected option as "Hold All Amount"!!!')
         this.selectedPayAmount = 0;
         return;
@@ -466,9 +477,7 @@ export class TicketDetailComponent implements OnInit {
     const checkPrice2 = this.checkTotalAmount();
     if (checkPrice2) {
       // TO DO: Needs to write a logic to remove latest added transaction based on activeSection 
-      this.transactionPaymentType.splice(this.transactionPaymentType.length - 1, 1)
-   //   window.alert("adding amount is greter than total amount")
-
+      this.transactionPaymentType.splice(this.transactionPaymentType.length - 1, 1);
       this.messageAlert('adding amount is greter than total amount')
     
       return false;
@@ -845,7 +854,7 @@ export class TicketDetailComponent implements OnInit {
     switch (this.selectedHoldAmount) {
       case 'Partial Pay Amount':
         if (this.totalHoldAmount >= this.payAmount && (this.totalHoldAmount != 0 || this.payAmount != 0)) {
-          alert(`Hold amount ( $${this.totalHoldAmount} ) is equal or more than total pay amount ( $${this.payAmount} )`);
+          this.errorAlert(`Hold amount ( $${this.totalHoldAmount} ) is equal or more than total pay amount ( $${this.payAmount} )`);
           this.payAmount = 0;
         } else {
           this.payAmount = this.totalAmount - this.ticketData?.paidAmount - this.totalHoldAmount;
@@ -858,14 +867,15 @@ export class TicketDetailComponent implements OnInit {
   }
 
   payAndSave(activeSection: string) {
-
-    if (this.transactionPaymentType.length > 1) {      
-      let text = 'You selected multiple payment mode please confirm ?';
-      if (confirm(text) != true) {
-        return;
-      }
+    if (this.transactionPaymentType.length > 1) {
+      let text = 'You selected multiple payment mode please confirm ?';      
+      this.confirmationMessage(text, 'payAndSave', activeSection);
+    } else if (this.transactionPaymentType.length == 1) {
+      this.proceedPayAndSave(activeSection);
     }
+  }
 
+  proceedPayAndSave(activeSection: string) {
     const payAmout = this.getTotal();
 
     if (payAmout == 0 && this.selectedPayAmount> 0) {
@@ -879,8 +889,7 @@ export class TicketDetailComponent implements OnInit {
       
     this.payAmount = this.getTotal();
 
-    if (!this.payAmount) {
-     
+    if (!this.payAmount) {     
       this.messageAlert('Enter Amount')
       return
     }
@@ -893,47 +902,36 @@ export class TicketDetailComponent implements OnInit {
       case 'Partial Pay Amount':
         const eligiblePayAmount = this.totalAmount - this.ticketData?.paidAmount - this.totalHoldAmount;
         if (this.payAmount > eligiblePayAmount) {
-        //  alert('Exclude hold item amount');
-
           this.messageAlert('Exclude hold item amount')
           this.payAmount = eligiblePayAmount;
           return;
         }
         break;
       case 'Hold All Amount':
-
-         this.messageAlert('You have selected option as "Hold All Amount"!!!')
-      //  alert('You have selected option as "Hold All Amount"!!!');
+        this.messageAlert('You have selected option as "Hold All Amount"!!!');
         this.payAmount = 0;
         return;
         break;
     }
 
     let msg = '';
-
     if (this.activeSection == 'Check') {
-      // msg = 'Do You want to print receipt?'
       if (this.checkNumber.length == 0) {
-        //alert('Enter Check Number');
         this.messageAlert('Enter Check Number')
    
         return;
       }
     } else if (this.activeSection == 'Electronic Payment') {
-      // msg = 'Do You want to print receipt?'
       if (this.ePaymentType?.length == 0) {
-       // alert('Enter Electronic Payment Type');
-
         this.messageAlert('Enter Electronic Payment Type')
         return;
       }
     } else {
       // TO DO:: Needs to check condition when directly hitting to pay amount
-      // msg = 'You selected as Cash as payment mode please confirm ?';
+      // msg = 'You selected as Cash as payment mode, please confirm?';
       // this.messageAlert(msg);
     }
-    
-    this.isReceiptPrint = true;
+        
     this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
   }
 
@@ -1012,12 +1010,6 @@ export class TicketDetailComponent implements OnInit {
       return item
     })
 
-    if (this.isReceiptPrint) {      
-      let text = "Do you want to print receipt?";
-      if (confirm(text) != true) {
-        this.isReceiptPrint = false;
-      }
-    }
     if (isCheckTransaction) {
       this.isCheckPrint = true;
     }
@@ -1042,9 +1034,8 @@ export class TicketDetailComponent implements OnInit {
       lstickettransaction : payTransactionObj
     };
 
-    this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {
-     
-      this.cancelEditTicket(this.isReceiptPrint, this.ticketId); 
+    this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {     
+      this.printTicket(this.ticketId); 
       this.getCashDrawerAmountAndPaidTicketCount();
 
     }, (error: any) => {
@@ -1077,12 +1068,12 @@ export class TicketDetailComponent implements OnInit {
       );
   }
 
-
-
-
-  saveTicketDetails(paidAmount: number, isReceiptPrint: boolean) {
-    // alert(paidAmount);
-    // alert(this.totalAmount);
+  saveTicketDetails(paidAmount: number, isReceiptPrint?: boolean) {
+    if (isReceiptPrint) {
+      this.isReceiptPrint = isReceiptPrint;
+    } else {
+      this.isReceiptPrint = false;
+    }
     let ticketStatus = 'OPEN';
     if (paidAmount > 0 && paidAmount == this.totalAmount) {
       ticketStatus = 'PAID';
@@ -1150,11 +1141,10 @@ export class TicketDetailComponent implements OnInit {
       } else {     
         this.ticketId = data.body.insertedRow;
         this.saveConfirmVisible = false;     
-        this.cancelEditTicket(isReceiptPrint, this.ticketId);
+        this.printTicket(this.ticketId);
       }
 
       // this.confirmSave();
-      // alert('Ticket Inserted/ updated successfully');
       // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       
     }, (error: any) => {
@@ -1163,18 +1153,17 @@ export class TicketDetailComponent implements OnInit {
     });
   }
 
-  cancelEditTicket(isReceiptPrint: boolean, ticketId: any) {
-    // alert('Refresh' + this.ticketId);
+  printTicket(ticketId: any) {
     if (ticketId && ticketId != 0) {
       console.log('11111');
       this.isEditModeOn = false;
       this.editItemCloseImageCapture = false;
       this.processDataBasedOnTicketId();
-    } else if (ticketId == 0 && !isReceiptPrint) {
+    } else if (ticketId == 0 && !this.isReceiptPrint) {
       console.log('222222');
       this.router.navigateByUrl(`${this.orgName}/home`);
     }
-    if (isReceiptPrint) {
+    if (this.isReceiptPrint) {
       this.generateSingleTicketReport(ticketId);
     } else {
       if (this.isCheckPrint) {
@@ -1189,8 +1178,6 @@ export class TicketDetailComponent implements OnInit {
     if (this.isCheckPrint) {
 
       this.messageAlert('Please insert Check into Printer!!!');
-
-      // alert("Please insert Check into Printer!!!");
       // Open Pdf viewer          
       this.showDownload = true;
       this.pdfViwerTitle = 'Check For Print';
@@ -1268,10 +1255,7 @@ export class TicketDetailComponent implements OnInit {
 
   
   deleteItem(i: number) {
-    //alert(i);
-    this.ticketObj.splice(i, 1);
-
-    
+    this.ticketObj.splice(i, 1);    
     console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
 
     this.calculateTotal(this.ticketObj);
@@ -1279,7 +1263,6 @@ export class TicketDetailComponent implements OnInit {
     // this.backToMainMaterials();
     // this.itemGross = '';
     // this.itemTare = 0;
-
   }
 
   calculateNet() {
@@ -1306,7 +1289,6 @@ export class TicketDetailComponent implements OnInit {
   }
 
   handleImage(imageUrl: string) {
-    // alert(imageUrl);
     this.imageUrl = imageUrl;
   }
 
@@ -1316,7 +1298,6 @@ export class TicketDetailComponent implements OnInit {
   }
 
   setSignature($event: any) {
-    // alert($event);
     this.imageUrl = $event;
     this.SaveImage(8);
     this.signaturePadVisible = false;
@@ -1354,10 +1335,7 @@ export class TicketDetailComponent implements OnInit {
     this.isChangeItemOn = true;
   }
 
-  backToChangeItemMainMaterials() {
-    // alert('Sudhir');    
-    // this.isEditModeOn = true;
-    
+  backToChangeItemMainMaterials() {    
     this.editItemCloseImageCapture = false;
     this.mainMaterialsVisible = true;
     this.itemLeveloperationPerform = '';  
@@ -1475,10 +1453,6 @@ export class TicketDetailComponent implements OnInit {
 
   onAdjustmentChange(value: any) {
     this.selectedAdjustment = value.target.value;
-
-    // this.messageAlert(this.selectedAdjustment)
-
-    //alert(this.selectedAdjustment);
   }
 
   GetAllAdjustmentType() {
@@ -1581,6 +1555,7 @@ export class TicketDetailComponent implements OnInit {
   }
 
   generateSingleTicketReport(ticketId: any) {
+    this.isReceiptPrint = true;
     // this.checkPrintAction();
     const param = {
       TicketId: ticketId,
@@ -1638,10 +1613,9 @@ export class TicketDetailComponent implements OnInit {
       // You can implement a condition to check if the print dialog is closed
       // For example, check if the browser is active again
       if (document.hidden) {
-        //alert('1111');
         setTimeout(checkPrintStatus, 1000);
       } else {
-        alert('Tiket Receipt Print');
+        alert('Ticket Receipt Print...!!!');
         this.afterPrintHandler();
         // Add your post-print logic here
       }
@@ -1687,7 +1661,6 @@ export class TicketDetailComponent implements OnInit {
   }
 
   generateCheck(){
-    // alert('Sudhir');
     this.isCheckPrint = true;
     this.checkVisible = false;
     this.checkPrintAction();

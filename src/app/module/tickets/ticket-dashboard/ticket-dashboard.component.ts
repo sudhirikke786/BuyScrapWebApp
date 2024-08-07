@@ -450,7 +450,6 @@ export class TicketDashboardComponent implements OnInit {
 
   voidCopyTicket() {
     const datePipe = new DatePipe('en-US');
-    // alert(this.voidReason);
     console.log("Void Ticket :: " + this.voidReason);
 
     console.log(this.tiketSelectedObj);
@@ -484,7 +483,6 @@ export class TicketDashboardComponent implements OnInit {
 
   voidTicket() {
     const datePipe = new DatePipe('en-US');
-    // alert(this.voidReason);
     console.log("Void Ticket :: " + this.voidReason);
 
     console.log(this.tiketSelectedObj);
@@ -514,7 +512,6 @@ export class TicketDashboardComponent implements OnInit {
 
   restoreTicket() {
     const datePipe = new DatePipe('en-US');
-    // alert('Restore Ticket :: ' + this.voidReason);
 
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
     this.tiketSelectedObj['CreatedBy'] = this.logInUserId;
@@ -724,10 +721,8 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   mergeAndPaySelectedTickets() {
-    // alert(JSON.stringify(this.selectedSellerTickets));
-
     if ((!this.selectedSellerTickets) || (this.selectedSellerTickets && this.selectedSellerTickets.length <= 1)) {
-      alert('Please select more than one ticket to merge!!!')
+      this.messageAlert('Please select more than one ticket to merge!!!')
       return;
     }
     
@@ -738,10 +733,7 @@ export class TicketDashboardComponent implements OnInit {
     this.isHoldTrue = (this.holdticketObj.length > 0) ? true : false;
 
     var totalbalanceAmount = this.selectedSellerTickets.reduce((totalAmount: any, item: any) => totalAmount + item.amount, 0);
-    
-    // alert(totalbalanceAmount);
-
-    
+        
     const totalActualAmount = this.selectedSellerTickets.reduce(function (sum: any, tickets: any) {
       return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : tickets.amount);
     }, 0);
@@ -749,7 +741,6 @@ export class TicketDashboardComponent implements OnInit {
     this.ticketId = this.selectedSellerTickets.map((item: any) => item.ticketId).join(',');
 
     this.totalAmount = Math.round(totalbalanceAmount);
-    // alert(this.totalAmount + '========' + this.ticketId);
 
     // this.mergeTicketVisible = false;
     // this.paymentVisible = true;
@@ -794,7 +785,7 @@ export class TicketDashboardComponent implements OnInit {
     switch (this.selectedHoldAmount) {
       case 'Partial Pay Amount':
         if (this.totalHoldAmount >= this.payAmount && (this.totalHoldAmount != 0 || this.payAmount != 0)) {
-          alert(`Hold amount ( $${this.totalHoldAmount} ) is equal or more than total pay amount ( $${this.payAmount} )`);
+          this.errorAlert(`Hold amount ( $${this.totalHoldAmount} ) is equal or more than total pay amount ( $${this.payAmount} )`);
           this.payAmount = 0;
         } else {
           this.payAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount - this.totalHoldAmount;
@@ -821,57 +812,67 @@ export class TicketDashboardComponent implements OnInit {
     }
 
     if (!this.isInputValid(this.selectedPayAmount)) {
-      //window.alert("Add valid input");
       this.messageAlert('Add valid input')
       return;
     }
 
-    const findItemExist = this.transactionPaymentType.findIndex((item: any) => item.typeofPayment?.toLowerCase() == this.activeSection?.toLowerCase())
     const checkPrice = this.checkTotalAmount();
 
     if (checkPrice) {
-   //   window.alert("adding amount is greter than total amount");
       this.messageAlert('adding amount is greter than total amount')
       return;
     }
-
     
     if (this.activeSection == 'Check') {
       if (this.checkNumber.length == 0) {
-      //  alert('Enter Check Number');
         this.messageAlert('Enter Check Number')
         return;
       }
+      this.proceedWithAddTransaction();
     } else if (this.activeSection == 'Electronic Payment') {
       if (this.ePaymentType?.length == 0) {
-      //  alert('Enter Electronic Payment Type');
         this.messageAlert('Enter Electronic Payment Type')
         return;
       }
+      this.proceedWithAddTransaction();
     } else if (this.activeSection == 'Cash') {
-      let text = 'You selected as Cash as payment mode please confirm ?';
-      if (confirm(text) != true) {
-        return;
-      }
-
+      let text = 'You selected as Cash as payment mode, please confirm?';
+      this.confirmationMessage(text, 'cashTransaction', null);
     }
+  }
 
+  
+  confirmationMessage(msg: any, triggerPoint: any, additionData: any) {
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: msg,
+      accept: () => {
+        if (triggerPoint == 'cashTransaction') {
+          this.proceedWithAddTransaction();
+        } else if (triggerPoint == 'payAndSave') {
+          this.proceedPayAndSave(additionData);
+        }
+      },
+      reject: () => {       
+        return false;
+      },
+    });
+  }
+
+  proceedWithAddTransaction() {
+    const findItemExist = this.transactionPaymentType.findIndex((item: any) => item.typeofPayment?.toLowerCase() == this.activeSection?.toLowerCase())
+    
     switch (this.selectedHoldAmount) {
       case 'Partial Pay Amount':
         const total = this.getTotal();
         const eligiblePayAmount = this.totalAmount - total - this.totalHoldAmount;
         if (this.selectedPayAmount > eligiblePayAmount) {
-          //alert('Exclude hold item amount');
-          this.messageAlert('Exclude hold item amount')
-
-  
+          this.messageAlert('Exclude hold item amount');  
           this.selectedPayAmount = eligiblePayAmount;
           return;
         }
         break;
       case 'Hold All Amount':
-      //  alert('You have selected option as "Hold All Amount"!!!');
-
         this.messageAlert('You have selected option as "Hold All Amount"!!!')
         this.selectedPayAmount = 0;
         return;
@@ -900,9 +901,7 @@ export class TicketDashboardComponent implements OnInit {
     const checkPrice2 = this.checkTotalAmount();
     if (checkPrice2) {
       // TO DO: Needs to write a logic to remove latest added transaction based on activeSection 
-      this.transactionPaymentType.splice(this.transactionPaymentType.length - 1, 1)
-  //    window.alert("adding amount is greter than total amount")
-
+      this.transactionPaymentType.splice(this.transactionPaymentType.length - 1, 1);
       this.messageAlert('adding amount is greter than total amount')
       return false;
     }
@@ -967,13 +966,15 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   payAndSave(activeSection: string) {
-
     if (this.transactionPaymentType.length > 1) {      
-      let text = 'You selected multiple payment mode please confirm ?';
-      if (confirm(text) != true) {
-        return;
-      }
+      let text = 'You selected multiple payment mode please confirm ?';      
+      this.confirmationMessage(text, 'payAndSave', activeSection);
+    } else if (this.transactionPaymentType.length == 1) {
+      this.proceedPayAndSave(activeSection);
     }
+  }
+
+  proceedPayAndSave(activeSection: string) {
 
     const payAmout = this.getTotal();
 
@@ -988,13 +989,11 @@ export class TicketDashboardComponent implements OnInit {
       
     this.payAmount = this.getTotal();
 
-    if (!this.payAmount) {
-    
+    if (!this.payAmount) {    
       this.messageAlert('Enter Amount')
       return
     }
     if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.selectedSellerTicketsPaidAmount)) {
-     // alert('Please enter valid amount!!!');
       this.messageAlert('Please enter valid amount!!!')
       return;
     }
@@ -1003,7 +1002,6 @@ export class TicketDashboardComponent implements OnInit {
       case 'Partial Pay Amount':
         const eligiblePayAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount - this.totalHoldAmount;
         if (this.payAmount > eligiblePayAmount) {
-         // alert('Exclude hold item amount');
           this.messageAlert('Exclude hold item amount')
           this.payAmount = eligiblePayAmount;
           return;
@@ -1019,25 +1017,21 @@ export class TicketDashboardComponent implements OnInit {
     let msg = '';
 
     if (this.activeSection == 'Check') {
-      // msg = 'Do You want to print receipt?'
       if (this.checkNumber.length == 0) {
-       // alert('Enter Check Number');
         this.messageAlert('Enter Check Number')
         return;
       }
     } else if (this.activeSection == 'Electronic Payment') {
-      // msg = 'Do You want to print receipt?'
       if (this.ePaymentType?.length == 0) {
         this.messageAlert('Enter Electronic Payment Type')
         return;
       }
     } else {
-      msg = 'You selected as Cash as payment mode please confirm ?';
+      msg = 'You selected as Cash as payment mode, please confirm?';
       this.messageAlert(msg);
     }
 
     this.saveTransactionData(activeSection);
-
   }
 
   saveTransactionData(activeSection: any) {
@@ -1116,44 +1110,25 @@ export class TicketDashboardComponent implements OnInit {
       return item
     })
 
-    
-    // let text = "Do you want to print receipt?";
-    // if (confirm(text) == true) {
-    //   this.isReceiptPrint = true;
-    //   if (isCheckTransaction) {
-    //     isCheckPrint = true;
-    //   }
-    // } else {
-    //   this.isReceiptPrint = false;
-    // }
-    if (this.isReceiptPrint) {      
-      let text = "Do you want to print receipt?";
-      if (confirm(text) != true) {
-        this.isReceiptPrint = false;
-      }
-    }
     if (isCheckTransaction) {
       isCheckPrint = true;
     }
 
     if(this.ticketId.toString().indexOf(',') > -1) {
-      this.saveMergeTicketDetails(payTransactionObj, isCheckPrint, this.isReceiptPrint);
+      this.saveMergeTicketDetails(payTransactionObj, isCheckPrint);
     } else {
-      this.savePaymentTransation(payTransactionObj, isCheckPrint, this.isReceiptPrint);
+      this.savePaymentTransation(payTransactionObj, isCheckPrint);
     }
     this.paymentVisible = false;
     // this.saveConfirmVisible = false; // TO DO
 
   }
 
-  savePaymentTransation(payTransactionObj: any, isCheckPrint: boolean, isReceiptPrint: boolean) {
+  savePaymentTransation(payTransactionObj: any, isCheckPrint: boolean) {
     console.log('payTransactionObj');
     console.log(payTransactionObj);
     console.log('this.transactionPaymentType');
     console.log(this.transactionPaymentType);
-    // alert('checkAmount ::' + checkAmount);
-    const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
-    const customerFullName = selectedTicketDetail[0].customerName;
 
     const transactionObj = {
       tickettransaction : {
@@ -1175,18 +1150,8 @@ export class TicketDashboardComponent implements OnInit {
       lstickettransaction : payTransactionObj
     };
 
-    this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {
-      // this.isReceiptPrint = false;
-      // if (isCheckPrint) {
-      //   alert("Please insert Check into Printer!!!");
-      //   // TO DO :: Open Pdf viewer          
-      //   this.showDownload = true;
-      //   this.pdfViwerTitle = 'Check For Print';
-      //   this.generateCheckPrintReport(this.ticketId, checkAmount, customerFullName);
-      // }
-      
-      this.cancelEditTicket(isReceiptPrint, this.ticketId, isCheckPrint, customerFullName);
-
+    this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {      
+      this.printTicket(this.ticketId, isCheckPrint);
     }, (error: any) => {
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
@@ -1194,7 +1159,7 @@ export class TicketDashboardComponent implements OnInit {
   }
 
 
-  saveMergeTicketDetails(payTransactionObj: any, isCheckPrint: boolean, isReceiptPrint: boolean) {
+  saveMergeTicketDetails(payTransactionObj: any, isCheckPrint: boolean) {
 
     const newTicket = {
       rowId: 0,
@@ -1210,42 +1175,33 @@ export class TicketDashboardComponent implements OnInit {
       lstTTicketTransactionDTO: payTransactionObj
     };
 
-
     console.log("New Merge ticketData :: " + JSON.stringify(newTicket));
-
 
     this.commonService.insertUpdateMergeTickets(newTicket).subscribe((data: any) => {
       console.log(data);
       const ticketId = data.body.insertedRow;
-      alert('Tickets merged successfully');
+      this.messageAlert('Tickets merged successfully');
       this.mergeTicketVisible = false;
       this.dialogPopupVisible = false;
-      this.cancelEditTicket(isReceiptPrint, ticketId, isCheckPrint, this.selectedSellerName);
-
+      this.printTicket(ticketId, isCheckPrint);
     }, (error: any) => {
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
-    // setTimeout(this.cancelEditTicket, 2000);
-    // this.cancelEditTicket();
-    // this.router.navigateByUrl(`${this.orgName}/home`);
   }
 
-  cancelEditTicket(isReceiptPrint: boolean, ticketId: any, isCheckPrint: boolean, customerFullName: any) {
+  printTicket(ticketId: any, isCheckPrint: boolean) {  
+    let isReceiptPrint = this.isReceiptPrint;  
+    if (this.isReceiptPrint) {      
+      let text = "Do you want to print receipt?";
+      if (confirm(text) != true) {
+        isReceiptPrint = false;
+      }
+    }
     const paramObject = {
       LocationId: this.locId
     };
     this.getCashDrawerAmountAndPaidTicketCount(paramObject);
-    // alert('Refresh' + this.ticketId);
-    // if (ticketId && ticketId != 0) {
-    //   console.log('11111');
-    //   this.isEditModeOn = false;
-    //   this.editItemCloseImageCapture = false;
-    //   this.processDataBasedOnTicketId();
-    // } else if (ticketId == 0 && !isReceiptPrint) {
-    //   console.log('222222');
-    //   this.router.navigateByUrl(`${this.orgName}/home`);
-    // }
     if (isReceiptPrint) {
       this.generateSingleTicketReport(ticketId);
     } else {      
@@ -1255,7 +1211,6 @@ export class TicketDashboardComponent implements OnInit {
   
   private checkPrintAction(isCheckPrint: boolean, ticketId: any) {
     if (isCheckPrint) {
-      // alert("Please insert Check into Printer!!!");
       this.messageAlert('Please insert Check into Printer!!!');
 
       const checkPaymentTransaction = this.transactionPaymentType.filter((item: any) => item.typeofPayment == 'Check');
@@ -1292,7 +1247,6 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   payRemainder() {
-    // alert(this.ticketId);
     const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
     this.totalAmount = selectedTicketDetail.reduce((totalAmount: any, item: any) => totalAmount + item.balanceAmount, 0);
     // this.totalAmount = selectedTicketDetail[0].balanceAmount;
@@ -1325,8 +1279,6 @@ export class TicketDashboardComponent implements OnInit {
     }
     let amountInWord = ((doller.length==0? 'Zero ' : doller) + 'DOLLARS AND ' + (cent.length==0? 'Zero' : cent) + ' CENTS ONLY').toUpperCase()
     console.info(amountInWord);
-
-    // alert(amountInWord);
     
     // const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
     // const customerFullName = selectedTicketDetail[0].customerName;       
@@ -1356,8 +1308,6 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   generateSingleTicketReport(ticketId: any) {
-
-    // alert(ticketId);
     const param = {
       TicketId: ticketId,
       LocationId: this.locId,
@@ -1494,7 +1444,6 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   print() {
-    // alert(this.ticketId);
   }
 
   processCash() {
@@ -1611,9 +1560,6 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   onRightClick(event: any) {
-    // alert('333333333333' + JSON.stringify(ticket));
-    // Your code here
-    // alert('1111111111111');
     return false;   // Add return false
   }
 
