@@ -35,7 +35,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-seller let-rowIndex="rowIndex">
-            <tr>
+            <tr *ngIf="seller.keys == 'isVirtualKeyboard' || seller.keys == 'AutoCaptureMaterialPhoto'">
                 <td>{{ seller.keys }}</td>
                 <td>
 
@@ -53,6 +53,7 @@
      
     </p-table>
                 
+  
 
 </div>
 

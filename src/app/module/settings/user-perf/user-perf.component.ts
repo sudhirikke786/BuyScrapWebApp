@@ -24,6 +24,8 @@ export class UserPerfComponent {
   copyObj: any;
   logInUserId: any;
   searchValue = '';
+  OriginalsystemPerObj :any = [];
+
   constructor(public commonService: CommonService,
     private confirmationService: ConfirmationService, 
     private messageService: MessageService,
@@ -75,20 +77,36 @@ export class UserPerfComponent {
 
 
   getSystemPreferencesValue(){
-    let reqObj = {
-      Key:'',
-      ManageByStore:true
-    }
-    this.commonService.GetSystemPreferencesValue(reqObj).subscribe((res) =>{
-      this.systemPerObj = res?.body?.data.map((item:any) => {
+
+
+   this.OriginalsystemPerObj = this.stroarge.getLocalStorage('systemInfo');
+
+    if(this.OriginalsystemPerObj ) {
+      this.systemPerObj =  this.OriginalsystemPerObj .map((item:any) => {
         item.isChecked = item.values == 'True' ? true : false;
         return item
-      });
-      this.copyObj = res?.body?.data.map;
-    
-    },(error)=>{
+      });;   
+      this.copyObj = this.OriginalsystemPerObj .map((item:any) => {
+        item.isChecked = item.values == 'True' ? true : false;
+        return item
+      }); ;
 
-    })
+    }
+
+    // let reqObj = {
+    //   Key:'',
+    //   ManageByStore:true
+    // }
+    // this.commonService.GetSystemPreferencesValue(reqObj).subscribe((res) =>{
+    //   this.systemPerObj = res?.body?.data.map((item:any) => {
+    //     item.isChecked = item.values == 'True' ? true : false;
+    //     return item
+    //   });
+    //   this.copyObj = res?.body?.data.map;
+    
+    // },(error)=>{
+
+    // })
   }
 
 
@@ -99,8 +117,20 @@ export class UserPerfComponent {
       header: 'Confirmation',
       message: `Are you sure you want to change ${type.keys} value?`,
       accept: () => {
-        // Action to take when the user clicks "Yes" or "OK"
-        this.saveForm(type,pos?.checked);
+
+       const findIndex =   this.stroarge.getLocalStorage('systemInfo').findIndex((item:any) => item.keys == type.keys);
+       const findElement =   this.stroarge.getLocalStorage('systemInfo').find((item:any) => item.keys == type.keys);
+
+       findElement.values = pos.checked  ? 'True' : 'False';
+
+      this.OriginalsystemPerObj[findIndex]  = findElement
+      localStorage.removeItem('systemInfo');
+
+      this.stroarge.setLocalStorage('systemInfo', this.OriginalsystemPerObj);   
+      this.getSystemPreferencesValue();
+       
+      //values : "True"
+       
      
         // Add your logic here
       },
@@ -117,29 +147,32 @@ export class UserPerfComponent {
 
 
   saveForm(type?:any,ischecked=false){
-    const datePipe = new DatePipe('en-US');
 
-    const sysInfo = {
-      "createdBy": this.logInUserId,
-      "updatedBy": this.logInUserId,
-      "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      "rowId": this.editObj?.rowId || type.rowId,
-      "keys":type.keys,
-      "values":ischecked ? 'True' : 'False'
-    }
 
-   // const reqObj = {...sysInfo,...obj};
 
-    this.commonService.InsertUpdateSystemPreferences(sysInfo).subscribe((res) =>{
-      this.getSystemPreferencesValue();
-      this.visible = false;
-      // alert('updated')
-      //this.msgService.showSuccess('Successfully Updated')
-    },(error)=>{
+  //   const datePipe = new DatePipe('en-US');
+
+  //   const sysInfo = {
+  //     "createdBy": this.logInUserId,
+  //     "updatedBy": this.logInUserId,
+  //     "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+  //     "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+  //     "rowId": this.editObj?.rowId || type.rowId,
+  //     "keys":type.keys,
+  //     "values":ischecked ? 'True' : 'False'
+  //   }
+
+  //  // const reqObj = {...sysInfo,...obj};
+
+  //   this.commonService.InsertUpdateSystemPreferences(sysInfo).subscribe((res) =>{
+  //     this.getSystemPreferencesValue();
+  //     this.visible = false;
+  //     // alert('updated')
+  //     //this.msgService.showSuccess('Successfully Updated')
+  //   },(error)=>{
       
-      //this.msgService.showError(error)
-    })
+  //     //this.msgService.showError(error)
+  //   })
 
   }
 
