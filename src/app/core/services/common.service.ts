@@ -458,6 +458,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/AWS/FileUploadFromWeb', 'POST', requestObj);
   }
 
+  ExtractOCRData(requestObj:any): Observable<any>{
+    return this.http.post(environment.baseUrl + '/AWS/ExtractOCRData', requestObj);
+  }
+
   /* Regrades API */  
 
   GetAllRegrades(paramObj: any): Observable<any> {

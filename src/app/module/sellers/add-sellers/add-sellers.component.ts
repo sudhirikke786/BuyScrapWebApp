@@ -187,33 +187,32 @@ export class AddSellersComponent implements OnInit {
     formData.append('file', file);   
     formData.append('document_type', "ID");  
     this.loaderShow =  true;
-     this.http.post('http://18.222.119.98/process-image/', formData)
-       .subscribe(res1 => {
-        const res:any = res1;
 
-        this.loaderShow =  false;
-        if(res){
-        const userObj =  {
-          licensePlateNumber : res["ID"],
-          lastName: res["LN"],
-          firstName : res["FN"],
-          middleName:res["MN"],
-          streetAddress:res["STREET"],
-          city: res["CITY"],
-          state:res["STATE"],
-          zipCode:res["ZIP"],
-          dob: this.formatDate(res["DOB"]),
-          gender:res["SEX"] == '' ? 'undefind' : res["SEX"] == 'M' ? 'Male' : 'Female',
-  
-         }   
-         this.sellerForm.patchValue({...userObj})
-        }
-  
-    
-  },(error) =>{
-    this.loaderShow =  false;
-  })
+    this.commonService.ExtractOCRData(formData).subscribe(res1 => {
+      const res:any = res1;
 
+      this.loaderShow =  false;
+      if(res){
+      const userObj =  {
+        licensePlateNumber : res["ID"],
+        lastName: res["LN"],
+        firstName : res["FN"],
+        middleName:res["MN"],
+        streetAddress:res["STREET"],
+        city: res["CITY"],
+        state:res["STATE"],
+        zipCode:res["ZIP"],
+        dob: this.formatDate(res["DOB"]),
+        gender:res["SEX"] == '' ? 'undefind' : res["SEX"] == 'M' ? 'Male' : 'Female',
+
+       }   
+       this.sellerForm.patchValue({...userObj})
+      }
+
+  
+    },(error) =>{
+      this.loaderShow =  false;
+    });
 
   }
 
