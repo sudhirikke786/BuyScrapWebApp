@@ -289,8 +289,8 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/ShipOuts/InsertShipOutDTO', 'POST', requestObj);
   }
 
-  UpdateShipOutStatus(requestObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/ShipOuts/UpdateShipOutStatus', 'GET',null,null, requestObj);
+  UpdateShipOutStatus(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/ShipOuts/UpdateShipOutStatus', 'GET',paramObj);
   }
 
 
