@@ -639,7 +639,7 @@
     <div class="mt-2" *ngIf="captureType!='Using Signature Pad' && captureType!='Using Sign'">
 
         <div class="d-flex">
-            <div class="form-group" *ngIf="type == 2">
+            <div class="form-group me-2" *ngIf="type == 2">
                 <select class="form-select" id="example-select" [(ngModel)]="selectedImageType" (change)="changeType(selectedImageType)">
                     <option value="ID">ID</option>
                     <option value="Driving Licence">Driver License</option>
