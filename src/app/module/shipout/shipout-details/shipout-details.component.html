@@ -46,7 +46,7 @@
                                                 <i class="mdi mdi-pencil"></i> Edit
                                             </a>
                                             <div *ngIf="isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
-                                                <a class="btn btn-danger me-1" (click)="cancelEditTicket()">Cancel</a>
+                                                <!-- <a class="btn btn-danger me-1" (click)="cancelEditTicket()">Cancel</a> -->
                                                 <a class="btn btn-primary" (click)="confirmSave()">Save</a>
                                             </div>
         
@@ -114,9 +114,13 @@
                                                         <td>{{ ticket.gross  }}</td>
                                                         <td>{{ ticket.tare }}</td>
                                                         <td>{{ ticket.net }}</td>
-                                                        <td *ngIf="isEditModeOn">
-                                                            <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editItem(ticket)"
+                                                        <td *ngIf="isEditModeOn">                                                            
+                                                            <!-- <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editItem(ticket)"
                                                             class="btn btn-grid btn-primary waves-effect waves-light me-1">
+                                                                <i class="mdi mdi-pencil"></i> Edit
+                                                            </a>  -->
+                                                            <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="false && editItem(ticket)"
+                                                            class="btn btn-grid btn-primary waves-effect waves-light me-1" [ngClass]="{'opacity-25': 1==1}">
                                                                 <i class="mdi mdi-pencil"></i> Edit
                                                             </a> 
                                                             
@@ -262,3 +266,4 @@
 
 
 <p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>

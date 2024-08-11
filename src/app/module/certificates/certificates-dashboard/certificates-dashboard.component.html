@@ -83,9 +83,9 @@
                     <td>{{ certificate.customerName }}</td>
                     <td>{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>
                     <td *ngIf="certificate?.dateClosed != null">
-					          <a (click)="getCODImagesbyID(certificate,'show')" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-eye"></i> Show</a>
+					          <a (click)="getCODImagesbyID(certificate,'show')" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i> Show</a>
 
-                      <a href="javascript:void()" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-printer"></i> Print</a>
+                      <a href="javascript:void()" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-printer"></i> Print</a>
 
                       <!-- <a href="" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-restore"></i> Restore</a>  -->
                     </td>

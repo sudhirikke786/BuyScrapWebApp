@@ -240,7 +240,9 @@ export class ShipoutDashboardComponent implements OnInit {
     }
     this.confirmationService.confirm({
       header: 'Confirmation',
-      message: 'Are you sure want to delete ' + shipoutId  ,
+      message: 'Are you sure want to delete selected Shipout Number #' + shipoutId + ' ?' ,
+      acceptLabel: 'Confirm',
+      rejectLabel: 'Cancel',
       accept: () => {
         this.commonService.UpdateShipOutStatus(reqObj).subscribe(() =>{
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Ship Out Record Deleted Successfully' });

@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
 import { WebcamImage } from 'ngx-webcam';
 import { TicketItem } from 'src/app/core/model/ticket-item.model';
@@ -17,7 +17,7 @@ import { MaterialCalculatorComponent } from '../../shared/commonshared/material-
   selector: 'app-shipout-details',
   templateUrl: './shipout-details.component.html',
   styleUrls: ['./shipout-details.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class ShipoutDetailsComponent implements OnInit {
   [x: string]: any;
@@ -94,6 +94,7 @@ export class ShipoutDetailsComponent implements OnInit {
     private router: Router,
     private datePipe: DatePipe,
     private messageService: MessageService,
+    private confirmationService: ConfirmationService,
     private stroarge:StorageService,
     public dataService: DataService,
     private commonService: CommonService) {  }
@@ -243,13 +244,21 @@ export class ShipoutDetailsComponent implements OnInit {
     this.getAllGroupMaterial();
   }
 
-  
-  deleteItem(i: number) {
-   
-    this.ticketObj.splice(i, 1);    
-    console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
-
-    this.calculateTotal(this.ticketObj);
+  deleteItem(item: number) {    
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: 'Are you sure you want to remove material?',
+      acceptLabel: 'Confirm',
+      rejectLabel: 'Cancel',
+      accept: () => {   
+        this.ticketObj.splice(item, 1);    
+        console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));    
+        this.calculateTotal(this.ticketObj);
+      },
+      reject: () => {       
+        return false;
+      },
+    });
   }
 
   getAllGroupMaterial() {
@@ -397,7 +406,8 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemLeveloperationPerform = 'Edit';
   }
 
-  editItem(rowData: any) {    
+  // TO DO:: Needs to implement Edit , but before that we will have to find available stock based on Material id
+  editItem(rowData: any) {   
     this.editItemCloseImageCapture = true;
     this.itemLeveloperationPerform = 'Edit';
 
@@ -409,12 +419,8 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemGross = rowData.gross;
     this.itemTare = rowData.tare;
     this.itemNet = isNaN(rowData.net) ?  0 : rowData.net;
+
     this.itemAvailableNet = rowData.price;
-    this.itemImagePath = rowData.imagePath;
-    this.itemCodNote = rowData.codNote;    
-    this.materialNote = rowData.materialNote;
-    
-    this.imageUrl = (this.itemImagePath ? this.itemImagePath : 'assets/images/custom/id_scan.png');
     
   }
 

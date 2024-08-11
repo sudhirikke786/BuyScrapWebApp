@@ -473,3 +473,8 @@ body{
  
 //    }
   
+// TO DO: need to check for pagination dropdown to open on upper side in modal pop up
+.p-dialog-content .p-paginator .p-dropdown {
+    height: 30px;
+    display: none !important;
+}
