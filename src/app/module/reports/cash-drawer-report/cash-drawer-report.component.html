@@ -51,6 +51,7 @@
                                   <th>Date</th>
                                   <th>Opening Balance</th>
                                   <th>In Amount</th>
+                                  <th>Paid Out Amount</th>
                                   <th>Out Amount</th>
                                   <th>Closing Balance</th>
                                 </tr>
@@ -61,6 +62,7 @@
                                   <td>{{ rowData.openingBalance | currency: currencySymbol :'symbol': numberFormat }}</td>
                                   <td>{{ rowData.iN_Amount | currency: currencySymbol :'symbol': numberFormat }}</td>
                                   <td>{{ rowData.ouT_Amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                  <td>{{ rowData.pettyOUT_Amount | currency: currencySymbol :'symbol': numberFormat }}</td>
                                   <td>{{ rowData.closingBalance | currency: currencySymbol :'symbol': numberFormat }}</td>
                                 </tr>
                               </ng-template>
