@@ -227,31 +227,21 @@ export class RegradeDashboardComponent implements OnInit {
   }
 
   deleteDetails(shipoutId: any) {
-
-
-
     this.confirmationService.confirm({
       header: 'Confirmation',
       message: `Are you sure you want to Delete this value?`,
       accept: () => {
         const param = { RowID: shipoutId,Status:true };
-
         this.commonService.UpdateRegradedStatus(param).subscribe(
           (data) => {
             this.messageService.add({ severity: 'success', summary: 'success', detail: "Deleted Successfully" });
-            this.getAllRegrades(this.pagination);
-    
+            this.getAllRegrades(this.pagination);    
         })
       },
       reject: () => {
        
       },
     });
-
-   
-
-
-   
   }
 
   existingMaterialList(item:any) {
