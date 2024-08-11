@@ -234,15 +234,15 @@ export class ShipoutDashboardComponent implements OnInit {
 
 
   confirmationMessage(shipoutId:any) {
-    const reqOob = {
-      RowID:shipoutId,
-      Status:true
+    const reqObj = {
+      RowID: shipoutId,
+      Status: true
     }
     this.confirmationService.confirm({
       header: 'Confirmation',
       message: 'Are you sure want to delete ' + shipoutId  ,
       accept: () => {
-        this.commonService.UpdateShipOutStatus(reqOob).subscribe(() =>{
+        this.commonService.UpdateShipOutStatus(reqObj).subscribe(() =>{
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Ship Out Record Deleted Successfully' });
           this.getAllShipOutDetails(this.pagination);
 
