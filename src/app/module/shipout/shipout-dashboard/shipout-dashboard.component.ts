@@ -6,11 +6,13 @@ import { ShipOut } from 'src/app/core/model/ship-out.model';
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { DataService } from 'src/app/core/services/data.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-shipout-dashboard',
   templateUrl: './shipout-dashboard.component.html',
-  styleUrls: ['./shipout-dashboard.component.scss']
+  styleUrls: ['./shipout-dashboard.component.scss'],
+  providers: [MessageService, ConfirmationService]
 })
 export class ShipoutDashboardComponent implements OnInit {
 
@@ -95,6 +97,8 @@ export class ShipoutDashboardComponent implements OnInit {
     private router: Router,
     private datePipe: DatePipe,
     private stroarge: StorageService,
+    private messageService:MessageService,
+    private confirmationService: ConfirmationService,
     public dataService: DataService,
     public commonService: CommonService) { }
 
@@ -112,6 +116,7 @@ export class ShipoutDashboardComponent implements OnInit {
 
     this.commonService.getAllShipOutDetails(pagination)
       .subscribe(data => {
+        this.showLoader = false;
           console.log('getAllShipOutDetails :: ');
           console.log(data);
           this.shipouts = data.body.data;
@@ -224,6 +229,31 @@ export class ShipoutDashboardComponent implements OnInit {
 
   deleteDetails(shipoutId: any) {
     alert('Delete action Triggered')
+  }
+
+
+
+  confirmationMessage(shipoutId:any) {
+    const reqOob = {
+      RowID:shipoutId,
+      Status:true
+    }
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: 'Are you sure want to delete ' + shipoutId  ,
+      accept: () => {
+        this.commonService.UpdateShipOutStatus(reqOob).subscribe(() =>{
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Ship Out Record Deleted Successfully' });
+          this.getAllShipOutDetails(this.pagination);
+
+        },(error) =>{
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something Wen\'t wrong' });
+        })
+      },
+      reject: () => {       
+        return false;
+      },
+    });
   }
 
 

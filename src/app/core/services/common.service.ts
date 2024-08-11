@@ -289,6 +289,13 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/ShipOuts/InsertShipOutDTO', 'POST', requestObj);
   }
 
+  UpdateShipOutStatus(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/ShipOuts/UpdateShipOutStatus', 'GET',null,null, requestObj);
+  }
+
+
+
+
   getAllCODTickets(pagination: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllCODTickets', 'GET', pagination);
   }
