@@ -20,6 +20,7 @@ export class SettingsDashboardComponent implements OnInit {
   locId: any;
   systemprefVisible = false;
   currentRole:any;
+  userprefVisible = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private authService:AuthService,
@@ -82,6 +83,17 @@ export class SettingsDashboardComponent implements OnInit {
   hideSytemPerf(){
     this.systemprefVisible = false;
   }
+
+  showUserPerf(){
+    this.userprefVisible = true;
+  }
+
+  hideUserPerf(){
+    this.userprefVisible = false;
+  }
+
+
+  
 
 
 

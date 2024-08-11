@@ -1,0 +1,96 @@
+
+<div class="row">
+                                
+    <div class="col-sm-6 mb-1">
+        <input type="text" (keydown)="searchBox()" [(ngModel)]="searchValue" id="example-placeholder" class="form-control" placeholder="Search Sys Pref">
+    </div>
+    <div class="col-sm-6 mb-1">
+        <a (click)="searchBox()" class="btn btn-square-less-padd btn-primary waves-effect waves-light" title="Search"><i class="mdi mdi-cust mdi-magnify"></i></a> 
+        <a class="btn ms-1 btn-square-less-padd btn-primary waves-effect waves-light" (click)="refershSettings()" title="Refresh"><i class="mdi mdi-cust mdi-refresh"></i></a>
+    </div>
+
+</div>
+
+<div class="row mt-3">
+
+
+        <p-table [value]="systemPerObj" 
+         [scrollable]="true" 
+         scrollHeight="40vh"
+        [paginator]="false"
+        [rows]="10"
+        [responsive]="true"
+        [showCurrentPageReport]="true" 
+      
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions" >
+
+       
+        
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+                <!-- <th>Action</th> -->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-seller let-rowIndex="rowIndex">
+            <tr>
+                <td>{{ seller.keys }}</td>
+                <td>
+
+                    <div class="d-flex">
+                        <div class="ms-1">Off</div>
+                        <div class="ms-1"><p-inputSwitch [(ngModel)]="seller.isChecked" (onChange)="showConfirmation($event,rowIndex,seller)"></p-inputSwitch></div>
+                        <div class="ms-1">On</div>
+
+                     </div>
+                </td>
+                <!-- <td> <a class="btn btn-grid btn-primary" (click)="editSystem(seller)"><i class="mdi mdi-pencil"></i> Edit</a>
+                </td> -->
+            </tr>
+        </ng-template>
+     
+    </p-table>
+                
+
+</div>
+
+<p-dialog [modal]="true"  header="Camera Settings"   [(visible)]="visible" [style]="{ width: '50vw' }" [breakpoints]="{'767px': '100vw'}">
+    <ng-template pTemplate="header">
+
+        <div class="d-flex">
+            <a class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a>
+
+            <h4 class="modal-title ml-10" id="myLargeModalLabel">Edit Sys Pref</h4>
+        </div>
+
+    </ng-template>
+    <div class="row" *ngIf="visible">
+        <div class="col-sm-12">
+            
+            <form [formGroup]="systemPerfForm">
+                
+                <div class="form-group col-sm-12 mb-2">
+                    <label for="simpleinput" class="form-label w-100">Key</label>
+                    <input readonly type="text" id="key" formControlName="keys" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-12 mb-2">
+                    <label for="simpleinput" class="form-label w-100">Confirm Key</label>
+                    <input type="text" id="setkey" class="form-control"  formControlName="values">
+                </div>
+
+                <button class="btn btn-primary " (click)="saveForm()">Update</button>
+            </form>
+
+        </div>
+    </div>
+  
+</p-dialog>
+
+
+
+<p-toast></p-toast>
+
+<p-confirmDialog></p-confirmDialog>

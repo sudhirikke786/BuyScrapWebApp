@@ -13,6 +13,7 @@ import { TicketSettingsComponent } from './ticket-settings/ticket-settings.compo
 import { CameraSettingsComponent } from './camera-settings/camera-settings.component';
 import { SystemPerfComponent } from './system-perf/system-perf.component';
 import { MessageService } from 'primeng/api';
+import { UserPerfComponent } from './user-perf/user-perf.component';
 
 
 
@@ -30,7 +31,8 @@ export const routes: Routes = [{
     CashierSettingsComponent,
     TicketSettingsComponent,
     CameraSettingsComponent,
-    SystemPerfComponent
+    SystemPerfComponent,
+    UserPerfComponent
   ],
   imports: [
     CommonModule,
