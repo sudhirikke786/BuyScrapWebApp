@@ -30,11 +30,13 @@ export class SellersBuyersDashboardComponent implements OnInit {
   actionList = [
     {
       iconcode:'mdi-magnify',
-      title:'Search'
+      title:'Search',
+      label:'Search'
     },
     {
       iconcode:'mdi-refresh',
-      title:'Refresh'
+      title:'Refresh',
+      label:'Refresh'
     },{
       iconcode:'mdi-plus',
       title:'Add Seller',
@@ -67,7 +69,8 @@ export class SellersBuyersDashboardComponent implements OnInit {
     const paramObject = {
       PageNumber: 1,
       RowOfPage: 10,
-      LocationId: this.locId
+      LocationId: this.locId,
+      SerachText: this.searchSellerInput.replace(/ /g, "%")
     };
     this.getAllsellersDetails(paramObject);
   }
@@ -100,7 +103,8 @@ export class SellersBuyersDashboardComponent implements OnInit {
     let pagObj = {
       PageNumber: this.currentPage,
       RowOfPage: event.rows,
-      LocationId: this.locId
+      LocationId: this.locId,
+      SerachText: this.searchSellerInput.replace(/ /g, "%")
     }
     this.pageSize = event.rows;
    // this.pagination = {...this.pagination,...pagObj};
@@ -111,6 +115,8 @@ export class SellersBuyersDashboardComponent implements OnInit {
   /** Seller pop up actions start */
 
   searchSeller() {
+    this.first = 0;
+    this.last = 9;
     const paramObject = {
       PageNumber: 1,
       RowOfPage: 10,
@@ -123,10 +129,13 @@ export class SellersBuyersDashboardComponent implements OnInit {
 
   refreshSellerData() {
     this.searchSellerInput = '';
+    this.first = 0;
+    this.last = 9;
     const paramObject = {
       PageNumber: 1,
       RowOfPage: 10,
-      LocationId: this.locId
+      LocationId: this.locId,
+      SerachText: this.searchSellerInput.replace(/ /g, "%")
     };
     this.getAllsellersDetails(paramObject);
   }
@@ -188,7 +197,8 @@ export class SellersBuyersDashboardComponent implements OnInit {
       const paramObject = {
         PageNumber: 1,
         RowOfPage: 10,
-        LocationId: this.locId
+        LocationId: this.locId,
+        SerachText: this.searchSellerInput.replace(/ /g, "%")
       };
       this.getAllsellersDetails(paramObject);
      
@@ -206,7 +216,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
 
   cancelClick(){
       this.isDeleteConfirmModel = false;
-      alert("Canceled Delete !!!");
+      // alert("Canceled Delete !!!");
   }
 
   mergeSellerData(){
