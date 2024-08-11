@@ -223,6 +223,8 @@ export class ShipoutDetailsComponent implements OnInit {
       );
   }
 
+ 
+
   calculateTotal(tickets: any) {
     this.totalNoOfMaterial = tickets.length;
     this.totalGross = tickets.reduce(function (sum:any, tickets:any) {
@@ -243,7 +245,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
   
   deleteItem(i: number) {
-    //alert(i);
+   
     this.ticketObj.splice(i, 1);    
     console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
 
@@ -326,10 +328,8 @@ export class ShipoutDetailsComponent implements OnInit {
       console.log(data); 
       this.shipoutId = data.body;
 
-      // this.confirmSave();
-      // alert('Ticket Inserted/ updated successfully');
-      // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
-      // this.cancelEditTicket();
+    
+      
       if (this.isReceiptPrint) {
         this.generateShipOutReport();
       }
@@ -343,7 +343,8 @@ export class ShipoutDetailsComponent implements OnInit {
   }
 
   cancelEditTicket() {
-    // alert('Refresh' + this.shipoutId);
+   
+    
     if (this.shipoutId && this.shipoutId != 0) {
       console.log('11111');
       this.isEditModeOn = false;
@@ -358,13 +359,15 @@ export class ShipoutDetailsComponent implements OnInit {
 
   closePdfReport() {
     this.showDownload = false;    
-    if (this.isEditModeOn && this.isNewShipOut) {
-      this.router.navigateByUrl(`${this.orgName}/ship-out`);
-    }
+    this.router.navigateByUrl(`${this.orgName}/ship-out`);
+    // if (this.isEditModeOn && this.isNewShipOut) {
+    //   this.router.navigateByUrl(`${this.orgName}/ship-out`);
+    // }
   }
 
   addItem(materialId: any, materialName: any, selectedMaterial: string, availableStock: any) {
-    // alert(availableStock);
+  
+    
     this.editItemCloseImageCapture = true;
     this.imageUrl = null;
     this.itemMaterialId = materialId;

@@ -39,7 +39,10 @@
   background-color: var(--ct-blue);
   color: var(--ct-white);
   border: none;
-  font-size: 1.1rem !important;
+  
+    font-size:1.2rem !important;
+    border-radius: 10px;
+    cursor: pointer;
   
   cursor: pointer;
 }
@@ -238,22 +241,31 @@
  }
 
 
-.cost-image{
-  div {
-   width:100%;
-  }
-  .img-fluid{
-   width: 100%;
- 
-   max-height: 400px;
-  }
-  .btn{
-   width:47%;
- 
-  }
-}
 
 }
-//  @media  screen only (max-width:2500px) and screen(min-width:1920){
 
-//  }
+
+.btn-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color:#eff0f2;
+ 
+}
+
+
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #fff;
+  text-decoration: none; /* Remove underline if any */
+  width: 30px;  /* Adjust as needed */
+  height: 30px; /* Adjust as needed */
+}
+
+.icon-container i {
+  font-size: 16px; /* Adjust as needed */
+  color: #007bff; /* Adjust as needed */
+}

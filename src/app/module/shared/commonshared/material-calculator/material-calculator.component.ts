@@ -40,7 +40,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
 
   isVirtual = true;
   isKeyboard = true;
-
+  @Output()  backClose =  new EventEmitter<any>();
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef) {
 
@@ -200,6 +200,11 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
     } catch (error) {
       this.displayValue = 'Error';
     }
+  }
+
+
+  backToChangeItemMainMaterials(){
+    this.backClose.emit(true);
   }
 
 
