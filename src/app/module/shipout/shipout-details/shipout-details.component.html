@@ -190,7 +190,7 @@
                                       
                                       <ng-container  *ngFor="let item of materialList" >
                                           <li>
-                                              <a id="showInnerDiv1" class="btn btn-primary "  style="line-height: 18px !important;" 
+                                              <a id="showInnerDiv1" class="btn btn-primary "  style="line-height: 18px !important;width: 100%;" 
                                               pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
                                               (click)="getSubMaterials(item.rowId, item.groupName, false)">
                                                   {{item.groupName}}
@@ -214,7 +214,7 @@
                                           <li>
                                               <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.availableStock)"
                                               pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
-                                              class="btn btn-primary" style="line-height: 18px !important;">{{item.materialName}}</a>
+                                              class="btn btn-primary" style="line-height: 18px !important;width:100%">{{item.materialName}}</a>
                                           </li>
                                       </ng-container>                                     
                                     </ul>
@@ -226,7 +226,7 @@
                                 <div class="calc" style="height:calc(100vh - 150px);width:100%;overflow: hidden;">
 
                                     <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()"
-                                        [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
+                                        [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" (backClose)="changeItem()" 
                                         [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
                                     </app-material-calculator>
 
