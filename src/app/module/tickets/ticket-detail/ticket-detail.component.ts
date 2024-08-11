@@ -1153,6 +1153,19 @@ export class TicketDetailComponent implements OnInit {
     });
   }
 
+  cancelEditTicket(ticketId: any) {
+    // alert('Refresh' + this.ticketId);
+    if (ticketId && ticketId != 0 && this.isEditModeOn) {
+      console.log('11111');
+      this.isEditModeOn = false;
+      this.editItemCloseImageCapture = false;
+      this.processDataBasedOnTicketId();
+    } else {
+      console.log('222222');
+      this.router.navigateByUrl(`${this.orgName}/home`);
+    }
+  }
+
   printTicket(ticketId: any) {
     if (ticketId && ticketId != 0) {
       console.log('11111');

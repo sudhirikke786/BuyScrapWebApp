@@ -9,6 +9,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DataService } from 'src/app/core/services/data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CashDrawerTransaction } from 'src/app/core/model/cash-drawer-transaction.model';
 
 @Component({
   selector: 'app-ticket-dashboard',
@@ -91,6 +92,7 @@ export class TicketDashboardComponent implements OnInit {
   selectedSellerName: any;
   selectedSellerTickets: any;
   selectedSellerTicketsPaidAmount = 0;
+  voidCashAmount = 0;
 
   dialogPopupVisible: boolean = false;
   newTicketVisible: boolean = false;
@@ -414,6 +416,7 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   getTicketTransactions() {
+    this.voidCashAmount = 0;
     this.showVoidDialogBox = true;
     const param = {
       TicketId: this.tiketSelectedObj?.rowId
@@ -429,6 +432,10 @@ export class TicketDashboardComponent implements OnInit {
         console.log(data);
         if (data.body.data.length > 0) {
           this.ticketsTransactions = data.body.data;
+          // this.ticketsTransactions.filter((item: any) => item.type == 'Cash');
+          this.voidCashAmount = this.ticketsTransactions.filter((item: any) => item.type == 'Cash').reduce(function (sum: any, item: any) {
+            return sum + item.amount;
+          }, 0);
           this.showPartially = true;
           this.showOpen = false;
         } else {
@@ -468,6 +475,7 @@ export class TicketDashboardComponent implements OnInit {
 
     this.commonService.voidCopyTickets(this.tiketSelectedObj).subscribe(data => {
       console.log(data);
+      this.addVoidedCashAmount();
       this.refreshData();
       this.voidReason = '';
       this.showOpen = false;
@@ -496,7 +504,8 @@ export class TicketDashboardComponent implements OnInit {
     console.log("Final ticketData :: " + JSON.stringify(this.tiketSelectedObj));
 
     this.commonService.insertUpdateTickets(this.tiketSelectedObj).subscribe(data => {
-      console.log(data);
+      console.log(data); 
+      this.addVoidedCashAmount();
       this.refreshData();
       this.voidReason = '';
       this.showOpen = false;
@@ -544,6 +553,38 @@ export class TicketDashboardComponent implements OnInit {
     this.pagination.SerachText = this.serachText,
     this.pagination.SearchOrder = this.searchOrder,
     this.getAllTicketsDetails(this.pagination);
+  }
+  
+
+  addVoidedCashAmount() {
+    const datePipe = new DatePipe('en-US');
+    // POST call
+    const newCashDrawerTransaction = new CashDrawerTransaction();     
+    newCashDrawerTransaction.rowId = 0;
+    newCashDrawerTransaction.createdBy = this.logInUserId;
+    newCashDrawerTransaction.createdDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+    newCashDrawerTransaction.updatedBy = this.logInUserId;
+    newCashDrawerTransaction.updatedDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+    newCashDrawerTransaction.amount = parseFloat(this.voidCashAmount.toString().replace(/,/g,''));
+    newCashDrawerTransaction.reason = "Void Ticket number = " + this.tiketSelectedObj.rowId;
+    newCashDrawerTransaction.locID = this.locId;
+    newCashDrawerTransaction.type = "IN";      
+    
+    console.log("Final CashDrawerTransaction :: " + JSON.stringify(newCashDrawerTransaction));
+    
+    this.commonService.insertUpdateCashDrawerTransactions(newCashDrawerTransaction).subscribe(data =>{    
+      console.log(data); 
+      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Cash Drawer Transaction updated successfully' });
+      
+      // Update values
+      const paramObject = {
+        LocationId: this.locId
+      };
+      this.getCashDrawerAmountAndPaidTicketCount(paramObject);
+    },(error: any) =>{  
+      console.log(error);  
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+    });
   }
 
   showMergeDialog() {

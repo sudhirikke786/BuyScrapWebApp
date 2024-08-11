@@ -51,6 +51,7 @@ export class InventoryReportComponent implements OnInit {
   showLoader = false;
   isReportShow = false;
   showLoaderReport = false;
+  numberFormat: string = '1.2-2';
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -62,7 +63,7 @@ export class InventoryReportComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.setDefaultDate();
     this.getAllGroupMaterial();
-  //  this.getInventoryReport();
+    this.getInventoryReport();
   }
 
   setDefaultDate() {
