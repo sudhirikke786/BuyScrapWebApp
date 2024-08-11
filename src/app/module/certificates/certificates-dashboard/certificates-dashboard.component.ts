@@ -101,7 +101,7 @@ export class CertificatesDashboardComponent implements OnInit {
   }
 
   changeType(selectedImageType: any) {    
-    alert(selectedImageType);
+    // alert(selectedImageType);
     this.selectedImageType = selectedImageType;
   }
   

@@ -49,6 +49,7 @@ export class AddSellersComponent implements OnInit {
   subScriptionType:any;
   showPlan =  false;
   fileObj: any;
+  selectedImageType: any = 'ID';
 
   loaderShow = false;
 
@@ -185,7 +186,7 @@ export class AddSellersComponent implements OnInit {
     const formData = new FormData();
 
     formData.append('file', file);   
-    formData.append('document_type', "ID");  
+    formData.append('document_type', this.selectedImageType);  
     this.loaderShow =  true;
 
     this.commonService.ExtractOCRData(formData).subscribe(res1 => {
@@ -384,10 +385,14 @@ export class AddSellersComponent implements OnInit {
     this.imageUrl = imageUrl;
   //  this.fileObj = imgObj;
   }
+
+  changeType(selectedImageType: any) {    
+    this.selectedImageType = selectedImageType;
+  }
   
   SaveImage() {
 
-    if(this.fileObj) {
+    if(this.fileObj && this.type=='2') {
       this.getUserInfo(this.fileObj)
     }
    

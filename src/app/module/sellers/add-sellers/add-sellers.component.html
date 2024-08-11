@@ -185,10 +185,7 @@
                                                 </li>
                                             </ul>
                                             </div>
-                                          </div>
-    
-    
-                                      
+                                          </div>                                      
                                     </div>
                                 </ng-container>
 
@@ -640,6 +637,15 @@
     </div>
 
     <div class="mt-2" *ngIf="captureType!='Using Signature Pad' && captureType!='Using Sign'">
+        
+        <div class="form-group" *ngIf="type == 2">
+            <select class="form-select" id="example-select" [(ngModel)]="selectedImageType" (change)="changeType(selectedImageType)">
+                <option value="ID">ID</option>
+                <option value="Driving Licence">Driver License</option>
+                <option value="Passport">Passport</option>
+            </select>
+        </div>
+
         <a id="save-image-btn" class="btn btn-primary me-1" (click)="SaveImage()">Save Image</a>
         <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeImageCapture()">Close</a>
 
