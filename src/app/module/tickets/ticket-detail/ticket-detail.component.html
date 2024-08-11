@@ -44,17 +44,19 @@
                                          
                                          
                                             <div class="col-sm-12 d-flex justify-content-between  mb-1">
-
-                                                <div>
-                                                    Ticket Id : {{ticketId}} / {{ticketData?.status}}                                                    
-    
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        Ticket Id : {{ticketId}} / {{ticketData?.status}}                                                    
+                                                    </div>
+                                                    <div class="ms-1" *ngIf="isEditModeOn" >
+                                                        <a  class="btn btn-primary me-1 mb-1" (click)="editSeller()">
+                                                            Edit Seller
+                                                        </a>
+                                                    </div>  
                                                 </div>
+                                               
                                                 
-                                                <div *ngIf="isEditModeOn" >
-                                                    <a  class="btn btn-primary me-1 mb-1" (click)="editSeller()">
-                                                        Edit Seller
-                                                    </a>
-                                                </div>  
+                                                
 
                                                 <div class="d-flex justify-content-end">
                                                     
