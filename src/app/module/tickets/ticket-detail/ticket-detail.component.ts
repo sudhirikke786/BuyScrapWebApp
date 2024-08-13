@@ -1586,13 +1586,29 @@ export class TicketDetailComponent implements OnInit {
 
         this.showDownload = false;
         this.pdfViwerTitle = 'Ticket Receipt';
-        this.loadAndPrintBase64Pdf(this.fileDataObj)
+
+        const checkTabView = this.isTab();
+        if(checkTabView){
+          this.downloadBase64Pdf(this.fileDataObj);
+        }else{
+          this.loadAndPrintBase64Pdf(this.fileDataObj)
+        }
+       
+
+        //
       },
         (err: any) => {
           this.showLoaderReport = false;
           // this.errorMsg = 'Error occured';
         }
       );
+  }
+
+
+  isTab(): boolean {
+    const width = window.innerWidth;
+    return width <= 1024;;
+
   }
 
   loadAndPrintBase64Pdf(base64Data: string): void {
@@ -1620,6 +1636,43 @@ export class TicketDetailComponent implements OnInit {
       //this.router.navigateByUrl(`${this.orgName}/home`);
     };
   }
+
+
+  downloadBase64Pdf(base64Data: string): void {
+    // Convert Base64 string to byte array
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+  
+    // Create a Blob and URL for the PDF
+    const blob = new Blob([byteArray], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+  
+    // Create and append download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = blobUrl;
+    downloadLink.download = 'document.pdf'; // Set download file name
+    downloadLink.textContent = 'Download PDF';
+    downloadLink.style.display = 'none'; // Hide the link
+    document.body.appendChild(downloadLink);
+  
+    // Trigger the download
+    downloadLink.click();
+  
+  
+   
+  }
+
+
+
+
+
+
+
+
 
   pollPrintStatus() {
     const checkPrintStatus = () => {
