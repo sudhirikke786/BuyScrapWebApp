@@ -339,7 +339,7 @@ export class TicketDetailComponent implements OnInit {
 
   private processDataBasedOnTicketId() {
     if (parseInt(this.ticketId)) {
-      this.getTransactionsDetailsById();
+      this.GetTicketMaterialsDetailsByTicketId();
       this.getAllTicketsDetails();
       this.getTicketTransactions();
     } else {
@@ -708,16 +708,16 @@ export class TicketDetailComponent implements OnInit {
   }
 
 
-  getTransactionsDetailsById() {
+  GetTicketMaterialsDetailsByTicketId() {
     const paramObject = {
       TicketId: this.ticketId,
       locid: this.locId,
       IsCOD: false,
       IsCODDone: false
     };
-    this.commonService.getTransactionsDetailsById(paramObject)
+    this.commonService.GetTicketMaterialsDetailsByTicketId(paramObject)
       .subscribe(data => {
-        console.log('getTransactionsDetailsById :: ');
+        console.log('GetTicketMaterialsDetailsByTicketId :: ');
         console.log(data);
         this.ticketObj = data.body.data.map((item: any) => {
           item.isSelected = false;
@@ -1604,11 +1604,9 @@ export class TicketDetailComponent implements OnInit {
       );
   }
 
-
   isTab(): boolean {
     const width = window.innerWidth;
-    return width <= 1024;;
-
+    return width <= 1163;
   }
 
   loadAndPrintBase64Pdf(base64Data: string): void {
@@ -1654,8 +1652,8 @@ export class TicketDetailComponent implements OnInit {
     // Create and append download link
     const downloadLink = document.createElement('a');
     downloadLink.href = blobUrl;
-    downloadLink.download = 'document.pdf'; // Set download file name
-    downloadLink.textContent = 'Download PDF';
+    downloadLink.download = this.ticketId + '_receipt.pdf'; // Set download file name
+    downloadLink.textContent = 'Download Receipt PDF';
     downloadLink.style.display = 'none'; // Hide the link
     document.body.appendChild(downloadLink);
   
@@ -1665,13 +1663,6 @@ export class TicketDetailComponent implements OnInit {
   
    
   }
-
-
-
-
-
-
-
 
 
   pollPrintStatus() {
