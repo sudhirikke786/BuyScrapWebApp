@@ -300,6 +300,12 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllCODTickets', 'GET', pagination);
   }
 
+  CODCloseUpdate(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Materialss/CODCloseUpdate', 'GET', paramObj);
+  }
+
+  
+
   MaterialCODImageUpdate(requestObj:any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Materialss/MaterialCODImageUpdate', 'POST', requestObj);
   }

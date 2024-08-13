@@ -74,18 +74,26 @@ export class CertificatesDashboardComponent implements OnInit {
 
 
   confirm1() {
-  
     this.isConfirmModel =  true;
   }
 
   confirmData(){
+
+    const userObj = {
+      UserID:this.logInUserId,
+      TicketID:this.checkOBj?.rowId
+    }
+
+
+    this.commonService.CODCloseUpdate(userObj).subscribe((res) => {
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: "Ticket is confirm for COD " });
+      this.isConfirmModel =  false;
+      this.getAllCODTickets();
+    })
     
-    this.saveConfirm();
   }
 
-  saveConfirm(){
-    this.isConfirmModel =  false;
-  }
+ 
 
   cancelClick(){
       this.certificates[this.currentIndex].selected =  false;
@@ -225,6 +233,12 @@ export class CertificatesDashboardComponent implements OnInit {
       );
     
   }
+
+
+
+
+
+  // {{BaseURL}}/Materialss/CODCloseUpdate?UserID=1&TicketID=2993
   
   saveCOD() {
 
