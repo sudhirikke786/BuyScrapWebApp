@@ -200,12 +200,13 @@ export class CertificatesDashboardComponent implements OnInit {
 
 
   getCODImagesbyID(obj:any,type:string){
+    this.selectedTicketId = obj?.rowId;
     if(type=='cod'){
       this.codeAdd()
     }else{
       this.showModel();
-    this.certificateLoader = true;
-    this.selectedTicketId = obj?.rowId;
+      this.certificateLoader = true;
+   
     const paramObject = {
       TicketID: this.selectedTicketId
     }
