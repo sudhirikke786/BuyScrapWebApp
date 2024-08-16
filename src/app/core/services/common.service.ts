@@ -576,6 +576,14 @@ export class CommonService {
   getAllCity(paramObj: any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Master/GetAllCity', 'GET', paramObj);
   }
+
+  InsertUpdatePriceKeySettings(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/PriceKeySettingss/InsertUpdatePriceKeySettings', 'POST', requestObj);
+  }
+
+  ValidatePriceKeySettings(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/PriceKeySettingss/ValidatePriceKeySettings', 'POST', requestObj);
+  }
   
   
   // http://18.222.119.98/process-image/

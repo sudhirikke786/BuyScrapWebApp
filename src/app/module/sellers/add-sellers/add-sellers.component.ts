@@ -185,8 +185,8 @@ export class AddSellersComponent implements OnInit {
 
     const formData = new FormData();
 
-    formData.append('file', file);   
-    formData.append('document_type', this.selectedImageType);  
+    formData.append('File', file);   
+    formData.append('DocumentType', this.selectedImageType);  
     this.loaderShow =  true;
 
     this.commonService.ExtractOCRData(formData).subscribe(res1 => {
@@ -195,7 +195,7 @@ export class AddSellersComponent implements OnInit {
       this.loaderShow =  false;
       if(res){
       const userObj =  {
-        licensePlateNumber : res["ID"],
+        driverLicenseNumber : res["ID"],
         lastName: res["LN"],
         firstName : res["FN"],
         middleName:res["MN"],
@@ -203,6 +203,7 @@ export class AddSellersComponent implements OnInit {
         city: res["CITY"],
         state:res["STATE"],
         zipCode:res["ZIP"],
+        expiryDate: this.formatDate(res["EXP"]),
         dob: this.formatDate(res["DOB"]),
         gender:res["SEX"] == '' ? 'undefind' : res["SEX"] == 'M' ? 'Male' : 'Female',
 
