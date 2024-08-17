@@ -257,16 +257,310 @@
         </div>
 
     </div>
-
-
     <ng-template pTemplate="footer">
-        <p-button 
-            label="I agree" 
-            [text]="true" 
-            severity="secondary" 
-            />
-      
+        <button  class="btn btn-primary" (click)="showPrivacy = false">Close</button>
     </ng-template>
+
+</p-dialog>
+
+
+<p-dialog [(visible)]="displayWarningDialog" 
+          [modal]="true" 
+          [closable]="false" 
+          [draggable]="false" 
+          [resizable]="false" 
+          [style]="{ width: '40vw' }" [breakpoints]="{'767px': '100vw'}"
+          header="Warning !!!">
+    
+    <p>{{warningMessage}}</p>
+
+    <div class="p-d-flex p-jc-center p-mt-3">
+        <p-button label="Ok" (click)="closeWarningDialog()"></p-button>
+    </div>
+</p-dialog>
+
+<p-dialog [modal]="true" 
+        header="Accept User Consents"
+        [(visible)]="displayUserConsent" [closable]="true"
+        [style]="{ width: '40vw' }" [breakpoints]="{'767px': '100vw'}"> 
+    
+    
+        <form [formGroup]="registrationForm">
+
+        <div class="row">
+            <div class="form-group col-sm-12 mb-2">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" formControlName="PrivacyPolicy"
+                        id="PrivacyPolicy">
+
+                    <label class="w-100" for="PrivacyPolicy">I agree to BuyScrapApp’s <a
+                            href="javascript:void(0)" (click)="showPrivacyConsent=true">Privacy
+                            Policy</a></label>
+                    <app-form-error-message msg="Click on Agree"
+                        *ngIf="submitted && registrationForm?.get('PrivacyPolicy')?.errors?.required"></app-form-error-message>
+
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" formControlName="TermsAndCondition"
+                        id="TermsAndCondition">
+                    <label class="w-100" for="TermsAndCondition">I agree to BuyScrapApp’s 
+                        <a href="javascript:void(0)" (click)="showPrivacy=true">Terms of Service</a></label>
+                    <app-form-error-message msg="Click on Terms of Service "
+                        *ngIf="submitted && registrationForm?.get('TermsAndCondition')?.errors?.required"></app-form-error-message>
+
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" formControlName="Communications"
+                        id="Communications">
+                    <label class="w-100" for="Communications">I would like BuyScrapApp to send me
+                        communications</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <button type="submit" (click)="closeWarningDialog()" class="btn btn-primary-popup-1">ACCEPT CONSENT</button>
+            </div>
+        </div>
+
+    </form>
+</p-dialog>       
+
+
+<p-dialog [modal]="true" header="Privacy Policy for BuyScrapApp Online Application" (onHide)="showPrivacyConsent = false" [(visible)]="showPrivacyConsent"
+[style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
+
+<div class="row">
+  
+    <div class="p-title">
+        Effective Date:  {{latestPublishDate}}
+    </div>
+    <p>
+        Thank you for using the BuyScrapApp Online Application (&quot;the App&quot;). This Privacy Policy
+        outlines
+        how we collect, use, and protect your and your customers’ personal information when you use our
+        services. By using the App, you agree to the terms of this Privacy Policy.
+    </p>
+
+    <ol class="list-group list-group-numbered">
+        <li class="list-group-item">
+            <span class="h-title">Information We Collect</span>
+            <ul class="info-desc">
+                <li>
+                    <span class="p-title">Personal Information:</span> When you sign up for an account or use
+                    our services, we may
+                    collect personal information such as your name, email address, phone number, and payment
+                    information.
+                </li>
+                <li>
+                    <span class="p-title">Transaction Information:</span> We collect information related to your
+                    transactions on the
+                    platform, including details of scrap items bought or sold, transaction amounts, and shipping
+                    information.
+                </li>
+                <li>
+                    <span class="p-title">Device Information:</span> We may collect device-specific information
+                    such as your device
+                    model, operating system, IP address, and browser type.
+                </li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <span class="h-title">How We Use Your Information</span>
+            <div>
+                <h5>We use the information we collect for the following purposes:</h5>
+                <ul class="info-desc">
+
+                    <li>Facilitating transactions and providing our services.</li>
+                    <li>Communicating with you about your account, transactions, and updates.</li>
+                    <li>Improving our services and user experience.</li>
+                    <li>Complying with legal and regulatory requirements.</li>
+                </ul>
+            </div>
+
+
+        </li>
+        <li class="list-group-item">
+            <span class="h-title">Types of Information Collected</span>
+            <p>In addition to the standard information outlined in our general Privacy Policy, we may collect
+                the
+                following sensitive personal information from users:</p>
+            <ul class="info-desc">
+                <li>
+                    <span class="p-title">Biometric Data:</span> This may include fingerprints, signatures, or
+                    other biometric identifiers
+                    provided by users for identity verification purposes.
+                </li>
+                <li>
+                    <span class="p-title">Government ID Copies:</span> Users may be required to submit copies of
+                    their government-
+                    issued identification documents (e.g., driver&#39;s license) for verification purposes.
+                </li>
+
+
+            </ul>
+
+
+
+
+        </li>
+
+
+        <li class="list-group-item">
+            <span class="h-title">Purpose of Biometric Data and ID Copies</span>
+            <p>We collect and use biometric data and ID copies solely for the following purposes:</p>
+            <ul class="info-desc">
+                <li>
+                    <span class="p-title">Identity Verification::</span>
+                    Biometric data and ID copies are used to verify the identity of
+                    users and prevent fraudulent activities on our platform.
+                </li>
+                <li>
+                    <span class="p-title">Compliance: </span>We may collect and retain this information to
+                    comply with legal and
+                    regulatory requirements related to scrap buying and selling.
+                </li>
+
+
+            </ul>
+
+
+
+
+        </li>
+
+        <li class="list-group-item">
+            <span class="h-title">Use and Disclosure of Biometric Data</span>
+            <p>We use biometric data only for the specific purposes for which it was collected, such as user
+                authentication and identity verification.</p>
+            <p>
+                We do not disclose biometric data to third parties except as required by law or with explicit
+                user consent.
+            </p>
+
+        </li>
+
+        <li class="list-group-item">
+            <span class="h-title">Sharing of Information</span>
+            <p>We may share your information with third parties under the following circumstances:</p>
+            <ul class="info-desc">
+
+                <li>With service providers and partners who assist us in providing and improving our services.
+                </li>
+                <li>
+                    With law enforcement or government authorities if required by law or to protect our legal
+                    rights.
+                </li>
+
+                <li>
+                    With your consent or as otherwise disclosed at the time of data collection.
+
+                </li>
+            </ul>
+
+
+
+        </li>
+        <li class="list-group-item">
+            <span class="h-title">Data Retention and Security</span>
+            <ul>
+                <li>
+                    We retain biometric data and ID copies only for as long as necessary to fulfil the purposes
+                    outlined above or as required by law.
+                </li>
+                <li>
+                    We implement strict security measures to protect personal information, biometric data and
+                    ID copies from unauthorized access, use, or disclosure. This includes separation of data
+                    based on organisation by maintaining different database, access controls, and regular
+                    security audits.
+                </li>
+            </ul>
+        </li>
+        <li class="list-group-item">
+            <span class="h-title">User Consent</span>
+                    <p>By using our services and submitting personal information, biometric data or ID copies of
+                your customers, you consent to the collection, use, and retention of this information as
+                described in this Privacy Policy.</p>
+                <ul class="info-desc">
+                    <li><span class="p-title">Consent for Collection:</span> Before collecting any personal information, biometric data, or
+                        ID copies from customers, you will obtain explicit consent from them.</li>
+                    <li><span class="p-title">Withdrawal of Consent:</span> You have the right to withdraw your consent at any time.
+                        However, please note that withdrawing consent may impact your ability to use certain
+                        features of our services.</li>
+                    <li><span class="p-title">How to Withdraw Consent: </span>To withdraw consent or for any questions regarding the
+                        handling of your sensitive</li>
+
+                </ul>
+
+        </li>
+
+        <li class="list-group-item">
+            <span class="h-title">Your Rights</span>
+            <ul class="info-desc">
+                    <li>You have the right to request access to, correction of, or deletion of your customer personal
+                        information, biometric data and ID copies.</li>
+                        <li>To exercise these rights or for any questions regarding the handling of your sensitive
+                            information, please contact us using the contact information provided below.</li>
+
+            </ul>
+
+        </li>
+        <li class="list-group-item">
+            <span class="h-title">Cookies and Tracking<</span>
+            <ul class="info-desc">
+                <li>    We use cookies and similar tracking technologies to analyse usage patterns, personalize
+                    content, and improve our services. You can manage your cookie preferences through your
+                    browser settings.</li>
+            </ul>
+            
+
+        </li>
+        <li class="list-group-item">
+            <span class="h-title">Policy Updates</span>
+            <ul class="info-desc">
+                <li>We may update this section of our Privacy Policy to reflect changes in our practices or
+                    applicable laws. We will notify you of any material changes to our handling of personal</li>
+                <li>
+                    information, biometric data or ID copies or any changes by posting the updated policy on
+                    our website or within the App.</li>
+            </ul>
+
+            
+
+        </li>
+
+        <li class="list-group-item">
+          <p>If you have any questions or concerns about our Privacy Policy or data practices, please
+            contact us at:</p>  
+        <ul class="info-desc">
+            <li>
+               [Your Company Name]
+            </li>
+            <li>[Address]</li>
+            <li>Email: Contactus@buyscrapapp.com</li>
+          <li>510-372-0872</li>
+        </ul>
+      
+    
+     
+        
+        </li>
+
+    </ol>
+
+
+
+
+
+
+</div>
+<ng-template pTemplate="footer">
+    <button  class="btn btn-primary" (click)="showPrivacyConsent = false">Close</button>
+</ng-template>
+
 
 
 
@@ -274,5 +568,5 @@
 </p-dialog>
 
 
-
-
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>

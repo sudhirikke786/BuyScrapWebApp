@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../core/services/common.service';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../core/interfaces/common-interfaces';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { StorageService } from '../core/services/storage.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
   styleUrls: ['./user-login.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService,ConfirmationService]
 })
 export class UserLoginComponent implements OnInit {
 
@@ -36,7 +36,16 @@ export class UserLoginComponent implements OnInit {
   isShow = false;
   currencyCode: string  = 'USD';
 
-  showPrivacy = true;
+  showPrivacy = false;
+  isMandatoryConsentAccepted = false;
+  latestPublishDate: any;
+  displayWarningDialog = false;
+  displayUserConsent = false;
+  showPrivacyConsent = false;
+  warningMessage = '';
+  submitted  =  false;
+  registrationForm!: FormGroup;
+  userData: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -44,17 +53,18 @@ export class UserLoginComponent implements OnInit {
               private localService:StorageService,
               private fb:FormBuilder,
               private messageService: MessageService,
+              private confirmationService: ConfirmationService,
               private commonService: CommonService) { }
 
   ngOnInit() {
     this.user.macID = "defaultMacId"
-    this.showPrivacy =  true;
 
     const userObjectExist = this.localService.getLocalStorage('userObj');
     if(userObjectExist){
       this.router.navigateByUrl(`/${this.organizationName}/home`);
     }
     this.getIPAddress();
+    this.getGetOrganisationConsent();
     this.route.params.subscribe((param)=>{ 
       this.organizationName = param["orgName"];
       this.getOrgLocation();
@@ -97,6 +107,11 @@ export class UserLoginComponent implements OnInit {
       this.user.macID = '131312236';
     });
   }
+  
+  getGetOrganisationConsent(){
+    this.isMandatoryConsentAccepted = false;
+    this.latestPublishDate = '08/17/2024';
+  }
 
   /**
    * Get the data by calling WebAPI to fetch the details for organization login
@@ -134,42 +149,13 @@ export class UserLoginComponent implements OnInit {
       this.isSubmit =  true;
       return false;
     }    
-    const locationName = this.loginForm.value.locationName;
     const req = {...this.loginForm.value,locID:Number(this.loginForm.value.locID)};
-    this.commonService.validateUserCredentials(req).subscribe(async(data) => {
-      this.localService.setLocalStorage('locId',Number(this.loginForm.value.locID)); 
-      localStorage.setItem('locationName',locationName);
-      localStorage.setItem('currencyCode',this.selectedLocation?.currencyCode || 'USD'); 
+    this.commonService.validateUserCredentials(req).subscribe((data) => {
           if (data?.body.token!='' && data?.body.userdto.userName) {
-            this.localService.setLocalStorage('userObj',data?.body);     
-            
-               const systemInfo = await this.getSystemPreferencesValue(); 
-
-            //  const obj =  systemInfo?.body?.data?.reduce((result:any,item:any) => {
-            //   const keyValue = item['keys'];
-
-            //   // If the key doesn't exist in the result, create an empty array for it
-            //   if (!result[keyValue]) {
-            //     result[keyValue] = [];
-            //   }
-          
-            //   // Push the current item into the array for the corresponding key
-            //   result[keyValue].push(item);
-          
-            //   return result;
-            // },{})
-            // console.log(obj)
-
-            if(systemInfo?.body?.data){
-              this.localService.setLocalStorage('systemInfo',systemInfo?.body?.data)   
-            }
-           
-           console.log(systemInfo?.body?.data);  
-            this.router.navigateByUrl(`/${this.organizationName}/home`);
+            this.displayOrganisationConsent(data);
           } else {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials or No user found.' });
-          }
-          
+          }          
         },
         (err: any) => {
           this.messageService.add({ severity: 'error', summary: 'error', detail: 'Invalid User Credentials' });
@@ -179,14 +165,112 @@ export class UserLoginComponent implements OnInit {
       );
   }
 
-  getSystemPreferencesValue(){
+  private displayOrganisationConsent(data: any) {
+    // Convert the string to a Date object
+    let date = new Date(this.latestPublishDate);
+
+    // Add 10 days to the date
+    date.setDate(date.getDate() + 5);
+
+    // Format the new date back to 'MM/dd/yyyy'
+    const latestAcceptanceDate = this.FormatDate(date);
+
+    console.log(latestAcceptanceDate); // Outputs: 08/27/2024
+
+
+    if (!this.isMandatoryConsentAccepted) {      
+      if (data?.body.userdto.role == 'Administrator') {
+        // display waring window to Scale & Cashier to intimate Administrator
+        // OnClick or OnCancel of pop-up window we will allow user to redirect on Home page 
+        // till 10 days after Publish date        
+        this.displayUserConsent = true;
+
+      } else {
+        // display waring window to Scale & Cashier to intimate Administrator
+        // OnClick or OnCancel of pop-up window we will allow user to redirect on Home page
+        // till 10 days after Publish date 
+        this.warningMessage = "As per the new policy changes, the Administrator needs to accept the Privacy Policy and End User License Agreement by " + latestAcceptanceDate + ". Otherwise, the user will not be able to log in after " + latestAcceptanceDate + ".";
+        this.userData = data;
+        this.displayWarningDialog = true;
+
+        // this.messageService.add({ severity: 'error', summary: 'Warning!!!', detail: this.warningMessage });
+        // setTimeout(() => {
+        //   this.redirectToHomePage(data);
+        // }, 10000);
+        
+        // this.confirmationService.confirm({
+        //   header: 'Warning !!!',
+        //   message: "As per the new policy changes, the Administrator needs to accept the Privacy Policy and End User License Agreement by " + latestAcceptanceDate + ". Otherwise, the user will not be able to log in after " + latestAcceptanceDate,
+        //   accept: () => { 
+        //     this.redirectToHomePage(data);
+        //   },
+        //   reject: () => {             
+        //     this.redirectToHomePage(data);
+        //   },
+        // });
+      }
+    } else {
+      this.redirectToHomePage(data);
+    }
+  }
+
+  closeWarningDialog() {
+    this.warningMessage = "";     
+    this.displayUserConsent = false;   
+    this.displayWarningDialog = false;
+    this.redirectToHomePage(this.userData);
+  }
+
+  private FormatDate(date: Date) {
+    let dd = String(date.getDate()).padStart(2, '0');
+    let mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JS
+    let yyyy = date.getFullYear();
+
+    const latestAcceptanceDate = mm + '/' + dd + '/' + yyyy;
+    return latestAcceptanceDate;
+  }
+
+  redirectToHomePage(data: any) {    
+    // Convert the string to a Date object
+    let date = new Date(this.latestPublishDate);
+
+    // Add 5 days to the date
+    date.setDate(date.getDate() + 5);
+
+    // Format the new date back to 'MM/dd/yyyy'
+    const latestAcceptanceDate = this.FormatDate(date);
+    
+    let todayDate = new Date();
+    const today = this.FormatDate(todayDate);
+
+    if (today >= latestAcceptanceDate) {
+      this.messageService.add({ severity: 'error', summary: 'error', detail: 'Your access is restricted. Please contact the Administrator to accept the updated Privacy Policy and End User License Agreement to regain access.' });
+      return;
+    }
+
+    //Local setting efore redirecting to home page
+    this.localService.setLocalStorage('locId',Number(this.loginForm.value.locID)); 
+    const locationName = this.loginForm.value.locationName;
+    localStorage.setItem('locationName',locationName);
+    localStorage.setItem('currencyCode',this.selectedLocation?.currencyCode || 'USD'); 
+    this.localService.setLocalStorage('userObj', data?.body);
+
     let reqObj = {
       Key:'',
       ManageByStore:true
     }
-    return this.commonService.GetSystemPreferencesValue(reqObj).toPromise()
+    this.commonService.GetSystemPreferencesValue(reqObj).subscribe((systemInfo) => {      
+      console.log(systemInfo?.body?.data);
+      if (systemInfo?.body?.data) {
+        this.localService.setLocalStorage('systemInfo', systemInfo?.body?.data);
+      }
+      this.router.navigateByUrl(`/${this.organizationName}/home`);
+    },
+    (err: any) => {
+      this.router.navigateByUrl(`/${this.organizationName}/home`);
+    });
 
-   }
+  }
    
 
   
