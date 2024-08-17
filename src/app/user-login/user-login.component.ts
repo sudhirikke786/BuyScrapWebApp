@@ -36,6 +36,8 @@ export class UserLoginComponent implements OnInit {
   isShow = false;
   currencyCode: string  = 'USD';
 
+  showPrivacy = true;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private http:HttpClient,
@@ -46,6 +48,7 @@ export class UserLoginComponent implements OnInit {
 
   ngOnInit() {
     this.user.macID = "defaultMacId"
+    this.showPrivacy =  true;
 
     const userObjectExist = this.localService.getLocalStorage('userObj');
     if(userObjectExist){

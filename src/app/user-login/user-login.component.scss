@@ -12,3 +12,52 @@
     }
    }
  }
+
+
+ .consent-content {
+
+  .h-title{
+    font-size: 20px;
+    color: #02659d;
+    font-weight: 700;
+  }
+  .p-title{
+    font-weight: bold;
+    color: #02659d;
+    font-size: 20px;
+  }
+
+  h3 ,h2 {
+    color: #02659d;
+  }
+  h2{
+    font-weight: 700;
+
+  }
+  
+  .list-group-numbered>.list-group-item::before{
+    font-size: 20px;
+  }
+  
+  .list-group-item li {
+    margin-left: 16px;
+    list-style: circle;
+    strong {
+      color: #02659d;
+    }
+  }
+  
+  .info-desc li {
+    font-size: 16px;
+    font-weight: normal;
+  }
+  
+  h5{
+    font-size: 16px; 
+  }
+  p{
+        font-size: 16px;  
+  }
+
+ }
+
