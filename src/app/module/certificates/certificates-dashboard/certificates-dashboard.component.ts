@@ -43,6 +43,7 @@ export class CertificatesDashboardComponent implements OnInit {
   certificates: any;
   certificatesImages: any;
 
+  ticketObj: any = [];
   selectedTicketId: any;
   certificateLoader = false;
   selectedProducts:any;
@@ -54,7 +55,14 @@ export class CertificatesDashboardComponent implements OnInit {
   materialDesc:any;
   imageUrl: any;
   imagePath: any;
-  selectedImageType: any = '1';
+  selectedImageType: any = 'ID';
+  
+  showImageHeader = 'Show image';
+  selectedImageUrl: any;
+  showImage = false;
+  
+  numberFormat: string = '1.2-2';
+  currencySymbol: string = 'USD';
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -68,6 +76,7 @@ export class CertificatesDashboardComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
+    this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     
     this.getAllCODTickets();
   }
@@ -232,9 +241,39 @@ export class CertificatesDashboardComponent implements OnInit {
         }
       );
     
+  }  
+
+  showSelectedImage(imageUrl: string) {
+    this.selectedImageUrl = imageUrl;
+    this.showImage = true;
+    this.showImageHeader = 'Show Material Image';
   }
 
+  cancelImage() {
+    this.showImage = false;
+  }
 
+  GetTicketMaterialsDetailsByTicketId() {
+    const paramObject = {
+      TicketId: this.selectedTicketId,
+      locid: this.locId,
+      IsCOD: false,
+      IsCODDone: false
+    };
+    this.commonService.GetTicketMaterialsDetailsByTicketId(paramObject)
+      .subscribe(data => {
+        console.log('GetTicketMaterialsDetailsByTicketId :: ');
+        console.log(data);
+        this.ticketObj = data.body.data.map((item: any) => {
+          item.isSelected = false;
+          return item
+        });
+      },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
 
 
 
@@ -273,6 +312,7 @@ export class CertificatesDashboardComponent implements OnInit {
     this.certificatesImages = [];
     this.materialDesc = '';
     this.visible = true;
+    this.ivisible =  false;
   }
 
   showCaptureModel(){
@@ -281,14 +321,13 @@ export class CertificatesDashboardComponent implements OnInit {
   }
 
   showItemViewModel() {
+    this.GetTicketMaterialsDetailsByTicketId();
     this.ivisible =  true;
   }
 
   hideItemViewModel() {
     this.ivisible =  false;
   }
-
-
 
   hideCaptureModel(){
     this.cvisible = false;

@@ -4,6 +4,8 @@ import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { MessageService } from 'primeng/api';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-price-calculator',
@@ -108,11 +110,13 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   currentRole: any;
   i = 0 ;
   showCamera = true;
+  materialkey: string = '';
 
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef,
     private stroarge: StorageService,
     private authService:AuthService,
+    private messageService: MessageService,
     public commonService: CommonService) {
 
   }
@@ -614,7 +618,34 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   
 
   priceModify(){
-    this.passwordmode = false;
+    this.validateExistingMaterialKey();
+  }
+  
+  validateExistingMaterialKey() {
+    const datePipe = new DatePipe('en-US');
+
+    const requestObj = {
+      "Key": this.materialkey,
+      "LocId": this.locId
+    }
+ 
+    this.commonService.ValidatePriceKeySettings(requestObj)
+      .subscribe(data => {
+          console.log('data :: ');
+          console.log(data.body.data);
+          if (data.body.data) {
+            this.messageService.add({ severity: 'success', summary: 'success', detail: 'Key validated' });
+            this.passwordmode = false;
+          } else {          
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Key.' }); 
+            this.passwordmode = true;         
+          }
+                
+        },
+        (err: any) => {          
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error while updating.' });          
+        }
+      );
   }
 
   backToChangeItemMainMaterials(){

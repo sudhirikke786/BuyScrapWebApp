@@ -235,7 +235,7 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Sellerss/DeleteSellerbyId', 'POST', null, localStorage.getItem('orgName') || "", paramObj);
   }
   
-  getTransactionsDetailsById(paramObj: any): Observable<any> {
+  GetTicketMaterialsDetailsByTicketId(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/TransactionMasters/GetTicketMaterialsDetailsByTicketId', 'GET', paramObj);
   }
 
@@ -575,6 +575,14 @@ export class CommonService {
 
   getAllCity(paramObj: any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Master/GetAllCity', 'GET', paramObj);
+  }
+
+  InsertUpdatePriceKeySettings(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/PriceKeySettingss/InsertUpdatePriceKeySettings', 'POST', requestObj);
+  }
+
+  ValidatePriceKeySettings(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/PriceKeySettingss/ValidatePriceKeySettings', 'POST', requestObj);
   }
   
   

@@ -258,15 +258,8 @@
       <div class="form-group">
         
         <div class="mt-1">
-          <input
-            type="password"
-            class="form-control"
-            name=""
-            id=""
-            aria-describedby="helpId"
-            placeholder="Enter Password"
-          />
-         
+          <input required type="password" id="materialkey" name="materialkey" class="form-control" 
+            placeholder="Enter Material Key" [(ngModel)]="materialkey" >         
         </div>
         
       </div>
@@ -287,3 +280,5 @@
    
    
 </p-overlayPanel>
+
+<p-toast></p-toast>  

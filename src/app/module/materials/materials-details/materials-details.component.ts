@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-materials-details',
@@ -86,6 +87,9 @@ export class MaterialsDetailsComponent implements OnInit {
   currentRole:any;
   numberFormat: string = '1.2-2';
   currencySymbol: string = 'USD';
+  
+  passwordmode = true;
+  materialkey: string = '';
 
   systemPerfForm!:FormGroup;
   constructor(private route: ActivatedRoute,
@@ -93,6 +97,7 @@ export class MaterialsDetailsComponent implements OnInit {
     private router: Router,
     private authService:AuthService,
     private stroarge:StorageService,
+    private messageService: MessageService,
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -201,9 +206,35 @@ enableCashier(){
 }
 
 connectToUpdate(){
+  this.validateExistingMaterialKey();
+  this.cashVisible = false;
+}
+  
+validateExistingMaterialKey() {
+  const datePipe = new DatePipe('en-US');
 
-  //Once Service give succee unable this
- // this.enablePriceItem();
+  const requestObj = {
+    "Key": this.materialkey,
+    "LocId": this.locId
+  }
+
+  this.commonService.ValidatePriceKeySettings(requestObj)
+    .subscribe(data => {
+        console.log('data :: ');
+        console.log(data.body.data);
+        if (data.body.data) {
+          this.messageService.add({ severity: 'success', summary: 'success', detail: 'Key validated' });
+          this.enablePriceItem();
+        } else {          
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Key.' }); 
+          this.disablePriceItem();         
+        }
+              
+      },
+      (err: any) => {          
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error while updating.' });          
+      }
+    );
 }
 
 disablePriceItem(){

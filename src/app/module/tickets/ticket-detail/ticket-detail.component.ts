@@ -14,6 +14,7 @@ import { DataService } from 'src/app/core/services/data.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tick } from '@angular/core/testing';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -194,6 +195,10 @@ export class TicketDetailComponent implements OnInit {
   copyMaterialData:any[]  = [];
   copySubMaterialData:any[]  = [];
 
+  deviceInfo:any ;
+  isMobile:any;
+  isTablet: any;
+  isDesktop: any;
 
 
   constructor(private route: ActivatedRoute,
@@ -203,11 +208,22 @@ export class TicketDetailComponent implements OnInit {
     private authService: AuthService,
     private messageService: MessageService,
     private stroarge: StorageService,
-    private dataService: DataService,
+    private dataService: DataService,    
     private confirmationService: ConfirmationService,
+    private deviceService: DeviceDetectorService,
     public commonService: CommonService) { }
 
-  ngOnInit() {    
+  ngOnInit() {   
+    // const userAgent = navigator.userAgent;
+    // const isAndroid = /Android/i.test(userAgent);
+
+    // this.deviceInfo = this.deviceService.getDeviceInfo();
+    // this.isMobile = this.deviceService.isMobile();
+    // this.isTablet = this.deviceService.isTablet();
+    // this.isDesktop = this.deviceService.isDesktop();
+
+    // alert(JSON.stringify(this.deviceInfo) + ' :: isMobile :: ' +JSON.stringify(this.isMobile) + ' :: isTablet :: ' +JSON.stringify(this.isTablet) + ' :: isDesktop :: ' +JSON.stringify(this.isDesktop) + ' :: ' + ' :: isAndroid :: ' +JSON.stringify(isAndroid) + ' :: ')
+
     window.addEventListener('afterprint', this.afterPrintHandler);
     this.currentRole = this.authService.userCurrentRole();
 
@@ -339,7 +355,7 @@ export class TicketDetailComponent implements OnInit {
 
   private processDataBasedOnTicketId() {
     if (parseInt(this.ticketId)) {
-      this.getTransactionsDetailsById();
+      this.GetTicketMaterialsDetailsByTicketId();
       this.getAllTicketsDetails();
       this.getTicketTransactions();
     } else {
@@ -708,16 +724,16 @@ export class TicketDetailComponent implements OnInit {
   }
 
 
-  getTransactionsDetailsById() {
+  GetTicketMaterialsDetailsByTicketId() {
     const paramObject = {
       TicketId: this.ticketId,
       locid: this.locId,
       IsCOD: false,
       IsCODDone: false
     };
-    this.commonService.getTransactionsDetailsById(paramObject)
+    this.commonService.GetTicketMaterialsDetailsByTicketId(paramObject)
       .subscribe(data => {
-        console.log('getTransactionsDetailsById :: ');
+        console.log('GetTicketMaterialsDetailsByTicketId :: ');
         console.log(data);
         this.ticketObj = data.body.data.map((item: any) => {
           item.isSelected = false;
@@ -1604,11 +1620,29 @@ export class TicketDetailComponent implements OnInit {
       );
   }
 
+  isTab(): boolean {    
+    const userAgent = navigator.userAgent;
+    const isAndroid = /Android/i.test(userAgent);
 
-  isTab(): boolean {
-    const width = window.innerWidth;
-    return width <= 1024;;
+    this.deviceInfo = this.deviceService.getDeviceInfo();
+    this.isMobile = this.deviceService.isMobile();
+    this.isTablet = this.deviceService.isTablet();
+    this.isDesktop = this.deviceService.isDesktop();
 
+    const isLinuxOS = (this.deviceService.os == "Linux"); // For Android Tablet
+
+    // alert(JSON.stringify(this.deviceInfo) + ' :: isMobile :: ' +JSON.stringify(this.isMobile) +
+    //  ' :: isTablet :: ' +JSON.stringify(this.isTablet) + ' :: isDesktop :: ' +JSON.stringify(this.isDesktop) +
+    //   ' :: ' + ' :: isAndroid :: ' +JSON.stringify(isAndroid) + ' :: ')
+
+
+    if (this.isMobile || this.isTablet || isAndroid || isLinuxOS) {
+      console.log('Mobile / Tablet Device');
+        return true;
+    } else {
+        console.log('Desktop or Laptop');
+    } 
+    return false;
   }
 
   loadAndPrintBase64Pdf(base64Data: string): void {
@@ -1654,8 +1688,8 @@ export class TicketDetailComponent implements OnInit {
     // Create and append download link
     const downloadLink = document.createElement('a');
     downloadLink.href = blobUrl;
-    downloadLink.download = 'document.pdf'; // Set download file name
-    downloadLink.textContent = 'Download PDF';
+    downloadLink.download = this.ticketId + '_receipt.pdf'; // Set download file name
+    downloadLink.textContent = 'Download Receipt PDF';
     downloadLink.style.display = 'none'; // Hide the link
     document.body.appendChild(downloadLink);
   
@@ -1665,13 +1699,6 @@ export class TicketDetailComponent implements OnInit {
   
    
   }
-
-
-
-
-
-
-
 
 
   pollPrintStatus() {

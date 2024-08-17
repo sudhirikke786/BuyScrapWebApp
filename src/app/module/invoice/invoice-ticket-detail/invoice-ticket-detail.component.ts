@@ -345,7 +345,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
   private processDataBasedOnTicketId() {
     if (parseInt(this.ticketId)) {
-      this.getTransactionsDetailsById();
+      this.GetTicketMaterialsDetailsByTicketId();
       this.getAllTicketsDetails();
       this.getTicketTransactions();
     } else {
@@ -705,16 +705,16 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
 
-  getTransactionsDetailsById() {
+  GetTicketMaterialsDetailsByTicketId() {
     const paramObject = {
       TicketId: this.ticketId,
       locid: this.locId,
       IsCOD: false,
       IsCODDone: false
     };
-    this.commonService.getTransactionsDetailsById(paramObject)
+    this.commonService.GetTicketMaterialsDetailsByTicketId(paramObject)
       .subscribe(data => {
-        console.log('getTransactionsDetailsById :: ');
+        console.log('GetTicketMaterialsDetailsByTicketId :: ');
         console.log(data);
         this.ticketObj = data.body.data.map((item: any) => {
           item.isSelected = false;

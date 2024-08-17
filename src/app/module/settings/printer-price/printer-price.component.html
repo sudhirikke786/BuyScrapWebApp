@@ -4,17 +4,57 @@
         <form action="">
             
             <div class="form-group col-sm-12 mb-2">
-                <label for="simpleinput" class="form-label w-100">Set Key</label>
-                <input type="text" id="setkey" class="form-control" value="*****">
+                <div class="form-group mb-3">
+                    <label for="orgkey" class="dark-color">Old Key</label>
+                    <div class="input-group input-group-merge">
+                        <input required [type]="inputType" id="oldMaterialkey" name="oldMaterialkey" class="form-control" 
+                        placeholder="Enter Old Material Key" [(ngModel)]="oldMaterialkey" >
+                        <div class="input-group-append" data-password="false">
+                            <div class="input-group-text h-100">
+                                <a  (click)="$event.preventDefault();changeInput()"><span class="bi bi-eye" ></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group col-sm-12 mb-2">
+                <div class="form-group mb-3">
+                    <label for="orgkey" class="dark-color">Set New Key</label>
+                    <div class="input-group input-group-merge">
+                        <input required [type]="inputType" id="materialkey" name="materialkey" class="form-control" 
+                        placeholder="Enter Material Key" [(ngModel)]="materialkey" >
+                        <div class="input-group-append" data-password="false">
+                            <div class="input-group-text h-100">
+                                <a  (click)="$event.preventDefault();changeInput()"><span class="bi bi-eye" ></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group col-sm-12 mb-2">
-                <label for="simpleinput" class="form-label w-100">Confirm Key</label>
-                <input type="text" id="setkey" class="form-control" value="*****">
+                <div class="form-group mb-3">
+                    <label for="orgkey" class="dark-color">Confirm New Key</label>
+                    <div class="input-group input-group-merge">
+                        <input required [type]="inputType" id="materialConfirmkey" name="materialConfirmkey" class="form-control" 
+                        placeholder="Enter Material Confirm Key" [(ngModel)]="materialConfirmkey" >
+                        <div class="input-group-append" data-password="false">
+                            <div class="input-group-text h-100">
+                                <a  (click)="$event.preventDefault();changeInput()"><span class="bi bi-eye" ></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <a class="btn btn-primary ">Save</a>
+
+            <div class="form-group mb-2 text-center">
+                <button (click)="btnClick();"  class="btn btn-primary"> Save </button>
+            </div>
         </form>
 
     </div>
-</div>                        
+</div>  
+
+<p-toast></p-toast>                      
