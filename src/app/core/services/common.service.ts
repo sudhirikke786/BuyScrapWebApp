@@ -146,6 +146,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Users/UserAuthentication', 'POST', requestObj);
   }
 
+  insertConsentdetail(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Consent/Insertconsentdetail', 'POST', requestObj);
+  }
+
   getOrgLocation(): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Locations/GetAllLocatoins', 'GET', null);
   }
@@ -303,6 +307,13 @@ export class CommonService {
   CODCloseUpdate(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Materialss/CODCloseUpdate', 'GET', paramObj);
   }
+
+  GetOrganisationConsent(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Consent/GetOrganisationConsent', 'GET', paramObj);
+  }
+
+
+  
 
   
 

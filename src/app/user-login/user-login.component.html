@@ -274,59 +274,61 @@
     
     <p>{{warningMessage}}</p>
 
-    <div class="p-d-flex p-jc-center p-mt-3">
+    <div class="p-d-flex p-jc-center p-mt-3" >
         <p-button label="Ok" (click)="closeWarningDialog()"></p-button>
     </div>
 </p-dialog>
 
 <p-dialog [modal]="true" 
         header="Accept User Consents"
-        [(visible)]="displayUserConsent" [closable]="true"
+         (onHide)="closeWarningDialog()"
+        [(visible)]="displayUserConsent" [closable]="byPassConsent"
         [style]="{ width: '40vw' }" [breakpoints]="{'767px': '100vw'}"> 
     
     
-        <form [formGroup]="registrationForm">
+        <form>
 
         <div class="row">
             <div class="form-group col-sm-12 mb-2">
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" formControlName="PrivacyPolicy"
+                    <input type="checkbox" class="form-check-input" name="PrivacyPolicy" [(ngModel)]="PrivacyPolicy"
                         id="PrivacyPolicy">
 
                     <label class="w-100" for="PrivacyPolicy">I agree to BuyScrapApp’s <a
                             href="javascript:void(0)" (click)="showPrivacyConsent=true">Privacy
                             Policy</a></label>
-                    <app-form-error-message msg="Click on Agree"
-                        *ngIf="submitted && registrationForm?.get('PrivacyPolicy')?.errors?.required"></app-form-error-message>
+                    <!-- <app-form-error-message msg="Click on Agree"
+                        *ngIf="submitted && registrationForm?.get('PrivacyPolicy')?.errors?.required"></app-form-error-message> -->
 
                 </div>
 
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" formControlName="TermsAndCondition"
+                    <input type="checkbox" class="form-check-input" name="TermsAndCondition"  [(ngModel)]="TermsAndCondition"
                         id="TermsAndCondition">
                     <label class="w-100" for="TermsAndCondition">I agree to BuyScrapApp’s 
                         <a href="javascript:void(0)" (click)="showPrivacy=true">Terms of Service</a></label>
-                    <app-form-error-message msg="Click on Terms of Service "
-                        *ngIf="submitted && registrationForm?.get('TermsAndCondition')?.errors?.required"></app-form-error-message>
+                    <!-- <app-form-error-message msg="Click on Terms of Service "
+                        *ngIf="submitted && registrationForm?.get('TermsAndCondition')?.errors?.required"></app-form-error-message> -->
 
                 </div>
 
-                <div class="form-check">
+                <!-- <div class="form-check">
                     <input type="checkbox" class="form-check-input" formControlName="Communications"
                         id="Communications">
                     <label class="w-100" for="Communications">I would like BuyScrapApp to send me
                         communications</label>
-                </div>
+                </div> -->
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-6">
-                <button type="submit" (click)="agreeConsents()" class="btn btn-primary-popup-1">I agree and accept terms </button>
-            </div>
-        </div>
+        <button type="submit" [disabled]="!areBothChecked" (click)="agreeConsents()" class="btn btn-primary-popup-1">I agree and accept terms </button>
+
+      
 
     </form>
+
+
+    
 </p-dialog>       
 
 

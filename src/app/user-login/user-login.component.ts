@@ -47,6 +47,11 @@ export class UserLoginComponent implements OnInit {
   registrationForm!: FormGroup;
   userData: any;
 
+
+  PrivacyPolicy:boolean= false;
+  TermsAndCondition:boolean =  false;
+  byPassConsent: boolean = false;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private http:HttpClient,
@@ -64,7 +69,7 @@ export class UserLoginComponent implements OnInit {
       this.router.navigateByUrl(`/${this.organizationName}/home`);
     }
     this.getIPAddress();
-    this.getGetOrganisationConsent();
+   
     this.route.params.subscribe((param)=>{ 
       this.organizationName = param["orgName"];
       this.getOrgLocation();
@@ -72,7 +77,7 @@ export class UserLoginComponent implements OnInit {
     if(userObjectExist){
       this.router.navigateByUrl(`/${this.organizationName}/home`);
     }
-
+    this.getGetOrganisationConsent();
   
 
     this.loginForm = this.fb.group({
@@ -84,6 +89,15 @@ export class UserLoginComponent implements OnInit {
       isConfirm: true
     })
   }
+
+
+
+   get areBothChecked(): boolean {
+    console.log(this.PrivacyPolicy && this.TermsAndCondition);
+    return this.PrivacyPolicy && this.TermsAndCondition;
+
+  }
+
   
   btnClick(): void {
   
@@ -109,7 +123,13 @@ export class UserLoginComponent implements OnInit {
   }
   
   getGetOrganisationConsent(){
-    this.isMandatoryConsentAccepted = false;
+
+    this.commonService.GetOrganisationConsent({OrganisationName:this.organizationName}).subscribe((res) =>{
+      this.isMandatoryConsentAccepted = res?.data?.isMandatoryConsentAccepted ==  false ? true :  false;
+      this.byPassConsent = false;
+    })
+
+    
     this.latestPublishDate = '08/17/2024';
   }
 
@@ -217,6 +237,18 @@ export class UserLoginComponent implements OnInit {
   agreeConsents() {
     this.displayUserConsent = false;   
     this.displayWarningDialog = false;
+
+    // const reqgObj = {
+    //   "rowId": 0,
+    //   "consentId":"1,2",
+    //   "organisationId": 1,
+    //   "isAccepted": true,
+    //   "consentGivenDate": "2024-08-17T18:14:02.693Z",
+    //   "consentGivenBy": 1
+    // }
+    // this.commonService.insertConsentdetail(reqgObj).subscribe((res) =>{
+    // })
+
     this.redirectToHomePage(this.userData);
   }
 
@@ -224,6 +256,10 @@ export class UserLoginComponent implements OnInit {
     this.warningMessage = "";     
     this.displayUserConsent = false;   
     this.displayWarningDialog = false;
+   
+
+   
+
     this.redirectToHomePage(this.userData);
   }
 

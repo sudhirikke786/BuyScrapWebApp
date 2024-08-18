@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router, RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -10,7 +11,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 })
 export class SideMenuComponent implements OnInit {
 
-  constructor(public commonService:CommonService,private authService: AuthService,private route: ActivatedRoute,
+  constructor(public commonService:CommonService, private stroarge: StorageService,private authService: AuthService,private route: ActivatedRoute,
     private router: Router){
 
   }
@@ -103,6 +104,23 @@ export class SideMenuComponent implements OnInit {
       this.menuList = this.menuItemList.filter(function(el) { return (el.title.toString() != "Invoice" && el.title.toString() != "Dispatch"); }); 
     } else {
       this.menuList = this.menuItemList;
+      const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
+      if (_dataObj) {
+        const isScaleUser = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'isscalemanageseller')[0];
+
+        if(isScaleUser.values.toLowerCase()=='true'){
+            const menuIndex = this.menuList.findIndex((item:any) => item.url == '/sellers-buyers');
+            let roleName  = this.menuList[menuIndex].role;
+            roleName = [...roleName,'Scale']
+            this.menuList[menuIndex].role = roleName;
+            this.menuList = [...this.menuList];
+        }
+       
+      }
+
+
+
+     
     }
   }
 
