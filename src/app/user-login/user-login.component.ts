@@ -176,7 +176,8 @@ export class UserLoginComponent implements OnInit {
     const latestAcceptanceDate = this.FormatDate(date);
 
     console.log(latestAcceptanceDate); // Outputs: 08/27/2024
-
+    this.userData = data;
+        
 
     if (!this.isMandatoryConsentAccepted) {      
       if (data?.body.userdto.role == 'Administrator') {
@@ -190,7 +191,6 @@ export class UserLoginComponent implements OnInit {
         // OnClick or OnCancel of pop-up window we will allow user to redirect on Home page
         // till 10 days after Publish date 
         this.warningMessage = "As per the new policy changes, the Administrator needs to accept the Privacy Policy and End User License Agreement by " + latestAcceptanceDate + ". Otherwise, the user will not be able to log in after " + latestAcceptanceDate + ".";
-        this.userData = data;
         this.displayWarningDialog = true;
 
         // this.messageService.add({ severity: 'error', summary: 'Warning!!!', detail: this.warningMessage });
@@ -212,6 +212,12 @@ export class UserLoginComponent implements OnInit {
     } else {
       this.redirectToHomePage(data);
     }
+  }
+
+  agreeConsents() {
+    this.displayUserConsent = false;   
+    this.displayWarningDialog = false;
+    this.redirectToHomePage(this.userData);
   }
 
   closeWarningDialog() {

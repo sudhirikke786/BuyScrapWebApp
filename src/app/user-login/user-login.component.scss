@@ -61,3 +61,58 @@
 
  }
 
+
+
+
+
+
+
+
+
+
+
+ 
+
+.btn-footer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 35%;
+  bottom: 5px;
+}
+
+@media only screen and (max-width:768px) {
+  .pricing-box{
+      width: 100%;
+      min-width: 100%;
+  }
+}
+
+
+
+.h-title{
+  font-size: 20px;
+  color: #02659d;
+  font-weight: 700;
+}
+.p-title{
+  font-weight: bold;
+  color: #02659d;
+}
+
+.list-group-numbered>.list-group-item::before{
+  font-size: 20px;
+}
+
+.info-desc li {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+h5{
+  font-size: 16px; 
+}
+p{
+      font-size: 16px;  
+}
