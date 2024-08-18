@@ -131,9 +131,34 @@ export class CameraComponent implements AfterViewInit ,OnDestroy {
     //console.log(_textData);
 
     this.getPicture.emit(this.imageUrl);
-
+    this.userInfo.emit(this.base64ToFile(this.imageUrl));
     
   }
+
+  // Function to convert base64 to File object
+  base64ToFile(base64String: any): any {
+    // Decode base64 string to binary data
+    let byteString = atob(base64String.split(',')[1]);
+    
+    // Create an ArrayBuffer and a typed array
+    let arrayBuffer = new ArrayBuffer(byteString.length);
+    let uint8Array = new Uint8Array(arrayBuffer);
+
+    // Populate the typed array with binary data
+    for (let i = 0; i < byteString.length; i++) {
+        uint8Array[i] = byteString.charCodeAt(i);
+    }
+
+    // Create a Blob from the typed array
+    let blob = new Blob([uint8Array], { type: 'image/jpeg' }); // or 'image/png' depending on your image format
+
+    let fileName = "image.jpg";
+    // Convert Blob to File
+    let file = new File([blob], fileName, { type: 'image/jpeg' }); // Specify file name and type
+    
+    return file;
+  }
+
 
   get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();

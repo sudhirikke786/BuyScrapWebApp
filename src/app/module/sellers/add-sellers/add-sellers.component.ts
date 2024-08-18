@@ -221,7 +221,7 @@ export class AddSellersComponent implements OnInit {
 
 
   getSelData(event:any) {
-
+    // alert(event);
     this.fileObj = event;
    // this.getUserInfo(event)
    
