@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../core/interfaces/common-interfaces';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { StorageService } from '../core/services/storage.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-login',
@@ -16,6 +16,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class UserLoginComponent implements OnInit {
 
   loginForm!: FormGroup
+  consentForm!: FormGroup;
   
   organizationName: any;
   locations: any;
@@ -47,9 +48,6 @@ export class UserLoginComponent implements OnInit {
   registrationForm!: FormGroup;
   userData: any;
 
-
-  PrivacyPolicy:boolean= false;
-  TermsAndCondition:boolean =  false;
   byPassConsent: boolean = false;
 
   constructor(private route: ActivatedRoute,
@@ -87,17 +85,38 @@ export class UserLoginComponent implements OnInit {
       locationName: '',
       isActive: true,
       isConfirm: true
-    })
+    });
+
+    this.consentForm = this.fb.group({
+      consent1: [false, Validators.requiredTrue],
+      consent2: [false, Validators.requiredTrue],
+      consent3: [false]
+    });
+  
+    this.consentForm.statusChanges.subscribe(() => {
+      this.updateSubmitButtonState();
+    });
+
   }
 
-
-
-   get areBothChecked(): boolean {
-    console.log(this.PrivacyPolicy && this.TermsAndCondition);
-    return this.PrivacyPolicy && this.TermsAndCondition;
-
+  // Check if the button should be enabled
+  isSubmitEnabled(): boolean {
+    return this.consentForm.get('consent1')?.value && this.consentForm.get('consent2')?.value;
   }
 
+  updateSubmitButtonState() {
+    const isEnabled = this.isSubmitEnabled();
+    // Logic to enable/disable the button
+    // You might not need this method if you bind directly to `isSubmitEnabled()` in the template
+  }
+
+  onSubmit() {
+    if (this.consentForm.valid) {
+      // Handle form submission
+      alert('valid form')
+    }
+  }
+  
   
   btnClick(): void {
   
@@ -124,13 +143,23 @@ export class UserLoginComponent implements OnInit {
   
   getGetOrganisationConsent(){
 
-    this.commonService.GetOrganisationConsent({OrganisationName:this.organizationName}).subscribe((res) =>{
-      this.isMandatoryConsentAccepted = res?.data?.isMandatoryConsentAccepted ==  false ? true :  false;
-      this.byPassConsent = false;
-    })
+    // this.commonService.GetOrganisationConsent({OrganisationName:this.organizationName}).subscribe((res) =>{
+    //   this.isMandatoryConsentAccepted = res?.data?.isMandatoryConsentAccepted ==  false ? true :  false;
+    //   this.byPassConsent = true;
+    // })
 
     
-    this.latestPublishDate = '08/17/2024';
+    if (this.organizationName.toLowerCase() != 'prodtest') {
+      this.isMandatoryConsentAccepted = true;
+      this.byPassConsent = true;
+      this.latestPublishDate = '08/17/2024';       
+    } else {
+      this.isMandatoryConsentAccepted = false;
+      this.byPassConsent = true;
+      this.latestPublishDate = '08/17/2024';     
+    }
+
+
   }
 
   /**
@@ -205,29 +234,12 @@ export class UserLoginComponent implements OnInit {
         // OnClick or OnCancel of pop-up window we will allow user to redirect on Home page 
         // till 10 days after Publish date        
         this.displayUserConsent = true;
-
       } else {
         // display waring window to Scale & Cashier to intimate Administrator
         // OnClick or OnCancel of pop-up window we will allow user to redirect on Home page
         // till 10 days after Publish date 
         this.warningMessage = "As per the new policy changes, the Administrator needs to accept the Privacy Policy and End User License Agreement by " + latestAcceptanceDate + ". Otherwise, the user will not be able to log in after " + latestAcceptanceDate + ".";
         this.displayWarningDialog = true;
-
-        // this.messageService.add({ severity: 'error', summary: 'Warning!!!', detail: this.warningMessage });
-        // setTimeout(() => {
-        //   this.redirectToHomePage(data);
-        // }, 10000);
-        
-        // this.confirmationService.confirm({
-        //   header: 'Warning !!!',
-        //   message: "As per the new policy changes, the Administrator needs to accept the Privacy Policy and End User License Agreement by " + latestAcceptanceDate + ". Otherwise, the user will not be able to log in after " + latestAcceptanceDate,
-        //   accept: () => { 
-        //     this.redirectToHomePage(data);
-        //   },
-        //   reject: () => {             
-        //     this.redirectToHomePage(data);
-        //   },
-        // });
       }
     } else {
       this.redirectToHomePage(data);
@@ -235,6 +247,7 @@ export class UserLoginComponent implements OnInit {
   }
 
   agreeConsents() {
+    //alert('agree')
     this.displayUserConsent = false;   
     this.displayWarningDialog = false;
 
@@ -247,19 +260,15 @@ export class UserLoginComponent implements OnInit {
     //   "consentGivenBy": 1
     // }
     // this.commonService.insertConsentdetail(reqgObj).subscribe((res) =>{
-    // })
-
-    this.redirectToHomePage(this.userData);
+    // });
+    
   }
 
   closeWarningDialog() {
+    //alert('close');
     this.warningMessage = "";     
     this.displayUserConsent = false;   
     this.displayWarningDialog = false;
-   
-
-   
-
     this.redirectToHomePage(this.userData);
   }
 
@@ -277,7 +286,7 @@ export class UserLoginComponent implements OnInit {
     let date = new Date(this.latestPublishDate);
 
     // Add 5 days to the date
-    date.setDate(date.getDate() + 5);
+    date.setDate(date.getDate() + 0);
 
     // Format the new date back to 'MM/dd/yyyy'
     const latestAcceptanceDate = this.FormatDate(date);
@@ -285,7 +294,7 @@ export class UserLoginComponent implements OnInit {
     let todayDate = new Date();
     const today = this.FormatDate(todayDate);
 
-    if (today >= latestAcceptanceDate) {
+    if (data?.body.userdto.role != 'Administrator' && today >= latestAcceptanceDate) {
       this.messageService.add({ severity: 'error', summary: 'error', detail: 'Your access is restricted. Please contact the Administrator to accept the updated Privacy Policy and End User License Agreement to regain access.' });
       return;
     }

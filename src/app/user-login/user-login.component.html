@@ -286,42 +286,33 @@
         [style]="{ width: '40vw' }" [breakpoints]="{'767px': '100vw'}"> 
     
     
-        <form>
+        <form [formGroup]="consentForm">
 
         <div class="row">
             <div class="form-group col-sm-12 mb-2">
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="PrivacyPolicy" [(ngModel)]="PrivacyPolicy"
-                        id="PrivacyPolicy">
+                    <input type="checkbox" class="form-check-input" formControlName="consent1">
 
-                    <label class="w-100" for="PrivacyPolicy">I agree to BuyScrapApp’s <a
+                    <label class="w-100" for="PrivacyPolicy"><span class="text-danger"><strong>* </strong></span>I agree to BuyScrapApp’s <a
                             href="javascript:void(0)" (click)="showPrivacyConsent=true">Privacy
                             Policy</a></label>
-                    <!-- <app-form-error-message msg="Click on Agree"
-                        *ngIf="submitted && registrationForm?.get('PrivacyPolicy')?.errors?.required"></app-form-error-message> -->
-
                 </div>
 
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="TermsAndCondition"  [(ngModel)]="TermsAndCondition"
-                        id="TermsAndCondition">
-                    <label class="w-100" for="TermsAndCondition">I agree to BuyScrapApp’s 
-                        <a href="javascript:void(0)" (click)="showPrivacy=true">Terms of Service</a></label>
-                    <!-- <app-form-error-message msg="Click on Terms of Service "
-                        *ngIf="submitted && registrationForm?.get('TermsAndCondition')?.errors?.required"></app-form-error-message> -->
-
+                    <input type="checkbox" class="form-check-input" formControlName="consent2">
+                    <label class="w-100" for="TermsAndCondition"><span class="text-danger"><strong>* </strong></span>I agree to BuyScrapApp’s 
+                        <a href="javascript:void(0)" (click)="showPrivacy=true">End User License Agreement (EULA)</a></label>
                 </div>
 
-                <!-- <div class="form-check">
-                    <input type="checkbox" class="form-check-input" formControlName="Communications"
-                        id="Communications">
-                    <label class="w-100" for="Communications">I would like BuyScrapApp to send me
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" formControlName="consent3">
+                    <label class="w-100" for="Communications">I agree to BuyScrapApp to send me
                         communications</label>
-                </div> -->
+                </div>
             </div>
         </div>
 
-        <button type="submit" [disabled]="!areBothChecked" (click)="agreeConsents()" class="btn btn-primary-popup-1">I agree and accept terms </button>
+        <button type="submit" [disabled]="!isSubmitEnabled()" (click)="agreeConsents()" class="btn btn-primary-popup-1">I agree and accept terms </button>
 
       
 

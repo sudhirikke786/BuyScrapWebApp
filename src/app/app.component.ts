@@ -8,12 +8,17 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = 'BuyScrapWebApp';
+  isLocalhost: boolean = false;
   
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // if (location.protocol !== 'https:') {
-    //   location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
-    // }
+
+    const hostname = window.location.hostname;
+    this.isLocalhost = hostname == 'localhost';
+    // alert(this.isLocalhost);
+    if (!this.isLocalhost && location.protocol !== 'https:') {
+      location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+    }
   }
 }

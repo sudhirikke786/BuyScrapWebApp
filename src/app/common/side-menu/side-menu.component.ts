@@ -39,8 +39,7 @@ export class SideMenuComponent implements OnInit {
       {
         title:'Ship Out',
         url:'/ship-out',
-        icon:'/assets/images/custom/icons/dispatch.png',
-       
+        icon:'/assets/images/custom/icons/dispatch.png',       
         role: ['Administrator','Cashier']
       },
       {
@@ -100,27 +99,24 @@ export class SideMenuComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+    
+    const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
+    if (_dataObj) {
+      const isScaleUser = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'isscalemanageseller')[0];
+
+      if(isScaleUser?.values.toLowerCase()=='true'){
+          const menuIndex = this.menuItemList.findIndex((item:any) => item.url == '/sellers-buyers');
+          let roleName  = this.menuItemList[menuIndex].role;
+          roleName = [...roleName,'Scale']
+          this.menuItemList[menuIndex].role = roleName;
+          this.menuItemList = [...this.menuItemList];
+      }     
+    }
+
     if (this.orgName.toLowerCase() != 'prodtest') {
       this.menuList = this.menuItemList.filter(function(el) { return (el.title.toString() != "Invoice" && el.title.toString() != "Dispatch"); }); 
     } else {
-      this.menuList = this.menuItemList;
-      const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
-      if (_dataObj) {
-        const isScaleUser = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'isscalemanageseller')[0];
-
-        if(isScaleUser.values.toLowerCase()=='true'){
-            const menuIndex = this.menuList.findIndex((item:any) => item.url == '/sellers-buyers');
-            let roleName  = this.menuList[menuIndex].role;
-            roleName = [...roleName,'Scale']
-            this.menuList[menuIndex].role = roleName;
-            this.menuList = [...this.menuList];
-        }
-       
-      }
-
-
-
-     
+      this.menuList = this.menuItemList;     
     }
   }
 
