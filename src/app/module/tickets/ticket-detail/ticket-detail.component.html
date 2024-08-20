@@ -1010,3 +1010,116 @@ header="Edit Seller"
         <button type="button" pButton icon="pi pi-check" label="Yes" (click)="confirmPosition"></button>
     </ng-template>
 </p-confirmDialog> -->
+
+
+
+<p-dialog [modal]="true" 
+  header="New Driver"
+  [(visible)]="newDriverScreenVisible"
+  [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}"
+>
+
+  <div class="row mt-3">
+    <h4>Driver Personal Information</h4>
+
+    <div class="form-group col-sm-6">
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          id="carrier" name="carrier" [(ngModel)]="driverDetails.carrier" 
+          placeholder="Carrier"
+        />
+        <label for="floatingInput">Carrier</label>
+      </div>
+    </div>
+    
+    <div class="form-group col-sm-3">
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="driverlicense" name="driverlicense" [(ngModel)]="driverDetails.driverlicense" 
+            placeholder="Driver License"
+          />
+          <label for="floatingInput">Driver License</label>
+        </div>
+    </div>
+    
+    <div class="form-group col-sm-3">
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="licenseplate" name="licenseplate" [(ngModel)]="driverDetails.licenseplate" 
+            placeholder="License Plate"
+          />
+          <label for="floatingInput">License Plate</label>
+        </div>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="form-group col-sm-3">
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          id="truck" name="truck" [(ngModel)]="driverDetails.truck" 
+          placeholder="Truck"
+        />
+        <label for="floatingInput">Truck Type</label>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-3">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="make" name="make" [(ngModel)]="driverDetails.make" 
+        placeholder="Make" />
+        <label for="floatingInput">Make</label>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-3">
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          id="model" name="model" [(ngModel)]="driverDetails.model" 
+          placeholder="Model"
+        />
+        <label for="floatingInput">Model</label>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-3">
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          id="driverName" name="driverName" [(ngModel)]="driverDetails.driverName" 
+          placeholder="Driver Name"
+        />
+        <label for="floatingInput">Driver Name</label>
+      </div>
+    </div>
+  </div>
+
+ 
+  <div class="row mt-2">
+
+    <div class="form-group col-sm-12">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="note" name="note" [(ngModel)]="driverDetails.note" 
+         placeholder="Note" />
+        <label for="floatingInput">Note</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-sm-12">
+      <a class="btn btn-primary " (click)="saveDriverInfo()" >Save</a>
+    </div>
+  </div>
+</p-dialog>

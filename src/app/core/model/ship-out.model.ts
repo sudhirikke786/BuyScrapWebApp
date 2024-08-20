@@ -15,6 +15,9 @@ export class ShipOut {
     make: string = '';
     model: string = '';
     driverName: string = '';
+    note: string = '';
+    driverlicense:string = '';
+    licenseplate:string = '';
     // trailer1: string = '';
     // trailer2: string = '';
     // container: string = '';
@@ -24,7 +27,6 @@ export class ShipOut {
     // chasis: string = '';
     // packSlip: string = '';
     // reference: string = '';
-    note: string = '';
     totalGross: number = 0;
     totalTare: number = 0;
     totalNet: number = 0;

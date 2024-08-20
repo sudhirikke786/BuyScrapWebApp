@@ -10,6 +10,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DataService } from 'src/app/core/services/data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CashDrawerTransaction } from 'src/app/core/model/cash-drawer-transaction.model';
+import { driver } from 'src/app/core/model/driver.model';
 
 @Component({
   selector: 'app-ticket-dashboard',
@@ -134,6 +135,7 @@ export class TicketDashboardComponent implements OnInit {
   /**Print out Variable */
   ticketId: any;
   customerId: any;
+  isBuniessUser = false;
   activeSection: string = '';
 
   totalAmount: any;
@@ -194,6 +196,8 @@ export class TicketDashboardComponent implements OnInit {
   selectedImageUrl: any;
 
   checkVisible =  false;
+  driverDetails!: driver;
+  newDriverScreenVisible = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -258,6 +262,8 @@ export class TicketDashboardComponent implements OnInit {
       middleName : [''],
       lastName : ['']
     });
+
+    this.driverDetails = new driver();
   }
 
 
@@ -655,19 +661,33 @@ export class TicketDashboardComponent implements OnInit {
 
   closeChildTicketMessage() {
     this.parentTicketIDVisible = false;
-    this.router.navigateByUrl(`/${this.orgName}/home/detail/${this.ticketId}/${this.customerId}`);
+    this.router.navigateByUrl(`/${this.orgName}/home/detail/${this.ticketId}/${this.customerId}/${this.isBuniessUser}`);
   }
 
-  clickOnSeller(sellerId: any, sellerFullname: any) {
+  clickOnSeller(sellerId: any, sellerFullname: any, sellerType: any) {
     this.selectedSellerName = sellerFullname;
     this.selectedSellerId = sellerId;
     if (this.newTicketVisible == true) {
-      this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${sellerId}`);
+      if (sellerType == 'Business') {
+        this.newDriverScreenVisible = true;
+      } else {
+        this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${sellerId}/false`);
+      }
     } else if (this.ticketvisible == true) {
       this.mergeTicketVisible = true;
       this.getAllTicketsBySellerId(sellerId);
     }
 
+  }
+
+  saveDriverInfo() {
+    // alert(JSON.stringify(this.driverDetails) + " :: " + this.newTicketVisible);    
+    this.newDriverScreenVisible = false;
+    this.dataService.setNewDriverDetail(this.driverDetails);
+    this.driverDetails = new driver();
+    if (this.newTicketVisible == true) {
+      this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${this.selectedSellerId}/true`);
+    }
   }
   
 
@@ -677,6 +697,7 @@ export class TicketDashboardComponent implements OnInit {
     this.ticketId = ticketData.rowId;
     this.isParent = ticketData.isParent;
     this.customerId = ticketData.customerId;
+    this.isBuniessUser = (ticketData.driverName && ticketData.driverName != '') ? true : false;
     if (this.parentTicketId) {
       this.parentTicketIDVisible = true;
       this.isParentTicketVisible = false;
@@ -686,7 +707,7 @@ export class TicketDashboardComponent implements OnInit {
       this.isParentTicketVisible = true;
     } else {
       this.parentTicketIDVisible = false;
-      this.router.navigateByUrl(`/${this.orgName}/home/detail/${this.ticketId}/${this.customerId}`);
+      this.router.navigateByUrl(`/${this.orgName}/home/detail/${this.ticketId}/${this.customerId}/${this.isBuniessUser}`);
     }
 
   }
@@ -1584,8 +1605,7 @@ export class TicketDashboardComponent implements OnInit {
           middleName: '',
           lastName: ''
         });
-        
-        this.clickOnSeller(data.body.insertedRow, sellerFullname);
+        this.clickOnSeller(data.body.insertedRow, sellerFullname, this.sellerType);
       },(error: any) =>{
       console.log(error);
     })

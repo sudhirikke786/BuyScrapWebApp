@@ -286,7 +286,7 @@ export class UserLoginComponent implements OnInit {
     let date = new Date(this.latestPublishDate);
 
     // Add 5 days to the date
-    date.setDate(date.getDate() + 0);
+    date.setDate(date.getDate() + 5);
 
     // Format the new date back to 'MM/dd/yyyy'
     const latestAcceptanceDate = this.FormatDate(date);

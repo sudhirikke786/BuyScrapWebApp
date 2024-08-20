@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { driver } from '../model/driver.model';
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  constructor() { }
-
   private _cashDrawerDetail: any;
   private _cashDrawerAmountAndPaidTicketCount: any;
   private _newShipOut: any;  
+  private _newDriverDetail!: driver;
   // _cashDrawerAmountDTO: any;
+  
+  constructor() {
+    this._newDriverDetail = new driver();
+   }
  
   private _cashDrawerAmountDTO = new BehaviorSubject<any>(0);
   private _cashDrawerAmountDTO$ = this._cashDrawerAmountDTO.asObservable();
@@ -69,6 +73,12 @@ export class DataService {
      this._planDetails = planObj; 
   }
 
+  setNewDriverDetail(val: any) {
+    this._newDriverDetail = val;
+  }
 
+  getNewDriverDetail() {
+    return this._newDriverDetail;
+  }
 
 }

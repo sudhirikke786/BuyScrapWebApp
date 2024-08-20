@@ -17,7 +17,7 @@ export const routes: Routes = [
     component:TicketDashboardComponent
   },
   {
-    path:'detail/:ticketId/:customerId',
+    path:'detail/:ticketId/:customerId/:isBuniessUser',
     canActivate: [CheckplanGuard],
     component:TicketDetailComponent
   }

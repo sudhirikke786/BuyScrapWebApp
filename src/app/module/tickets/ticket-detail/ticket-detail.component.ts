@@ -15,6 +15,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tick } from '@angular/core/testing';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { driver } from 'src/app/core/model/driver.model';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -160,6 +161,10 @@ export class TicketDetailComponent implements OnInit {
   sellerForm!: FormGroup;
   sellerType: string = 'Personal';
   
+  driverDetails!: driver;
+  newDriverScreenVisible = false;
+  isBuniessUser = false;
+  
   newTicketList = [{
     iconcode: 'mdi-magnify',
     title: 'Search',
@@ -213,7 +218,9 @@ export class TicketDetailComponent implements OnInit {
     private deviceService: DeviceDetectorService,
     public commonService: CommonService) { }
 
-  ngOnInit() {   
+  ngOnInit() {
+    this.driverDetails = new driver();
+
     // const userAgent = navigator.userAgent;
     // const isAndroid = /Android/i.test(userAgent);
 
@@ -259,6 +266,7 @@ export class TicketDetailComponent implements OnInit {
     this.route.params.subscribe((param) => {
       this.ticketId = param["ticketId"];
       this.sellerId = param["customerId"];
+      this.isBuniessUser = param["isBuniessUser"]; // To dispaly driver details
      
       this.getSellerById();
       this.processDataBasedOnTicketId();
@@ -284,8 +292,6 @@ export class TicketDetailComponent implements OnInit {
       middleName : [''],
       lastName : ['']
     });
-
-
   }
 
   
@@ -366,6 +372,17 @@ export class TicketDetailComponent implements OnInit {
       this.ticketData['balanceAmount'] = 0;
       this.ticketData['isCOD'] = false;
       
+      // driver details
+      this.driverDetails = this.dataService.getNewDriverDetail();
+      this.ticketData['carrier'] = this.driverDetails?.carrier || '';
+      this.ticketData['driverlicense'] = this.driverDetails?.driverlicense || '';
+      this.ticketData['licenseplate'] = this.driverDetails?.licenseplate || '';
+      this.ticketData['truck'] = this.driverDetails?.truck || '';
+      this.ticketData['make'] = this.driverDetails?.make || '';
+      this.ticketData['model'] = this.driverDetails?.model || '';
+      this.ticketData['driverName'] = this.driverDetails?.driverName || '';
+      this.ticketData['note'] = this.driverDetails?.note || '';
+      this.dataService.setNewDriverDetail(new driver());
 
       this.ticketObj = [];
 
@@ -380,6 +397,18 @@ export class TicketDetailComponent implements OnInit {
     }
   }
 
+  saveDriverInfo() {
+    //alert(JSON.stringify(this.driverDetails) + " :: " + this.newTicketVisible);    
+    this.newDriverScreenVisible = false;
+    this.ticketData['carrier'] = this.driverDetails?.carrier || '';
+    this.ticketData['driverlicense'] = this.driverDetails?.driverlicense || '';
+    this.ticketData['licenseplate'] = this.driverDetails?.licenseplate || '';
+    this.ticketData['truck'] = this.driverDetails?.truck || '';
+    this.ticketData['make'] = this.driverDetails?.make || '';
+    this.ticketData['model'] = this.driverDetails?.model || '';
+    this.ticketData['driverName'] = this.driverDetails?.driverName || '';
+    this.ticketData['note'] = this.driverDetails?.note || '';    
+  }
 
   isInputValid(input: any): boolean {
     const numberFloatRegex: RegExp = /^-?\d+(\.\d+)?$/;
