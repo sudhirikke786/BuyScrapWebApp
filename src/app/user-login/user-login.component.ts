@@ -143,10 +143,10 @@ export class UserLoginComponent implements OnInit {
   
   getGetOrganisationConsent(){
 
-    // this.commonService.GetOrganisationConsent({OrganisationName:this.organizationName}).subscribe((res) =>{
-    //   this.isMandatoryConsentAccepted = res?.data?.isMandatoryConsentAccepted ==  false ? true :  false;
-    //   this.byPassConsent = true;
-    // })
+    this.commonService.GetOrganisationConsent({OrganisationName:this.organizationName}).subscribe((res) =>{
+      this.isMandatoryConsentAccepted = res?.data?.isMandatoryConsentAccepted ==  false ? true :  false;
+      this.byPassConsent = true;
+    })
 
     
     if (this.organizationName.toLowerCase() != 'prodtest') {
@@ -234,6 +234,8 @@ export class UserLoginComponent implements OnInit {
         // OnClick or OnCancel of pop-up window we will allow user to redirect on Home page 
         // till 10 days after Publish date        
         this.displayUserConsent = true;
+        // TO DO : API call to get consent data
+        // https://api.buyscrapapp.com/Consent/GetConsentDetails
       } else {
         // display waring window to Scale & Cashier to intimate Administrator
         // OnClick or OnCancel of pop-up window we will allow user to redirect on Home page
@@ -253,13 +255,14 @@ export class UserLoginComponent implements OnInit {
 
     // const reqgObj = {
     //   "rowId": 0,
-    //   "consentId":"1,2",
+    //   "consentIds":"1,2",
     //   "organisationId": 1,
     //   "isAccepted": true,
     //   "consentGivenDate": "2024-08-17T18:14:02.693Z",
-    //   "consentGivenBy": 1
+    //   "consentGivenBy": 1 //loged in user id
     // }
     // this.commonService.insertConsentdetail(reqgObj).subscribe((res) =>{
+        //this.redirectToHomePage(this.userData);
     // });
     
   }
@@ -294,7 +297,7 @@ export class UserLoginComponent implements OnInit {
     let todayDate = new Date();
     const today = this.FormatDate(todayDate);
 
-    if (data?.body.userdto.role != 'Administrator' && today >= latestAcceptanceDate) {
+    if (this.organizationName.toLowerCase() == 'prodtest' && data?.body.userdto.role != 'Administrator' && today >= latestAcceptanceDate) {
       this.messageService.add({ severity: 'error', summary: 'error', detail: 'Your access is restricted. Please contact the Administrator to accept the updated Privacy Policy and End User License Agreement to regain access.' });
       return;
     }

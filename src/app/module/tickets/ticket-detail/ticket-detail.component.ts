@@ -397,8 +397,7 @@ export class TicketDetailComponent implements OnInit {
     }
   }
 
-  saveDriverInfo() {
-    //alert(JSON.stringify(this.driverDetails) + " :: " + this.newTicketVisible);    
+  saveDriverInfo() {    
     this.newDriverScreenVisible = false;
     this.ticketData['carrier'] = this.driverDetails?.carrier || '';
     this.ticketData['driverlicense'] = this.driverDetails?.driverlicense || '';
@@ -407,7 +406,7 @@ export class TicketDetailComponent implements OnInit {
     this.ticketData['make'] = this.driverDetails?.make || '';
     this.ticketData['model'] = this.driverDetails?.model || '';
     this.ticketData['driverName'] = this.driverDetails?.driverName || '';
-    this.ticketData['note'] = this.driverDetails?.note || '';    
+    this.ticketData['note'] = this.driverDetails?.note || '';
   }
 
   isInputValid(input: any): boolean {
@@ -1658,7 +1657,7 @@ export class TicketDetailComponent implements OnInit {
     this.isTablet = this.deviceService.isTablet();
     this.isDesktop = this.deviceService.isDesktop();
 
-    const isLinuxOS = (this.deviceService.os == "Linux"); // For Android Tablet
+    const isLinuxOS = (this.deviceService.os.toLowerCase() == "linux"); // For Android Tablet
 
     // alert(JSON.stringify(this.deviceInfo) + ' :: isMobile :: ' +JSON.stringify(this.isMobile) +
     //  ' :: isTablet :: ' +JSON.stringify(this.isTablet) + ' :: isDesktop :: ' +JSON.stringify(this.isDesktop) +
