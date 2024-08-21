@@ -266,7 +266,7 @@ export class TicketDetailComponent implements OnInit {
     this.route.params.subscribe((param) => {
       this.ticketId = param["ticketId"];
       this.sellerId = param["customerId"];
-      this.isBuniessUser = param["isBuniessUser"]; // To dispaly driver details
+     
      
       this.getSellerById();
       this.processDataBasedOnTicketId();
@@ -306,6 +306,10 @@ export class TicketDetailComponent implements OnInit {
 
   }
 
+
+  ShowDriverDeatils(){
+    this.newDriverScreenVisible =  true;
+  }
 
   
   searchSubMaterial(searchTerm:any){
@@ -577,6 +581,11 @@ export class TicketDetailComponent implements OnInit {
   }
 
 
+  editDriverr(){
+
+  }
+
+
   getAllTicketsDetails() {
     this.isLoading = true;
     const paramObject = {
@@ -744,6 +753,8 @@ export class TicketDetailComponent implements OnInit {
         console.log('getSellerById :: ');
         console.log(data);
         this.customer = data.body.data;
+        this.isBuniessUser = this.customer.sellerType ==  "Business" ? true : false;
+
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -1402,6 +1413,7 @@ export class TicketDetailComponent implements OnInit {
     //this.changeItemMaterialsVisible = true;
   }
 
+  
   calculation(rowData: any) {
     console.log('Calculation data ::');
     console.log(rowData);
