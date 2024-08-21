@@ -238,8 +238,16 @@ export class TicketDashboardComponent implements OnInit {
       this.actionList = [...this.actionList,...actionButton];
     }
 
-    this.selectedTickets = this.defaultSelectedTicketsTypes;
+    const isFilter = localStorage.getItem('filterObj');
+    if(isFilter){
+      this.selectedTickets =  JSON.parse(isFilter);
+    }else{
+      this.selectedTickets = this.defaultSelectedTicketsTypes;
 
+    }
+
+
+  
     
 
     const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
@@ -656,6 +664,8 @@ export class TicketDashboardComponent implements OnInit {
         this.selectedTickets = this.defaultSelectedTicketsTypes;
       }
     }
+
+    localStorage.setItem("filterObj",JSON.stringify(this.selectedTickets));
     this.searchTickets();
   }
 
