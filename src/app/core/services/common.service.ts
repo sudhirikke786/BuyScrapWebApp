@@ -312,6 +312,11 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Consent/GetOrganisationConsent', 'GET', paramObj);
   }
 
+  GetConsentDetails(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Consent/GetConsentDetails', 'GET',paramObj);
+  }
+
+
 
   
 
