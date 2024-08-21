@@ -243,11 +243,7 @@ export class TicketDashboardComponent implements OnInit {
       this.selectedTickets =  JSON.parse(isFilter);
     }else{
       this.selectedTickets = this.defaultSelectedTicketsTypes;
-
     }
-
-
-  
     
 
     const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
@@ -262,6 +258,18 @@ export class TicketDashboardComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
     this.pagination.Status = result;
+    
+    const ticketPagination = localStorage.getItem('ticketPagination');
+    if(ticketPagination){
+      // this.currentPage = 5;      
+      // this.first = 40;   
+      // this.last = 49;
+      this.pagination =  JSON.parse(ticketPagination);
+      this.first = (this.pagination?.PageNumber - 1) * this.pagination?.RowOfPage || 0;   
+      this.last = (this.pagination?.PageNumber * this.pagination?.RowOfPage) -1 || 9; 
+    }else{
+      this.pagination.Status = result;
+    }
     this.getAllTicketsDetails(this.pagination);
 
     this.sellerForm = this.fb.group({
@@ -313,7 +321,8 @@ export class TicketDashboardComponent implements OnInit {
     this.isLoading = true;
     console.log(this.pagination);
     this.commonService.getAllTicketsDetails(pagination)
-      .subscribe(data => {
+      .subscribe(data => {        
+        localStorage.setItem("ticketPagination",JSON.stringify(pagination));
         console.log('getAllTicketsDetails :: ');
         console.log(data);
         this.tickets = data.body.data.map((item:any) => {
@@ -664,8 +673,6 @@ export class TicketDashboardComponent implements OnInit {
         this.selectedTickets = this.defaultSelectedTicketsTypes;
       }
     }
-
-    localStorage.setItem("filterObj",JSON.stringify(this.selectedTickets));
     this.searchTickets();
   }
 

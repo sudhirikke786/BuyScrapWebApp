@@ -57,8 +57,10 @@ export class OrganizationLoginComponent implements OnInit {
           console.log(data);
           if (data.body.data.organisationName) {
             const orgName = data.body.data.organisationName;
+            const orgId = data.body.data.rowId;
             if (this.isChecked) {
-              localStorage.setItem('orgName',orgName)
+              localStorage.setItem('orgName',orgName);
+              localStorage.setItem('orgId',orgId);
             } else {
               localStorage.clear();
             }

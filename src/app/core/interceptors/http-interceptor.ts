@@ -219,6 +219,8 @@ export class AuthInterceptor implements HttpInterceptor {
       const orgName = localStorage.getItem('orgName');
       localStorage.removeItem('userObj');
       localStorage.removeItem('locId');
+      localStorage.removeItem('ticketPagination');
+      localStorage.removeItem('filterObj');
       this.router.navigateByUrl(`${orgName}/user-login`);
 
       return observableThrowError('');
@@ -234,6 +236,8 @@ export class AuthInterceptor implements HttpInterceptor {
     localStorage.removeItem('orgName');
     localStorage.removeItem('systemInfo');
     localStorage.removeItem('locationName');
+    localStorage.removeItem('ticketPagination');
+    localStorage.removeItem('filterObj');
       this.router.navigateByUrl(`organization-login`);
       return observableThrowError('');
   }

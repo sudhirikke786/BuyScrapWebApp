@@ -292,6 +292,8 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('locId');
     localStorage.removeItem('locationName');
     localStorage.removeItem('currencyCode');
+    localStorage.removeItem('ticketPagination');
+    localStorage.removeItem('filterObj');
     this.router.navigateByUrl(`${orgName}/user-login`);
   }
 

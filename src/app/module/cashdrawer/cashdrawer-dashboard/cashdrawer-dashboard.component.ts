@@ -372,6 +372,8 @@ export class CashdrawerDashboardComponent implements OnInit {
       localStorage.removeItem('token');
       localStorage.removeItem('userObj');
       localStorage.removeItem('locId');
+      localStorage.removeItem('ticketPagination');
+      localStorage.removeItem('filterObj');
       this.router.navigateByUrl(`${orgName}/user-login`);
     }
   }

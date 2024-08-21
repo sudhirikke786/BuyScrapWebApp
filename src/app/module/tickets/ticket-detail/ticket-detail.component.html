@@ -58,13 +58,15 @@
                                                     
                                                     <div > 
                                                         <a  (click)="ShowDriverDeatils()" *ngIf="!isEditModeOn  && isBuniessUser" >
-                                                            <i pTooltip="Show Driver Details" class="fa fa-id-card" aria-hidden="true"></i>
-
+                                                            <span class="menu-icon me-1" pTooltip="View Driver Details" >
+                                                                <img src="/assets/images/custom/icons/truckDriver.png" class="driver-icons"> 
+                                                            </span>
                                                         </a>
 
                                                         <a  (click)="ShowDriverDeatils()" *ngIf="isEditModeOn && isBuniessUser">
-                                                            <i pTooltip="Update Driver Details" class="fa fa-id-card" aria-hidden="true"></i>
-
+                                                            <span class="menu-icon me-1" pTooltip="Edit Driver Details" >
+                                                                <img src="/assets/images/custom/icons/truckDriver.png" class="driver-icons"> 
+                                                            </span>
                                                         </a>
                                                     </div>
 
@@ -1046,25 +1048,31 @@ header="Edit Seller"
 <form #myForm="ngForm" (ngSubmit)="saveDriverInfo()" novalidate>
 
     <div class="row mt-3">
+
+      
   
-      <div class="form-group col-sm-4">
-        
-          <label for="carrier">Carrier</label>
-          <input
-            type="text"
-            class="form-control"
-            id="carrier"
-            name="carrier"
-            [(ngModel)]="driverDetails.carrier"
-            #carrier="ngModel"
-            required
-            placeholder="Carrier"
-          />
-          
+      <!-- Driver Name Field -->
+      <div class="form-group col-sm-6">
+        <label for="driverName">Driver Name</label>
+        <input
+          type="text"
+          class="form-control"
+          [ngClass]="{'border-danger': driverName.invalid && (driverName.dirty || driverName.touched) }"
+          id="driverName"
+          name="driverName"
+          [(ngModel)]="driverDetails.driverName"
+          #driverName="ngModel"
+          required
+          placeholder="Driver Name"
+        />
+
+        <div *ngIf="driverName.invalid && (driverName.dirty || driverName.touched)">
+          <app-form-error-message msg="Driver Name is required"></app-form-error-message>
+        </div>
       </div>
   
       <!-- Driver License Field -->
-      <div class="form-group col-sm-4">
+      <div class="form-group col-sm-3">
           <label for="driverlicense">Driver License</label>
         
           <input
@@ -1086,7 +1094,7 @@ header="Edit Seller"
       </div>
   
       <!-- License Plate Field -->
-      <div class="form-group col-sm-4">
+      <div class="form-group col-sm-3">
           <label for="licenseplate">License Plate</label>
           <input
             type="text"
@@ -1107,6 +1115,24 @@ header="Edit Seller"
     </div>
   
     <div class="row mt-2">
+        
+  
+      <div class="form-group col-sm-3">
+        
+        <label for="carrier">Carrier</label>
+        <input
+          type="text"
+          class="form-control"
+          id="carrier"
+          name="carrier"
+          [(ngModel)]="driverDetails.carrier"
+          #carrier="ngModel"
+          required
+          placeholder="Carrier"
+        />
+        
+      </div>
+
       <!-- Truck Field -->
       <div class="form-group col-sm-3">
           <label for="truck">Truck Type</label>
@@ -1148,26 +1174,6 @@ header="Edit Seller"
             #model="ngModel"
             placeholder="Model"
           />
-      </div>
-  
-      <!-- Driver Name Field -->
-      <div class="form-group col-sm-3">
-          <label for="driverName">Driver Name</label>
-          <input
-            type="text"
-            class="form-control"
-            [ngClass]="{'border-danger': driverName.invalid && (driverName.dirty || driverName.touched) }"
-            id="driverName"
-            name="driverName"
-            [(ngModel)]="driverDetails.driverName"
-            #driverName="ngModel"
-            required
-            placeholder="Driver Name"
-          />
-
-          <div *ngIf="driverName.invalid && (driverName.dirty || driverName.touched)">
-            <app-form-error-message msg="Driver Name is required"></app-form-error-message>
-          </div>
       </div>
     </div>
   

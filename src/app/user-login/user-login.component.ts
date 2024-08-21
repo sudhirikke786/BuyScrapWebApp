@@ -6,6 +6,7 @@ import { User } from '../core/interfaces/common-interfaces';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { StorageService } from '../core/services/storage.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-user-login',
@@ -18,7 +19,10 @@ export class UserLoginComponent implements OnInit {
   loginForm!: FormGroup
   consentForm!: FormGroup;
   
-  organizationName: any;
+  organizationName: any;  
+  OrgId: any;
+  logInUserId: any;
+
   locations: any;
   selectedLocation: any;
   errorMsg: any;
@@ -40,9 +44,11 @@ export class UserLoginComponent implements OnInit {
   showPrivacy = false;
   isMandatoryConsentAccepted = false;
   latestPublishDate: any;
+  acceptanceDate: any;
   displayWarningDialog = false;
   displayUserConsent = false;
   showPrivacyConsent = false;
+  consentAgree = true;
   warningMessage = '';
   submitted  =  false;
   registrationForm!: FormGroup;
@@ -71,7 +77,11 @@ export class UserLoginComponent implements OnInit {
       this.router.navigateByUrl(`/${this.organizationName}/home`);
     }
     this.getIPAddress();
-   
+    this.getConsetInfo();
+
+    this.OrgId = this.commonService.getProbablyNumberFromLocalStorage('orgId');
+    this.logInUserId = 1;
+
     this.route.params.subscribe((param)=>{ 
       this.organizationName = param["orgName"];
       this.getOrgLocation();
@@ -146,22 +156,19 @@ export class UserLoginComponent implements OnInit {
   }
   
   getGetOrganisationConsent(){
-
-    this.commonService.GetOrganisationConsent({OrganisationName:this.organizationName}).subscribe((res) =>{
-      this.isMandatoryConsentAccepted = res?.data?.isMandatoryConsentAccepted ==  false ? true :  false;
-      this.byPassConsent = true;
-    })
-
     
-    if (this.organizationName.toLowerCase() != 'prodtest') {
-      this.isMandatoryConsentAccepted = true;
-      this.byPassConsent = true;
-      this.latestPublishDate = '08/17/2024';       
-    } else {
-      this.isMandatoryConsentAccepted = false;
-      this.byPassConsent = true;
-      this.latestPublishDate = '08/17/2024';     
-    }
+    // if (this.organizationName.toLowerCase() != 'prodtest') {
+    //   this.isMandatoryConsentAccepted = true;
+    //   this.byPassConsent = true;
+    //   this.latestPublishDate = '08/17/2024';       
+    // } else {      
+      this.commonService.GetOrganisationConsent({OrganisationName:this.organizationName}).subscribe((res) =>{
+        this.isMandatoryConsentAccepted = res?.body?.data?.isMandatoryConsentAccepted ==  true ? true :  false;
+        this.byPassConsent = res?.body?.data?.byPassConsent;      
+        this.latestPublishDate = res?.body?.data?.latestPublishDate;        
+        this.acceptanceDate = res?.body?.data?.acceptanceDate;   
+      })   
+    // }
 
 
   }
@@ -205,6 +212,7 @@ export class UserLoginComponent implements OnInit {
     const req = {...this.loginForm.value,locID:Number(this.loginForm.value.locID)};
     this.commonService.validateUserCredentials(req).subscribe((data) => {
           if (data?.body.token!='' && data?.body.userdto.userName) {
+            this.logInUserId = data?.body.userdto.rowId;
             this.displayOrganisationConsent(data);
           } else {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials or No user found.' });
@@ -231,23 +239,25 @@ export class UserLoginComponent implements OnInit {
     console.log(latestAcceptanceDate); // Outputs: 08/27/2024
     this.userData = data;
         
-
     if (!this.isMandatoryConsentAccepted) {      
       if (data?.body.userdto.role == 'Administrator') {
         // display waring window to Scale & Cashier to intimate Administrator
         // OnClick or OnCancel of pop-up window we will allow user to redirect on Home page 
         // till 10 days after Publish date        
         this.displayUserConsent = true;
-        this.getConsetInfo();
         // TO DO : API call to get consent data
         // https://api.buyscrapapp.com/Consent/GetConsentDetails
+      } else if (!this.byPassConsent) {
+        this.messageService.add({ severity: 'error', summary: 'error', detail: 'Your access is restricted. Please contact the Administrator to accept the updated Privacy Policy and End User License Agreement to regain access.' });
+        return;
       } else {
         // display waring window to Scale & Cashier to intimate Administrator
         // OnClick or OnCancel of pop-up window we will allow user to redirect on Home page
-        // till 10 days after Publish date 
+        // till 10 days after Publish date       
+        this.displayUserConsent = false;
         this.warningMessage = "As per the new policy changes, the Administrator needs to accept the Privacy Policy and End User License Agreement by " + latestAcceptanceDate + ". Otherwise, the user will not be able to log in after " + latestAcceptanceDate + ".";
         this.displayWarningDialog = true;
-      }
+      } 
     } else {
       this.redirectToHomePage(data);
     }
@@ -277,30 +287,63 @@ export class UserLoginComponent implements OnInit {
     })
   }
 
-  agreeConsents() {
-    //alert('agree')
+  agreeConsents() {    
     this.displayUserConsent = false;   
-    this.displayWarningDialog = false;
+    this.consentAgree = true;
+    // this.redirectToHomePage(this.userData);
+  }
 
-    // const reqgObj = {
-    //   "rowId": 0,
-    //   "consentIds":"1,2",
-    //   "organisationId": 1,
-    //   "isAccepted": true,
-    //   "consentGivenDate": "2024-08-17T18:14:02.693Z",
-    //   "consentGivenBy": 1 //loged in user id
-    // }
-    // this.commonService.insertConsentdetail(reqgObj).subscribe((res) =>{
-        //this.redirectToHomePage(this.userData);
-    // });
+  insertConsentdetail() {
+    let consentIds = '';
+    if (this.consentForm.value.consent1) {
+      consentIds += this.consetInfo[0].rowId + ',';
+    } else {
+      this.displayOrganisationConsent(this.userData);
+      return;
+    }
+    if (this.consentForm.value.consent2) {
+      consentIds += this.consetInfo[1].rowId + ',';
+    } else {
+      this.displayOrganisationConsent(this.userData);
+      return;
+    }
+    if (this.consentForm.value.consent3) {
+      consentIds += this.consetInfo[2].rowId + ',';
+    }
+    if (consentIds.endsWith(",")) {
+      consentIds = consentIds.slice(0, -1);
+    }    
+    
+    const datePipe = new DatePipe('en-US');
+
+    const reqgObj = {
+      "rowId": 0,
+      "consentIds":consentIds,
+      "organisationId": this.OrgId,
+      "isAccepted": true,
+      "consentGivenDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+      "consentGivenBy": this.logInUserId
+    }
+    this.commonService.insertConsentdetail(reqgObj).subscribe((res) =>{      
+      this.router.navigateByUrl(`/${this.organizationName}/home`);
+    },
+    (err: any) => {
+      this.router.navigateByUrl(`/${this.organizationName}/home`);
+    });
     
   }
 
   closeWarningDialog() {
     //alert('close');
-    this.warningMessage = "";     
-    this.displayUserConsent = false;   
+    this.warningMessage = "";      
     this.displayWarningDialog = false;
+    this.redirectToHomePage(this.userData);
+  }
+
+  closeDialog() {
+    //alert('close');   
+    this.consentAgree = false;
+    this.displayUserConsent = false;   
     this.redirectToHomePage(this.userData);
   }
 
@@ -314,19 +357,16 @@ export class UserLoginComponent implements OnInit {
   }
 
   redirectToHomePage(data: any) {    
-    // Convert the string to a Date object
-    let date = new Date(this.latestPublishDate);
+    // // Convert the string to a Date object
+    // let date = new Date(this.acceptanceDate);
 
-    // Add 5 days to the date
-    date.setDate(date.getDate() + 5);
-
-    // Format the new date back to 'MM/dd/yyyy'
-    const latestAcceptanceDate = this.FormatDate(date);
+    // // Format the new date back to 'MM/dd/yyyy'
+    // const latestAcceptanceDate = this.FormatDate(date);
     
-    let todayDate = new Date();
-    const today = this.FormatDate(todayDate);
+    // let todayDate = new Date();
+    // const today = this.FormatDate(todayDate);
 
-    if (this.organizationName.toLowerCase() == 'prodtest' && data?.body.userdto.role != 'Administrator' && today >= latestAcceptanceDate) {
+    if (data?.body.userdto.role != 'Administrator' && !this.byPassConsent && !this.isMandatoryConsentAccepted) {
       this.messageService.add({ severity: 'error', summary: 'error', detail: 'Your access is restricted. Please contact the Administrator to accept the updated Privacy Policy and End User License Agreement to regain access.' });
       return;
     }
@@ -347,7 +387,16 @@ export class UserLoginComponent implements OnInit {
       if (systemInfo?.body?.data) {
         this.localService.setLocalStorage('systemInfo', systemInfo?.body?.data);
       }
-      this.router.navigateByUrl(`/${this.organizationName}/home`);
+      
+      if (this.consentForm.value.consent1 && this.consentForm.value.consent2 && this.consentAgree) {      
+        this.insertConsentdetail();
+      } else {
+        if (this.isMandatoryConsentAccepted || this.byPassConsent) {
+          this.router.navigateByUrl(`/${this.organizationName}/home`);
+        } else {
+          this.insertConsentdetail();
+        }
+      }
     },
     (err: any) => {
       this.router.navigateByUrl(`/${this.organizationName}/home`);
