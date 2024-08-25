@@ -297,10 +297,10 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   appendNumber(number: any) {
    
-    if (this.i == 0 && this.isAutocapture) {
-      this.takeSnapshot();
-    }
-    this.i++;
+    // if (this.i == 0 && this.isAutocapture) {
+    //   this.takeSnapshot();
+    // }
+    // this.i++;
   
     if (this.focusedInput === 'inputBox1') {
       this.renderer.selectRootElement(this.inputBox1?.nativeElement).focus();

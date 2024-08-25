@@ -48,7 +48,7 @@ export class UserLoginComponent implements OnInit {
   displayWarningDialog = false;
   displayUserConsent = false;
   showPrivacyConsent = false;
-  consentAgree = true;
+  consentAgree = false;
   warningMessage = '';
   submitted  =  false;
   registrationForm!: FormGroup;
@@ -341,8 +341,7 @@ export class UserLoginComponent implements OnInit {
   }
 
   closeDialog() {
-    //alert('close');   
-    this.consentAgree = false;
+    //alert('close');  
     this.displayUserConsent = false;   
     this.redirectToHomePage(this.userData);
   }

@@ -210,18 +210,18 @@ export class TicketDashboardComponent implements OnInit {
     private messageService: MessageService,
     public commonService: CommonService) {
      // this.setPageSize();
-      this.route.params.subscribe((res) =>{
-        this.pagination = {
-          SerachText: '',
-          SearchOrder: 'TicketId',
-          Status: this.defaultSelectedTicketsTypes.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(','),
-          PageNumber: 1,
-          RowOfPage: 10,
-          LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
-          first: 0,
-        }
-        this.getAllTicketsDetails(this.pagination);
-      })
+      // this.route.params.subscribe((res) =>{
+      //   this.pagination = {
+      //     SerachText: '',
+      //     SearchOrder: 'TicketId',
+      //     Status: this.defaultSelectedTicketsTypes.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(','),
+      //     PageNumber: 1,
+      //     RowOfPage: 10,
+      //     LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
+      //     first: 0,
+      //   }
+      //   this.getAllTicketsDetails(this.pagination);
+      // })
 
      }
 
@@ -267,6 +267,7 @@ export class TicketDashboardComponent implements OnInit {
       this.pagination =  JSON.parse(ticketPagination);
       this.first = (this.pagination?.PageNumber - 1) * this.pagination?.RowOfPage || 0;   
       this.last = (this.pagination?.PageNumber * this.pagination?.RowOfPage) -1 || 9; 
+      this.pageSize = this.pagination?.RowOfPage || 10;
     }else{
       this.pagination.Status = result;
     }
@@ -321,7 +322,8 @@ export class TicketDashboardComponent implements OnInit {
     this.isLoading = true;
     console.log(this.pagination);
     this.commonService.getAllTicketsDetails(pagination)
-      .subscribe(data => {        
+      .subscribe(data => {
+        localStorage.setItem("filterObj",JSON.stringify(this.selectedTickets));        
         localStorage.setItem("ticketPagination",JSON.stringify(pagination));
         console.log('getAllTicketsDetails :: ');
         console.log(data);
@@ -665,14 +667,19 @@ export class TicketDashboardComponent implements OnInit {
 
   addRemoveStatus(event: any) {
     console.log('Change Multiselect :: ');
-    console.log(event);
+    console.log(JSON.stringify(event));
     if (event.itemValue.name === 'ALL') {
       if (event.originalEvent) {
         this.selectedTickets = this.ticketsTypes;
       } else {
         this.selectedTickets = this.defaultSelectedTicketsTypes;
       }
+    } else {
+      // TO DO:: check item is selected or deselected by looking at no.of item in event.value
+      // if less than 6, then remove item with All and bind remaining with this.selectedTickets
+      
     }
+    this.pagination.PageNumber = 1;
     this.searchTickets();
   }
 
