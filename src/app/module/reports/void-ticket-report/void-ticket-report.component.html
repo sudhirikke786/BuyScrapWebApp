@@ -97,6 +97,7 @@
 <!-- ============================================================== -->
 <!-- End Page content -->
 <!-- ============================================================== -->
+<ng-container *ngIf="!checkTabView">
 
   <p-dialog   header="Void Ticket Report" [(visible)]="isReportShow" [modal]="true" [style]="{ width: '70vw' }">
              
@@ -110,3 +111,4 @@
       </div>
     </div>
   </p-dialog>
+  </ng-container>

@@ -106,6 +106,7 @@
           <!-- ============================================================== -->
           <!-- End Page content -->
           <!-- ============================================================== -->
+          <ng-container *ngIf="!checkTabView">
 
           <p-dialog   header="Payment Report" [(visible)]="isReportShow" [modal]="true" [style]="{ width: '70vw' }">
            
@@ -120,4 +121,4 @@
             </div>
           </p-dialog>
         
-
+          </ng-container>

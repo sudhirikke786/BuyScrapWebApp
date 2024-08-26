@@ -106,6 +106,7 @@
             <!-- End Page content -->
             <!-- ============================================================== -->
 
+            <ng-container *ngIf="!checkTabView">
 
             <p-dialog [modal]="true" header="Customer History Report" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
 
@@ -117,3 +118,6 @@
                 </div>
 
               </div>
+              </p-dialog>
+
+            </ng-container>

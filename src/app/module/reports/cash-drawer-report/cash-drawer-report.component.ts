@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-cash-drawer-report',
@@ -10,7 +11,7 @@ import { CommonService } from 'src/app/core/services/common.service';
   styleUrls: ['./cash-drawer-report.component.scss']
 })
 export class CashDrawerReportComponent implements OnInit {
-
+  checkTabView: boolean = false;
   actionList = [
     {
       iconcode: 'mdi-magnify',
@@ -53,6 +54,7 @@ export class CashDrawerReportComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
+    private helperService: HelperService,
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -61,6 +63,7 @@ export class CashDrawerReportComponent implements OnInit {
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.setDefaultDate();
     this.getCashDrawerReport();
+    this.checkTabView = this.helperService.isTab();
   }
 
   setDefaultDate() {
@@ -108,6 +111,11 @@ export class CashDrawerReportComponent implements OnInit {
         console.log(data);
         this.fileDataObj = data.body.data;
         this.showDownload = false;
+
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Daily_Tickets")
+        }
+
       },
         (err: any) => {
           this.showDownload = false;

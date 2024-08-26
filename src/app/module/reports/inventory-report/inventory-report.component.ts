@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-inventory-report',
@@ -10,6 +11,7 @@ import { CommonService } from 'src/app/core/services/common.service';
   styleUrls: ['./inventory-report.component.scss']
 })
 export class InventoryReportComponent implements OnInit {
+  checkTabView: boolean = false;
 
   actionList = [
     {
@@ -56,6 +58,7 @@ export class InventoryReportComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
+    private helperService:HelperService,
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -118,6 +121,9 @@ export class InventoryReportComponent implements OnInit {
         console.log(data);
         this.showLoaderReport = false;
         this.fileDataObj = data.body.data;
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Payment Report")
+        }
        
       },
         (err: any) => {

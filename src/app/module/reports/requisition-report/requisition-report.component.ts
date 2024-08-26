@@ -22,6 +22,7 @@ interface DataRow {
   styleUrls: ['./requisition-report.component.css']
 })
 export class RequisitionReportComponent implements OnInit {
+  checkTabView: boolean = false;
 
   actionList = [
     {

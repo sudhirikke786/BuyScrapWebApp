@@ -118,6 +118,8 @@
             <!-- ============================================================== -->
             <!-- End Page content -->
             <!-- ============================================================== -->
+            <ng-container *ngIf="!checkTabView">
+
             <p-dialog [modal]="true" header="Sub Material Report" [(visible)]="isReportShow" [modal]="true" [style]="{ width: '70vw' }">
 
               <div *ngIf="showLoaderReport">
@@ -131,4 +133,4 @@
 
                 </div>
               </div>
-			  
+			  </ng-container>

@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-material-report',
@@ -10,6 +11,7 @@ import { CommonService } from 'src/app/core/services/common.service';
   styleUrls: ['./material-report.component.scss']
 })
 export class MaterialReportComponent implements OnInit {
+  checkTabView: boolean = false;
 
   actionList = [
     {
@@ -52,6 +54,7 @@ export class MaterialReportComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
+    private helperService:HelperService,
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -59,6 +62,8 @@ export class MaterialReportComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.setDefaultDate();
+    this.checkTabView = this.helperService.isTab();
+
     this.getMaterialReport();
   }
 
@@ -105,6 +110,11 @@ export class MaterialReportComponent implements OnInit {
         console.log(data);
         this.fileDataObj = data.body.data;
         this.showDownload = false;
+
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Material Report")
+        }
+
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';

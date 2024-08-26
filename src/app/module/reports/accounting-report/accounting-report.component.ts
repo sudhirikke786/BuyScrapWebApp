@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-accounting-report',
@@ -10,6 +11,7 @@ import { CommonService } from 'src/app/core/services/common.service';
   styleUrls: ['./accounting-report.component.scss']
 })
 export class AccountingReportComponent implements OnInit {
+  checkTabView: boolean = false;
 
   actionList = [
     {
@@ -54,6 +56,7 @@ export class AccountingReportComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
+    private helperService:HelperService,
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -62,6 +65,7 @@ export class AccountingReportComponent implements OnInit {
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.setDefaultDate();
     this.getAccountingReport();
+    this.checkTabView = this.helperService.isTab();
   }
 
   setDefaultDate() {
@@ -116,6 +120,10 @@ export class AccountingReportComponent implements OnInit {
         this.fileDataObj = data.body.data;
         // console.log(this.fileDataObj);
         this.showDownload = true;
+
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Daily_Tickets")
+        }
       },
         (err: any) => {
           this.showLoader = false;
@@ -135,7 +143,7 @@ export class AccountingReportComponent implements OnInit {
       case 'mdi-magnify':
         this.showDownload = false;
         this.getAccountingReport();
-        break;
+        break; 
       case 'mdi-refresh':
         this.showDownload = false;
         this.setDefaultDate();

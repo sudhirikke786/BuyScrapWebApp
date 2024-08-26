@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-void-ticket-report',
@@ -47,10 +48,11 @@ export class VoidTicketReportComponent implements OnInit {
   showLoader =  false;
   showLoaderReport = false;
   isReportShow = false;
-
+  checkTabView: boolean = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
+    private helperService:HelperService,
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -58,6 +60,7 @@ export class VoidTicketReportComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.setDefaultDate();
     this.getVoidTicketReport();
+    this.checkTabView = this.helperService.isTab();
   }
 
   setDefaultDate() {
@@ -113,6 +116,11 @@ export class VoidTicketReportComponent implements OnInit {
         console.log(data);
         this.showLoaderReport = false;
         this.fileDataObj = data.body.data;
+
+
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Void Ticket Report")
+        }
        
       },
         (err: any) => {

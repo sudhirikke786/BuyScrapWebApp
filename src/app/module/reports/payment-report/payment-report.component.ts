@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-payment-report',
@@ -10,6 +11,7 @@ import { CommonService } from 'src/app/core/services/common.service';
   styleUrls: ['./payment-report.component.scss']
 })
 export class PaymentReportComponent implements OnInit {
+  checkTabView: boolean = false;
 
   actionList = [
     {
@@ -58,6 +60,8 @@ export class PaymentReportComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
+    private helperService:HelperService,
+
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -66,6 +70,7 @@ export class PaymentReportComponent implements OnInit {
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.setDefaultDate();
     this.getPaymentReport();
+    this.checkTabView = this.helperService.isTab();
   }
 
   setDefaultDate() {
@@ -120,6 +125,9 @@ export class PaymentReportComponent implements OnInit {
         console.log(data);
         this.showLoaderReport = false;
         this.fileDataObj = data.body.data;
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Payment Report")
+        }
        
       },
         (err: any) => {

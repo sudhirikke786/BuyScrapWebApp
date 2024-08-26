@@ -14,8 +14,8 @@ import { DataService } from 'src/app/core/services/data.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tick } from '@angular/core/testing';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { driver } from 'src/app/core/model/driver.model';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -200,10 +200,7 @@ export class TicketDetailComponent implements OnInit {
   copyMaterialData:any[]  = [];
   copySubMaterialData:any[]  = [];
 
-  deviceInfo:any ;
-  isMobile:any;
-  isTablet: any;
-  isDesktop: any;
+ 
 
 
   constructor(private route: ActivatedRoute,
@@ -213,9 +210,10 @@ export class TicketDetailComponent implements OnInit {
     private authService: AuthService,
     private messageService: MessageService,
     private stroarge: StorageService,
-    private dataService: DataService,    
+    private dataService: DataService,
+    private helperService:HelperService,    
     private confirmationService: ConfirmationService,
-    private deviceService: DeviceDetectorService,
+   
     public commonService: CommonService) { }
 
   ngOnInit() {
@@ -1643,9 +1641,10 @@ export class TicketDetailComponent implements OnInit {
         this.showDownload = false;
         this.pdfViwerTitle = 'Ticket Receipt';
 
-        const checkTabView = this.isTab();
+        const checkTabView = this.helperService.isTab();
         if(checkTabView){
-          this.downloadBase64Pdf(this.fileDataObj);
+          this.helperService.downloadBase64Pdf(this.fileDataObj,this.ticketId)
+         
         }else{
           this.loadAndPrintBase64Pdf(this.fileDataObj)
         }
@@ -1660,30 +1659,7 @@ export class TicketDetailComponent implements OnInit {
       );
   }
 
-  isTab(): boolean {    
-    const userAgent = navigator.userAgent;
-    const isAndroid = /Android/i.test(userAgent);
-
-    this.deviceInfo = this.deviceService.getDeviceInfo();
-    this.isMobile = this.deviceService.isMobile();
-    this.isTablet = this.deviceService.isTablet();
-    this.isDesktop = this.deviceService.isDesktop();
-
-    const isLinuxOS = (this.deviceService.os.toLowerCase() == "linux"); // For Android Tablet
-
-    // alert(JSON.stringify(this.deviceInfo) + ' :: isMobile :: ' +JSON.stringify(this.isMobile) +
-    //  ' :: isTablet :: ' +JSON.stringify(this.isTablet) + ' :: isDesktop :: ' +JSON.stringify(this.isDesktop) +
-    //   ' :: ' + ' :: isAndroid :: ' +JSON.stringify(isAndroid) + ' :: ')
-
-
-    if (this.isMobile || this.isTablet || isAndroid || isLinuxOS) {
-      console.log('Mobile / Tablet Device');
-        return true;
-    } else {
-        console.log('Desktop or Laptop');
-    } 
-    return false;
-  }
+ 
 
   loadAndPrintBase64Pdf(base64Data: string): void {
     const iframe = document.createElement('iframe');
@@ -1714,27 +1690,7 @@ export class TicketDetailComponent implements OnInit {
 
   downloadBase64Pdf(base64Data: string): void {
     // Convert Base64 string to byte array
-    const byteCharacters = atob(base64Data);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-  
-    // Create a Blob and URL for the PDF
-    const blob = new Blob([byteArray], { type: 'application/pdf' });
-    const blobUrl = URL.createObjectURL(blob);
-  
-    // Create and append download link
-    const downloadLink = document.createElement('a');
-    downloadLink.href = blobUrl;
-    downloadLink.download = this.ticketId + '_receipt.pdf'; // Set download file name
-    downloadLink.textContent = 'Download Receipt PDF';
-    downloadLink.style.display = 'none'; // Hide the link
-    document.body.appendChild(downloadLink);
-  
-    // Trigger the download
-    downloadLink.click();
+    
   
   
    

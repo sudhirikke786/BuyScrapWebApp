@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-sub-material-report',
@@ -51,9 +52,12 @@ export class SubMaterialReportComponent implements OnInit {
   showLoader  = false;
   isReportShow = false;
   showLoaderReport = false;
+  checkTabView: boolean = false;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
+    private helperService:HelperService,
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -61,6 +65,8 @@ export class SubMaterialReportComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.setDefaultDate();
     this.getAllGroupMaterial();
+    this.checkTabView = this.helperService.isTab();
+
    // this.getSubMaterialsReport();
   }
 
@@ -121,6 +127,9 @@ export class SubMaterialReportComponent implements OnInit {
         console.log(data);
         this.showLoaderReport  = false; 
         this.fileDataObj = data.body.data;
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Materials Report")
+        }
        
       },
         (err: any) => {

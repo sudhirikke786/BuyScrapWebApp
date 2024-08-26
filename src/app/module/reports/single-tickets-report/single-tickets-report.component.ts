@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-single-tickets-report',
@@ -56,16 +57,19 @@ export class SingleTicketsReportComponent implements OnInit {
   customerObj:any;
   numberFormat: string = '1.2-2';
   currencySymbol: string = 'USD';
+  checkTabView: boolean = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
+    private helperService:HelperService,
     private commonService: CommonService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
+    this.checkTabView = this.helperService.isTab();
     this.setDefaultDate();
     this.getSingleTicketReport();
   }
@@ -124,6 +128,10 @@ export class SingleTicketsReportComponent implements OnInit {
         console.log(data);
         this.showLoaderReport = false;
         this.fileDataObj = data.body.data;
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,this.customerObj.ticketId)
+        }
+
        
       },
         (err: any) => {

@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CommonService } from 'src/app/core/services/common.service';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-customer-report',
@@ -50,10 +51,11 @@ export class CustomerReportComponent implements OnInit {
   showDownload=false;
   showLoader = false;
   customerObj: any;
-
+  checkTabView: boolean = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
+    private helperService: HelperService,
     private commonService: CommonService) { }
 
   ngOnInit() {
@@ -61,6 +63,7 @@ export class CustomerReportComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.setDefaultDate();
     this.getCustomerReport();
+    this.checkTabView = this.helperService.isTab();
   }
 
   setDefaultDate() {
@@ -138,6 +141,11 @@ export class CustomerReportComponent implements OnInit {
         console.log('generateCustomerReport :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
+
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Daily_Tickets")
+        }
+
         // console.log(this.fileDataObj);
         this.showDownload = true;
       },
