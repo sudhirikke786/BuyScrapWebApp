@@ -681,7 +681,7 @@
     </ng-template>
 </p-confirmDialog> -->
 
-
+<ng-container *ngIf="!checkTabView">
 
 <p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
    
@@ -696,7 +696,7 @@
     </div>
     </div>
 </p-dialog>
-
+</ng-container>
 
 <p-dialog [modal]="true" (onHide)="showPlan =  false" [(visible)]="showPlan" [style]="{width: '80vw'}"
 [breakpoints]="{'767px': '100vw'}">

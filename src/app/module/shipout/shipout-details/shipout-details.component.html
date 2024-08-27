@@ -254,6 +254,7 @@
   <app-page-loader type="ftable"></app-page-loader>
 </div>
 
+<ng-container *ngIf="!checkTabView">
 
 
 <p-dialog header="Shipout Report" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
@@ -263,6 +264,7 @@
       </div>
     </div>
 </p-dialog>
+</ng-container>
 
 
 <p-toast></p-toast>

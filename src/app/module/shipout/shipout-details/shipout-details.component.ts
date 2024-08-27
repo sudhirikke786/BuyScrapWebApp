@@ -12,7 +12,8 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { ShipOut } from 'src/app/core/model/ship-out.model';
 import { DataService } from 'src/app/core/services/data.service';
 import { MaterialCalculatorComponent } from '../../shared/commonshared/material-calculator/material-calculator.component';
-
+import { HelperService } from 'src/app/core/services/helper.service';
+ 
 @Component({
   selector: 'app-shipout-details',
   templateUrl: './shipout-details.component.html',
@@ -45,6 +46,7 @@ export class ShipoutDetailsComponent implements OnInit {
   totalGross: any;
   totalTare: any;
   totalNet: any;
+
 
   isEditModeOn = false;
   materialList: any;
@@ -87,7 +89,7 @@ export class ShipoutDetailsComponent implements OnInit {
   fileDataObj: any;
   showDownload = false;
   isLoading = false;
-
+  checkTabView: boolean = false;
   @ViewChild(MaterialCalculatorComponent) materialCalculatorComponent!: MaterialCalculatorComponent;
  
   constructor(private route: ActivatedRoute,
@@ -97,6 +99,7 @@ export class ShipoutDetailsComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private stroarge:StorageService,
     public dataService: DataService,
+    public helperService:HelperService,
     private commonService: CommonService) {  }
 
   ngOnInit() {
@@ -104,6 +107,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
+    this.checkTabView = this.helperService.isTab();
     this.route.params.subscribe((param)=>{
       this.shipoutId = param["shipOutId"];
       this.shipoutAction = param["action"];
@@ -523,6 +527,10 @@ export class ShipoutDetailsComponent implements OnInit {
         console.log('getShipOutReportByID :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Shipout Report"+this.shipoutId)
+        }
+
         this.showDownload = true;
       },
         (err: any) => {

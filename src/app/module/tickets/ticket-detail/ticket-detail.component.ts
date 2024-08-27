@@ -199,9 +199,8 @@ export class TicketDetailComponent implements OnInit {
   @ViewChild('searchsubMaterialInput' , { static: false }) searchsubMaterialInput!: ElementRef;
   copyMaterialData:any[]  = [];
   copySubMaterialData:any[]  = [];
-
  
-
+  checkTabView: boolean = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -218,7 +217,8 @@ export class TicketDetailComponent implements OnInit {
 
   ngOnInit() {
     this.driverDetails = new driver();
-
+    this.checkTabView = this.helperService.isTab();
+	
     // const userAgent = navigator.userAgent;
     // const isAndroid = /Android/i.test(userAgent);
 
@@ -1247,7 +1247,13 @@ export class TicketDetailComponent implements OnInit {
       // Open Pdf viewer          
       this.showDownload = true;
       this.pdfViwerTitle = 'Check For Print';
-      this.generateCheckPrintReport(this.ticketId, this.checkAmount);
+      if(this.checkTabView) {
+        this.helperService.downloadBase64Pdf(this.fileDataObj,this.pdfViwerTitle)
+      }else{
+        this.generateCheckPrintReport(this.ticketId, this.checkAmount);
+      }
+
+     
       this.isCheckPrint = false;
       this.checkAmount = 0;
     }

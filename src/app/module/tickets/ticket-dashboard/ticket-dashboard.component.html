@@ -653,6 +653,8 @@
     
 </p-dialog>
 
+<ng-container *ngIf="!checkTabView">
+
 <p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
    
     <div *ngIf="showLoaderReport">
@@ -665,7 +667,7 @@
       </div>
     </div>
 </p-dialog>
-
+</ng-container>
 
 <iframe id="pdfFrame" #pdfFrame style="display: none;"></iframe>
 

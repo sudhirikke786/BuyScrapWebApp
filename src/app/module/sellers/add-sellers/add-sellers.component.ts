@@ -6,6 +6,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DataService } from 'src/app/core/services/data.service';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-add-sellers',
@@ -52,6 +53,8 @@ export class AddSellersComponent implements OnInit {
   selectedImageType: any = 'ID';
 
   loaderShow = false;
+  checkTabView: boolean = false;
+
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -59,6 +62,7 @@ export class AddSellersComponent implements OnInit {
     private _sanitizer: DomSanitizer,
     public dtService:DataService,
     private http:HttpClient,
+    private helperService: HelperService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private commonService: CommonService) { 
@@ -86,7 +90,7 @@ export class AddSellersComponent implements OnInit {
   ngOnInit() {
 
     this.subScriptionType = this.dtService.getActivePlan();
-
+    this.checkTabView = this.helperService.isTab();
 
     this.createSellerForm();
 
@@ -454,6 +458,8 @@ export class AddSellersComponent implements OnInit {
     this.type = '';
     this.cameraVisible = false;
   }
+
+
   changeSellerType() {
     if (this.sellerForm.get('sellerType')?.value) {
       this.sellerType = this.sellerForm.get('sellerType')?.value;
@@ -492,8 +498,14 @@ export class AddSellersComponent implements OnInit {
         console.log('getSellerInfo :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
-      
+       
         this.pdfViwerTitle = 'Seller Info';
+        
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj, this.pdfViwerTitle)
+        }
+
+      
       },
         (err: any) => {
           this.showLoaderReport = false;

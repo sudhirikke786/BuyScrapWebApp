@@ -37,7 +37,11 @@ export class HelperService {
     return false;
   }
 
-
+/**
+ * 
+ * @param base64Data : File data binary string
+ * @param fileName  : file name 
+ */
 
   
   downloadBase64Pdf(base64Data: string,fileName:string): void {

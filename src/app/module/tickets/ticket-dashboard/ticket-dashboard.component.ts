@@ -11,6 +11,7 @@ import { DataService } from 'src/app/core/services/data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CashDrawerTransaction } from 'src/app/core/model/cash-drawer-transaction.model';
 import { driver } from 'src/app/core/model/driver.model';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-ticket-dashboard',
@@ -158,7 +159,7 @@ export class TicketDashboardComponent implements OnInit {
   showDownload = false;
   showLoaderReport = false;
   pdfViwerTitle = 'Ticket Receipt';
-
+  
 
   pagination: any = {
     SerachText: '',
@@ -198,6 +199,9 @@ export class TicketDashboardComponent implements OnInit {
   checkVisible =  false;
   driverDetails!: driver;
   newDriverScreenVisible = false;
+  checkTabView: boolean = false;
+
+  
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -207,6 +211,7 @@ export class TicketDashboardComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private datePipe: DatePipe,
     private dataService: DataService,
+    private helperService: HelperService,
     private messageService: MessageService,
     public commonService: CommonService) {
      // this.setPageSize();
@@ -227,7 +232,7 @@ export class TicketDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.currentRole = this.authService.userCurrentRole();
-
+    this.checkTabView = this.helperService.isTab();
     ['Administrator','Scale','Cashier']
     if (['Administrator', 'Cashier'].includes(this.currentRole)) {
       let actionButton = [{
@@ -348,7 +353,7 @@ export class TicketDashboardComponent implements OnInit {
 
   getColor(type: any, isParent: boolean) {
 
-    //     .text-primary
+    // .text-primary
 
     // .text-secondary
 
@@ -1409,9 +1414,16 @@ export class TicketDashboardComponent implements OnInit {
         this.fileDataObj = data.body.data;
         this.showLoaderReport = false;
         this.showDownload = false;
-
+       
         this.pdfViwerTitle = 'Ticket Receipt :: #' + ticketId;
+
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj, this.pdfViwerTitle)
+        }else{
         this.loadAndPrintBase64Pdf(this.fileDataObj)
+        }
+
+
       },
         (err: any) => {
           this.showLoaderReport = false;

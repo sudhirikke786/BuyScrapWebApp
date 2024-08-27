@@ -99,6 +99,7 @@
             <!-- End Page content -->
             <!-- ============================================================== -->
 
+            <ng-container *ngIf="!checkTabView">
 
             <p-dialog [modal]="true" header="Accounting Report" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
 
@@ -113,6 +114,7 @@
 
 
                 </div>
+                
 
                 <div style="height: 500px;" *ngIf="showLoader">
 
@@ -122,3 +124,5 @@
                 </div>
 
               </div>
+              </p-dialog>
+              </ng-container>
