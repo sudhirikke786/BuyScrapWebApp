@@ -66,6 +66,7 @@ export class InventoryReportComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.setDefaultDate();
     this.getAllGroupMaterial();
+    this.checkTabView = this.helperService.isTab();
     this.getInventoryReport();
   }
 

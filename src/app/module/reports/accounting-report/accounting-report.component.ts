@@ -122,7 +122,7 @@ export class AccountingReportComponent implements OnInit {
         this.showDownload = true;
 
         if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,"Daily_Tickets")
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Customer Report")
         }
       },
         (err: any) => {

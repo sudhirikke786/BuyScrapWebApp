@@ -113,7 +113,7 @@ export class CashDrawerReportComponent implements OnInit {
         this.showDownload = false;
 
         if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,"Daily_Tickets")
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Cash Drawer Report"+this.toDate)
         }
 
       },

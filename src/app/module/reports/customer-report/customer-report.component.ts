@@ -143,7 +143,7 @@ export class CustomerReportComponent implements OnInit {
         this.fileDataObj = data.body.data;
 
         if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,"Daily_Tickets")
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Customer Report"+this.customerObj.rowId)
         }
 
         // console.log(this.fileDataObj);
