@@ -43,6 +43,8 @@
 
             </div>
 
+           
+
             <!-- <div class="row mt-2">
                 <h4 class="title-plus-border">A4 Printer Settings</h4>
             </div> -->
@@ -110,6 +112,27 @@
                     <a (click)="closePopup()" data-bs-dismiss="modal" class="btn btn-primary  ms-2">Close</a>
                 </div>
             </div>
+
+
+            <div class="row">
+
+                <div class="col-sm-12">
+                <div class="d-flex mt-2">
+                    <button class="btn btn-primary ms-1" (click)="createURI()">Generate Print URI</button>
+                    <button class="btn btn-primary ms-1" (click)="createHtMl()">Generate Print URI</button>
+              
+                   
+                </div>
+
+                <div class="d-flex mt-2">
+                    <a id="print" class="btn btn-primary" *ngIf="passprntUri!=''" [href]="passprntUri" target="_blank">Print Link</a>
+                    <a id="print" class="btn btn-primary" *ngIf="passprntPDfURL!=''" [href]="passprntPDfURL" target="_blank">Print PDF</a>
+                    <!-- end page title -->
+                 
+                </div>
+              
+                        </div>
+        </div>
 
         </form>
 
