@@ -48,7 +48,7 @@ export class MaterialReportComponent implements OnInit {
   showDownload = false;
   showLoader = false;
   isReportShow = false;
-  numberFormat: string = '1.2-2';
+  numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
   
   constructor(private route: ActivatedRoute,

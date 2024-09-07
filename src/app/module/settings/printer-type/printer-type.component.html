@@ -118,15 +118,15 @@
 
                 <div class="col-sm-12">
                 <div class="d-flex mt-2">
-                    <button class="btn btn-primary ms-1" (click)="createURI()">Generate Print URI</button>
-                    <button class="btn btn-primary ms-1" (click)="createHtMl()">Generate Print URI</button>
+                    <button class="btn btn-primary ms-1" (click)="createURI()">Enable PDF Print URI Button</button>
+                    <button class="btn btn-primary ms-1" (click)="createHtMl()">Enable HTML Print URI Button</button>
               
                    
                 </div>
 
                 <div class="d-flex mt-2">
-                    <a id="print" class="btn btn-primary" *ngIf="passprntUri!=''" [href]="passprntUri" target="_blank">Print Link</a>
-                    <a id="print" class="btn btn-primary" *ngIf="passprntPDfURL!=''" [href]="passprntPDfURL" target="_blank">Print PDF</a>
+                    <a id="print" class="btn btn-primary ms-1" *ngIf="passprntPDfURL!=''" [href]="passprntPDfURL" target="_blank">Print with PassPRNT - PDF Print</a>
+                    <a id="print" class="btn btn-primary ms-1" *ngIf="passprntUri!=''" [href]="passprntUri" target="_blank">Print with PassPRNT - HTML Print</a>
                     <!-- end page title -->
                  
                 </div>

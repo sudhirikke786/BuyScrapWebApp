@@ -7,6 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DataService } from 'src/app/core/services/data.service';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-add-sellers',
@@ -18,6 +19,7 @@ import { HelperService } from 'src/app/core/services/helper.service';
 export class AddSellersComponent implements OnInit {
 
   orgName: any;
+  logInUserId: any;
   locId: any;
   locationName: any;
   cameraVisible = false;
@@ -65,9 +67,11 @@ export class AddSellersComponent implements OnInit {
     private helperService: HelperService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private stroarge: StorageService,
     private commonService: CommonService) { 
 
       this.orgName = localStorage.getItem('orgName');
+      this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
       this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
       this.locationName = localStorage.getItem('locationName');
       this.route.params.subscribe((param)=>{
@@ -249,7 +253,9 @@ export class AddSellersComponent implements OnInit {
         "fingerPrints": this.fingerPrints.includes('images/custom/id_fingerprint.png') ? null : this.fingerPrints,
       },
       ...this.sellerForm.value,
-      ...{dob:_dob, rowId: parseInt(this.sellerId),expiryDate:expDate, drivingLicenseExpiryDate:expDate, createdBy: 2, updatedBy: 2}
+      ...{dob:_dob, rowId: parseInt(this.sellerId),expiryDate:expDate, drivingLicenseExpiryDate:expDate, 
+        createdBy: this.logInUserId, 
+        updatedBy: this.logInUserId}
     }
 
     console.log(reqObj);

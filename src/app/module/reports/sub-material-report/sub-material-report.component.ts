@@ -53,6 +53,7 @@ export class SubMaterialReportComponent implements OnInit {
   isReportShow = false;
   showLoaderReport = false;
   checkTabView: boolean = false;
+  numberFormat: string = '1.3-3';
 
   constructor(private route: ActivatedRoute,
     private router: Router,

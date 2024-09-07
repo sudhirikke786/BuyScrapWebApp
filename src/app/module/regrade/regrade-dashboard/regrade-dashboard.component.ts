@@ -86,6 +86,7 @@ export class RegradeDashboardComponent implements OnInit {
   netLoss:any;
   netDescription:any;
   logInUserId: any;
+  numberFormat: string = '1.3-3';
 
   constructor(
     private route: ActivatedRoute,

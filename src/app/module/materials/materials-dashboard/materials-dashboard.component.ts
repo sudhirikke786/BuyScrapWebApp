@@ -71,6 +71,7 @@ export class MaterialsDashboardComponent implements OnInit {
   subMaterialList: any;
   mainMaterialsVisible = true;
   defaultSelectedMaterial: any = 1;
+  numberFormat: string = '1.3-3';
   defaultImage = 'assets/images/custom/materials/Default-Scrap-Material.png';
   
   @ViewChild('subMaterialContainer') subMaterialContainer: any;

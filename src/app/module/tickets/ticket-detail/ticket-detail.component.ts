@@ -190,7 +190,7 @@ export class TicketDetailComponent implements OnInit {
   showImageHeader = 'Show image';
   selectedImageUrl: any;
   
-  numberFormat: string = '1.2-2';
+  numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
 
   @ViewChild(PriceCalculatorComponent) priceCalculatorComponent!: PriceCalculatorComponent;
@@ -751,6 +751,9 @@ export class TicketDetailComponent implements OnInit {
         console.log('getSellerById :: ');
         console.log(data);
         this.customer = data.body.data;
+        //alert(JSON.stringify(this.customer));
+        this.customer.fullName = this.customer?.fullName || this.customer?.firstName;
+        //alert(JSON.stringify(this.customer));
         this.isBuniessUser = this.customer.sellerType ==  "Business" ? true : false;
 
       },

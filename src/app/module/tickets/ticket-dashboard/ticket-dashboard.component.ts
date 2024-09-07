@@ -189,7 +189,7 @@ export class TicketDashboardComponent implements OnInit {
   sellerForm!: FormGroup;
   sellerType: string = 'Personal';
   
-  numberFormat: string = '1.2-2';
+  numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
 
   showImage = false;
