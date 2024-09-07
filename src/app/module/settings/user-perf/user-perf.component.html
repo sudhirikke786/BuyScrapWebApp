@@ -35,7 +35,8 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-seller let-rowIndex="rowIndex">
-            <tr *ngIf="seller.keys == 'AutoCaptureMaterialPhoto'">
+            <tr *ngIf="seller.keys == 'AutoCaptureMaterialPhoto' || seller.keys == 'isStarMicronicsPrinter'">
+
                 <td>{{ seller.keys }}</td>
                 <td>
 
