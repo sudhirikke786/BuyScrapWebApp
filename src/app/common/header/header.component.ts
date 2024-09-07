@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
 
   locationId :any;
   // cashAmount:any;
-  numberFormat: string = '1.2-2';
+  numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
   wHeiht: any;
   wWidth: any;

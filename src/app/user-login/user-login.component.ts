@@ -127,7 +127,7 @@ export class UserLoginComponent implements OnInit {
   onSubmit() {
     if (this.consentForm.valid) {
       // Handle form submission
-      alert('valid form')
+      //alert('valid form')
     }
   }
   

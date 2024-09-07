@@ -195,7 +195,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   printCheckNo!:string;
   checkVisible = false;
   
-  numberFormat: string = '1.2-2';
+  numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
 
   copyMaterialData:any[]  = [];

@@ -49,7 +49,7 @@ export class AccountingReportComponent implements OnInit {
   toDate: any;
   fileDataObj: any;
   showDownload: boolean = false;
-  numberFormat: string = '1.2-2';
+  numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
 
   showLoader = false;

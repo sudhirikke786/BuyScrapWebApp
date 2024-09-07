@@ -53,7 +53,7 @@ export class InventoryReportComponent implements OnInit {
   showLoader = false;
   isReportShow = false;
   showLoaderReport = false;
-  numberFormat: string = '1.2-2';
+  numberFormat: string = '1.3-3';
 
   constructor(private route: ActivatedRoute,
     private router: Router,

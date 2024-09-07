@@ -60,7 +60,7 @@
                                         <td  [ngClass]="{'bg-danger text-white': regrade.isDeleted}">{{ regrade.createdDate | date: 'MM/dd/yyyy' }}</td>
                                         <td  [ngClass]="{'bg-danger text-white': regrade.isDeleted}">{{ regrade.materialName }}</td>
                                         <td  [ngClass]="{'bg-danger text-white': regrade.isDeleted}"><span [innerHTML] = "regrade.formattedText"></span></td>
-                                        <td  [ngClass]="{'bg-danger text-white': regrade.isDeleted}">{{ regrade.sumMaterialNet | number : '1.3-3' }}</td>
+                                        <td  [ngClass]="{'bg-danger text-white': regrade.isDeleted}">{{ regrade.sumMaterialNet | number : numberFormat }}</td>
                                         <td  [ngClass]="{'bg-danger text-white': regrade.isDeleted}">
                                             <a type="button"routerLinkActive="router-link-active" (click)="regradeDetails(regrade.rowId, regrade.materialId, regrade?.materialNet, regrade?.lossReason, 'show')"
                                             class="btn btn-grid btn-success waves-effect waves-light me-1">

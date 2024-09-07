@@ -55,7 +55,7 @@ export class SingleTicketsReportComponent implements OnInit {
   showLoaderReport = false;
   isReportShow = false;
   customerObj:any;
-  numberFormat: string = '1.2-2';
+  numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
   checkTabView: boolean = false;
 
