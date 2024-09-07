@@ -46,6 +46,8 @@ export class HeaderComponent implements OnInit {
   defulatFontSize = 100;
 
   locations :any;
+  locationName!: string | null;
+
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
     public dataService: DataService,
@@ -73,6 +75,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+    this.locationName = localStorage.getItem('locationName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.currentSize()
