@@ -139,6 +139,18 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     this.wWidth = (totalWidth - cal)-10;
 
   }
+
+
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if(this.checkTabView) {
+      if (event.key === 'Enter') {
+        this.enter();
+      }
+    }
+   
+  }
   currentSize(){
 
     const totalWidth = this.elementRef.nativeElement.querySelector('.main-cal').offsetWidth;
