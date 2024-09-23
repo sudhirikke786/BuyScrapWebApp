@@ -144,7 +144,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if(this.checkTabView) {
+    if(!this.checkTabView) {
       if (event.key === 'Enter') {
         this.enter();
       }
