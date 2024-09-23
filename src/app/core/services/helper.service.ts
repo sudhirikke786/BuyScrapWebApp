@@ -50,7 +50,7 @@ export class HelperService {
     let isAutoDownload = false;
     if (_dataObj) {
       const isElectronic = _dataObj.filter(
-        (item: any) => item?.keys?.toLowerCase() == 'isStarMicronicsPrinter'
+        (item: any) => item?.keys?.toLowerCase() == 'isstarmicronicsprinter'
       )[0];
       isAutoDownload = isElectronic?.values == 'True' ? true : false;
     }

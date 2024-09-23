@@ -151,13 +151,14 @@ export class InventoryReportComponent implements OnInit {
   }
 
   onMaterialChange(value: any) {
-    if (value.target.value == 0) {
+    if (this.defaultSelectedMaterial == 0) {
       this.defaultSelectedSubMaterial = 0;
       this.subMaterialList = null;
     } else {
-      const selectedMaterialId = value.target.value;
+      const selectedMaterialId = this.defaultSelectedMaterial;
       this.getSubMaterials(selectedMaterialId);
     }
+    this.getInventoryReport();
   }
 
   getSubMaterials(materialId: any) {

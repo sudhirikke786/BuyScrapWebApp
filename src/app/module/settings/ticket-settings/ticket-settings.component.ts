@@ -18,6 +18,9 @@ export class TicketSettingsComponent implements OnInit {
   ticketForm!: FormGroup;
   logo:any;
   logInUserId: any;
+  orgName: any;
+  locationName: any;
+
   constructor(private formBuilder: FormBuilder,
     private stroarge:StorageService,
     private commonService:CommonService,
@@ -29,6 +32,9 @@ export class TicketSettingsComponent implements OnInit {
 
   ngOnInit(){
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    this.orgName = localStorage.getItem('orgName');
+    this.locationName = localStorage.getItem('locationName');
+    
     this.createForm();
     this.getAllTicketDetails();
   }
@@ -68,6 +74,7 @@ export class TicketSettingsComponent implements OnInit {
       disclaimer:[],
       codDisclaimer:[],
       advertising:[],
+      logo: ''
     });
   }
 
@@ -75,6 +82,7 @@ export class TicketSettingsComponent implements OnInit {
     const datePipe = new DatePipe('en-US');
 
     const obj = this.ticketForm.value;
+    obj.logo = this.logo;
     const userInfo = {
       "createdBy": this.logInUserId,
       "updatedBy": this.logInUserId,
@@ -95,5 +103,38 @@ export class TicketSettingsComponent implements OnInit {
     })
 
   }
+  
+  onFileChanged(event: any) {
+   this.logo = null;
+   const file = event.target.files[0];
+   console.log('file  :: ' + JSON.stringify(file));
+   let reader = new FileReader();
+   if (event.target.files && event.target.files[0]) {
+     reader.readAsDataURL(file);
+     reader.onload =  () => {
+       this.logo = reader.result;   
+       this.SaveImage();    
+      //  this.getPicture.emit(this.logo);
+      //  this.userInfo.emit(file);
+     }       
+   }
+ }
+
+ SaveImage() {
+
+   let requestObj: any = {
+
+     organisationName: this.orgName,
+     locationName: this.locationName,
+     imagetype: 9, // BuisnessLogo
+     base64Data: this.logo?.split(';base64,')[1]
+   };
+
+   this.commonService.FileUploadFromWeb(requestObj).subscribe((res: any) => {
+     console.log('Image url path :: {}', res.body.data);
+     console.log(res.body.data);
+     this.logo = res.body.data;
+   })
+ }
 
 }

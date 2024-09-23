@@ -14,10 +14,10 @@
 
                 <div class="form-group col-sm-6 mb-2">
                     <div id="image-preview-ticket" class="mb-20">
-                        <img src="{{logo}}" alt="logo">
+                        <img formControlName="logo" [src]="logo" alt="logo" style="height: 100%; width: auto;max-height:200px">
                     </div>
                     <button class="btn btn-primary ml-10" onclick="document.getElementById('upload').click()">Upload Image</button>
-                    <input type='file' id="upload" style="display:none">
+                    <input type='file' id="upload" style="display:none"  (change)="onFileChanged($event)">
                 </div>
             </div>
 

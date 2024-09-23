@@ -1352,6 +1352,8 @@ export class TicketDetailComponent implements OnInit {
       setTimeout(() =>{
         this.focusChildInput()
       },100)
+    } else if (imagetype == 7) {
+      console.log('Capture Adjustment image');
     } else {
       this.saveConfirmVisible = true;
       this.signaturePadVisible = false;
@@ -1365,6 +1367,7 @@ export class TicketDetailComponent implements OnInit {
 
   handleImage(imageUrl: string) {
     this.imageUrl = imageUrl;
+    this.SaveImage(7);
   }
 
 
@@ -1394,7 +1397,7 @@ export class TicketDetailComponent implements OnInit {
       console.log('Image url path :: {}', res.body.data);
       console.log(res.body.data);
       this.imageUrl = res.body.data;
-      if (type == 1) {
+      if (type == 1 || type == 7) {
         this.itemImagePath = this.imageUrl;
       } else {
         this.sellerSignatureImagePath = this.imageUrl;
@@ -1559,7 +1562,7 @@ export class TicketDetailComponent implements OnInit {
       rowData.materialName = rowData.concatAdjustments = this.selectedAdjustment;
       rowData.materialNote = this.adjustmentNote;
       rowData.price = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
-      rowData.imagePath = '';
+      rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
       rowData.isCOD = false;
       rowData.isAdjusmentSet = true;
 
@@ -1584,7 +1587,7 @@ export class TicketDetailComponent implements OnInit {
           rowData.materialName = rowData.concatAdjustments = this.selectedAdjustment;
           rowData.materialNote = this.adjustmentNote;
           rowData.price = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
-          rowData.imagePath = '';
+          rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
           rowData.isCOD = false;
           rowData.isAdjusmentSet = true;
 
