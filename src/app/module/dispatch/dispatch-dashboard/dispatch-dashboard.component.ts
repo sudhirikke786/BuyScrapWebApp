@@ -123,10 +123,11 @@ export class DispatchDashboardComponent implements OnInit {
     const paramObject = {
       PageNumber: 1,
       RowOfPage: 1000,
-      LocationId: this.locId
+      LocationId: this.locId,
+      SerachText:''
     };
     this.showLoader = true;
-    this.commonService.getAllCODTickets(paramObject)
+    this.commonService.GetAllPickUpDetails(paramObject)
       .subscribe(data => {
           console.log('getAllCODTickets :: ');
           console.log(data);

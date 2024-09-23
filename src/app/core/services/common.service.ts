@@ -304,6 +304,13 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllCODTickets', 'GET', pagination);
   }
 
+  GetAllPickUpDetails(pagination: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PickUp/GetAllPickUpDetails', 'GET', pagination);
+  }
+
+
+   
+
   CODCloseUpdate(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Materialss/CODCloseUpdate', 'GET', paramObj);
   }

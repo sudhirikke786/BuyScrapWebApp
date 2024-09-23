@@ -6,6 +6,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-price-calculator',
@@ -102,6 +103,8 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   isVirtual = true;
   dCamera: any;
+  checkTabView =  false;
+
 
   wHeight = 210;
   wWidth :any
@@ -117,8 +120,9 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     private stroarge: StorageService,
     private authService:AuthService,
     private messageService: MessageService,
+    private helperService:HelperService,
     public commonService: CommonService) {
-
+      this.checkTabView = this.helperService.isTab();
   }
 
 
@@ -191,7 +195,13 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
       this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
     }
 
-    this.isVirtual = true;
+
+    if(this.checkTabView){
+      this.isVirtual = true;
+    }else{
+      this.isVirtual = false;
+    } 
+
 
 
 
