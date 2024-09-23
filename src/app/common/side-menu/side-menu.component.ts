@@ -112,8 +112,9 @@ export class SideMenuComponent implements OnInit {
           this.menuItemList = [...this.menuItemList];
       }     
     }
+    //alert(this.orgName.toLowerCase());
 
-    if (this.orgName.toLowerCase() != 'prodtest') {
+    if (this.orgName.toLowerCase() != 'prodtest' && this.orgName.toLowerCase() != 'siddhi eneterprise') {
       this.menuList = this.menuItemList.filter(function(el) { return (el.title.toString() != "Invoice" && el.title.toString() != "Dispatch"); }); 
     } else {
       this.menuList = this.menuItemList;     
