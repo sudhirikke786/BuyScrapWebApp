@@ -8,6 +8,7 @@ import { ErrorComponent } from './error/error.component';
 import { RoleGuard } from './core/guard/role.guard';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SuccessPageComponent } from './success-page/success-page.component';
+import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component';
 
 const routes: Routes = [
   { 
@@ -39,6 +40,7 @@ const routes: Routes = [
     path:'stripe-checkout',
     component:SuccessPageComponent
   },
+
   { 
       path: ':orgName',
       component: SiteLayoutComponent, 
@@ -49,6 +51,10 @@ const routes: Routes = [
           pathMatch: 'full',
           canActivate: [RoleGuard],
           data: { requiredRole:['Administrator','Scale','Cashier']},
+        },
+        { 
+          path: 'home-dashboard', 
+          component:HomeDashboardComponent
         },
         { 
           path: 'home', 

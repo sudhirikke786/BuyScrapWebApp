@@ -1,0 +1,12 @@
+<ul class="v-menu list-unstyled d-flex justify-content-around flex-wrap">
+    <li class="menu-item" *ngFor="let item of menuItemList">
+        <a class="btn btn-lg menu-link" (click)="navigatePage(item)">
+            <span class="menu-icon">
+                <img class="dash-icons" src="{{item.icon}}" alt="Home">
+            </span>
+            <span class="menu-text">{{item.title}}</span>
+        </a>
+    </li>
+   
+   
+</ul>

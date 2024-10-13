@@ -1170,7 +1170,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
   padding: 5px 5px !important;
 }
 
-*/ .btn-danger {
+ .btn-danger {
   background: #c90303 !important;
 }
 
@@ -2081,6 +2081,7 @@ select optgroup option {
   text-align: center;
 }
 
+
 /* .btn {
   font-size: 1rem !important;
 } */
@@ -2961,4 +2962,17 @@ select optgroup option {
     overflow-y: auto;
     height: calc(100vh - 530px)!important;
   }
+}
+
+
+
+
+.btn{
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1)  !important;
+   transition: all 0.3s ease-in-out  !important;
+}
+
+
+.btn:hover {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2) !important; /* Slightly deeper shadow on hover */
 }

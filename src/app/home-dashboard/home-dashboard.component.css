@@ -1,0 +1,55 @@
+.v-menu {
+    padding: 20px; /* Add padding to the menu */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-grow: 1;
+
+}
+
+.menu-item{
+    width: 300px
+}
+
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    width: 100%;
+    justify-content: center;
+    text-align: center; /* Center text */
+    padding: 20px; /* Increase padding for larger buttons */
+    border-radius: 15px; /* Rounded corners */
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text */
+    text-decoration: none; /* Remove underline */
+    margin: 5px; /* Space between buttons */
+}
+
+.menu-link:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.menu-icon img {
+    width: 40px; /* Icon size */
+    height: 40px; /* Icon size */
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.menu-text {
+    font-size: 18px; /* Increase font size */
+}
+
+@media (max-width: 767px) {
+    .menu-link {
+        font-size: 16px; /* Smaller font size for mobile */
+        padding: 15px; /* Smaller padding for mobile */
+    }
+
+    .menu-icon img {
+        width: 30px; /* Smaller icon size for mobile */
+        height: 30px; /* Smaller icon size for mobile */
+    }
+}

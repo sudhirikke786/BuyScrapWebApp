@@ -23,7 +23,8 @@ import { GlobalErrorHandlerService } from './core/services/global-error-handler.
 import { PrintTicketComponent } from './print-ticket/print-ticket.component';
 import { ErrorComponent } from './error/error.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { SuccessPageComponent } from './success-page/success-page.component'
+import { SuccessPageComponent } from './success-page/success-page.component';
+import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component'
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { SuccessPageComponent } from './success-page/success-page.component'
     PrintTicketComponent,
     ErrorComponent,
     SignUpComponent,
-    SuccessPageComponent    
+    SuccessPageComponent,
+    HomeDashboardComponent    
   ],
   imports: [
     BrowserModule,
