@@ -4,12 +4,15 @@
     justify-content: center;
     flex-wrap: wrap;
     align-items: center;
+    gap:10px;
     flex-grow: 1;
 
 }
 
 .menu-item{
-    width: 300px
+    width: 20%;
+    min-width:300px;
+    max-width:400px;
 }
 
 
@@ -18,14 +21,15 @@
     align-items: center;
     flex-grow: 1;
     width: 100%;
-    justify-content: center;
-    text-align: center; /* Center text */
+    justify-content: start;
+    text-align: left; /* Center text */
     padding: 20px; /* Increase padding for larger buttons */
     border-radius: 15px; /* Rounded corners */
     background-color: #007bff; /* Bootstrap primary color */
     color: white; /* White text */
     text-decoration: none; /* Remove underline */
     margin: 5px; /* Space between buttons */
+    cursor: pointer;
 }
 
 .menu-link:hover {
@@ -39,10 +43,17 @@
 }
 
 .menu-text {
-    font-size: 18px; /* Increase font size */
+    font-size: 1.5rem; /* Increase font size */
+    line-height: 1.5rem;
+
 }
 
 @media (max-width: 767px) {
+
+    .v-menu {
+        justify-content: space-around !important;
+        width: 40% ;
+    }
     .menu-link {
         font-size: 16px; /* Smaller font size for mobile */
         padding: 15px; /* Smaller padding for mobile */
