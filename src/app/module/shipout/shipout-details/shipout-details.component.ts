@@ -30,6 +30,8 @@ export class ShipoutDetailsComponent implements OnInit {
   
   cheight= '50vh';
 
+  sidebarVisible1 = false;
+
   ticketObj:any = [];
   orgName: any;
   sellerId: any;
@@ -111,9 +113,9 @@ export class ShipoutDetailsComponent implements OnInit {
     this.route.params.subscribe((param)=>{
       this.shipoutId = param["shipOutId"];
       this.shipoutAction = param["action"];
-      if (this.shipoutAction == 'edit') {
-        this.editTicketDetails();
-      }
+      // if (this.shipoutAction == 'edit') {
+      //   this.editTicketDetails();
+      // }
       if (parseInt(this.shipoutId)) {
         this.getShipOutDetailsByID();
         this.isNewShipOut = false;

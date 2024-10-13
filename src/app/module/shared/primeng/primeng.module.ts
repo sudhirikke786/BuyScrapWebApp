@@ -17,6 +17,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
   declarations: [],
@@ -34,7 +35,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     PaginatorModule,
     ConfirmDialogModule,
     CheckboxModule,
-    InputSwitchModule
+    InputSwitchModule,
+    SidebarModule
   ],
   exports:[
     InputTextModule,
@@ -52,7 +54,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     ContextMenuModule,
     ConfirmDialogModule,
     CheckboxModule,
-    InputSwitchModule
+    InputSwitchModule,
+    SidebarModule
   ]
 })
 export class PrimengModule { }

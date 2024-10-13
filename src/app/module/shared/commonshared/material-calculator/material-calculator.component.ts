@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-material-calculator',
@@ -26,6 +27,9 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   @Output() calculateObj = new EventEmitter<any>();
   @Output() changeItemEvent = new EventEmitter<any>();
 
+
+
+
   grossInput:any;
   tareInput:any;
   netInput:any =0;
@@ -34,23 +38,33 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   inputBoxes: any[] = [];
   private currentFocusIndex = 0;
 
+  addNoteSectionVisible = false;  
+
   displayValue: string = '';
 
   isNaN: Function = Number.isNaN;
 
   isVirtual = true;
   isKeyboard = true;
+
+  checkTabView =  false;
+
+
   @Output()  backClose =  new EventEmitter<any>();
-  constructor(private renderer: Renderer2,
+  constructor(private renderer: Renderer2, private helperService:HelperService,
     private elementRef: ElementRef) {
+      this.checkTabView = this.helperService.isTab();
 
   }
 
   onKeyPress(event: KeyboardEvent) {
+
     if(this.isVirtual){
       event.preventDefault();
-    }   
+    }
+   
   }
+
 
   ngOnInit(): void {
   
@@ -63,8 +77,25 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
       this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
     }
    
-    this.isVirtual = true;
 
+    if(this.checkTabView){
+      this.isVirtual = true;
+    }else{
+      this.isVirtual = false;
+    } 
+
+
+  }
+
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if(!this.checkTabView) {
+      if (event.key === 'Enter') {
+        this.enter();
+      }
+    }
+   
   }
 
   calcNetFromGross(gross: any) {
@@ -211,6 +242,20 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
 
   getFocusElemet(){
   
+  }
+
+  note() {
+    this.addNoteSectionVisible = true;
+  }
+
+  addEditNote() {   
+    // alert(this.materialNote); 
+    this.addNoteSectionVisible = false;
+  }
+
+  deleteNote() {
+    this.materialNote = '';
+    this.addNoteSectionVisible = false;
   }
 
   enter() {    
