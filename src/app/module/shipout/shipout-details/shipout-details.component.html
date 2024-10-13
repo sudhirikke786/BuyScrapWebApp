@@ -42,15 +42,11 @@
                                             <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/ship-out">
                                                 Back
                                             </a>
-                                            <a *ngIf="!isEditModeOn" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right me-1" (click)="editTicketDetails()">
+                                            <!-- <a *ngIf="!isEditModeOn" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right me-1" (click)="editTicketDetails()">
                                                 <i class="mdi mdi-pencil"></i> Edit
-                                            </a>
+                                            </a> -->
 
-                                            <a class="btn  btn-primary waves-effect waves-light ticket-edit flt-right me-1" (click)="sidebarVisible1 = true">
-                                                <i class="mdi mdi-pencil"></i> OPen Side
-                                            </a>
-
-
+                                           
                                            
                    
                                             <div *ngIf="isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
@@ -100,13 +96,17 @@
                                             [rows]="10"
                                             [loading]="isLoading"
                                             [responsive]="true"
+                                        
                                             [showCurrentPageReport]="false"
                                             [scrollable]="true" 
                                             >
                 
                                             <ng-template pTemplate="header">
                                                 <tr>
-                                                    <th style="width: 40%;">Material</th>
+                                                    <!-- <th pSortableColumn="name">Name <p-sortIcon [field]="'name'"></p-sortIcon></th> -->
+                                                    <!-- <th pSortableColumn="gross"> <p-sortIcon [field]="'gross'"></p-sortIcon>Gross(M)</th> -->
+
+                                                    <th style="width: 40%">Material</th>
                                                     <th>Gross(M)</th>
                                                     <th>Tare</th>
                                                     <th>Net</th>
@@ -155,7 +155,7 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <div style="position: absolute; bottom: 10px; right: 5px; left: 5px;"  [class]="!isEditModeOn && !editItemCloseImageCapture? 'col-sm-12' : 'col-sm-6'">
+                                    <div style="position: absolute; bottom: 10px; right: 5px; left: 5px;"  [class]="isEditModeOn && !editItemCloseImageCapture? 'col-sm-6' : 'col-sm-12'">
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
         
@@ -192,17 +192,30 @@
                             </div>
 
                             
-
-                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
+                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture">
                                 
-                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 180px)">
+                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 160px)">
                                     <h4 class="materials-heading">Materials</h4>
+
+                                    <div>
+                                        <input
+                                         type="text"
+                                         id="searchMaterialInput"
+                                         #searchMaterialInput
+                                         (keyup)="searchMaterial($event)"
+                                        class="form-control w-100"
+                                        placeholder="Search  Material"
+                                        aria-describedby="helpId"
+                                    />
+                                        
+                                    </div>
+
   
-                                    <ul class="main-ul">
+                                    <ul class="main-ul mt-1">
                                       
                                       <ng-container  *ngFor="let item of materialList" >
                                           <li>
-                                              <a id="showInnerDiv1" class="btn btn-primary "  style="line-height: 18px !important;width: 100%;" 
+                                              <a id="showInnerDiv1" class="btn custom-lh"  
                                               pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
                                               (click)="getSubMaterials(item.rowId, item.groupName, false)">
                                                   {{item.groupName}}
@@ -213,26 +226,43 @@
                                     
                                 </div>
   
-                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row" style="height:calc(100vh - 180px)">
+                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row" style="height:calc(100vh - 160px)">
                                     <h1 class="materials-heading">
                                       <span>
                                           <a id="backToMainBox1" class="btn btn-primary " (click)="backToMainMaterials()"><i class="mdi mdi-keyboard-backspace"></i></a>
                                       </span>
-                                       Main Material - {{selectedMaterial}}
+                                       <div class="main-material"> Main Material - {{selectedMaterial}}</div>
                                   </h1>
+
+                                  <div>
+                                    <input
+                                     type="text"
+                                     
+                                     #searchsubMaterialInput
+                                     (keyup)="searchSubMaterial($event)"
+                                    class="form-control w-100"
+                                    placeholder="Search  Material"
+                                    aria-describedby="helpId"
+                                />
+                                    
+                                </div>
                        
-                                    <ul class="main-ul">
+                                    <ul class="main-ul mt-1">
                                       <ng-container  *ngFor="let item of subMaterialList" >
                                           <li>
-                                              <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.availableStock)"
+                                              <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
                                               pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
-                                              class="btn btn-primary" style="line-height: 18px !important;width:100%">{{item.materialName}}</a>
+                                              class="btn  custom-lh">{{item.materialName}}</a>
                                           </li>
                                       </ng-container>                                     
                                     </ul>
   
                                 </div>
                             </div>
+                            
+
+
+
 
                             <!-- <div class="col-sm-6" *ngIf="isEditModeOn && editItemCloseImageCapture">
                                 <div class="calc" style="height:calc(100vh - 150px);width:100%;overflow: hidden;">
@@ -277,10 +307,17 @@
 
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
+<div *ngIf="isEditModeOn && editItemCloseImageCapture">
+    
 
-<p-sidebar [style]="{'width':'700px'}" [(visible)]="isEditModeOn && editItemCloseImageCapture" position="right">
-    <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()"
-    [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" (backClose)="changeItem()" 
-    [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
-</app-material-calculator>
+
+
+    <p-sidebar [style]="{'width':'60%'}" [(visible)]="isEditModeOn && editItemCloseImageCapture" position="right">
+      
+        <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()"
+        [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" (backClose)="changeItem()" 
+        [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
+    </app-material-calculator>
+
 </p-sidebar>
+</div>

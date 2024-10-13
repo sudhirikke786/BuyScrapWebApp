@@ -24,6 +24,17 @@ export class ShipoutDetailsComponent implements OnInit {
   [x: string]: any;
   @ViewChild('htmlData') htmlData!: ElementRef;
 
+
+  @ViewChild('searchMaterialInput' , { static: false }) searchMaterialInput!: ElementRef;
+
+  @ViewChild('searchsubMaterialInput' , { static: false }) searchsubMaterialInput!: ElementRef;
+
+
+  copyMaterialData:any[]  = [];
+  copySubMaterialData:any[]  = [];
+
+
+
   showCalculator = false;
   @ViewChild('inputFile')
   myInputVariable!: ElementRef;
@@ -113,9 +124,9 @@ export class ShipoutDetailsComponent implements OnInit {
     this.route.params.subscribe((param)=>{
       this.shipoutId = param["shipOutId"];
       this.shipoutAction = param["action"];
-      // if (this.shipoutAction == 'edit') {
-      //   this.editTicketDetails();
-      // }
+      if (this.shipoutAction == 'edit') {
+        this.editTicketDetails();
+      }
       if (parseInt(this.shipoutId)) {
         this.getShipOutDetailsByID();
         this.isNewShipOut = false;
@@ -189,6 +200,32 @@ export class ShipoutDetailsComponent implements OnInit {
       this.user =  res?.body?.data[0];     
     })
   }
+
+
+  searchMaterial(searchTerm:any){
+
+    const inputParms =  searchTerm?.target?.value?.toLowerCase();
+    if(inputParms){
+      this.materialList = this.copyMaterialData.filter((item:any) => item?.groupName?.toLowerCase().includes(inputParms))
+    }else{
+      this.materialList = this.copyMaterialData 
+    }
+
+  }
+
+
+  searchSubMaterial(searchTerm:any){
+
+    const inputParms =  searchTerm?.target?.value?.toLowerCase();
+    if(inputParms){
+      this.subMaterialList = this.copySubMaterialData.filter((item:any) => item?.materialName?.toLowerCase().includes(inputParms))
+    }else{
+      this.subMaterialList = this.copySubMaterialData 
+    }
+
+  }
+
+
     
   getShipOutDetailsByID() {
     const paramObject = {
@@ -275,7 +312,8 @@ export class ShipoutDetailsComponent implements OnInit {
       .subscribe(data => {
           console.log('getAllGroupMaterial :: ');
           console.log(data);
-          this.materialList = data.body.data;
+           this.materialList = data.body.data;
+          this.copyMaterialData = data.body.data;
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -285,6 +323,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
   backToMainMaterials() {
     this.mainMaterialsVisible =  true;
+    this.materialList =  this.copyMaterialData;
   }
 
   getSubMaterials(materialId: any, selectedMaterial: any, isChangeItemMode: any) {
@@ -304,6 +343,8 @@ export class ShipoutDetailsComponent implements OnInit {
           console.log('getAllSubMaterials :: ');
           console.log(data);
           this.subMaterialList = data.body.data;
+          this.copySubMaterialData = data?.body?.data;
+
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -414,8 +455,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
   // TO DO:: Needs to implement Edit , but before that we will have to find available stock based on Material id
   editItem(rowData: any) {   
-    this.editItemCloseImageCapture = true;
-    this.itemLeveloperationPerform = 'Edit';
+   
 
     this.itemRowId = rowData.rowId;
     this.itemLocalRowId = rowData.localRowId;
@@ -426,7 +466,10 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemTare = rowData.tare;
     this.itemNet = isNaN(rowData.net) ?  0 : rowData.net;
 
-    this.itemAvailableNet = rowData.price;
+    this.itemAvailableNet = rowData?.price;
+
+    this.editItemCloseImageCapture = true;
+    this.itemLeveloperationPerform = 'Edit';
     
   }
 
@@ -441,6 +484,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
   backToChangeItemMainMaterials() {
     this.changeItemMaterialsVisible =  true;
+    this.materialList =  this.copyMaterialData;
   }
 
   calculation(rowData:any){

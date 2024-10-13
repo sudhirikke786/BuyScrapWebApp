@@ -1,12 +1,8 @@
 <div class="card">
-    <div class="card-body px-1 py-0" style="padding-top: 6px !important; padding-bottom: 6px !important;">
+    <div class="card-body px-1 py-0" style="padding-top: 6px !important; padding-bottom: 6px !important;box-shadow: none !important;">
       
     <div class="container px-0 py-0">  
-        <div class="row">
-            <div class="col-12"   > 
-                &nbsp; 
-            </div>
-        </div>
+       
     
       <div class="row">
           <div class="col-sm-12">
@@ -32,8 +28,11 @@
           </div>
       </div>
     </div>
-    <div class="container px-0 py-0">
-      <div class="row">
+
+    <div class="row">
+
+      <div class="col-sm-4">
+        <div class="row">
           <div class="col-md-4">
               <label for="gross">Gross:</label>
           </div>
@@ -83,30 +82,38 @@
               </div>
           </div>
       </div>
+      </div>
+
+      
+      <div class="col-sm-8">
+        <div class="calculator">
+          <button class="btn-cal" (click)="appendNumber(1)">1</button>
+          <button class="btn-cal" (click)="appendNumber(2)">2</button>
+          <button class="btn-cal" (click)="appendNumber(3)">3</button>
+          <button class="btn-cal btn-danger" (click)="deleteCharacter()">Del</button>
+          <button class="btn-cal " (click)="appendNumber(4)">4</button>
+          <button class="btn-cal" (click)="appendNumber(5)">5</button>
+          <button class="btn-cal" (click)="appendNumber(6)">6</button>
+          <button class="btn-cal btn-danger" (click)="note()">Notes</button>
+          <button class="btn-cal" (click)="appendNumber(7)">7</button>
+          <button class="btn-cal" (click)="appendNumber(8)">8</button>
+          <button class="btn-cal" (click)="appendNumber(9)">9</button>
+          <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
+          <button class="btn-cal" (click)="appendNumber(0)">0</button>
+          <button class="btn-cal" (click)="appendNumber('00')">00</button>
+          <button class="btn-cal" (click)="appendNumber('.')">.</button>
     
-      <!-- Add more rows as needed for additional input boxes -->
+    
+        </div>
+      </div>
+
     </div>
-    
+
+
+
    
-    <div class="calculator">
-      <button class="btn-cal" (click)="appendNumber(1)">1</button>
-      <button class="btn-cal" (click)="appendNumber(2)">2</button>
-      <button class="btn-cal" (click)="appendNumber(3)">3</button>
-      <button class="btn-cal btn-danger" (click)="deleteCharacter()">Del</button>
-      <button class="btn-cal " (click)="appendNumber(4)">4</button>
-      <button class="btn-cal" (click)="appendNumber(5)">5</button>
-      <button class="btn-cal" (click)="appendNumber(6)">6</button>
-      <button class="btn-cal btn-danger" (click)="note()">Notes</button>
-      <button class="btn-cal" (click)="appendNumber(7)">7</button>
-      <button class="btn-cal" (click)="appendNumber(8)">8</button>
-      <button class="btn-cal" (click)="appendNumber(9)">9</button>
-      <button class="btn-cal operator btn-success" (click)="enter()">Enter</button>
-      <button class="btn-cal" (click)="appendNumber(0)">0</button>
-      <button class="btn-cal" (click)="appendNumber('00')">00</button>
-      <button class="btn-cal" (click)="appendNumber('.')">.</button>
-
-
-    </div>
+   
+  
 
 
 
