@@ -163,4 +163,134 @@ h4{
     line-height: 2rem !important;  
   }
 }
+
+.invoiceTable{
+  /* General Styles */
+.invoice-container {
+  max-width:100%;
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Table Styles */
+.table-wrapper {
+  overflow-x: auto; /* Make table scrollable on small screens */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+ 
+  background-color: #fff;
+}
+
+tbody{
+  max-height: 300px;
+  overflow-x: scroll;
+}
+
+thead {
+  background-color: #03669c;
+  color: white;
+}
+
+thead th {
+  padding: 10px;
+  text-align: left;
+}
+
+tbody td,
+tfoot td {
+  padding: 10px;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tfoot {
+  background-color: #ddd;
+}
+
+tfoot td {
+  font-weight: bold;
+}
+
+tfoot .text-right {
+  text-align: right;
+}
+
+input {
+  width: 90%;
+  padding: 4px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Button Styles */
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.add-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.add-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+.add-button-container {
+  text-align: right;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  button {
+    font-size: 12px;
+  }
+}
+
+}
+
+.card-invoice-table {
+  overflow-y: auto;
+  height: calc(100vh - 300px) !important;
+}
   

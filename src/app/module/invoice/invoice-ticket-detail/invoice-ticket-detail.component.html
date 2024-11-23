@@ -28,7 +28,7 @@
 
                         <div class="row">
 
-                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  invoiceData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-6'">
+                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  invoiceData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-12'">
                                 
                                 <div class="row">
                                     <div class="col-sm-2">
@@ -89,6 +89,109 @@
                                                 <td>By <label>{{user?.firstName}} {{user?.lastName}}</label></td>
                                             </tr>
                                         </tbody></table>
+
+                                        <div class="invoiceTable card-invoice-table">
+
+                                       
+                                            <div class="invoice-container">
+                                                <div class="text-left">Invoice</div>
+                                                <div class="table-wrapper">
+                                                  <table>
+                                                    <thead>
+                                                      <tr>
+                                                        <th >Item Name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Rate</th>
+                                                        <th>Amount</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                      <tr *ngFor="let item of items; let i = index">
+                                                        <td style="width:40%">
+                                                          <input
+                                                            type="text"
+                                                            [(ngModel)]="item.name"
+                                                            placeholder="Enter item name"
+                                                          />
+                                                        </td>
+                                                        <td>
+                                                          <input
+                                                            type="number"
+                                                            [(ngModel)]="item.quantity"
+                                                            (input)="updateAmount(i)"
+                                                            placeholder="Enter quantity"
+                                                          />
+                                                        </td>
+                                                        <td>
+                                                          <input
+                                                            type="number"
+                                                            [(ngModel)]="item.rate"
+                                                            (input)="updateAmount(i)"
+                                                            placeholder="Enter rate"
+                                                          />
+                                                        </td>
+                                                        <td>
+                                                          <input type="number" [value]="item.amount" readonly />
+                                                        </td>
+                                                        <td>
+                                                          <button class="delete-btn" (click)="removeItem(i)">Remove</button>
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>
+                                                          <input
+                                                            type="text"
+                                                            [(ngModel)]="newItem.name"
+                                                            placeholder="Enter item name"
+                                                          />
+                                                        </td>
+                                                        <td>
+                                                          <input
+                                                            type="number"
+                                                            [(ngModel)]="newItem.quantity"
+                                                            (input)="updateNewItemAmount()"
+                                                            placeholder="Enter quantity"
+                                                          />
+                                                        </td>
+                                                        <td>
+                                                          <input
+                                                            type="number"
+                                                            [(ngModel)]="newItem.rate"
+                                                            (input)="updateNewItemAmount()"
+                                                            placeholder="Enter rate"
+                                                          />
+                                                        </td>
+                                                        <td>
+                                                          <input type="number" [value]="newItem.amount" readonly />
+                                                        </td>
+                                                        <td></td>
+                                                      </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                      <tr>
+                                                        <td colspan="3" class="text-right"><strong>Total Amount:</strong></td>
+                                                        <td>
+                                                          <input type="number" [value]="getTotalAmount()" readonly />
+                                                        </td>
+                                                        <td></td>
+                                                      </tr>
+                                                    </tfoot>
+                                                  </table>
+                                                </div>
+                                                <div class="add-button-container">
+                                                  <button
+                                                   class="btn btn-primary"
+                                                    (click)="addInvoice()"
+                                                    [disabled]="!newItem.name || newItem.quantity <= 0 || newItem.rate <= 0"
+                                                  >
+                                                    Add Item
+                                                  </button>
+                                                </div>
+                                              </div>
+                                        </div> 
+
+
                                     </div>
                                 </div>
                                 
@@ -105,8 +208,11 @@
 
 
                                 <div class="row">
-                                    <div class="card-ticket-table mt-2">
-                                        <p-table class="ticket-table" #dt1 [value]="invoiceObj" 
+                                    <div class="mt-2 ">
+                                    
+                                          
+                                        
+                                        <!-- <p-table class="ticket-table" #dt1 [value]="invoiceObj" 
                                             [paginator]="false" 
                                             [rows]="10"
                                             [loading]="isLoading"                                     
@@ -116,104 +222,42 @@
                 
                                             <ng-template pTemplate="header">
                                                 <tr>
-                                                    <th style="width: 25%;"> Item</th>
+                                                    <th style="width: 25%;">Item</th>
                     
                                                     <th>Quantity</th>
                                                     <th>Rate</th>
                                                     <th>Amount</th>
-                                                    <th>Image</th>
+                                                   
                                                     <th *ngIf="isEditModeOn">Action</th>
                                                 </tr>
                                             </ng-template>
                                             <ng-template pTemplate="body" let-ticket let-rowIndex="rowIndex">
+                                                <td>
+                                                    
+                                                </td>
+                                                <td>
 
-                                                <ng-container *ngIf="isEditModeOn">
-                                                    <!-- (contextmenu)="onContextMenu($event,ticket) ; op?.toggle($event)"  -->
-                                                    <tr    [ngClass]="{'border-tr': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
-                                                        <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
-                                                            <td class="cod-item" style="width: 25%;">{{ ticket.itemName }}</td>
-                                                            <td class="cod-item"></td>
-                                                            <td class="cod-item"></td>
-                                                            <td class="cod-item"></td>
-                                                            <td class="cod-item"></td>
-                                                            <td class="cod-item">{{ ticket?.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}
-                                                        </ng-container>
-                                                        <ng-template #otherThanCOD >
-                                                            <td style="width: 25%;">{{ ticket?.itemName }}</td>
-                                                            <td>{{ ticket?.quantity  }}</td>
-                                                            <td>{{ ticket?.rate | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                            <td>{{ ticket?.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                        </ng-template>
-                                                        <td>
-                                                            <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img" (click)="showSelectedImage(ticket.imagePath, '1')"></a>
-                                                        </td>
-                                                        <td *ngIf="isEditModeOn">
-                                                            <div class="d-flex justify-content-center align-items-center">
-                                                                <a  (click)="editItem(ticket)"
-                                                                class="btn btn-grid btn-primary waves-effect waves-light me-1">
-                                                                    <i class="mdi mdi-pencil"></i>Edit
-                                                                </a> 
-                                                                
-                                                                <a class="btn btn-grid btn-danger waves-effect waves-light" (click)="deleteItem(rowIndex)">
-                                                                    <i class="mdi mdi-trash-can-outline"></i>Delete
-                                                                </a>
-                                                            </div>
-                                                            
-                                                          
-                                                        </td>
-                                                    </tr>
-                                                    <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}"  *ngIf="ticket.materialNote != ''">
-                                                        <!-- <td class="cod-item">
-                                                            {{ ticket?.codNote }}
-                                                        </td> -->
-                                                        <td colspan="7">
-                                                            Note : {{ ticket?.materialNote }}
-                                                        </td>
-                                                    </tr>
-                                                </ng-container>
-
-                                                <ng-container *ngIf="!isEditModeOn" >
-
-                                                    <tr class="border-tr" [ngClass]="{'border-tr': ticket.materialNote ==''}" >
-                                                        <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
-                                                            <td class="cod-item" style="width: 25%;">{{ ticket.itemName }}</td>
-                                                            <td class="cod-item"></td>
-                                                            <td class="cod-item"></td>
-                                                            <td class="cod-item"></td>
-                                                            <td class="cod-item"></td>
-                                                            <td class="cod-item">{{ ticket.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                        </ng-container>
-                                                        <ng-template #otherThanCOD >
-                                                            <td style="width: 25%;">{{ ticket.itemName }}</td>
-                                                            <td>{{ ticket.quantity  }}</td>
-                                                           
-                                                            <td>{{ ticket.rate | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                            <td>{{ ticket.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                        </ng-template>
-                                                        <td>
-                                                            <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img" (click)="showSelectedImage(ticket.imagePath, '1')"></a>
-                                                        </td>
-                                                        
-                                                    </tr>
-                                                    <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}"  *ngIf="ticket.materialNote != ''">
-                                                        <!-- <td class="cod-item">
-                                                            {{ ticket.codNote }}
-                                                        </td> -->
-                                                        <td colspan="7">
-                                                            Note : {{ ticket.materialNote }}
-                                                        </td>
-                                                    </tr>
-                                                </ng-container>
+                                                </td>
+                                                <td>
+                                                    
+                                                </td>
+                                                <td>
+                                                    
+                                                </td>
+                                                <td>
+                                                    
+                                                </td>
                                               
+
                                             </ng-template>
                                             
-                                        </p-table>
+                                        </p-table> -->
                                       
                                     </div>
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && invoiceData?.status?.toUpperCase() =='OPEN'? 'w-98 p-open' : 'col-6 p-close'" >
+                                    <div class="payment-ticket"  >
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
                                                 <!-- <p class="ticket-details-p fz-14"><b>Adjustment : {{(totalAdjustment * -1) | currency: currencySymbol :'symbol': numberFormat}}</b></p> -->
@@ -244,97 +288,14 @@
                                         
                                         </div>
                                         
-                                        <div class="row mt-2">   
-                                            <div class="col-md-7 col-lg-7 col-sm-7">    
-                                         
-                                                    <div class="ticket-summary-div d-flex justify-content-start align-item-center">
-                                                        <div class="me-2">
-                                                            <b class="fz-14">Paid Amount  {{invoiceData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
-                                                        </div>
-            
-                                                        <div class="ms-2 me-2">
-                                                            <b class="fz-14">Balance Amount  {{totalAmount - totalAdjustment - invoiceData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
-                                                        </div> 
-                                                        <div class="ms-2" *ngIf="!isEditModeOn && false" >
-                                                            <div class="d-flex justify-content-start align-items-center">
-                                                                <div><p-inputSwitch [disabled]="true"  [(ngModel)]="isCODRequired"></p-inputSwitch></div>
-                                                                <div class="ms-2" >COD <span *ngIf="!isCODRequired">Required</span></div> 
-                                                            </div>
-                                                          
-
-                                                        </div>
-                                                        <div class="ms-2" *ngIf="isEditModeOn && false">
-                                                            <div class="d-flex justify-content-start align-items-center">
-                                                                <div><p-inputSwitch  [(ngModel)]="isCODRequired"></p-inputSwitch></div>
-                                                                <div class="ms-2" >COD <span *ngIf="!isCODRequired">Required</span></div> 
-                                                            </div>
-                                                          
-
-                                                        </div>
-                                                    </div>
-                                                   
-        
-                                                
-                                            </div>
-        
-                                            <div class="col-md-5 col-lg-5 col-sm-5">    
-                                                <div class="d-flex justify-content-end">
-                                                 
-        
-                                                    <div *ngIf="!isEditModeOn" class="pay-print-box">
-                                                        <a *ngIf="(invoiceData.status == 'OPEN' || invoiceData.status == 'Partially Paid') && (currentRole!== 'Scale')" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
-                                                        <a class="btn btn-primary" (click)="generateSingleTicketReport(ticketId)">Printout</a>
-                                                    </div>        
-        
-                                                    <div *ngIf="isEditModeOn && false" class="adjustment-deduction-box">
-                                                        <a data-bs-target="#adjustments-modal" data-bs-toggle="modal" 
-                                                        class="btn btn-danger me-1" (click)="addAdjustments()">Adjustments(Deductions)</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                                                   
-        
-                                          
-                                        </div>
+                                    
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-sm-6" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  invoiceData?.status?.toUpperCase()!='OPEN'">
+                    
 
-                                <!-- <div class="col-12">  -->
-                                <div id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
-                                    <div class="card">
-                                        <div class="card-body px-1 py-1">
-                                            
-                                            <p-table #dt1 [value]="invoicesTransactions" [paginator]="false">
-                        
-                                                <ng-template pTemplate="header">
-                                                    <tr>
-                                                        <th>*</th>
-                                                        <th>Transaction Type</th>
-                                                        <th>Amount paid</th>
-                                                        <th>Check number</th>
-                                                    </tr>
-                                                </ng-template>
-                                                <ng-template pTemplate="body" let-invoicesTransaction>
-                                                    <tr>
-                                                        <td># </td>
-                                                        <td>{{ invoicesTransaction?.type }} <a pTooltip="Check reprint" href="javascript:void()" *ngIf="ticketsTransaction?.type == 'Check'" (click)="checkReprint(ticketsTransaction)" ><i class="bi bi-printer-fill ms-1"></i></a></td>
-                                                        <td>{{ invoicesTransaction?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
-                                                        <td>{{ invoicesTransaction?.checkNumber }}</td>
-                                                    </tr>
-                                                </ng-template>
-                        
-                                            </p-table>
-                                        </div>
-                                    </div>
-                                  
-                                </div>
-
-                            </div>
-
-                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
+                            <!-- <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 160px)">
                                     <h4 class="materials-heading">Materials</h4>
@@ -397,14 +358,9 @@
                                     </ul>
   
                                 </div>
-                            </div>
+                            </div> -->
 
-                            <div class="col-lg-6 col-xs-12 col-sm-6 position-releative" *ngIf="isEditModeOn && editItemCloseImageCapture">
-                                <app-invoice-calculator (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()" (backClose)="backToChangeItemMainMaterials()"
-                                    [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
-                                    [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
-                                </app-invoice-calculator>
-                            </div>
+                          
                         </div>
                     
                     </div> <!-- end card body-->
@@ -929,12 +885,3 @@ header="Edit Seller"
 </p-dialog>
 
 
-<!-- <p-confirmDialog  [style]="{width: '50vw'}">
-    <ng-template pTemplate="header">
-        <h3>Delete Project</h3>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <button type="button" pButton icon="pi pi-times" label="No" (click)="confirmPosition"></button>
-        <button type="button" pButton icon="pi pi-check" label="Yes" (click)="confirmPosition"></button>
-    </ng-template>
-</p-confirmDialog> -->

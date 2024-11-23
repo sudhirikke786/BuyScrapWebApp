@@ -198,7 +198,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
   copyMaterialData:any[]  = [];
   copySubMaterialData:any[]  = [];
-
+  items:any[] = [];
+  newItem = { name: '', quantity: 0, rate: 0, amount: 0 };
 
 
   @ViewChild(InvoiceCalculatorComponent) InvoiceCalculatorComponent!:InvoiceCalculatorComponent;
@@ -278,6 +279,34 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     });
 
 
+   
+
+  }
+
+ 
+
+  addInvoice() {
+    if (this.newItem.name && this.newItem.quantity > 0 && this.newItem.rate > 0) {
+      this.items.push({ ...this.newItem }); // Add the new item
+      this.newItem = { name: '', quantity: 0, rate: 0, amount: 0 }; // Reset the new item
+    }
+  }
+
+  getTotalAmount(): number {
+    return this.items.reduce((total, item) => total + item.amount, 0); // Calculate the total amount
+  }
+
+  removeInvoice(index: number) {
+    this.items.splice(index, 1); // Remove the selected item
+  }
+
+  updateAmount(index: number) {
+    const item = this.items[index];
+    item.amount = item.quantity * item.rate; // Update the amount dynamically
+  }
+
+  updateNewItemAmount() {
+    this.newItem.amount = this.newItem.quantity * this.newItem.rate; // Update the new item amount dynamically
   }
 
 
