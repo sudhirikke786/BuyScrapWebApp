@@ -32,9 +32,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
   copyMaterialData:any[]  = [];
   copySubMaterialData:any[]  = [];
-
-
-
+  
   showCalculator = false;
   @ViewChild('inputFile')
   myInputVariable!: ElementRef;
@@ -225,7 +223,6 @@ export class ShipoutDetailsComponent implements OnInit {
 
   }
 
-
     
   getShipOutDetailsByID() {
     const paramObject = {
@@ -312,7 +309,7 @@ export class ShipoutDetailsComponent implements OnInit {
       .subscribe(data => {
           console.log('getAllGroupMaterial :: ');
           console.log(data);
-           this.materialList = data.body.data;
+          this.materialList = data.body.data;
           this.copyMaterialData = data.body.data;
         },
         (err: any) => {
@@ -323,7 +320,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
   backToMainMaterials() {
     this.mainMaterialsVisible =  true;
-    this.materialList =  this.copyMaterialData;
+    this.materialList =  this.copyMaterialData
   }
 
   getSubMaterials(materialId: any, selectedMaterial: any, isChangeItemMode: any) {
@@ -344,7 +341,6 @@ export class ShipoutDetailsComponent implements OnInit {
           console.log(data);
           this.subMaterialList = data.body.data;
           this.copySubMaterialData = data?.body?.data;
-
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -455,8 +451,6 @@ export class ShipoutDetailsComponent implements OnInit {
 
   // TO DO:: Needs to implement Edit , but before that we will have to find available stock based on Material id
   editItem(rowData: any) {   
-   
-
     this.itemRowId = rowData.rowId;
     this.itemLocalRowId = rowData.localRowId;
     this.itemGroupName = rowData.groupName;
@@ -517,7 +511,8 @@ export class ShipoutDetailsComponent implements OnInit {
         materialId : this.itemMaterialId,
         gross : parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)),
         tare : parseFloat(parseFloat(this.itemTare.toString()).toFixed(3)),
-        net : parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)) - parseFloat(parseFloat(this.itemTare.toString()).toFixed(3))
+        net : parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)) - parseFloat(parseFloat(this.itemTare.toString()).toFixed(3)),
+        note : (this.materialNote || this.materialNote == '' ? this.materialNote : null)
       };   
 
       this.ticketObj.push(rowData);
@@ -535,6 +530,7 @@ export class ShipoutDetailsComponent implements OnInit {
           rowData.gross = parseFloat(parseFloat(this.itemGross.toString()).toFixed(3));
           rowData.tare = parseFloat(parseFloat(this.itemTare.toString()).toFixed(3));
           rowData.net = rowData.gross - rowData.tare ;
+          rowData.note = (this.materialNote || this.materialNote == '' ? this.materialNote : null);
         }
       });
       this.itemLeveloperationPerform = '';
@@ -548,6 +544,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.backToMainMaterials();
     this.itemGross = '';
     this.itemTare = '';
+    this.materialNote = '';
 
   }
 

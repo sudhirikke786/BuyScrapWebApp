@@ -5,6 +5,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { DatePipe } from '@angular/common';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 
 @Component({
@@ -61,6 +62,12 @@ export class CertificatesDashboardComponent implements OnInit {
   selectedImageUrl: any;
   showImage = false;
   
+  fileDataObj: any;
+  showDownload = false;
+  isReportShow = false;
+  isLoading = false;
+  checkTabView: boolean = false;
+
   numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
 
@@ -69,6 +76,7 @@ export class CertificatesDashboardComponent implements OnInit {
     private confirmationService: ConfirmationService, 
     private messageService: MessageService,
     private stroarge:StorageService,
+    public helperService:HelperService,
     public commonService: CommonService) { }
 
   ngOnInit() {
@@ -77,6 +85,7 @@ export class CertificatesDashboardComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
+    this.checkTabView = this.helperService.isTab();
     
     this.getAllCODTickets();
   }
@@ -337,6 +346,38 @@ export class CertificatesDashboardComponent implements OnInit {
     this.visible = false;
     this.certificatesImages = [];
     this.materialDesc = '';
+  }
+  
+
+  generateCODReport(id: any) {
+    this.isReportShow = true;
+    this.showDownload = false;
+    const param = {
+      LocationId: this.locId,
+      TicketId: id
+    }
+
+    this.commonService.getCODTicketReceipt(param)
+      .subscribe(data => {
+        console.log('getCODTicketReceipt :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"COD Receipt Report " + id);
+        }
+
+        this.showDownload = true;
+      },
+        (err: any) => {
+          this.showDownload = true;
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
+  closePdfReport() {
+    this.showDownload = false;    
+    //this.router.navigateByUrl(`${this.orgName}/ship-out`);
   }
   
 }

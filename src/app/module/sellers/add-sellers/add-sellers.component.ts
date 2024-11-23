@@ -203,7 +203,8 @@ export class AddSellersComponent implements OnInit {
       this.loaderShow =  false;
       if(res){
       const userObj =  {
-        driverLicenseNumber : res["ID"],
+        driverLicenseNumber : res["NUMBER"],
+        idnumber : res["NUMBER"],
         lastName: res["LN"],
         firstName : res["FN"],
         middleName:res["MN"],
@@ -293,6 +294,7 @@ export class AddSellersComponent implements OnInit {
      state: obj.state,
      zipCode: obj.zipCode,
      idnumber: obj.idnumber,
+     driverLicenseNumber: obj.driverLicenseNumber,
      expiryDate: this.formatDate(obj.expiryDate),
      class: obj.class,
      gender: obj.gender,

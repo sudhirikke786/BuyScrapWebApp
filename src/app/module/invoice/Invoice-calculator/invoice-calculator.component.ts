@@ -4,6 +4,8 @@ import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { MessageService } from 'primeng/api';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-invoice-calculator',
@@ -14,6 +16,7 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
 
   @Output() getPicture = new EventEmitter<string>();
   showWebcam = false;
+  showCamera = true;
   isCameraExist = true;
   allMediaDevices: any;
 
@@ -62,18 +65,13 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
 
   @ViewChild('inputBox1') inputBox1: ElementRef | undefined;
   @ViewChild('inputBox2') inputBox2: ElementRef | undefined;
-  @ViewChild('inputBox3') inputBox3: ElementRef | undefined;
-  @ViewChild('inputBox4') inputBox4: ElementRef | undefined;
 
   @Input() materialNote = '';
   @Input() itemGroupName = 'Motors/Motores';
   @Input() itemMaterialName = 'Aluminum Motors (Clean/Limpios)';
   @Input() itemImagePath :any
 
-
   @Input() itemGross: any;
-  @Input() itemTare: any;
-  @Input() itemNet: any = 0;
   @Input() itemPrice: any;
 
   isKeyboard = true;
@@ -88,9 +86,8 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
   locId: any;
   logInUserId: any;
   locationName: any;
+  isAutocapture = false;
   grossInput:any;
-  tareInput:any;
-  netInput:any = 0;
   priceInput:any;
   focusedInput: string | null = null;
   addNoteSectionVisible = false;  
@@ -107,12 +104,17 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
 
   passwordmode = true;
   currentRole: any;
+  i = 0 ;
+  checkTabView =  false;
 
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef,
     private stroarge: StorageService,
     private authService:AuthService,
+    private messageService: MessageService,
+    private helperService:HelperService,
     public commonService: CommonService) {
+      this.checkTabView = this.helperService.isTab();
 
   }
 
@@ -124,6 +126,18 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
    
     this.wWidth =  this.elementRef.nativeElement.querySelector('.webcam-container').offsetWidth;
     this.wHeight =  this.elementRef.nativeElement.querySelector('.webcam-container').offsetHeight;
+  }
+
+
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if(!this.checkTabView) {
+      if (event.key === 'Enter') {
+        this.enter();
+      }
+    }
+   
   }
   currentSize(){
     this.wWidth = this.elementRef.nativeElement.querySelector('.webcam-container').offsetWidth-10;
@@ -146,12 +160,17 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
-
-   
-  
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    
+    const autoCaptureMaterialPhotoItem = this.stroarge.getLocalStorage('systemInfo').find((item: any) => item.keys === "AutoCaptureMaterialPhoto");
+    if (autoCaptureMaterialPhotoItem) {
+      this.isAutocapture = this.stroarge.getLocalStorage('systemInfo').filter((item:any) => item.keys == "AutoCaptureMaterialPhoto")[0].values == "True" ? true : false;
+    } else {
+      this.isAutocapture = false;
+    }
+    
     this.locationName = localStorage.getItem('locationName');
     this.currentRole = this.authService.userCurrentRole();
 
@@ -159,16 +178,16 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
       this.passwordmode = false;
     }
     this.grossInput = this.itemGross;
-    this.tareInput = this.itemTare;
-    const netQty = this.grossInput - this.tareInput
-    this.netInput = isNaN(netQty) ?  0 : netQty;
     this.priceInput = this.itemPrice;
     if (this.inputBox1) {
       this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
     }
 
-    this.isVirtual = true;
-
+    if(this.checkTabView){
+      this.isVirtual = true;
+    }else{
+      this.isVirtual = false;
+    }
 
 
     const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
@@ -190,16 +209,12 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
     this.elementRef.nativeElement.querySelector('.inputone').focus();
   }
 
-  calcNetFromGross(gross: any) {    
-    this.grossInput = (isNaN(gross) || gross == '') ?  0 : gross;
-    // this.tareInput = (isNaN(this.tareInput) || this.tareInput == '') ?  0 : this.tareInput;
-    this.netInput = gross - this.tareInput;
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
 
     if(changes && changes.itemImagePath){
       if (changes.itemImagePath.currentValue != 'assets/images/custom/id_scan.png') {
+        this.showWebcam = false;
+        this.showCamera = false; 
         this.imageUrl =  changes.itemImagePath.currentValue;
       } else {
         this.imageUrl =  '';
@@ -218,19 +233,14 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
   changeFocus() {
     // Set focus on the current input
 
-    if (this.currentFocusIndex === this.inputBoxes.length-2) {
-      this.tareInput = (isNaN(this.tareInput) || this.tareInput == '') ? 0 : this.tareInput;
+    if (this.currentFocusIndex === this.inputBoxes.length-1) {
       const obj = {
         itemGross: this.grossInput,
-        itemTare: this.tareInput,
-        itemNet: isNaN(this.grossInput - this.tareInput) ?  0 : (this.grossInput - this.tareInput),
         itemPrice: this.priceInput,
         materialNote: this.materialNote,
         itemImagePath: this.itemImagePath
       }
       this.grossInput = '';
-      this.tareInput = ''; 
-      this.netInput = 0; 
       this.materialNote = '';
       this.imageUrl = '';
       this.itemImagePath = '';
@@ -239,7 +249,7 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
      
      
       // Increment the focus index, resetting to 0 if it exceeds the number of inputs
-      if(this.currentFocusIndex > 3){
+      if(this.currentFocusIndex > 1){
         this.currentFocusIndex = 0;
       }else{
         this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
@@ -279,24 +289,8 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
         this.grossInput += number.toString().trim();
       }
     } else if (this.focusedInput === 'inputBox2') {
-      this.renderer.selectRootElement(this.inputBox2?.nativeElement).focus();
-      let data = this.tareInput ?? '';
-      if (data === '') {
-        this.tareInput = number.toString().trim();
-      } else {
-        this.tareInput += number.toString().trim();
-      }
-    } else if (this.focusedInput === 'inputBox4') {
-      this.renderer.selectRootElement(this.inputBox4?.nativeElement).focus();
-      let data = this.netInput ?? '';;
-      if (data === '') {
-        this.netInput = number.toString().trim();
-      } else {
-        this.netInput += number.toString().trim();
-      }
-    } else if (this.focusedInput === 'inputBox3') {
       if(!this.passwordmode){
-        this.renderer.selectRootElement(this.inputBox3?.nativeElement).focus();
+        this.renderer.selectRootElement(this.inputBox2?.nativeElement).focus();
         let data = this.priceInput ?? '';
         if (data === '') {
           this.priceInput = number.toString().trim();
@@ -308,10 +302,6 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
     } else {
       console.log('No input box is currently focused');
     }
-    
-    this.priceInput =  isNaN(Number(this.grossInput) *  Number(this.grossInput));
-    // const netQty = (isNaN(this.grossInput) ?  0 : this.grossInput) - (isNaN(this.tareInput) ?  0 : this.tareInput)
-    // this.netInput = isNaN(netQty) ?  0 : netQty;
 
   }
 
@@ -349,7 +339,10 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
   }
 
   enter() {
-    this.calcNetFromGross(this.grossInput);
+    if (this.i == 0 && this.isAutocapture) {
+      this.takeSnapshot();
+    }
+    this.i++;
     this.changeFocus();
     console.log(this.currentFocusIndex);
     
@@ -366,36 +359,13 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
         this.grossInput = '';
       }
 
-    }else if (this.focusedInput === 'inputBox2') {
-      if (this.tareInput.length > 1) {
-        this.tareInput = this.tareInput.slice(0, -1);
-      } else {
-        this.tareInput = '';
-      }
-
-    }else if (this.focusedInput === 'inputBox4') {
-      if (this.netInput.toString().length > 1) {
-        this.netInput = this.netInput.toString().slice(0, -1);
-      } else {
-        this.netInput = '';
-      }
-      
-    }else if (this.focusedInput === 'inputBox3') {
+    } else if (this.focusedInput === 'inputBox2') {
       if (this.priceInput.toString().length > 1) {
         this.priceInput = this.priceInput.toString().slice(0, -1);
       } else {
         this.priceInput = '';
       }
     }
-
-    // switch (key) {
-    //   case value:
-        
-    //     break;
-    
-    //   default:
-    //     break;
-    // }
    
   }
 
@@ -405,31 +375,39 @@ export class InvoiceCalculatorComponent implements OnInit, AfterViewInit {
 
 
 
-    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox3,this.inputBox4];
+    this.inputBoxes = [this.inputBox1, this.inputBox2];
     setTimeout(()=>{
       this.inputBoxes[this.currentFocusIndex]?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     },100);
 
 
-    (async () => {     
-      let devices = await navigator.mediaDevices.enumerateDevices(); 
-     
-      this.allMediaDevices = devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput");
-    
-      this.isCameraExist = this.allMediaDevices && this.allMediaDevices.length > 0;
-      const deviceId =  localStorage.getItem('metarialCamera');
-      if(localStorage.getItem('metarialCamera')){
-        setTimeout(() =>{
-           this.selectedCamera =  deviceId; 
-           this.changeWebCame(this.selectedCamera);
-        },100)
-       
-      }else{
-        this.selectedCamera =  this.allMediaDevices[0].deviceId;
-        this.changeWebCame(this.selectedCamera);
-      }
-    
-    })();
+
+    /**
+     * On edit if image came default camera stop
+     * 
+     */
+    if(this.showCamera){
+      (async () => {     
+        let devices = await navigator.mediaDevices.enumerateDevices(); 
+      
+        this.allMediaDevices = devices.filter(inputDeviceInfo => inputDeviceInfo.kind == "videoinput");
+      
+        this.isCameraExist = this.allMediaDevices && this.allMediaDevices.length > 0;
+        const deviceId =  localStorage.getItem('metarialCamera');
+        if(localStorage.getItem('metarialCamera')){
+          setTimeout(() =>{
+            this.selectedCamera =  deviceId; 
+            this.changeWebCame(this.selectedCamera);
+          },100)
+        
+        }else{
+          this.selectedCamera =  this.allMediaDevices[0].deviceId;
+          this.changeWebCame(this.selectedCamera);
+        }
+      
+      })();
+    }
+
 
    
     

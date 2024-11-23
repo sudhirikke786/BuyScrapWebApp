@@ -18,7 +18,7 @@ export const routes: Routes = [
     component:InvoiceTicketDashboardComponent
   },
   {
-    path:'detail/:ticketId/:customerId',
+    path:'detail/:invoiceId/:customerId',
     canActivate: [CheckplanGuard],
     component:InvoiceTicketDetailComponent
   }

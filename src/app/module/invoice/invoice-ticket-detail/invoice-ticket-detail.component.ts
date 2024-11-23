@@ -6,8 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
 import { WebcamImage } from 'ngx-webcam';
-import { TicketItem } from 'src/app/core/model/ticket-item.model';
-import { Ticket } from 'src/app/core/model/ticket.model';
+import { InvoiceItem } from 'src/app/core/model/invoice-item.model';
+import { Invoice } from 'src/app/core/model/invoice.model';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { PriceCalculatorComponent } from '../../shared/commonshared/price-calculator/price-calculator.component';
 import { DataService } from 'src/app/core/services/data.service';
@@ -23,7 +23,7 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 
 @Component({
-  selector: 'app-ticket-detail',
+  selector: 'app-invoice-ticket-detail',
   templateUrl: './invoice-ticket-detail.component.html',
   styleUrls: ['./invoice-ticket-detail.component.scss'],
   providers: [MessageService, ConfirmationService]
@@ -50,17 +50,17 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   selectedHoldAmount = 'Pay Total Amount'
 
 
-  ticketObj: any = [];
-  holdticketObj: any = [];
+  invoiceObj: any = [];
+  holdinvoiceObj: any = [];
   orgName: any;
   sellerId: any;
-  ticketId: any;
+  invoiceId: any;
   locId: any;
   logInUserId: any;
   locationName: any;
   showImage = false;
 
-  ticketData: any = {};
+  invoiceData: any = {};
   customer: any;
   user: any;
   totalNoOfMaterial: any;
@@ -93,8 +93,6 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   itemMaterialName: string = '';
   itemMaterialId: number = 0;
   itemGross: any;
-  itemTare: any;
-  itemNet: any = 0;
   itemPrice: any;
   itemImagePath: string = 'assets/images/custom/id_scan.png';
   itemDefaultImagePath: string = 'assets/images/custom/id_scan.png';
@@ -110,8 +108,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   isCODRequired = false;
   dCamera:any; 
 
-  ticketsTransactions: any;
-  defaultSelectedTicketsTypes = [
+  invoicesTransactions: any;
+  defaultSelectedInvoicesTypes = [
     { name: 'OPEN', code: 'OPEN' },
     { name: 'Partially Paid', code: 'Partially Paid' },
     { name: 'ON HOLD', code: 'ON HOLD' }
@@ -151,7 +149,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   fileDataObj: any;
   showDownload = false;
   showLoaderReport = false;
-  pdfViwerTitle = 'Ticket Receipt';
+  pdfViwerTitle = 'Invoice Receipt';
   isCheckPrint = false;
   checkAmount = 0;
   isLoading = false;
@@ -173,7 +171,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   sellerForm!: FormGroup;
   sellerType: string = 'Personal';
   
-  newTicketList = [{
+  newInvoiceList = [{
     iconcode: 'mdi-magnify',
     title: 'Search',
     label: 'Search'
@@ -252,13 +250,13 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.route.params.subscribe((param) => {
-      this.ticketId = param["ticketId"];
+      this.invoiceId = param["invoiceId"];
       this.sellerId = param["customerId"];
      
       this.getSellerById();
-      this.processDataBasedOnTicketId();
+      this.processDataBasedOnInvoiceId();
     //  this.GetAllAdjustmentType();
-      this.getTicketTransactions();
+      this.getInvoiceTransactions();
     });
 
     this.route.queryParams.subscribe(params => {
@@ -319,18 +317,18 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     this.selectedRowObj = obj;
     // add the Data from Table
     this.itemLocalRowId = this.selectedRowObj?.localRowId;
-    this.updateTicketObjectForCOD('Flagged for COD');
+    this.updateInvoiceObjectForCOD('Flagged for COD');
   }
 
   removeCode(obj: any) {
     // remove the Data from Table
     this.selectedRowObj = obj;
     this.itemLocalRowId = this.selectedRowObj.localRowId;
-    this.updateTicketObjectForCOD('');
+    this.updateInvoiceObjectForCOD('');
   }
 
-  private updateTicketObjectForCOD(itemCodNote: any) {
-    this.ticketObj.forEach((rowData: any) => {
+  private updateInvoiceObjectForCOD(itemCodNote: any) {
+    this.invoiceObj.forEach((rowData: any) => {
       if (this.itemLocalRowId === rowData.localRowId) {
         console.log("found " + rowData.rowId);
         rowData.codNote = itemCodNote;
@@ -343,21 +341,20 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     });
   }
 
-  private processDataBasedOnTicketId() {
-    if (parseInt(this.ticketId)) {
-      this.GetTicketMaterialsDetailsByTicketId();
-      this.getAllTicketsDetails();
-      this.getTicketTransactions();
+  private processDataBasedOnInvoiceId() {
+    if (parseInt(this.invoiceId)) {
+      this.GetInvoiceMaterialsDetailsByInvoiceId();
+      this.getAllInvoicesDetails();
+      this.getInvoiceTransactions();
     } else {
-      this.ticketId = 0;
-      this.ticketData['createdDate'] = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      this.ticketData['status'] = 'NEW TICKET';
-      this.ticketData['paidAmount'] = 0;
-      this.ticketData['balanceAmount'] = 0;
-      this.ticketData['isCOD'] = false;
+      this.invoiceId = 0;
+      this.invoiceData['createdDate'] = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      this.invoiceData['status'] = 'NEW INVOICE';
+      this.invoiceData['paidAmount'] = 0;
+      this.invoiceData['balanceAmount'] = 0;
       
 
-      this.ticketObj = [];
+      this.invoiceObj = [];
 
       this.totalNoOfMaterial = 0;
       this.totalGross = 0;
@@ -365,8 +362,9 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.totalNet = 0;
       this.totalRoundingAmount = 0;
       this.totalAmount = 0;
+      this.totalAdjustment = 0;
       this.totalActualAmount = 0;
-      this.editTicketDetails();
+      this.editInvoiceDetails();
     }
   }
 
@@ -480,7 +478,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       return false;
     }
 
-    this.remainingAmount = this.totalAmount - this.totalAdjustment - this.ticketData?.paidAmount - this.getTotal();
+    this.remainingAmount = this.totalAmount - this.totalAdjustment - this.invoiceData?.paidAmount - this.getTotal();
     this.selectedPayAmount = this.remainingAmount;
 
 
@@ -514,7 +512,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   removeItem(i: number) {
     this.transactionPaymentType.splice(i, 1);
     
-    this.remainingAmount = this.totalAmount - this.totalAdjustment - this.ticketData?.paidAmount - this.getTotal();
+    this.remainingAmount = this.totalAmount - this.totalAdjustment - this.invoiceData?.paidAmount - this.getTotal();
     this.selectedPayAmount = this.remainingAmount;
   }
 
@@ -530,21 +528,21 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
 
-  getAllTicketsDetails() {
+  getAllInvoicesDetails() {
     this.isLoading = true;
     const paramObject = {
       LocationId: this.locId,
-      SerachText: this.ticketId,
+      SerachText: this.invoiceId,
       SearchOrder: 'InvoiceId',
       PageNumber: 1,
       RowOfPage: 10
     };
     this.commonService.GetAllInvoiceDetails(paramObject)
       .subscribe(data => {
-        console.log('getAllTicketsDetails for ticketId :: ');
+        console.log('getAllInvoicesDetails for invoiceId :: ');
         console.log(data);
-        this.ticketData = data.body.data[0];
-        this.isCODRequired = this.ticketData.isCOD;
+        this.invoiceData = data.body.data[0];
+        this.isCODRequired = this.invoiceData.isCOD;
         this.totalRecords = data.totalRecords;
         const userId = data.body.data[0].createdBy;
 
@@ -572,7 +570,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
   onPageChange(event: any) {
     this.currentPage = event.first / event.rows + 1;
-    this.getAllTicketsDetails();
+    this.getAllInvoicesDetails();
   }
 
   editSeller() {    
@@ -705,29 +703,29 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
 
-  GetTicketMaterialsDetailsByTicketId() {
+  GetInvoiceMaterialsDetailsByInvoiceId() {
     const paramObject = {
-      TicketId: this.ticketId,
+      InvoiceId: this.invoiceId,
       locid: this.locId,
       IsCOD: false,
       IsCODDone: false
     };
-    this.commonService.GetTicketMaterialsDetailsByTicketId(paramObject)
+    this.commonService.GetInvoiceMaterialsDetailsByInvoiceId(paramObject)
       .subscribe(data => {
-        console.log('GetTicketMaterialsDetailsByTicketId :: ');
+        console.log('GetInvoiceMaterialsDetailsByInvoiceId :: ');
         console.log(data);
-        this.ticketObj = data.body.data.map((item: any) => {
+        this.invoiceObj = data.body.data.map((item: any) => {
           item.isSelected = false;
           return item
         });
 
-        this.holdticketObj = null;
-        this.holdticketObj = data.body.data.filter((obj: any) => {
+        this.holdinvoiceObj = null;
+        this.holdinvoiceObj = data.body.data.filter((obj: any) => {
           return obj.isHold === true
         });
-        this.isHoldTrue = (this.holdticketObj.length > 0) ? true : false;
+        this.isHoldTrue = (this.holdinvoiceObj.length > 0) ? true : false;
 
-        this.calculateTotal(this.ticketObj);
+        this.calculateTotal(this.invoiceObj);
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -735,31 +733,25 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       );
   }
 
-  calculateTotal(tickets: any) {
-    this.totalNoOfMaterial = tickets.length;
-    this.totalGross = tickets.reduce(function (sum: any, tickets: any) {
-      return sum + tickets.gross;
+  calculateTotal(invoices: any) {
+    this.totalNoOfMaterial = invoices.length;
+    this.totalGross = invoices.reduce(function (sum: any, invoices: any) {
+      return sum + invoices.quantity;
     }, 0);
-    this.totalTare = tickets.reduce(function (sum: any, tickets: any) {
-      return sum + tickets.tare;
-    }, 0);
-    this.totalNet = tickets.reduce(function (sum: any, tickets: any) {
-      return sum + tickets.net;
-    }, 0);
-    this.totalActualAmount = tickets.reduce(function (sum: any, tickets: any) {
-      // return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : tickets.amount);
-      return sum + (tickets.isAdjusmentSet ? 0 : tickets.amount);
+    this.totalActualAmount = invoices.reduce(function (sum: any, invoices: any) {
+      // return sum + (invoices.isAdjusmentSet ? invoices.amount * -1 : invoices.amount);
+      return sum + (invoices.amount);
     }, 0);
 
     this.totalAmount = Math.round(this.totalActualAmount);
     this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
-    this.totalAdjustment = tickets.reduce(function (sum: any, tickets: any) {
-      // return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : 0);
-      return sum + (tickets.isAdjusmentSet ? tickets.amount : 0);
+    this.totalAdjustment = invoices.reduce(function (sum: any, invoices: any) {
+      // return sum + (invoices.isAdjusmentSet ? invoices.amount * -1 : 0);
+      return sum + (invoices.isAdjusmentSet ? invoices.amount : 0);
     }, 0);
   }
 
-  editTicketDetails() {
+  editInvoiceDetails() {
     this.isEditModeOn = true;
     this.getAllGroupMaterial();
   }
@@ -837,7 +829,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
 
   confirmSave() {
-    if (this.ticketId != 0) {
+    if (this.invoiceId != 0) {
       this.saveConfirmVisible = true;
       this.signaturePadVisible = false;
     } else {
@@ -854,7 +846,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   showPayment(isReceiptPrint: boolean) {
     this.isReceiptPrint = isReceiptPrint;
     this.paymentVisible = true;
-    this.selectedPayAmount = this.remainingAmount = this.payAmount = this.totalAmount - this.totalAdjustment - this.ticketData?.paidAmount;
+    this.selectedPayAmount = this.remainingAmount = this.payAmount = this.totalAmount - this.totalAdjustment - this.invoiceData?.paidAmount;
     this.showSection('Cash');
   }
 
@@ -869,7 +861,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     this.ePaymentType = '';
 
     if (this.isHoldTrue) {
-      this.totalHoldAmount = this.holdticketObj.reduce((acc: any, curr: any) => acc + curr.amount, 0);
+      this.totalHoldAmount = this.holdinvoiceObj.reduce((acc: any, curr: any) => acc + curr.amount, 0);
     }
     switch (this.selectedHoldAmount) {
       case 'Partial Pay Amount':
@@ -877,7 +869,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
           alert(`Hold amount ( $${this.totalHoldAmount} ) is equal or more than total pay amount ( $${this.payAmount} )`);
           this.payAmount = 0;
         } else {
-          this.payAmount = this.totalAmount - this.ticketData?.paidAmount - this.totalHoldAmount;
+          this.payAmount = this.totalAmount - this.invoiceData?.paidAmount - this.totalHoldAmount;
         }
         break;
       case 'Hold All Amount':
@@ -913,14 +905,14 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.messageAlert('Enter Amount')
       return
     }
-    if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.ticketData?.paidAmount)) {
+    if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.invoiceData?.paidAmount)) {
       this.messageAlert('adding amount is greter than total amount')
       return;
     }
 
     switch (this.selectedHoldAmount) {
       case 'Partial Pay Amount':
-        const eligiblePayAmount = this.totalAmount - this.ticketData?.paidAmount - this.totalHoldAmount;
+        const eligiblePayAmount = this.totalAmount - this.invoiceData?.paidAmount - this.totalHoldAmount;
         if (this.payAmount > eligiblePayAmount) {
         //  alert('Exclude hold item amount');
 
@@ -963,7 +955,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     }
     
     this.isReceiptPrint = true;
-    this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
+    this.saveInvoiceDetails(this.payAmount, this.isReceiptPrint);
   }
 
 
@@ -985,7 +977,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
           createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
           updatedBy: this.logInUserId,
           updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-          ticketId: parseInt(this.ticketId),
+          invoiceId: parseInt(this.invoiceId),
           type: item.typeofPayment,
           amount: parseFloat(item.typeofAmount),
           checkNumber: '',
@@ -1008,7 +1000,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
           createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
           updatedBy: this.logInUserId,
           updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-          ticketId: parseInt(this.ticketId),
+          invoiceId: parseInt(this.invoiceId),
           type: item.typeofPayment,
           amount: this.checkAmount,
           checkNumber: checkNumber,
@@ -1027,7 +1019,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
           createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
           updatedBy: this.logInUserId,
           updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-          ticketId: parseInt(this.ticketId),
+          invoiceId: parseInt(this.invoiceId),
           type: item.typeofPayment,
           amount: parseFloat(item.typeofAmount),
           checkNumber: item.paymentType,
@@ -1052,14 +1044,14 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     }
 
     const transactionObj = {
-      tickettransaction : {
+      invoicetransaction : {
         localRowId: 0,
         rowId: 0,
         createdBy: this.logInUserId,
         createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         updatedBy: this.logInUserId,
         updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-        ticketId: parseInt(this.ticketId),
+        invoiceId: parseInt(this.invoiceId),
         type: this.transactionPaymentType[0]?.typeofPayment,
         amount: 0,
         checkNumber: '',
@@ -1068,12 +1060,12 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         dateClosed: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
       },
-      lstickettransaction : payTransactionObj
+      lsinvoicetransaction : payTransactionObj
     };
 
-    this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {
+    this.commonService.insertInvoiceTransactions(transactionObj).subscribe(data => {
      
-      this.cancelEditTicket(this.isReceiptPrint, this.ticketId); 
+      this.cancelEditInvoice(this.isReceiptPrint, this.invoiceId); 
       this.getCashDrawerAmountAndPaidTicketCount();
 
     }, (error: any) => {
@@ -1094,7 +1086,6 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       .subscribe((data: any) => {
           console.log('getCashDrawerAmountAndPaidTicketCount :: ');
           console.log(data);
-          // this.dataService.cashDrawerAmountAndPaidTicketCount(data);
           const cashDrawerBalanceAmount = data.body.cashDrawerbalance;
           const paidTicketCount = data.body.paidTicketCount;
           this.dataService.setCashDrawerAmountDTO(cashDrawerBalanceAmount);
@@ -1109,82 +1100,79 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
 
 
-  saveTicketDetails(paidAmount: number, isReceiptPrint: boolean) {
+  saveInvoiceDetails(paidAmount: number, isReceiptPrint: boolean) {
     // alert(paidAmount);
     // alert(this.totalAmount);
-    let ticketStatus = 'OPEN';
+    let invoiceStatus = 'OPEN';
     if (paidAmount > 0 && paidAmount == this.totalAmount) {
-      ticketStatus = 'PAID';
+      invoiceStatus = 'PAID';
     }
 
-    if (this.ticketId != 0) {
-      if (paidAmount > 0 && paidAmount == (this.totalAmount - this.ticketData?.paidAmount)) {
-        ticketStatus = 'PAID';
+    if (this.invoiceId != 0) {
+      if (paidAmount > 0 && paidAmount == (this.totalAmount - this.invoiceData?.paidAmount)) {
+        invoiceStatus = 'PAID';
       } else if (paidAmount > 0 && paidAmount != this.totalAmount) {
-        ticketStatus = 'Partially Paid';
+        invoiceStatus = 'Partially Paid';
       }
       this.isEditModeOn = false;
-      this.ticketData.isCOD = this.isCODRequired;
-      this.ticketData.status = ticketStatus;
-      this.ticketData.amount = parseFloat(this.totalAmount.toFixed(3));
-      this.ticketData.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
-      this.ticketData.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
-      this.ticketData.ticketAmount = parseFloat(this.totalActualAmount.toFixed(3));
-      this.ticketData.paidAmount = parseFloat(paidAmount.toString());
-      this.ticketData.adjustmentAmount = parseFloat(this.totalAdjustment.toFixed(3));
-      this.ticketData.lstttransactionMasterDTO = this.ticketObj;
-      this.ticketData.updatedBy = this.logInUserId;
-      this.ticketData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      this.ticketData.customerId = parseFloat(this.sellerId);
+      this.invoiceData.status = invoiceStatus;
+      this.invoiceData.amount = parseFloat(this.totalAmount.toFixed(3));
+      this.invoiceData.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
+      this.invoiceData.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
+      this.invoiceData.totalAmount = parseFloat(this.totalActualAmount.toFixed(3));
+      this.invoiceData.paidAmount = parseFloat(paidAmount.toString());
+      this.invoiceData.lstttransactionMasterDTO = this.invoiceObj;
+      this.invoiceData.updatedBy = this.logInUserId;
+      this.invoiceData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      this.invoiceData.customerId = parseFloat(this.sellerId);
+      this.invoiceData.customerName = this.customer?.fullName;
     } else {
-      const newTicket = new Ticket();
-      newTicket.rowId = 0;
-      newTicket.createdBy = this.logInUserId;
-      newTicket.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      newTicket.updatedBy = this.logInUserId;
-      newTicket.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      newTicket.customerId = parseFloat(this.sellerId);
-      newTicket.ticketId = 0;
-      newTicket.status = ticketStatus;
-      newTicket.amount = parseFloat(this.totalAmount.toFixed(3));
-      newTicket.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
-      newTicket.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
-      newTicket.ticketAmount = parseFloat(this.totalActualAmount.toFixed(3));
-      newTicket.paidAmount = parseFloat(paidAmount.toString());
-      newTicket.dateOpened = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      newTicket.dateClosed = null;
-      newTicket.customerName = this.customer?.fullName;
-      newTicket.adjustmentAmount = parseFloat(this.totalAdjustment.toFixed(3));
-      newTicket.locID = this.locId;
-      newTicket.lstttransactionMasterDTO = this.ticketObj;
-      newTicket.sellerSignature = this.sellerSignatureImagePath;
-      newTicket.isCOD = this.isCODRequired;
+      const newInvoice = new Invoice();
+      newInvoice.rowId = 0;
+      newInvoice.createdBy = this.logInUserId;
+      newInvoice.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      newInvoice.updatedBy = this.logInUserId;
+      newInvoice.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      newInvoice.customerId = parseFloat(this.sellerId);
+      newInvoice.invoiceId = 0;
+      newInvoice.status = invoiceStatus;
+      newInvoice.amount = parseFloat(this.totalAmount.toFixed(3));
+      newInvoice.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
+      newInvoice.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
+      newInvoice.totalAmount = parseFloat(this.totalActualAmount.toFixed(3));
+      newInvoice.paidAmount = parseFloat(paidAmount.toString());
+      newInvoice.dateOpened = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      newInvoice.dateClosed = null;
+      newInvoice.customerName = this.customer?.fullName;
+      newInvoice.locID = this.locId;
+      newInvoice.lstttransactionMasterDTO = this.invoiceObj;
+      newInvoice.buyerSignature = this.sellerSignatureImagePath;
 
-      this.ticketData = newTicket;
+      this.invoiceData = newInvoice;
       this.sellerSignatureImagePath = null;
     }
 
 
-    console.log("Final ticketData :: " + JSON.stringify(this.ticketData));
+    console.log("Final invoiceData :: " + JSON.stringify(this.invoiceData));
 
-    this.commonService.insertUpdateTickets(this.ticketData).subscribe(data => {
+    this.commonService.insertUpdateInvoice(this.invoiceData).subscribe(data => {
       console.log(data);
 
       
       if (this.transactionPaymentType.length > 0) { 
-        const oldTicketId = this.ticketId;       
-        this.ticketId = data.body.insertedRow;
+        const oldInvoiceId = this.invoiceId;       
+        this.invoiceId = data.body.insertedRow;
         this.saveTransactionData(this.activeSection);
         this.saveConfirmVisible = false;
       } else {     
-        this.ticketId = data.body.insertedRow;
+        this.invoiceId = data.body.insertedRow;
         this.saveConfirmVisible = false;     
-        this.cancelEditTicket(isReceiptPrint, this.ticketId);
+        this.cancelEditInvoice(isReceiptPrint, this.invoiceId);
       }
 
       // this.confirmSave();
-      // alert('Ticket Inserted/ updated successfully');
-      // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
+      // alert('Invoice Inserted/ updated successfully');
+      // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Invoice Inserted/ updated successfully' });
       
     }, (error: any) => {
       console.log(error);
@@ -1192,24 +1180,24 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     });
   }
 
-  cancelEditTicket(isReceiptPrint: boolean, ticketId: any) {
-    // alert('Refresh' + this.ticketId);
-    if (ticketId && ticketId != 0) {
+  cancelEditInvoice(isReceiptPrint: boolean, invoiceId: any) {
+    // alert('Refresh' + this.invoiceId);
+    if (invoiceId && invoiceId != 0) {
       console.log('11111');
       this.isEditModeOn = false;
       this.editItemCloseImageCapture = false;
-      this.processDataBasedOnTicketId();
-    } else if (ticketId == 0 && !isReceiptPrint) {
+      this.processDataBasedOnInvoiceId();
+    } else if (invoiceId == 0 && !isReceiptPrint) {
       console.log('222222');
-      this.router.navigateByUrl(`${this.orgName}/home`);
+      this.router.navigateByUrl(`${this.orgName}/invoice`);
     }
     if (isReceiptPrint) {
-      this.generateSingleTicketReport(ticketId);
+      this.generateSingleInvoiceReport(invoiceId);
     } else {
       if (this.isCheckPrint) {
         this.checkPrintAction();
       } else {
-        this.router.navigateByUrl(`${this.orgName}/home`);
+        this.router.navigateByUrl(`${this.orgName}/invoice`);
       }       
     }
   }
@@ -1223,7 +1211,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       // Open Pdf viewer          
       this.showDownload = true;
       this.pdfViwerTitle = 'Check For Print';
-      this.generateCheckPrintReport(this.ticketId, this.checkAmount);
+      this.generateCheckPrintReport(this.invoiceId, this.checkAmount);
       this.isCheckPrint = false;
       this.checkAmount = 0;
     }
@@ -1241,7 +1229,6 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     this.itemLeveloperationPerform = this.itemLeveloperationPerform == '' ? 'Add' : this.itemLeveloperationPerform;
     this.itemCodNote = '';    
     this.itemGross = '';
-    this.itemTare = '';
     this.itemImagePath = '';
     this.closeCapturedImage(1)
     // this.materialNote = '';
@@ -1282,8 +1269,6 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.itemMaterialName = rowData.materialName;
       this.itemMaterialId = rowData.materialId;
       this.itemGross = rowData.gross;
-      this.itemTare = rowData.tare;
-      this.itemNet = isNaN(rowData.net) ?  0 : rowData.net;
       this.itemPrice = rowData.price;
       this.itemImagePath = rowData.imagePath;
       this.itemCodNote = rowData.codNote;
@@ -1298,22 +1283,16 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   
   deleteItem(i: number) {
     //alert(i);
-    this.ticketObj.splice(i, 1);
+    this.invoiceObj.splice(i, 1);
 
     
-    console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
+    console.log("updated invoiceObj :: " + JSON.stringify(this.invoiceObj));
 
-    this.calculateTotal(this.ticketObj);
+    this.calculateTotal(this.invoiceObj);
     // this.backToChangeItemMainMaterials();
     // this.backToMainMaterials();
     // this.itemGross = '';
-    // this.itemTare = 0;
 
-  }
-
-  calculateNet() {
-    const netQty = this.itemGross - this.itemTare
-    this.itemNet = isNaN(netQty) ?  0 : netQty;
   }
 
   closeCapturedImage(imagetype: number) {
@@ -1400,9 +1379,6 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     this.editItemCloseImageCapture = false;
     this.mainMaterialsVisible = true;
     this.itemGross = rowData.itemGross;
-    this.itemTare = rowData.itemTare;
-    const netQty = this.itemGross - this.itemTare
-    this.itemNet = isNaN(netQty) ?  0 : netQty;
     this.itemPrice = rowData.itemPrice;
     this.materialNote = rowData.materialNote;
     this.itemImagePath = rowData.itemImagePath;
@@ -1429,66 +1405,58 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
     if (this.itemLeveloperationPerform === 'Add') {
       // const arr = [];
-      const rowData = new TicketItem();
+      const rowData = new InvoiceItem();
       rowData.rowId = 0;
       rowData.localRowId = this.localRowIdCounter++;
-      rowData.groupName = this.itemGroupName;
-      rowData.materialName = this.itemMaterialName;
-      rowData.materialId = this.itemMaterialId;
-      rowData.gross = parseFloat(parseFloat(this.itemGross.toString()).toFixed(3));
-      rowData.tare = parseFloat(parseFloat(this.itemTare.toString()).toFixed(3));
-      rowData.net = rowData.gross - rowData.tare;
-      rowData.price = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
-      rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
-      rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
-      rowData.codNote = '';
-      rowData.materialNote = (this.materialNote || this.materialNote == '' ? this.materialNote : null );
-
 
       rowData.createdBy = this.logInUserId;
       rowData.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       rowData.updatedBy = this.logInUserId;
       rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      rowData.invoiceDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
 
-      this.ticketObj.push(rowData);
-      // this.ticketObj = arr;
+      //rowData.groupName = this.itemGroupName;
+      rowData.itemName = this.itemMaterialName;
+      rowData.materialId = this.itemMaterialId;
+      rowData.quantity = parseFloat(parseFloat(this.itemGross.toString()).toFixed(0));
+      rowData.rate = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
+      rowData.amount = parseFloat(parseFloat((rowData.rate * (rowData.quantity)).toString()).toFixed(3));
+      rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
+      rowData.materialNote = (this.materialNote || this.materialNote == '' ? this.materialNote : null );
+
+      this.invoiceObj.push(rowData);
+      // this.invoiceObj = arr;
 
     } else if (this.itemLeveloperationPerform === 'Edit') {
 
-      this.ticketObj.forEach((rowData: any) => {
+      this.invoiceObj.forEach((rowData: any) => {
         if (this.itemLocalRowId === rowData.localRowId) {
           console.log("found " + rowData.rowId);
           // rowData.rowId = this.itemRowId;
-          rowData.groupName = this.itemGroupName;
-          rowData.materialName = this.itemMaterialName;
+          //rowData.groupName = this.itemGroupName;
+          rowData.itemName = this.itemMaterialName;
           rowData.materialId = this.itemMaterialId;
-          rowData.gross = parseFloat(parseFloat(this.itemGross.toString()).toFixed(3));
-          rowData.tare = parseFloat(parseFloat(this.itemTare.toString()).toFixed(3));
-          rowData.net = rowData.gross - rowData.tare;
-          rowData.price = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
-          rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
+          rowData.quantity = parseFloat(parseFloat(this.itemGross.toString()).toFixed(0));
+          rowData.rate = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
+          rowData.amount = parseFloat(parseFloat((rowData.rate * (rowData.quantity)).toString()).toFixed(3));
           rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
-          rowData.codNote = this.itemCodNote;
           rowData.materialNote = (this.materialNote || this.materialNote == '' ? this.materialNote : null);
 
           // TO DO:: does not required. need to verify;
           rowData.updatedBy = this.logInUserId;
           rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-          rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+          rowData.invoiceDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
         }
       });
       this.itemLeveloperationPerform = '';
     }
 
-    console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
+    console.log("updated invoiceObj :: " + JSON.stringify(this.invoiceObj));
 
-    this.calculateTotal(this.ticketObj);
+    this.calculateTotal(this.invoiceObj);
     this.backToChangeItemMainMaterials();
     this.backToMainMaterials();
     this.itemGross = '';
-    this.itemTare = 0;
-
   }
 
   addAdjustments() {
@@ -1530,30 +1498,27 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
     if (this.itemLeveloperationPerform === 'Add') {
       // const arr = [];
-      const rowData = new TicketItem();
+      const rowData = new InvoiceItem();
       rowData.rowId = 0;
       rowData.localRowId = this.localRowIdCounter++;
-      rowData.materialName = rowData.concatAdjustments = this.selectedAdjustment;
       rowData.materialNote = this.adjustmentNote;
-      rowData.price = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
+      rowData.rate = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
       rowData.imagePath = '';
-      rowData.isCOD = false;
-      rowData.isAdjusmentSet = true;
 
       rowData.createdBy = this.logInUserId;
       rowData.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       rowData.updatedBy = this.logInUserId;
       rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+      rowData.invoiceDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
 
-      this.ticketObj.push(rowData);
-      // this.ticketObj = arr;
+      this.invoiceObj.push(rowData);
+      // this.invoiceObj = arr;
 
     } else if (this.itemLeveloperationPerform === 'Edit') {
       this.messageAlert(this.selectedAdjustment);
 
   
-      this.ticketObj.forEach((rowData: any) => {
+      this.invoiceObj.forEach((rowData: any) => {
         if (this.itemLocalRowId === rowData.localRowId) {
           console.log("found " + rowData.rowId);
 
@@ -1574,13 +1539,12 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
     }
 
-    console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
+    console.log("updated invoiceObj :: " + JSON.stringify(this.invoiceObj));
 
-    this.calculateTotal(this.ticketObj);
+    this.calculateTotal(this.invoiceObj);
     // this.backToChangeItemMainMaterials();
     // this.backToMainMaterials();
     // this.itemGross = 0;
-    // this.itemTare = 0;
     this.adjustmentAmount = '';
     this.adjustmentNote = '';
     this.selectedAdjustment = 'Certified Destruction Cost ';
@@ -1591,8 +1555,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     this.addEditAdjustmentVisible = false;
   }
 
-  getPromoStyles(ticket: any) {
-    if (ticket.codNote == '' && ticket.materialNote == '') {
+  getPromoStyles(invoice: any) {
+    if (invoice.codNote == '' && invoice.materialNote == '') {
       return {
         'border-bottom': '1px solid black'
       };
@@ -1601,30 +1565,30 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
 
-  closeTicket() {
+  closeInvoice() {
     console.log('close');
     this.paymentVisible = false;
     this.transactionPaymentType = [];
   }
 
-  generateSingleTicketReport(ticketId: any) {
+  generateSingleInvoiceReport(invoiceId: any) {
     // this.checkPrintAction();
     const param = {
-      TicketId: ticketId,
+      InvoiceId: invoiceId,
       LocationId: this.locId,
       Type: localStorage.getItem('defaultPrintSize')
     }
     this.showLoaderReport = false;
 
-    this.commonService.generateSingleTicketReport(param)
+    this.commonService.generateSingleInvoiceReport(param)
       .subscribe(data => {
-        console.log('generateSingleTicketReport :: ');
+        console.log('generateSingleInvoiceReport :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
         this.showLoaderReport = false;
 
         this.showDownload = false;
-        this.pdfViwerTitle = 'Ticket Receipt';
+        this.pdfViwerTitle = 'Invoice Receipt';
         this.loadAndPrintBase64Pdf(this.fileDataObj)
       },
         (err: any) => {
@@ -1656,7 +1620,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       iframe.contentWindow?.print();
       this.pollPrintStatus();
       //redirct to home page
-      //this.router.navigateByUrl(`${this.orgName}/home`);
+      //this.router.navigateByUrl(`${this.orgName}/invoice`);
     };
   }
 
@@ -1688,29 +1652,29 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     if (this.isCheckPrint) {
       this.checkPrintAction();
     } else {
-      this.router.navigateByUrl(`${this.orgName}/home`);
+      this.router.navigateByUrl(`${this.orgName}/invoice`);
     } 
   }
 
   closePdfReport() {
     this.showDownload = false;
-    // if (this.ticketId && this.ticketId != 0) {
+    // if (this.invoiceId && this.invoiceId != 0) {
     //   console.log('11111');      
     //   this.checkPrintAction();
     // } else {
     //   console.log('222222');
-    //   this.router.navigateByUrl(`${this.orgName}/home`);
+    //   this.router.navigateByUrl(`${this.orgName}/invoice`);
     // }
     
-    this.router.navigateByUrl(`${this.orgName}/home`);
+    this.router.navigateByUrl(`${this.orgName}/invoice`);
   }
 
-  checkReprint(ticketsTransaction: any) {
+  checkReprint(invoicesTransaction: any) {
     this.checkVisible = true;
-    this.printCheckNo =  ticketsTransaction.checkNumber;
-    // this.ticketId =  ticketsTransaction.
-    this.checkAmount =  ticketsTransaction.amount
-    this.selectedCheckDate =  ticketsTransaction.checkDate;
+    this.printCheckNo =  invoicesTransaction.checkNumber;
+    // this.invoiceId =  invoicesTransaction.
+    this.checkAmount =  invoicesTransaction.amount
+    this.selectedCheckDate =  invoicesTransaction.checkDate;
   }
 
   generateCheck(){
@@ -1722,23 +1686,23 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
 
-  getTicketTransactions() {
+  getInvoiceTransactions() {
 
     const param = {
-      TicketId: this.ticketId,
+      InvoiceId: this.invoiceId,
       locid: this.locId,
     };
-    this.getAllTicketsTransactionsByTicketId(param);
+    this.getAllInvoicesTransactionsByInvoiceId(param);
   }
 
-  getAllTicketsTransactionsByTicketId(paramObj: any) {
+  getAllInvoicesTransactionsByInvoiceId(paramObj: any) {
     console.log(paramObj);
-    this.commonService.GetInvoiceMaterialsDetailsByInvoiceId(paramObj)
+    this.commonService.GetAllInvoicesTransactionsByInvoiceId(paramObj)
       .subscribe(data => {
-        console.log('getAllTicketsTransactionsByTicketId :: ');
+        console.log('getAllInvoicesTransactionsByInvoiceId :: ');
         console.log(data);
         if (data.body.data.length > 0) {
-          this.ticketsTransactions = data.body.data;
+          this.invoicesTransactions = data.body.data;
 
         } else {
           this.showPartially = false;
@@ -1752,7 +1716,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
 
-  generateCheckPrintReport(ticketId: any, checkAmount: any) {
+  generateCheckPrintReport(invoiceId: any, checkAmount: any) {
     this.showLoaderReport = true;
 
     let amount = checkAmount;
@@ -1768,7 +1732,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
 
     const param = {
-      TicketId: ticketId,
+      InvoiceId: invoiceId,
       FullName: this.customer?.fullName.toUpperCase(),
       PrintDate: this.formatDate(new Date()),
       CheckDate: this.formatDate(this.selectedCheckDate),

@@ -180,6 +180,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
 
    
+    alert(this.inputBox1);
   
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');

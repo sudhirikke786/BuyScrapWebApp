@@ -1518,6 +1518,7 @@ export class TicketDetailComponent implements OnInit {
     this.backToMainMaterials();
     this.itemGross = '';
     this.itemTare = 0;
+    this.materialNote = '';
 
   }
 

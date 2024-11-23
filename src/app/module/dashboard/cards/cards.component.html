@@ -1,0 +1,120 @@
+<!-- cards.component.html -->
+<div class="container d-flex w-100 justify-content-center">
+  <div class="cards-container">
+    <!-- Received Card -->
+    <div class="card blue-border" (click)="openModal('received')">
+      <p>Received</p>
+      <h2>${{ receivedTotal | number:'1.0-0' }}</h2>
+      <div class="dropdown">
+        <select [(ngModel)]="selectedTimeRange" (click)="$event.stopPropagation()" (change)="onTimeRangeChange($event)">
+          <option value="OneWeek">1 Week</option>
+          <option value="Daily">Current Month</option>
+          <option value="OneMonth">1 Month</option>
+          <option value="Monthly" selected>1 Year</option>
+        </select>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart
+                [data]="receivedData"
+                [options]="chartOptions"
+                [type]="'line'">
+        </canvas>
+      </div>
+    </div>
+  
+    <!-- Shipout Card -->
+    <div class="card yellow-border" (click)="openModal('shipout')">
+      <p>Shipout</p>
+      <h2>{{ shipoutTotal | number:'1.0-0' }}</h2>
+      <div class="dropdown">
+        <select [(ngModel)]="selectedTimeRange" (click)="$event.stopPropagation()" (change)="onTimeRangeChange($event)">
+          <option value="OneWeek">1 Week</option>
+          <option value="Daily">Current Month</option>
+          <option value="OneMonth">1 Month</option>
+          <option value="Monthly" selected>1 Year</option>
+        </select>
+      </div>
+  
+      <div class="chart-container">
+        <canvas baseChart
+                [data]="shipoutData"
+                [options]="chartOptions"
+                [type]="'line'">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <!-- Regraded Card -->
+    <div class="card orange-border" (click)="openModal('regraded')">
+      <p>Regraded</p>
+      <h2>{{ regradedTotal | number:'1.0-0' }}</h2>
+      <div class="dropdown" (click)="$event.stopPropagation()">
+        <select [(ngModel)]="selectedTimeRange" (change)="onTimeRangeChange($event)">
+          <option value="OneWeek">1 Week</option>
+          <option value="Daily">Current Month</option>
+          <option value="OneMonth">1 Month</option>
+          <option value="Monthly" selected>1 Year</option>
+        </select>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart
+                [data]="regradedData"
+                [options]="chartOptions"
+                [type]="'line'">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Total Revenue Card -->
+    <div class="card green-border" (click)="openModal('revenue')">
+      <p>Total Revenue</p>
+      <h2>${{ revenueTotal | number:'1.0-0' }}</h2>
+      <div class="dropdown" (click)="$event.stopPropagation()">
+        <select [(ngModel)]="selectedTimeRange" (change)="onTimeRangeChange($event)">
+          <option value="OneWeek">1 Week</option>
+          <option value="Daily">Current Month</option>
+          <option value="OneMonth">1 Month</option>
+          <option value="Monthly" selected>1 Year</option>
+        </select>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart
+                [data]="totalRevenueData"
+                [options]="chartOptions"
+                [type]="'line'">
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Component -->
+<app-modal [isOpen]="isModalOpen" (close)="closeModal()">
+  <div *ngIf="selectedCard" [ngClass]="'modal-card ' + selectedCard + '-border'">
+    <div class="row-container">
+      <div>
+        <p>{{ getCardTitle() }}</p>
+        <br>
+        <h2>${{ getCardTotal() | number:'1.0-0' }}</h2>
+      </div>
+
+      <!-- Dropdown for time range selection -->
+      <select [(ngModel)]="selectedTimeRange" (change)="onTimeRangeChange($event)" style=" height: 40px; border-radius: 5px;">
+        <option value="OneWeek">1 Week</option>
+        <option value="Daily">Current Month</option>
+        <option value="OneMonth">1 Month</option>
+        <option value="Monthly" selected>1 Year</option>
+      </select>
+    </div>
+
+    <div class="modal-chart-container">
+      <canvas baseChart
+              [data]="getCardData()"
+              [options]="modalChartOptions"
+              [type]="'line'">
+      </canvas>
+    </div>
+  </div>
+</app-modal>

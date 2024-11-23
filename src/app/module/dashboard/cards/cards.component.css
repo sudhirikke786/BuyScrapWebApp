@@ -1,0 +1,181 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .cards-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+
+  .row-container{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px 0 0 0;
+    margin: 10px;
+    flex: 1;
+    min-height: 130px;
+    min-width: 200px;
+    max-width: 300px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .card h3 {
+    color: #333333;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .card p {
+    color: #666666;
+    font-size: 1.2rem;
+  }
+  
+  /* RGB colored borders for each card */
+  .yellow-border {
+    border-top: 1mm solid rgb(185, 255, 46);
+    background-color: rgba(184, 255, 42, 0.051);
+    /* background-image: url('bg3.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: -10px; */
+  }
+  
+  .green-border {
+    border-top: 1mm solid green;
+    background-color: rgba(0, 128, 0, 0.051);
+    /* background-image: url('bg2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: -10px; */
+  }
+  
+  .blue-border {
+    border-top: 1mm solid rgb(6, 88, 240);
+    background-color: rgb(6, 88, 240, 0.051);
+    /* background-image: url('bg1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: -10px; */
+  }
+
+  .orange-border {
+    border-top: 1mm solid orange;
+    background-color: rgba(255, 166, 0, 0.051);
+    /* background-image: url('bg1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: -10px; */
+  }
+
+  .blue-border:hover {
+    border-left: 1px black;
+    box-shadow: 2px 1px 5px darkblue;
+    transform: scale(1.05);
+    transition: 0.5s;
+  }
+
+  .orange-border:hover {
+    border-left: 1px black;
+    box-shadow: 2px 1px 5px darkorange;
+    transform: scale(1.05);
+    transition: 0.5s;
+  }
+
+  .yellow-border:hover {
+    border-left: 1px black;
+    box-shadow: 2px 1px 5px darkgreen;
+    transform: scale(1.05);
+    transition: 0.5s;
+  }
+
+  .green-border:hover {
+    border-left: 1px black;
+    box-shadow: 2px 1px 5px darkgreen;
+    transform: scale(1.05);
+    transition: 0.5s;
+  }
+
+.modal-card {
+  width: 60%;
+  height: 60%;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.dropdown{
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.dropdown select {
+    /* height: 3px; /* Decrease height for a smaller dropdown */
+    /* width:60px; */
+    text-align: center; /* Center text */
+    text-align-last: center;
+    font-size: 0.9rem; /* Decrease font size for smaller text */
+    padding: 0 5px; /* Decrease padding for a more compact appearance */
+    border-radius: 3px; /* Adjust border-radius for smaller corners */
+    border: none; /* Optional: Add a border for better visibility */
+    background-color: transparent;
+    appearance: none;
+    cursor: pointer;
+}
+
+.modal-chart-container {
+  height: 50%;
+  margin-top: 20px;
+}
+
+/* Apply the same border classes as the original cards */
+.modal-card.received-border {
+  border-top: 1mm solid rgb(6, 88, 240);
+}
+
+.modal-card.shipout-border {
+  border-top: 1mm solid rgb(185, 255, 46);
+}
+
+.modal-card.regraded-border {
+  border-top: 1mm solid orange;
+}
+
+.modal-card.revenue-border {
+  border-top: 1mm solid green;
+}
+  
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .modal-card {
+      width: 95%;
+      height: 60%;
+    }
+  
+    .card {
+      max-width: 90%;
+    }
+  }
+  

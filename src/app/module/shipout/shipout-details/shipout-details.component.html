@@ -42,13 +42,9 @@
                                             <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/ship-out">
                                                 Back
                                             </a>
-                                            <!-- <a *ngIf="!isEditModeOn" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right me-1" (click)="editTicketDetails()">
+                                            <!-- <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
                                                 <i class="mdi mdi-pencil"></i> Edit
                                             </a> -->
-
-                                           
-                                           
-                   
                                             <div *ngIf="isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
                                                 <!-- <a class="btn btn-danger me-1" (click)="cancelEditTicket()">Cancel</a> -->
                                                 <a class="btn btn-primary" (click)="confirmSave()">Save</a>
@@ -96,17 +92,13 @@
                                             [rows]="10"
                                             [loading]="isLoading"
                                             [responsive]="true"
-                                        
                                             [showCurrentPageReport]="false"
                                             [scrollable]="true" 
                                             >
                 
                                             <ng-template pTemplate="header">
                                                 <tr>
-                                                    <!-- <th pSortableColumn="name">Name <p-sortIcon [field]="'name'"></p-sortIcon></th> -->
-                                                    <!-- <th pSortableColumn="gross"> <p-sortIcon [field]="'gross'"></p-sortIcon>Gross(M)</th> -->
-
-                                                    <th style="width: 40%">Material</th>
+                                                    <th style="width: 40%;">Material</th>
                                                     <th>Gross(M)</th>
                                                     <th>Tare</th>
                                                     <th>Net</th>
@@ -137,6 +129,14 @@
                                                             </a>
                                                         </td>
                                                     </tr>
+                                                    <tr [ngClass]="{'no-border-tr': ticket.note !=''}"  *ngIf="ticket.note != ''">
+                                                        <!-- <td class="cod-item">
+                                                            {{ ticket?.codNote }}
+                                                        </td> -->
+                                                        <td colspan="7">
+                                                            Note : {{ ticket?.note }}
+                                                        </td>
+                                                    </tr>
                                                 </ng-container>
 
                                                 <ng-container *ngIf="!isEditModeOn" >
@@ -145,6 +145,14 @@
                                                         <td>{{ ticket.gross  }}</td>
                                                         <td>{{ ticket.tare }}</td>
                                                         <td>{{ ticket.net }}</td>                                                        
+                                                    </tr>
+                                                    <tr [ngClass]="{'no-border-tr': ticket.note !=''}"  *ngIf="ticket.note != ''">
+                                                        <!-- <td class="cod-item">
+                                                            {{ ticket.codNote }}
+                                                        </td> -->
+                                                        <td colspan="7">
+                                                            Note : {{ ticket.note }}
+                                                        </td>
                                                     </tr>
                                                 </ng-container>
                                               
@@ -190,10 +198,9 @@
                                     </div>
                                 </div>
                             </div>
-
                             
-                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture">
-                                
+
+                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture">    
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 160px)">
                                     <h4 class="materials-heading">Materials</h4>
 
@@ -205,18 +212,16 @@
                                          (keyup)="searchMaterial($event)"
                                         class="form-control w-100"
                                         placeholder="Search  Material"
-                                        aria-describedby="helpId"
-                                    />
+                                        aria-describedby="helpId"/>
                                         
                                     </div>
-
   
                                     <ul class="main-ul mt-1">
                                       
                                       <ng-container  *ngFor="let item of materialList" >
                                           <li>
-                                              <a id="showInnerDiv1" class="btn custom-lh"  
-                                              pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
+                                            <a id="showInnerDiv1" class="btn custom-lh"  
+                                            pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
                                               (click)="getSubMaterials(item.rowId, item.groupName, false)">
                                                   {{item.groupName}}
                                               </a>
@@ -231,26 +236,22 @@
                                       <span>
                                           <a id="backToMainBox1" class="btn btn-primary " (click)="backToMainMaterials()"><i class="mdi mdi-keyboard-backspace"></i></a>
                                       </span>
-                                       <div class="main-material"> Main Material - {{selectedMaterial}}</div>
+                                      <div class="main-material"> Main Material - {{selectedMaterial}}</div>
                                   </h1>
 
                                   <div>
-                                    <input
-                                     type="text"
-                                     
-                                     #searchsubMaterialInput
-                                     (keyup)="searchSubMaterial($event)"
+                                    <input type="text"                                     
+                                    #searchsubMaterialInput
+                                    (keyup)="searchSubMaterial($event)"
                                     class="form-control w-100"
                                     placeholder="Search  Material"
-                                    aria-describedby="helpId"
-                                />
-                                    
-                                </div>
+                                    aria-describedby="helpId" />                                    
+                                  </div>
                        
                                     <ul class="main-ul mt-1">
                                       <ng-container  *ngFor="let item of subMaterialList" >
                                           <li>
-                                              <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
+                                              <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.availableStock)"
                                               pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
                                               class="btn  custom-lh">{{item.materialName}}</a>
                                           </li>
@@ -259,12 +260,8 @@
   
                                 </div>
                             </div>
-                            
 
-
-
-
-                            <!-- <div class="col-sm-6" *ngIf="isEditModeOn && editItemCloseImageCapture">
+                            <!-- <div class="col-sm-4 " *ngIf="isEditModeOn && editItemCloseImageCapture">
                                 <div class="calc" style="height:calc(100vh - 150px);width:100%;overflow: hidden;">
 
                                     <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()"
@@ -308,10 +305,6 @@
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
 <div *ngIf="isEditModeOn && editItemCloseImageCapture">
-    
-
-
-
     <p-sidebar [style]="{'width':'60%'}" [(visible)]="isEditModeOn && editItemCloseImageCapture" position="right">
       
         <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()"

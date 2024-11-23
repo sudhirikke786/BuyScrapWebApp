@@ -18,27 +18,24 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   @Input() itemMaterialName = 'Aluminum Motors (Clean/Limpios)';
   @Input() itemImagePath = 'assets/images/custom/id_scan.png';
 
-
   @Input() itemGross: any;
   @Input() itemTare: any;
   @Input() itemNet: number = 0;
   @Input() itemAvailableNet: number = 0;
+  @Input() itemMaterialPrice: number = 0;
 
   @Output() calculateObj = new EventEmitter<any>();
   @Output() changeItemEvent = new EventEmitter<any>();
-
-
-
 
   grossInput:any;
   tareInput:any;
   netInput:any =0;
   availableNetInput:any =0;
   focusedInput: string | null = null;
+  addNoteSectionVisible = false;  
   inputBoxes: any[] = [];
   private currentFocusIndex = 0;
-
-  addNoteSectionVisible = false;  
+  checkTabView =  false;
 
   displayValue: string = '';
 
@@ -46,28 +43,21 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
 
   isVirtual = true;
   isKeyboard = true;
-
-  checkTabView =  false;
-
-
   @Output()  backClose =  new EventEmitter<any>();
   constructor(private renderer: Renderer2, private helperService:HelperService,
     private elementRef: ElementRef) {
       this.checkTabView = this.helperService.isTab();
-
   }
 
   onKeyPress(event: KeyboardEvent) {
-
     if(this.isVirtual){
       event.preventDefault();
-    }
-   
+    }   
   }
-
 
   ngOnInit(): void {
   
+    alert(this.inputBox1);
     this.grossInput = this.itemGross;
     this.tareInput = this.itemTare;
     const netQty = this.grossInput - this.tareInput
@@ -75,15 +65,13 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
     this.availableNetInput = this.itemAvailableNet;
     if (this.inputBox1) {
       this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
-    }
-   
+    }   
 
     if(this.checkTabView){
       this.isVirtual = true;
     }else{
       this.isVirtual = false;
-    } 
-
+    }
 
   }
 

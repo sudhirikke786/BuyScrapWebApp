@@ -23,8 +23,8 @@ import { GlobalErrorHandlerService } from './core/services/global-error-handler.
 import { PrintTicketComponent } from './print-ticket/print-ticket.component';
 import { ErrorComponent } from './error/error.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { SuccessPageComponent } from './success-page/success-page.component';
-import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component'
+import { SuccessPageComponent } from './success-page/success-page.component'
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -39,8 +39,7 @@ import { HomeDashboardComponent } from './home-dashboard/home-dashboard.componen
     PrintTicketComponent,
     ErrorComponent,
     SignUpComponent,
-    SuccessPageComponent,
-    HomeDashboardComponent    
+    SuccessPageComponent    
   ],
   imports: [
     BrowserModule,
@@ -50,7 +49,8 @@ import { HomeDashboardComponent } from './home-dashboard/home-dashboard.componen
     PrimengModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgChartsModule
   ],
   providers: [
     MessageService,  

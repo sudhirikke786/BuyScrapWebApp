@@ -352,7 +352,7 @@
                                                  
         
                                                     <div *ngIf="!isEditModeOn" class="pay-print-box">
-                                                        <a *ngIf="(ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid') && (currentRole!== 'Scale')" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
+                                                        <a *ngIf="(ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid') && (currentRole!== 'Scale')" class="btn btn-danger me-1" (click)="showPayment(true)">Pay Ticket</a>
                                                         <a class="btn btn-primary" (click)="generateSingleTicketReport(ticketId)">Printout</a>
                                                     </div>        
         

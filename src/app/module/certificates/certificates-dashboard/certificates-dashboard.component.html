@@ -85,7 +85,7 @@
                     <td *ngIf="certificate?.dateClosed != null">
 					          <a (click)="getCODImagesbyID(certificate,'show')" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i> Show</a>
 
-                      <a href="javascript:void()" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-printer"></i> Print</a>
+                      <a (click)="generateCODReport(certificate.rowId)" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-printer"></i> Print</a>
 
                       <!-- <a href="" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-restore"></i> Restore</a>  -->
                     </td>
@@ -346,6 +346,21 @@
   </ng-template>
 </p-dialog>
 
+
+<ng-container *ngIf="!checkTabView">
+
+  <p-dialog header="COD Receipt Report" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+    
+    <div *ngIf="!showDownload">
+      <app-page-loader type="reportloader"></app-page-loader>
+    </div>
+    <div class="row" >
+      <div style="height: 500px;" *ngIf="showDownload">             
+        <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
+      </div>
+    </div>
+  </p-dialog>
+  </ng-container>
       
 <p-toast></p-toast>
 

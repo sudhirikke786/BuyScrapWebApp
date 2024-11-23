@@ -84,7 +84,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
 
   tickets: any;
   childTickets: any;
-  ticketsTransactions: any;
+  invoicesTransactions: any;
   sellerTickets: any;
   sellers: any;
   selectedSellerId: any;
@@ -413,19 +413,19 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   getTicketTransactions() {
     this.showVoidDialogBox = true;
     const param = {
-      TicketId: this.tiketSelectedObj?.rowId
+      InvoiceId: this.tiketSelectedObj?.rowId
     };
-    this.getAllTicketsTransactionsByTicketId(param);
+    this.getAllInvoicesTransactionsByInvoiceId(param);
   }
 
-  getAllTicketsTransactionsByTicketId(paramObj: any) {
+  getAllInvoicesTransactionsByInvoiceId(paramObj: any) {
     console.log(paramObj);
-    this.commonService.getAllTicketsTransactionsByTicketId(paramObj)
+    this.commonService.GetAllInvoicesTransactionsByInvoiceId(paramObj)
       .subscribe(data => {
-        console.log('getAllTicketsTransactionsByTicketId :: ');
+        console.log('getAllInvoicesTransactionsByInvoiceId :: ');
         console.log(data);
         if (data.body.data.length > 0) {
-          this.ticketsTransactions = data.body.data;
+          this.invoicesTransactions = data.body.data;
           this.showPartially = true;
           this.showOpen = false;
         } else {
@@ -618,10 +618,11 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   }
 
   clickOnSeller(sellerId: any, sellerFullname: any) {
+    alert(sellerId + ' :: ' + sellerFullname);
     this.selectedSellerName = sellerFullname;
     this.selectedSellerId = sellerId;
     if (this.newTicketVisible == true) {
-      this.router.navigateByUrl(`/${this.orgName}/home/invoice/new/${sellerId}`);
+      this.router.navigateByUrl(`/${this.orgName}/invoice/detail/new/${sellerId}`);
     } else if (this.ticketvisible == true) {
       this.mergeTicketVisible = true;
       this.getAllTicketsBySellerId(sellerId);

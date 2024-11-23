@@ -11,7 +11,7 @@
 
                 <div class="col-sm-6 col-6">
                     <div class="b-links">
-                        <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/home/detail/{{ticketId}}/{{sellerId}}">Ticket Details</a>
+                        <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/invoice/detail/{{ticketId}}/{{sellerId}}">Invoice Details</a>
                     </div>
                 </div>
             </div>
@@ -28,7 +28,7 @@
 
                         <div class="row">
 
-                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  ticketData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-6'">
+                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  invoiceData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-6'">
                                 
                                 <div class="row">
                                     <div class="col-sm-2">
@@ -40,7 +40,7 @@
                                         <div class="row">
                                            <div class="col-sm-6 col-md-4 d-flex">
                                             
-                                            <h4 class="ticket-number me-1">Ticket# -{{ticketId}} / {{ticketData?.status}}   </h4>
+                                            <h4 class="ticket-number me-1">Invoice # - {{invoiceId}} / {{invoiceData?.status}}   </h4>
 
                                            
                                            </div>
@@ -60,14 +60,14 @@
 
                                             </div>
                                             <div>
-                                                <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary flt-right" (click)="editTicketDetails()">
+                                                <a *ngIf="!isEditModeOn && invoiceData.status == 'OPEN'" class="btn  btn-primary flt-right" (click)="editInvoiceDetails()">
                                                     <i class="mdi mdi-pencil"></i> Edit
                                                 </a>
                                             </div>
                                                
                                               
                                                 <div *ngIf="isEditModeOn" >
-                                                    <a class="btn btn-danger me-1" (click)="cancelEditTicket(false, 0)">Cancel</a>
+                                                    <a class="btn btn-danger me-1" (click)="cancelEditInvoice(false, 0)">Cancel</a>
                                                     <a class="btn btn-primary" (click)="confirmSave()">Save</a>
                                                 </div>
         
@@ -78,8 +78,8 @@
                                             <tbody><tr>
                                                 <td>{{customer?.fullName}}</td>
                                                 <td>Address : {{customer?.streetAddress}}</td>
-                                                <td>Created on : <label>{{ticketData?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
-                                                <td>Time : {{ticketData?.createdDate  | date: 'hh:mm a'}}</td>
+                                                <td>Created on : <label>{{invoiceData?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
+                                                <td>Time : {{invoiceData?.createdDate  | date: 'hh:mm a'}}</td>
                                             </tr>
         
                                             <tr>
@@ -99,18 +99,17 @@
                                     <div class="col-sm-4">
 
                                         
-                                        <h4 class="title-plus-border">Status - <span class="color-green">{{ticketData?.status}}</span></h4>                                                
+                                        <h4 class="title-plus-border">Status - <span class="color-green">{{invoiceData?.status}}</span></h4>                                                
                                     </div>
                                 </div> -->
 
 
                                 <div class="row">
                                     <div class="card-ticket-table mt-2">
-                                        <p-table class="ticket-table" #dt1 [value]="ticketObj" 
+                                        <p-table class="ticket-table" #dt1 [value]="invoiceObj" 
                                             [paginator]="false" 
                                             [rows]="10"
-                                            [loading]="isLoading"
-                                     
+                                            [loading]="isLoading"                                     
                                             [showCurrentPageReport]="false"
                                             [scrollable]="true" 
                                             >
@@ -132,7 +131,7 @@
                                                     <!-- (contextmenu)="onContextMenu($event,ticket) ; op?.toggle($event)"  -->
                                                     <tr    [ngClass]="{'border-tr': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
-                                                            <td class="cod-item" style="width: 25%;">{{ ticket.materialName }}</td>
+                                                            <td class="cod-item" style="width: 25%;">{{ ticket.itemName }}</td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
@@ -140,9 +139,9 @@
                                                             <td class="cod-item">{{ ticket?.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}
                                                         </ng-container>
                                                         <ng-template #otherThanCOD >
-                                                            <td style="width: 25%;">{{ ticket?.materialName }}</td>
-                                                            <td>{{ ticket?.gross  }}</td>
-                                                            <td>{{ ticket?.price | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                            <td style="width: 25%;">{{ ticket?.itemName }}</td>
+                                                            <td>{{ ticket?.quantity  }}</td>
+                                                            <td>{{ ticket?.rate | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                             <td>{{ ticket?.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                         </ng-template>
                                                         <td>
@@ -177,7 +176,7 @@
 
                                                     <tr class="border-tr" [ngClass]="{'border-tr': ticket.materialNote ==''}" >
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
-                                                            <td class="cod-item" style="width: 25%;">{{ ticket.materialName }}</td>
+                                                            <td class="cod-item" style="width: 25%;">{{ ticket.itemName }}</td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
@@ -185,10 +184,10 @@
                                                             <td class="cod-item">{{ ticket.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                         </ng-container>
                                                         <ng-template #otherThanCOD >
-                                                            <td style="width: 25%;">{{ ticket.materialName }}</td>
-                                                            <td>{{ ticket.gross  }}</td>
+                                                            <td style="width: 25%;">{{ ticket.itemName }}</td>
+                                                            <td>{{ ticket.quantity  }}</td>
                                                            
-                                                            <td>{{ ticket.price | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                            <td>{{ ticket.rate | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                             <td>{{ ticket.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                         </ng-template>
                                                         <td>
@@ -214,7 +213,7 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98 p-open' : 'col-6 p-close'" >
+                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && invoiceData?.status?.toUpperCase() =='OPEN'? 'w-98 p-open' : 'col-6 p-close'" >
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
                                                 <!-- <p class="ticket-details-p fz-14"><b>Adjustment : {{(totalAdjustment * -1) | currency: currencySymbol :'symbol': numberFormat}}</b></p> -->
@@ -250,11 +249,11 @@
                                          
                                                     <div class="ticket-summary-div d-flex justify-content-start align-item-center">
                                                         <div class="me-2">
-                                                            <b class="fz-14">Paid Amount  {{ticketData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
+                                                            <b class="fz-14">Paid Amount  {{invoiceData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
                                                         </div>
             
                                                         <div class="ms-2 me-2">
-                                                            <b class="fz-14">Balance Amount  {{totalAmount - totalAdjustment - ticketData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
+                                                            <b class="fz-14">Balance Amount  {{totalAmount - totalAdjustment - invoiceData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
                                                         </div> 
                                                         <div class="ms-2" *ngIf="!isEditModeOn && false" >
                                                             <div class="d-flex justify-content-start align-items-center">
@@ -283,7 +282,7 @@
                                                  
         
                                                     <div *ngIf="!isEditModeOn" class="pay-print-box">
-                                                        <a *ngIf="(ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid') && (currentRole!== 'Scale') && false" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
+                                                        <a *ngIf="(invoiceData.status == 'OPEN' || invoiceData.status == 'Partially Paid') && (currentRole!== 'Scale')" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
                                                         <a class="btn btn-primary" (click)="generateSingleTicketReport(ticketId)">Printout</a>
                                                     </div>        
         
@@ -301,14 +300,14 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
+                            <div class="col-sm-6" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  invoiceData?.status?.toUpperCase()!='OPEN'">
 
                                 <!-- <div class="col-12">  -->
                                 <div id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
                                     <div class="card">
                                         <div class="card-body px-1 py-1">
                                             
-                                            <p-table #dt1 [value]="ticketsTransactions" [paginator]="false">
+                                            <p-table #dt1 [value]="invoicesTransactions" [paginator]="false">
                         
                                                 <ng-template pTemplate="header">
                                                     <tr>
@@ -318,12 +317,12 @@
                                                         <th>Check number</th>
                                                     </tr>
                                                 </ng-template>
-                                                <ng-template pTemplate="body" let-ticketsTransaction>
+                                                <ng-template pTemplate="body" let-invoicesTransaction>
                                                     <tr>
                                                         <td># </td>
-                                                        <td>{{ ticketsTransaction?.type }} <a pTooltip="Check reprint" href="javascript:void()" *ngIf="ticketsTransaction?.type == 'Check'" (click)="checkReprint(ticketsTransaction)" ><i class="bi bi-printer-fill ms-1"></i></a></td>
-                                                        <td>{{ ticketsTransaction?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
-                                                        <td>{{ ticketsTransaction?.checkNumber }}</td>
+                                                        <td>{{ invoicesTransaction?.type }} <a pTooltip="Check reprint" href="javascript:void()" *ngIf="ticketsTransaction?.type == 'Check'" (click)="checkReprint(ticketsTransaction)" ><i class="bi bi-printer-fill ms-1"></i></a></td>
+                                                        <td>{{ invoicesTransaction?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                                        <td>{{ invoicesTransaction?.checkNumber }}</td>
                                                     </tr>
                                                 </ng-template>
                         
@@ -401,13 +400,10 @@
                             </div>
 
                             <div class="col-lg-6 col-xs-12 col-sm-6 position-releative" *ngIf="isEditModeOn && editItemCloseImageCapture">
-
-                               
-                                    <app-invoice-calculator  (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()" (backClose)="backToChangeItemMainMaterials()"
-                                [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
-                                        [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
-                                    </app-invoice-calculator>
-                              
+                                <app-invoice-calculator (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()" (backClose)="backToChangeItemMainMaterials()"
+                                    [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
+                                    [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
+                                </app-invoice-calculator>
                             </div>
                         </div>
                     
@@ -538,12 +534,12 @@
     </div>
     <div class="d-flex justify-content-center">
         <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">Pay Amount without printing</button></div>
-        <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveTicketDetails(0, true)" style="line-height: 18px  !important;">Print and Save</button></div>
+        <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveInvoiceDetails(0, true)" style="line-height: 18px  !important;">Print and Save</button></div>
         <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)"  style="line-height: 18px  !important;">Pay Amount and Print </button></div>
     </div>
 
     <div class="d-flex justify-content-center mt-2">
-        <div><button class="btn btn-success justify-content-center equal-h me-2" (click)="saveTicketDetails(0, false)">Close and Save</button></div>
+        <div><button class="btn btn-success justify-content-center equal-h me-2" (click)="saveInvoiceDetails(0, false)">Close and Save</button></div>
     </div>
     
 </p-dialog>

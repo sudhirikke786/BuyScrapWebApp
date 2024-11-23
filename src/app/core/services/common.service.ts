@@ -183,6 +183,22 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Invoice/GetAllInvoiceDetails', 'GET', paramObj);
   }
 
+  GetInvoiceMaterialsDetailsByInvoiceId(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InvoiceTransactionMaster/GetInvoiceMaterialsDetailsByInvoiceId', 'GET', paramObj);
+  }
+
+  insertUpdateInvoice(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Invoice/InsertUpdateInvoice', 'POST', requestObj);
+  }
+
+  insertInvoiceTransactions(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Invoice/InsertInvoiceTransactions', 'POST', requestObj);
+  }
+
+  GetAllInvoicesTransactionsByInvoiceId(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Invoice/GetAllInvoicesTransactionsByInvoiceId', 'GET', paramObj);
+  }
+
 
 
 
@@ -193,10 +209,6 @@ export class CommonService {
 
   getAllTicketsTransactionsByTicketId(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsTransactionsByTicketId', 'GET', paramObj);
-  }
-
-  GetInvoiceMaterialsDetailsByInvoiceId(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/InvoiceTransactionMaster/GetInvoiceMaterialsDetailsByInvoiceId', 'GET', paramObj);
   }
 
   insertUpdateTickets(requestObj: any): Observable<any> {
@@ -259,7 +271,9 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Materialss/GetSubMaterials', 'GET', paramObj);
   } 
 
-
+  getSubMaterialByID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Materialss/GetSubMaterialByID', 'GET', paramObj);
+  } 
 
   getAllSubMaterials(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterials', 'GET', paramObj);
@@ -404,6 +418,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetTransactionsTicketReceipt', 'GET', paramObj);
   }
 
+  generateSingleInvoiceReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetTransactionsTicketReceipt', 'GET', paramObj);
+  }
+
   generateInventoryReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetAllInventoryReport', 'GET', paramObj);
   }
@@ -454,6 +472,10 @@ export class CommonService {
 
   getCashdrawerReceipt(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetCashdrawerReceipt', 'GET', paramObj);
+  }
+
+  getCODTicketReceipt(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetCODTicketReceipt', 'GET', paramObj);
   }
 
   /** Admin API */

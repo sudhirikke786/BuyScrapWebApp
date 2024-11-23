@@ -391,7 +391,7 @@ export class UserLoginComponent implements OnInit {
         this.insertConsentdetail();
       } else {
         if (this.isMandatoryConsentAccepted || this.byPassConsent) {
-          this.router.navigateByUrl(`/${this.organizationName}/home-dashboard`);
+          this.router.navigateByUrl(`/${this.organizationName}/home`);
         } else {
           this.insertConsentdetail();
         }

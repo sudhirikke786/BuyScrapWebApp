@@ -72,7 +72,7 @@ export class OrganizationLoginComponent implements OnInit {
         },
         (err: any) => {
           
-          this.messageService.add({ severity: 'success', summary: 'Error', detail: 'Invalid credentials.' });
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials.' });
           // this.messageService.add({ severity: 'error', summary: 'Error', detail: err });
 
           

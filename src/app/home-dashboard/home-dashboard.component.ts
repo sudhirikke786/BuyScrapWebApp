@@ -89,6 +89,12 @@ export class HomeDashboardComponent implements OnInit {
         url:'/admin',
         icon:'/assets/images/custom/icons/admin.png',
         role: ['Administrator']
+      },
+      {
+        title:'Dashboard',
+        url:'/dashboard',
+        icon:'/assets/images/custom/icons/admin.png',
+        role: ['Administrator','Cashier']
       }
   ]
 

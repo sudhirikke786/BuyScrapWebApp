@@ -432,7 +432,7 @@
             <div class="card">
                 <div class="card-body px-1 py-1">
                     
-                    <p-table #dt1 [value]="ticketsTransactions" [paginator]="false">
+                    <p-table #dt1 [value]="invoicesTransactions" [paginator]="false">
 
                         <ng-template pTemplate="header">
                             <tr>
@@ -442,12 +442,12 @@
                                 <th>Check number</th>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-ticketsTransaction>
+                        <ng-template pTemplate="body" let-invoicesTransaction>
                             <tr>
                                 <td># </td>
-                                <td>{{ ticketsTransaction?.type }}</td>
-                                <td>{{ ticketsTransaction?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
-                                <td>{{ ticketsTransaction?.checkNumber }}</td>
+                                <td>{{ invoicesTransaction?.type }}</td>
+                                <td>{{ invoicesTransaction?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                <td>{{ invoicesTransaction?.checkNumber }}</td>
                             </tr>
                         </ng-template>
 

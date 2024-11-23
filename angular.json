@@ -38,7 +38,7 @@
               "src/assets/css/app.min.css",
               "src/assets/css/bootstrap.min.css",
               "src/assets/css/custom.css",
-              "src/assets/css/icons.min.css",
+              "src/assets/css/icons.min.css"
              
             ],
             "scripts": [
