@@ -31,10 +31,6 @@
                             <div  [ngClass]="(isEditModeOn || (!isEditModeOn && invoiceData?.status?.toUpperCase() =='OPEN')) && (invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' ) ? 
                             'col-sm-12' : 'col-sm-6'">
                                 
-                                <!-- <div class="row">
-                                    {{invoiceData?.status?.toUpperCase()}} ====== {{(invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' )}}
-                                    ---- {{isEditModeOn}} -----
-                                </div> -->
                                 <div class="row">
                                     <div class="col-sm-2">
                                         <img src="{{customer?.idfaceShotImage}}" class="dl-img">

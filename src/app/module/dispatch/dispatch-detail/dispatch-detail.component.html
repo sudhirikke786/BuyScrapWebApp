@@ -1,0 +1,118 @@
+<div class="container">
+  <div class="header" style="display: flex; justify-content: space-between;">
+    <h2 style="color: #02659d;">Dispatch</h2>
+    <button class="save-btn" style="color: white; background-color: #02659d">Save</button>
+  </div>
+
+  <div class="info-section">
+    <div class="customer-info" style="display: flex; gap: 10rem;">
+      <div style="display: flex; flex-direction: column;">
+          <div>
+              <label >Customer Name: </label> <span>{{customerName}}</span>
+              <!-- <input type="text" [value]="customerName" readonly> -->
+              
+          </div>
+          <div>
+              <label>Type:</label>
+              <select>
+              <option>Exchange</option>
+              <option>Pick Up</option>
+              <option>Drop Off</option>
+              </select>
+          </div>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+          <div>
+              <label>Address:</label><span>{{address}}</span>
+              <!-- <input type="text" placeholder="Enter Address"> -->
+          </div>
+          <div>
+              <label>PickUp Date:</label>
+              <input type="date" >
+          </div>
+      </div>
+    </div>
+
+    <div class="driver-info" style="display: flex; flex-direction: column;">
+      <div>
+          <label style="margin-right: 5px;">Driver:</label>
+          <select>
+            <option>Select Driver</option>
+            <option *ngFor="let driver of drivers" [value]="driver.rowId">
+              {{ driver.userName }}
+            </option>
+          </select>
+      </div>
+      <div>
+          <label style="margin-right: 5px;">By:</label>
+          <span>{{firstname}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+      <div style="background-color: #fff; padding: 10px;">
+          <table class="table" style="background-color: white;">
+              <thead>
+                <tr>
+                  <th>Container Type</th>
+                  <th>Drop Of Box#</th>
+                  <th>Box Pick Up#</th>
+                  <th>Charges</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of tableData; let i = index">
+                  <td>{{item.containerType}} <span style="color: green;"><br><small>{{item.notes}}</small></span></td>
+                  <td>{{item.dropOffBox}}</td>
+                  <td>{{item.pickUpBox}}</td>
+                  <td>{{item.charges}}</td>
+                  <td>
+                    <button class="edit-btn" (click)="editEntry(i)">Edit</button>
+                    <button class="delete-btn" (click)="deleteEntry(i)">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3"></td>
+                  <td>
+                    <div class="total-charges">
+                      <label>Total Charges:</label>
+                      <span>{{totalCharges}}</span>
+                    </div>
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
+          </table>
+          
+      </div>
+    
+      <div class="form-section" style="display: flex; flex-direction: column; width: 23vw;">
+        <label>Select Container</label>
+        <select [(ngModel)]="formData.containerType">
+          <option value="">Select Container</option>
+          <option *ngFor="let container of containers" [value]="container.rowId">
+            {{ container.containerType }} - {{ container.containerSize }}
+          </option>
+        </select>
+      
+        <label>Drop OF Box#</label>
+        <input type="number" [(ngModel)]="formData.dropOffBox">
+      
+        <label>Box Pick Up#</label>
+        <input type="number" [(ngModel)]="formData.pickUpBox">
+      
+        <label>Charges</label>
+        <input type="number" [(ngModel)]="formData.charges">
+      
+        <label>Notes</label>
+        <textarea [(ngModel)]="formData.notes"></textarea>
+      
+        <button class="enter-btn" (click)="onEnterClick()" 
+                style="background-color: green; color: white; align-self: center; width: 50%;">
+          Enter
+        </button>
+      </div>
+  </div>
+</div>

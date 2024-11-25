@@ -199,10 +199,6 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Invoice/GetAllInvoicesTransactionsByInvoiceId', 'GET', paramObj);
   }
 
-
-
-
-
   getAllTicketsByParentID(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsByParentID', 'GET', paramObj);
   }
@@ -275,6 +271,7 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Materialss/GetSubMaterialByID', 'GET', paramObj);
   } 
 
+
   getAllSubMaterials(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterials', 'GET', paramObj);
   }  
@@ -287,8 +284,16 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Adjustments/GetAllAdjustmentType', 'GET', paramObj);
   }
 
+  GetAllContainer(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Container/GetAllContainer', 'GET', paramObj);
+  }
+
   insertUpdateGroupAdjustment(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Adjustments/InsertUpdateGroupAdjustment', 'POST', requestObj);
+  }
+
+  InsertUpdateContainert(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Container/InsertUpdateContainert', 'POST', requestObj);
   }
 
   getAllShipOutDetails(pagination: any): Observable<any> {

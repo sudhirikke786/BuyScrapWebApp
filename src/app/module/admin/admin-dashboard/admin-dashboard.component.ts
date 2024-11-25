@@ -115,6 +115,28 @@ export class AdminDashboardComponent implements OnInit {
     // });
   }
 
+  onRoleChange(event: Event): void {
+    const selectedRole = (event.target as HTMLSelectElement).value;
+
+    if (selectedRole === '4' || selectedRole === '5') {
+      this.userForm.get('firstName')?.enable();
+      this.userForm.get('lastName')?.enable();
+      this.userForm.get('userName')?.disable();
+      this.userForm.get('password')?.disable();
+      this.userForm.get('confirmPassword')?.disable();
+      this.userForm.get('mobileNumber')?.disable();
+      this.userForm.get('emailID')?.disable();
+    } else {
+      this.userForm.get('firstName')?.enable();
+      this.userForm.get('lastName')?.enable();
+      this.userForm.get('userName')?.enable();
+      this.userForm.get('password')?.enable();
+      this.userForm.get('confirmPassword')?.enable();
+      this.userForm.get('mobileNumber')?.enable();
+      this.userForm.get('emailID')?.enable();
+    }
+  }
+
   submitForm() {
     const datePipe = new DatePipe('en-US');
     console.log('Form submitted:', this.userForm);

@@ -61,6 +61,12 @@ export class SideMenuComponent implements OnInit {
         role: ['Administrator','Cashier']
       },
       {
+        title:'Container',
+        url:'/container',
+        icon:'/assets/images/custom/icons/container-truck-2.png',
+        role: ['Administrator']
+      },
+      {
         title:'Regrade',
         url:'/regrade',
         icon:'/assets/images/custom/icons/regrade.png',

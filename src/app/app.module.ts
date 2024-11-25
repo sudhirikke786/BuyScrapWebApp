@@ -10,6 +10,7 @@ import { HeaderComponent } from './common/header/header.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
 import { SiteLayoutComponent } from './common/site-layout/site-layout.component';
 import { FooterComponent } from './common/footer/footer.component';
+import { DispatchDetailComponent } from './module/dispatch/dispatch-detail/dispatch-detail.component';
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -25,7 +26,6 @@ import { ErrorComponent } from './error/error.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SuccessPageComponent } from './success-page/success-page.component'
 import { NgChartsModule } from 'ng2-charts';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +39,8 @@ import { NgChartsModule } from 'ng2-charts';
     PrintTicketComponent,
     ErrorComponent,
     SignUpComponent,
-    SuccessPageComponent    
+    SuccessPageComponent,
+    DispatchDetailComponent
   ],
   imports: [
     BrowserModule,

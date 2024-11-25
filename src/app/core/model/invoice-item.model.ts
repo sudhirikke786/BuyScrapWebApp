@@ -5,14 +5,14 @@ export class InvoiceItem {
      createdDate: any;
      updatedBy: number = 0;
      updatedDate: any;
-     count: number = 0.00;
+     // count: number = 0.00;
      quantity: number = 0;
      rate: number = 0.00;
      amount: number = 0.00;
      invoiceID: number = 0;
      invoiceDate: any;
      itemName: string = '';
-     materialId: number = 0.00;
-     imagePath: any = null;
-     materialNote: any = null;
+     // materialId: number = 0.00;
+     // imagePath: any = null;
+     // materialNote: any = null;
 }

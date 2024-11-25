@@ -7,6 +7,7 @@ import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 import { PrimengModule } from '../shared/primeng/primeng.module';
 import { FullCalnderDispatchComponent } from './full-calnder-dispatch/full-calnder-dispatch.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { DispatchDetailComponent } from './dispatch-detail/dispatch-detail.component';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,10 @@ export const routes: Routes = [
   },{
     path:'meeting',
     component:FullCalnderDispatchComponent
+  },
+  {
+    path: 'detail/:sellerId',
+    component: DispatchDetailComponent
   }
 ]
 

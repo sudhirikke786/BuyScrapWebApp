@@ -139,6 +139,12 @@ const routes: Routes = [
           loadChildren:() => import('./module/dispatch/dispatch.module').then((m =>m.DispatchModule)),
         
         },
+        {
+          path:'container',
+          loadChildren:() => import('./module/container/container.module').then(m => m.ContainerModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole:['Administrator','Cashier']},
+        }
       ]
   }
 ];
