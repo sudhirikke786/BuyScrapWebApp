@@ -259,9 +259,20 @@ a {
      left: 5px;
 }
 
+@media (min-width:767px) {
+    .payment-ticket{
+        position: absolute;
+         bottom: 65px;
+          right: 5px; 
+         left: 5px;
+    }
+
+}
+
 
 @media (max-width: 767px) {
 
+   
     .balance-details-ul {
         position: absolute;
         top: 5%;
