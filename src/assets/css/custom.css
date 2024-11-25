@@ -1233,7 +1233,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 }
 
 .dl-img {
-  min-height: 80px;
+  max-height: 90px;
   width: 100%;
 
 }

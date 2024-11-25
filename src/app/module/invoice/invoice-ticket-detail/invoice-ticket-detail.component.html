@@ -29,7 +29,7 @@
                         <div class="row">
 
                             <div  [ngClass]="(isEditModeOn || (!isEditModeOn && invoiceData?.status?.toUpperCase() =='OPEN')) && (invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' ) ? 
-                            'col-sm-12' : 'col-sm-6'">
+                            'col-sm-12' : 'col-sm-8'">
                                 
                                 <div class="row">
                                     <div class="col-sm-2">
@@ -200,7 +200,16 @@
                                                             <td>
                                                                 {{newItem.amount}}
                                                             </td>
-                                                            <td></td>
+                                                            <td>
+                                                                <button *ngIf="isEditModeOn"  class="btn btn-primary me-1"  [disabled]="!newItem.name || newItem.quantity <= 0 || newItem.rate <= 0" (click)="addNewItem()"
+                                                                     
+                                                                >
+                                                                  Add Item
+
+                                                                </button>
+                                                                
+                                                                
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                     <!-- <tfoot>
@@ -214,15 +223,7 @@
                                                     </tfoot> -->
                                                   </table>
                                                 </div>
-                                                <div *ngIf="isEditModeOn" class="add-button-container">
-                                                  <button
-                                                   class="btn btn-primary"
-                                                    (click)="addNewItem()"
-                                                    [disabled]="!newItem.name || newItem.quantity <= 0 || newItem.rate <= 0"
-                                                  >
-                                                    Add Item
-                                                  </button>
-                                                </div>
+                                               
                                               </div>
                                         </div>
                                       
@@ -318,7 +319,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6" *ngIf="!isEditModeOn && invoiceData?.status?.toUpperCase()!='OPEN'">
+                            <div class="col-sm-4" *ngIf="!isEditModeOn && invoiceData?.status?.toUpperCase()!='OPEN'">
 
                                 <!-- <div class="col-12">  -->
                                 <div id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
