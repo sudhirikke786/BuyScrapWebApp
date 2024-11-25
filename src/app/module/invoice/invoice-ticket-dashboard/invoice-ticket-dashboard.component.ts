@@ -618,7 +618,6 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   }
 
   clickOnSeller(sellerId: any, sellerFullname: any) {
-    alert(sellerId + ' :: ' + sellerFullname);
     this.selectedSellerName = sellerFullname;
     this.selectedSellerId = sellerId;
     if (this.newTicketVisible == true) {

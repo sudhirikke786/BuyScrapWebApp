@@ -28,7 +28,7 @@
 
                         <div class="row">
 
-                            <div  [ngClass]="isEditModeOn && (invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' ) ? 
+                            <div  [ngClass]="(isEditModeOn || (!isEditModeOn && invoiceData?.status?.toUpperCase() =='OPEN')) && (invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' ) ? 
                             'col-sm-12' : 'col-sm-6'">
                                 
                                 <!-- <div class="row">
@@ -123,70 +123,89 @@
                                                         <th style="width:15%">Quantity</th>
                                                         <th style="width:15%">Rate</th>
                                                         <th style="width:15%">Amount</th>
-                                                        <th style="width:15%">Action</th>
+                                                        <th *ngIf="isEditModeOn" style="width:15%">Action</th>
                                                       </tr>
                                                     </thead>
                                                     <tbody>
-                                                      <tr *ngFor="let item of invoiceObj; let i = index">
-                                                        <td style="width:40%">
-                                                          <input
-                                                            type="text"
-                                                            [(ngModel)]="item.itemName"
-                                                            placeholder="Enter item name"
-                                                          />
-                                                        </td>
-                                                        <td style="width:15%">
-                                                          <input
-                                                            type="number"
-                                                            [(ngModel)]="item.quantity"
-                                                            (input)="updateAmount(i)"
-                                                            placeholder="Enter quantity"
-                                                          />
-                                                        </td>
-                                                        <td style="width:15%">
-                                                          <input
-                                                            type="number"
-                                                            [(ngModel)]="item.rate"
-                                                            (input)="updateAmount(i)"
-                                                            placeholder="Enter rate"
-                                                          />
-                                                        </td>
-                                                        <td style="width:15%">
-                                                          <input type="number" [value]="item.amount" readonly />
-                                                        </td>
-                                                        <td style="width:15%">
-                                                          <button class="delete-btn" (click)="removeItem(i)">Remove</button>
-                                                        </td>
-                                                      </tr>
-                                                      <tr *ngIf="isEditModeOn">
-                                                        <td>
-                                                          <input
-                                                            type="text"
-                                                            [(ngModel)]="newItem.name"
-                                                            placeholder="Enter item name"
-                                                          />
-                                                        </td>
-                                                        <td>
-                                                          <input
-                                                            type="number"
-                                                            [(ngModel)]="newItem.quantity"
-                                                            (input)="updateNewItemAmount()"
-                                                            placeholder="Enter quantity"
-                                                          />
-                                                        </td>
-                                                        <td>
-                                                          <input
-                                                            type="number"
-                                                            [(ngModel)]="newItem.rate"
-                                                            (input)="updateNewItemAmount()"
-                                                            placeholder="Enter rate"
-                                                          />
-                                                        </td>
-                                                        <td>
-                                                          <input type="number" [value]="newItem.amount" readonly />
-                                                        </td>
-                                                        <td></td>
-                                                      </tr>
+                                                        <ng-container *ngIf="isEditModeOn" >
+                                                            <tr *ngFor="let item of invoiceObj; let i = index">
+                                                              <td style="width:40%">
+                                                                <input
+                                                                  type="text"
+                                                                  [(ngModel)]="item.itemName"
+                                                                  (input)="updateItems(i)"
+                                                                  placeholder="Enter item name"
+                                                                />
+                                                              </td>
+                                                              <td style="width:15%">
+                                                                <input
+                                                                  type="number"
+                                                                  [(ngModel)]="item.quantity"
+                                                                  (input)="updateItems(i)"
+                                                                  placeholder="Enter quantity"
+                                                                />
+                                                              </td>
+                                                              <td style="width:15%">
+                                                                <input
+                                                                  type="number"
+                                                                  [(ngModel)]="item.rate"
+                                                                  (input)="updateItems(i)"
+                                                                  placeholder="Enter rate"
+                                                                />
+                                                              </td>
+                                                              <td style="width:15%">
+                                                                {{item.amount}}
+                                                              </td>
+                                                              <td style="width:15%">
+                                                                <button class="btn btn-danger me-1" (click)="deleteItem(i)">Remove</button>
+                                                              </td>
+                                                            </tr>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!isEditModeOn" >
+                                                            <tr *ngFor="let item of invoiceObj; let i = index">
+                                                              <td style="width:40%">
+                                                                {{item.itemName}}
+                                                              </td>
+                                                              <td style="width:15%">
+                                                                {{item.quantity}}
+                                                              </td>
+                                                              <td style="width:15%">
+                                                                {{item.rate}}
+                                                              </td>
+                                                              <td style="width:15%">
+                                                                {{item.amount}}
+                                                              </td>
+                                                            </tr>
+                                                        </ng-container>
+                                                        <tr *ngIf="isEditModeOn">
+                                                            <td>
+                                                            <input
+                                                                type="text"
+                                                                [(ngModel)]="newItem.name"
+                                                                placeholder="Enter item name"
+                                                            />
+                                                            </td>
+                                                            <td>
+                                                            <input
+                                                                type="number"
+                                                                [(ngModel)]="newItem.quantity"
+                                                                (input)="updateNewItemAmount()"
+                                                                placeholder="Enter quantity"
+                                                            />
+                                                            </td>
+                                                            <td>
+                                                            <input
+                                                                type="number"
+                                                                [(ngModel)]="newItem.rate"
+                                                                (input)="updateNewItemAmount()"
+                                                                placeholder="Enter rate"
+                                                            />
+                                                            </td>
+                                                            <td>
+                                                                {{newItem.amount}}
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
                                                     </tbody>
                                                     <!-- <tfoot>
                                                       <tr>
@@ -202,7 +221,7 @@
                                                 <div *ngIf="isEditModeOn" class="add-button-container">
                                                   <button
                                                    class="btn btn-primary"
-                                                    (click)="addInvoice()"
+                                                    (click)="addNewItem()"
                                                     [disabled]="!newItem.name || newItem.quantity <= 0 || newItem.rate <= 0"
                                                   >
                                                     Add Item
@@ -215,7 +234,7 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="payment-ticket" [ngClass]="isEditModeOn && (invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' ) ? 
+                                    <div class="payment-ticket" [ngClass]="(isEditModeOn || (!isEditModeOn && invoiceData?.status?.toUpperCase() =='OPEN')) && (invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' ) ? 
                                     'w-98 p-open' : 'col-6 p-close'" >
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
@@ -303,7 +322,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  invoiceData?.status?.toUpperCase()!='OPEN'">
+                            <div class="col-sm-6" *ngIf="!isEditModeOn && invoiceData?.status?.toUpperCase()!='OPEN'">
 
                                 <!-- <div class="col-12">  -->
                                 <div id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
@@ -429,7 +448,7 @@
 </div>
 
 
-<ng-container *ngIf="editItemVisible">
+<!-- <ng-container *ngIf="editItemVisible">
 
     <p-dialog [modal]="true" [header]="subScriptionType?.organisationPlan=='pro' ? 'Item Details' : ''" [(visible)]="editItemVisible"
   [style]="{width: '500'}" >
@@ -524,7 +543,7 @@
         
     </p-dialog>
     
-</ng-container>
+</ng-container> -->
 
 
 <p-dialog [modal]="true" header="Header"  [breakpoints]="{'1024px': '60vw', '1080px': '70vw','767px': '100vw'}" [modal]="true" [(visible)]="saveConfirmVisible" [style]="{ width: '50vw' }">

@@ -294,14 +294,15 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     this.items.splice(index, 1); // Remove the selected item
   }
 
-  updateAmount(index: number) {
-    const item = this.items[index];
-    item.amount = item.quantity * item.rate; // Update the amount dynamically
-  }
+  // updateAmount(index: number) {
+  //   alert('Hiiiiiiiiiiiii')
+  //   const item = this.items[index];
+  //   item.amount = item.quantity * item.rate; // Update the amount dynamically
+  // }
 
-  updateNewItemAmount() {
-    this.newItem.amount = this.newItem.quantity * this.newItem.rate; // Update the new item amount dynamically
-  }
+  // updateNewItemAmount() {
+  //   this.newItem.amount = this.newItem.quantity * this.newItem.rate; // Update the new item amount dynamically
+  // }
 
   ngAfterViewInit() {
     // if(this.searchMaterialInput){
@@ -1241,68 +1242,68 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     }
   }
 
-  addItem(materialId: any, materialName: any, selectedMaterial: string, scrapPrice: any) {
-    this.modalHeader = 'Add Item Details';
-    this.editItemVisible = false;
-    this.editItemCloseImageCapture = false;
-    this.imageUrl = null;
-    this.itemMaterialId = materialId;
-    this.itemGroupName = selectedMaterial;
-    this.itemMaterialName = materialName;
-    this.itemPrice = scrapPrice;
-    this.itemLeveloperationPerform = this.itemLeveloperationPerform == '' ? 'Add' : this.itemLeveloperationPerform;
-    this.itemCodNote = '';    
-    this.itemGross = '';
-    this.itemImagePath = '';
-    this.closeCapturedImage(1)
-    // this.materialNote = '';
-  }
+  // addItem(materialId: any, materialName: any, selectedMaterial: string, scrapPrice: any) {
+  //   this.modalHeader = 'Add Item Details';
+  //   this.editItemVisible = false;
+  //   this.editItemCloseImageCapture = false;
+  //   this.imageUrl = null;
+  //   this.itemMaterialId = materialId;
+  //   this.itemGroupName = selectedMaterial;
+  //   this.itemMaterialName = materialName;
+  //   this.itemPrice = scrapPrice;
+  //   this.itemLeveloperationPerform = this.itemLeveloperationPerform == '' ? 'Add' : this.itemLeveloperationPerform;
+  //   this.itemCodNote = '';    
+  //   this.itemGross = '';
+  //   this.itemImagePath = '';
+  //   this.closeCapturedImage(1)
+  //   // this.materialNote = '';
+  // }
 
-  updateExistingItem(materialId: any, materialName: string, selectedMaterial: string, scrapPrice: any) {
-    this.isChangeItemOn = false;
-    this.itemMaterialId = materialId;
-    this.itemGroupName = selectedMaterial;
-    this.itemMaterialName = materialName;
-    this.itemPrice = scrapPrice;
-    this.itemLeveloperationPerform = 'Edit';
-  }
+  // updateExistingItem(materialId: any, materialName: string, selectedMaterial: string, scrapPrice: any) {
+  //   this.isChangeItemOn = false;
+  //   this.itemMaterialId = materialId;
+  //   this.itemGroupName = selectedMaterial;
+  //   this.itemMaterialName = materialName;
+  //   this.itemPrice = scrapPrice;
+  //   this.itemLeveloperationPerform = 'Edit';
+  // }
 
-  editItem(rowData: any) {
+  // editItem(rowData: any) {
 
-    if (rowData.isAdjusmentSet == true) {
-      this.addEditAdjustmentVisible = true;
-      this.modalAdjustmentHeader = 'Edit Adjustment';
-      this.itemLeveloperationPerform = 'Edit';
+  //   if (rowData.isAdjusmentSet == true) {
+  //     this.addEditAdjustmentVisible = true;
+  //     this.modalAdjustmentHeader = 'Edit Adjustment';
+  //     this.itemLeveloperationPerform = 'Edit';
 
-      this.itemRowId = rowData.rowId;
-      this.itemLocalRowId = rowData.localRowId;
-      this.adjustmentAmount = rowData.price;
-      this.adjustmentNote = rowData.materialNote;
-      this.selectedAdjustment = rowData.concatAdjustments;
+  //     this.itemRowId = rowData.rowId;
+  //     this.itemLocalRowId = rowData.localRowId;
+  //     this.adjustmentAmount = rowData.price;
+  //     this.adjustmentNote = rowData.materialNote;
+  //     this.selectedAdjustment = rowData.concatAdjustments;
 
-    } else {
-      this.modalHeader =  'Edit Item Details';
-      this.editItemVisible = true;
+  //   } else {
+  //     this.modalHeader =  'Edit Item Details';
+  //     this.editItemVisible = true;
       
-      this.editItemCloseImageCapture = false;
-      this.itemLeveloperationPerform = 'Edit';
+  //     this.editItemCloseImageCapture = false;
+  //     this.itemLeveloperationPerform = 'Edit';
 
-      this.itemRowId = rowData.rowId;
-      this.itemLocalRowId = rowData.localRowId;
-      this.itemGroupName = rowData.groupName;
-      this.itemMaterialName = rowData.materialName;
-      this.itemMaterialId = rowData.materialId;
-      this.itemGross = rowData.gross;
-      this.itemPrice = rowData.price;
-      this.itemImagePath = rowData.imagePath;
-      this.itemCodNote = rowData.codNote;
-      this.materialNote = rowData.materialNote;  
+  //     this.itemRowId = rowData.rowId;
+  //     this.itemLocalRowId = rowData.localRowId;
+  //     this.itemGroupName = rowData.groupName;
+  //     this.itemMaterialName = rowData.materialName;
+  //     this.itemMaterialId = rowData.materialId;
+  //     this.itemGross = rowData.gross;
+  //     this.itemPrice = rowData.price;
+  //     this.itemImagePath = rowData.imagePath;
+  //     this.itemCodNote = rowData.codNote;
+  //     this.materialNote = rowData.materialNote;  
 
-      this.imageUrl = (this.itemImagePath ? this.itemImagePath : 'assets/images/custom/id_scan.png');
-      this.closeCapturedImage(1);
-    }
+  //     this.imageUrl = (this.itemImagePath ? this.itemImagePath : 'assets/images/custom/id_scan.png');
+  //     this.closeCapturedImage(1);
+  //   }
 
-  }
+  // }
 
   
   deleteItem(i: number) {
@@ -1396,31 +1397,57 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     // this.editItemVisible = false;
     //this.changeItemMaterialsVisible = true;
   }
+    // updateAmount(index: number) {
+  //   alert('Hiiiiiiiiiiiii')
+  //   const item = this.items[index];
+  //   item.amount = item.quantity * item.rate; // Update the amount dynamically
+  // }
 
-  calculation(rowData: any) {
-    console.log('Calculation data ::');
-    console.log(rowData);
-    this.editItemCloseImageCapture = false;
-    this.mainMaterialsVisible = true;
-    this.itemGross = rowData.itemGross;
-    this.itemPrice = rowData.itemPrice;
-    this.materialNote = rowData.materialNote;
-    this.itemImagePath = rowData.itemImagePath;
+
+  updateItems(index: number) {
+    // alert('Hiiiiiiiiiiiii')
+    this.itemLeveloperationPerform = 'Edit';
+    const item = this.invoiceObj[index];
+    console.log(item);
+    this.itemLocalRowId = item.localRowId;
+    this.itemMaterialName = item.itemName;
+    this.itemGross = item.quantity;
+    this.itemPrice = item.rate;
     this.updateExistingItemDataResponse();
   }
 
-  changeItem() {
-    this.editItemCloseImageCapture = false;
-    this.mainMaterialsVisible = true;
+  addNewItem() {
+    
+    if (this.newItem.name && this.newItem.quantity > 0 && this.newItem.rate > 0) {
+      this.itemLeveloperationPerform = 'Add';
+      
+      console.log('Calculation data ::');
+      console.log(this.newItem);
+      // this.editItemCloseImageCapture = false;
+      // this.mainMaterialsVisible = true;
+      this.itemMaterialName = this.newItem.name;
+      this.itemGross = this.newItem.quantity;
+      this.itemPrice = this.newItem.rate;
+      // this.materialNote = rowData.materialNote;
+      // this.itemImagePath = rowData.itemImagePath;
+      this.updateExistingItemDataResponse();
+      this.newItem = { name: '', quantity: 0, rate: 0, amount: 0 }; // Reset the new item
+    }
+
   }
 
-  changeImage() {
-    this.modalHeader = 'Edit Item Details';
-    this.editItemVisible = true;
+  // changeItem() {
+  //   this.editItemCloseImageCapture = false;
+  //   this.mainMaterialsVisible = true;
+  // }
 
-    // this.editItemCloseImageCapture = false;
-    this.itemLeveloperationPerform = 'Edit';
-  }
+  // changeImage() {
+  //   this.modalHeader = 'Edit Item Details';
+  //   this.editItemVisible = true;
+
+  //   // this.editItemCloseImageCapture = false;
+  //   this.itemLeveloperationPerform = 'Edit';
+  // }
 
 
   updateExistingItemDataResponse() {
@@ -1431,7 +1458,10 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       // const arr = [];
       const rowData = new InvoiceItem();
       rowData.rowId = 0;
-      rowData.localRowId = this.localRowIdCounter++;
+      if (Object.keys(this.invoiceObj).length > 0) {
+        this.localRowIdCounter = Math.max(...this.invoiceObj.map((b: any) => b.localRowId));
+      }
+      rowData.localRowId = this.localRowIdCounter + 1;
 
       rowData.createdBy = this.logInUserId;
       rowData.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
@@ -1441,12 +1471,12 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
       //rowData.groupName = this.itemGroupName;
       rowData.itemName = this.itemMaterialName;
-      rowData.materialId = this.itemMaterialId;
+      //rowData.materialId = this.itemMaterialId;
       rowData.quantity = parseFloat(parseFloat(this.itemGross.toString()).toFixed(0));
       rowData.rate = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
       rowData.amount = parseFloat(parseFloat((rowData.rate * (rowData.quantity)).toString()).toFixed(3));
-      rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
-      rowData.materialNote = (this.materialNote || this.materialNote == '' ? this.materialNote : null );
+      // rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
+      // rowData.materialNote = (this.materialNote || this.materialNote == '' ? this.materialNote : null );
 
       this.invoiceObj.push(rowData);
       // this.invoiceObj = arr;
@@ -1459,12 +1489,12 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
           // rowData.rowId = this.itemRowId;
           //rowData.groupName = this.itemGroupName;
           rowData.itemName = this.itemMaterialName;
-          rowData.materialId = this.itemMaterialId;
+          // rowData.materialId = this.itemMaterialId;
           rowData.quantity = parseFloat(parseFloat(this.itemGross.toString()).toFixed(0));
           rowData.rate = parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
           rowData.amount = parseFloat(parseFloat((rowData.rate * (rowData.quantity)).toString()).toFixed(3));
-          rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
-          rowData.materialNote = (this.materialNote || this.materialNote == '' ? this.materialNote : null);
+          // rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
+          // rowData.materialNote = (this.materialNote || this.materialNote == '' ? this.materialNote : null);
 
           // TO DO:: does not required. need to verify;
           rowData.updatedBy = this.logInUserId;
@@ -1483,101 +1513,101 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     this.itemGross = '';
   }
 
-  addAdjustments() {
-    this.modalAdjustmentHeader = 'Add Adjustment';
-    this.addEditAdjustmentVisible = true;
-    this.itemLeveloperationPerform = 'Add';
-    this.adjustmentAmount = '';
-    this.adjustmentNote = '';
-    this.selectedAdjustment = 'Certified Destruction Cost ';
-  }
+  // addAdjustments() {
+  //   this.modalAdjustmentHeader = 'Add Adjustment';
+  //   this.addEditAdjustmentVisible = true;
+  //   this.itemLeveloperationPerform = 'Add';
+  //   this.adjustmentAmount = '';
+  //   this.adjustmentNote = '';
+  //   this.selectedAdjustment = 'Certified Destruction Cost ';
+  // }
 
-  onAdjustmentChange(value: any) {
-    this.selectedAdjustment = value.target.value;
+  // onAdjustmentChange(value: any) {
+  //   this.selectedAdjustment = value.target.value;
 
-    // this.messageAlert(this.selectedAdjustment)
+  //   // this.messageAlert(this.selectedAdjustment)
 
-    //alert(this.selectedAdjustment);
-  }
+  //   //alert(this.selectedAdjustment);
+  // }
 
-  GetAllAdjustmentType() {
-    const paramObject = {
-      LocationId: this.locId
-    };
-    this.commonService.GetAllAdjustmentType(paramObject)
-      .subscribe(data => {
-        console.log('GetAllAdjustmentType :: ');
-        console.log(data);
-        this.adjustmentList = data.body.data;
-      },
-        (err: any) => {
-          // this.errorMsg = 'Error occured';
-        }
-      );
-  }
+  // GetAllAdjustmentType() {
+  //   const paramObject = {
+  //     LocationId: this.locId
+  //   };
+  //   this.commonService.GetAllAdjustmentType(paramObject)
+  //     .subscribe(data => {
+  //       console.log('GetAllAdjustmentType :: ');
+  //       console.log(data);
+  //       this.adjustmentList = data.body.data;
+  //     },
+  //       (err: any) => {
+  //         // this.errorMsg = 'Error occured';
+  //       }
+  //     );
+  // }
 
-  SaveAdjustment() {
-    this.addEditAdjustmentVisible = false;
-    this.editItemVisible = false;
+  // SaveAdjustment() {
+  //   this.addEditAdjustmentVisible = false;
+  //   this.editItemVisible = false;
 
-    if (this.itemLeveloperationPerform === 'Add') {
-      // const arr = [];
-      const rowData = new InvoiceItem();
-      rowData.rowId = 0;
-      rowData.localRowId = this.localRowIdCounter++;
-      rowData.materialNote = this.adjustmentNote;
-      rowData.rate = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
-      rowData.imagePath = '';
+  //   if (this.itemLeveloperationPerform === 'Add') {
+  //     // const arr = [];
+  //     const rowData = new InvoiceItem();
+  //     rowData.rowId = 0;
+  //     rowData.localRowId = this.localRowIdCounter++;
+  //     rowData.materialNote = this.adjustmentNote;
+  //     rowData.rate = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
+  //     rowData.imagePath = '';
 
-      rowData.createdBy = this.logInUserId;
-      rowData.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      rowData.updatedBy = this.logInUserId;
-      rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-      rowData.invoiceDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+  //     rowData.createdBy = this.logInUserId;
+  //     rowData.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+  //     rowData.updatedBy = this.logInUserId;
+  //     rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+  //     rowData.invoiceDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
 
-      this.invoiceObj.push(rowData);
-      // this.invoiceObj = arr;
+  //     this.invoiceObj.push(rowData);
+  //     // this.invoiceObj = arr;
 
-    } else if (this.itemLeveloperationPerform === 'Edit') {
-      this.messageAlert(this.selectedAdjustment);
+  //   } else if (this.itemLeveloperationPerform === 'Edit') {
+  //     this.messageAlert(this.selectedAdjustment);
 
   
-      this.invoiceObj.forEach((rowData: any) => {
-        if (this.itemLocalRowId === rowData.localRowId) {
-          console.log("found " + rowData.rowId);
+  //     this.invoiceObj.forEach((rowData: any) => {
+  //       if (this.itemLocalRowId === rowData.localRowId) {
+  //         console.log("found " + rowData.rowId);
 
-          this.messageAlert(this.selectedAdjustment);
-          rowData.materialName = rowData.concatAdjustments = this.selectedAdjustment;
-          rowData.materialNote = this.adjustmentNote;
-          rowData.price = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
-          rowData.imagePath = '';
-          rowData.isCOD = false;
-          rowData.isAdjusmentSet = true;
+  //         this.messageAlert(this.selectedAdjustment);
+  //         rowData.materialName = rowData.concatAdjustments = this.selectedAdjustment;
+  //         rowData.materialNote = this.adjustmentNote;
+  //         rowData.price = rowData.amount = parseFloat(parseFloat(this.adjustmentAmount.toString()).toFixed(3));
+  //         rowData.imagePath = '';
+  //         rowData.isCOD = false;
+  //         rowData.isAdjusmentSet = true;
 
-          // TO DO:: does not required. need to verify;
-          rowData.updatedBy = this.logInUserId;
-          rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-          rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-        }
-      });
+  //         // TO DO:: does not required. need to verify;
+  //         rowData.updatedBy = this.logInUserId;
+  //         rowData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+  //         rowData.transactionDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+  //       }
+  //     });
 
-    }
+  //   }
 
-    console.log("updated invoiceObj :: " + JSON.stringify(this.invoiceObj));
+  //   console.log("updated invoiceObj :: " + JSON.stringify(this.invoiceObj));
 
-    this.calculateTotal(this.invoiceObj);
-    // this.backToChangeItemMainMaterials();
-    // this.backToMainMaterials();
-    // this.itemGross = 0;
-    this.adjustmentAmount = '';
-    this.adjustmentNote = '';
-    this.selectedAdjustment = 'Certified Destruction Cost ';
+  //   this.calculateTotal(this.invoiceObj);
+  //   // this.backToChangeItemMainMaterials();
+  //   // this.backToMainMaterials();
+  //   // this.itemGross = 0;
+  //   this.adjustmentAmount = '';
+  //   this.adjustmentNote = '';
+  //   this.selectedAdjustment = 'Certified Destruction Cost ';
 
-  }
+  // }
 
-  closeAdjustment() {
-    this.addEditAdjustmentVisible = false;
-  }
+  // closeAdjustment() {
+  //   this.addEditAdjustmentVisible = false;
+  // }
 
   getPromoStyles(invoice: any) {
     if (invoice.codNote == '' && invoice.materialNote == '') {
