@@ -28,8 +28,13 @@
 
                         <div class="row">
 
-                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  invoiceData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-12'">
+                            <div  [ngClass]="isEditModeOn && (invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' ) ? 
+                            'col-sm-12' : 'col-sm-6'">
                                 
+                                <!-- <div class="row">
+                                    {{invoiceData?.status?.toUpperCase()}} ====== {{(invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' )}}
+                                    ---- {{isEditModeOn}} -----
+                                </div> -->
                                 <div class="row">
                                     <div class="col-sm-2">
                                         <img src="{{customer?.idfaceShotImage}}" class="dl-img">
@@ -89,33 +94,48 @@
                                                 <td>By <label>{{user?.firstName}} {{user?.lastName}}</label></td>
                                             </tr>
                                         </tbody></table>
+                                    </div>
+                                </div>
+                                
+                                <!-- <div class="row">
+                                    <div class="col-sm-4">
+                                        <h4 class="title-plus-border">Particulars</h4>                                                
+                                    </div>
+                                    <div class="col-sm-4">
 
+                                        
+                                        <h4 class="title-plus-border">Status - <span class="color-green">{{invoiceData?.status}}</span></h4>                                                
+                                    </div>
+                                </div> -->
+
+
+                                <div class="row">
+                                    <div class="card-ticket-table mt-2">
                                         <div class="invoiceTable card-invoice-table">
 
                                        
                                             <div class="invoice-container">
-                                                <div class="text-left">Invoice</div>
                                                 <div class="table-wrapper">
                                                   <table>
                                                     <thead>
                                                       <tr>
-                                                        <th >Item Name</th>
-                                                        <th>Quantity</th>
-                                                        <th>Rate</th>
-                                                        <th>Amount</th>
-                                                        <th>Action</th>
+                                                        <th style="width:40%">Item Name</th>
+                                                        <th style="width:15%">Quantity</th>
+                                                        <th style="width:15%">Rate</th>
+                                                        <th style="width:15%">Amount</th>
+                                                        <th style="width:15%">Action</th>
                                                       </tr>
                                                     </thead>
                                                     <tbody>
-                                                      <tr *ngFor="let item of items; let i = index">
+                                                      <tr *ngFor="let item of invoiceObj; let i = index">
                                                         <td style="width:40%">
                                                           <input
                                                             type="text"
-                                                            [(ngModel)]="item.name"
+                                                            [(ngModel)]="item.itemName"
                                                             placeholder="Enter item name"
                                                           />
                                                         </td>
-                                                        <td>
+                                                        <td style="width:15%">
                                                           <input
                                                             type="number"
                                                             [(ngModel)]="item.quantity"
@@ -123,7 +143,7 @@
                                                             placeholder="Enter quantity"
                                                           />
                                                         </td>
-                                                        <td>
+                                                        <td style="width:15%">
                                                           <input
                                                             type="number"
                                                             [(ngModel)]="item.rate"
@@ -131,14 +151,14 @@
                                                             placeholder="Enter rate"
                                                           />
                                                         </td>
-                                                        <td>
+                                                        <td style="width:15%">
                                                           <input type="number" [value]="item.amount" readonly />
                                                         </td>
-                                                        <td>
-                                                          <button class="btn btn-danger me-1" (click)="removeItem(i)">Remove</button>
+                                                        <td style="width:15%">
+                                                          <button class="delete-btn" (click)="removeItem(i)">Remove</button>
                                                         </td>
                                                       </tr>
-                                                      <tr>
+                                                      <tr *ngIf="isEditModeOn">
                                                         <td>
                                                           <input
                                                             type="text"
@@ -168,7 +188,7 @@
                                                         <td></td>
                                                       </tr>
                                                     </tbody>
-                                                    <tfoot>
+                                                    <!-- <tfoot>
                                                       <tr>
                                                         <td colspan="3" class="text-right"><strong>Total Amount:</strong></td>
                                                         <td>
@@ -176,10 +196,10 @@
                                                         </td>
                                                         <td></td>
                                                       </tr>
-                                                    </tfoot>
+                                                    </tfoot> -->
                                                   </table>
                                                 </div>
-                                                <div class="add-button-container">
+                                                <div *ngIf="isEditModeOn" class="add-button-container">
                                                   <button
                                                    class="btn btn-primary"
                                                     (click)="addInvoice()"
@@ -189,75 +209,14 @@
                                                   </button>
                                                 </div>
                                               </div>
-                                        </div> 
-
-
-                                    </div>
-                                </div>
-                                
-                                <!-- <div class="row">
-                                    <div class="col-sm-4">
-                                        <h4 class="title-plus-border">Particulars</h4>                                                
-                                    </div>
-                                    <div class="col-sm-4">
-
-                                        
-                                        <h4 class="title-plus-border">Status - <span class="color-green">{{invoiceData?.status}}</span></h4>                                                
-                                    </div>
-                                </div> -->
-
-
-                                <div class="row">
-                                    <div class="mt-2 ">
-                                    
-                                          
-                                        
-                                        <!-- <p-table class="ticket-table" #dt1 [value]="invoiceObj" 
-                                            [paginator]="false" 
-                                            [rows]="10"
-                                            [loading]="isLoading"                                     
-                                            [showCurrentPageReport]="false"
-                                            [scrollable]="true" 
-                                            >
-                
-                                            <ng-template pTemplate="header">
-                                                <tr>
-                                                    <th style="width: 25%;">Item</th>
-                    
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
-                                                   
-                                                    <th *ngIf="isEditModeOn">Action</th>
-                                                </tr>
-                                            </ng-template>
-                                            <ng-template pTemplate="body" let-ticket let-rowIndex="rowIndex">
-                                                <td>
-                                                    
-                                                </td>
-                                                <td>
-
-                                                </td>
-                                                <td>
-                                                    
-                                                </td>
-                                                <td>
-                                                    
-                                                </td>
-                                                <td>
-                                                    
-                                                </td>
-                                              
-
-                                            </ng-template>
-                                            
-                                        </p-table> -->
+                                        </div>
                                       
                                     </div>
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="payment-ticket"  >
+                                    <div class="payment-ticket" [ngClass]="isEditModeOn && (invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' ) ? 
+                                    'w-98 p-open' : 'col-6 p-close'" >
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
                                                 <!-- <p class="ticket-details-p fz-14"><b>Adjustment : {{(totalAdjustment * -1) | currency: currencySymbol :'symbol': numberFormat}}</b></p> -->
@@ -288,12 +247,95 @@
                                         
                                         </div>
                                         
-                                    
+                                        <div class="row mt-2">   
+                                            <div class="col-md-7 col-lg-7 col-sm-7">    
+                                         
+                                                    <div class="ticket-summary-div d-flex justify-content-start align-item-center">
+                                                        <div class="me-2">
+                                                            <b class="fz-14">Paid Amount  {{invoiceData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
+                                                        </div>
+            
+                                                        <div class="ms-2 me-2">
+                                                            <b class="fz-14">Balance Amount  {{totalAmount - totalAdjustment - invoiceData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
+                                                        </div> 
+                                                        <div class="ms-2" *ngIf="!isEditModeOn && false" >
+                                                            <div class="d-flex justify-content-start align-items-center">
+                                                                <div><p-inputSwitch [disabled]="true"  [(ngModel)]="isCODRequired"></p-inputSwitch></div>
+                                                                <div class="ms-2" >COD <span *ngIf="!isCODRequired">Required</span></div> 
+                                                            </div>
+                                                          
+
+                                                        </div>
+                                                        <div class="ms-2" *ngIf="isEditModeOn && false">
+                                                            <div class="d-flex justify-content-start align-items-center">
+                                                                <div><p-inputSwitch  [(ngModel)]="isCODRequired"></p-inputSwitch></div>
+                                                                <div class="ms-2" >COD <span *ngIf="!isCODRequired">Required</span></div> 
+                                                            </div>
+                                                          
+
+                                                        </div>
+                                                    </div>
+                                                   
+        
+                                                
+                                            </div>
+        
+                                            <div class="col-md-5 col-lg-5 col-sm-5">    
+                                                <div class="d-flex justify-content-end">
+                                                 
+        
+                                                    <div *ngIf="!isEditModeOn" class="pay-print-box">
+                                                        <a *ngIf="(invoiceData.status == 'OPEN' || invoiceData.status == 'Partially Paid') && (currentRole!== 'Scale')" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
+                                                        <a class="btn btn-primary" (click)="generateSingleTicketReport(ticketId)">Printout</a>
+                                                    </div>        
+        
+                                                    <div *ngIf="isEditModeOn && false" class="adjustment-deduction-box">
+                                                        <a data-bs-target="#adjustments-modal" data-bs-toggle="modal" 
+                                                        class="btn btn-danger me-1" (click)="addAdjustments()">Adjustments(Deductions)</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                                   
+        
+                                          
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                    
+                            <div class="col-sm-6" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  invoiceData?.status?.toUpperCase()!='OPEN'">
+
+                                <!-- <div class="col-12">  -->
+                                <div id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
+                                    <div class="card">
+                                        <div class="card-body px-1 py-1">
+                                            
+                                            <p-table #dt1 [value]="invoicesTransactions" [paginator]="false">
+                        
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                        <th>*</th>
+                                                        <th>Transaction Type</th>
+                                                        <th>Amount paid</th>
+                                                        <th>Check number</th>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-invoicesTransaction>
+                                                    <tr>
+                                                        <td># </td>
+                                                        <td>{{ invoicesTransaction?.type }} <a pTooltip="Check reprint" href="javascript:void()" *ngIf="ticketsTransaction?.type == 'Check'" (click)="checkReprint(ticketsTransaction)" ><i class="bi bi-printer-fill ms-1"></i></a></td>
+                                                        <td>{{ invoicesTransaction?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                                        <td>{{ invoicesTransaction?.checkNumber }}</td>
+                                                    </tr>
+                                                </ng-template>
+                        
+                                            </p-table>
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+
+                            </div>
 
                             <!-- <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
@@ -358,9 +400,14 @@
                                     </ul>
   
                                 </div>
-                            </div> -->
+                            </div>
 
-                          
+                            <div class="col-lg-6 col-xs-12 col-sm-6 position-releative" *ngIf="isEditModeOn && editItemCloseImageCapture">
+                                <app-invoice-calculator (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()" (backClose)="backToChangeItemMainMaterials()"
+                                    [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
+                                    [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
+                                </app-invoice-calculator>
+                            </div> -->
                         </div>
                     
                     </div> <!-- end card body-->
@@ -885,3 +932,12 @@ header="Edit Seller"
 </p-dialog>
 
 
+<!-- <p-confirmDialog  [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+        <h3>Delete Project</h3>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="confirmPosition"></button>
+        <button type="button" pButton icon="pi pi-check" label="Yes" (click)="confirmPosition"></button>
+    </ng-template>
+</p-confirmDialog> -->

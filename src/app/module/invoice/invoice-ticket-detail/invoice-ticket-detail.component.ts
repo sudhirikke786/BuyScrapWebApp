@@ -198,15 +198,13 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
   copyMaterialData:any[]  = [];
   copySubMaterialData:any[]  = [];
+  
   items:any[] = [];
   newItem = { name: '', quantity: 0, rate: 0, amount: 0 };
 
-
   @ViewChild(InvoiceCalculatorComponent) InvoiceCalculatorComponent!:InvoiceCalculatorComponent;
   
-
-
-  constructor(private route: ActivatedRoute,
+      constructor(private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private datePipe: DatePipe,
@@ -279,11 +277,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     });
 
 
-   
-
   }
-
- 
 
   addInvoice() {
     if (this.newItem.name && this.newItem.quantity > 0 && this.newItem.rate > 0) {
@@ -308,7 +302,6 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   updateNewItemAmount() {
     this.newItem.amount = this.newItem.quantity * this.newItem.rate; // Update the new item amount dynamically
   }
-
 
   ngAfterViewInit() {
     // if(this.searchMaterialInput){
@@ -376,6 +369,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.getAllInvoicesDetails();
       this.getInvoiceTransactions();
     } else {
+      //alert('NEW INVOICE');
       this.invoiceId = 0;
       this.invoiceData['createdDate'] = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       this.invoiceData['status'] = 'NEW INVOICE';
@@ -394,6 +388,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.totalAdjustment = 0;
       this.totalActualAmount = 0;
       this.editInvoiceDetails();
+      //alert(this.isEditModeOn);
     }
   }
 
