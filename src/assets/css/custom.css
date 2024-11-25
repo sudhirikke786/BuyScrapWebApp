@@ -2098,6 +2098,12 @@ select optgroup option {
   height: calc(100vh - 430px) !important;
 }
 
+.in-card-ticket-table {
+  overflow-y: auto;
+  height: calc(100vh -325px) !important;
+}
+
+
 
 /* @media only screen and (min-width:576px){
  .pay-print-box{margin-top: -30px !important; text-align: right;}
