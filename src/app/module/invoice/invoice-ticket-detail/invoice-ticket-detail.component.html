@@ -546,16 +546,16 @@
 <p-dialog [modal]="true" header="Header"  [breakpoints]="{'1024px': '60vw', '1080px': '70vw','767px': '100vw'}" [modal]="true" [(visible)]="saveConfirmVisible" [style]="{ width: '50vw' }">
     <ng-template pTemplate="header">        
         <a class="btn btn-primary " (click)="saveConfirmVisible=false;"><i class="mdi mdi-keyboard-backspace"> Back </i></a>
-        <span class="text-xl font-bold text-success" style="font-size: 24px;"> Ticket Saved Successfully</span>
+        <span class="text-xl font-bold text-success" style="font-size: 24px;"> Invoice Saved Successfully</span>
     </ng-template>
     <div class="text-center  mb-2 mt-2">
         <span class="text-xl font-bold text-info text-center" style="font-size: 14px;"> Please select Option</span>  
     </div>
-    <div class="d-flex justify-content-center">
+    <!-- <div class="d-flex justify-content-center">
         <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">Pay Amount without printing</button></div>
         <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveInvoiceDetails(0, true)" style="line-height: 18px  !important;">Print and Save</button></div>
         <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)"  style="line-height: 18px  !important;">Pay Amount and Print </button></div>
-    </div>
+    </div> -->
 
     <div class="d-flex justify-content-center mt-2">
         <div><button class="btn btn-success justify-content-center equal-h me-2" (click)="saveInvoiceDetails(0, false)">Close and Save</button></div>
