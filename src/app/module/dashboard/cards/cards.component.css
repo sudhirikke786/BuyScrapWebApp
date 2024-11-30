@@ -1,120 +1,112 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .cards-container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  .row-container{
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .card {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 20px 0 0 0;
-    margin: 10px;
-    flex: 1;
-    min-height: 130px;
-    min-width: 200px;
-    max-width: 300px;
-    text-align: center;
-    position: relative;
-    cursor: pointer;
-  }
-  
-  .card h3 {
-    color: #333333;
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
-  
-  .card p {
-    color: #666666;
-    font-size: 1.2rem;
-  }
-  
-  /* RGB colored borders for each card */
-  .yellow-border {
-    border-top: 1mm solid rgb(185, 255, 46);
-    background-color: rgba(184, 255, 42, 0.051);
-    /* background-image: url('bg3.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-y: -10px; */
-  }
-  
-  .green-border {
-    border-top: 1mm solid green;
-    background-color: rgba(0, 128, 0, 0.051);
-    /* background-image: url('bg2.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-y: -10px; */
-  }
-  
-  .blue-border {
-    border-top: 1mm solid rgb(6, 88, 240);
-    background-color: rgb(6, 88, 240, 0.051);
-    /* background-image: url('bg1.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-y: -10px; */
-  }
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
 
-  .orange-border {
-    border-top: 1mm solid orange;
-    background-color: rgba(255, 166, 0, 0.051);
-    /* background-image: url('bg1.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-y: -10px; */
-  }
+/* Flex layout for card containers */
+.cards-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  width: 100%;
+}
 
-  .blue-border:hover {
-    border-left: 1px black;
-    box-shadow: 2px 1px 5px darkblue;
-    transform: scale(1.05);
-    transition: 0.5s;
-  }
+.row-container {
+  display: flex;
+  justify-content: space-between;
+}
 
-  .orange-border:hover {
-    border-left: 1px black;
-    box-shadow: 2px 1px 5px darkorange;
-    transform: scale(1.05);
-    transition: 0.5s;
-  }
+.card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 5px 0 0 0; /* Reduced padding to reduce height */
+  flex: 1;
+  max-height: fit-content;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  margin: 0 10px;
+}
 
-  .yellow-border:hover {
-    border-left: 1px black;
-    box-shadow: 2px 1px 5px darkgreen;
-    transform: scale(1.05);
-    transition: 0.5s;
-  }
+/* Keep the chart container the same size */
+.chart-container {
+  height: 100px; /* You can adjust this value based on your desired graph height */
+}
 
-  .green-border:hover {
-    border-left: 1px black;
-    box-shadow: 2px 1px 5px darkgreen;
-    transform: scale(1.05);
-    transition: 0.5s;
-  }
+/* .card h4 {
+  font-size: 1rem;
+  margin: 10px 0;
+  color: #333333;
+} */
 
+.card p {
+  color: #666666;
+  font-size: 1.2rem;
+}
+
+.piechart {
+  flex: 1 1 30vw; /* Adjust the flex basis to take up a proportion of the available width */
+  max-width: 30vw; /* Ensure the piechart doesn't exceed 30% of the viewport width */
+  max-height: 70vh; /* Limit the height to 70% of the viewport height */
+  margin: 10px;
+  box-sizing: border-box; /* Ensure padding is included in width and height calculations */
+  overflow: hidden; /* Prevent content from spilling out */
+}
+
+
+/* RGB colored borders for each card */
+.yellow-border {
+  border-top: 1mm solid rgb(185, 255, 46);
+  background-color: rgba(184, 255, 42, 0.051);
+}
+
+.green-border {
+  border-top: 1mm solid green;
+  background-color: rgba(0, 128, 0, 0.051);
+}
+
+.blue-border {
+  border-top: 1mm solid rgb(6, 88, 240);
+  background-color: rgb(6, 88, 240, 0.051);
+}
+
+.orange-border {
+  border-top: 1mm solid orange;
+  background-color: rgba(255, 166, 0, 0.051);
+}
+
+/* Hover effects */
+.card:hover {
+  box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.dropdown select {
+  font-size: 0.9rem;
+  /* padding: 5px 5px; */
+  border-radius: 5px;
+  text-align: center;
+  text-align-last: center;
+  border: none;
+  background-color: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+/* Modal styling */
 .modal-card {
   width: 60%;
   height: 60%;
@@ -122,60 +114,61 @@
   border-radius: 10px;
 }
 
-.dropdown{
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-.dropdown select {
-    /* height: 3px; /* Decrease height for a smaller dropdown */
-    /* width:60px; */
-    text-align: center; /* Center text */
-    text-align-last: center;
-    font-size: 0.9rem; /* Decrease font size for smaller text */
-    padding: 0 5px; /* Decrease padding for a more compact appearance */
-    border-radius: 3px; /* Adjust border-radius for smaller corners */
-    border: none; /* Optional: Add a border for better visibility */
-    background-color: transparent;
-    appearance: none;
-    cursor: pointer;
-}
-
 .modal-chart-container {
   height: 50%;
   margin-top: 20px;
 }
 
-/* Apply the same border classes as the original cards */
-.modal-card.received-border {
-  border-top: 1mm solid rgb(6, 88, 240);
-}
-
-.modal-card.shipout-border {
-  border-top: 1mm solid rgb(185, 255, 46);
-}
-
-.modal-card.regraded-border {
-  border-top: 1mm solid orange;
-}
-
-.modal-card.revenue-border {
-  border-top: 1mm solid green;
-}
-  
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
+/* Responsive breakpoints */
+@media (max-width: 1024px) {
+  .cards-container {
       align-items: center;
-    }
+  }
 
-    .modal-card {
+  .piechart {
+    max-width: 50vw; /* Allow more space for smaller screens */
+    max-height: 50vh; /* Reduce height as well */
+  }
+
+  .card {
+      max-width: 90%;
+  }
+
+  .modal-card {
+      width: 85%;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .card {
+      max-width: 100%;
+      margin: 10px 10px;
+  }
+
+  .modal-card {
       width: 95%;
       height: 60%;
-    }
-  
-    .card {
-      max-width: 90%;
-    }
   }
-  
+}
+
+@media (max-width: 480px) {
+  .card {
+      max-width: 95%;
+  }
+
+  .piechart {
+    max-width: 100vw; /* On very small screens, let it take the full width */
+    max-height: 40vh; /* Restrict height for better visibility */
+  }
+
+  .modal-card {
+      width: 100%;
+      height: 70%;
+  }
+
+  .dropdown select {
+      font-size: 0.8rem;
+      padding: 2px 5px;
+  }
+}

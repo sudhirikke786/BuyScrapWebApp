@@ -1233,7 +1233,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 }
 
 .dl-img {
-  max-height: 90px;
+  min-height: 80px;
   width: 100%;
 
 }
@@ -2097,12 +2097,6 @@ select optgroup option {
   overflow-y: auto;
   height: calc(100vh - 430px) !important;
 }
-
-.in-card-ticket-table {
-  overflow-y: auto;
-  height: calc(100vh -325px) !important;
-}
-
 
 
 /* @media only screen and (min-width:576px){

@@ -12,7 +12,6 @@ import { SiteLayoutComponent } from './common/site-layout/site-layout.component'
 import { FooterComponent } from './common/footer/footer.component';
 import { DispatchDetailComponent } from './module/dispatch/dispatch-detail/dispatch-detail.component';
 
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FourColumnPipe } from './core/pipe/four-column.pipe';
@@ -26,6 +25,8 @@ import { ErrorComponent } from './error/error.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SuccessPageComponent } from './success-page/success-page.component'
 import { NgChartsModule } from 'ng2-charts';
+import { ChatbotComponent } from './common/chatbot/chatbot.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +41,7 @@ import { NgChartsModule } from 'ng2-charts';
     ErrorComponent,
     SignUpComponent,
     SuccessPageComponent,
+    ChatbotComponent,
     DispatchDetailComponent
   ],
   imports: [

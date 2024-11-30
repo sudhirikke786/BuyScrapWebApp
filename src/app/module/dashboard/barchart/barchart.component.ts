@@ -36,6 +36,7 @@ export class BarchartComponent implements OnInit {
 
   public chartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
+    maintainAspectRatio: true,
     plugins: {
       // title: {
       //   display: true,

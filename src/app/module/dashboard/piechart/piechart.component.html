@@ -1,6 +1,6 @@
 <div>
   <div style="display: flex; justify-content: space-between;">
-    <label for="dataType">Top 5 {{selectedType}} Sellers</label>
+    <label for="dataType">Top 5 Sellers</label>
     <select id="dataType" [(ngModel)]="selectedType" (change)="onTypeChange($event)" style="border-radius: 5px;">
       <option value="OneWeek">1 Week</option>
       <option value="Daily">Current Month</option>
@@ -13,6 +13,7 @@
   <canvas baseChart
     [data]="chartData"
     [options]="chartOptions"
-    [type]="'pie'">
+    [type]="'pie'"
+  >
   </canvas>
 </div>

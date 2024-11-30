@@ -22,7 +22,7 @@ export class CardsComponent implements OnInit {
   // Modal properties
   isModalOpen = false;
   selectedCard: string | null = null;
-  public selectedTimeRange: string = 'Daily'; // Default value
+  public selectedTimeRange: string = 'Monthly'; // Default value
 
   // Data for 'Received' sparkline
   public receivedData = {

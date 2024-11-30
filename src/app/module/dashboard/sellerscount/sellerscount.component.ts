@@ -18,7 +18,7 @@ interface CustomerCountData {
 export class SellerscountComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined; // Reference to the chart directive
 
-  public selectedType: string = 'Daily'; // Default type is set to 'Monthly'
+  public selectedType: string = 'Monthly'; // Default type is set to 'Monthly'
 
   public chartData: ChartConfiguration<'bar'>['data'] = {
     labels: [], // To be populated with the API response

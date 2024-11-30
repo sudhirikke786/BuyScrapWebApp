@@ -11,7 +11,7 @@ import { BaseChartDirective } from 'ng2-charts';
 export class PiechartComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   
-  public selectedType: string = 'Daily';
+  public selectedType: string = 'Monthly';
 
   public chartData: ChartConfiguration<'pie'>['data'] = {
     labels: [],

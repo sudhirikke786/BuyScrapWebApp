@@ -1,11 +1,11 @@
 <!-- cards.component.html -->
 <div class="container d-flex w-100 justify-content-center">
-  <div class="cards-container">
+  <div class="cards-container" title="Click on this card to view it in detail!">
     <!-- Received Card -->
     <div class="card blue-border" (click)="openModal('received')">
-      <p>Received</p>
-      <h2>${{ receivedTotal | number:'1.0-0' }}</h2>
-      <div class="dropdown">
+      <small>Received</small>
+      <h4>${{ receivedTotal | number:'1.0-0' }}</h4>
+      <div class="dropdown" title="Click to change type!">
         <select [(ngModel)]="selectedTimeRange" (click)="$event.stopPropagation()" (change)="onTimeRangeChange($event)">
           <option value="OneWeek">1 Week</option>
           <option value="Daily">Current Month</option>
@@ -24,8 +24,8 @@
   
     <!-- Shipout Card -->
     <div class="card yellow-border" (click)="openModal('shipout')">
-      <p>Shipout</p>
-      <h2>{{ shipoutTotal | number:'1.0-0' }}</h2>
+      <small>Shipout</small>
+      <h4>{{ shipoutTotal | number:'1.0-0' }}</h4>
       <div class="dropdown">
         <select [(ngModel)]="selectedTimeRange" (click)="$event.stopPropagation()" (change)="onTimeRangeChange($event)">
           <option value="OneWeek">1 Week</option>
@@ -43,13 +43,10 @@
         </canvas>
       </div>
     </div>
-  </div>
 
-  <div class="cards-container">
-    <!-- Regraded Card -->
     <div class="card orange-border" (click)="openModal('regraded')">
-      <p>Regraded</p>
-      <h2>{{ regradedTotal | number:'1.0-0' }}</h2>
+      <small>Regraded</small>
+      <h4>{{ regradedTotal | number:'1.0-0' }}</h4>
       <div class="dropdown" (click)="$event.stopPropagation()">
         <select [(ngModel)]="selectedTimeRange" (change)="onTimeRangeChange($event)">
           <option value="OneWeek">1 Week</option>
@@ -68,9 +65,9 @@
     </div>
 
     <!-- Total Revenue Card -->
-    <div class="card green-border" (click)="openModal('revenue')">
-      <p>Total Revenue</p>
-      <h2>${{ revenueTotal | number:'1.0-0' }}</h2>
+    <!-- <div class="card green-border" (click)="openModal('revenue')">
+      <small>Total Revenue</small>
+      <h4>${{ revenueTotal | number:'1.0-0' }}</h4>
       <div class="dropdown" (click)="$event.stopPropagation()">
         <select [(ngModel)]="selectedTimeRange" (change)="onTimeRangeChange($event)">
           <option value="OneWeek">1 Week</option>
@@ -86,7 +83,7 @@
                 [type]="'line'">
         </canvas>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
 
@@ -95,9 +92,9 @@
   <div *ngIf="selectedCard" [ngClass]="'modal-card ' + selectedCard + '-border'">
     <div class="row-container">
       <div>
-        <p>{{ getCardTitle() }}</p>
+        <b>{{ getCardTitle() }}</b>
         <br>
-        <h2>${{ getCardTotal() | number:'1.0-0' }}</h2>
+        <h4>${{ getCardTotal() | number:'1.0-0' }}</h4>
       </div>
 
       <!-- Dropdown for time range selection -->
