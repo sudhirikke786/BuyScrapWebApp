@@ -8,12 +8,18 @@ import { PrimengModule } from '../shared/primeng/primeng.module';
 import { FullCalnderDispatchComponent } from './full-calnder-dispatch/full-calnder-dispatch.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DispatchDetailComponent } from './dispatch-detail/dispatch-detail.component';
+import { DispatchLatestDetailsComponent } from './dispatch-latest-details/dispatch-latest-details.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: DispatchDashboardComponent
-  },{
+  },
+  {
+    path: 'dispatch-detail/:rowId/:sellerID/:type',
+    component: DispatchLatestDetailsComponent
+  },
+  {
     path:'meeting',
     component:FullCalnderDispatchComponent
   },
@@ -27,7 +33,8 @@ export const routes: Routes = [
 @NgModule({
   declarations: [
     DispatchDashboardComponent,
-    FullCalnderDispatchComponent
+    FullCalnderDispatchComponent,
+    DispatchLatestDetailsComponent
   ],
   imports: [
     CommonModule,

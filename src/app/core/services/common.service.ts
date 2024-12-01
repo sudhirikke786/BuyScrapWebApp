@@ -239,9 +239,31 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Sellerss/GetSellerById', 'GET', paramObj);
   }
 
+
+  GetAllPickUpDetailsByID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Pickup/GetPickUpDetailsByID', 'GET', paramObj);
+  }
+
+  GetAllPickUpMaterialByID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Pickup/GetAllPickUpMaterialByID', 'GET', paramObj);
+  }
+
+
+  GetAllDispatchTypes(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Pickup/GetAllDispatchTypes', 'GET', paramObj);
+  }
+
+
+
+
+
+
   addSeller(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Sellerss/InsertSellerDTO', 'POST', requestObj);
   }
+
+
+
 
   DeleteSellerbyId(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Sellerss/DeleteSellerbyId', 'POST', null, localStorage.getItem('orgName') || "", paramObj);
@@ -288,9 +310,17 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Container/GetAllContainer', 'GET', paramObj);
   }
 
+
+
   insertUpdateGroupAdjustment(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Adjustments/InsertUpdateGroupAdjustment', 'POST', requestObj);
   }
+  InsertUpdatePickup(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PickUp/InsertUpdatePickup', 'POST', requestObj);
+  }
+
+
+  
 
   InsertUpdateContainert(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Container/InsertUpdateContainert', 'POST', requestObj);

@@ -136,6 +136,7 @@ export class DispatchDashboardComponent implements OnInit {
               pickUpDate: item.pickUpDate,
               customerName: item.customerName,
               sellerName: item.sellerName,
+              sellerID:item.sellerID,
               charges: item.charges,
               selected: item.closedDate ? true : false
             };
@@ -160,9 +161,8 @@ export class DispatchDashboardComponent implements OnInit {
     });
   }
   clickOnSeller(sellerId: string | number, sellerName: string,sellerAddress: string) {
-    this.router.navigate([`/${this.orgName}/dispatch/detail`, sellerId], {
-      queryParams: { sellerName: sellerName, address: sellerAddress }
-    });
+   
+    this.router.navigate([`/${this.orgName}/dispatch/dispatch-detail`,sellerId,90,'add']);
   }
   
 

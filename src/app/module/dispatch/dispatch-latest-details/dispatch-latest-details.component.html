@@ -1,0 +1,241 @@
+
+<div class="content-page">
+    <div class="content">
+        <div class="bdcmb mt-2">
+            <div class="row">
+              <div class="col-sm-6 col-6">
+                <h4 class="page-title">Dispatch</h4>
+              </div>
+    
+              <div class="col-sm-6 col-6">
+                <div class="b-links">
+                  <a routerLink="/{{orgName}}/home">Home</a> / <a href="javascript:void(0)" routerLink="/{{orgName}}/dispatch">Dispatch</a>
+                </div>
+              </div>
+            </div>
+        </div>
+   
+
+    <div class="row mt-2">
+        <div class="col-12">
+            <div class="card ticket-card">
+                <div class="card-body">
+                    <div class="row">
+                        
+                        <div class="col-sm-2">
+                            <img src="{{customer?.idfaceShotImage}}" class="dl-img">
+                        </div>
+
+                        <div class="col-sm-10">
+
+                            <div class="row">
+                               <div class="col-sm-6 col-md-4 d-flex">
+                                
+                                <h4 class="ticket-number me-1">Dispatch ID # - {{invoiceId}} /   </h4>
+
+                               
+                               </div>
+
+                               <div class="col-sm-6 col-md-8 d-flex justify-content-end mb-1">
+
+                                <div *ngIf="isEditModeOn" >
+                                    <a  class="btn btn-primary me-1 mb-1" (click)="edit()">
+                                        Edit
+                                    </a>
+                                </div>
+
+                                <div>
+                                    <a  class="btn btn-primary me-1" [routerLink]="backUrl">
+                                        Back
+                                    </a>
+
+                                </div>
+                               
+                                   
+                                  
+                                    <!-- <div *ngIf="isEditModeOn" >
+                                        <a class="btn btn-danger me-1" (click)="cancelEditInvoice(false, 0)">Cancel</a>
+                                        <a class="btn btn-primary" (click)="confirmSave()">Save</a>
+                                    </div> -->
+
+                               </div> 
+                            </div>
+                            <div class="row">
+                                <table class="seller-view-tbl">
+                                <tr>
+                                    <td> <b>Customer Name :</b> {{customer?.fullName}}</td>
+                                    <td><b>Address:</b>
+                                        <span class="text-truncate">{{customer?.streetAddress}}</span>
+                                    </td>
+                                    <td>Created on : <label>{{customer?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
+                                    <td>Time : {{customer?.createdDate  | date: 'hh:mm a'}}</td>
+                                </tr>
+                                   
+                                
+                                </table>
+                               
+
+                            </div>
+
+                     
+
+
+                        
+                            
+                         
+
+
+                          
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="form-group col-sm-4 mt-1">
+                            <label for="floatingInput"  class="form-label w-100">Type</label>
+
+                            <select class="form-control" id="defaultSelectedSubMaterial" name="defaultSelectedSubMaterial" [(ngModel)]="dispatchMaterial">
+                                <option *ngFor="let option of dispatchTypes; let i = index"
+                             >
+                                {{ option.type }}
+                                </option>
+                            </select>
+                          
+                        </div>
+
+                        <div class="form-group col-sm-3 mt-1">
+                            <label for="floatingInput"  class="form-label w-100">Pickup Date</label>
+                                <input type="date" class="form-control" [(ngModel)]="pickupdate" id="birthdate"
+                                    placeholder="Date of Birth">
+                             
+                          
+                        </div>
+                        <div class="form-group col-sm-4 mt-1">
+                            <label for="floatingInput"  class="form-label w-100">Driver</label>
+
+                            <select class="form-control me-1" id="defaultSelectedMaterial" name="defaultSelectedMaterial" [(ngModel)]="dispatch"
+                            (change)="onMaterialChange($event)">
+                            <option *ngFor="let option of dispatchMaterialObj; let i = index"
+                            >
+                                {{ option.containerType }}
+                            </option>
+                        </select>
+                             
+                          
+                        </div>
+
+                       
+
+                        
+
+                    </div>
+
+            
+
+                    <div class="row">
+
+                        <div class="invoiceTable">
+                            <div class="invoice-container">
+                                <div class="table-wrapper">
+                                  <table>
+                                    <thead>
+                                      <tr>
+                                        <th style="width:15%">Container ID</th>
+                                        <th style="width:15%">Drop-off Box</th>
+                                        <th style="width:15%">Box Pickup</th>
+                                        <th style="width:15%">Charges</th>
+                                        <th style="width:15%">Notes</th>
+                                        <th style="width:15%">Action</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <!-- Existing Items -->
+                                      <tr *ngFor="let item of invoiceObj; let i = index">
+                                        <td>{{ item.containerType }}</td>
+                                        <td>{{ item.dropoffbox }}</td>
+                                        <td>{{ item.boxpickup }}</td>
+                                        <td>{{ item.charges }}</td>
+                                        <td>{{ item.notes }}</td>
+                                        <td>
+                                          <button class="btn btn-primary me-1" (click)="editItem(i)">Edit</button>
+                                          <button class="btn btn-danger" (click)="deleteItem(i)">Delete</button>
+                                        </td>
+                                      </tr>
+                                      <!-- New Item Input -->
+                                      <tr>
+                                        <td>
+
+                                            <select class="form-control me-1" id="allContainerType" name="defaultSelectedMaterial" [(ngModel)]="newItem.containerType"
+                                            >
+                                            <option *ngFor="let option of allContainerType; let i = index">
+                                                {{ option.containerType }}
+                                            </option>
+                                            </select>
+                                          <!-- <input type="text" [(ngModel)]="newItem.containerID" placeholder="Container ID" /> -->
+                                        </td>
+                                        <td>
+                                          <input type="text" [(ngModel)]="newItem.dropoffbox" placeholder="Drop-off Box" />
+                                        </td>
+                                        <td>
+                                          <input type="text" [(ngModel)]="newItem.boxpickup" placeholder="Box Pickup" />
+                                        </td>
+                                        <td>
+                                          <input type="number" [(ngModel)]="newItem.charges" placeholder="Charges" />
+                                        </td>
+                                        <td>
+                                          <input type="text" [(ngModel)]="newItem.notes" placeholder="Notes" />
+                                        </td>
+                                        <td>
+                                            <button
+      class="btn btn-primary"
+      [disabled]="!isValidNewItem()"
+      (click)="addNewItem()"
+    >
+      {{ editingIndex !== null ? 'Update Item' : 'Add Item' }}
+    </button>
+                                          <!-- <button class="btn btn-primary" [disabled]="!isValidNewItem()" (click)="addNewItem()">Add</button> -->
+                                        </td>
+                                      </tr>
+                                    </tbody>
+
+                                    <tfoot>
+                                        <tr>
+                                          <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                                          <td>{{ getTotalCharges() | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                          <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5"></td>
+                                            <td>  
+                                                <div class="d-flex">
+                                                <button class="btn btn-primary" (click)="submitSave()">Save</button>
+                                            </div></td>
+                                           
+                                        </tr>
+                                      </tfoot>
+                                  </table>
+                                </div>
+                              </div>
+                        </div>
+                        
+                      
+                          
+                    </div>
+                </div>
+            </div>
+         </div>
+                
+
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+

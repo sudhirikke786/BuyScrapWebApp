@@ -61,13 +61,14 @@
                       
                         <p-checkbox [binary]="true" [disabled]="certificate.selected" [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
                       </td>
-                      <td>{{ certificate.rowId }}</td>
+                      <td>{{ certificate.rowId }} / {{certificate?.sellerID}}</td>
                       <td>{{ certificate?.pickUpDate | date: 'MM/dd/yyyy' }}</td>
                       <td>{{ certificate.sellerName }}</td>
                       <td>{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>
                       <td>
                           <div class="d-flex align-items-center">
-                              <a class="btn btn-primary me-1">Show</a>
+                              <a class="btn btn-primary me-1" [routerLink]="['dispatch-detail', certificate.rowId, certificate.sellerID,'new']"
+                              routerLinkActive="router-link-active" >Show</a>
                               <a class="btn btn-primary me-1">Edit</a>
                               <a class="btn btn-danger me-1">Delete</a>
                               <a class="btn btn-primary">Convert to Ticket</a>
