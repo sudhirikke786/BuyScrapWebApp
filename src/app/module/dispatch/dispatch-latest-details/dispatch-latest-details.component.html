@@ -104,8 +104,8 @@
 
                         <div class="form-group col-sm-3 mt-1">
                             <label for="floatingInput"  class="form-label w-100">Pickup Date</label>
-                                <input type="date" class="form-control" [(ngModel)]="pickupdate" id="birthdate"
-                                    placeholder="Date of Birth">
+                                <input type="datetime-local" [min]="minDate" class="form-control" [(ngModel)]="pickupdate" id="birthdate"
+                                    placeholder="Pick up Date">
                              
                           
                         </div>
@@ -179,7 +179,7 @@
                                           <input type="text" [(ngModel)]="newItem.boxpickup" placeholder="Box Pickup" />
                                         </td>
                                         <td>
-                                          <input type="number" [(ngModel)]="newItem.charges" placeholder="Charges" />
+                                          <input min="0" type="number" [(ngModel)]="newItem.charges" placeholder="Charges" />
                                         </td>
                                         <td>
                                           <input type="text" [(ngModel)]="newItem.notes" placeholder="Notes" />
@@ -223,7 +223,7 @@
                 </div>
             </div>
          </div>
-                
+         <p-toast></p-toast>
 
 
 

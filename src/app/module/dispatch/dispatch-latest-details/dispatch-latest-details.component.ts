@@ -2,12 +2,14 @@ import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angula
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'src/app/core/services/common.service';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 
 @Component({
   selector: 'app-dispatch-latest-details',
   templateUrl: './dispatch-latest-details.component.html',
-  styleUrls: ['./dispatch-latest-details.component.css']
+  styleUrls: ['./dispatch-latest-details.component.css'],
+  providers: [MessageService, ConfirmationService]
 })
 export class DispatchLatestDetailsComponent {
 
@@ -25,7 +27,7 @@ export class DispatchLatestDetailsComponent {
   currencySymbol: string = 'USD';
   numberFormat: string = '1.3-3';
   editingIndex:any = null;
-
+  minDate! :string;
   dispatch:any;
   dispatchMaterial:any;
 
@@ -39,13 +41,13 @@ export class DispatchLatestDetailsComponent {
   newItem: any = {
           "localRowId": 0,
           "rowID": 0,
-          "materialName": "string",
+          "materialName": "",
           "pickUpID": 0,
-          "isDeleted": true,
+          "isDeleted": false,
           "containerID": 0,
-          "containerType": "string",
-          "containerSize": "string",
-          "containerName": "string",
+          "containerType": "",
+          "containerSize": "",
+          "containerName": "",
           "noofShippingUnits": 0,
           "charges": 0,
           "liveLeadEQ": "string",
@@ -60,13 +62,14 @@ export class DispatchLatestDetailsComponent {
 
 
 constructor(private route: ActivatedRoute, 
-   
+  private messageService: MessageService,
   public commonService: CommonService) { }
 
   ngOnInit() {    
  
     this.orgName = localStorage.getItem('orgName');
     this.locId = localStorage.getItem('locId');
+    this.minDate =  this.formateDate();
 
     this.route.params.subscribe((param) => {
       this.invoiceId = param["rowId"];
@@ -87,7 +90,7 @@ constructor(private route: ActivatedRoute,
      this.GetAllPickUpMaterialByID();
      this.GetAllContainer();
 
-    this.backUrl = `/${this.orgName}/sellers-buyers`;
+    this.backUrl = `/${this.orgName}/dispatch`;
 
 
    
@@ -236,37 +239,54 @@ constructor(private route: ActivatedRoute,
   }
   submitSave(){
     // "pickUpDate": this.datePipe.transform(this.pickupdate, 'YYYY-MM-ddTHH:mm:ss.SSS'),
-
+    const containerObj =  this.invoiceObj.map((item) =>{
+      item.containerID = this.allContainerType.filter((item1:any) => item1.containerType === item.containerType)[0].rowId;
+      return item;
+    })
     const submitObj = {
       "rowID": 0,
       "ticketID": 0,
       "sellerID": this.sellerId,
       "pickUpAddress": "string",
+      "pickUpDate":new Date(this.pickupdate).toISOString(),
       "charges": this.invoiceObj.reduce((acc,curr) => acc + curr.charges,0),
       "locID": this.locId,
       "isDeleted": false,
       "typeID": 0,
-      "type": "string",
+      "type": this.dispatchMaterial,
       "driverID": 0,
       "closedDate": "2024-12-01T14:41:32.385Z",
-      "vehicalNo": "string",
-      "route": "string",
-      "carrierName": "string",
-      "driverName": "string",
+      "vehicalNo": "",
+      "route": "",
+      "carrierName": "",
+      "driverName": "",
       "createdBy": 0,
       "createdDate": "2024-12-01T14:41:32.385Z",
       "updatedBy": 0,
       "updatedDate": "2024-12-01T14:41:32.385Z",
-      "lstTPickUpMaterialDTO": this.invoiceObj
+      "lstTPickUpMaterialDTO": containerObj
     }
 
     this.commonService.InsertUpdatePickup(submitObj).subscribe((res) =>{
       console.log("Inserted")
     },(error) =>{
+
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+
       console.log("Error")
     })
   }
 
+
+  formateDate(){
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mi = String(now.getMinutes()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}T${hh}:${mi}`; 
+  }
 
   
 
