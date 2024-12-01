@@ -30,9 +30,9 @@ export class DispatchLatestDetailsComponent {
   minDate! :string;
   dispatch:any;
   dispatchMaterial:any;
-
+  driverName:any;
   customer:any;
-
+  driveruserObj:any;
 
   // Array to store invoice items
   invoiceObj: Array<any> = [];
@@ -57,7 +57,8 @@ export class DispatchLatestDetailsComponent {
    };
 
   allContainerType :any = [];
-
+  admins: any;
+  driverList:any[] =[];
 
 
 
@@ -89,6 +90,7 @@ constructor(private route: ActivatedRoute,
      this.GetAllDispatchTypes();
      this.GetAllPickUpMaterialByID();
      this.GetAllContainer();
+     this.getAllUsers();
 
     this.backUrl = `/${this.orgName}/dispatch`;
 
@@ -100,8 +102,8 @@ constructor(private route: ActivatedRoute,
 
   }
 
-  onMaterialChange(materialId:any){
-    console.log(materialId);
+  onMaterialChange(){
+   this.driveruserObj = this.driverName
   }
 
   // Add new item to the list
@@ -254,12 +256,12 @@ constructor(private route: ActivatedRoute,
       "isDeleted": false,
       "typeID": 0,
       "type": this.dispatchMaterial,
-      "driverID": 0,
+      "driverID": this.driveruserObj.rowId,
       "closedDate": "2024-12-01T14:41:32.385Z",
       "vehicalNo": "",
       "route": "",
       "carrierName": "",
-      "driverName": "",
+      "driverName": this.driveruserObj.firstName,
       "createdBy": 0,
       "createdDate": "2024-12-01T14:41:32.385Z",
       "updatedBy": 0,
@@ -278,6 +280,8 @@ constructor(private route: ActivatedRoute,
   }
 
 
+
+
   formateDate(){
     const now = new Date();
     const yyyy = now.getFullYear();
@@ -286,6 +290,20 @@ constructor(private route: ActivatedRoute,
     const hh = String(now.getHours()).padStart(2, '0');
     const mi = String(now.getMinutes()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}T${hh}:${mi}`; 
+  }
+
+
+
+  getAllUsers(){
+    const reqObj = {
+      LocationId: this.locId,
+      UserID:0
+    }
+    this.commonService.GetAllUsers(reqObj).subscribe((res) =>{
+      this.driverList =  res?.body?.data;
+
+     
+    })
   }
 
   

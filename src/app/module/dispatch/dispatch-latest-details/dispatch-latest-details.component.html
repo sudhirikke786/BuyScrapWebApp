@@ -112,11 +112,11 @@
                         <div class="form-group col-sm-4 mt-1">
                             <label for="floatingInput"  class="form-label w-100">Driver</label>
 
-                            <select class="form-control me-1" id="defaultSelectedMaterial" name="defaultSelectedMaterial" [(ngModel)]="dispatch"
-                            (change)="onMaterialChange($event)">
-                            <option *ngFor="let option of dispatchMaterialObj; let i = index"
+                            <select class="form-control me-1" id="defaultSelectedMaterial" name="defaultSelectedMaterial" [(ngModel)]="driverName"
+                            (change)="onMaterialChange()">
+                            <option *ngFor="let optionobj of driverList; let i = index" [ngValue]="optionobj"
                             >
-                                {{ option.containerType }}
+                                {{ optionobj.firstName }}
                             </option>
                         </select>
                              
