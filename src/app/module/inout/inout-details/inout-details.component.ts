@@ -9,18 +9,18 @@ import { WebcamImage } from 'ngx-webcam';
 import { TicketItem } from 'src/app/core/model/ticket-item.model';
 import { Ticket } from 'src/app/core/model/ticket.model';
 import { StorageService } from 'src/app/core/services/storage.service';
-import { ShipOut } from 'src/app/core/model/ship-out.model';
+import { Inout } from 'src/app/core/model/inout.model';
 import { DataService } from 'src/app/core/services/data.service';
 import { MaterialCalculatorComponent } from '../../shared/commonshared/material-calculator/material-calculator.component';
 import { HelperService } from 'src/app/core/services/helper.service';
  
 @Component({
-  selector: 'app-shipout-details',
-  templateUrl: './shipout-details.component.html',
-  styleUrls: ['./shipout-details.component.scss'],
+  selector: 'app-inout-details',
+  templateUrl: './inout-details.component.html',
+  styleUrls: ['./inout-details.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class ShipoutDetailsComponent implements OnInit {
+export class InoutDetailsComponent implements OnInit {
   [x: string]: any;
   @ViewChild('htmlData') htmlData!: ElementRef;
 
@@ -44,14 +44,14 @@ export class ShipoutDetailsComponent implements OnInit {
   ticketObj:any = [];
   orgName: any;
   sellerId: any;
-  shipoutId: any;
-  shipoutAction: any;
+  inoutId: any;
+  inoutAction: any;
   locId: any;
   logInUserId: any;
   locationName: any;
 
   ticketData:any = {};
-  shipOutDetails: any;
+  inoutDetails: any;
   user: any;
   totalNoOfMaterial: any;
   totalGross: any;
@@ -96,7 +96,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
   selectedRowObj: any;
   isReceiptPrint = true;
-  isNewShipOut = false;
+  isNewInout = false;
 
   fileDataObj: any;
   showDownload = false;
@@ -121,19 +121,19 @@ export class ShipoutDetailsComponent implements OnInit {
     this.locationName = localStorage.getItem('locationName');
     this.checkTabView = this.helperService.isTab();
     this.route.params.subscribe((param)=>{
-      this.shipoutId = param["shipOutId"];
-      this.shipoutAction = param["action"];
-      if (this.shipoutAction == 'edit') {
+      this.inoutId = param["inoutId"];
+      this.inoutAction = param["action"];
+      if (this.inoutAction == 'edit') {
         this.editTicketDetails();
       }
-      if (parseInt(this.shipoutId)) {
-        this.getShipOutDetailsByID();
-        this.isNewShipOut = false;
+      if (parseInt(this.inoutId)) {
+        this.getInoutDetailsByID();
+        this.isNewInout = false;
       }
       else {
-        this.shipOutDetails = this.dataService.getNewShipOut();
+        this.inoutDetails = this.dataService.getNewInout();
         this.getAllUsers(this.logInUserId);
-        this.isNewShipOut = true;
+        this.isNewInout = true;
       }
       this.processDataBasedOnTicketId();
     });
@@ -143,11 +143,11 @@ export class ShipoutDetailsComponent implements OnInit {
 
   
   private processDataBasedOnTicketId() {
-    if (parseInt(this.shipoutId)) {
-      this.getShipOutMaterialbyID();
+    if (parseInt(this.inoutId)) {
+      this.getInoutMaterialbyID();
       // this.getAllTicketsDetails();
     } else {
-      this.shipoutId = 0;
+      this.inoutId = 0;
       this.ticketData['createdDate'] = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       this.ticketData['status'] = 'NEW SHIP OUT';
 
@@ -165,14 +165,14 @@ export class ShipoutDetailsComponent implements OnInit {
   //   this.isLoading = true;
   //   const paramObject = {
   //     LocationId: this.locId,
-  //     SerachText: this.shipoutId,
+  //     SerachText: this.inoutId,
   //     SearchOrder: 'TicketId', 
   //     PageNumber: 1, 
   //     RowOfPage: 10
   //   };
   //   this.commonService.getAllTicketsDetails(paramObject)
   //     .subscribe(data => {
-  //         console.log('getAllTicketsDetails for shipoutId :: ');
+  //         console.log('getAllTicketsDetails for inoutId :: ');
   //         console.log(data);
   //         this.ticketData = data.body.data[0];
   //         this.totalRecords =  data.totalRecords;
@@ -225,17 +225,17 @@ export class ShipoutDetailsComponent implements OnInit {
   }
 
     
-  getShipOutDetailsByID() {
+  getInoutDetailsByID() {
     const paramObject = {
-      rowId: this.shipoutId,
+      rowId: this.inoutId,
       LocID: this.locId
     };
-    this.commonService.getShipOutDetailsByID(paramObject)
+    this.commonService.getInoutDetailsByID(paramObject)
       .subscribe(data => {
-          console.log('getShipOutDetailsByID :: ');
+          console.log('getInoutDetailsByID :: ');
           console.log(data);
-          this.shipOutDetails = data.body.data; 
-          this.shipOutDetails.shipoutmaterial = null; 
+          this.inoutDetails = data.body.data; 
+          this.inoutDetails.inoutmaterial = null; 
           const userId = data.body.data.createdBy;
           this.getAllUsers(userId);
         },
@@ -246,14 +246,14 @@ export class ShipoutDetailsComponent implements OnInit {
   }
 
   
-  getShipOutMaterialbyID() {
+  getInoutMaterialbyID() {
     const paramObject = {
-      ShipOutIDId: this.shipoutId,
+      ShipOutIDId: this.inoutId,
       locid: this.locId
     };
-    this.commonService.getShipOutMaterialbyID(paramObject)
+    this.commonService.getInoutMaterialbyID(paramObject)
       .subscribe(data => {
-          console.log('getShipOutMaterialbyID :: ');
+          console.log('getInoutMaterialbyID :: ');
           console.log(data);
           this.ticketObj = data.body.data;
 
@@ -364,27 +364,27 @@ export class ShipoutDetailsComponent implements OnInit {
     // }, 0);
        
     // this.isEditModeOn = false;
-    this.shipOutDetails.LocID = this.locId;
-    this.shipOutDetails.totalGross = this.totalGross;
-    this.shipOutDetails.totalTare = this.totalTare;
-    this.shipOutDetails.totalNet = this.totalNet;
-    this.shipOutDetails.shipoutmaterial = this.ticketObj;
+    this.inoutDetails.LocID = this.locId;
+    this.inoutDetails.totalGross = this.totalGross;
+    this.inoutDetails.totalTare = this.totalTare;
+    this.inoutDetails.totalNet = this.totalNet;
+    this.inoutDetails.inoutmaterial = this.ticketObj;
     
-    console.log("Final shipOutDetails :: " + JSON.stringify(this.shipOutDetails));
+    console.log("Final inoutDetails :: " + JSON.stringify(this.inoutDetails));
     
-    this.commonService.insertShipOutDTO(this.shipOutDetails).subscribe(data =>{
-      if (parseInt(this.shipoutId)) {
-        this.isNewShipOut = false;
+    this.commonService.insertInoutDTO(this.inoutDetails).subscribe(data =>{
+      if (parseInt(this.inoutId)) {
+        this.isNewInout = false;
       } else {
-        this.isNewShipOut = true;
+        this.isNewInout = true;
       }
       console.log(data); 
-      this.shipoutId = data.body;
+      this.inoutId = data.body;
 
     
       
       if (this.isReceiptPrint) {
-        this.generateShipOutReport();
+        this.generateInoutReport();
       }
     },(error: any) =>{  
       console.log(error);  
@@ -398,7 +398,7 @@ export class ShipoutDetailsComponent implements OnInit {
   cancelEditTicket() {
    
     
-    if (this.shipoutId && this.shipoutId != 0) {
+    if (this.inoutId && this.inoutId != 0) {
       console.log('11111');
       this.isEditModeOn = false;
       this.editItemCloseImageCapture = false;
@@ -406,15 +406,15 @@ export class ShipoutDetailsComponent implements OnInit {
     } 
     // else {
     //   console.log('222222');
-    //   this.router.navigateByUrl(`${this.orgName}/ship-out`);
+    //   this.router.navigateByUrl(`${this.orgName}/inout`);
     // }    
   }
 
   closePdfReport() {
     this.showDownload = false;    
-    this.router.navigateByUrl(`${this.orgName}/ship-out`);
-    // if (this.isEditModeOn && this.isNewShipOut) {
-    //   this.router.navigateByUrl(`${this.orgName}/ship-out`);
+    this.router.navigateByUrl(`${this.orgName}/inout`);
+    // if (this.isEditModeOn && this.isNewInout) {
+    //   this.router.navigateByUrl(`${this.orgName}/inout`);
     // }
   }
 
@@ -450,7 +450,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemLeveloperationPerform = 'Edit';
   }
 
-  editItem(rowData: any) {
+  editItem(rowData: any) {   
     this.itemRowId = rowData.rowId;
     this.itemLocalRowId = rowData.localRowId;
     this.itemGroupName = rowData.groupName;
@@ -559,20 +559,20 @@ export class ShipoutDetailsComponent implements OnInit {
   }
   
 
-  generateShipOutReport() {
+  generateInoutReport() {
 
     const param = {
-      ShipOutId: this.shipoutId,
+      InoutId: this.inoutId,
       LocationId: this.locId
     }
 
-    this.commonService.getShipOutReportByID(param)
+    this.commonService.getInoutReportByID(param)
       .subscribe(data => {
-        console.log('getShipOutReportByID :: ');
+        console.log('getInoutReportByID :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
         if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,"Shipout Report"+this.shipoutId)
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Inout Report"+this.inoutId)
         }
 
         this.showDownload = true;

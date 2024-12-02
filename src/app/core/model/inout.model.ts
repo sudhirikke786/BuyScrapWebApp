@@ -1,0 +1,37 @@
+export class Inout {  
+    rowId: number = 0;
+    createdBy: number = 0;
+    createdDate: any;
+    updatedBy: number = 0;
+    updatedDate: any;
+    locID: number = 0;
+    locIn: number = 0;
+    locOut: number = 0;
+    locationName: string = '';
+    status: string = '';
+    driverName: string = '';
+    make: string = '';
+    model: string = '';
+    carrier: string = '';
+    truck: string = '';
+    note: string = '';
+    driverlicense:string = '';
+    licenseplate:string = '';
+    trailer1: string = '';
+    trailer2: string = '';
+    container: string = '';
+    vehicleNo: string = '';
+    // seal: string = '';
+    // booking: string = '';
+    // vessels: string = '';
+    // chasis: string = '';
+    // packSlip: string = '';
+    // reference: string = '';
+    totalGross: number = 0;
+    totalTare: number = 0;
+    totalNet: number = 0;
+    isDeleted: boolean = false;
+    inwordDate: any;
+    outwordDate: any;
+    inoutmaterial: any;
+}

@@ -3,7 +3,8 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'src/app/core/services/common.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
-
+import { StorageService } from 'src/app/core/services/storage.service';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-dispatch-latest-details',
@@ -17,6 +18,9 @@ export class DispatchLatestDetailsComponent {
   invoiceId:any;
   sellerId:any;
   locId:any;
+  logInUserId: any;
+  locationName: any;
+  checkTabView: boolean = false;
   isEditModeOn= false;
   dispatchObj:any;
   dispatchTypes:any;
@@ -64,12 +68,17 @@ export class DispatchLatestDetailsComponent {
 
 constructor(private route: ActivatedRoute, 
   private messageService: MessageService,
+  private stroarge:StorageService,
+  public helperService:HelperService,
   public commonService: CommonService) { }
 
   ngOnInit() {    
  
     this.orgName = localStorage.getItem('orgName');
-    this.locId = localStorage.getItem('locId');
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    this.locationName = localStorage.getItem('locationName');
+    this.checkTabView = this.helperService.isTab();
     this.minDate =  this.formateDate();
 
     this.route.params.subscribe((param) => {
@@ -139,8 +148,8 @@ constructor(private route: ActivatedRoute,
   isValidNewItem(): boolean {
     return (
       this.newItem.containerType &&
-      this.newItem.dropoffbox &&
-      this.newItem.boxpickup &&
+      this.newItem.dropOffBox &&
+      this.newItem.boxPickUp &&
       this.newItem.charges > 0
     );
   }
@@ -248,20 +257,20 @@ constructor(private route: ActivatedRoute,
     const submitObj = {
       "rowID": 0,
       "ticketID": 0,
-      "sellerID": this.sellerId,
+      "sellerID": parseInt(this.sellerId),
       "pickUpAddress": "string",
       "pickUpDate":new Date(this.pickupdate).toISOString(),
       "charges": this.invoiceObj.reduce((acc,curr) => acc + curr.charges,0),
       "locID": this.locId,
       "isDeleted": false,
-      "typeID": 0,
-      "type": this.dispatchMaterial,
-      "driverID": this.driveruserObj.rowId,
+      "typeID": 1,
+      "type": "dropbox",
+      "driverID": 0,
       "closedDate": "2024-12-01T14:41:32.385Z",
       "vehicalNo": "",
       "route": "",
       "carrierName": "",
-      "driverName": this.driveruserObj.firstName,
+      "driverName": " ",
       "createdBy": 0,
       "createdDate": "2024-12-01T14:41:32.385Z",
       "updatedBy": 0,

@@ -162,7 +162,7 @@ export class DispatchDashboardComponent implements OnInit {
   }
   clickOnSeller(sellerId: string | number, sellerName: string,sellerAddress: string) {
    
-    this.router.navigate([`/${this.orgName}/dispatch/dispatch-detail`,sellerId,90,'add']);
+    this.router.navigate([`/${this.orgName}/dispatch/dispatch-detail`,'new',sellerId,'add']);
   }
   
 

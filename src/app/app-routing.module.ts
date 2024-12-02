@@ -75,6 +75,12 @@ const routes: Routes = [
           data: { requiredRole: ['Administrator','Cashier']},
         },
         {
+          path:'inout',
+          loadChildren:() => import('./module/inout/inout.module').then(m => m.InoutModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator','Cashier']},
+        },
+        {
           path:'materials',
           loadChildren:() => import('./module/materials/materials.module').then(m => m.MaterialsModule),
           canActivate: [RoleGuard],

@@ -151,8 +151,8 @@
                                       <!-- Existing Items -->
                                       <tr *ngFor="let item of invoiceObj; let i = index">
                                         <td>{{ item.containerType }}</td>
-                                        <td>{{ item.dropoffbox }}</td>
-                                        <td>{{ item.boxpickup }}</td>
+                                        <td>{{ item.dropOffBox }}</td>
+                                        <td>{{ item.boxPickUp }}</td>
                                         <td>{{ item.charges }}</td>
                                         <td>{{ item.notes }}</td>
                                         <td>
@@ -173,10 +173,10 @@
                                           <!-- <input type="text" [(ngModel)]="newItem.containerID" placeholder="Container ID" /> -->
                                         </td>
                                         <td>
-                                          <input type="text" [(ngModel)]="newItem.dropoffbox" placeholder="Drop-off Box" />
+                                          <input type="number" [(ngModel)]="newItem.dropOffBox" placeholder="Drop-off Box" />
                                         </td>
                                         <td>
-                                          <input type="text" [(ngModel)]="newItem.boxpickup" placeholder="Box Pickup" />
+                                          <input type="number" [(ngModel)]="newItem.boxPickUp" placeholder="Box Pickup" />
                                         </td>
                                         <td>
                                           <input min="0" type="number" [(ngModel)]="newItem.charges" placeholder="Charges" />

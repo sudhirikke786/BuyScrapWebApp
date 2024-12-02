@@ -347,6 +347,31 @@ export class CommonService {
   }
 
 
+  // InOut
+  
+
+  getAllInoutDetails(pagination: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InOut/GetAllInOutDetails', 'GET', pagination);
+  }
+
+  getInoutDetailsByID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InOut/GetInOutDetailsByID', 'GET', paramObj);
+  }
+
+  getInoutMaterialbyID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InOut/GetInOutMaterialbyID', 'GET', paramObj);
+  }
+
+  insertInoutDTO(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InOut/InsertInOutDTO', 'POST', requestObj);
+  }
+
+  UpdateInoutStatus(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InOut/UpdateInwardStatus', 'POST',paramObj);
+  }
+
+
+
 
 
   getAllCODTickets(pagination: any): Observable<any> {
@@ -498,6 +523,10 @@ export class CommonService {
   }
 
   getShipOutReportByID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetShipOutDetailsByID', 'GET', paramObj);
+  }
+
+  getInoutReportByID(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetShipOutDetailsByID', 'GET', paramObj);
   }
 

@@ -57,7 +57,6 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
   
-    alert(this.inputBox1);
     this.grossInput = this.itemGross;
     this.tareInput = this.itemTare;
     const netQty = this.grossInput - this.tareInput

@@ -9,6 +9,7 @@ export class DataService {
   private _cashDrawerDetail: any;
   private _cashDrawerAmountAndPaidTicketCount: any;
   private _newShipOut: any;  
+  private _newInout: any;  
   private _newDriverDetail!: driver;
   // _cashDrawerAmountDTO: any;
   
@@ -63,6 +64,14 @@ export class DataService {
 
   getNewShipOut() {
     return this._newShipOut;
+  }
+
+  setNewInout(val: any) {
+    this._newInout = val;
+  }
+
+  getNewInout() {
+    return this._newInout;
   }
 
   getActivePlan() {

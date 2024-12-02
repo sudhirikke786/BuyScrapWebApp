@@ -6,12 +6,12 @@
         <div class="bdcmb mt-2">
             <div class="row">
                 <div class="col-sm-6 col-6">
-                    <h4 class="page-title">Ship Out Details</h4>
+                    <h4 class="page-title">In Out Details</h4>
                 </div>
 
                 <div class="col-sm-6 col-6">
                     <div class="b-links">
-                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/ship-out">Ship Out</a> / <a href="javscript:void()">Ship Out Details</a>
+                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/inout">In Out</a> / <a href="javscript:void()">In Out Details</a>
                     </div>
                 </div>
             </div>
@@ -32,14 +32,14 @@
         
                                         <div class="row">
                                            <div class="col-sm-6 d-flex">
-                                                <h4 class="ticket-number me-1">Ship-out # - {{shipoutId}}</h4>
+                                                <h4 class="ticket-number me-1">Inout # - {{inoutId}}</h4>
                                                 <!-- <a href="javascript:void(0)" class="btn btn-grid btn-primary waves-effect waves-light ms-1 mb-1">
                                                     <i class="mdi mdi-plus"></i>  COD Required
                                                 </a> -->
                                            </div>
         
                                            <div class="col-sm-6 d-flex justify-content-end">
-                                            <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/ship-out">
+                                            <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/inout">
                                                 Back
                                             </a>
                                             <!-- <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
@@ -52,7 +52,7 @@
         
                                             
                                             <div *ngIf="!isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
-                                                <a class="btn btn-primary" (click)="generateShipOutReport()">Print</a>
+                                                <a class="btn btn-primary" (click)="generateInoutReport()">Print</a>
                                             </div>
         
                                            </div> 
@@ -61,14 +61,16 @@
                                         <table class="seller-view-tbl">
                                             <tbody>
                                             <tr>
-                                                <td>Business : {{shipOutDetails?.customerName}}</td>
-                                                <td>Address : {{shipOutDetails?.streetAddress}}</td>
-                                                <td>Driver : {{shipOutDetails?.driverName}}</td>
+                                                <td *ngIf="inoutDetails?.status == 'Out'" >To Location : {{inoutDetails?.locationName}}</td>
+                                                <td *ngIf="inoutDetails?.status == 'In'" >From Location : {{inoutDetails?.locationName}}</td>
+                                                <td *ngIf="inoutDetails?.status != 'In' && inoutDetails?.status != 'Out'" >Location : {{inoutDetails?.locationName}}</td>
+                                                <td>Status : {{inoutDetails?.status}}</td>
+                                                <td>Driver : {{inoutDetails?.driverName}}</td>
                                             </tr>
         
                                             <tr>
-                                                <td>DL# - {{shipOutDetails?.rowId}}</td>
-                                                <td>Truck - {{shipOutDetails?.truck}}</td>
+                                                <td>DL# - {{inoutDetails?.driverlicense}}</td>
+                                                <td>Truck - {{inoutDetails?.truck}}</td>
                                                 <td>By - <label>{{user?.firstName}} {{user?.lastName}}</label></td>
                                             </tr>
                                         </tbody></table>
@@ -292,7 +294,7 @@
 <ng-container *ngIf="!checkTabView">
 
 
-<p-dialog header="Shipout Report" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+<p-dialog header="Inout Report" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
     <div class="row" >
       <div style="height: 500px;" *ngIf="showDownload">                
         <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>

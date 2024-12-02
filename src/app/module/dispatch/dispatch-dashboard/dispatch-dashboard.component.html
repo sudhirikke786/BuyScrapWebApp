@@ -61,7 +61,7 @@
                       
                         <p-checkbox [binary]="true" [disabled]="certificate.selected" [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
                       </td>
-                      <td>{{ certificate.rowId }} / {{certificate?.sellerID}}</td>
+                      <td>{{ certificate.rowId }}</td>
                       <td>{{ certificate?.pickUpDate | date: 'MM/dd/yyyy' }}</td>
                       <td>{{ certificate.sellerName }}</td>
                       <td>{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>

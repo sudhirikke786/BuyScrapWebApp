@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 interface ChatbotRequest {
   query: string;
@@ -32,8 +33,8 @@ export class ChatbotService {
       conversation_id: this.currentConversationId
     };
 
-    // const apiUrl = 'http://3.135.87.230/chatbot/ask';
-    const apiUrl = 'http://localhost:8000/chatbot/ask';
+    const apiUrl = environment.baseUrl + '/AWS/AskQuery';
+    // const apiUrl = 'http://localhost:8000/chatbot/ask';
 
     return this.http.post<ChatbotResponse>(apiUrl, requestBody, { headers });
   }
@@ -43,8 +44,8 @@ export class ChatbotService {
   }
 
   uploadPDF(formData: FormData) {
-    // const apiUrl = 'http://3.135.87.230/chatbot/upload-pdf';
-    const apiUrl = 'http://localhost:8000/chatbot/upload-pdf';
+    const apiUrl = environment.baseUrl + '/chatbot/upload-pdf';
+    // const apiUrl = 'http://localhost:8000/chatbot/upload-pdf';
     return this.http.post<any>(apiUrl, formData, { observe: 'response' });
   }
 }
