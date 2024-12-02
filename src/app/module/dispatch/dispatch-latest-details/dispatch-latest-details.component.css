@@ -57,13 +57,7 @@
     background-color: #f2f2f2;
   }
   
-  tfoot {
-    background-color: #ddd;
-  }
-  
-  tfoot td {
-    font-weight: bold;
-  }
+
   
   tfoot .text-right {
     text-align: right;

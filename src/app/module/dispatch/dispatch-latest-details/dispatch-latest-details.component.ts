@@ -24,7 +24,7 @@ export class DispatchLatestDetailsComponent {
   isEditModeOn= false;
   dispatchObj:any;
   dispatchTypes:any;
-  dispatchMaterialObj:any;
+  dispatchMaterialObj = 'undefined';
   backUrl:any;
   type:any;
   pickupdate:any;
@@ -55,18 +55,18 @@ export class DispatchLatestDetailsComponent {
           "noofShippingUnits": 0,
           "charges": 0,
           "liveLeadEQ": "string",
-          "dropOffBox": 0,
-          "boxPickUp": 0,
+          "dropoffbox": 0,
+          "boxpickup": 0,
           "notes": ""
    };
 
   allContainerType :any = [];
   admins: any;
   driverList:any[] =[];
+  editItemObj: any = {};
 
 
-
-constructor(private route: ActivatedRoute, 
+constructor(private route: ActivatedRoute, private router:Router,
   private messageService: MessageService,
   private stroarge:StorageService,
   public helperService:HelperService,
@@ -94,10 +94,11 @@ constructor(private route: ActivatedRoute,
      this.getSellerById();
      if( this.type=='new'){
       this.GetAllPickUpDetailsByID();
+      this.GetAllPickUpMaterialByID();
      }
     // 
      this.GetAllDispatchTypes();
-     this.GetAllPickUpMaterialByID();
+ 
      this.GetAllContainer();
      this.getAllUsers();
 
@@ -111,6 +112,25 @@ constructor(private route: ActivatedRoute,
 
   }
 
+  startEditing(index: number, item: any): void {
+    this.editingIndex = index;
+    this.editItemObj = { ...item }; // Create a copy to avoid directly modifying the original
+  }
+  
+  saveEdit(index: number): void {
+    if (this.editingIndex !== null) {
+      this.invoiceObj[index] = { ...this.editItemObj }; // Save the updated values
+      this.editingIndex = null;
+    }
+  }
+  
+
+  cancelEdit(): void {
+    this.editingIndex = null; // Exit edit mode without saving
+    this.editItemObj = {};
+  }
+
+
   onMaterialChange(){
    this.driveruserObj = this.driverName
   }
@@ -118,17 +138,26 @@ constructor(private route: ActivatedRoute,
   // Add new item to the list
   addNewItem() {
 
-    if (this.editingIndex !== null) {
-      // Update the existing item
-      this.invoiceObj[this.editingIndex] = { ...this.newItem };
-      this.editingIndex = null; // Reset the editing index
-    }else{
-      this.invoiceObj.push({ ...this.newItem}); // Add a copy of the new item
+      const item = {
+        "localRowId": 0,
+        "rowID": 0,
+        "materialName": "",
+        "pickUpID": 0,
+        "isDeleted": false,
+        "containerID": 0,
+        "containerType": "",
+        "containerSize": "",
+        "containerName": "",
+        "noofShippingUnits": 0,
+        "charges": 0,
+        "liveLeadEQ": "string",
+        "dropoffbox": 0,
+        "boxpickup": 0,
+        "notes": ""
+      }
+      this.invoiceObj.push({...item ,...this.newItem}); // Add a copy of the new item
      
-    }
-    console.log(this.invoiceObj);
-    
-    this.resetNewItem();
+      this.resetNewItem();
   }
 
   // Edit existing item
@@ -147,10 +176,7 @@ constructor(private route: ActivatedRoute,
   // Check if the new item is valid
   isValidNewItem(): boolean {
     return (
-      this.newItem.containerType &&
-      this.newItem.dropOffBox &&
-      this.newItem.boxPickUp &&
-      this.newItem.charges > 0
+      this.newItem.containerType && (this.newItem.dropOffBox || this.newItem.boxpickup) 
     );
   }
 
@@ -208,7 +234,7 @@ constructor(private route: ActivatedRoute,
     this.commonService.GetAllPickUpMaterialByID(paramObject)
       .subscribe(data => {
      
-        this.dispatchMaterialObj = data.body.data;
+        this.invoiceObj = data.body.data;
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -254,6 +280,10 @@ constructor(private route: ActivatedRoute,
       item.containerID = this.allContainerType.filter((item1:any) => item1.containerType === item.containerType)[0].rowId;
       return item;
     })
+
+    if(this.type==''){
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+    }
     const submitObj = {
       "rowID": 0,
       "ticketID": 0,
@@ -264,7 +294,7 @@ constructor(private route: ActivatedRoute,
       "locID": this.locId,
       "isDeleted": false,
       "typeID": 1,
-      "type": "dropbox",
+      "type": this.dispatchMaterial,
       "driverID": 0,
       "closedDate": "2024-12-01T14:41:32.385Z",
       "vehicalNo": "",
@@ -279,7 +309,10 @@ constructor(private route: ActivatedRoute,
     }
 
     this.commonService.InsertUpdatePickup(submitObj).subscribe((res) =>{
-      console.log("Inserted")
+
+      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Dispatch Order Successfully' });
+      this.router.navigate([this.backUrl]);
+    
     },(error) =>{
 
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
