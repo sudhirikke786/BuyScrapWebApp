@@ -232,9 +232,14 @@ constructor(private route: ActivatedRoute, private router:Router,
      RowID: Number(this.invoiceId)
     };
     this.commonService.GetAllPickUpMaterialByID(paramObject)
-      .subscribe(data => {
+      .subscribe((data:any) => {
      
-        this.invoiceObj = data.body.data;
+        this.invoiceObj = data.body.data.map((item:any) =>{
+          item.dropOffBox = item.dropOffBox;
+          item.boxpickup = item.boxPickup;
+          return item
+         
+        });
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
