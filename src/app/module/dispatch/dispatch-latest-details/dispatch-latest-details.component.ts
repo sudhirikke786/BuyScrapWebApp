@@ -42,23 +42,23 @@ export class DispatchLatestDetailsComponent {
   invoiceObj: Array<any> = [];
   
   // New item model
-  newItem: any = {
-          "localRowId": 0,
-          "rowID": 0,
-          "materialName": "",
-          "pickUpID": 0,
-          "isDeleted": false,
-          "containerID": 0,
-          "containerType": "",
-          "containerSize": "",
-          "containerName": "",
-          "noofShippingUnits": 0,
-          "charges": 0,
-          "liveLeadEQ": "string",
-          "dropoffbox": 0,
-          "boxpickup": 0,
-          "notes": ""
-   };
+  newItem: any ={
+    "localRowId": 0,
+    "rowID": 0,
+    "materialName": "",
+    "pickUpID": 0,
+    "isDeleted": false,
+    "containerID": 0,
+    "containerType": "",
+    "containerSize": "",
+    "containerName": "",
+    "noofShippingUnits": 0,
+    "charges": 0,
+    "liveLeadEQ": "string",
+    "dropoffbox": 0,
+    "boxpickup": 0,
+    "notes": ""
+  };
 
   allContainerType :any = [];
   admins: any;
@@ -89,6 +89,9 @@ constructor(private route: ActivatedRoute, private router:Router,
 
 
    
+    this.GetAllDispatchTypes();
+    this.GetAllContainer();
+    this.getAllUsers();
 
   
      this.getSellerById();
@@ -97,11 +100,7 @@ constructor(private route: ActivatedRoute, private router:Router,
       this.GetAllPickUpMaterialByID();
      }
     // 
-     this.GetAllDispatchTypes();
- 
-     this.GetAllContainer();
-     this.getAllUsers();
-
+    
     this.backUrl = `/${this.orgName}/dispatch`;
 
 
@@ -233,13 +232,28 @@ constructor(private route: ActivatedRoute, private router:Router,
     };
     this.commonService.GetAllPickUpMaterialByID(paramObject)
       .subscribe((data:any) => {
-     
+       
         this.invoiceObj = data.body.data.map((item:any) =>{
-          item.dropOffBox = item.dropOffBox;
-          item.boxpickup = item.boxPickup;
-          return item
+          let obj : any = {};
+          obj.rowID= item.rowID;
+          obj.materialName= item.materialName;
+          obj.pickUpID = item.pickUpID;
+          obj.isDeleted = false;
+          obj.containerID = item.containerID;
+          obj.containerSize = item.containerSize;
+          obj.containerName = item.containerName;
+          obj.noofShippingUnits = item.noofShippingUnits;
+          obj.charges = item.charges;
+          obj.liveLeadEQ = "";
+          obj.dropoffbox = item.dropOffBox;
+          obj.boxpickup = item.boxPickUp;
+          obj.notes = item.notes
+          obj.fullName =  item.fullName;
+          obj.notes = item.notes;
+          return {...obj,...item};
          
         });
+        console.log(this.invoiceObj)
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';

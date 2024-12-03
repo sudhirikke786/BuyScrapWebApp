@@ -152,9 +152,10 @@
                                       </tr>
                                     </thead>
                                     <tbody>
+                                      
 
                                       <tr *ngFor="let item of invoiceObj; let i = index">
-                                        <td *ngIf="editingIndex !== i">{{ item.containerType }}</td>
+                                        <td *ngIf="editingIndex !== i">{{ item?.containerType }}</td>
                                         <td *ngIf="editingIndex === i">
                                           <select [(ngModel)]="editItemObj.containerType" class="form-control">
                                           
@@ -163,19 +164,19 @@
                                             </option>
                                           </select>
                                         </td>
-                                        <td *ngIf="editingIndex !== i">{{ item.dropoffbox}}</td>
+                                        <td *ngIf="editingIndex !== i">{{ item?.dropoffbox}}</td>
                                         <td *ngIf="editingIndex === i">
                                           <input type="number" [(ngModel)]="editItemObj.dropoffbox" />
                                         </td>
-                                        <td *ngIf="editingIndex !== i">{{ item.boxpickup }}</td>
+                                        <td *ngIf="editingIndex !== i">{{ item?.boxpickup }}</td>
                                         <td *ngIf="editingIndex === i">
                                           <input type="number" [(ngModel)]="editItemObj.boxpickup " />
                                         </td>
-                                        <td *ngIf="editingIndex !== i">{{ item.charges }}</td>
+                                        <td *ngIf="editingIndex !== i">{{ item?.charges }}</td>
                                         <td *ngIf="editingIndex === i">
                                           <input type="number" [(ngModel)]="editItemObj.charges" />
                                         </td>
-                                        <td *ngIf="editingIndex !== i">{{ item.notes }}</td>
+                                        <td *ngIf="editingIndex !== i">{{ item?.notes }}</td>
                                         <td *ngIf="editingIndex === i">
                                           <input type="text" [(ngModel)]="editItemObj.notes" />
                                         </td>
