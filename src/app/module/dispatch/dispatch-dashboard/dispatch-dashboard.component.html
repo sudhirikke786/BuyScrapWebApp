@@ -67,9 +67,9 @@
                       <td>{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>
                       <td>
                           <div class="d-flex align-items-center">
-                              <a class="btn btn-primary me-1" [routerLink]="['dispatch-detail', certificate.rowId, certificate.sellerID,'new']"
+                              <a class="btn btn-primary me-1" [routerLink]="['dispatch-detail', certificate.rowId, certificate.sellerID,'show']"
                               routerLinkActive="router-link-active" >Show</a>
-                              <a class="btn btn-primary me-1">Edit</a>
+                              <a class="btn btn-primary me-1" [routerLink]="['dispatch-detail', certificate.rowId, certificate.sellerID,'edit']">Edit</a>
                               <a class="btn btn-danger me-1">Delete</a>
                               <a class="btn btn-primary">Convert to Ticket</a>
                           </div>

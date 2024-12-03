@@ -34,7 +34,7 @@ export class DispatchLatestDetailsComponent {
   minDate! :string;
   dispatch:any;
   dispatchMaterial:any;
-  driverName:any;
+  driversName:any;
   customer:any;
   driveruserObj:any;
 
@@ -63,7 +63,7 @@ export class DispatchLatestDetailsComponent {
   allContainerType :any = [];
   admins: any;
   driverList:any[] =[];
-  editItemObj: any = {};
+  editItemObj: any = { };
 
 
 constructor(private route: ActivatedRoute, private router:Router,
@@ -95,7 +95,7 @@ constructor(private route: ActivatedRoute, private router:Router,
 
   
      this.getSellerById();
-     if( this.type=='new'){
+     if( this.type=='show' || this.type=='edit'  ){
       this.GetAllPickUpDetailsByID();
       this.GetAllPickUpMaterialByID();
      }
@@ -126,13 +126,13 @@ constructor(private route: ActivatedRoute, private router:Router,
 
   cancelEdit(): void {
     this.editingIndex = null; // Exit edit mode without saving
-    this.editItemObj = {};
+    this.editItemObj = {
+   
+    };
   }
 
 
-  onMaterialChange(){
-   this.driveruserObj = this.driverName
-  }
+
 
   // Add new item to the list
   addNewItem() {
@@ -219,6 +219,9 @@ constructor(private route: ActivatedRoute, private router:Router,
       .subscribe(data => {
      
         this.dispatchObj = data.body.data;
+        this.dispatchMaterial = this.dispatchObj?.dispatchType;
+        this.pickupdate =  this.dispatchObj.pickUpDate;
+        this.driversName = this.dispatchObj.driverID;
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -296,15 +299,22 @@ constructor(private route: ActivatedRoute, private router:Router,
   submitSave(){
     // "pickUpDate": this.datePipe.transform(this.pickupdate, 'YYYY-MM-ddTHH:mm:ss.SSS'),
     const containerObj =  this.invoiceObj.map((item) =>{
+      item.dropOffBox = item.dropoffbox;
+      item.boxPickUp =item.boxpickup ;
       item.containerID = this.allContainerType.filter((item1:any) => item1.containerType === item.containerType)[0].rowId;
       return item;
     })
 
-    if(this.type==''){
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+    if(!this.dispatchMaterial){
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Select Type' });
+      return
+    }
+    if(!this.pickupdate){
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Select Pickup Date' });
+      return
     }
     const submitObj = {
-      "rowID": 0,
+      "rowID": this.dispatchObj?.rowID ?? 0,
       "ticketID": 0,
       "sellerID": parseInt(this.sellerId),
       "pickUpAddress": "string",
@@ -314,12 +324,12 @@ constructor(private route: ActivatedRoute, private router:Router,
       "isDeleted": false,
       "typeID": 1,
       "type": this.dispatchMaterial,
-      "driverID": 0,
+      "driverID":Number(this.driversName),
       "closedDate": "2024-12-01T14:41:32.385Z",
       "vehicalNo": "",
       "route": "",
       "carrierName": "",
-      "driverName": " ",
+      "driverName": this.driverList.filter((item) => item.rowId == Number(this.driversName))[0].firstName,
       "createdBy": 0,
       "createdDate": "2024-12-01T14:41:32.385Z",
       "updatedBy": 0,
