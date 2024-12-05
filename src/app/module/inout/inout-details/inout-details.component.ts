@@ -248,8 +248,7 @@ export class InoutDetailsComponent implements OnInit {
   
   getInoutMaterialbyID() {
     const paramObject = {
-      ShipOutIDId: this.inoutId,
-      locid: this.locId
+      RowID: this.inoutId
     };
     this.commonService.getInoutMaterialbyID(paramObject)
       .subscribe(data => {
