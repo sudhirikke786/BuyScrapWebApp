@@ -348,6 +348,28 @@ export class InoutDetailsComponent implements OnInit {
       );
   }
 
+  inword(inoutDetails: any) {
+    alert(JSON.stringify(inoutDetails));
+    inoutDetails.status = 'In';
+    console.log("Final inoutDetails :: " + JSON.stringify(inoutDetails));
+    
+    this.commonService.insertInoutDTO(inoutDetails).subscribe(data =>{
+      if (parseInt(this.inoutId)) {
+        this.isNewInout = false;
+      } else {
+        this.isNewInout = true;
+      }
+      console.log(data); 
+      this.inoutId = data.body;    
+      
+      if (this.isReceiptPrint) {
+        this.generateInoutReport();
+      }
+    },(error: any) =>{  
+      console.log(error);  
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+    });
+  }
 
   confirmSave() {
 

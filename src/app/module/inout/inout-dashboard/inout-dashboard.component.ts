@@ -138,7 +138,7 @@ export class InoutDashboardComponent implements OnInit {
 
           console.log('getAllLocatoins :: ');
           console.log(data);
-          this.locations = data.body.data;
+          this.locations = data.body.data.filter((item: any) => item.rowId != this.locId);
         },
         (err: any) => {
           this.showPageLoader = false;
@@ -212,6 +212,10 @@ export class InoutDashboardComponent implements OnInit {
 
   editDetails(inoutId: any) {
     this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/edit`);
+  }
+
+  inword(inoutId: any) {
+    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/inword`);
   }
 
   deleteDetails(inoutId: any) {

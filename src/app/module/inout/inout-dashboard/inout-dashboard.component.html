@@ -63,17 +63,21 @@
                     <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">{{ inout.totalNet }}</td>
                     <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">{{ inout.status }}</td>
                     <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">
-                      <a type="button"routerLinkActive="router-link-active" (click)="showDetails(inout.rowId)"
+                      <a *ngIf="inout.status != 'InTransient'" type="button"routerLinkActive="router-link-active" (click)="showDetails(inout.rowId)"
                         class="btn btn-grid btn-success waves-effect waves-light me-1">
                           <i class="mdi mdi-eye"></i> Show
                       </a>
-                      <a *ngIf="!inout.isDeleted" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editDetails(inout.rowId)"
+                      <a *ngIf="!inout.isDeleted && inout.status != 'In' && inout.status != 'InTransient'" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editDetails(inout.rowId)"
                       class="btn btn-grid btn-primary waves-effect waves-light me-1">
                           <i class="mdi mdi-pencil"></i> Edit
                       </a>                       
-                      <a *ngIf="!inout.isDeleted" class="btn btn-grid btn-danger waves-effect waves-light" (click)="confirmationMessage(inout.rowId)">
+                      <a *ngIf="!inout.isDeleted && inout.status != 'In' && inout.status != 'InTransient'" class="btn btn-grid btn-danger waves-effect waves-light" (click)="confirmationMessage(inout.rowId)">
                           <i class="mdi mdi-trash-can-outline"></i> Delete
                       </a>
+                      <a *ngIf="!inout.isDeleted && inout.status == 'InTransient'" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="inword(inout.rowId)"
+                      class="btn btn-grid btn-primary waves-effect waves-light me-1">
+                          <i class="mdi mdi-pencil"></i> Inword
+                      </a> 
                     </td>
                   </tr>
                 </ng-template>
