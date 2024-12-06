@@ -42,6 +42,10 @@
                                             <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/inout">
                                                 Back
                                             </a>
+                                            <a *ngIf="inoutDetails?.status == 'InTransient'" data-bs-toggle="modal" data-bs-target="#capture-image" 
+                                            (click)="inword(inoutDetails)" class="btn  btn-primary waves-effect waves-light ticket-edit me-1">
+                                                <i class="mdi mdi-pencil"></i> Inword
+                                            </a>
                                             <!-- <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
                                                 <i class="mdi mdi-pencil"></i> Edit
                                             </a> -->
