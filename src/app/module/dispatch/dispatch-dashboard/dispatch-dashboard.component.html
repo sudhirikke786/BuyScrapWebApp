@@ -47,7 +47,7 @@
                 >
                   <ng-template pTemplate="header">
                     <tr>
-                      <th></th>
+                      <!-- <th></th> -->
                       <th>Pickup</th>
                       <th>Pick up Date and Time</th>
                       <th>Customer</th>
@@ -57,10 +57,10 @@
                   </ng-template>
                   <ng-template pTemplate="body" let-certificate let-rowIndex="rowIndex">
                     <tr>
-                      <td>
+                      <!-- <td>
                       
                         <p-checkbox [binary]="true" [disabled]="certificate.selected" [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
-                      </td>
+                      </td> -->
                       <td>{{ certificate.rowId }}</td>
                       <td>{{ certificate?.pickUpDate | date: 'MM/dd/yyyy' }}</td>
                       <td>{{ certificate.sellerName }}</td>
