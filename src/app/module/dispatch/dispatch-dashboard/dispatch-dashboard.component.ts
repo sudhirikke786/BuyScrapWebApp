@@ -122,11 +122,12 @@ export class DispatchDashboardComponent implements OnInit {
       LocationId: this.locId,
       SerachText: ''
     };
-    this.showLoader = true;
+    this.isLoading = true;
 
     this.commonService.GetAllPickUpDetails(paramObject).subscribe(
       
       (data: any) => {
+        this.isLoading = false;
         //console.log('API Response:', data); 
         console.log('getAllCODTickets :: ', data);
         if (data && data.body && data.body.data) {
@@ -146,6 +147,7 @@ export class DispatchDashboardComponent implements OnInit {
         }
       },
       (err: any) => {
+        this.isLoading = false;
         this.showLoader = false;
         console.error('Error fetching COD tickets:', err);
       },
