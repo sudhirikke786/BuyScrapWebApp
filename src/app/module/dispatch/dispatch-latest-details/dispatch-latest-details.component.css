@@ -17,7 +17,7 @@
   
   /* Table Styles */
   .table-wrapper {
-    max-height: 300px; /* Adjust height as needed */
+    max-height: 250px; /* Adjust height as needed */
      overflow-y: auto;
      overflow-x: hidden;
      border: 1px solid #ddd; /* Optional: border for visual clarity */
@@ -127,3 +127,22 @@
   
   }
   
+
+@media (min-width: 1900px) {
+    .table-wrapper {
+        max-height: 40vh !important; /* Adjust height based on 80% of the viewport height */
+    }
+}
+
+/* Responsive Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+    .table-wrapper {
+        max-height: 200px; /* Reduce height for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .table-wrapper {
+        max-height: 150px; /* Further adjust for very small screens */
+    }
+}

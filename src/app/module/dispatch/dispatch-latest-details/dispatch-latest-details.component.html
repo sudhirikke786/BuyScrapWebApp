@@ -144,11 +144,11 @@
                                   <table>
                                     <thead>
                                       <tr>
-                                        <th style="width:10%">Container ID</th>
+                                        <th style="width:15%">Container ID</th>
                                         <th style="width:10%">Drop-off Box</th>
                                         <th style="width:10%">Box Pickup</th>
                                         <th style="width:10%">Charges</th>
-                                        <th style="width:35%">Notes</th>
+                                        <th style="width:20%">Notes</th>
                                         <th style="width:10%" *ngIf="type!=='show'">Action</th>
                                       </tr>
                                     </thead>
@@ -156,11 +156,11 @@
                                       
                                      
                                         <tr *ngFor="let item of invoiceObj; let i = index"  >
-                                          <td style="width:10%">{{item?.containerType}}</td>
+                                          <td style="width:15%">{{item?.containerType}}</td>
                                           <td style="width:10%">{{item?.dropoffbox}}</td>
                                           <td style="width:10%">{{item?.boxpickup}}</td>
-                                          <td  style="width:35%" >{{item?.charges}}</td>
-                                          <td  style="width:10%">{{item?.notes}}</td>
+                                          <td style="width:20%" >{{item?.charges}}</td>
+                                          <td style="width:10%">{{item?.notes}}</td>
                                         </tr>
                                       </tbody>
                                     <tbody>
@@ -177,11 +177,11 @@
                                         </td>
                                         <td *ngIf="editingIndex !== i">{{ item?.dropoffbox}}</td>
                                         <td *ngIf="editingIndex === i">
-                                          <input type="number" [(ngModel)]="editItemObj.dropoffbox" />
+                                          <input type="text" [(ngModel)]="editItemObj.dropoffbox" />
                                         </td>
                                         <td *ngIf="editingIndex !== i">{{ item?.boxpickup }}</td>
                                         <td *ngIf="editingIndex === i">
-                                          <input type="number" [(ngModel)]="editItemObj.boxpickup " />
+                                          <input type="text" [(ngModel)]="editItemObj.boxpickup " />
                                         </td>
                                         <td *ngIf="editingIndex !== i">{{ item?.charges }}</td>
                                         <td *ngIf="editingIndex === i">
@@ -189,7 +189,10 @@
                                         </td>
                                         <td *ngIf="editingIndex !== i">{{ item?.notes }}</td>
                                         <td *ngIf="editingIndex === i">
-                                          <input type="text" [(ngModel)]="editItemObj.notes" />
+                                          <textarea cols="20" rows="2" [(ngModel)]="editItemObj.notes"></textarea>
+
+
+                                         
                                         </td>
                                         <td>
                                           <button class="btn btn-primary me-1" *ngIf="editingIndex !== i" (click)="startEditing(i, item)">Edit</button>
@@ -230,7 +233,9 @@
                                           <input min="0" type="number" [(ngModel)]="newItem.charges" placeholder="Charges" />
                                         </td>
                                         <td>
-                                          <input type="textarea" rows="2" cols="2" [(ngModel)]="newItem.notes" placeholder="Notes" />
+                                          <textarea cols="20" rows="2" [(ngModel)]="newItem.notes" placeholder="Notes">
+                                          </textarea>
+
                                         </td>
                                         <td>
                                             <button
@@ -246,14 +251,6 @@
                                    </ng-template>
                                     </tbody>
                                   
-                                    <tfoot>
-                                        <tr>
-                                          <td colspan="3" class="text-right"><strong>Total:</strong></td>
-                                          <td>{{ getTotalCharges() | currency: currencySymbol :'symbol': numberFormat }}</td>
-                                          <td></td>
-                                        </tr>
-                                        
-                                      </tfoot>
                                   </table>
                                 </div>
                               </div>
@@ -262,6 +259,28 @@
                       
                           
                     </div>
+
+
+                    <div class="row">
+
+                      <table>
+                                      
+                                     
+                        <tr>
+                          <td style="width:10%"></td>
+                          <td style="width:10%"></td>
+                          <td style="width:12%;text-align:right" >Total:</td>
+                          <td style="width:10%;margin-left:15px" > <b>{{ getTotalCharges() | currency: currencySymbol :'symbol': numberFormat }}</b></td>
+                          <td style="width:40%"></td>
+                          <td style="width:10%"></td>
+                        </tr>
+                      </table>
+                   
+                      
+                    
+
+
+                   
                 </div>
             </div>
          </div>
