@@ -138,6 +138,7 @@ export class DispatchDashboardComponent implements OnInit {
               customerName: item.customerName,
               sellerName: item.sellerName,
               sellerID:item.sellerID,
+              ticketRowID:item.ticketRowID,
               charges: item.charges,
               selected: item.closedDate ? true : false
             };
@@ -165,6 +166,11 @@ export class DispatchDashboardComponent implements OnInit {
   clickOnSeller(sellerId: string | number, sellerName: string,sellerAddress: string) {
    
     this.router.navigate([`/${this.orgName}/dispatch/dispatch-detail`,'New',sellerId,'new']);
+  }
+
+  navigateToTicket(obj:any){
+    console.log([`/${this.orgName}/home/detail`,obj.ticketRowID,obj.sellerId,false]);
+    this.router.navigate([`/${this.orgName}/home/detail`,obj.ticketRowID,obj.sellerID,false]);
   }
   
 
