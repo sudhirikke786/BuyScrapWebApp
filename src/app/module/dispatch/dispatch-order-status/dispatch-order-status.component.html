@@ -6,7 +6,7 @@
         <div class="service-request-card">
           <!-- Title and Status -->
           <div class="d-flex  sr-pending">
-             <h5 class="service-title">Pending Service Requests</h5>
+             <h5 class="service-title text-primary">Pending Service Requests</h5>
           </div>
   
           <!-- Inner Cards Loop -->
@@ -81,8 +81,11 @@
                 <div>
                    <div class="total-order"  pTooltip="Pending Order">{{ box.orderCount  + box.items.length}}</div>
                 </div>
-                <div>{{ box.firstName }}</div>
+                <div class="text-primary">{{ box.firstName }}</div>
                 <div class="d-flex">
+                    <div class="me-1 align-item-center">
+                        <img  class="dash-icons" src="/assets/images/custom/icons/ship-out.png">
+                    </div>
                     <div class="div"> <button (click)="op.toggle($event)"class="btn btn-light border" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-three-dots"></i>
                       </button>

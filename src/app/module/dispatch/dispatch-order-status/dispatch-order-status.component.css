@@ -83,7 +83,8 @@
 .sr-pending{
    
     border-radius: 10px;
-    background-color: #ebeff3;
+    background-color: #02659d;
+
      border-radius: 10px 10px 0px 0px;
     padding: 10px;
     display: flex;
@@ -126,7 +127,7 @@
   /* Title and Service Detail */
   .service-title {
     font-size: 1rem;
-   
+    
     font-weight: 600;
   }
 

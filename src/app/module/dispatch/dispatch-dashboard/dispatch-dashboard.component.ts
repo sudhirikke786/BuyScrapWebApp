@@ -255,7 +255,7 @@ export class DispatchDashboardComponent implements OnInit {
 
 
   gotoDriverPage(){
-    this.router.navigateByUrl(`/${this.orgName}/dispatch-status`)
+    this.router.navigateByUrl(`/${this.orgName}/dispatch/dispatch-status`)
   }
 
   openAddUpdateEvent() {
