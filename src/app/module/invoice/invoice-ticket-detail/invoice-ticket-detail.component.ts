@@ -111,8 +111,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   invoicesTransactions: any;
   defaultSelectedInvoicesTypes = [
     { name: 'OPEN', code: 'OPEN' },
-    { name: 'Partially Paid', code: 'Partially Paid' },
-    { name: 'ON HOLD', code: 'ON HOLD' }
+    { name: 'Partially Paid', code: 'Partially Paid' }
   ];
 
 

@@ -5,11 +5,14 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DispatchModule } from '../dispatch.module';
 import { FormGroup,FormBuilder,Validators } from '@angular/forms';
+import { MessageService,ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-dispatch-dashboard',
   templateUrl: './dispatch-dashboard.component.html',
-  styleUrls: ['./dispatch-dashboard.component.scss']
+  styleUrls: ['./dispatch-dashboard.component.scss'],
+  providers: [MessageService, ConfirmationService]
+
 })
 export class DispatchDashboardComponent implements OnInit {
   locId!: string | number | null;
@@ -18,6 +21,9 @@ export class DispatchDashboardComponent implements OnInit {
   orgName!: string | null;
   showLoader = false;
   isConfirmModel = false;
+  rowID:any;
+  sellerID:any;
+  ticketId:number=0;
 
   dispatchRes = [
     
@@ -106,12 +112,18 @@ export class DispatchDashboardComponent implements OnInit {
     private router: Router,
     public commonService: CommonService,
    // private datePipe: DatePipe
-   private fb: FormBuilder
+   private fb: FormBuilder,
+   private messageService:MessageService
+
   ) {}
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.route.params.subscribe((params)=>{
+      this.sellerID = params["sellerID"];
+      this.rowID = params["rowID"];
+    });
 
     this.getAllCODTickets();
   }
@@ -128,11 +140,11 @@ export class DispatchDashboardComponent implements OnInit {
     this.commonService.GetAllPickUpDetails(paramObject).subscribe(
       
       (data: any) => {
-        this.isLoading = false;
         //console.log('API Response:', data); 
         console.log('getAllCODTickets :: ', data);
         if (data && data.body && data.body.data) {
           this.dispatchRes = data.body.data.map((item: any) => {
+            //console.log('Mapped item:', item.ticketRowID);
             return {
               rowId: item.rowID,       
               pickUpDate: item.pickUpDate,
@@ -141,7 +153,9 @@ export class DispatchDashboardComponent implements OnInit {
               sellerID:item.sellerID,
               ticketRowID:item.ticketRowID,
               charges: item.charges,
-              selected: item.closedDate ? true : false
+              selected: item.closedDate ? true : false,
+              ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
+              sellerAddress: item.streetAddress         
             };
           });
         } else {
@@ -154,6 +168,7 @@ export class DispatchDashboardComponent implements OnInit {
         console.error('Error fetching COD tickets:', err);
       },
       () => {
+        this.isLoading = false;
         this.showLoader = false;
       }
     );
@@ -169,9 +184,16 @@ export class DispatchDashboardComponent implements OnInit {
     this.router.navigate([`/${this.orgName}/dispatch/dispatch-detail`,'New',sellerId,'new']);
   }
 
-  navigateToTicket(obj:any){
-    console.log([`/${this.orgName}/home/detail`,obj.ticketRowID,obj.sellerId,false]);
-    this.router.navigate([`/${this.orgName}/home/detail`,obj.ticketRowID,obj.sellerID,false]);
+  convertToTicket(sellerID: any, rowId:any) {
+    this.router.navigate([`/${this.orgName}/home/detail/new/${sellerID}/false`], {
+        queryParams: { dispatchID: rowId},
+    });
+    
+  }
+
+  showTicketclick(ticketRowID: any, sellerID: any) {
+    this.router.navigate([`/${this.orgName}/home/detail/${ticketRowID}/${sellerID}/false`])
+      
   }
   
 
@@ -321,6 +343,41 @@ addNewSeller() {
       this.sellerType = 'Business';
     } else {
       this.sellerType = 'Personal';
+    }
+  }
+
+  deletePickup(rowID: number): void {
+    const confirmation = confirm('Are you sure you want to delete this pickup?');
+    if (confirmation) {
+      const requestObj = {
+        RowID: rowID,
+      };
+  
+      this.commonService.DeletePickUpbyId(requestObj).subscribe(
+        (response) => {
+          console.log('Delete API Response:', response); 
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Deleted Successfully',
+            detail: `Pickup details with ID ${rowID} have been deleted.`
+          });
+          this.removeFromList(rowID); 
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Failed to delete pickup details with ID ${rowID}.`
+          });
+        }
+      );
+    }
+  }
+
+  removeFromList(rowID: number): void {
+    const index = this.dispatchRes.findIndex((item) => item && (item as any).rowId === rowID);
+    if (index > -1) {
+      this.dispatchRes.splice(index, 1);
     }
   }
 

@@ -69,12 +69,10 @@
                           <div class="d-flex align-items-center">
                               <a class="btn btn-primary me-1" [routerLink]="['dispatch-detail', certificate.rowId, certificate.sellerID,'show']"
                               routerLinkActive="router-link-active" >Show</a>
-                              <a class="btn btn-primary me-1" [routerLink]="['dispatch-detail', certificate.rowId, certificate.sellerID,'edit']">Edit</a>
-                              <a class="btn btn-danger me-1">Delete</a>
-                              <!-- detail/180/10/false -->
-                              <a class="btn btn-primary" *ngIf="certificate.ticketRowID" (click)="navigateToTicket(certificate)">Show Ticket</a>
-                              <a class="btn btn-primary" *ngIf="!certificate?.ticketRowID">Convert to Ticket</a>
-                              
+                              <a class="btn btn-primary me-1" *ngIf="certificate.ticketRowID === 0" [routerLink]="['dispatch-detail', certificate.rowId, certificate.sellerID,'edit']">Edit</a>
+                              <a class="btn btn-danger me-1" *ngIf="certificate.ticketRowID === 0" (click)="deletePickup(certificate.rowId)">Delete</a>
+                              <a class="btn btn-primary" *ngIf="certificate.ticketRowID === 0" (click)="convertToTicket(certificate.sellerID,certificate.rowId)">Convert to Ticket</a>
+                              <a class="btn btn-success me-1" *ngIf="certificate.ticketRowID > 0" (click)="showTicketclick(certificate.ticketRowID,certificate.sellerID)">Show Ticket</a>
                           </div>
                       </td>
                     </tr>

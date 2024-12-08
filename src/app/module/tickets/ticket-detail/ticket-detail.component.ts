@@ -43,6 +43,8 @@ export class TicketDetailComponent implements OnInit {
   orgName: any;
   sellerId: any;
   ticketId: any;
+  dispatchID: any;
+
   locId: any;
   logInUserId: any;
   locationName: any;
@@ -265,6 +267,11 @@ export class TicketDetailComponent implements OnInit {
       this.ticketId = param["ticketId"];
       this.sellerId = param["customerId"];
      
+
+      this.route.queryParams.subscribe(params => {
+        this.dispatchID = params['dispatchID'];
+        // console.log('Dispatch ID:', dispatchID);
+      });
      
       this.getSellerById();
       this.processDataBasedOnTicketId();
@@ -1154,6 +1161,8 @@ export class TicketDetailComponent implements OnInit {
       this.ticketData.updatedBy = this.logInUserId;
       this.ticketData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       this.ticketData.customerId = parseFloat(this.sellerId);
+      this.ticketData.dispatchID = parseFloat(this.dispatchID);
+
     } else {
       const newTicket = new Ticket();
       newTicket.rowId = 0;
@@ -1177,6 +1186,8 @@ export class TicketDetailComponent implements OnInit {
       newTicket.lstttransactionMasterDTO = this.ticketObj;
       newTicket.sellerSignature = this.sellerSignatureImagePath;
       newTicket.isCOD = this.isCODRequired;
+      newTicket.dispatchID = parseFloat(this.dispatchID);
+    
 
       this.ticketData = newTicket;
       this.sellerSignatureImagePath = null;

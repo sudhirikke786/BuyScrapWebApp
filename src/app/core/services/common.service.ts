@@ -69,6 +69,12 @@ export class CommonService {
             headers: httpHeader,
             observe: 'response'
         });
+    } else if (method === 'DELETE') {
+      return this.http.delete<any>(productionURL, {
+          headers: httpHeader,
+          observe: 'response',
+          params: requestObj
+      });
     }
 
     return new Observable<any>(x => x.next(null));
@@ -253,6 +259,13 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Pickup/GetAllDispatchTypes', 'GET', paramObj);
   }
 
+  DeletePickUpbyId(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PickUp/DeletePickUpbyId', 'DELETE', requestObj);
+  }
+
+  DeletePickUpMaterialbyId(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PickUp/DeletePickUpMaterialbyId', 'DELETE', requestObj);
+  }
 
 
 
