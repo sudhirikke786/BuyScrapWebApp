@@ -154,7 +154,6 @@ export class DispatchDashboardComponent implements OnInit {
               charges: item.charges,
               selected: item.closedDate ? true : false,
               ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
-              ticketRowID: item.ticketRowID,
               sellerAddress: item.streetAddress         
             };
           });
