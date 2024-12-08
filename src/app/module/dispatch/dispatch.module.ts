@@ -9,6 +9,7 @@ import { FullCalnderDispatchComponent } from './full-calnder-dispatch/full-calnd
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DispatchDetailComponent } from './dispatch-detail/dispatch-detail.component';
 import { DispatchLatestDetailsComponent } from './dispatch-latest-details/dispatch-latest-details.component';
+import { DispatchOrderStatusComponent } from './dispatch-order-status/dispatch-order-status.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,10 @@ export const routes: Routes = [
   {
     path: 'dispatch-detail/:rowId/:sellerID/:type',
     component: DispatchLatestDetailsComponent
+  },
+  {
+    path: 'dispatch-status',
+    component: DispatchOrderStatusComponent
   },
   {
     path:'meeting',
@@ -34,7 +39,8 @@ export const routes: Routes = [
   declarations: [
     DispatchDashboardComponent,
     FullCalnderDispatchComponent,
-    DispatchLatestDetailsComponent
+    DispatchLatestDetailsComponent,
+    DispatchOrderStatusComponent
   ],
   imports: [
     CommonModule,

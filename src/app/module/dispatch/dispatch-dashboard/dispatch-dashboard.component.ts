@@ -27,7 +27,8 @@ export class DispatchDashboardComponent implements OnInit {
     { iconcode: 'mdi-magnify', title: 'Search' },
     { iconcode: 'mdi-refresh', title: 'Refresh' },
     { iconcode: 'mdi-calendar', title: 'Calendar View', label: 'Calendar View' },
-    { iconcode: 'mdi-plus', title: 'Sellers', label: 'New Appointment' }
+    { iconcode: 'mdi-plus', title: 'Sellers', label: 'New Appointment' },
+    { iconcode: 'mdi-add', title: 'Dispatch', label: 'Driver Assign' }
   ];
   newTicketList = [{
     iconcode: 'mdi-magnify',
@@ -220,10 +221,19 @@ export class DispatchDashboardComponent implements OnInit {
       case 'mdi-plus':
         this.openAddUpdateEvent();
         break;
+      case 'mdi-add':
+          this.gotoDriverPage();
+        break;
       default:
         console.warn('Unknown action triggered');
         break;
     }
+  }
+
+
+
+  gotoDriverPage(){
+    this.router.navigateByUrl(`/${this.orgName}/dispatch-status`)
   }
 
   openAddUpdateEvent() {

@@ -18,6 +18,9 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { SidebarModule } from 'primeng/sidebar';
+import { DragDropModule } from 'primeng/dragdrop';
+import { ProgressBarModule } from 'primeng/progressbar';
+
 
 @NgModule({
   declarations: [],
@@ -36,7 +39,9 @@ import { SidebarModule } from 'primeng/sidebar';
     ConfirmDialogModule,
     CheckboxModule,
     InputSwitchModule,
-    SidebarModule
+    SidebarModule,
+    DragDropModule,
+    ProgressBarModule
   ],
   exports:[
     InputTextModule,
@@ -55,7 +60,9 @@ import { SidebarModule } from 'primeng/sidebar';
     ConfirmDialogModule,
     CheckboxModule,
     InputSwitchModule,
-    SidebarModule
+    SidebarModule,
+    DragDropModule,
+    ProgressBarModule
   ]
 })
 export class PrimengModule { }
