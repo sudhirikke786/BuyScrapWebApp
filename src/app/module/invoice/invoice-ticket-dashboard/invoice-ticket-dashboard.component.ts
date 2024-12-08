@@ -70,7 +70,6 @@ export class InvoiceTicketDashboardComponent implements OnInit {
     { name: 'ALL', code: 'ALL' , },
     { name: 'OPEN', code: 'OPEN' },
     { name: 'Partially Paid', code: 'Partially Paid' },
-    { name: 'ON HOLD', code: 'ON HOLD' },
     { name: 'PAID', code: 'PAID' },
     { name: 'VOIDED', code: 'VOIDED' }
   ];
@@ -78,8 +77,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
 
   defaultSelectedTicketsTypes = [
     { name: 'OPEN', code: 'OPEN' },
-    { name: 'Partially Paid', code: 'Partially Paid' },
-    { name: 'ON HOLD', code: 'ON HOLD' }
+    { name: 'Partially Paid', code: 'Partially Paid' }
   ];
 
   tickets: any;
@@ -333,7 +331,6 @@ export class InvoiceTicketDashboardComponent implements OnInit {
     // { name: 'ALL', code: 'ALL' },
     // { name: 'OPEN', code: 'OPEN' },
     // { name: 'Partially Paid', code: 'Partially Paid' },
-    // { name: 'ON HOLD', code: 'ON HOLD' },
     // { name: 'PAID', code: 'PAID' },
     // { name: 'VOIDED', code: 'VOIDED' }
 
@@ -352,8 +349,6 @@ export class InvoiceTicketDashboardComponent implements OnInit {
       case 'open':
         statusClassName = 'text-primary'
         break;
-      case 'on hold':
-        statusClassName = 'text-danger'
         break;
       case 'balance owed':
           statusClassName = 'text-warning'
