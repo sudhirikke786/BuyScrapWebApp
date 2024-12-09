@@ -302,7 +302,7 @@
         
                                                     <div *ngIf="!isEditModeOn" class="pay-print-box">
                                                         <a *ngIf="(invoiceData.status == 'OPEN' || invoiceData.status == 'Partially Paid') && (currentRole!== 'Scale')" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
-                                                        <a class="btn btn-primary" (click)="generateSingleTicketReport(ticketId)">Printout</a>
+                                                        <a class="btn btn-primary" (click)="generateSingleInvoiceReport(invoiceId)">Printout</a>
                                                     </div>        
         
                                                     <div *ngIf="isEditModeOn && false" class="adjustment-deduction-box">

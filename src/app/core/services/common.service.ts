@@ -204,6 +204,14 @@ export class CommonService {
   GetAllInvoicesTransactionsByInvoiceId(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Invoice/GetAllInvoicesTransactionsByInvoiceId', 'GET', paramObj);
   }
+  
+  restoreVoidInvoice(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Invoice/RestoreVoidInvoice', 'POST', requestObj);
+  }
+
+  voidCopyInvoice(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Invoice/VoidCopyInvoice', 'POST', requestObj);
+  }
 
   getAllTicketsByParentID(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsByParentID', 'GET', paramObj);
@@ -491,10 +499,6 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetTransactionsTicketReceipt', 'GET', paramObj);
   }
 
-  generateSingleInvoiceReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/PdfReports/GetTransactionsTicketReceipt', 'GET', paramObj);
-  }
-
   generateInventoryReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetAllInventoryReport', 'GET', paramObj);
   }
@@ -553,6 +557,10 @@ export class CommonService {
 
   getCODTicketReceipt(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetCODTicketReceipt', 'GET', paramObj);
+  }
+
+  generateSingleInvoiceReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetSingleInvoiceData', 'GET', paramObj);
   }
 
   /** Admin API */

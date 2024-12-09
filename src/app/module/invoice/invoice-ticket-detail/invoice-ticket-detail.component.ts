@@ -1625,6 +1625,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
   generateSingleInvoiceReport(invoiceId: any) {
+    alert('Printing Invoice Report');
     // this.checkPrintAction();
     const param = {
       InvoiceId: invoiceId,
