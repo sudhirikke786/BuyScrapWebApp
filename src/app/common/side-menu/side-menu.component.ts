@@ -45,19 +45,19 @@ export class SideMenuComponent implements OnInit {
       {
         title:'In-Out',
         url:'/inout',
-        icon:'/assets/images/custom/icons/adjustment.png',    
-        role: ['Administrator','Cashier']
-      },
-      {
-        title:'Materials',
-        url:'/materials',
-        icon:'/assets/images/custom/icons/materials.png',
+        icon:'/assets/images/custom/icons/InOut.png',    
         role: ['Administrator','Cashier']
       },
       {
         title:'Dispatch',
         url:'/dispatch',
         icon:'/assets/images/custom/icons/ship-out.png',
+        role: ['Administrator','Cashier']
+      },
+      {
+        title:'Materials',
+        url:'/materials',
+        icon:'/assets/images/custom/icons/materials.png',
         role: ['Administrator','Cashier']
       },
       {
