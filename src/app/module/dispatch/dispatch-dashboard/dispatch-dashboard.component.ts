@@ -113,7 +113,8 @@ export class DispatchDashboardComponent implements OnInit {
     public commonService: CommonService,
    // private datePipe: DatePipe
    private fb: FormBuilder,
-   private messageService:MessageService
+   private messageService:MessageService,
+   private confirmationService:ConfirmationService,
 
   ) {}
 
@@ -346,32 +347,45 @@ addNewSeller() {
     }
   }
 
+
+
+
   deletePickup(rowID: number): void {
-    const confirmation = confirm('Are you sure you want to delete this pickup?');
-    if (confirmation) {
-      const requestObj = {
-        RowID: rowID,
-      };
-  
-      this.commonService.DeletePickUpbyId(requestObj).subscribe(
-        (response) => {
-          console.log('Delete API Response:', response); 
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Deleted Successfully',
-            detail: `Pickup details with ID ${rowID} have been deleted.`
-          });
-          this.removeFromList(rowID); 
-        },
-        (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: `Failed to delete pickup details with ID ${rowID}.`
-          });
-        }
-      );
-    }
+
+
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: "Are you sure you want to delete this pickup",
+      accept: () => {
+        const requestObj = {
+          RowID: rowID,
+        };
+    
+        this.commonService.DeletePickUpbyId(requestObj).subscribe(
+          (response) => {
+            console.log('Delete API Response:', response); 
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Deleted Successfully',
+              detail: `Pickup details with ID ${rowID} have been deleted.`
+            });
+            this.removeFromList(rowID); 
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: `Failed to delete pickup details with ID ${rowID}.`
+            });
+          }
+        );
+      },
+      reject: () => {       
+        return false;
+      },
+    });
+
+    
   }
 
   removeFromList(rowID: number): void {

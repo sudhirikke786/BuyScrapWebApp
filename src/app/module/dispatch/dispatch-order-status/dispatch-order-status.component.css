@@ -1,25 +1,4 @@
 /* Main Box for draggable items */
-.main-box {
-  width: 100%;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-}
-
-.draggable-item {
-  padding: 10px 15px;
-  margin: 5px 0;
-  background-color: #ffffff;
-  border: 1px solid #dcdcdc;
-  border-radius: 4px;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.draggable-item:hover {
-  background-color: #f0f0f0;
-}
 
 
 
@@ -29,11 +8,13 @@
     scroll-snap-type: x mandatory; /* Optional: smooth snapping effect */
     white-space: nowrap; /* Ensures children stay in a row */
     scroll-behavior: smooth;
+    max-width: 950px;
+    margin-left: 10px;
   }
   
   .target-boxes {
     display: grid;
-    height:85vh;
+    height:80vh;
     grid-auto-flow: column; /* Lays out grid items in columns */
     grid-auto-columns: minmax(300px, 1fr); /* Each column adapts to its content */
     gap: 1rem; /* Adds space between grid items */
@@ -83,7 +64,7 @@
 .sr-pending{
    
     border-radius: 10px;
-    background-color: #02659d;
+    background-color: #e9ecef;
 
      border-radius: 10px 10px 0px 0px;
     padding: 10px;

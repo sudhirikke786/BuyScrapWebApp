@@ -1,127 +1,119 @@
-<div class="d-flex">
-
-
-    <div class="col-md-3">
-        <!-- Main Service Request Card -->
-        <div class="service-request-card">
-          <!-- Title and Status -->
-          <div class="d-flex  sr-pending">
-             <h5 class="service-title text-primary">Pending Service Requests</h5>
-          </div>
-  
-          <!-- Inner Cards Loop -->
-          <div class="inner-card-wrapper" *ngFor="let item of mainItems"
-          pDraggable
-        
-          (onDragStart)="onDragStart(item)"
-          (onDragEnd)="onDragEnd()" >
-            <div class="inner-card">
-              <h6 class="service-title">{{item.name}}</h6>
-              <p class="service-detail">EcoRenew Yard</p>
+<!-- 
+<div class="content-page">
+    <div class="content">
+        <div class="bdcmb mt-2">
+            <div class="row">
+              <div class="col-sm-6 col-6">
+                <h4 class="page-title">Dispatch</h4>
+              </div>
+    
+              <div class="col-sm-6 col-6">
+                <div class="b-links">
+                  <a routerLink="/{{orgName}}/home">Home</a> / <a href="javascript:void(0)" routerLink="/{{orgName}}/dispatch">Dispatch</a>
+                </div>
+              </div>
             </div>
-  
-            <!-- You can add more inner cards dynamically here -->
-         
-          </div>
         </div>
-      </div>
+    </div>
+</div> -->
 
-
-    <!-- <div  class="col-3">
-        <div class="card" style="height: 100vh;">
-        <div class="card-title">ahgasggasgsagsg</div>
-        <div class="service-request-container"  
-            *ngFor="let item of mainItems"
-            pDraggable
-          
-            (onDragStart)="onDragStart(item)"
-            (onDragEnd)="onDragEnd()" >
-    
-            
-                <div class="service-title">Pending Service Requests</div>
-                <div class="service-id">e003792</div>
-                <div class="status-wrapper">
-                  <span class="service-status">Pending Review</span>
-                </div>
-                <div class="service-header">{{ item.name }}</div>
-                <p class="service-detail">EcoRenew Yard</p>)O)
+<div class="content-page">
+    <div class="content">
+        <div class="bdcmb mt-2">
+            <div class="row">
+              <div class="col-sm-6 col-6">
+                <h4 class="page-title">Dispatch</h4>
               </div>
-
-
-        </div> -->
-
-       
-        <!-- <div class="inner-card-wrapper" *ngFor="let item of mainItems"
-        pDraggable
-      
-        (onDragStart)="onDragStart(item)"
-        (onDragEnd)="onDragEnd()" >
-          <div class="inner-card">
-            <h6 class="service-title">{{item.name}}</h6>
-            <p class="service-detail">EcoRenew Yard</p>
-          </div>
-
-      You can add more inner cards dynamically here 
-       
-        </div>-->
-            
-       
-          
     
-    <div class="col-9">
-        <div class="target-boxes-container">
-            <div class="target-boxes">
-              <div
-                class="target-box"
-                *ngFor="let box of targetBoxes; let i = index"
-                pDroppable
-                (onDrop)="onDrop(i)"
-              >
-              <div class="d-flex justify-content-between  sr-pending">
-                <div>
-                   <div class="total-order"  pTooltip="Pending Order">{{ box.orderCount  + box.items.length}}</div>
-                </div>
-                <div class="text-primary">{{ box.firstName }}</div>
-                <div class="d-flex">
-                    <div class="me-1 align-item-center">
-                        <img  class="dash-icons" src="/assets/images/custom/icons/ship-out.png">
-                    </div>
-                    <div class="div"> <button (click)="op.toggle($event)"class="btn btn-light border" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-three-dots"></i>
-                      </button>
-                    </div>
-                   
-                </div>
-                
-             </div>
-                <!-- <h3>{{ box.firstName }}</h3> -->
-                <div *ngFor="let item of box.items" class="dropped-item">
-                  <div class="inner-card-wrapper">
-                    <div class="inner-card">
-                        <h6 class="service-title">{{item.name}}</h6>
-                        <div>Ticket ID : {{item.ticketId}}</div>
-                        <p class="service-detail">{{item.status}}</p>
-                      </div>
-                      <p-progressBar  [style]="{ height: '10px' }"></p-progressBar>
-
-                  </div>
-
-                  
-
-                
+              <div class="col-sm-6 col-6">
+                <div class="b-links">
+                  <a routerLink="/{{orgName}}/home">Home</a> / <a href="javascript:void(0)" routerLink="/{{orgName}}/dispatch">Dispatch</a>
                 </div>
               </div>
             </div>
-          </div>
-          
-       
-    </div>
-    
+        </div>
+      
+        <div class="d-flex">
 
+
+            <div class="col-md-3">
+                <div class="service-request-card">
+                    <div class="d-flex  sr-pending">
+                        <h5 class="service-title text-primary">Pending Service Requests</h5>
+                    </div>
+        
+                    <div class="inner-card-wrapper" *ngFor="let item of mainItems" pDraggable (onDragStart)="onDragStart(item)"
+                        (onDragEnd)="onDragEnd()">
+                        <div class="inner-card">
+                            <h6 class="service-title">{{item.name}}</h6>
+                            <p class="service-detail">EcoRenew Yard</p>
+                        </div>
+        
+        
+                    </div>
+                </div>
+            </div>
+        
+        
+        
+        
+            <div class="col-9">
+                <div class="target-boxes-container">
+                    <div class="target-boxes">
+                        <div class="target-box" *ngFor="let box of targetBoxes; let i = index" pDroppable (onDrop)="onDrop(i)">
+                            <div class="d-flex justify-content-between  sr-pending">
+                                <div>
+                                    <div class="total-order" pTooltip="Pending Order">{{ box.orderCount + box.items.length}}
+                                    </div>
+                                </div>
+                                <div class="text-primary">{{ box.firstName }}</div>
+                                <div class="d-flex">
+                                    <div class="me-1 align-item-center">
+                                        <img class="dash-icons" src="/assets/images/custom/icons/ship-out.png">
+                                    </div>
+                                    <div class="div"> <button (click)="op.toggle($event)" class="btn btn-light border"
+                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots"></i>
+                                        </button>
+                                    </div>
+        
+                                </div>
+        
+                            </div>
+        
+                            <div *ngFor="let item of box.items" class="dropped-item">
+                                <div class="inner-card-wrapper">
+                                    <div class="inner-card">
+                                        <h6 class="service-title">{{item.name}}</h6>
+                                        <div>Ticket ID : {{item.ticketId}}</div>
+                                        <p class="service-detail">{{item.status}}</p>
+                                    </div>
+                                    <p-progressBar [style]="{ height: '10px' }"></p-progressBar>
+        
+                                </div>
+        
+        
+        
+        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+        
+            </div>
+        
+        
+        </div>
+        
+    </div>
 </div>
 
-    
- 
+
+
+
+
+
 <p-overlayPanel #op>
     <img src="https://primefaces.org/cdn/primeng/images/demo/product/bamboo-watch.jpg" alt="product" />
 </p-overlayPanel>
