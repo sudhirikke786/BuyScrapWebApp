@@ -459,7 +459,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
 
     console.log("Final ticketData :: " + JSON.stringify(this.tiketSelectedObj));
 
-    this.commonService.voidCopyTickets(this.tiketSelectedObj).subscribe(data => {
+    this.commonService.voidCopyInvoice(this.tiketSelectedObj).subscribe(data => {
       console.log(data);
       this.refreshData();
       this.voidReason = '';
@@ -489,7 +489,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
 
     console.log("Final ticketData :: " + JSON.stringify(this.tiketSelectedObj));
 
-    this.commonService.insertUpdateTickets(this.tiketSelectedObj).subscribe(data => {
+    this.commonService.insertUpdateInvoice(this.tiketSelectedObj).subscribe(data => {
       console.log(data);
       this.refreshData();
       this.voidReason = '';
@@ -514,7 +514,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
 
     console.log("Restore ticketData :: " + JSON.stringify(this.tiketSelectedObj));
 
-    this.commonService.RestoreVoidTickets(this.tiketSelectedObj).subscribe(data => {
+    this.commonService.restoreVoidInvoice(this.tiketSelectedObj).subscribe(data => {
       console.log(data);
       this.refreshData();
       this.voidReason = '';
