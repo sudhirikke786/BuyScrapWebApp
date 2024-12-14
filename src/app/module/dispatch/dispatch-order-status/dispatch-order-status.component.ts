@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/core/services/common.service';
-export interface Item {
-  id: number;
-  name: string;
-  status:string,
-  ticketId:string,
-  buttonType:string,
-}
+// export interface Item {
+//   id: number;
+//   name: string;
+//   status:string,
+//   ticketId:string,
+//   buttonType:string,
+// }
 
 @Component({
   selector: 'app-dispatch-order-status',
@@ -15,15 +15,13 @@ export interface Item {
 })
 export class DispatchOrderStatusComponent implements OnInit {
 
-  mainItems: Item[] = [
-    { id: 1,  name: "Dropoff",status:"pending review", ticketId:'1222',buttonType:'overdue by 8 days ' },
-    { id: 2, name: 'Pickup' ,status:"pending review", ticketId:'1222',buttonType:'overdue by 8 days '},
-    { id: 3, name: 'Exchange',status:"pending review", ticketId:'1222',buttonType:'overdue by 8 days ' },
-  ];
+  mainItems:any[] = [];
   orgName:any;
   locId:any;
   targetBoxes:any = [];
+  dispatchRes: any;
   //driverList = [];
+  totalUnassignTickets:any= []
   constructor( public commonService: CommonService){
 
   }
@@ -32,12 +30,13 @@ export class DispatchOrderStatusComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.getAllUsers();
+    this.getAllCODTickets();
   }
 
 
-  draggedItem: Item | null = null;
+  draggedItem: any | null = null;
 
-  onDragStart(item: Item): void {
+  onDragStart(item: any): void {
     console.log('Drag Start:', item);
     this.draggedItem = item; // Save the dragged item
   }
@@ -62,6 +61,63 @@ export class DispatchOrderStatusComponent implements OnInit {
     
   
 
+  }
+
+  getAllCODTickets() {
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId,
+      SerachText: ''
+    };
+
+    this.commonService.GetAllPickUpDetails(paramObject).subscribe(
+      
+      (data: any) => {
+        //console.log('API Response:', data); 
+        let _filterUnassignTicket = []
+        if (data && data.body && data.body.data) {
+          _filterUnassignTicket = data?.body?.data.filter((item:any) => !item.driverFirstName);
+        }
+
+        if (data && data.body && data.body.data) {
+          const _mainItems = _filterUnassignTicket.map((item: any,index:number) => {
+            //console.log('Mapped item:', item.ticketRowID);
+            return {
+              rowId: item.rowID, 
+              id: index,     
+              pickUpDate: item.pickUpDate,
+              customerName: item.customerName,
+              sellerName: item.sellerName,
+              sellerID:item.sellerID,
+              ticketRowID:item.ticketRowID,
+              charges: item.charges,
+              driverName:item.driverFirstName,
+              selected: item.closedDate ? true : false,
+              ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
+              sellerAddress: item.streetAddress         
+            };
+          });
+          this.mainItems = _mainItems;
+          console.log(this.mainItems)
+          
+
+        } else {
+          console.error('No data found or incorrect response structure.');
+        }
+
+        
+      
+      },
+      (err: any) => {
+       
+      
+        console.error('Error fetching COD tickets:', err);
+      },
+    
+       
+    );
+    
   }
 
   getAllUsers(){
