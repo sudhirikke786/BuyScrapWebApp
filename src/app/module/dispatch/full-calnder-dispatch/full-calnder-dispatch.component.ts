@@ -219,11 +219,14 @@ addColorStatus(driver:any) {
   
   return {
     html: `
-      <div style="border:1px solid ${colorStatus}; border-left:3px solid ${colorStatus};padding:5px;overflow: hidden;">
+      <div style="border:1px solid ${colorStatus};text-align: left; border-left:3px solid ${colorStatus};padding:5px;overflow: hidden;">
 
       
         <div>
-          <i class="${info.event.extendedProps.icon} me-2"></i>  <div style="font-weight: bold;">${ticketStatus}</div>
+        <div  class="d-flex justify-content-start align-items-center" >
+         <i class="${info.event.extendedProps.icon} me-2"></i>  <div style="font-weight: bold;">${ticketStatus}</div>
+        </div>
+         
           <div style="font-weight: bold;">Customer Name: ${info.event.title}</div>
           <div style="font-weight: bold;">${type}</div>
          <div style="font-weight: bold;">${driverName}</div>

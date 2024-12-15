@@ -92,7 +92,11 @@ export class DispatchOrderStatusComponent implements OnInit {
               sellerID:item.sellerID,
               ticketRowID:item.ticketRowID,
               charges: item.charges,
+              typeID:item.typeID,
+              type:item.type,
               driverName:item.driverFirstName,
+              ticketStatus:this.addStatus(item),
+              colorStatus:this.addColorStatus(item),
               selected: item.closedDate ? true : false,
               ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
               sellerAddress: item.streetAddress         
@@ -120,6 +124,10 @@ export class DispatchOrderStatusComponent implements OnInit {
     
   }
 
+  submitSave(){
+    console.log('Submit save button clicked');
+  }
+
   getAllUsers(){
     const reqObj = {
       LocationId: this.locId,
@@ -135,6 +143,40 @@ export class DispatchOrderStatusComponent implements OnInit {
      
     })
   }
+
+
+
+
+  addStatus(driver:any) {
+    let status  = 'Unassigned';
+    if(driver.driverID>0){
+      status = 'Assigned'
+    }else{
+       status = 'Unassigned'
+    }
+    if(driver.closedDate){
+      status = 'Completed'
+    }
+    return status;
+  
+  }
+  
+  
+  addColorStatus(driver:any) {
+    
+    let colorStatus = '#06669c'
+    if(driver.driverID>0){
+      colorStatus = '#6658dd'
+    }else{
+      colorStatus = '#06669c'
+    }
+    if(driver.closedDate){
+      colorStatus = '#6658dd'
+    }
+    return colorStatus;
+  
+  }
+  
   
   
 
