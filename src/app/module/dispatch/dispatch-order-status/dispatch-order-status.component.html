@@ -116,7 +116,7 @@
                                 </div>
         
                             </div>
-        
+                            <div class="item-container">
                             <div *ngFor="let item of box.items" class="dropped-item">
                                 
                                 <div style="border:1px solid {{item.colorStatus}};text-align: left; border-left:3px solid {{item.colorStatus}};padding:5px;overflow: hidden;" [ngStyle]="item.ticketStatus === 'Unassigned' ? { 'border-left': '3px solid red' } : {}">
@@ -139,6 +139,7 @@
         
         
         
+                            </div>
                             </div>
                         </div>
                     </div>
