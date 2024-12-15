@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/core/services/common.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StorageService } from 'src/app/core/services/storage.service';
 
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import { style } from '@angular/animations';
 
 @Component({
   selector: 'app-full-calnder-dispatch',
@@ -17,7 +18,7 @@ export class FullCalnderDispatchComponent implements OnInit {
   locId: string | number | null | undefined;
   customerName: string = '';
   address: string | null = null;
-
+  backUrl:any;
 
   totalCharges: number = 0;
   firstname: string = '';
@@ -27,6 +28,7 @@ export class FullCalnderDispatchComponent implements OnInit {
   constructor(
     private commonService: CommonService,
     private route: ActivatedRoute,
+    private router:Router,
     private localService:StorageService,
 
   ) {}
@@ -44,8 +46,8 @@ export class FullCalnderDispatchComponent implements OnInit {
     customButtons: {
       myCustomButton: {
         text: 'Back',
-        click: function () {
-          alert('clicked the back button!');
+        click: () => {
+          this.router.navigateByUrl(this.backUrl)
         }
       }
     },
@@ -66,6 +68,7 @@ export class FullCalnderDispatchComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = localStorage.getItem('locId');
     this.getAllCODTickets();
+    this.backUrl = `/${this.orgName}/dispatch`;
   }
 
 
@@ -97,6 +100,13 @@ export class FullCalnderDispatchComponent implements OnInit {
               ticketRowID:item.ticketRowID,
               charges: item.charges,
               selected: item.closedDate ? true : false,
+              closedDate: item.closedDate,
+              typeID:item.typeID,
+              type:item.type,
+              driverID:item.driverID,
+              ticketStatus:this.addStatus(item),
+              colorStatus:this.addColorStatus(item),
+              driverFullName:item.driverFullName,
               ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
               sellerAddress: item.streetAddress         
             };
@@ -128,8 +138,17 @@ export class FullCalnderDispatchComponent implements OnInit {
         title: item.sellerName,
         start: item.pickUpDate,
         end: item.pickUpDate,
+        detailObj : {
+          customerName:item.sellerName,
+          driverFullName:item.driverFullName,
+          driverID:item.driverID,
+          type:item.type,
+          closedDate:item.closedDate,
+          ticketStatus:item.ticketStatus,
+          colorStatus:item.colorStatus,
+        },
         description: item.sellerName,
-      
+        url:`/${this.orgName}/dispatch/dispatch-detail/${item.rowId}/${item.sellerID}/show`,
         icon: 'fa-solid fa-calendar'
         };
     })
@@ -148,25 +167,70 @@ export class FullCalnderDispatchComponent implements OnInit {
 
 
 
+addStatus(driver:any) {
+  let status  = 'Unassigned';
+  if(driver.driverID>0){
+    status = 'Assigned'
+  }else{
+     status = 'Unassigned'
+  }
+  if(driver.closedDate){
+    status = 'Completed'
+  }
+  return status;
+
+}
+
+
+addColorStatus(driver:any) {
+  
+  let colorStatus = '#06669c'
+  if(driver.driverID>0){
+    colorStatus = '#6658dd'
+  }else{
+    colorStatus = '#06669c'
+  }
+  if(driver.closedDate){
+    colorStatus = '#6658dd'
+  }
+  return colorStatus;
+
+}
+
+
 
 
  
   
  renderEventContent(info: any) {
-  const start = new Date(info.event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const end = new Date(info.event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  //[routerLink]="['dispatch-detail', certificate.rowId, certificate.sellerID,'show']
+//this.router.navigateByUrl(`/${this.orgName}/dispatch/dispatch-status`)
+ 
+
+    const start = new Date(info.event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const end = new Date(info.event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const type = info.event.extendedProps.detailObj.type ? 'Type : ' + info.event.extendedProps?.detailObj?.type : '';
+    const  driverName = info.event.extendedProps?.detailObj?.driverID > 0 ? 'Driver Name : '+  info.event.extendedProps?.detailObj?.driverFullName : '';
+    //Unassign
+    const ticketStatus = info.event.extendedProps?.detailObj?.ticketStatus ;
+    const colorStatus = info.event.extendedProps?.detailObj?.colorStatus ;
+
+  
   return {
     html: `
-      <div style="border:1px solid #6658dd; border-left:3px solid #6658dd;padding:5px;">
+      <div style="border:1px solid ${colorStatus}; border-left:3px solid ${colorStatus};padding:5px;overflow: hidden;">
 
-        <i class="${info.event.extendedProps.icon} me-2"></i>
-        <div display: flex; align-items: center;">
-          <div style="font-weight: bold;">${info.event.title}</div>
+      
+        <div>
+          <i class="${info.event.extendedProps.icon} me-2"></i>  <div style="font-weight: bold;">${ticketStatus}</div>
+          <div style="font-weight: bold;">Customer Name: ${info.event.title}</div>
+          <div style="font-weight: bold;">${type}</div>
+         <div style="font-weight: bold;">${driverName}</div>
           <div>${start} - ${end}</div>
         </div>
         <div display: flex; align-items: center;">
-         <div style="font-weight: bold;">10 -Appointments</div>
-         <div style="font-weight: bold;">  <a  class="text-primary">View All</a></div>
+         <div style="font-weight: bold;">  <a  class="text-primary cursor-hand" href="${info.event?.url}">View All</a></div>
 
         </div>
 
