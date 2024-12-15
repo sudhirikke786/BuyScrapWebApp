@@ -50,9 +50,9 @@
   }
   
   .dropped-item {
-    margin: 0.5rem 0;
+    
     padding: 0.5rem;
-    background-color: #e9ecef;
+    
     border-radius: 5px;
   }
   
@@ -111,6 +111,7 @@
   .item-container{
     height: calc(100vh - 150px); 
     overflow-y: scroll;
+    padding: 8px;
   }
 
   .ticket-detail {
@@ -121,7 +122,7 @@
     }
   }
   .ticket-detail-driver{
-    
+
   }
 
 

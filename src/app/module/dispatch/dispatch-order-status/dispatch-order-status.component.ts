@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/core/services/common.service';
+import { MessageService, ConfirmationService } from 'primeng/api';
+
 // export interface Item {
 //   id: number;
 //   name: string;
@@ -11,7 +13,8 @@ import { CommonService } from 'src/app/core/services/common.service';
 @Component({
   selector: 'app-dispatch-order-status',
   templateUrl: './dispatch-order-status.component.html',
-  styleUrls: ['./dispatch-order-status.component.css']
+  styleUrls: ['./dispatch-order-status.component.css'],
+  providers: [MessageService, ConfirmationService]
 })
 export class DispatchOrderStatusComponent implements OnInit {
 
@@ -20,9 +23,12 @@ export class DispatchOrderStatusComponent implements OnInit {
   locId:any;
   targetBoxes:any = [];
   dispatchRes: any;
+  driverList:any  = []
+  selecteddriverID:any = [];
+  isLoading = false;
   //driverList = [];
   totalUnassignTickets:any= []
-  constructor( public commonService: CommonService){
+  constructor( public commonService: CommonService, private messageService: MessageService,){
 
   }
 
@@ -30,7 +36,7 @@ export class DispatchOrderStatusComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.getAllUsers();
-    this.getAllCODTickets();
+  //  this.getAllCODTickets();
   }
 
 
@@ -38,6 +44,7 @@ export class DispatchOrderStatusComponent implements OnInit {
 
   onDragStart(item: any): void {
     console.log('Drag Start:', item);
+    
     this.draggedItem = item; // Save the dragged item
   }
 
@@ -48,11 +55,13 @@ export class DispatchOrderStatusComponent implements OnInit {
 
   onDrop(index:number): void {
   
+    this.selecteddriverID =  this.targetBoxes[index];
     console.log(this.draggedItem);
     if (this.draggedItem) {
       this.targetBoxes[index].items.push(this.draggedItem);
       this.mainItems = this.mainItems.filter(item => item.id != this.draggedItem?.id);
-
+      this.mainItems.sort((a,b) => b.id - a.id);
+      console.log("Drop Element",this.targetBoxes);
       this.draggedItem = null;
     }
 
@@ -71,13 +80,21 @@ export class DispatchOrderStatusComponent implements OnInit {
       SerachText: ''
     };
 
+    this.isLoading =  true;
+
     this.commonService.GetAllPickUpDetails(paramObject).subscribe(
       
       (data: any) => {
+
+        this.isLoading =  false;
+
         //console.log('API Response:', data); 
-        let _filterUnassignTicket = []
+        let _filterUnassignTicket = [];
+        let _driverList = [];
         if (data && data.body && data.body.data) {
           _filterUnassignTicket = data?.body?.data.filter((item:any) => !item.driverFirstName);
+          _driverList = data?.body?.data.filter((item:any) => item.driverID);
+          console.log("driverlist",_driverList)
         }
 
         if (data && data.body && data.body.data) {
@@ -110,6 +127,33 @@ export class DispatchOrderStatusComponent implements OnInit {
           console.error('No data found or incorrect response structure.');
         }
 
+        this.targetBoxes = [];
+        let  groupedData:any = [];
+        _driverList.forEach((item:any) => {
+          item.ticketStatus = this.addStatus(item);
+          item.colorStatus = this.addColorStatus(item);
+            if(!groupedData[item.driverID]) {
+              groupedData[item.driverID] = [];
+            }
+           groupedData[item.driverID].push(item);
+        });
+
+        console.log(groupedData);
+
+
+        // this.targetBoxes =  driverData.map((element:any) => {
+        //   element.items = [];
+        //   element.orderCount = 5;
+        //   return element;
+        // });
+
+        this.targetBoxes =  this.driverList.map((element:any,index:number) => {
+          element.items =  groupedData[element.rowId];
+          element.id = index;
+          return element
+        });
+        console.log("targetdata",this.targetBoxes);
+
         
       
       },
@@ -124,9 +168,7 @@ export class DispatchOrderStatusComponent implements OnInit {
     
   }
 
-  submitSave(){
-    console.log('Submit save button clicked');
-  }
+
 
   getAllUsers(){
     const reqObj = {
@@ -134,15 +176,48 @@ export class DispatchOrderStatusComponent implements OnInit {
       UserID:0
     }
     this.commonService.GetAllUsers(reqObj).subscribe((res) =>{
-      const driverData =  res?.body?.data;
-      this.targetBoxes =  driverData.map((element:any) => {
-        element.items = [];
-        element.orderCount = 5;
-        return element;
-      });
-     
+     this.driverList =  res?.body?.data.filter((item:any) =>item.role.toLowerCase() == 'driver');
+      this.getAllCODTickets()
     })
   }
+
+
+
+  submitSave(){
+    // "pickUpDate": this.datePipe.transform(this.pickupdate, 'YYYY-MM-ddTHH:mm:ss.SSS'),
+  try {
+    const  dragObjIndex = this.targetBoxes[0].items.findIndex((item:any) =>  item.ticketStatus == 'Unassigned');
+    console.log(dragObjIndex);
+    this.targetBoxes[0].items[dragObjIndex]['driverID'] =  this.selecteddriverID.rowId;
+    this.targetBoxes[0].items[dragObjIndex]['driverName'] = this.selecteddriverID.firstName;
+ 
+   
+    const objectData = this.targetBoxes[0].items[dragObjIndex] 
+    console.log(objectData);
+    this.commonService.InsertUpdatePickup(objectData).subscribe((res) =>{
+
+      this.messageService.add({ severity: 'success', summary: 'success', detail: ' Order Assigned Successfully' });
+     this.getAllCODTickets();
+    
+    },(error) =>{
+
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+
+      console.log("Error")
+    })
+
+
+
+  } catch (error) {
+    console.log(error);
+  }
+
+
+   
+  }
+
+
+
 
 
 

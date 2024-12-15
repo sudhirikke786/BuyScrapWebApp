@@ -17,7 +17,7 @@
     </div>
 </div> -->
 
-<div class="content-page">
+<div class="content-page" *ngIf="!isLoading">
     <div class="content">
         <div class="bdcmb mt-2">
             <div class="row">
@@ -99,19 +99,19 @@
                         <div class="target-box" *ngFor="let box of targetBoxes; let i = index" pDroppable (onDrop)="onDrop(i)">
                             <div class="d-flex justify-content-between  sr-pending">
                                 <div>
-                                    <div class="total-order" pTooltip="Pending Order">{{ box.orderCount + box.items.length}}
+                                    <div class="total-order" pTooltip="Pending Order">{{ box.items.length}}
                                     </div>
                                 </div>
-                                <div class="text-primary">{{ box.sellerName }}</div>
+                                <div class="text-primary">{{ box.driverFullName }}</div>
                                 <div class="d-flex">
                                     <div class="me-1 align-item-center">
                                         <img class="dash-icons" src="/assets/images/custom/icons/ship-out.png">
                                     </div>
-                                    <div class="div"> <button (click)="op.toggle($event)" class="btn btn-light border"
+                                    <!-- <div class="div"> <button (click)="op.toggle($event)" class="btn btn-light border"
                                             type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="bi bi-three-dots"></i>
                                         </button>
-                                    </div>
+                                    </div> -->
         
                                 </div>
         
@@ -119,12 +119,12 @@
         
                             <div *ngFor="let item of box.items" class="dropped-item">
                                 
-                                <div style="border:1px solid {{item.colorStatus}};text-align: left; border-left:3px solid {{item.colorStatus}};padding:5px;overflow: hidden;">
+                                <div style="border:1px solid {{item.colorStatus}};text-align: left; border-left:3px solid {{item.colorStatus}};padding:5px;overflow: hidden;" [ngStyle]="item.ticketStatus === 'Unassigned' ? { 'border-left': '3px solid red' } : {}">
 
       
                                     <div>
                                     <div  class="d-flex justify-content-start align-items-center" >
-                                        <div style="font-weight: bold;">{{item.ticketStatus}}</div>
+                                        <div style="font-weight: bold;">Status : {{item.ticketStatus}}</div>
                                     </div>
                                      
                                       <div style="font-weight: bold;">Customer Name: {{item.sellerName}}</div>
@@ -153,11 +153,17 @@
     </div>
 </div>
 
+<p-toast></p-toast>
 
 
+<div class="content" *ngIf="isLoading">
+    <app-page-loader type="ftable"></app-page-loader>
+  </div>
+
+  
 
 
-
+<!-- 
 <p-overlayPanel #op>
     <img src="https://primefaces.org/cdn/primeng/images/demo/product/bamboo-watch.jpg" alt="product" />
-</p-overlayPanel>
+</p-overlayPanel> -->

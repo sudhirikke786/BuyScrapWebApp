@@ -371,8 +371,7 @@ constructor(private route: ActivatedRoute, private router:Router,
       UserID:0
     }
     this.commonService.GetAllUsers(reqObj).subscribe((res) =>{
-      this.driverList =  res?.body?.data;
-
+      this.driverList =  res?.body?.data.filter((item:any) =>item.role.toLowerCase() == 'driver');
      
     })
   }
