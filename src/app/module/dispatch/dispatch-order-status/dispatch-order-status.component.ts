@@ -101,7 +101,7 @@ export class DispatchOrderStatusComponent implements OnInit {
           const _mainItems = _filterUnassignTicket.map((item: any,index:number) => {
             //console.log('Mapped item:', item.ticketRowID);
             return {
-              rowId: item.rowID, 
+              rowID: item.rowID, 
               id: index,     
               pickUpDate: item.pickUpDate,
               customerName: item.customerName,
