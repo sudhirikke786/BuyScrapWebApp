@@ -52,7 +52,7 @@ export class FullCalnderDispatchComponent implements OnInit {
       }
     },
     headerToolbar: {
-      left: 'prev,next myCustomButton today',
+      left: 'prev,next myCustomButton',
       center: 'title',
       right: 'dayGridMonth,dayGridWeek,dayGridDay'
     },
