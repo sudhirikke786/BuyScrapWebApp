@@ -148,7 +148,7 @@ export class DispatchOrderStatusComponent implements OnInit {
         // });
 
         this.targetBoxes =  this.driverList.map((element:any,index:number) => {
-          element.items =  groupedData[element.rowId];
+          element.items =  groupedData[element.rowId] ? groupedData[element.rowId] : [] ;
           element.id = index;
           return element
         });
