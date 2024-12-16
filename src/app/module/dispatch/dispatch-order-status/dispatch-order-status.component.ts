@@ -28,6 +28,7 @@ export class DispatchOrderStatusComponent implements OnInit {
   isLoading = false;
   //driverList = [];
   totalUnassignTickets:any= []
+  backUrl: any;
   constructor( public commonService: CommonService, private messageService: MessageService,){
 
   }
@@ -36,6 +37,7 @@ export class DispatchOrderStatusComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.getAllUsers();
+    this.backUrl = `/${this.orgName}/dispatch`;
   //  this.getAllCODTickets();
   }
 

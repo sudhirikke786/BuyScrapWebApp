@@ -8,7 +8,7 @@
     scroll-snap-type: x mandatory; /* Optional: smooth snapping effect */
     white-space: nowrap; /* Ensures children stay in a row */
     scroll-behavior: smooth;
-    max-width: 950px;
+    
     margin-left: 10px;
   }
   

@@ -44,9 +44,9 @@
                 </div>
 
                   <div>
-                      <button  class="btn btn-primary me-1">
+                      <a  class="btn btn-primary me-1"  href="{{backUrl}}">
                           Back
-                      </button>
+                      </a>
 
                   </div>
             </div>
@@ -72,14 +72,14 @@
       
                             <div>
                                 <div style="font-weight: bold;">#{{item.rowID}}</div>
-                            <div  class="d-flex justify-content-start align-items-center" >
+                            <!-- <div  class="d-flex justify-content-start align-items-center" >
                                 <div style="font-weight: bold;">{{item.ticketStatus}}</div>
-                            </div>
+                            </div> -->
                             
                               <div style="font-weight: bold;">Customer Name: {{item.sellerName}}</div>
                               <div style="font-weight: bold;">Type: {{item.type}}</div>
                             
-                              <div>{{item.pickUpDate}}</div>
+                              <div>{{item.pickUpDate | date: 'short'}}</div>
                             </div>
                            
                     
@@ -132,7 +132,7 @@
                                       <div style="font-weight: bold;">Customer Name: {{item.sellerName}}</div>
                                       <div style="font-weight: bold;">Type: {{item.type}}</div>
                                     
-                                      <div>{{item.pickUpDate}}</div>
+                                      <div>{{item.pickUpDate | date: 'short'}}</div>
                                     </div>
                                    
                             
