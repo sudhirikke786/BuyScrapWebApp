@@ -42,8 +42,13 @@
                                             <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/inout">
                                                 Back
                                             </a>
-                                            <a *ngIf="inoutDetails?.status == 'InTransient'" data-bs-toggle="modal" data-bs-target="#capture-image" 
+                                            <!-- <a *ngIf="inoutDetails?.status == 'Out' && !inoutDetails?.inwarddate" data-bs-toggle="modal" data-bs-target="#capture-image" 
                                             (click)="inword(inoutDetails)" class="btn  btn-primary waves-effect waves-light ticket-edit me-1">
+                                                <i class="mdi mdi-pencil"></i> Inword
+                                            </a> -->
+                                            <a *ngIf="inoutDetails?.status == 'Out' && !inoutDetails?.inwarddate" data-bs-toggle="modal" data-bs-target="#capture-image" 
+                                            (click)="inwardStatusUpdate()"
+                                             class="btn  btn-primary waves-effect waves-light ticket-edit me-1">
                                                 <i class="mdi mdi-pencil"></i> Inword
                                             </a>
                                             <!-- <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
@@ -65,9 +70,9 @@
                                         <table class="seller-view-tbl">
                                             <tbody>
                                             <tr>
-                                                <td *ngIf="inoutDetails?.status == 'Out'" >To Location : {{inoutDetails?.locationName}}</td>
-                                                <td *ngIf="inoutDetails?.status == 'In'" >From Location : {{inoutDetails?.locationName}}</td>
-                                                <td *ngIf="inoutDetails?.status != 'In' && inoutDetails?.status != 'Out'" >Location : {{inoutDetails?.locationName}}</td>
+                                                <td *ngIf="inoutDetails?.status == 'Out'" >To Location : {{inoutDetails?.locOutName}}</td>
+                                                <td *ngIf="inoutDetails?.status == 'In'" >From Location : {{inoutDetails?.locInName}}</td>
+                                                <td *ngIf="inoutDetails?.status != 'In' && inoutDetails?.status != 'Out'" >Location : {{inoutDetails?.locInName}}</td>
                                                 <td>Status : {{inoutDetails?.status}}</td>
                                                 <td>Driver : {{inoutDetails?.driverName}}</td>
                                             </tr>
@@ -298,12 +303,25 @@
 <ng-container *ngIf="!checkTabView">
 
 
-<p-dialog header="Inout Report" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+<!-- <p-dialog header="Inout Report" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
     <div class="row" >
       <div style="height: 500px;" *ngIf="showDownload">                
         <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
       </div>
     </div>
+</p-dialog> -->
+<p-dialog header="Inout Report" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+   
+    <div *ngIf="showLoaderReport">
+    <app-page-loader type="reportloader"></app-page-loader>
+  </div>
+
+
+<div class="row" >
+  <div style="height: 500px;" *ngIf="!showLoaderReport">                
+    <ngx-extended-pdf-viewer *ngIf="!showLoaderReport" #pdfViewer [base64Src]="fileDataObj" [useBrowserLocale]="false" [PageViewMode]="Single" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
+  </div>
+</div>
 </p-dialog>
 </ng-container>
 

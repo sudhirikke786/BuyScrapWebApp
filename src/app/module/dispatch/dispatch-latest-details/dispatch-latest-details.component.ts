@@ -55,8 +55,8 @@ export class DispatchLatestDetailsComponent {
     "noofShippingUnits": 0,
     "charges": 0,
     "liveLeadEQ": "string",
-    "dropoffbox": 0,
-    "boxpickup": 0,
+    "dropoffbox": "",
+    "boxpickup": "",
     "notes": ""
   };
 
@@ -150,8 +150,8 @@ constructor(private route: ActivatedRoute, private router:Router,
         "noofShippingUnits": 0,
         "charges": 0,
         "liveLeadEQ": "string",
-        "dropoffbox": 0,
-        "boxpickup": 0,
+        "dropoffbox": "",
+        "boxpickup": "",
         "notes": ""
       }
       this.invoiceObj.push({...item ,...this.newItem}); // Add a copy of the new item
@@ -284,9 +284,9 @@ constructor(private route: ActivatedRoute, private router:Router,
       RowID: Number(this.invoiceId)
      };
      this.commonService.GetAllContainer(paramObject)
-       .subscribe(data => {
-      
+       .subscribe(data => {      
          this.allContainerType = data.body.data;
+         this.allContainerType.push({ containerType: 'Not Applicable' })
        },
          (err: any) => {
            // this.errorMsg = 'Error occured';

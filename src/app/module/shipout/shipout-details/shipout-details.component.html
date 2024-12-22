@@ -292,13 +292,27 @@
 <ng-container *ngIf="!checkTabView">
 
 
-<p-dialog header="Shipout Report" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+<!-- <p-dialog header="Shipout Report" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
     <div class="row" >
       <div style="height: 500px;" *ngIf="showDownload">                
         <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
       </div>
     </div>
+</p-dialog> -->
+<p-dialog header="Shipout Report" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+   
+    <div *ngIf="showLoaderReport">
+    <app-page-loader type="reportloader"></app-page-loader>
+  </div>
+
+
+<div class="row" >
+  <div style="height: 500px;" *ngIf="!showLoaderReport">                
+    <ngx-extended-pdf-viewer *ngIf="!showLoaderReport" #pdfViewer [base64Src]="fileDataObj" [useBrowserLocale]="false" [PageViewMode]="Single" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
+  </div>
+</div>
 </p-dialog>
+
 </ng-container>
 
 

@@ -224,30 +224,66 @@ export class InoutDashboardComponent implements OnInit {
 
 
 
-  confirmationMessage(inoutId:any) {
-    const reqObj = {
-      RowID: inoutId,
-      Status: true
-    }
+  // confirmationMessage(inoutId:any) {
+  //   const reqObj = {
+  //     RowID: inoutId,
+  //     Status: true
+  //   }
+  //   this.confirmationService.confirm({
+  //     header: 'Confirmation',
+  //     message: 'Are you sure want to delete selected Inout Number #' + inoutId + ' ?' ,
+  //     acceptLabel: 'Confirm',
+  //     rejectLabel: 'Cancel',
+  //     accept: () => {
+  //       this.commonService.UpdateInoutStatus(reqObj).subscribe(() =>{
+  //         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'In-Out Record Deleted Successfully' });
+  //         this.getAllInoutDetails(this.pagination);
+
+  //       },(error) =>{
+  //         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something Wen\'t wrong' });
+  //       })
+  //     },
+  //     reject: () => {       
+  //       return false;
+  //     },
+  //   });
+  // }
+
+  deleteDetailsInout(inoutId: any) {
     this.confirmationService.confirm({
       header: 'Confirmation',
-      message: 'Are you sure want to delete selected Inout Number #' + inoutId + ' ?' ,
-      acceptLabel: 'Confirm',
-      rejectLabel: 'Cancel',
+      message: `Are you sure you want to delete the record with ID #${inoutId}?`,
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
       accept: () => {
-        this.commonService.UpdateInoutStatus(reqObj).subscribe(() =>{
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'In-Out Record Deleted Successfully' });
-          this.getAllInoutDetails(this.pagination);
-
-        },(error) =>{
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something Wen\'t wrong' });
-        })
+        this.showPageLoader = true;
+  
+        const requestObj = { RowID: inoutId };
+  
+        this.commonService
+          .DeleteInoutbyId(requestObj)
+          .subscribe(
+            (response) => {
+              this.showPageLoader = false;
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Deleted',
+                detail: `Record with ID #${inoutId} has been deleted successfully.`,
+              });
+              this.getAllInoutDetails(this.pagination); 
+            }
+          );
       },
-      reject: () => {       
-        return false;
+      reject: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Cancelled',
+          detail: 'Delete operation cancelled.',
+        });
       },
     });
   }
+  
 
 
   getLocationAction(actionCode: any) {

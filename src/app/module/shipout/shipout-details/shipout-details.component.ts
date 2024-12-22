@@ -100,6 +100,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
   fileDataObj: any;
   showDownload = false;
+  showLoaderReport = false;
   isLoading = false;
   checkTabView: boolean = false;
   @ViewChild(MaterialCalculatorComponent) materialCalculatorComponent!: MaterialCalculatorComponent;
@@ -560,8 +561,10 @@ export class ShipoutDetailsComponent implements OnInit {
   
 
   generateShipOutReport() {
+    this.isReportShow =true;
+    this.showLoaderReport = true;
 
-    const param = {
+     const param = {
       ShipOutId: this.shipoutId,
       LocationId: this.locId
     }
@@ -571,13 +574,15 @@ export class ShipoutDetailsComponent implements OnInit {
         console.log('getShipOutReportByID :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
+        this.showLoaderReport = false;
         if(this.checkTabView) {
           this.helperService.downloadBase64Pdf(this.fileDataObj,"Shipout Report"+this.shipoutId)
         }
 
-        this.showDownload = true;
+        //this.showDownload = true;
       },
         (err: any) => {
+          this.showLoaderReport = false;
           // this.errorMsg = 'Error occured';
         }
       );

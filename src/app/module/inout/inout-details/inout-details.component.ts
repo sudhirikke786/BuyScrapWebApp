@@ -100,6 +100,7 @@ export class InoutDetailsComponent implements OnInit {
 
   fileDataObj: any;
   showDownload = false;
+  showLoaderReport = false;
   isLoading = false;
   checkTabView: boolean = false;
   @ViewChild(MaterialCalculatorComponent) materialCalculatorComponent!: MaterialCalculatorComponent;
@@ -348,28 +349,52 @@ export class InoutDetailsComponent implements OnInit {
       );
   }
 
-  inword(inoutDetails: any) {
-    alert(JSON.stringify(inoutDetails));
-    inoutDetails.status = 'In';
-    console.log("Final inoutDetails :: " + JSON.stringify(inoutDetails));
+  // inword(inoutDetails: any) {
+  //   alert(JSON.stringify(inoutDetails));
+  //   inoutDetails.status = 'In';
+  //   console.log("Final inoutDetails :: " + JSON.stringify(inoutDetails));
     
-    this.commonService.insertInoutDTO(inoutDetails).subscribe(data =>{
-      if (parseInt(this.inoutId)) {
-        this.isNewInout = false;
-      } else {
-        this.isNewInout = true;
-      }
-      console.log(data); 
-      this.inoutId = data.body;    
+  //   this.commonService.insertInoutDTO(inoutDetails).subscribe(data =>{
+  //     if (parseInt(this.inoutId)) {
+  //       this.isNewInout = false;
+  //     } else {
+  //       this.isNewInout = true;
+  //     }
+  //     console.log(data); 
+  //     this.inoutId = data.body;    
       
-      if (this.isReceiptPrint) {
-        this.generateInoutReport();
-      }
-    },(error: any) =>{  
-      console.log(error);  
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
-    });
-  }
+  //     if (this.isReceiptPrint) {
+  //       this.generateInoutReport();
+  //     }
+  //   },(error: any) =>{  
+  //     console.log(error);  
+  //     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
+  //   });
+  // }
+
+  isInwardUpdating = false;
+
+inwardStatusUpdate() {
+  this.isInwardUpdating = true; 
+  const paramObject = {
+    rowId: this.inoutId,
+    InwardDate: new Date().toISOString()
+  };
+
+  this.commonService.UpdateInoutStatus(paramObject).subscribe(
+    (response) => {
+      console.log('Inward status updated successfully:', response);
+      this.inoutDetails.status = 'In';
+      this.inoutDetails.inwarddate = paramObject.InwardDate;
+      this.isInwardUpdating = false;
+    },
+    (error) => {
+      console.error('Error updating inward status:', error);
+      this.isInwardUpdating = false; 
+    }
+  );
+}
+
 
   confirmSave() {
 
@@ -581,6 +606,8 @@ export class InoutDetailsComponent implements OnInit {
   
 
   generateInoutReport() {
+    this.isReportShow =true;
+    this.showLoaderReport = true;
 
     const param = {
       InoutId: this.inoutId,
@@ -592,13 +619,18 @@ export class InoutDetailsComponent implements OnInit {
         console.log('getInoutReportByID :: ');
         console.log(data);
         this.fileDataObj = data.body.data;
+        this.showLoaderReport = false;
+
+
         if(this.checkTabView) {
           this.helperService.downloadBase64Pdf(this.fileDataObj,"Inout Report"+this.inoutId)
         }
 
-        this.showDownload = true;
+        //this.showDownload = true;
       },
         (err: any) => {
+          this.showLoaderReport = false;
+
           // this.errorMsg = 'Error occured';
         }
       );

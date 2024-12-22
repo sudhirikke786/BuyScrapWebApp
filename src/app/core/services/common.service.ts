@@ -391,6 +391,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/InOut/UpdateInwardStatus', 'POST',paramObj);
   }
 
+  DeleteInoutbyId(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InOut/DeleteInoutbyId', 'DELETE', requestObj);
+  }
+
 
 
 

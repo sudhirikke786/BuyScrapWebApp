@@ -75,7 +75,8 @@
                                                     <td>{{ admin.emailID }}</td>
                                                     <td>
                                                         <a (click)="showModel(admin,'update')" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
-                                                        <a (click)="deletUser(admin)"class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
+                                                        <!-- <a (click)="deletUser(admin)"class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a> -->
+                                                        <a (click)="confirmDelete(admin)" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
                                                     </td>
                                                 </tr>
                                             </ng-template>
@@ -199,3 +200,6 @@
         </p-dialog>
 
         <p-toast></p-toast>
+        <p-confirmDialog></p-confirmDialog>
+
+    
