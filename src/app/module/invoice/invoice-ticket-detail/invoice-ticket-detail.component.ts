@@ -148,6 +148,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   fileDataObj: any;
   showDownload = false;
   showLoaderReport = false;
+  isReportShow = false;
+
   pdfViwerTitle = 'Invoice Receipt';
   isCheckPrint = false;
   checkAmount = 0;
@@ -1625,14 +1627,16 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
   generateSingleInvoiceReport(invoiceId: any) {
-    alert('Printing Invoice Report');
     // this.checkPrintAction();
+    this.isReportShow =true;
+    this.showLoaderReport = true; 
+    alert('Printing Invoice Report');
     const param = {
       InvoiceId: invoiceId,
       LocationId: this.locId,
       Type: localStorage.getItem('defaultPrintSize')
     }
-    this.showLoaderReport = false;
+    //this.showLoaderReport = false;
 
     this.commonService.generateSingleInvoiceReport(param)
       .subscribe(data => {
@@ -1641,9 +1645,11 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         this.fileDataObj = data.body.data;
         this.showLoaderReport = false;
 
-        this.showDownload = false;
+        //this.showDownload = false;
         this.pdfViwerTitle = 'Invoice Receipt';
-        this.loadAndPrintBase64Pdf(this.fileDataObj)
+        //this.showDownload = true;
+
+        //this.loadAndPrintBase64Pdf(this.fileDataObj)
       },
         (err: any) => {
           this.showLoaderReport = false;

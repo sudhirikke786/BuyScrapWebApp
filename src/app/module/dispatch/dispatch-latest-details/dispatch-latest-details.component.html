@@ -144,9 +144,9 @@
                                   <table>
                                     <thead>
                                       <tr>
-                                        <th style="width:15%">Container ID</th>
-                                        <th style="width:10%">Drop-off Box</th>
-                                        <th style="width:10%">Box Pickup</th>
+                                        <th style="width:15%">Container Type</th>
+                                        <th style="width:10%">Drop-off Box #</th>
+                                        <th style="width:10%">Box Pickup #</th>
                                         <th style="width:10%">Charges</th>
                                         <th style="width:20%">Notes</th>
                                         <th style="width:10%" *ngIf="type!=='show'">Action</th>
@@ -173,6 +173,7 @@
                                             <option *ngFor="let option of allContainerType" [value]="option.containerType">
                                               {{ option.containerType }}
                                             </option>
+                                            <option [value]="'N/A'">Not Applicable</option>
                                           </select>
                                         </td>
                                         <td *ngIf="editingIndex !== i">{{ item?.dropoffbox}}</td>
@@ -233,7 +234,7 @@
                                           <input min="0" type="number" [(ngModel)]="newItem.charges" placeholder="Charges" />
                                         </td>
                                         <td>
-                                          <textarea cols="20" rows="2" [(ngModel)]="newItem.notes" placeholder="Notes">
+                                          <textarea cols="70" rows="2" [(ngModel)]="newItem.notes" placeholder="Notes">
                                           </textarea>
 
                                         </td>

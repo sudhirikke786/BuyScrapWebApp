@@ -5,7 +5,7 @@ import { DatePipe } from '@angular/common';
 
 import { RegexPattern } from 'src/app/core/pattern/regex-patterns';
 import { CommonService } from 'src/app/core/services/common.service';
-import { MessageService } from 'primeng/api';
+import { MessageService,ConfirmationService } from 'primeng/api';
 import { StorageService } from 'src/app/core/services/storage.service';
 
     
@@ -28,7 +28,7 @@ export function ConfirmedValidator(controlName: string, matchingControlName: str
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService,ConfirmationService]
 })
 export class AdminDashboardComponent implements OnInit {
 
@@ -69,6 +69,7 @@ export class AdminDashboardComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private messageService: MessageService,
+    private confirmationService:ConfirmationService,
     private stroarge:StorageService,
     public commonService: CommonService) { }
 
@@ -182,13 +183,43 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
-  deletUser(userObj:any){
-    this.commonService.DeleteUserDTO(userObj).subscribe((res:any) =>{
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Delete User Successfully' });
-      this.getAllUsers();
-    })
-  }
+  // deletUser(userObj:any){
+  //   this.commonService.DeleteUserDTO(userObj).subscribe((res:any) =>{
+  //     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Delete User Successfully' });
+  //     this.getAllUsers();
+  //   })
+  // }
+  confirmDelete(userObj: any) {
+    this.confirmationService.confirm({
+        message: 'Are you sure you want to delete this user?',
+        header: 'Confirm Deletion',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+            this.deleteUser(userObj); // Call the delete method if confirmed
+        },
+        reject: () => {
+            this.messageService.add({
+                severity: 'info',
+                summary: 'Cancelled',
+                detail: 'User deletion cancelled',
+            });
+        }
+    });
+}
 
+deleteUser(userObj: any) {
+    this.commonService.DeleteUserDTO(userObj).subscribe(
+        (res: any) => {
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'User deleted successfully',
+            });
+            this.getAllUsers(); // Refresh user list
+        }
+    );
+}
+ 
   hideModel() {
     this.visible = false;
   }

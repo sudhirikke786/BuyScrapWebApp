@@ -764,7 +764,7 @@
     
 </p-dialog>
 
-<p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+<p-dialog [header]="pdfViwerTitle" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
    
         <div *ngIf="showLoaderReport">
         <app-page-loader type="reportloader"></app-page-loader>
@@ -777,6 +777,7 @@
       </div>
     </div>
 </p-dialog>
+
 
 <iframe id="pdfFrame" #pdfFrame style="display: none;"></iframe>
 

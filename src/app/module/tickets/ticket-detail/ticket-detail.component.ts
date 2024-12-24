@@ -1646,14 +1646,16 @@ export class TicketDetailComponent implements OnInit {
   }
 
   generateSingleTicketReport(ticketId: any) {
-    this.isReceiptPrint = true;
+    //this.isReceiptPrint = true;
+    this.isReportShow =true;
+    this.showLoaderReport = true; 
     // this.checkPrintAction();
     const param = {
       TicketId: ticketId,
       LocationId: this.locId,
       Type: localStorage.getItem('defaultPrintSize')
     }
-    this.showLoaderReport = false;
+    //this.showLoaderReport = false;
 
     this.commonService.generateSingleTicketReport(param)
       .subscribe(data => {
@@ -1662,7 +1664,7 @@ export class TicketDetailComponent implements OnInit {
         this.fileDataObj = data.body.data;
         this.showLoaderReport = false;
 
-        this.showDownload = false;
+        //this.showDownload = false;
         this.pdfViwerTitle = 'Ticket Receipt';
 
         const checkTabView = this.helperService.isTab();

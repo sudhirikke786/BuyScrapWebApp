@@ -27,13 +27,30 @@ export class ChangeLocationComponent implements OnInit {
 
 
   changeLocation(){
-    localStorage.setItem("locId",this.locationId);
-    this.selectedLocation = this.locations.filter((item:any) => item.rowId == this.locationId)[0];
-    localStorage.setItem('currencyCode',this.selectedLocation?.currencyCode); 
+    // localStorage.setItem("locId",this.locationId);
+    // this.selectedLocation = this.locations.filter((item:any) => item.rowId == this.locationId)[0];
+    // localStorage.setItem('currencyCode',this.selectedLocation?.currencyCode); 
       
-    const URl  = window.location.href;
-    console.log(URl);
-    this.router.navigateByUrl(`${this.orgName}/home`);
+    // const URl  = window.location.href;
+    // console.log(URl);
+    // this.router.navigateByUrl(`${this.orgName}/home`);
+
+    if (this.locationId) {
+      localStorage.setItem("locId",this.locationId);
+      this.selectedLocation = this.locations.filter((item:any) => item.rowId == this.locationId)[0];
+      const newLocationName = this.selectedLocation?.locationName || '';
+
+      localStorage.setItem('locationName', newLocationName);
+      localStorage.setItem('currencyCode', this.selectedLocation?.currencyCode);
+
+      const URl  = window.location.href;
+      console.log(URl);
+      this.router.navigateByUrl(`${this.orgName}/home`);
+    } else {
+      alert('Please select a valid location.');
+    }
+
+
    
   }
 

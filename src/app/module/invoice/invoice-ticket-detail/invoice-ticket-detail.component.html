@@ -32,9 +32,9 @@
                             'col-sm-12' : 'col-sm-8'">
                                 
                                 <div class="row">
-                                    <div class="col-sm-2">
+                                    <!-- <div class="col-sm-2">
                                         <img src="{{customer?.idfaceShotImage}}" class="dl-img">
-                                    </div>
+                                    </div> -->
         
                                     <div class="col-sm-10">
         
@@ -142,6 +142,7 @@
                                                                 />
                                                               </td>
                                                               <td style="width:15%">
+                                                                <span>$</span>
                                                                 <input
                                                                   type="number"
                                                                   [(ngModel)]="item.rate"
@@ -150,7 +151,7 @@
                                                                 />
                                                               </td>
                                                               <td style="width:15%">
-                                                                {{item.amount}}
+                                                                <span>$</span> {{item.amount}}
                                                               </td>
                                                               <td style="width:15%">
                                                                 <button class="btn btn-danger me-1" (click)="deleteItem(i)">Remove</button>
@@ -244,7 +245,7 @@
                                                             <th style="width: 15%;">Item</th>
                                                             <th style="width: 15%;">Quantity</th>
                                                             <th style="width: 15%;">Actual Amount</th>
-                                                            <th style="width: 15%;">Rounding</th>
+                                                            <!-- <th style="width: 15%;">Rounding</th> -->
                                                             <th style="width: 15%;">Amount</th>
                                                     </tr></thead>
         
@@ -253,7 +254,7 @@
                                                             <td>{{totalNoOfMaterial}}</td>
                                                             <td>{{totalGross}}</td>
                                                             <td>{{totalActualAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                            <td>{{totalRoundingAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                            <!-- <td>{{totalRoundingAmount | currency: currencySymbol :'symbol': numberFormat}}</td> -->
                                                             <td>{{totalAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                         </tr>                                                     
                                                     </tbody>
@@ -705,7 +706,7 @@
     
 </p-dialog>
 
-<p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+<!-- <p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
    
         <div *ngIf="showLoaderReport">
         <app-page-loader type="reportloader"></app-page-loader>
@@ -717,7 +718,26 @@
         <ngx-extended-pdf-viewer *ngIf="!showLoaderReport" #pdfViewer [base64Src]="fileDataObj" [useBrowserLocale]="false" [PageViewMode]="Single" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
       </div>
     </div>
+</p-dialog> -->
+
+<p-dialog [header]="pdfViwerTitle" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+  <div *ngIf="showLoaderReport" class="loader-container" style="width: 100%;">
+    <app-page-loader type="reportloader"></app-page-loader>
+  </div>
+
+  <div class="row" *ngIf="!showLoaderReport">
+    <div style="height: 500px; width: 90vw;">                
+      <ngx-extended-pdf-viewer 
+        [base64Src]="fileDataObj" 
+        [PageViewMode]="'Single'" 
+        [pageChangeOnScrolling]="true" 
+        [showScrollbar]="false">
+      </ngx-extended-pdf-viewer>
+    </div>
+  </div>
 </p-dialog>
+
+
 
 <iframe id="pdfFrame" #pdfFrame style="display: none;"></iframe>
 
@@ -957,3 +977,4 @@ header="Edit Seller"
         <button type="button" pButton icon="pi pi-check" label="Yes" (click)="confirmPosition"></button>
     </ng-template>
 </p-confirmDialog> -->
+
