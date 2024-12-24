@@ -37,11 +37,11 @@
                         
         
             <div class="col-sm-12 d-flex justify-content-end">
-                <div >
+                <!-- <div >
                     <button  class="btn btn-primary me-1" (click)="submitSave()">
                         Save
                     </button>
-                </div>
+                </div> -->
 
                   <div>
                       <a  class="btn btn-primary me-1"  href="{{backUrl}}">
@@ -77,7 +77,7 @@
                             </div> -->
                             
                               <div style="font-weight: bold;">Customer Name: {{item.sellerName}}</div>
-                              <div style="font-weight: bold;">Type: {{item.type}}</div>
+                              <div style="font-weight: bold; font-size:1.2rem">{{item.type}}</div>
                             
                               <div>{{item.pickUpDate | date: 'short'}}</div>
                             </div>
@@ -130,7 +130,8 @@
                                     </div> -->
                                      
                                       <div style="font-weight: bold;">Customer Name: {{item.sellerName}}</div>
-                                      <div style="font-weight: bold;">Type: {{item.type}}</div>
+                                      <div style="font-weight: bold; font-size:1.2rem">{{item.type}}</div>
+
                                     
                                       <div>{{item.pickUpDate | date: 'short'}}</div>
                                     </div>

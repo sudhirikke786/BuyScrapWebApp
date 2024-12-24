@@ -61,6 +61,11 @@ export class DispatchDetailComponent implements OnInit {
       (response) => {
         console.log(response);
         this.containers = response.body.data;
+        this.containers.unshift({
+          rowId:0,
+          containerType:"Select Container Type"
+
+        })
       },
       (error) => {
         console.error('Error fetching container data:', error);
@@ -128,7 +133,7 @@ export class DispatchDetailComponent implements OnInit {
 
   resetForm(): void {
     this.formData = {
-      containerType: '',
+      containerType: 'Select Container Type',
       dropOffBox: 0,
       pickUpBox: 0,
       charges: 0,

@@ -42,7 +42,7 @@ export class FullCalnderDispatchComponent implements OnInit {
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin],
-    initialView: 'dayGridMonth',
+    initialView: 'dayGridWeek',
     customButtons: {
       myCustomButton: {
         text: 'Back',
@@ -143,6 +143,7 @@ export class FullCalnderDispatchComponent implements OnInit {
           driverFullName:item.driverFullName,
           driverID:item.driverID,
           type:item.type,
+          rowId:item.rowId,
           closedDate:item.closedDate,
           ticketStatus:item.ticketStatus,
           colorStatus:item.colorStatus,
@@ -215,19 +216,40 @@ addColorStatus(driver:any) {
     //Unassign
     const ticketStatus = info.event.extendedProps?.detailObj?.ticketStatus ;
     const colorStatus = info.event.extendedProps?.detailObj?.colorStatus ;
+    const rowID = info.event.extendedProps?.detailObj?.rowId
+    let bgColor =  '#FF69B4';
+    let textColor = '';
 
+    switch (info?.event?.extendedProps?.detailObj?.type) {
+      case 'Drop off':
+        bgColor = '#E6FFE6';
+        textColor = '#000000';
+        break;
+      case 'Exchange':
+        bgColor = '#FFC107';
+        textColor = '#FFFFFFF';
+        break;
+      case 'Pickup':
+        bgColor = '#4CAF50';
+        textColor = '#000000';
+        break;
+      default:
+        bgColor = '#000000';
+    }
   
   return {
     html: `
-      <div style="border:1px solid ${colorStatus};text-align: left; border-left:3px solid ${colorStatus};padding:5px;overflow: hidden;">
+      <div style="border:1px solid ${colorStatus};text-align: left;  border-left:3px solid ${colorStatus};padding:5px;overflow: hidden;background-color:${bgColor};color:${textColor}">
 
       
         <div>
+           <div style="font-weight: bold;">#${rowID}</div>
         <div  class="d-flex justify-content-start align-items-center" >
          <i class="${info.event.extendedProps.icon} me-2"></i>  <div style="font-weight: bold;">${ticketStatus}</div>
         </div>
-         
+       
           <div style="font-weight: bold;">Customer Name: ${info.event.title}</div>
+         
           <div style="font-weight: bold;">${type}</div>
          <div style="font-weight: bold;">${driverName}</div>
           <div>${start} - ${end}</div>
@@ -240,5 +262,15 @@ addColorStatus(driver:any) {
       </div>`
   }
 }
+getColor(type:any) {
+  try {
+   
+    
+  } catch (error) {
+    
+  }
+ 
+ }
+
 
 }

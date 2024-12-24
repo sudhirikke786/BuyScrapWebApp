@@ -53,6 +53,7 @@ export class DispatchOrderStatusComponent implements OnInit {
   onDragEnd(): void {
     console.log('Drag End');
     this.draggedItem = null; // Reset the dragged item
+   
   }
 
   onDrop(index:number): void {
@@ -65,9 +66,17 @@ export class DispatchOrderStatusComponent implements OnInit {
       this.mainItems.sort((a,b) => b.id - a.id);
       console.log("Drop Element",this.targetBoxes);
       this.draggedItem = null;
+     
+    
     }
+    
+  setTimeout(() => {
+    if(this.targetBoxes.length > 0){
+      this.submitSave();
+    }
+  }, 1000);
 
-
+  
 
     
   
@@ -190,23 +199,26 @@ export class DispatchOrderStatusComponent implements OnInit {
   try {
     const  dragObjIndex = this.targetBoxes[0].items.findIndex((item:any) =>  item.ticketStatus == 'Unassigned');
     console.log(dragObjIndex);
-    this.targetBoxes[0].items[dragObjIndex]['driverID'] =  this.selecteddriverID.rowId;
-    this.targetBoxes[0].items[dragObjIndex]['driverName'] = this.selecteddriverID.firstName;
- 
-   
-    const objectData = this.targetBoxes[0].items[dragObjIndex] 
-    console.log(objectData);
-    this.commonService.InsertUpdatePickup(objectData).subscribe((res) =>{
-
-      this.messageService.add({ severity: 'success', summary: 'success', detail: ' Order Assigned Successfully' });
-     this.getAllCODTickets();
+    if(dragObjIndex > -1){
+      this.targetBoxes[0].items[dragObjIndex]['driverID'] =  this.selecteddriverID.rowId;
+      this.targetBoxes[0].items[dragObjIndex]['driverName'] = this.selecteddriverID.firstName;
+  
     
-    },(error) =>{
+      const objectData = this.targetBoxes[0].items[dragObjIndex] 
+      console.log(objectData);
+      this.commonService.InsertUpdatePickup(objectData).subscribe((res) =>{
 
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+        this.messageService.add({ severity: 'success', summary: 'success', detail: ' Order Assigned Successfully' });
+      this.getAllCODTickets();
+      
+      },(error) =>{
 
-      console.log("Error")
-    })
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+
+        console.log("Error")
+      })
+    }
+    
 
 
 
