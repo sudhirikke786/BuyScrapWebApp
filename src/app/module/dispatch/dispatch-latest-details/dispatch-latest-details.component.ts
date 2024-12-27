@@ -257,7 +257,7 @@ constructor(private route: ActivatedRoute, private router:Router,
           obj.notes = item.notes
           obj.fullName =  item.fullName;
           obj.notes = item.notes;
-          obj.pickUpDate = this.formateDate(item.pickUpDate)
+          obj.pickUpDate = item.pickUpDate.split('T')[0]
           return {...obj,...item};
          
         });
