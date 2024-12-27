@@ -49,7 +49,7 @@ export class DispatchLatestDetailsComponent {
     "pickUpID": 0,
     "isDeleted": false,
     "containerID": 0,
-    "containerType": "",
+    "containerType": "Select Container Type",
     "containerSize": "",
     "containerName": "",
     "noofShippingUnits": 0,
@@ -144,7 +144,7 @@ constructor(private route: ActivatedRoute, private router:Router,
         "pickUpID": 0,
         "isDeleted": false,
         "containerID": 0,
-        "containerType": "",
+        "containerType": "Select Container Type",
         "containerSize": "",
         "containerName": "",
         "noofShippingUnits": 0,
@@ -174,15 +174,19 @@ constructor(private route: ActivatedRoute, private router:Router,
 
   // Check if the new item is valid
   isValidNewItem(): boolean {
-    return (
-      this.newItem.containerType && (this.newItem.dropOffBox || this.newItem.boxpickup) 
-    );
+
+    console.log(this.newItem.containerType);
+    return this.newItem.containerType != 'Select Container Type'
+   // return true
+    // return (
+    //   this.newItem.containerType && (this.newItem.dropOffBox || this.newItem.boxpickup) 
+    // );
   }
 
   // Reset new item fields
   resetNewItem() {
     this.newItem = {
-      containerType: '',
+      containerType: 'Select Container Type',
       dropoffbox: '',
       boxpickup: '',
       charges: 0,
@@ -253,6 +257,7 @@ constructor(private route: ActivatedRoute, private router:Router,
           obj.notes = item.notes
           obj.fullName =  item.fullName;
           obj.notes = item.notes;
+          obj.pickUpDate = this.formateDate(item.pickUpDate)
           return {...obj,...item};
          
         });
@@ -287,6 +292,8 @@ constructor(private route: ActivatedRoute, private router:Router,
        .subscribe(data => {      
          this.allContainerType = data.body.data;
          this.allContainerType.push({ containerType: 'Not Applicable' })
+         this.allContainerType.unshift({ containerType: 'Select Container Type' })
+     
        },
          (err: any) => {
            // this.errorMsg = 'Error occured';
@@ -305,10 +312,10 @@ constructor(private route: ActivatedRoute, private router:Router,
       return item;
     })
 
-    if(!this.dispatchMaterial){
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Select Type' });
-      return
-    }
+    // if(!this.dispatchMaterial){
+    //   this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Select Type' });
+    //   return
+    // }
     if(!this.pickupdate){
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Select Pickup Date' });
       return
@@ -358,9 +365,9 @@ constructor(private route: ActivatedRoute, private router:Router,
     const yyyy = now.getFullYear();
     const mm = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-based
     const dd = String(now.getDate()).padStart(2, '0');
-    const hh = String(now.getHours()).padStart(2, '0');
-    const mi = String(now.getMinutes()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}T${hh}:${mi}`; 
+    // const hh = String(now.getHours()).padStart(2, '0');
+    // const mi = String(now.getMinutes()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`; 
   }
 
 

@@ -17,8 +17,11 @@
           
           <div class="row">
             <div class="card fc-calender" style="max-height: calc(100vh - 100px);overflow:auto"> 
-
-                <full-calendar [options]="calendarOptions"></full-calendar>
+              <div class="controls mt-2">
+                <button class="btn btn-primary me-1" (click)="goToPreviousMonth()">Previous</button>
+                <button class="btn btn-primary"  (click)="goToNextMonth()">Next </button>
+              </div>
+                <full-calendar #calendarRef [options]="calendarOptions"></full-calendar>
             </div>
 
           </div>

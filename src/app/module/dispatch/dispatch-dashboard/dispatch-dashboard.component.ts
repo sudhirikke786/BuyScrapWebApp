@@ -33,7 +33,7 @@ export class DispatchDashboardComponent implements OnInit {
     { iconcode: 'mdi-magnify', title: 'Search' },
     { iconcode: 'mdi-refresh', title: 'Refresh' },
     { iconcode: 'mdi-calendar', title: 'Calendar View', label: 'Calendar View' },
-    { iconcode: 'mdi-plus', title: 'Sellers', label: 'New Appointment' },
+    { iconcode: 'mdi-plus', title: 'Sellers', label: 'New Dispatch' },
     { iconcode: 'mdi-add', title: 'Dispatch', label: 'Driver Assign' }
   ];
   newTicketList = [{

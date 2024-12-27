@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from 'src/app/core/services/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StorageService } from 'src/app/core/services/storage.service';
@@ -6,6 +6,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { style } from '@angular/animations';
+import { FullCalendarComponent } from '@fullcalendar/angular';
 
 @Component({
   selector: 'app-full-calnder-dispatch',
@@ -62,7 +63,10 @@ export class FullCalnderDispatchComponent implements OnInit {
     },
     events: [],
     eventContent: this.renderEventContent
-  };;
+  };
+
+  @ViewChild('calendarRef') calendarRef!: FullCalendarComponent;
+
 
   ngOnInit(){
     this.orgName = localStorage.getItem('orgName');
@@ -200,6 +204,16 @@ addColorStatus(driver:any) {
 
 
 
+goToPreviousMonth() {
+  this.calendarRef.getApi().prev(); // Use FullCalendar's API to go to the previous month
+}
+
+// Navigate to the next month
+goToNextMonth() {
+  this.calendarRef.getApi().next(); // Use FullCalendar's API to go to the next month
+}
+
+
 
  
   
@@ -218,7 +232,7 @@ addColorStatus(driver:any) {
     const colorStatus = info.event.extendedProps?.detailObj?.colorStatus ;
     const rowID = info.event.extendedProps?.detailObj?.rowId
     let bgColor =  '#FF69B4';
-    let textColor = '';
+    let textColor = '#ffffff';
 
     switch (info?.event?.extendedProps?.detailObj?.type) {
       case 'Drop off':

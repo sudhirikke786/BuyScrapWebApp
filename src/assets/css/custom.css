@@ -2972,3 +2972,17 @@ select optgroup option {
 .btn:hover {
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2) !important; /* Slightly deeper shadow on hover */
 }
+
+
+
+
+
+/* Example for body text */
+body {
+  font-size: clamp(1rem, 1.2vw, 1.5rem); /* Scales with viewport width */
+}
+
+/* Example for headings */
+h1 {
+  font-size: clamp(2rem, 4vw, 3.5rem); /* Responsive font size */
+}
