@@ -215,6 +215,21 @@ constructor(private route: ActivatedRoute, private router:Router,
       );
   }
 
+  setDateToInput(isoDateString:any) {
+    // Convert the ISO string to a Date object
+    const dateObject = new Date(isoDateString);
+
+    // Extract the date in YYYY-MM-DD format
+    const year = dateObject.getFullYear();
+    const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+    const day = dateObject.getDate().toString().padStart(2, '0');
+
+    // Combine to get the formatted date
+    const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+    
+  }
+
   GetAllPickUpDetailsByID() {
     const paramObject = {
      RowID: Number(this.invoiceId)
@@ -224,7 +239,7 @@ constructor(private route: ActivatedRoute, private router:Router,
      
         this.dispatchObj = data.body.data;
         this.dispatchMaterial = this.dispatchObj?.dispatchType;
-        this.pickupdate =  this.dispatchObj.pickUpDate;
+        this.pickupdate =  this.setDateToInput(this.dispatchObj.pickUpDate) ;
         this.driversName = this.dispatchObj.driverID;
       },
         (err: any) => {
@@ -257,7 +272,7 @@ constructor(private route: ActivatedRoute, private router:Router,
           obj.notes = item.notes
           obj.fullName =  item.fullName;
           obj.notes = item.notes;
-          obj.pickUpDate = item.pickUpDate.split('T')[0]
+        
           return {...obj,...item};
          
         });
