@@ -44,3 +44,25 @@
     padding-top: 0px !important;
     padding-bottom: 0px !important;
   }
+
+  .table {
+    width: 100%;
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  button {
+    margin-right: 10px;
+  }
+
+  .nav-tabs .nav-link.active {
+    color: #fff; 
+    background-color: #02659d; 
+    border-color: #02659d;
+    font-weight: bold;
+}
+ul.nav-tabs .nav-link.active span h5{
+    color: #fff !important;
+}
+
+  

@@ -20,6 +20,9 @@ import { AccountingReportComponent } from './accounting-report/accounting-report
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { CheckplanGuard } from 'src/app/core/guard/checkplan.guard';
 import { RequisitionReportComponent } from './requisition-report/requisition-report.component';
+import { ShipOutReportComponent } from './ship-out-report/ship-out-report.component';
+import { InOutReportComponent } from './in-out-report/in-out-report.component';
+import { DispatchReportComponent } from './dispatch-report/dispatch-report.component';
 
 export const routes: Routes = [
   {
@@ -71,6 +74,18 @@ export const routes: Routes = [
     path:'requisition-report',
     component:RequisitionReportComponent
   },
+  {
+    path:'ship-out-report',
+    component:ShipOutReportComponent
+  },
+  {
+    path:'in-out-report',
+    component:InOutReportComponent
+  },
+  {
+    path:'dispatch-report',
+    component:DispatchReportComponent
+  }
 
 ]
 
@@ -87,7 +102,10 @@ export const routes: Routes = [
     VoidTicketReportComponent,
     PaymentReportComponent,
     AccountingReportComponent,
-    RequisitionReportComponent
+    RequisitionReportComponent,
+    ShipOutReportComponent,
+    InOutReportComponent,
+    DispatchReportComponent
   ],
   imports: [
     CommonModule,

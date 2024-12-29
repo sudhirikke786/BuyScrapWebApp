@@ -43,6 +43,9 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   @ViewChild('inputFile')
   myInputVariable!: ElementRef;
 
+  currentRoute: string = '';
+
+
   cheight = '50vh';
 
   isHoldTrue: boolean = false;
@@ -61,7 +64,10 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   showImage = false;
 
   invoiceData: any = {};
+  addressName: string = ''; // To store personal seller's address
+  selectedBusinessAddressID: number = 0;
   customer: any;
+  addressId:number=0;
   user: any;
   totalNoOfMaterial: any;
   totalGross: any;
@@ -214,11 +220,20 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     private stroarge: StorageService,
     private dataService: DataService,
     private confirmationService: ConfirmationService,
-    public commonService: CommonService) { }
+    public commonService: CommonService) { 
+      this.currentRoute = this.route.snapshot.url.join('/');
+
+    }
 
   ngOnInit() {    
     window.addEventListener('afterprint', this.afterPrintHandler);
     this.currentRole = this.authService.userCurrentRole();
+
+    this.route.url.subscribe(url => {
+      this.currentRoute = url.join('/');
+    });
+
+    console.log(this.currentRoute);
 
     this.orgName = localStorage.getItem('orgName');
     this.subScriptionType = this.dataService.getActivePlan();
@@ -568,6 +583,14 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         console.log('getAllInvoicesDetails for invoiceId :: ');
         console.log(data);
         this.invoiceData = data.body.data[0];
+         //logic for display address
+         if (this.invoiceData.addressID === 0) {
+          this.addressName = this.customer?.streetAddress || 'N/A';
+          this.selectedBusinessAddressID = 0; 
+        } else {
+          this.selectedBusinessAddressID = this.invoiceData.addressID;
+          this.addressName = this.getAddressName(this.invoiceData.addressID);
+        }
         this.isCODRequired = this.invoiceData.isCOD;
         this.totalRecords = data.totalRecords;
         const userId = data.body.data[0].createdBy;
@@ -583,6 +606,16 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         }
       );
   }
+  getAddressName(addressID: number): string {
+    const selectedAddress = this.addresses.find((address: { rowId: number; }) => address.rowId === addressID);
+    return selectedAddress ? selectedAddress.streetAddress : 'N/A';
+  }
+
+  getAddressLabel(selectedId: number): string {
+    const selectedAddress = this.addresses.find((address: { rowId: number; }) => address.rowId === selectedId);
+    return selectedAddress ? selectedAddress.streetAddress : 'Address not found';
+  }
+  
 
   getAllUsers(userId: any) {
     const reqObj = {
@@ -714,19 +747,49 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   getSellerById() {
     const paramObject = {
       ID: this.sellerId,
-      LocationId: this.locId
+      LocationId: Number(this.locId)
     };
-    this.commonService.getSellerById(paramObject)
-      .subscribe(data => {
-        console.log('getSellerById :: ');
-        console.log(data);
+    this.commonService.getSellerById(paramObject).subscribe(
+      (data) => {
+        console.log('getSellerById Response:', data);
         this.customer = data.body.data;
+        this.isBusiness = this.customer?.sellerType === 'Business';
+  
+        if (this.isBusiness) {
+          this.fetchSellerAddresses();
+        } else {
+          this.addresses = [this.customer.streetAddress];
+        }
       },
-        (err: any) => {
-          // this.errorMsg = 'Error occured';
+      (err: any) => {
+        console.error('Error fetching seller details:', err);
+      }
+    );
+  }
+
+  fetchSellerAddresses() {
+    if (this.sellerId) {
+      const paramObj = {
+        SellerId: this.sellerId
+      };
+  
+      this.commonService.GetAddressesByID(paramObj).subscribe(
+        (response) => {
+          this.addresses = response.body.data || [];
+          localStorage.setItem('addresses', JSON.stringify(this.addresses));
+          if (this.addresses.length > 0) {
+            this.addressId = parseInt(this.addresses[0].rowId);
+          }
+        },
+        (error) => {
+          console.error('Error fetching addresses:', error);
+          this.addresses = [];
+          localStorage.removeItem('addresses');
         }
       );
+    } 
   }
+
 
 
   GetInvoiceMaterialsDetailsByInvoiceId() {
@@ -1155,6 +1218,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     } else {
       const newInvoice = new Invoice();
       newInvoice.rowId = 0;
+      newInvoice.addressID=Number(this.addressId),
       newInvoice.createdBy = this.logInUserId;
       newInvoice.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       newInvoice.updatedBy = this.logInUserId;

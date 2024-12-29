@@ -30,6 +30,8 @@ export class AddSellersComponent implements OnInit {
   sellerForm!: FormGroup;
   sellerId: any = 0;
   sellerType: string = 'Personal';
+  activeTab: string = 'personal';
+
 
   idscanImage:any = 'assets/images/custom/id_scan.png';
   idsignatureImage:any = 'assets/images/custom/id_signature.png';
@@ -57,6 +59,11 @@ export class AddSellersComponent implements OnInit {
   loaderShow = false;
   checkTabView: boolean = false;
 
+  addresses: any[] = [];
+  SellerId:any;
+  isEditing: boolean = false;  
+  selectedAddressIndex: number | null = null;  
+  
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -80,8 +87,18 @@ export class AddSellersComponent implements OnInit {
           this.getSellerById(); 
         } else {
           this.sellerId = 0;
+          this.addresses = [];
+          localStorage.removeItem('addresses');
         }    
       });
+     
+      this.addresses = [];
+
+      // Load existing addresses from localStorage
+      const storedAddresses = localStorage.getItem('addresses');
+      if (storedAddresses) {
+        this.addresses = JSON.parse(storedAddresses);
+      }
 
 
 
@@ -120,6 +137,8 @@ export class AddSellersComponent implements OnInit {
        city : [],
        state : [],
        zipCode : [],
+       streetNumber : [],
+       streetName : [],
        idnumber : [''],
        expiryDate : [],
        class : [],
@@ -185,6 +204,8 @@ export class AddSellersComponent implements OnInit {
           this.showLoader = false;
         }
       );
+      this.fetchSellerAddresses();
+
 
   }
 
@@ -293,6 +314,8 @@ export class AddSellersComponent implements OnInit {
      city: obj.city,
      state: obj.state,
      zipCode: obj.zipCode,
+     streetNumber:obj.streetNumber,
+     streetName:obj.streetName,
      idnumber: obj.idnumber,
      driverLicenseNumber: obj.driverLicenseNumber,
      expiryDate: this.formatDate(obj.expiryDate),
@@ -526,7 +549,200 @@ export class AddSellersComponent implements OnInit {
     this.showDownload = false;
   }
 
+  fetchSellerAddresses() {
+    if (this.sellerId) {
+      const paramObj = {
+        SellerId: this.sellerId
+      };
+  
+      this.commonService.GetAddressesByID(paramObj).subscribe(
+        (response) => {
+          this.addresses = response.body.data || [];
+          localStorage.setItem('addresses', JSON.stringify(this.addresses));
+        },
+        (error) => {
+          console.error('Error fetching addresses:', error);
+          this.addresses = [];
+          localStorage.removeItem('addresses');
+        }
+      );
+    } else {
+      this.addresses = [];
+      localStorage.removeItem('addresses');
+    }
+  }
+  
+  addAddress() {
+    const sellerId = this.sellerId;
+  
+    // Check if sellerId exists
+    if (!sellerId || sellerId === 0) {
+      this.messageService.add({
+        severity: 'warn', 
+        summary: 'Warning',
+        detail: 'Please create the seller first.',
+      });
+      this.sellerForm.reset();
+      return; 
+    }
+  
+    const streetAddress = this.sellerForm.get('streetAddress')?.value;
+    const city = this.sellerForm.get('city')?.value;
+    const state = this.sellerForm.get('state')?.value;
+    const zipCode = this.sellerForm.get('zipCode')?.value;
+    const streetNumber = this.sellerForm.get('streetNumber')?.value;
+    const streetName = this.sellerForm.get('streetName')?.value;
+  
+    const paramObj = {
+      SellerID: Number(sellerId),
+      StreetAddress: streetAddress,
+      StreetName: streetName,
+      StreetNumber: streetNumber,
+      City: city,
+      State: state,
+      CreatedBy: 1,
+      UpdatedBy: 1,
+      ZipCode: zipCode
+    };
+  
+    const reqParms = {
+      SellerID: Number(sellerId),
+      StreetAddress: streetAddress,
+      StreetName: streetName,
+      StreetNumber: streetNumber,
+      City: city,
+      State: state,
+      CreatedBy: 1,
+      UpdatedBy: 1,
+      ZipCode: zipCode
+    };
+  
+    this.commonService.InsertMultipleAddress(paramObj, reqParms).subscribe(
+      (response) => {
+        this.fetchSellerAddresses();
+        this.sellerForm.reset();
+        console.log('Address added successfully:', response);
+        this.messageService.add({
+          severity: 'success', 
+          summary: 'Success',
+          detail: 'Address added successfully.',
+        });
+        this.addresses.push(paramObj);
+        localStorage.setItem('addresses', JSON.stringify(this.addresses));
+      },
+      (error) => {
+        console.error('Error adding address:', error);
+      }
+    );
+  }
+  
 
+  editAddress(index: number) {
+    this.selectedAddressIndex = index;
+    const selectedAddress = this.addresses[index];
+    this.isEditing = true;
+
+    // Patch the form with the selected address details
+    this.sellerForm.patchValue({
+      streetAddress: selectedAddress.streetAddress,
+      city: selectedAddress.city,
+      state: selectedAddress.state,
+      zipCode: selectedAddress.zipCode,
+      streetNumber: selectedAddress.streetNumber,
+      streetName: selectedAddress.streetName
+    });
+  }
+
+  updateAddress() {
+    if (this.selectedAddressIndex === null) return;  // address to update
+    
+    const selectedAddress = this.addresses[this.selectedAddressIndex];
+    
+    const sellerId = this.sellerId;
+    const streetAddress = this.sellerForm.get('streetAddress')?.value;
+    const city = this.sellerForm.get('city')?.value;
+    const state = this.sellerForm.get('state')?.value;
+    const zipCode = this.sellerForm.get('zipCode')?.value;
+    const streetNumber = this.sellerForm.get('streetNumber')?.value;
+    const streetName = this.sellerForm.get('streetName')?.value;
+  
+    const paramObj = {
+      RowID: selectedAddress.rowId,  
+      SellerID: Number(sellerId),
+      StreetAddress: streetAddress,
+      StreetName: streetName,
+      StreetNumber: streetNumber,
+      City: city,
+      State: state,
+      CreatedBy: 1, 
+      UpdatedBy: 1, 
+      ZipCode: zipCode
+    };
+  
+    const reqParms = {
+      SellerID: Number(sellerId),
+      StreetAddress: streetAddress,
+      StreetName: streetName,
+      StreetNumber: streetNumber,
+      City: city,
+      State: state,
+      CreatedBy: 1, 
+      UpdatedBy: 1, 
+      ZipCode: zipCode,
+      RowID: selectedAddress.rowId  
+    };
+  
+    this.commonService.InsertMultipleAddress(paramObj, reqParms).subscribe(
+      (response) => {
+        this.addresses[this.selectedAddressIndex!] = paramObj;  
+        localStorage.setItem('addresses', JSON.stringify(this.addresses));  
+  
+        this.sellerForm.reset();
+        this.isEditing = false;
+        this.selectedAddressIndex = null; 
+  
+        console.log('Address updated successfully:', response);
+        this.messageService.add({
+          severity: 'success', 
+          summary: 'Success',
+          detail: 'Address Updated successfully.',
+        });
+        this.fetchSellerAddresses(); 
+      },
+      (error) => {
+        console.error('Error updating address:', error);
+      }
+    );
+  }
+  
+
+  deleteAddress(index: number, rowId: number) {
+    const params = {
+       RowID: rowId 
+      };
+    
+    this.commonService.DeleteAddressbyId(params).subscribe(
+      (response) => {
+        console.log('Address deleted successfully:', response);
+        this.messageService.add({
+          severity: 'success', 
+          summary: 'Success',
+          detail: 'Address deleted successfully.',
+        });
+        
+        this.addresses.splice(index, 1);
+        localStorage.setItem('addresses', JSON.stringify(this.addresses));
+        
+       
+        this.fetchSellerAddresses();
+      },
+      (error) => {
+        console.error('Error deleting address:', error);
+      }
+    );
+  }
+
+  
 
 
 }

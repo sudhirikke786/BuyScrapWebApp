@@ -175,6 +175,7 @@ export class ShipoutDashboardComponent implements OnInit {
     // alert(sellerId);
     this.newDriverScreenVisible = true;
     this.selectedSeller = seller;
+    
   }
 
   saveDriverInfo() {
@@ -211,7 +212,8 @@ export class ShipoutDashboardComponent implements OnInit {
 
     this.dataService.setNewShipOut(newShipOut);
     
-    this.router.navigateByUrl(`/${this.orgName}/ship-out/detail/new/new`);
+    // this.router.navigateByUrl(`/${this.orgName}/ship-out/detail/new/new`);
+    this.router.navigate([`/${this.orgName}/ship-out/detail/new/new`], { queryParams: { customerId: this.selectedSeller.rowId } });
 
   }
 
@@ -219,12 +221,26 @@ export class ShipoutDashboardComponent implements OnInit {
     this.newDriverScreenVisible = false;
   }
 
-  showDetails(shipoutId: any) {
-    this.router.navigateByUrl(`${this.orgName}/ship-out/detail/${shipoutId}/show`);
-  }
+  // showDetails(shipoutId: any) {
+  //   this.router.navigateByUrl(`${this.orgName}/ship-out/detail/${shipoutId}/show`);
+  // }
 
-  editDetails(shipoutId: any) {
-    this.router.navigateByUrl(`${this.orgName}/ship-out/detail/${shipoutId}/edit`);
+  showDetails(shipoutId: any, customerId: any) {
+    console.log('Navigating to:', `${this.orgName}/ship-out/detail/${shipoutId}/show`);
+  console.log('With customerId:', customerId);
+  this.router.navigate([`${this.orgName}/ship-out/detail/${shipoutId}/show`], {
+    queryParams: { customerId: customerId }
+  });
+}
+
+  // editDetails(shipoutId: any) {
+  //   this.router.navigateByUrl(`${this.orgName}/ship-out/detail/${shipoutId}/edit`);
+  // }
+
+  editDetails(shipoutId: any, customerId: any) {
+    this.router.navigate([`${this.orgName}/ship-out/detail/${shipoutId}/edit`], {
+      queryParams: { customerId: customerId }
+    });
   }
 
   deleteDetails(shipoutId: any) {

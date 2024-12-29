@@ -31,6 +31,8 @@ export class TicketDetailComponent implements OnInit {
   @ViewChild('inputFile')
   myInputVariable!: ElementRef;
 
+  currentRoute: string = '';
+
   cheight = '50vh';
 
   isHoldTrue: boolean = false;
@@ -42,6 +44,7 @@ export class TicketDetailComponent implements OnInit {
   holdticketObj: any = [];
   orgName: any;
   sellerId: any;
+  addressId:number=0;
   ticketId: any;
   dispatchID: any;
 
@@ -53,6 +56,8 @@ export class TicketDetailComponent implements OnInit {
   ticketData: any = {};
   customer: any;
   user: any;
+  addressName: string = ''; // To store personal seller's address
+  selectedBusinessAddressID: number = 0;
   totalNoOfMaterial: any;
   totalGross: any;
   totalTare: any;
@@ -166,6 +171,8 @@ export class TicketDetailComponent implements OnInit {
   driverDetails!: driver;
   newDriverScreenVisible = false;
   isBuniessUser = false;
+  addresses: any[] = [];
+  isBusiness: boolean = false;
   
   newTicketList = [{
     iconcode: 'mdi-magnify',
@@ -214,12 +221,21 @@ export class TicketDetailComponent implements OnInit {
     private dataService: DataService,
     private helperService:HelperService,    
     private confirmationService: ConfirmationService,
-   
-    public commonService: CommonService) { }
+    public commonService: CommonService) { 
+      this.currentRoute = this.route.snapshot.url.join('/');
+    }
+    
+    
 
   ngOnInit() {
     this.driverDetails = new driver();
     this.checkTabView = this.helperService.isTab();
+
+    this.route.url.subscribe(url => {
+      this.currentRoute = url.join('/');
+    });
+
+    console.log(this.currentRoute);
 	
     // const userAgent = navigator.userAgent;
     // const isAndroid = /Android/i.test(userAgent);
@@ -266,6 +282,8 @@ export class TicketDetailComponent implements OnInit {
     this.route.params.subscribe((param) => {
       this.ticketId = param["ticketId"];
       this.sellerId = param["customerId"];
+
+      console.log(this.sellerId);
      
 
       this.route.queryParams.subscribe(params => {
@@ -605,6 +623,14 @@ export class TicketDetailComponent implements OnInit {
         console.log('getAllTicketsDetails for ticketId :: ');
         console.log(data);
         this.ticketData = data.body.data[0];
+        //logic for display address
+        if (this.ticketData.addressID === 0) {
+          this.addressName = this.customer?.streetAddress || 'N/A';
+          this.selectedBusinessAddressID = 0; 
+        } else {
+          this.selectedBusinessAddressID = this.ticketData.addressID;
+          this.addressName = this.getAddressName(this.ticketData.addressID);
+        }
         this.isCODRequired = this.ticketData.isCOD;
         this.totalRecords = data.totalRecords;
         const userId = data.body.data[0].createdBy;
@@ -620,6 +646,17 @@ export class TicketDetailComponent implements OnInit {
         }
       );
   }
+
+  getAddressName(addressID: number): string {
+    const selectedAddress = this.addresses.find(address => address.rowId === addressID);
+    return selectedAddress ? selectedAddress.streetAddress : 'N/A';
+  }
+
+  getAddressLabel(selectedId: number): string {
+    const selectedAddress = this.addresses.find(address => address.rowId === selectedId);
+    return selectedAddress ? selectedAddress.streetAddress : 'Address not found';
+  }
+  
 
   getAllUsers(userId: any) {
     const reqObj = {
@@ -751,10 +788,10 @@ export class TicketDetailComponent implements OnInit {
   getSellerById() {
     const paramObject = {
       ID: this.sellerId,
-      LocationId: this.locId
+      LocationId: Number(this.locId)
     };
-    this.commonService.getSellerById(paramObject)
-      .subscribe(data => {
+    this.commonService.getSellerById(paramObject).subscribe(
+      (data) => {
         console.log('getSellerById :: ');
         console.log(data);
         this.customer = data.body.data;
@@ -762,12 +799,41 @@ export class TicketDetailComponent implements OnInit {
         this.customer.fullName = this.customer?.fullName || this.customer?.firstName;
         //alert(JSON.stringify(this.customer));
         this.isBuniessUser = this.customer.sellerType ==  "Business" ? true : false;
-
+        this.isBusiness = this.customer?.sellerType === 'Business';
+  
+        if (this.isBusiness) {
+          this.fetchSellerAddresses();
+        } else {
+          this.addresses = [this.customer.streetAddress];
+        }
       },
-        (err: any) => {
-          // this.errorMsg = 'Error occured';
+      (err: any) => {
+        console.error('Error fetching seller details:', err);
+      }
+    );
+  }
+
+  fetchSellerAddresses() {
+    if (this.sellerId) {
+      const paramObj = {
+        SellerId: this.sellerId
+      };
+  
+      this.commonService.GetAddressesByID(paramObj).subscribe(
+        (response) => {
+          this.addresses = response.body.data || [];
+          localStorage.setItem('addresses', JSON.stringify(this.addresses));
+          if (this.addresses.length > 0) {
+            this.addressId = parseInt(this.addresses[0].rowId);
+          }
+        },
+        (error) => {
+          console.error('Error fetching addresses:', error);
+          this.addresses = [];
+          localStorage.removeItem('addresses');
         }
       );
+    } 
   }
 
 
@@ -1166,6 +1232,7 @@ export class TicketDetailComponent implements OnInit {
     } else {
       const newTicket = new Ticket();
       newTicket.rowId = 0;
+      newTicket.addressID = Number(this.addressId);
       newTicket.createdBy = this.logInUserId;
       newTicket.createdDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       newTicket.updatedBy = this.logInUserId;
@@ -1646,16 +1713,16 @@ export class TicketDetailComponent implements OnInit {
   }
 
   generateSingleTicketReport(ticketId: any) {
-    //this.isReceiptPrint = true;
-    this.isReportShow =true;
-    this.showLoaderReport = true; 
+    this.isReceiptPrint = true;
+    //this.isReportShow =true;
+    //this.showLoaderReport = true; 
     // this.checkPrintAction();
     const param = {
       TicketId: ticketId,
       LocationId: this.locId,
       Type: localStorage.getItem('defaultPrintSize')
     }
-    //this.showLoaderReport = false;
+     this.showLoaderReport = false;
 
     this.commonService.generateSingleTicketReport(param)
       .subscribe(data => {
@@ -1664,7 +1731,7 @@ export class TicketDetailComponent implements OnInit {
         this.fileDataObj = data.body.data;
         this.showLoaderReport = false;
 
-        //this.showDownload = false;
+        this.showDownload = false;
         this.pdfViwerTitle = 'Ticket Receipt';
 
         const checkTabView = this.helperService.isTab();
@@ -1770,16 +1837,55 @@ export class TicketDetailComponent implements OnInit {
   checkReprint(ticketsTransaction: any) {
     this.checkVisible = true;
     this.printCheckNo =  ticketsTransaction.checkNumber;
+    this.originalCheckNumber = ticketsTransaction.checkNumber; 
+    this.selectedRowId = ticketsTransaction.rowId; 
     // this.ticketId =  ticketsTransaction.
     this.checkAmount =  ticketsTransaction.amount
     this.selectedCheckDate =  ticketsTransaction.checkDate;
+
+    console.log('Check Reprint Triggered:');
+    console.log('Original Check Number:', this.originalCheckNumber);
+    console.log('Selected Row ID:', this.selectedRowId);
   }
 
-  generateCheck(){
-    this.isCheckPrint = true;
-    this.checkVisible = false;
-    this.checkPrintAction();
+  generateCheck() {
+    console.log('Modified Check Number:', this.printCheckNo);
+  console.log('Original Check Number:', this.originalCheckNumber);
+  console.log('Selected Row ID:', this.selectedRowId);
+    if (this.printCheckNo !== this.originalCheckNumber && this.selectedRowId) {
+      // If the check number was modified, then these api will call
+      const requestObj = {
+        RowID: this.selectedRowId,
+        checkNumber: this.printCheckNo,
+      };
+      const reqParams = {
+        RowID: this.selectedRowId,
+        checkNumber: this.printCheckNo,
+      };
+      console.log('Calling UpdateCheckByRowId API with params:', reqParams);
 
+  
+  
+      this.commonService.UpdateCheckByRowId(requestObj, reqParams).subscribe(
+        (response) => {
+          console.log('Check number updated successfully:', response);
+          this.isCheckPrint = true;
+          this.checkVisible = false;
+          this.checkPrintAction(); 
+          this.getTicketTransactions();
+        },
+        (error) => {
+          console.error('Error updating check number:', error);
+          this.checkVisible = false;
+        }
+      );
+    } else {
+      // If no changes to the check number, directly print
+      console.log('No changes to the check number, proceeding to print.');
+      this.isCheckPrint = true;
+      this.checkVisible = false;
+      this.checkPrintAction(); 
+    }
   }
 
 

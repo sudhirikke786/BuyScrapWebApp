@@ -49,6 +49,7 @@ export class InoutDetailsComponent implements OnInit {
   locId: any;
   logInUserId: any;
   locationName: any;
+  isInwardUpdating = false;
 
   ticketData:any = {};
   inoutDetails: any;
@@ -372,16 +373,20 @@ export class InoutDetailsComponent implements OnInit {
   //   });
   // }
 
-  isInwardUpdating = false;
+  
 
 inwardStatusUpdate() {
   this.isInwardUpdating = true; 
   const paramObject = {
-    rowId: this.inoutId,
+    RowID: this.inoutId,
+    InwardDate: new Date().toISOString()
+  };
+  const reqparam = {
+    RowID: this.inoutId,
     InwardDate: new Date().toISOString()
   };
 
-  this.commonService.UpdateInoutStatus(paramObject).subscribe(
+  this.commonService.UpdateInoutStatus(paramObject,reqparam).subscribe(
     (response) => {
       console.log('Inward status updated successfully:', response);
       this.inoutDetails.status = 'In';

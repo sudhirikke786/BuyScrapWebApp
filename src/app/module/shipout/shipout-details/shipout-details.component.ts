@@ -36,6 +36,9 @@ export class ShipoutDetailsComponent implements OnInit {
   showCalculator = false;
   @ViewChild('inputFile')
   myInputVariable!: ElementRef;
+
+  currentRoute: string = '';
+
   
   cheight= '50vh';
 
@@ -44,11 +47,17 @@ export class ShipoutDetailsComponent implements OnInit {
   ticketObj:any = [];
   orgName: any;
   sellerId: any;
+  customer:any;
+  addressId:number=0;
+  type:any;
   shipoutId: any;
   shipoutAction: any;
   locId: any;
   logInUserId: any;
   locationName: any;
+  addresses: any[] = [];
+  isBusiness: boolean = false;
+
 
   ticketData:any = {};
   shipOutDetails: any;
@@ -113,7 +122,10 @@ export class ShipoutDetailsComponent implements OnInit {
     private stroarge:StorageService,
     public dataService: DataService,
     public helperService:HelperService,
-    private commonService: CommonService) {  }
+    private commonService: CommonService) { 
+      this.currentRoute = this.route.snapshot.url.join('/');
+
+     }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -121,9 +133,39 @@ export class ShipoutDetailsComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.checkTabView = this.helperService.isTab();
+    this.route.url.subscribe(url => {
+      this.currentRoute = url.join('/');
+    });
+
+    console.log(this.currentRoute);
+	
     this.route.params.subscribe((param)=>{
       this.shipoutId = param["shipOutId"];
       this.shipoutAction = param["action"];
+      // this.sellerId = param["customerId"];
+      this.type = param["type"];
+
+
+      console.log(this.sellerId);
+
+      this.route.queryParams.subscribe(params => {
+        console.log('Query Params:', params); 
+        this.customerId = params['customerId'];
+       // console.log(this.customerId); 
+      });
+
+       if (this.customerId) {
+        localStorage.setItem('customerId', this.customerId); 
+        console.log('Stored customerId:', this.customerId);
+      } else {
+        console.error('customerId is missing in query params.');
+      }
+
+      if (!this.customerId) {
+        this.customerId = localStorage.getItem('customerId');
+        console.log('Fallback customerId from localStorage:', this.customerId);
+      }
+
       if (this.shipoutAction == 'edit') {
         this.editTicketDetails();
       }
@@ -138,6 +180,8 @@ export class ShipoutDetailsComponent implements OnInit {
       }
       this.processDataBasedOnTicketId();
     });
+    this.getSellerById();
+
 
     
   }
@@ -200,6 +244,60 @@ export class ShipoutDetailsComponent implements OnInit {
       this.user =  res?.body?.data[0];     
     })
   }
+  
+  getSellerById() {
+    console.log('customerId in getSellerById:', this.customerId); // Debug log
+    const paramObject = {
+      ID: this.customerId,
+      LocationId: Number(this.locId)
+    };
+    this.commonService.getSellerById(paramObject).subscribe(
+      (data) => {
+        console.log('getSellerById :: ');
+        console.log(data);
+        this.customer = data.body.data;
+        //alert(JSON.stringify(this.customer));
+        this.customer.fullName = this.customer?.fullName || this.customer?.firstName;
+        //alert(JSON.stringify(this.customer));
+        this.isBuniessUser = this.customer.sellerType ==  "Business" ? true : false;
+        this.isBusiness = this.customer?.sellerType === 'Business';
+  
+        if (this.isBusiness) {
+          this.fetchSellerAddresses();
+        } else {
+          this.addresses = [this.customer.streetAddress];
+        }
+      },
+      (err: any) => {
+        console.error('Error fetching seller details:', err);
+      }
+    );
+  }
+
+  fetchSellerAddresses() {
+    console.log('customerId in fetchSellerAddresses:', this.customerId);
+    if (this.customerId) {
+      const paramObj = {
+        SellerId: this.customerId
+      };
+      console.log(this.customerId);
+  
+      this.commonService.GetAddressesByID(paramObj).subscribe(
+        (response) => {
+          this.addresses = response.body.data || [];
+          localStorage.setItem('addresses', JSON.stringify(this.addresses));
+          if (this.addresses.length > 0) {
+            this.addressId = parseInt(this.addresses[0].rowId);
+          }
+        },
+        (error) => {
+          console.error('Error fetching addresses:', error);
+          this.addresses = [];
+          localStorage.removeItem('addresses');
+        }
+      );
+    } 
+  }
 
 
   searchMaterial(searchTerm:any){
@@ -236,14 +334,38 @@ export class ShipoutDetailsComponent implements OnInit {
           console.log('getShipOutDetailsByID :: ');
           console.log(data);
           this.shipOutDetails = data.body.data; 
+          if (this.shipOutDetails.addressID === 0) {
+            this.addressName = this.customer?.streetAddress || 'N/A';
+            this.selectedBusinessAddressID = 0; 
+          } else {
+            this.selectedBusinessAddressID = this.shipOutDetails.addressID;
+            this.addressName = this.getAddressName(this.shipOutDetails.addressID);
+          }
+
           this.shipOutDetails.shipoutmaterial = null; 
           const userId = data.body.data.createdBy;
           this.getAllUsers(userId);
+
+          this.customerID = data.body.data.customerID; 
+          localStorage.setItem('customerId', this.customerID);
+          this.getSellerById();
+
+
+          
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
       );
+  }
+  getAddressName(addressID: number): string {
+    const selectedAddress = this.addresses.find(address => address.rowId === addressID);
+    return selectedAddress ? selectedAddress.streetAddress : 'N/A';
+  }
+
+  getAddressLabel(selectedId: number): string {
+    const selectedAddress = this.addresses.find(address => address.rowId === selectedId);
+    return selectedAddress ? selectedAddress.streetAddress : 'Address not found';
   }
 
   
@@ -370,6 +492,9 @@ export class ShipoutDetailsComponent implements OnInit {
     this.shipOutDetails.totalTare = this.totalTare;
     this.shipOutDetails.totalNet = this.totalNet;
     this.shipOutDetails.shipoutmaterial = this.ticketObj;
+    this.shipOutDetails.customerId = parseFloat(this.sellerId);
+    this.shipOutDetails.addressID= Number(this.addressId);
+    
     
     console.log("Final shipOutDetails :: " + JSON.stringify(this.shipOutDetails));
     

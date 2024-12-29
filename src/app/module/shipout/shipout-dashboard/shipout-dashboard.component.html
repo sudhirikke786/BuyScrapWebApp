@@ -65,11 +65,11 @@
                     <td [ngClass]="{'bg-danger text-white': shipout.isDeleted}">{{ shipout.totalNet }}</td>
                     <td [ngClass]="{'bg-danger text-white': shipout.isDeleted}">{{ shipout.customerName }}</td>
                     <td [ngClass]="{'bg-danger text-white': shipout.isDeleted}">
-                      <a type="button"routerLinkActive="router-link-active" (click)="showDetails(shipout.rowId)"
+                      <a type="button"routerLinkActive="router-link-active" (click)="showDetails(shipout.rowId, shipout.customerId)"
                         class="btn btn-grid btn-success waves-effect waves-light me-1">
                           <i class="mdi mdi-eye"></i> Show
                       </a>
-                      <a *ngIf="!shipout.isDeleted" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editDetails(shipout.rowId)"
+                      <a *ngIf="!shipout.isDeleted" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editDetails(shipout.rowId, shipout.customerId)"
                       class="btn btn-grid btn-primary waves-effect waves-light me-1">
                           <i class="mdi mdi-pencil"></i> Edit
                       </a>                       

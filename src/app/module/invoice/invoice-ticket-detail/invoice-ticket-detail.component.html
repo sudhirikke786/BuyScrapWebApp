@@ -78,7 +78,41 @@
                                         <table class="seller-view-tbl">
                                             <tbody><tr>
                                                 <td>{{customer?.fullName}}</td>
-                                                <td>Address : {{customer?.streetAddress}}</td>
+                                                <!-- <td class="w-25"><b>Address:</b>
+                                                    <ng-container *ngIf="isBusiness; else personalAddress">
+                                                      <select class="text-truncate" [(ngModel)]="addressId">
+                                                        <option *ngFor="let address of addresses" [value]="address.rowId">
+                                                          {{ address.streetAddress }}
+                                                        </option>
+                                                      </select>
+                                                    </ng-container>
+                                                    <ng-template #personalAddress>
+                                                      <span class="text-truncate">{{ customer?.streetAddress }}</span>
+                                                    </ng-template>
+                                                  </td> -->
+                                                  <td class="w-25"><b>Address:</b>
+
+
+                                                    <ng-container *ngIf="isBusiness; else personalAddress">
+                                                        <select class="text-truncate" *ngIf="!selectedBusinessAddressID && currentRoute.includes('detail/new')" [(ngModel)]="addressId">
+                                                            <option *ngFor="let address of addresses" [value]="address.rowId">
+                                                              {{ address.streetAddress }}
+                                                            </option>
+                                                          </select>
+                                                      <!-- <select class="text-truncate" *ngIf="selectedBusinessAddressID != 0" [(ngModel)]="selectedBusinessAddressID" disabled>
+                                                        <option *ngFor="let address of addresses" [value]="address.rowId">
+                                                          {{ address.streetAddress }}
+                                                        </option>
+                                                      </select> -->
+                                                      <label *ngIf="!currentRoute.includes('detail/new')">
+                                                        {{ getAddressLabel(selectedBusinessAddressID) }}
+                                                      </label>
+                                                      
+                                                    </ng-container>
+                                                    <ng-template #personalAddress>
+                                                      <span class="text-truncate">{{ customer?.streetAddress }}</span>
+                                                    </ng-template>
+                                                  </td>
                                                 <td>Created on : <label>{{invoiceData?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
                                                 <td>Time : {{invoiceData?.createdDate  | date: 'hh:mm a'}}</td>
                                             </tr>
@@ -126,10 +160,14 @@
                                                         <ng-container *ngIf="isEditModeOn" >
                                                             <tr *ngFor="let item of invoiceObj; let i = index">
                                                               <td style="width:40%">
-                                                                <textarea rows="2" cols="40"  [(ngModel)]="item.itemName"
-                                                                (input)="updateItems(i)"
-                                                                placeholder="Enter item name"></textarea>
-                                                                
+                                                                <textarea
+                                                                  type="text"
+                                                                  [(ngModel)]="item.itemName"
+                                                                  (input)="updateItems(i)"
+                                                                  placeholder="Enter item name"
+                                                                  cols="70" 
+                                                                  rows="2" 
+                                                                ></textarea>
                                                               </td>
                                                               <td style="width:15%">
                                                                 <input
@@ -158,7 +196,7 @@
                                                         </ng-container>
                                                         <ng-container *ngIf="!isEditModeOn" >
                                                             <tr *ngFor="let item of invoiceObj; let i = index">
-                                                              <td style="width:40%">
+                                                              <td style="width:40%;white-space: pre-wrap;">
                                                                 {{item.itemName}}
                                                               </td>
                                                               <td style="width:15%">
@@ -174,36 +212,35 @@
                                                         </ng-container>
                                                         <tr *ngIf="isEditModeOn">
                                                             <td>
-                                                                <textarea rows="2" cols="40"  [(ngModel)]="newItem.name"
-                                                               
-                                                                placeholder="Enter item name" tabindex="1"></textarea>
-                                                            <!-- <input
+                                                            <textarea
                                                                 type="text"
                                                                 [(ngModel)]="newItem.name"
                                                                 placeholder="Enter item name"
-                                                            /> -->
+                                                                cols="70" 
+                                                                rows="2" 
+                                                            ></textarea>
                                                             </td>
                                                             <td>
                                                             <input
                                                                 type="number"
                                                                 [(ngModel)]="newItem.quantity"
                                                                 (input)="updateNewItemAmount()"
-                                                                placeholder="Enter quantity" tabindex="2"/>
-                                                           
+                                                                placeholder="Enter quantity"
+                                                            />
                                                             </td>
                                                             <td>
                                                             <input
                                                                 type="number"
                                                                 [(ngModel)]="newItem.rate"
                                                                 (input)="updateNewItemAmount()"
-                                                                placeholder="Enter rate" tabindex="3"/>
-                                                           
+                                                                placeholder="Enter rate"
+                                                            />
                                                             </td>
                                                             <td>
                                                                 {{newItem.amount}}
                                                             </td>
                                                             <td>
-                                                                <button tabindex="4" *ngIf="isEditModeOn"  class="btn btn-primary me-1"  [disabled]="!newItem.name || newItem.quantity <= 0 || newItem.rate <= 0" (click)="addNewItem()"
+                                                                <button *ngIf="isEditModeOn"  class="btn btn-primary me-1"  [disabled]="!newItem.name || newItem.quantity <= 0 || newItem.rate <= 0" (click)="addNewItem()"
                                                                      
                                                                 >
                                                                   Add Item
@@ -554,9 +591,9 @@
         <span class="text-xl font-bold text-info text-center" style="font-size: 14px;"> Please select Option</span>  
     </div>
     <div class="d-flex justify-content-center">
-        <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">Pay Amount without printing</button></div>
+        <!-- <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">Pay Amount without printing</button></div> -->
         <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveInvoiceDetails(0, true)" style="line-height: 18px  !important;">Print and Save</button></div>
-        <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)"  style="line-height: 18px  !important;">Pay Amount and Print </button></div>
+        <!-- <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)"  style="line-height: 18px  !important;">Pay Amount and Print </button></div> -->
     </div>
 
     <div class="d-flex justify-content-center mt-2">

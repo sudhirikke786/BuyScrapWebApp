@@ -23,6 +23,7 @@ export class TicketDashboardComponent implements OnInit {
   sellerTicketsloader: boolean = false;
 
   selectedTickets: any;
+  selectedTicket: any = null;  
 
 
   actionList = [{
@@ -200,6 +201,7 @@ export class TicketDashboardComponent implements OnInit {
   driverDetails!: driver;
   newDriverScreenVisible = false;
   checkTabView: boolean = false;
+  isReportShow= false;
 
   
 
@@ -721,6 +723,7 @@ export class TicketDashboardComponent implements OnInit {
   
 
   showTicketDetails(ticketData: any) {
+    this.selectedTicket = ticketData; 
     this.parentTicketId = ticketData.parentTicketID;
     this.tiketSelectedObj = ticketData;
     this.ticketId = ticketData.rowId;
@@ -741,6 +744,11 @@ export class TicketDashboardComponent implements OnInit {
 
   }
 
+  showParentTicketDetails(ticketId: any) {
+
+    this.router.navigateByUrl(`/${this.orgName}/home/detail/${this.ticketId}/${this.customerId}/${this.isBuniessUser}`);
+
+  }
 
   onKeydown(event: KeyboardEvent, searchValue: string): void {
     // Check for specific key events, e.g., Enter key
@@ -1399,13 +1407,16 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   generateSingleTicketReport(ticketId: any) {
+    //this.isReportShow =true;
+    this.showLoaderReport = true; 
+    this.showDownload = true;
     const param = {
       TicketId: ticketId,
       LocationId: this.locId,
       Type: localStorage.getItem('defaultPrintSize')
     }
-    this.showLoaderReport = false;
-    this.showDownload = false;
+    //this.showLoaderReport = false;
+    //this.showDownload = false;
 
     this.commonService.getMergeTransactionsTicketReceipt(param)
       .subscribe(data => {
@@ -1413,14 +1424,14 @@ export class TicketDashboardComponent implements OnInit {
         console.log(data);
         this.fileDataObj = data.body.data;
         this.showLoaderReport = false;
-        this.showDownload = false;
+        //this.showDownload = false;
        
         this.pdfViwerTitle = 'Ticket Receipt :: #' + ticketId;
 
         if(this.checkTabView) {
           this.helperService.downloadBase64Pdf(this.fileDataObj, this.pdfViwerTitle)
         }else{
-        this.loadAndPrintBase64Pdf(this.fileDataObj)
+          this.loadAndPrintBase64Pdf(this.fileDataObj)
         }
 
 

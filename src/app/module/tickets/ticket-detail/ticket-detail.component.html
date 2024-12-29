@@ -106,7 +106,29 @@
                                         <table class="seller-view-tbl">
                                             <tbody><tr>
                                                 <td>{{customer?.fullName}}</td>
-                                                <td>Address : {{customer?.streetAddress}}</td>
+                                                <td class="w-25"><b>Address:</b>
+
+
+                                                    <ng-container *ngIf="isBusiness; else personalAddress">
+                                                        <select class="text-truncate" *ngIf="!selectedBusinessAddressID && currentRoute.includes('detail/new')" [(ngModel)]="addressId">
+                                                            <option *ngFor="let address of addresses" [value]="address.rowId">
+                                                              {{ address.streetAddress }}
+                                                            </option>
+                                                          </select>
+                                                      <!-- <select class="text-truncate" *ngIf="selectedBusinessAddressID != 0" [(ngModel)]="selectedBusinessAddressID" disabled>
+                                                        <option *ngFor="let address of addresses" [value]="address.rowId">
+                                                          {{ address.streetAddress }}
+                                                        </option>
+                                                      </select> -->
+                                                      <label *ngIf="!currentRoute.includes('detail/new')">
+                                                        {{ getAddressLabel(selectedBusinessAddressID) }}
+                                                      </label>
+                                                      
+                                                    </ng-container>
+                                                    <ng-template #personalAddress>
+                                                      <span class="text-truncate">{{ customer?.streetAddress }}</span>
+                                                    </ng-template>
+                                                  </td>
                                                 <td>Created on : <label>{{ticketData?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
                                                 <td>Time : {{ticketData?.createdDate  | date: 'hh:mm a'}}</td>
                                             </tr>
@@ -764,7 +786,7 @@
     
 </p-dialog>
 
-<p-dialog [header]="pdfViwerTitle" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+<p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
    
         <div *ngIf="showLoaderReport">
         <app-page-loader type="reportloader"></app-page-loader>

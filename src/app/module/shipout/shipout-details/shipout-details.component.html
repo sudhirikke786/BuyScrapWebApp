@@ -62,7 +62,29 @@
                                             <tbody>
                                             <tr>
                                                 <td>Business : {{shipOutDetails?.customerName}}</td>
-                                                <td>Address : {{shipOutDetails?.streetAddress}}</td>
+                                                <td class="w-25"><b>Address:</b>
+
+
+                                                    <ng-container *ngIf="isBusiness; else personalAddress">
+                                                        <select class="text-truncate" *ngIf="!selectedBusinessAddressID && currentRoute.includes('detail/new')" [(ngModel)]="addressId">
+                                                            <option *ngFor="let address of addresses" [value]="address.rowId">
+                                                              {{ address.streetAddress }}
+                                                            </option>
+                                                          </select>
+                                                      <!-- <select class="text-truncate" *ngIf="selectedBusinessAddressID != 0" [(ngModel)]="selectedBusinessAddressID" disabled>
+                                                        <option *ngFor="let address of addresses" [value]="address.rowId">
+                                                          {{ address.streetAddress }}
+                                                        </option>
+                                                      </select> -->
+                                                      <label *ngIf="!currentRoute.includes('detail/new')">
+                                                        {{ getAddressLabel(selectedBusinessAddressID) }}
+                                                      </label>
+                                                      
+                                                    </ng-container>
+                                                    <ng-template #personalAddress>
+                                                      <span class="text-truncate">{{ customer?.streetAddress }}</span>
+                                                    </ng-template>
+                                                  </td>
                                                 <td>Driver : {{shipOutDetails?.driverName}}</td>
                                             </tr>
         

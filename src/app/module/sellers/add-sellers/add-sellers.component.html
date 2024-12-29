@@ -312,7 +312,30 @@
 
                             <hr>
 
-                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link"
+                                        [class.active]="activeTab === 'personal'"
+                                        (click)="activeTab = 'personal'"
+                                        href="javascript:void(0);"
+                                    >
+                                        <span><h5>Personal Information</h5></span>
+                                    </a>
+                                </li>
+                                <li class="nav-item" *ngIf="sellerType === 'Business'">
+                                    <a
+                                        class="nav-link"
+                                        [class.active]="activeTab === 'address'"
+                                        (click)="activeTab = 'address'"
+                                        href="javascript:void(0);"
+                                    >
+                                        <span><h5>Address</h5></span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal' && activeTab === 'personal'">
 
                                 <div *ngIf="loaderShow" >
                                     <app-page-loader type="table"></app-page-loader>
@@ -320,7 +343,7 @@
 
                                <ng-container *ngIf="!loaderShow" >
 
-                                <h4>Personal Information</h4>
+                                <!-- <h4>Personal Information</h4> -->
                                 <div class="form-group col-sm-3 mt-1">
                                     <label for="floatingInput" class="form-label w-100">First Name</label>
                                    <input type="text" formControlName="firstName" class="form-control"
@@ -362,7 +385,7 @@
                                
                             </div>
                             <ng-container *ngIf="!loaderShow" >
-                            <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
+                            <div class="row mt-2" *ngIf="this.sellerType == 'Business' && activeTab === 'personal'">
 
                                 <h4>Business Information</h4>
 
@@ -375,7 +398,7 @@
                                 </div>
                             </div>
                             </ng-container>
-                            <ng-container *ngIf="!loaderShow" >
+                            <ng-container *ngIf="!loaderShow && activeTab === 'personal'" >
                             <div class="row mt-2">
 
                                 <div class="form-group col-sm-3">
@@ -411,7 +434,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
+                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal' && activeTab === 'personal'">
 
                                 <div class="form-group col-sm-3">
                                     <label for="floatingInput"  class="form-label w-100">ID/License Number</label>
@@ -449,7 +472,7 @@
 
                             </div>
 
-                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
+                            <div class="row mt-2" *ngIf="this.sellerType == 'Personal' && activeTab === 'personal'">
 
                                 <div class="form-group col-sm-3">
                                     <label for="floatingInput"  class="form-label w-100">Vehicle Make</label>
@@ -534,6 +557,86 @@
                             </div>
                             </ng-container>
                        
+                            <div *ngIf="activeTab === 'address'">
+                                <div class="row mt-2">
+
+                                <div class="form-group col-sm-3">
+                                    <label for="floatingInput"  class="form-label w-100">Street Address</label>
+                                        <input type="text" class="form-control" formControlName="streetAddress"
+                                            id="streetaddress" placeholder="Street Address">
+                                      
+                                   
+                                </div>
+
+                                <div class="form-group col-sm-3">
+                                    <label for="floatingInput"  class="form-label w-100">City</label>
+                                        <input type="text" class="form-control" formControlName="city" id="city"
+                                            placeholder="City">
+                                      
+                                  
+                                </div>
+
+                                <div class="form-group col-sm-3">
+                                    <label for="floatingInput"  class="form-label w-100">State</label>
+
+                                        <input type="text" class="form-control" formControlName="state" id="state"
+                                            placeholder="State">
+                                  
+                                </div>
+
+                                <div class="form-group col-sm-3">
+                                    <label for="floatingInput"  class="form-label w-100">Zip Code</label>
+                                        <input type="text" class="form-control" formControlName="zipCode" id="zipcode"
+                                            placeholder="Zip Code">
+                                 
+                                   
+                                </div>
+                                <!-- <div class="form-group col-sm-3 mt-2">
+                                    <label for="floatingInput" class="form-label w-100">Street Number</label>
+                                    <input type="text" class="form-control" formControlName="streetNumber" id="streetNumber" placeholder="Street Number">
+                                  </div>
+                                  <div class="form-group col-sm-3 mt-2">
+                                    <label for="floatingInput" class="form-label w-100">Street Name</label>
+                                    <input type="text" class="form-control" formControlName="streetName" id="streetName" placeholder="Street Name">
+                                  </div>
+                                 -->
+                                
+                            </div>
+                            <div class="form-group d-flex flex-row-reverse">
+                                <br><button type="button" class="btn btn-primary me-1" (click)="isEditing ? updateAddress() : addAddress()">
+                                    {{ isEditing ? 'Update' : '+ Add' }}
+                                  </button>
+                                </div>
+                            <div class="mt-4">
+                                <table class="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th>Street Address</th>
+                                      <th>City</th>
+                                      <th>State</th>
+                                      <th>Zip Code</th>
+                                      <!-- <th>Street Number</th>
+                                      <th>Street Name</th> -->
+                                      <th>Actions</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let address of addresses; let i = index">
+                                      <td>{{ address.streetAddress }}</td>
+                                      <td>{{ address.city }}</td>
+                                      <td>{{ address.state }}</td>
+                                      <td>{{ address.zipCode }}</td>
+                                      <!-- <td>{{ address.streetNumber }}</td>
+                                      <td>{{ address.streetName }}</td> -->
+                                      <td>
+                                        <button type="button"  class="btn btn-primary btn-sm" (click)="editAddress(i)">Edit</button>
+                                        <button class="btn btn-danger btn-sm" (click)="deleteAddress(i,  address.rowId)">Delete</button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
 
                         </form>
 
