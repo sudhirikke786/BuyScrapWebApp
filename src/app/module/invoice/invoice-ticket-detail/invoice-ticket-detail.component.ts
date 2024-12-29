@@ -1694,7 +1694,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     // this.checkPrintAction();
     this.isReportShow =true;
     this.showLoaderReport = true; 
-    alert('Printing Invoice Report');
+    // alert('Printing Invoice Report');
     const param = {
       InvoiceId: invoiceId,
       LocationId: this.locId,

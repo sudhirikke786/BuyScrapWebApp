@@ -15,6 +15,7 @@ export class SellersBuyersDetailsComponent implements OnInit {
   sellerId: any;
   seller: any;
   tickets: any;
+  isBuniessUser = false;
 
   sellerLoader = false;
   
@@ -44,6 +45,7 @@ export class SellersBuyersDetailsComponent implements OnInit {
           console.log('getSellerById :: ');
           console.log(data);
           this.seller = data.body.data;
+          this.isBuniessUser = this.seller.sellerType ? true : false;
         },
         (err: any) => {
           this.sellerLoader = false;
@@ -78,12 +80,8 @@ export class SellersBuyersDetailsComponent implements OnInit {
 
 
 
-  showTicketDetails(ticketData: any) {
-   
-   
-      this.router.navigateByUrl(`/${this.orgName}/home/detail/${ticketData.rowId}/${ticketData.customerId}?type=seller`);
-
-
+  showTicketDetails(ticketData: any) {   
+      this.router.navigateByUrl(`/${this.orgName}/home/detail/${ticketData.rowId}/${ticketData.customerId}/${this.isBuniessUser}?type=seller`);
   }
 
 }
