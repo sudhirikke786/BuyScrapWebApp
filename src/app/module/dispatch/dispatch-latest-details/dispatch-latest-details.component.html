@@ -38,7 +38,7 @@
 
                   <div class="col-sm-6 col-md-8 d-flex justify-content-end mb-1">
 
-                    <div *ngIf="type=='edit'">
+                    <div *ngIf="type=='show'">
                       <a class="btn btn-primary me-1 mb-1" (click)="edit()">
                         Edit
                       </a>
@@ -71,7 +71,17 @@
 
                       <td class="w-25"><b>Customer Name :</b> {{customer?.fullName}}</td>
                       <td class="w-25"><b>Address:</b>
-                        <span class="text-truncate">{{customer?.streetAddress}}</span>
+                        <ng-container *ngIf="isBusiness; else personalAddress">
+                          <!-- Dropdown for Business -->
+                          <select class="text-truncate" [(ngModel)]="addressId">
+                            <option *ngFor="let address of addresses" [value]="address.rowId">
+                              {{ address.streetAddress }}
+                            </option>
+                          </select>
+                        </ng-container>
+                        <ng-template #personalAddress>
+                          <span class="text-truncate">{{ customer?.streetAddress }}</span>
+                        </ng-template>
                       </td>
                       <td class="w-25">Created on : <label>{{customer?.createdDate | date: 'MM/dd/yyyy'}}</label></td>
                       <td class="w-25">Time : {{customer?.createdDate | date: 'hh:mm a'}}</td>
@@ -162,7 +172,7 @@
                           <td style="width:15%">{{item?.dropoffbox}}</td>
                           <td style="width:15%">{{item?.boxpickup}}</td>
                           <td style="width:15%">{{item?.charges}}</td>
-                          <td colspan="2">{{item?.notes}}</td>
+                          <td colspan="2" style="width:20%;white-space: pre-wrap;">{{item?.notes}}</td>
                        
                         </tr>
                       </tbody>
@@ -172,11 +182,10 @@
                             <td style="width:15%" *ngIf="editingIndex !== i">{{ item?.containerType }}</td>
                             <td style="width:15%" *ngIf="editingIndex === i">
                               <select [(ngModel)]="editItemObj.containerType" class="form-control">
-
+                                <option value="-- None --" selected="true">-- None --</option>
                                 <option *ngFor="let option of allContainerType" [value]="option.containerType">
                                   {{ option.containerType }}
                                 </option>
-                                <option [value]="'N/A'">Not Applicable</option>
                               </select>
                             </td>
                             <td style="width:15%" *ngIf="editingIndex !== i">{{ item?.dropoffbox}}</td>
@@ -191,9 +200,9 @@
                             <td style="width:15%" *ngIf="editingIndex === i">
                               <input type="number" [(ngModel)]="editItemObj.charges" />
                             </td>
-                            <td style="width:30%" *ngIf="editingIndex !== i">{{ item?.notes }}</td>
+                            <td style="width:30%" *ngIf="editingIndex !== i" style="white-space: pre-wrap;">{{ item?.notes }}</td>
                             <td style="width:30%" *ngIf="editingIndex === i">
-                              <textarea cols="20" rows="2" [(ngModel)]="editItemObj.notes"></textarea>
+                              <textarea cols="50" rows="2" [(ngModel)]="editItemObj.notes"></textarea>
 
 
 
@@ -228,7 +237,7 @@
 
                               <select class="form-control me-1" id="allContainerType" name="defaultSelectedMaterial"
                                 [(ngModel)]="newItem.containerType">
-                                <!-- <option  value="Select Container Type" >Select Container Type</option> -->
+                                <option value="-- None --" selected="true">-- None --</option>
                                 <option *ngFor="let option of allContainerType; let i = index"
                                   [value]="option.containerType">
                                   {{ option.containerType }}
@@ -251,7 +260,7 @@
 
                             </td>
                             <td style="width:15%">
-                              <button class="btn btn-primary" [disabled]="!isValidNewItem()" (click)="addNewItem()">
+                              <button class="btn btn-primary" (click)="addNewItem()">
                                 Add Item
                               </button>
                               <!-- <button class="btn btn-primary" [disabled]="!isValidNewItem()" (click)="addNewItem()">Add</button> -->

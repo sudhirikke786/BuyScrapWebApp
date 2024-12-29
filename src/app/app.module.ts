@@ -10,7 +10,6 @@ import { HeaderComponent } from './common/header/header.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
 import { SiteLayoutComponent } from './common/site-layout/site-layout.component';
 import { FooterComponent } from './common/footer/footer.component';
-import { DispatchDetailComponent } from './module/dispatch/dispatch-detail/dispatch-detail.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -41,8 +40,7 @@ import { ChatbotComponent } from './common/chatbot/chatbot.component';
     ErrorComponent,
     SignUpComponent,
     SuccessPageComponent,
-    ChatbotComponent,
-    DispatchDetailComponent
+    ChatbotComponent
   ],
   imports: [
     BrowserModule,

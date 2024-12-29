@@ -17,6 +17,7 @@ export class DispatchLatestDetailsComponent {
   orgName:any;
   invoiceId:any;
   sellerId:any;
+  addressId:any;
   locId:any;
   logInUserId: any;
   locationName: any;
@@ -37,6 +38,8 @@ export class DispatchLatestDetailsComponent {
   driversName:any;
   customer:any;
   driveruserObj:any;
+  addresses: any[] = [];
+  isBusiness: boolean = false;
 
   // Array to store invoice items
   invoiceObj: Array<any> = [];
@@ -49,7 +52,7 @@ export class DispatchLatestDetailsComponent {
     "pickUpID": 0,
     "isDeleted": false,
     "containerID": 0,
-    "containerType": "Select Container Type",
+    "containerType": "-- None --",
     "containerSize": "",
     "containerName": "",
     "noofShippingUnits": 0,
@@ -70,7 +73,16 @@ constructor(private route: ActivatedRoute, private router:Router,
   private messageService: MessageService,
   private stroarge:StorageService,
   public helperService:HelperService,
-  public commonService: CommonService) { }
+  public commonService: CommonService) {
+    this.addresses = [];
+
+      // Load existing addresses from localStorage
+      const storedAddresses = localStorage.getItem('addresses');
+      if (storedAddresses) {
+        this.addresses = JSON.parse(storedAddresses);
+      }
+      
+   }
 
   ngOnInit() {    
  
@@ -102,13 +114,14 @@ constructor(private route: ActivatedRoute, private router:Router,
     // 
     
     this.backUrl = `/${this.orgName}/dispatch`;
+   // this.fetchSellerAddresses();
 
 
    
   }
 
   edit(){
-
+    this.type = 'edit';
   }
 
   startEditing(index: number, item: any): void {
@@ -144,7 +157,7 @@ constructor(private route: ActivatedRoute, private router:Router,
         "pickUpID": 0,
         "isDeleted": false,
         "containerID": 0,
-        "containerType": "Select Container Type",
+        "containerType": "-- None --",
         "containerSize": "",
         "containerName": "",
         "noofShippingUnits": 0,
@@ -174,19 +187,15 @@ constructor(private route: ActivatedRoute, private router:Router,
 
   // Check if the new item is valid
   isValidNewItem(): boolean {
-
-    console.log(this.newItem.containerType);
-    return this.newItem.containerType != 'Select Container Type'
-   // return true
-    // return (
-    //   this.newItem.containerType && (this.newItem.dropOffBox || this.newItem.boxpickup) 
-    // );
+    return (
+      this.newItem.containerType && (this.newItem.dropOffBox || this.newItem.boxpickup) 
+    );
   }
 
   // Reset new item fields
   resetNewItem() {
     this.newItem = {
-      containerType: 'Select Container Type',
+      containerType: '-- None --',
       dropoffbox: '',
       boxpickup: '',
       charges: 0,
@@ -203,16 +212,45 @@ constructor(private route: ActivatedRoute, private router:Router,
       ID: this.sellerId,
       LocationId: Number(this.locId)
     };
-    this.commonService.getSellerById(paramObject)
-      .subscribe(data => {
-        console.log('getSellerById :: ');
-        console.log(data);
+    this.commonService.getSellerById(paramObject).subscribe(
+      (data) => {
+        console.log('getSellerById Response:', data);
         this.customer = data.body.data;
+        this.isBusiness = this.customer?.sellerType === 'Business';
+  
+        if (this.isBusiness) {
+          this.fetchSellerAddresses();
+        } else {
+          this.addresses = [this.customer.streetAddress];
+        }
       },
-        (err: any) => {
-          // this.errorMsg = 'Error occured';
+      (err: any) => {
+        console.error('Error fetching seller details:', err);
+      }
+    );
+  }
+
+  fetchSellerAddresses() {
+    if (this.sellerId) {
+      const paramObj = {
+        SellerId: this.sellerId
+      };
+  
+      this.commonService.GetAddressesByID(paramObj).subscribe(
+        (response) => {
+          this.addresses = response.body.data || [];
+          localStorage.setItem('addresses', JSON.stringify(this.addresses));
+          if (this.addresses.length > 0) {
+            this.addressId = this.addresses[0].rowId;
+          }
+        },
+        (error) => {
+          console.error('Error fetching addresses:', error);
+          this.addresses = [];
+          localStorage.removeItem('addresses');
         }
       );
+    } 
   }
 
   setDateToInput(isoDateString:any) {
@@ -306,9 +344,6 @@ constructor(private route: ActivatedRoute, private router:Router,
      this.commonService.GetAllContainer(paramObject)
        .subscribe(data => {      
          this.allContainerType = data.body.data;
-         this.allContainerType.push({ containerType: 'Not Applicable' })
-         this.allContainerType.unshift({ containerType: 'Select Container Type' })
-     
        },
          (err: any) => {
            // this.errorMsg = 'Error occured';
@@ -323,14 +358,15 @@ constructor(private route: ActivatedRoute, private router:Router,
     const containerObj =  this.invoiceObj.map((item) =>{
       item.dropOffBox = item.dropoffbox;
       item.boxPickUp =item.boxpickup ;
-      item.containerID = this.allContainerType.filter((item1:any) => item1.containerType === item.containerType)[0].rowId;
+      let selectedContainerType = this.allContainerType.filter((item1:any) => item1.containerType === item.containerType);
+      item.containerID = selectedContainerType.length > 0 ? selectedContainerType[0].rowId : 0;
       return item;
     })
 
-    // if(!this.dispatchMaterial){
-    //   this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Select Type' });
-    //   return
-    // }
+    if(!this.dispatchMaterial){
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Select Type' });
+      return
+    }
     if(!this.pickupdate){
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Select Pickup Date' });
       return
@@ -339,6 +375,7 @@ constructor(private route: ActivatedRoute, private router:Router,
       "rowID": this.dispatchObj?.rowID ?? 0,
       "ticketID": 0,
       "sellerID": parseInt(this.sellerId),
+      "addressID":parseInt(this.addressId),
       "pickUpAddress": "string",
       "pickUpDate":new Date(this.pickupdate).toISOString(),
       "charges": this.invoiceObj.reduce((acc,curr) => acc + curr.charges,0),
