@@ -24,6 +24,8 @@ export class DispatchDashboardComponent implements OnInit {
   rowID:any;
   sellerID:any;
   ticketId:number=0;
+  selectedRowId: number=0;
+
 
   dispatchRes = [
     
@@ -351,48 +353,49 @@ addNewSeller() {
 
 
   deletePickup(rowID: number): void {
-
-
+    this.selectedRowId = rowID; 
     this.confirmationService.confirm({
-      header: 'Confirmation',
-      message: "Are you sure you want to delete this pickup",
-      accept: () => {
-        const requestObj = {
-          RowID: rowID,
-        };
-    
-        this.commonService.DeletePickUpbyId(requestObj).subscribe(
-          (response) => {
-            console.log('Delete API Response:', response); 
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Deleted Successfully',
-              detail: `Pickup details with ID ${rowID} have been deleted.`
-            });
-            this.removeFromList(rowID); 
-          },
-          (error) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: `Failed to delete pickup details with ID ${rowID}.`
-            });
-          }
-        );
-      },
-      reject: () => {       
-        return false;
-      },
+      key: 'deleteDialog', 
+      accept: () => this.confirmDelete(),
+      reject: () => this.cancelDelete(),
     });
-
-    
   }
 
+  confirmDelete(): void {
+    const requestObj = {
+      RowID: this.selectedRowId,
+    };
+
+    this.commonService.DeletePickUpbyId(requestObj).subscribe(
+      (response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Deleted Successfully',
+          detail: `Pickup details with ID ${this.selectedRowId} have been deleted.`,
+        });
+        this.removeFromList(this.selectedRowId);
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Failed to delete pickup details with ID ${this.selectedRowId}.`,
+        });
+      }
+    );
+  }
   removeFromList(rowID: number): void {
     const index = this.dispatchRes.findIndex((item) => item && (item as any).rowId === rowID);
     if (index > -1) {
       this.dispatchRes.splice(index, 1);
     }
+  }
+  cancelDelete(): void {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Cancelled',
+      detail: 'Deletion action was cancelled.',
+    });
   }
 
 

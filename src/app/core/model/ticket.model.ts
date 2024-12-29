@@ -1,5 +1,6 @@
 export class Ticket {
     rowId: number = 0;
+    addressID:any;
     createdBy: number = 0;
     dispatchID: number = 0;
     createdDate: any;

@@ -43,7 +43,7 @@ export class SideMenuComponent implements OnInit {
         role: ['Administrator','Cashier']
       },
       {
-        title:'In-Out',
+        title:'Internal Transfer',
         url:'/inout',
         icon:'/assets/images/custom/icons/InOut.png',    
         role: ['Administrator','Cashier']

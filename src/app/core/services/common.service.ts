@@ -183,6 +183,12 @@ export class CommonService {
   getAllTicketsDetails(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsDetails', 'GET', paramObj);
   }
+
+  UpdateCheckByRowId(requestObj: any, postParams: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/UpdateCheckByRowId', 'POST', requestObj, null , postParams);
+  }
+
+
   
 
   GetAllInvoiceDetails(paramObj: any): Observable<any> {
@@ -252,6 +258,21 @@ export class CommonService {
   getSellerById(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Sellerss/GetSellerById', 'GET', paramObj);
   }
+
+  InsertMultipleAddress(paramObj: any,postParams:any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InsertMultipleAddress', 'POST',  paramObj, null , postParams);
+  }
+
+  GetAddressesByID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/GetAddressesByID', 'GET', paramObj);
+  }
+
+  DeleteAddressbyId(params: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/DeleteAddressbyId', 'DELETE', params);
+  }
+
+
+
 
 
   GetAllPickUpDetailsByID(paramObj: any): Observable<any> {
@@ -387,8 +408,8 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/InOut/InsertInOutDTO', 'POST', requestObj);
   }
 
-  UpdateInoutStatus(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/InOut/UpdateInwardStatus', 'POST',paramObj);
+  UpdateInoutStatus(paramObj: any, postParams: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InOut/UpdateInwardStatus', 'POST',paramObj, null , postParams);
   }
 
   DeleteInoutbyId(requestObj: any): Observable<any> {

@@ -1,5 +1,6 @@
 export class ShipOut {  
     rowId: number = 0;
+    addressID:any;
     createdBy: number = 0;
     createdDate: any;
     updatedBy: number = 0;
