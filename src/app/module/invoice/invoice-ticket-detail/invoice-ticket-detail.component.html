@@ -1,4 +1,4 @@
-<div  *ngIf="!isLoading">
+<div *ngIf="!isLoading">
 
     <!-- Start Content-->
     <div class="container-fluid">
@@ -11,7 +11,8 @@
 
                 <div class="col-sm-6 col-6">
                     <div class="b-links">
-                        <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/invoice/detail/{{ticketId}}/{{sellerId}}">Invoice Details</a>
+                        <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()"
+                            routerLink="/{{orgName}}/invoice/detail/{{ticketId}}/{{sellerId}}">Invoice Details</a>
                     </div>
                 </div>
             </div>
@@ -22,111 +23,170 @@
                 <div class="card ticket-card">
                     <div class="card-body">
 
-                       
 
-                      
+
+
 
                         <div class="row">
 
-                            <div  [ngClass]="(isEditModeOn || (!isEditModeOn && invoiceData?.status?.toUpperCase() =='OPEN')) && (invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' ) ? 
+                            <div [ngClass]="(isEditModeOn || (!isEditModeOn && invoiceData?.status?.toUpperCase() =='OPEN')) && (invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' ) ? 
                             'col-sm-12' : 'col-sm-8'">
-                                
+
                                 <div class="row">
                                     <!-- <div class="col-sm-2">
                                         <img src="{{customer?.idfaceShotImage}}" class="dl-img">
                                     </div> -->
-        
-                                    <div class="col-sm-10">
-        
+
+                                    <div class="col-sm-12">
+
                                         <div class="row">
-                                           <div class="col-sm-6 col-md-4 d-flex">
-                                            
-                                            <h4 class="ticket-number me-1">Invoice # - {{invoiceId}} / {{invoiceData?.status}}   </h4>
+                                            <div class="col-sm-6 col-md-4 d-flex">
 
-                                           
-                                           </div>
-        
-                                           <div class="col-sm-6 col-md-8 d-flex justify-content-end mb-1">
+                                                <h4 class="ticket-number me-1">Invoice # - {{invoiceId}} /
+                                                    {{invoiceData?.status}} </h4>
 
-                                            <div *ngIf="isEditModeOn" >
-                                                <a  class="btn btn-primary me-1 mb-1" (click)="editSeller()">
-                                                    Edit
-                                                </a>
-                                            </div>
-
-                                            <div>
-                                                <a  class="btn btn-primary me-1" [routerLink]="backUrl">
-                                                    Back
-                                                </a>
 
                                             </div>
-                                            <div>
-                                                <a *ngIf="!isEditModeOn && invoiceData.status == 'OPEN'" class="btn  btn-primary flt-right" (click)="editInvoiceDetails()">
-                                                    <i class="mdi mdi-pencil"></i> Edit
-                                                </a>
-                                            </div>
-                                               
-                                              
-                                                <div *ngIf="isEditModeOn" >
-                                                    <a class="btn btn-danger me-1" (click)="cancelEditInvoice(false, 0)">Cancel</a>
+
+                                            <div class="col-sm-6 col-md-8 d-flex justify-content-end mb-1">
+
+                                                <div *ngIf="isEditModeOn">
+                                                    <a class="btn btn-primary me-1 mb-1" (click)="editSeller()">
+                                                        Edit
+                                                    </a>
+                                                </div>
+
+                                                <div>
+                                                    <a class="btn btn-primary me-1" [routerLink]="backUrl">
+                                                        Back
+                                                    </a>
+
+                                                </div>
+                                                <div>
+                                                    <a *ngIf="!isEditModeOn && invoiceData.status == 'OPEN'"
+                                                        class="btn  btn-primary flt-right"
+                                                        (click)="editInvoiceDetails()">
+                                                        <i class="mdi mdi-pencil"></i> Edit
+                                                    </a>
+                                                </div>
+
+
+                                                <div *ngIf="isEditModeOn">
+                                                    <a class="btn btn-danger me-1"
+                                                        (click)="cancelEditInvoice(false, 0)">Cancel</a>
                                                     <a class="btn btn-primary" (click)="confirmSave()">Save</a>
                                                 </div>
-        
-                                           </div> 
+
+                                            </div>
                                         </div>
-        
+
                                         <table class="seller-view-tbl">
-                                            <tbody><tr>
-                                                <td>{{customer?.fullName}}</td>
-                                                <!-- <td class="w-25"><b>Address:</b>
-                                                    <ng-container *ngIf="isBusiness; else personalAddress">
-                                                      <select class="text-truncate" [(ngModel)]="addressId">
-                                                        <option *ngFor="let address of addresses" [value]="address.rowId">
-                                                          {{ address.streetAddress }}
-                                                        </option>
-                                                      </select>
-                                                    </ng-container>
-                                                    <ng-template #personalAddress>
-                                                      <span class="text-truncate">{{ customer?.streetAddress }}</span>
-                                                    </ng-template>
-                                                  </td> -->
-                                                  <td class="w-25"><b>Address:</b>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width:15%">{{customer?.fullName}}</td>
+
+                                                    <td style="width:35%">
+                                                        <div
+                                                            class="d-flex w-12 justify-content-start align-items-center">
+                                                            <div class="fw-bold col-sm-6">Address : </div>
+                                                            <div class="col-sm-6">
+                                                                <ng-container *ngIf="isBusiness; else personalAddress">
+                                                                    <select class="text-truncate form-control"
+                                                                        *ngIf="!selectedBusinessAddressID && currentRoute.includes('detail/new')"
+                                                                        [(ngModel)]="addressId">
+                                                                        <option *ngFor="let address of addresses"
+                                                                            [value]="address.rowId">
+                                                                            {{ address.streetAddress }}
+                                                                        </option>
+                                                                    </select>
+                                                                    <!-- <select class="text-truncate" *ngIf="selectedBusinessAddressID != 0" [(ngModel)]="selectedBusinessAddressID" disabled>
+                                                                <option *ngFor="let address of addresses" [value]="address.rowId">
+                                                                  {{ address.streetAddress }}
+                                                                </option>
+                                                              </select> -->
+                                                                    <label *ngIf="!currentRoute.includes('detail/new')">
+                                                                        {{ getAddressLabel(selectedBusinessAddressID) }}
+                                                                    </label>
+
+                                                                </ng-container>
+                                                                <ng-template #personalAddress>
+                                                                    <span class="text-truncate">{{
+                                                                        customer?.streetAddress }}</span>
+                                                                </ng-template>
+                                                            </div>
+                                                        </div>
 
 
-                                                    <ng-container *ngIf="isBusiness; else personalAddress">
-                                                        <select class="text-truncate" *ngIf="!selectedBusinessAddressID && currentRoute.includes('detail/new')" [(ngModel)]="addressId">
-                                                            <option *ngFor="let address of addresses" [value]="address.rowId">
-                                                              {{ address.streetAddress }}
-                                                            </option>
-                                                          </select>
-                                                      <!-- <select class="text-truncate" *ngIf="selectedBusinessAddressID != 0" [(ngModel)]="selectedBusinessAddressID" disabled>
-                                                        <option *ngFor="let address of addresses" [value]="address.rowId">
-                                                          {{ address.streetAddress }}
-                                                        </option>
-                                                      </select> -->
-                                                      <label *ngIf="!currentRoute.includes('detail/new')">
-                                                        {{ getAddressLabel(selectedBusinessAddressID) }}
-                                                      </label>
-                                                      
-                                                    </ng-container>
-                                                    <ng-template #personalAddress>
-                                                      <span class="text-truncate">{{ customer?.streetAddress }}</span>
-                                                    </ng-template>
-                                                  </td>
-                                                <td>Created on : <label>{{invoiceData?.createdDate  | date: 'MM/dd/yyyy'}}</label></td>
-                                                <td>Time : {{invoiceData?.createdDate  | date: 'hh:mm a'}}</td>
-                                            </tr>
-        
-                                            <tr>
-                                                <td>DL# - {{customer?.driverLicenseNumber}}</td>
-                                                <td>Dealer Type - {{customer?.dealerType}}</td>
-                                                <td>License Plate # :{{customer?.driverLicenseNumber}}</td>
-                                                <td>By <label>{{user?.firstName}} {{user?.lastName}}</label></td>
-                                            </tr>
-                                        </tbody></table>
+                                                    </td>
+                                                    <td style="width:25%"><span class="fw-bold">Created on :</span>
+                                                        <label>{{invoiceData?.createdDate | date: 'MM/dd/yyyy'}}</label>
+                                                    </td>
+                                                    <td style="width:25%"><span class="fw-bold">Time :</span>
+                                                        {{invoiceData?.createdDate | date: 'hh:mm a'}}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><span class="fw-bold">DL# -
+                                                        </span>{{customer?.driverLicenseNumber}}</td>
+                                                    <td><span class="fw-bold">Dealer Type -</span>
+                                                        {{customer?.dealerType}}</td>
+                                                    <td><span class="fw-bold">License Plate #
+                                                            :</span>{{customer?.driverLicenseNumber}}</td>
+                                                    <td><span class="fw-bold"></span>By <label>{{user?.firstName}}
+                                                            {{user?.lastName}}</label></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="3"></td>
+
+
+                                                    <td style="width:45%">
+
+                                                        <div class="col-sm-12 sidebar-inputox">
+
+                                                            <div class="mb-1 d-flex">
+                                                                <label for="date" class="form-label">Date</label>
+                                                                <input type="date" id="date" class="form-control">
+                                                            </div>
+                                                            <div class="mb-1  d-flex">
+                                                                <label for="payment-terms" class="form-label">Payment
+                                                                    Terms</label>
+                                                                <input type="text" id="payment-terms"
+                                                                    class="form-control"
+                                                                    placeholder="Enter payment terms">
+                                                            </div>
+                                                            <div class="mb-1  d-flex">
+                                                                <label for="due-date" class="form-label">Due
+                                                                    Date</label>
+                                                                <input type="date" id="due-date" class="form-control">
+                                                            </div>
+                                                            <div class="mb-1  d-flex">
+                                                                <label for="po-number" class="form-label">PO
+                                                                    Number</label>
+                                                                <input type="text" id="po-number" class="form-control"
+                                                                    placeholder="Enter PO number">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- Time :</span>  {{invoiceData?.createdDate  | date: 'hh:mm a'}} -->
+
+
+
+
+
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+
+
+
                                     </div>
                                 </div>
-                                
+
                                 <!-- <div class="row">
                                     <div class="col-sm-4">
                                         <h4 class="title-plus-border">Particulars</h4>                                                
@@ -143,115 +203,98 @@
                                     <div class="mt-2">
                                         <div class="invoiceTable card-invoice-table">
 
-                                       
+
                                             <div class="invoice-container">
                                                 <div class="table-wrapper">
-                                                  <table>
-                                                    <thead>
-                                                      <tr>
-                                                        <th style="width:40%">Item Name</th>
-                                                        <th style="width:15%">Quantity</th>
-                                                        <th style="width:15%">Rate</th>
-                                                        <th style="width:15%">Amount</th>
-                                                        <th *ngIf="isEditModeOn" style="width:15%">Action</th>
-                                                      </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <ng-container *ngIf="isEditModeOn" >
-                                                            <tr *ngFor="let item of invoiceObj; let i = index">
-                                                              <td style="width:40%">
-                                                                <textarea
-                                                                  type="text"
-                                                                  [(ngModel)]="item.itemName"
-                                                                  (input)="updateItems(i)"
-                                                                  placeholder="Enter item name"
-                                                                  cols="70" 
-                                                                  rows="2" 
-                                                                ></textarea>
-                                                              </td>
-                                                              <td style="width:15%">
-                                                                <input
-                                                                  type="number"
-                                                                  [(ngModel)]="item.quantity"
-                                                                  (input)="updateItems(i)"
-                                                                  placeholder="Enter quantity"
-                                                                />
-                                                              </td>
-                                                              <td style="width:15%">
-                                                                <span>$</span>
-                                                                <input
-                                                                  type="number"
-                                                                  [(ngModel)]="item.rate"
-                                                                  (input)="updateItems(i)"
-                                                                  placeholder="Enter rate"
-                                                                />
-                                                              </td>
-                                                              <td style="width:15%">
-                                                                <span>$</span> {{item.amount}}
-                                                              </td>
-                                                              <td style="width:15%">
-                                                                <button class="btn btn-danger me-1" (click)="deleteItem(i)">Remove</button>
-                                                              </td>
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width:40%">Item Name</th>
+                                                                <th style="width:15%">Quantity</th>
+                                                                <th style="width:15%">Rate</th>
+                                                                <th style="width:15%">Amount</th>
+                                                                <th *ngIf="isEditModeOn" style="width:15%">Action</th>
                                                             </tr>
-                                                        </ng-container>
-                                                        <ng-container *ngIf="!isEditModeOn" >
-                                                            <tr *ngFor="let item of invoiceObj; let i = index">
-                                                              <td style="width:40%;white-space: pre-wrap;">
-                                                                {{item.itemName}}
-                                                              </td>
-                                                              <td style="width:15%">
-                                                                {{item.quantity}}
-                                                              </td>
-                                                              <td style="width:15%">
-                                                                {{item.rate}}
-                                                              </td>
-                                                              <td style="width:15%">
-                                                                {{item.amount}}
-                                                              </td>
-                                                            </tr>
-                                                        </ng-container>
-                                                        <tr *ngIf="isEditModeOn">
-                                                            <td>
-                                                            <textarea
-                                                                type="text"
-                                                                [(ngModel)]="newItem.name"
-                                                                placeholder="Enter item name"
-                                                                cols="70" 
-                                                                rows="2" 
-                                                            ></textarea>
-                                                            </td>
-                                                            <td>
-                                                            <input
-                                                                type="number"
-                                                                [(ngModel)]="newItem.quantity"
-                                                                (input)="updateNewItemAmount()"
-                                                                placeholder="Enter quantity"
-                                                            />
-                                                            </td>
-                                                            <td>
-                                                            <input
-                                                                type="number"
-                                                                [(ngModel)]="newItem.rate"
-                                                                (input)="updateNewItemAmount()"
-                                                                placeholder="Enter rate"
-                                                            />
-                                                            </td>
-                                                            <td>
-                                                                {{newItem.amount}}
-                                                            </td>
-                                                            <td>
-                                                                <button *ngIf="isEditModeOn"  class="btn btn-primary me-1"  [disabled]="!newItem.name || newItem.quantity <= 0 || newItem.rate <= 0" (click)="addNewItem()"
-                                                                     
-                                                                >
-                                                                  Add Item
+                                                        </thead>
+                                                        <tbody>
+                                                            <ng-container *ngIf="isEditModeOn">
+                                                                <tr *ngFor="let item of invoiceObj; let i = index">
+                                                                    <td style="width:40%">
+                                                                        <textarea type="text"
+                                                                            [(ngModel)]="item.itemName"
+                                                                            (input)="updateItems(i)"
+                                                                            placeholder="Enter item name" cols="70"
+                                                                            rows="2"></textarea>
+                                                                    </td>
+                                                                    <td style="width:15%">
+                                                                        <input type="number" [(ngModel)]="item.quantity"
+                                                                            (input)="updateItems(i)"
+                                                                            placeholder="Enter quantity" />
+                                                                    </td>
+                                                                    <td style="width:15%">
+                                                                        <span>$</span>
+                                                                        <input type="number" [(ngModel)]="item.rate"
+                                                                            (input)="updateItems(i)"
+                                                                            placeholder="Enter rate" />
+                                                                    </td>
+                                                                    <td style="width:15%">
+                                                                        <span>$</span> {{item.amount}}
+                                                                    </td>
+                                                                    <td style="width:15%">
+                                                                        <button class="btn btn-danger me-1"
+                                                                            (click)="deleteItem(i)">Remove</button>
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!isEditModeOn">
+                                                                <tr *ngFor="let item of invoiceObj; let i = index">
+                                                                    <td style="width:40%;white-space: pre-wrap;">
+                                                                        {{item.itemName}}
+                                                                    </td>
+                                                                    <td style="width:15%">
+                                                                        {{item.quantity}}
+                                                                    </td>
+                                                                    <td style="width:15%">
+                                                                        {{item.rate}}
+                                                                    </td>
+                                                                    <td style="width:15%">
+                                                                        {{item.amount}}
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-container>
+                                                            <tr *ngIf="isEditModeOn">
+                                                                <td>
+                                                                    <textarea type="text" [(ngModel)]="newItem.name"
+                                                                        placeholder="Enter item name" cols="70"
+                                                                        rows="2"></textarea>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" [(ngModel)]="newItem.quantity"
+                                                                        (input)="updateNewItemAmount()"
+                                                                        placeholder="Enter quantity" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" [(ngModel)]="newItem.rate"
+                                                                        (input)="updateNewItemAmount()"
+                                                                        placeholder="Enter rate" />
+                                                                </td>
+                                                                <td>
+                                                                    {{newItem.amount}}
+                                                                </td>
+                                                                <td>
+                                                                    <button *ngIf="isEditModeOn"
+                                                                        class="btn btn-primary me-1"
+                                                                        [disabled]="!newItem.name || newItem.quantity <= 0 || newItem.rate <= 0"
+                                                                        (click)="addNewItem()">
+                                                                        Add Item
 
-                                                                </button>
-                                                                
-                                                                
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                    <!-- <tfoot>
+                                                                    </button>
+
+
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <!-- <tfoot>
                                                       <tr>
                                                         <td colspan="3" class="text-right"><strong>Total Amount:</strong></td>
                                                         <td>
@@ -260,99 +303,105 @@
                                                         <td></td>
                                                       </tr>
                                                     </tfoot> -->
-                                                  </table>
+                                                    </table>
                                                 </div>
-                                               
-                                              </div>
+
+                                            </div>
                                         </div>
-                                      
+
                                     </div>
                                 </div>
-                                
+
                                 <div class="row">
-                                    <div class="payment-ticket" [ngClass]="(isEditModeOn || (!isEditModeOn && invoiceData?.status?.toUpperCase() =='OPEN')) && (invoiceData?.status?.toUpperCase()=='OPEN' || invoiceData?.status?.toUpperCase()=='NEW INVOICE' ) ? 
-                                    'w-98 p-open' : 'col-8 p-close'" >
-                                        <div class="row" style="background: var(--ct-card-bg);">
-                                            <div class="col-sm-12 px-10 py-10">
-                                                <!-- <p class="ticket-details-p fz-14"><b>Adjustment : {{(totalAdjustment * -1) | currency: currencySymbol :'symbol': numberFormat}}</b></p> -->
-                                                <p class="ticket-details-p fz-14"><b>Total LBS</b></p>
-        
-                                                <table class="ticket-details-tbl">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="width: 15%;">Item</th>
-                                                            <th style="width: 15%;">Quantity</th>
-                                                            <th style="width: 15%;">Actual Amount</th>
-                                                            <!-- <th style="width: 15%;">Rounding</th> -->
-                                                            <th style="width: 15%;">Amount</th>
-                                                    </tr></thead>
-        
-                                                    <tbody> 
-                                                        <tr>
-                                                            <td>{{totalNoOfMaterial}}</td>
-                                                            <td>{{totalGross}}</td>
-                                                            <td>{{totalActualAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                            <!-- <td>{{totalRoundingAmount | currency: currencySymbol :'symbol': numberFormat}}</td> -->
-                                                            <td>{{totalAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                        </tr>                                                     
-                                                    </tbody>
-                                                    
-                                                </table>
+
+                                    <div class="row mt-1 mb-4">
+                                        <div class="col-md-8">
+                                            <div class="mb-3">
+                                                <label for="notes" class="form-label">Notes</label>
+                                                <textarea id="notes" class="form-control" rows="3"
+                                                    placeholder="Any relevant information not already covered"></textarea>
                                             </div>
-                                        
+
                                         </div>
-                                        
-                                        <div class="row mt-2">   
-                                            <div class="col-md-7 col-lg-7 col-sm-7">    
-                                         
-                                                    <div class="ticket-summary-div d-flex justify-content-start align-item-center">
-                                                        <div class="me-2">
-                                                            <b class="fz-14">Paid Amount  {{invoiceData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
-                                                        </div>
-            
-                                                        <div class="ms-2 me-2">
-                                                            <b class="fz-14">Balance Amount  {{totalAmount - totalAdjustment - invoiceData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
-                                                        </div> 
-                                                        <div class="ms-2" *ngIf="!isEditModeOn && false" >
-                                                            <div class="d-flex justify-content-start align-items-center">
-                                                                <div><p-inputSwitch [disabled]="true"  [(ngModel)]="isCODRequired"></p-inputSwitch></div>
-                                                                <div class="ms-2" >COD <span *ngIf="!isCODRequired">Required</span></div> 
-                                                            </div>
-                                                          
-
-                                                        </div>
-                                                        <div class="ms-2" *ngIf="isEditModeOn && false">
-                                                            <div class="d-flex justify-content-start align-items-center">
-                                                                <div><p-inputSwitch  [(ngModel)]="isCODRequired"></p-inputSwitch></div>
-                                                                <div class="ms-2" >COD <span *ngIf="!isCODRequired">Required</span></div> 
-                                                            </div>
-                                                          
-
-                                                        </div>
-                                                    </div>
-                                                   
-        
-                                                
-                                            </div>
-        
-                                            <div class="col-md-5 col-lg-5 col-sm-5">    
-                                                <div class="d-flex justify-content-end">
-                                                 
-        
-                                                    <div *ngIf="!isEditModeOn" class="pay-print-box">
-                                                        <a *ngIf="(invoiceData.status == 'OPEN' || invoiceData.status == 'Partially Paid') && (currentRole!== 'Scale')" class="btn btn-danger me-1" (click)="showPayment(false)">Pay Ticket</a>
-                                                        <a class="btn btn-primary" (click)="generateSingleInvoiceReport(invoiceId)">Printout</a>
-                                                    </div>        
-        
-                                                    <div *ngIf="isEditModeOn && false" class="adjustment-deduction-box">
-                                                        <a data-bs-target="#adjustments-modal" data-bs-toggle="modal" 
-                                                        class="btn btn-danger me-1" (click)="addAdjustments()">Adjustments(Deductions)</a>
-                                                    </div>
+                                        <div class="col-md-4">
+                                            <div class="d-flex justify-content-end mb-1 align-items-center">
+                                                <div class="fw-bold mr-1">Subtotal:</div>
+                                                <div>
+                                                    <input type="number" readonly class="form-control w-100" 
+                                                        [value]="totalAmount">
                                                 </div>
                                             </div>
-                                                                   
-        
-                                          
+                                            <div class="d-flex justify-content-end mb-1 align-items-center" *ngIf="isshowTax">
+                                                <div class="fw-bold mr-1">Tax:</div>
+                                                <div class="d-flex justify-content-between align-items-center"> <input
+                                                        type="number" (keydown)="getTaxAmount()" [(ngModel)]="taxAmount" class="form-control w-100">
+                                                    <a href="javascript:void(0)" class="fw-bold  remove-x"
+                                                        (click)="isshowTax =  false">X</a>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="d-flex justify-content-end mb-1 align-items-center" *ngIf="isshowDiscount">
+                                                <div class="fw-bold mr-1">Discount :</div>
+                                                <div class="d-flex   justify-content-between align-items-center"><input
+                                                        type="number"  [(ngModel)]="discountAmount" class="form-control ">
+                                                    <a class="fw-bold remove-x" href="javascript:void(0)"
+                                                        (click)="isshowDiscount =  false">X</a>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-end  mb-1 align-items-center" *ngIf="isshowShipping">
+                                                <div class="fw-bold mr-1">Shipping :</div>
+                                                <div class="d-flex  justify-content-between align-items-center"><input
+                                                        type="number" [(ngModel)]="shippingAmount" class="form-control ">
+                                                    <a class="fw-bold remove-x" href="javascript:void(0)"
+                                                        (click)="isshowShipping =  false">X</a>
+                                                </div>
+                                            </div>
+
+
+
+
+                                            <div class="d-flex justify-content-end mb-1 align-items-center">
+                                                <div class="fw-bold mr-1">Total:</div>
+                                                <div class="d-flex  justify-content-between align-items-center"> <input
+                                                        type="text" [(ngModel)]="totalActualAmount"  readonly class="form-control w-100">
+                                                  
+                                                </div>
+                                            </div>
+
+
+                                            <div class="d-flex justify-content-end mb-1 align-items-center">
+                                                <div class="fw-bold mr-1">Amount Paid  :</div>
+                                                <div class="d-flex  justify-content-between align-items-center">
+                                                    <input type="number" readonly class="form-control ">
+                                                  
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-end  mb-1 align-items-center">
+                                                <div class="fw-bold mr-1">Balance Due :</div>
+                                                <div class="d-flex readonly  justify-content-between align-items-center"><input
+                                                        type="number" class="form-control ">
+                                                   
+                                                </div>
+                                            </div>
+
+
+                                            
+                                            <div class="d-flex justify-content-start mt-1 sidebar-button">
+                                                <button class="btn btn-primary me-1" (click)="showTax()"> <i
+                                                        class="fa fa-plus"></i> Tax</button>
+                                                <button class="btn btn-primary  me-1" (click)="showShipping()"> <i
+                                                        class="fa fa-plus"></i> Shipping
+
+
+
+                                                </button>
+                                                <button class="btn btn-success  me-1" (click)="showDiscount()"> <i
+                                                        class="fa fa-plus"></i>Discount</button>
+
+                                            </div>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -364,9 +413,9 @@
                                 <div id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
                                     <div class="card">
                                         <div class="card-body px-1 py-1">
-                                            
+
                                             <p-table #dt1 [value]="invoicesTransactions" [paginator]="false">
-                        
+
                                                 <ng-template pTemplate="header">
                                                     <tr>
                                                         <th>*</th>
@@ -378,16 +427,21 @@
                                                 <ng-template pTemplate="body" let-invoicesTransaction>
                                                     <tr>
                                                         <td># </td>
-                                                        <td>{{ invoicesTransaction?.type }} <a pTooltip="Check reprint" href="javascript:void()" *ngIf="ticketsTransaction?.type == 'Check'" (click)="checkReprint(ticketsTransaction)" ><i class="bi bi-printer-fill ms-1"></i></a></td>
-                                                        <td>{{ invoicesTransaction?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                                        <td>{{ invoicesTransaction?.type }} <a pTooltip="Check reprint"
+                                                                href="javascript:void()"
+                                                                *ngIf="ticketsTransaction?.type == 'Check'"
+                                                                (click)="checkReprint(ticketsTransaction)"><i
+                                                                    class="bi bi-printer-fill ms-1"></i></a></td>
+                                                        <td>{{ invoicesTransaction?.amount | currency: currencySymbol
+                                                            :'symbol': numberFormat }}</td>
                                                         <td>{{ invoicesTransaction?.checkNumber }}</td>
                                                     </tr>
                                                 </ng-template>
-                        
+
                                             </p-table>
                                         </div>
                                     </div>
-                                  
+
                                 </div>
 
                             </div>
@@ -464,14 +518,14 @@
                                 </app-invoice-calculator>
                             </div> -->
                         </div>
-                    
+
                     </div> <!-- end card body-->
                 </div> <!-- end card -->
             </div><!-- end col-->
 
         </div>
-        <!-- end row-->     
-        
+        <!-- end row-->
+
     </div> <!-- container -->
 
 </div>
@@ -480,7 +534,7 @@
 
 
 <div class="content" *ngIf="isLoading">
-  <app-page-loader type="ftable"></app-page-loader>
+    <app-page-loader type="ftable"></app-page-loader>
 </div>
 
 
@@ -582,32 +636,37 @@
 </ng-container> -->
 
 
-<p-dialog [modal]="true" header="Header"  [breakpoints]="{'1024px': '60vw', '1080px': '70vw','767px': '100vw'}" [modal]="true" [(visible)]="saveConfirmVisible" [style]="{ width: '50vw' }">
-    <ng-template pTemplate="header">        
-        <a class="btn btn-primary " (click)="saveConfirmVisible=false;"><i class="mdi mdi-keyboard-backspace"> Back </i></a>
+<p-dialog [modal]="true" header="Header" [breakpoints]="{'1024px': '60vw', '1080px': '70vw','767px': '100vw'}"
+    [modal]="true" [(visible)]="saveConfirmVisible" [style]="{ width: '50vw' }">
+    <ng-template pTemplate="header">
+        <a class="btn btn-primary " (click)="saveConfirmVisible=false;"><i class="mdi mdi-keyboard-backspace"> Back
+            </i></a>
         <span class="text-xl font-bold text-success" style="font-size: 24px;"> Invoice Saved Successfully</span>
     </ng-template>
     <div class="text-center  mb-2 mt-2">
-        <span class="text-xl font-bold text-info text-center" style="font-size: 14px;"> Please select Option</span>  
+        <span class="text-xl font-bold text-info text-center" style="font-size: 14px;"> Please select Option</span>
     </div>
     <div class="d-flex justify-content-center">
         <!-- <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">Pay Amount without printing</button></div> -->
-        <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveInvoiceDetails(0, true)" style="line-height: 18px  !important;">Print and Save</button></div>
+        <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveInvoiceDetails(0, true)"
+                style="line-height: 18px  !important;">Print and Save</button></div>
         <!-- <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)"  style="line-height: 18px  !important;">Pay Amount and Print </button></div> -->
     </div>
 
     <div class="d-flex justify-content-center mt-2">
-        <div><button class="btn btn-success justify-content-center equal-h me-2" (click)="saveInvoiceDetails(0, false)">Close and Save</button></div>
+        <div><button class="btn btn-success justify-content-center equal-h me-2"
+                (click)="saveInvoiceDetails(0, false)">Close and Save</button></div>
     </div>
-    
+
 </p-dialog>
 
 
-<p-dialog header="Header" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [modal]="true" [(visible)]="paymentVisible" (onHide)="closeTicket()">
+<p-dialog header="Header" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [modal]="true"
+    [(visible)]="paymentVisible" (onHide)="closeTicket()">
     <ng-template pTemplate="header">
-        <a  class="btn btn-primary " (click)="paymentVisible=false">
+        <a class="btn btn-primary " (click)="paymentVisible=false">
             <i _ class="mdi mdi-keyboard-backspace">
-            Back
+                Back
             </i>
         </a>
     </ng-template>
@@ -619,129 +678,143 @@
     </div>
 
     <div class="d-flex justify-content-between" *ngIf="isHoldTrue">
-        <div> <div class="form-check equal-h  form-check-inline">
-            <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdamount" value="Pay Total Amount">
-            <label class="form-check-label" for="">Pay Total Amount</label>
-          </div></div>
+        <div>
+            <div class="form-check equal-h  form-check-inline">
+                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount"
+                    id="holdamount" value="Pay Total Amount">
+                <label class="form-check-label" for="">Pay Total Amount</label>
+            </div>
+        </div>
         <div>
 
             <div class="form-check equal-h  form-check-inline">
-                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="phamount" value="Partial Pay Amount">
+                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount"
+                    id="phamount" value="Partial Pay Amount">
                 <label class="form-check-label" for="">Partial Pay Amount <br>
                     (Exclude Hold Items Amount)
-                
+
                 </label>
-              </div>
+            </div>
 
         </div>
         <div>
 
             <div class="form-check equal-h form-check-inline">
-                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdallamount" value="Hold All Amount">
+                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount"
+                    id="holdallamount" value="Hold All Amount">
                 <label class="form-check-label" for="">Hold All Amount</label>
-              </div> 
+            </div>
         </div>
-    </div>  
+    </div>
 
-  
+
     <div class="row">
         <div class="col-sm-12">
             <div class="d-flex justify-content-between  mb-2 mt-2">
                 <div class="text-xl fz-16 font-bold">Total Amount
                 </div>
-                <div class="font-bold fz-16">{{remainingAmount | currency: currencySymbol :'symbol': numberFormat}}</div>    
+                <div class="font-bold fz-16">{{remainingAmount | currency: currencySymbol :'symbol': numberFormat}}
+                </div>
             </div>
         </div>
     </div>
-   
+
     <div class="row">
         <div class="col-sm-12">
             <div class="d-flex justify-content-start">
-              
-                <div><button class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Cash'}" (click)="showSection('Cash');payAmount=0">Cash</button></div>
-                <div><button  class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Check'}" (click)="showSection('Check');payAmount=0" >Check</button></div>
-                <div ><button   *ngIf="systemInfo =='True'" class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Electronic Payment'}"  (click)="showSection('Electronic Payment');payAmount=0">Electronic Payment</button></div>
-            </div>        
+
+                <div><button class="btn btn-info justify-content-center equal-h me-2"
+                        [ngClass]="{'btn-success': activeSection === 'Cash'}"
+                        (click)="showSection('Cash');payAmount=0">Cash</button></div>
+                <div><button class="btn btn-info justify-content-center equal-h me-2"
+                        [ngClass]="{'btn-success': activeSection === 'Check'}"
+                        (click)="showSection('Check');payAmount=0">Check</button></div>
+                <div><button *ngIf="systemInfo =='True'" class="btn btn-info justify-content-center equal-h me-2"
+                        [ngClass]="{'btn-success': activeSection === 'Electronic Payment'}"
+                        (click)="showSection('Electronic Payment');payAmount=0">Electronic Payment</button></div>
+            </div>
             <div>
                 <div class="row">
-        
+
                     <form class="d-flex flex-wrap mt-2">
                         <div class="col-sm-5">
                             <div class="mb-3">
                                 <label for="" class="form-label">Amount</label>
-                                <input type="text" name="selectedPayAmount" id="selectedPayAmount" pattern="/^-?\d+(\.\d+)?$/" [(ngModel)]="selectedPayAmount" class="form-control"  aria-describedby="helpId">
+                                <input type="text" name="selectedPayAmount" id="selectedPayAmount"
+                                    pattern="/^-?\d+(\.\d+)?$/" [(ngModel)]="selectedPayAmount" class="form-control"
+                                    aria-describedby="helpId">
                             </div>
                         </div>
                         <div class="col-sm-5 ms-2" *ngIf="activeSection === 'Check'">
                             <div class="mb-3">
                                 <label for="" class="form-label">Check</label>
-                                <input type="text" name="checkNumber" id="checkNumber" [(ngModel)]="checkNumber" class="form-control" placeholder="" aria-describedby="helpId">
+                                <input type="text" name="checkNumber" id="checkNumber" [(ngModel)]="checkNumber"
+                                    class="form-control" placeholder="" aria-describedby="helpId">
                             </div>
                         </div>
                         <div class="col-sm-5 ms-2" *ngIf="activeSection === 'Electronic Payment'">
                             <div class="mb-3">
                                 <label for="" class="form-label">Electronic Payment Type</label>
-                                <input type="text" name="ePaymentType" id="" [(ngModel)]="ePaymentType" class="form-control" placeholder="" aria-describedby="helpId">
+                                <input type="text" name="ePaymentType" id="" [(ngModel)]="ePaymentType"
+                                    class="form-control" placeholder="" aria-describedby="helpId">
                             </div>
                         </div>
                         <div class="col-sm-5 form-group" *ngIf="activeSection === 'Check'">
                             <label for="floatingInput">Check Date</label>
-        
-                            <input type="date" name="selectedCheckDate" id="selectedCheckDate" [min]="selectedCheckDate" [(ngModel)]="selectedCheckDate" class="form-control" placeholder="Check Date">
+
+                            <input type="date" name="selectedCheckDate" id="selectedCheckDate" [min]="selectedCheckDate"
+                                [(ngModel)]="selectedCheckDate" class="form-control" placeholder="Check Date">
                         </div>
                     </form>
-        
-                
+
+
                 </div>
-              
-        
+
+
             </div>
-        
+
         </div>
 
     </div>
     <div class="col-12" *ngIf="transactionPaymentType?.length > 0">
 
-        <p-table class="ticket-table" [value]="transactionPaymentType" 
-        [paginator]="false" 
-        [rows]="3"
-        [loading]="isLoading"
-        [showCurrentPageReport]="false"
-        [scrollable]="false" 
-        >
+        <p-table class="ticket-table" [value]="transactionPaymentType" [paginator]="false" [rows]="3"
+            [loading]="isLoading" [showCurrentPageReport]="false" [scrollable]="false">
 
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 30%;"> Type </th>
-                <th style="width:30%;"> Amount </th>
-                <th style="width:30%;"> SubType / Check </th>
-                <th style="width:30%;"> Action </th>
-                <!-- <th style="width:30%;"> Action </th> -->
-           </tr>
-           
-        </ng-template>
-        <ng-template pTemplate="body" let-type let-rowIndex="rowIndex">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 30%;"> Type </th>
+                    <th style="width:30%;"> Amount </th>
+                    <th style="width:30%;"> SubType / Check </th>
+                    <th style="width:30%;"> Action </th>
+                    <!-- <th style="width:30%;"> Action </th> -->
+                </tr>
 
-            <tr>
-                <td>{{type?.typeofPayment}}</td>
-                <td>{{type?.typeofAmount}}</td>
-                <td>{{type?.paymentType}}</td>
-                <td> <a class="btn btn-danger" (click)="removeItem(rowIndex)">Delete</a> </td>
-            </tr>      
+            </ng-template>
+            <ng-template pTemplate="body" let-type let-rowIndex="rowIndex">
 
-          
-        </ng-template>
-        
-    </p-table>     
+                <tr>
+                    <td>{{type?.typeofPayment}}</td>
+                    <td>{{type?.typeofAmount}}</td>
+                    <td>{{type?.paymentType}}</td>
+                    <td> <a class="btn btn-danger" (click)="removeItem(rowIndex)">Delete</a> </td>
+                </tr>
+
+
+            </ng-template>
+
+        </p-table>
 
     </div>
     <div class="d-flex justify-content-left mt-2">
 
-        <div><button type="submit" class="btn btn-primary justify-content-center  me-2"  (click)="addTransction()">Add Payment</button></div>
+        <div><button type="submit" class="btn btn-primary justify-content-center  me-2" (click)="addTransction()">Add
+                Payment</button></div>
 
-        <div><button class="btn btn-primary justify-content-center me-2" (click)="payAndSave(activeSection)">Pay Ticket</button></div>
+        <div><button class="btn btn-primary justify-content-center me-2" (click)="payAndSave(activeSection)">Pay
+                Ticket</button></div>
     </div>
-    
+
 </p-dialog>
 
 <!-- <p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
@@ -758,21 +831,19 @@
     </div>
 </p-dialog> -->
 
-<p-dialog [header]="pdfViwerTitle" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
-  <div *ngIf="showLoaderReport" class="loader-container" style="width: 100%;">
-    <app-page-loader type="reportloader"></app-page-loader>
-  </div>
-
-  <div class="row" *ngIf="!showLoaderReport">
-    <div style="height: 500px; width: 90vw;">                
-      <ngx-extended-pdf-viewer 
-        [base64Src]="fileDataObj" 
-        [PageViewMode]="'Single'" 
-        [pageChangeOnScrolling]="true" 
-        [showScrollbar]="false">
-      </ngx-extended-pdf-viewer>
+<p-dialog [header]="pdfViwerTitle" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true"
+    [style]="{ width: '70vw' }">
+    <div *ngIf="showLoaderReport" class="loader-container" style="width: 100%;">
+        <app-page-loader type="reportloader"></app-page-loader>
     </div>
-  </div>
+
+    <div class="row" *ngIf="!showLoaderReport">
+        <div style="height: 500px; width: 90vw;">
+            <ngx-extended-pdf-viewer [base64Src]="fileDataObj" [PageViewMode]="'Single'" [pageChangeOnScrolling]="true"
+                [showScrollbar]="false">
+            </ngx-extended-pdf-viewer>
+        </div>
+    </div>
 </p-dialog>
 
 
@@ -780,8 +851,8 @@
 <iframe id="pdfFrame" #pdfFrame style="display: none;"></iframe>
 
 
-<p-dialog [modal]="true" [header]="'Sign Receipt'" [breakpoints]="{'767px': '100vw'}" (onHide)="closeCapturedImage(8)" [(visible)]="signaturePadVisible"
-    [style]="{width: '550'}">
+<p-dialog [modal]="true" [header]="'Sign Receipt'" [breakpoints]="{'767px': '100vw'}" (onHide)="closeCapturedImage(8)"
+    [(visible)]="signaturePadVisible" [style]="{width: '550'}">
 
     <div class="row">
         <div class="col-md-12">
@@ -835,7 +906,7 @@
     <div class="over-flow-300 image-center img-profile">
         <img [src]="selectedImageUrl" style="height: 100%; width: 100%;">
     </div>
-    <div class="mt-2">        
+    <div class="mt-2">
         <a class="btn btn-primary " [href]="selectedImageUrl" target="_self" download><i class="mdi"> Download </i></a>
     </div>
 </p-dialog>
@@ -847,148 +918,149 @@
 <p-dialog header="Header" [(visible)]="alertVisible" [modal]="true" [style]="{width: '500'}">
     <ng-template pTemplate="header">
         <div class="inline-flex align-items-center justify-content-center gap-2">
-            <span class="text-xl fz-16 font-bold" >Information</span>
+            <span class="text-xl fz-16 font-bold">Information</span>
         </div>
     </ng-template>
     <p class="m-0 fz-14" style="width:300px">
-         
+
         {{alertMessage}}
     </p>
     <ng-template pTemplate="footer">
-        <button class="btn btn-primary"  (click)="alertVisible = false"> Ok </button>
+        <button class="btn btn-primary" (click)="alertVisible = false"> Ok </button>
     </ng-template>
 </p-dialog>
 
 
 
-<p-dialog [modal]="true" 
-header="Edit Seller"
-[(visible)]="dialogPopupVisible" [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
+<p-dialog [modal]="true" header="Edit Seller" [(visible)]="dialogPopupVisible" [style]="{width: '70vw'}"
+    [breakpoints]="{'767px': '100vw'}">
 
 
-<div class="row" *ngIf="sellerLoader">
- 
+    <div class="row" *ngIf="sellerLoader">
+
         <app-page-loader type="ftable"></app-page-loader>
-   
-</div>
 
-
-<div class="row" *ngIf="!sellerLoader">
-
-    <div class="col-md-6">
-        <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control"
-            placeholder="Search for Sellers, Address, License and License Plate">
     </div>
-    <div class="col-md-6">
-        <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newTicketList"></app-actionbar>
 
-        <!-- <a  type="button" (click)="addNewSeller()" 
+
+    <div class="row" *ngIf="!sellerLoader">
+
+        <div class="col-md-6">
+            <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control"
+                placeholder="Search for Sellers, Address, License and License Plate">
+        </div>
+        <div class="col-md-6">
+            <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newTicketList"></app-actionbar>
+
+            <!-- <a  type="button" (click)="addNewSeller()" 
         class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
         New Customer
         </a> -->
+        </div>
+
     </div>
 
-</div>
+    <div class="row mt-3" *ngIf="!sellerLoader">
 
-<div class="row mt-3"  *ngIf="!sellerLoader">
-
-    <p-table [value]="sellers" [scrollable]="true" scrollHeight="40vh" [paginator]="true" [rows]="10"
-        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
+        <p-table [value]="sellers" [scrollable]="true" scrollHeight="40vh" [paginator]="true" [rows]="10"
+            [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
 
 
 
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Seller</th>
-                <th>Driver's License</th>
-                <th>Address</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-seller>
-            <tr (click)="clickOnSeller(seller.rowId)"  style="cursor: pointer;">
-                <td>{{ seller.fullName }}</td>
-                <td>{{ seller.driverLicenseNumber }}</td>
-                <td>{{ seller.streetAddress }}</td>
-            </tr>
-        </ng-template>
-      
-    </p-table>
-</div>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Seller</th>
+                    <th>Driver's License</th>
+                    <th>Address</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-seller>
+                <tr (click)="clickOnSeller(seller.rowId)" style="cursor: pointer;">
+                    <td>{{ seller.fullName }}</td>
+                    <td>{{ seller.driverLicenseNumber }}</td>
+                    <td>{{ seller.streetAddress }}</td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+    </div>
 
 
 </p-dialog>
 
 
-<p-dialog header="Header" [(visible)]="addSellerPopupVisible" [modal]="true" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [style]="{width: '500'}">
+<p-dialog header="Header" [(visible)]="addSellerPopupVisible" [modal]="true"
+    [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [style]="{width: '500'}">
     <ng-template pTemplate="header">
         <div class="inline-flex align-items-center justify-content-center gap-2">
             <span class="font-bold white-space-nowrap">Add New Customer</span>
         </div>
     </ng-template>
-        <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()">
-            <div class="row" style="min-width: 500px;">
-                <div class="d-flex row align-items-center">
-                    <div class="col-sm-3">
-                     <label for="example-select" class="form-label">Select Type</label></div>
+    <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()">
+        <div class="row" style="min-width: 500px;">
+            <div class="d-flex row align-items-center">
+                <div class="col-sm-3">
+                    <label for="example-select" class="form-label">Select Type</label>
+                </div>
 
-                    <div class="form-group" >
-                           <select formControlName="sellerType" class="form-select" id="example-select"
+                <div class="form-group">
+                    <select formControlName="sellerType" class="form-select" id="example-select"
                         (change)="changeSellerType()">
                         <option>Personal</option>
                         <option>Business</option>
-                    </select> 
-                 </div>
-                </div>
-                
-            </div>
-            <hr>
-            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
-                <h4>Personal Information</h4>
-
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="firstName" class="form-control"
-                            id="firstname" placeholder="First Name">
-                        <label for="floatingInput">First Name</label>
-                    </div>
-                </div>
-
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="middleName" class="form-control"
-                            id="middlename" placeholder="Middle Name">
-                        <label for="floatingInput">Middle Name</label>
-                    </div>
-                </div>
-
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" formControlName="lastName" id="lastname"
-                            placeholder="Last Name">
-                        <label for="floatingInput">Last Name</label>
-                    </div>
+                    </select>
                 </div>
             </div>
 
-            <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
-                <h4>Business Information</h4>
+        </div>
+        <hr>
+        <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
+            <h4>Personal Information</h4>
 
-                <div class="form-group col-sm-6 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="firstName" class="form-control"
-                            id="bfirstName" placeholder="Business Name">
-                        <label for="floatingInput">Business Name</label>
-                    </div>
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="firstName" class="form-control" id="firstname"
+                        placeholder="First Name">
+                    <label for="floatingInput">First Name</label>
                 </div>
             </div>
-            
-        </form>
-    
-        <ng-template pTemplate="footer">
-            <button class="btn btn-primary me-1" (click)="onSubmit()">Save</button>
-        </ng-template>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="middleName" class="form-control" id="middlename"
+                        placeholder="Middle Name">
+                    <label for="floatingInput">Middle Name</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" class="form-control" formControlName="lastName" id="lastname"
+                        placeholder="Last Name">
+                    <label for="floatingInput">Last Name</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
+            <h4>Business Information</h4>
+
+            <div class="form-group col-sm-6 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="firstName" class="form-control" id="bfirstName"
+                        placeholder="Business Name">
+                    <label for="floatingInput">Business Name</label>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <button class="btn btn-primary me-1" (click)="onSubmit()">Save</button>
+    </ng-template>
 </p-dialog>
 
 
@@ -998,10 +1070,10 @@ header="Edit Seller"
         <!-- <label for="username" class="font-semibold w-6rem">Check No</label> -->
         <input id="checkNo" [(ngModel)]="printCheckNo" class=" form-control flex-auto" autocomplete="off" />
     </div>
-    
+
     <div class="flex justify-content-end gap-2">
-        <button  class="btn btn-primary me-2" (click)="generateCheck()">Print</button>
-        <button  class="btn btn-outline-primary"  (click)="checkVisible = false" >Cancel </button>
+        <button class="btn btn-primary me-2" (click)="generateCheck()">Print</button>
+        <button class="btn btn-outline-primary" (click)="checkVisible = false">Cancel </button>
     </div>
 </p-dialog>
 
@@ -1015,4 +1087,3 @@ header="Edit Seller"
         <button type="button" pButton icon="pi pi-check" label="Yes" (click)="confirmPosition"></button>
     </ng-template>
 </p-confirmDialog> -->
-

@@ -73,7 +73,9 @@
                               <a class="btn btn-danger me-1" *ngIf="certificate.ticketRowID === 0" (click)="deletePickup(certificate.rowId)">Delete</a>
                               <a class="btn btn-primary" *ngIf="certificate.ticketRowID === 0" (click)="convertToTicket(certificate.sellerID,certificate.rowId)">Convert to Ticket</a>
                               <a class="btn btn-success me-1" *ngIf="certificate.ticketRowID > 0" (click)="showTicketclick(certificate.ticketRowID,certificate.sellerID)">Show Ticket</a>
-                          </div>
+                              <a class="btn btn-success me-1 ms-1"  (click)="printTicket(certificate.ticketRowID,certificate.sellerID)">Print</a>
+
+                             </div>
                       </td>
                     </tr>
                   </ng-template>

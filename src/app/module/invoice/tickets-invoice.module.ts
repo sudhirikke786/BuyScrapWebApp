@@ -11,6 +11,7 @@ import { InvoiceTicketDetailComponent } from './invoice-ticket-detail/invoice-ti
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { CheckplanGuard } from 'src/app/core/guard/checkplan.guard';
 import { InvoiceCalculatorComponent } from './Invoice-calculator/invoice-calculator.component';
+import { TotalPricePipe } from './total-price.pipe';
 
 export const routes: Routes = [
   {
@@ -28,7 +29,8 @@ export const routes: Routes = [
   declarations: [
     InvoiceTicketDashboardComponent,
     InvoiceTicketDetailComponent,
-    InvoiceCalculatorComponent
+    InvoiceCalculatorComponent,
+    TotalPricePipe
   ],
   imports: [
     CommonModule,

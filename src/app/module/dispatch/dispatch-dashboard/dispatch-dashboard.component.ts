@@ -198,6 +198,10 @@ export class DispatchDashboardComponent implements OnInit {
     this.router.navigate([`/${this.orgName}/home/detail/${ticketRowID}/${sellerID}/false`])
       
   }
+
+  printTicket(ticketRowID: any, sellerID: any) {
+    console.log("Print");
+  }
   
 
   setChecked(item: any, rowIndex: any): void {

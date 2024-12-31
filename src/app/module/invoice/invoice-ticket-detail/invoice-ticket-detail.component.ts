@@ -209,6 +209,15 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   items:any[] = [];
   newItem = { name: '', quantity: 0, rate: 0, amount: 0 };
 
+  isshowTax =  false;
+  isshowDiscount = false;
+  isshowShipping =  false;
+
+  discountAmount = 0;
+  taxAmount = 0;
+  shippingAmount = 0;
+
+
   @ViewChild(InvoiceCalculatorComponent) InvoiceCalculatorComponent!:InvoiceCalculatorComponent;
   
       constructor(private route: ActivatedRoute,
@@ -302,8 +311,30 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     }
   }
 
-  getTotalAmount(): number {
-    return this.items.reduce((total, item) => total + item.amount, 0); // Calculate the total amount
+  showTax() {
+    this.isshowTax = !this.isshowTax;
+  }
+
+
+  showDiscount(){
+    this.isshowDiscount = !this.isshowDiscount;
+  }
+
+  showShipping(){
+    this.isshowShipping =  !this.isshowShipping;
+  }
+
+
+
+  getTotalAmount() {
+  
+    console.log(this.items)
+      const total   = this.invoiceObj.reduce((total:any, item:any) => total + item.amount, 0); // Calculate the total amount
+
+      console.log(total);
+      return total;
+    
+   
   }
 
   removeInvoice(index: number) {
@@ -832,6 +863,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       return sum + (invoices.amount);
     }, 0);
 
+
     this.totalAmount = Math.round(this.totalActualAmount);
     this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
     this.totalAdjustment = invoices.reduce(function (sum: any, invoices: any) {
@@ -843,6 +875,24 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   editInvoiceDetails() {
     this.isEditModeOn = true;
     this.getAllGroupMaterial();
+  }
+
+  getTaxAmount() {
+    // how to calculate tax on total number of material
+     const taxAMount = this.totalAmount *  (1 + this.taxAmount/100);
+     console.log(taxAMount)
+
+     this.totalActualAmount =  taxAMount;
+     console.log(taxAMount, this.totalActualAmount )
+
+    // this.totalAmount = this.totalActualAmount + this.taxAmount;
+    // this.totalAmount = Math.round(this.totalAmount);
+    // this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
+
+    
+    // const taxAdd =  this.totalAmount % 
+
+    //  this.totalAmount + this.totalRoundingAmount + this.totalAdjustment;
   }
 
 

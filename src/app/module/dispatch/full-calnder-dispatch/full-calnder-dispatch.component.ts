@@ -45,12 +45,12 @@ export class FullCalnderDispatchComponent implements OnInit {
     plugins: [dayGridPlugin],
     initialView: 'dayGridWeek',
     customButtons: {
-      myCustomButton: {
-        text: 'Back',
-        click: () => {
-          this.router.navigateByUrl(this.backUrl)
-        }
-      }
+      // myCustomButton: {
+      //   text: 'Back',
+      //   click: () => {
+      //     this.router.navigateByUrl(this.backUrl)
+      //   }
+      // }
     },
     headerToolbar: {
       left: 'prev,next myCustomButton',
