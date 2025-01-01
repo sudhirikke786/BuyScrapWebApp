@@ -40,7 +40,7 @@ export class DispatchLatestDetailsComponent {
   driveruserObj:any;
   addresses: any[] = [];
   isBusiness: boolean = false;
-
+  notes:any;
   // Array to store invoice items
   invoiceObj: Array<any> = [];
   
