@@ -216,8 +216,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   discountAmount = 0;
   taxAmount = 0;
   shippingAmount = 0;
-
-
+  paidAmount = 0.0;
+  balanceDue = 0;
   @ViewChild(InvoiceCalculatorComponent) InvoiceCalculatorComponent!:InvoiceCalculatorComponent;
   
       constructor(private route: ActivatedRoute,
@@ -879,10 +879,11 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
   getTaxAmount() {
     // how to calculate tax on total number of material
-     const taxAMount = this.totalAmount *  (1 + this.taxAmount/100);
+     const taxAMount = this.totalAmount *  (1 + this.taxAmount / 100);
      console.log(taxAMount)
 
      this.totalActualAmount =  taxAMount;
+     
      console.log(taxAMount, this.totalActualAmount )
 
     // this.totalAmount = this.totalActualAmount + this.taxAmount;
@@ -895,6 +896,34 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     //  this.totalAmount + this.totalRoundingAmount + this.totalAdjustment;
   }
 
+  removeTax() {
+
+
+  }
+
+  addShip(){
+
+  }
+
+  removeShip(){
+
+  }
+
+  addDiscount(){
+
+  }
+
+  removeDiscount(){
+
+  }
+
+  addTotal(){
+    this.totalActualAmount =  this.totalActualAmount - this.paidAmount
+  }
+
+  calculateBalanceDue(): void {
+    this.balanceDue = this.totalActualAmount - this.paidAmount;
+  }
 
   searchMaterial(searchTerm:any){
 

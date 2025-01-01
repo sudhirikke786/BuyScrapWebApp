@@ -86,11 +86,18 @@ textarea{
   
 }
 
-.remove-x{
-  font-weight: bold;
-  margin-left: 2px;
-  font-size: 2rem;
+.remove-x {
+  cursor: pointer;
+    color: red;
+    position: absolute;
+    font-size: 1rem !important;
+    right: -14px;
+    text-decoration: none;
 }
+.input-container {
+  position: relative;
+}
+
 
 
 
@@ -120,60 +127,6 @@ textarea{
   }
   
 
-  @media (max-width: 767px) {
-    .w-98{
-      width: 100% !important ;
-    }
-    .w-75{
-      width:100% !important;
-    }
-
-  }
-
-  @media (max-width: 1024px) {
-
-    
-    
-    .equal-h{
-      width: 114px;
-      height: 60px;
-    }
-    .main-ul{
-      display: block;
-    }
-  }
-
-
-
-
-
-/* Media query for screens wider than 3000px */
-@media (min-width: 3000px) {
- 
-    .main-ul  li a {
-      padding:1.5rem !important;
-      font-size: 1.5rem !important;
-      line-height: 1.5rem !important;  
-    }
-}
-
-/* Media query for screens wider than 4000px */
-@media (min-width: 4000px) {
-  .main-ul  li a {
-    padding:1.5rem !important;
-    font-size: 2rem !important;
-    line-height: 2rem !important;  
-  }
-}
-
-/* Media query for screens wider than 5000px */
-@media (min-width: 5000px) {
-  .main-ul  li a {
-    padding:1.5rem !important;
-    font-size:2rem !important;
-    line-height: 2rem !important;  
-  }
-}
   
 
 
@@ -316,3 +269,72 @@ button {
 }
 
 
+
+
+
+@media (max-width: 767px) {
+  .w-98{
+    width: 100% !important ;
+  }
+  .w-75{
+    width:100% !important;
+  }
+
+}
+
+@media (max-width: 1024px) {
+
+  
+  
+  .equal-h{
+    width: 114px;
+    height: 60px;
+  }
+  .main-ul{
+    display: block;
+  }
+}
+
+
+
+@media (min-width: 2000px) {
+
+  .sidebar-inputox {
+
+    label {
+      min-width: 220px;
+    }
+  }
+  
+ 
+}
+
+
+
+/* Media query for screens wider than 3000px */
+@media (min-width: 3000px) {
+
+  .main-ul  li a {
+    padding:1.5rem !important;
+    font-size: 1.5rem !important;
+    line-height: 1.5rem !important;  
+  }
+}
+
+/* Media query for screens wider than 4000px */
+@media (min-width: 4000px) {
+  .main-ul  li a {
+    padding:1.5rem !important;
+    font-size: 2rem !important;
+    line-height: 2rem !important;  
+  }
+}
+
+/* Media query for screens wider than 5000px */
+@media (min-width: 5000px) {
+.main-ul  li a {
+  padding:1.5rem !important;
+  font-size:2rem !important;
+  line-height: 2rem !important;  
+}
+}

@@ -315,7 +315,7 @@
                                 <div class="row">
 
                                     <div class="row mt-1 mb-4">
-                                        <div class="col-md-8">
+                                        <div class="col-lg-8 col-sm-6">
                                             <div class="mb-3">
                                                 <label for="notes" class="form-label">Notes</label>
                                                 <textarea id="notes" class="form-control" rows="3"
@@ -323,7 +323,7 @@
                                             </div>
 
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-lg-4 col-sm-6">
                                             <div class="d-flex justify-content-end mb-1 align-items-center">
                                                 <div class="fw-bold mr-1">Subtotal:</div>
                                                 <div>
@@ -331,56 +331,59 @@
                                                         [value]="totalAmount">
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-end mb-1 align-items-center" *ngIf="isshowTax">
+                                            <div class="d-flex justify-content-end  align-items-center" *ngIf="isshowTax">
                                                 <div class="fw-bold mr-1">Tax:</div>
-                                                <div class="d-flex justify-content-between align-items-center"> <input
+                                                <div class="d-flex justify-content-between align-items-center  input-container"> <input
                                                         type="number" (keydown)="getTaxAmount()" [(ngModel)]="taxAmount" class="form-control w-100">
                                                     <a href="javascript:void(0)" class="fw-bold  remove-x"
-                                                        (click)="isshowTax =  false">X</a>
+                                                        (click)="isshowTax =  false;removeTax()">X</a>
                                                 </div>
                                             </div>
 
 
-                                            <div class="d-flex justify-content-end mb-1 align-items-center" *ngIf="isshowDiscount">
+                                            <div class="d-flex justify-content-end  align-items-center" *ngIf="isshowDiscount">
                                                 <div class="fw-bold mr-1">Discount :</div>
-                                                <div class="d-flex   justify-content-between align-items-center"><input
-                                                        type="number"  [(ngModel)]="discountAmount" class="form-control ">
+                                                <div class="d-flex   justify-content-between align-items-center  input-container">
+                                                    <input (keydown)="addDiscount()" 
+                                                        type="text"  [(ngModel)]="discountAmount" class="form-control w-100">
                                                     <a class="fw-bold remove-x" href="javascript:void(0)"
-                                                        (click)="isshowDiscount =  false">X</a>
+                                                        (click)="isshowDiscount =  false;removeDiscount()">X</a>
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-end  mb-1 align-items-center" *ngIf="isshowShipping">
+                                            <div class="d-flex justify-content-end  align-items-center " *ngIf="isshowShipping">
                                                 <div class="fw-bold mr-1">Shipping :</div>
-                                                <div class="d-flex  justify-content-between align-items-center"><input
-                                                        type="number" [(ngModel)]="shippingAmount" class="form-control ">
+                                                <div class="d-flex  justify-content-between align-items-center input-container ">
+                                                    <input
+                                                        type="text" (keydown)="addShip()"  [(ngModel)]="shippingAmount" class="form-control w-100">
                                                     <a class="fw-bold remove-x" href="javascript:void(0)"
-                                                        (click)="isshowShipping =  false">X</a>
+                                                        (click)="isshowShipping =  false;removeShip()">X</a>
                                                 </div>
                                             </div>
 
 
 
 
-                                            <div class="d-flex justify-content-end mb-1 align-items-center">
+                                            <div class="d-flex justify-content-end mt-1 align-items-center">
                                                 <div class="fw-bold mr-1">Total:</div>
-                                                <div class="d-flex  justify-content-between align-items-center"> <input
+                                                <div  class="d-flex   justify-content-between align-items-center">
+                                                     <input  
                                                         type="text" [(ngModel)]="totalActualAmount"  readonly class="form-control w-100">
                                                   
                                                 </div>
                                             </div>
 
 
-                                            <div class="d-flex justify-content-end mb-1 align-items-center">
+                                            <div class="d-flex justify-content-end mt-1 align-items-center">
                                                 <div class="fw-bold mr-1">Amount Paid  :</div>
                                                 <div class="d-flex  justify-content-between align-items-center">
-                                                    <input type="number" readonly class="form-control ">
+                                                    <input type="text" (keydown)="calculateBalanceDue()" [(ngModel)]="paidAmount"   class="form-control ">
                                                   
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-end  mb-1 align-items-center">
+                                            <div class="d-flex justify-content-end mt-1 align-items-center">
                                                 <div class="fw-bold mr-1">Balance Due :</div>
-                                                <div class="d-flex readonly  justify-content-between align-items-center"><input
-                                                        type="number" class="form-control ">
+                                                <div class="d-flex readonly   justify-content-between align-items-center">
+                                                    <input [(ngModel)]="balanceDue"  type="text" class="form-control ">
                                                    
                                                 </div>
                                             </div>
