@@ -112,15 +112,20 @@
                                                             </a>
                                                             <a *ngIf="ticket?.status == 'VOIDED'" type="button" (click)="showRestoreTicket(ticket)"
                                                                 class="btn btn-grid btn-success  me-1">
-                                                                <i class="mdi mdi-restore pe-1"></i> Restore
+                                                                <i class="mdi mdi-restore me-1 pe-1"></i> Restore
                                                             </a>
 
                                                         </ng-container>
                                                        
-                                                        <a class="btn btn-grid btn-success"
+                                                        <a class="btn btn-grid btn-success me-1"
                                                             (click)="showTicketDetails(ticket)">
                                                             <i class="mdi mdi-eye pe-1"></i> Open Invoice
                                                         </a>
+
+                                                        <a class="btn btn-grid btn-success  me-1"
+                                                        (click)="markasPaid(ticket)">
+                                                        <i class="mdi mdi-eye pe-1"></i>Mark as Paid
+                                                    </a>
 
                                                     </div>
                                                 </td>

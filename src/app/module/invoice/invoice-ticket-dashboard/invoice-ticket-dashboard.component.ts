@@ -314,6 +314,10 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   }
 
 
+  markasPaid(ticketData: any){
+
+  }
+
   getColor(type: any, isParent: boolean) {
 
     //     .text-primary
