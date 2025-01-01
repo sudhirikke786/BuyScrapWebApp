@@ -142,15 +142,40 @@
                                                     </td>
                                                 <td  style="width: 30%;">
 
-                                                    <div class="mb-3">
-                                                        <label for="notes" class="form-label fw-bold">Ship To Address</label>
-                                                        <textarea id="notes" class="form-control" rows="3"
+                                                    <div>
+                                                        <label for="ship" class="form-label fw-bold">Ship To Address</label>
+                                                        <textarea id="ship" class="form-control" rows="3"
                                                             placeholder="Ship Address"></textarea>
                                                     </div>
 
 
 
                                                     
+
+
+
+
+
+
+
+                                                </td>
+
+
+                                                <td  style="width: 30%;">
+                                                    <div class="col-sm-12 sidebar-inputox">
+                                                    <div class="mb-1 d-flex">
+                                                        <label for="date" class="form-label">Date</label>
+                                                        <input type="date" id="date" class="form-control">
+                                                    </div>
+                                                    <div class="mb-1  d-flex">
+                                                        <label for="payment-terms" class="form-label">Payment
+                                                            Terms</label>
+                                                        <input type="text" id="payment-terms"
+                                                            class="form-control"
+                                                            placeholder="Enter payment terms">
+                                                    </div>
+
+                                                    </div>
 
 
 
@@ -167,17 +192,7 @@
 
                                                     <div class="col-sm-12 sidebar-inputox">
 
-                                                        <div class="mb-1 d-flex">
-                                                            <label for="date" class="form-label">Date</label>
-                                                            <input type="date" id="date" class="form-control">
-                                                        </div>
-                                                        <div class="mb-1  d-flex">
-                                                            <label for="payment-terms" class="form-label">Payment
-                                                                Terms</label>
-                                                            <input type="text" id="payment-terms"
-                                                                class="form-control"
-                                                                placeholder="Enter payment terms">
-                                                        </div>
+                                                        
                                                         <div class="mb-1  d-flex">
                                                             <label for="due-date" class="form-label">Due
                                                                 Date</label>
@@ -337,17 +352,21 @@
                                 <div class="row">
 
                                     <div class="row mt-1 mb-4">
-                                        <div class="col-lg-8 col-sm-6">
-                                            <div class="mb-3">
+                                        <div class="col-lg-8 d-flex col-sm-6">
+                                        
+                                            <div class="mb-3 col-sm-6">
                                                 <label for="notes" class="form-label">Notes</label>
                                                 <textarea id="notes" [(ngModel)]="notes" class="form-control" rows="3"
                                                     placeholder="Any relevant information not already covered"></textarea>
                                             </div>
 
-                                            <div class="mb-3">
-                                                <label for="notes" class="form-label">Terms</label>
-                                                <textarea id="notes" [(ngModel)]="terms" class="form-control" rows="3"
-                                                    placeholder="Terms an conditions"></textarea>
+                                            <div class="mb-3 col-sm-6">
+                                                <div class="ms-2">
+                                                    <label for="notes" class="form-label">Terms</label>
+                                                    <textarea id="notes" [(ngModel)]="terms" class="form-control" rows="3"
+                                                        placeholder="Terms an conditions"></textarea>
+                                                </div>
+                                               
                                             </div>
 
                                         </div>
