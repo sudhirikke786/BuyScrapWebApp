@@ -82,50 +82,9 @@
 
                                         <table class="seller-view-tbl">
                                             <tbody>
-                                                <tr>
-                                                    <td style="width:15%">{{customer?.fullName}}</td>
+                                                
 
-                                                    <td style="width:35%">
-                                                        <div
-                                                            class="d-flex w-12 justify-content-start align-items-center">
-                                                            <div class="fw-bold col-sm-6">Address : </div>
-                                                            <div class="col-sm-6">
-                                                                <ng-container *ngIf="isBusiness; else personalAddress">
-                                                                    <select class="text-truncate form-control"
-                                                                        *ngIf="!selectedBusinessAddressID && currentRoute.includes('detail/new')"
-                                                                        [(ngModel)]="addressId">
-                                                                        <option *ngFor="let address of addresses"
-                                                                            [value]="address.rowId">
-                                                                            {{ address.streetAddress }}
-                                                                        </option>
-                                                                    </select>
-                                                                    <!-- <select class="text-truncate" *ngIf="selectedBusinessAddressID != 0" [(ngModel)]="selectedBusinessAddressID" disabled>
-                                                                <option *ngFor="let address of addresses" [value]="address.rowId">
-                                                                  {{ address.streetAddress }}
-                                                                </option>
-                                                              </select> -->
-                                                                    <label *ngIf="!currentRoute.includes('detail/new')">
-                                                                        {{ getAddressLabel(selectedBusinessAddressID) }}
-                                                                    </label>
-
-                                                                </ng-container>
-                                                                <ng-template #personalAddress>
-                                                                    <span class="text-truncate">{{
-                                                                        customer?.streetAddress }}</span>
-                                                                </ng-template>
-                                                            </div>
-                                                        </div>
-
-
-                                                    </td>
-                                                    <td style="width:25%"><span class="fw-bold">Created on :</span>
-                                                        <label>{{invoiceData?.createdDate | date: 'MM/dd/yyyy'}}</label>
-                                                    </td>
-                                                    <td style="width:25%"><span class="fw-bold">Time :</span>
-                                                        {{invoiceData?.createdDate | date: 'hh:mm a'}}</td>
-                                                </tr>
-
-                                                <tr>
+                                                <!-- <tr>
                                                     <td><span class="fw-bold">DL# -
                                                         </span>{{customer?.driverLicenseNumber}}</td>
                                                     <td><span class="fw-bold">Dealer Type -</span>
@@ -134,49 +93,108 @@
                                                             :</span>{{customer?.driverLicenseNumber}}</td>
                                                     <td><span class="fw-bold"></span>By <label>{{user?.firstName}}
                                                             {{user?.lastName}}</label></td>
-                                                </tr>
+                                                </tr> -->
 
                                                 <tr>
-                                                    <td colspan="3"></td>
 
+                                                    <td style="width: 30%;">
 
-                                                    <td style="width:45%">
-
-                                                        <div class="col-sm-12 sidebar-inputox">
-
+                                                        <div class="col-sm-12">
+    
                                                             <div class="mb-1 d-flex">
-                                                                <label for="date" class="form-label">Date</label>
-                                                                <input type="date" id="date" class="form-control">
+                                                                <label for="date" class="form-label fw-bold">Customer Name:</label>
+                                                                {{customer?.fullName}}
                                                             </div>
-                                                            <div class="mb-1  d-flex">
-                                                                <label for="payment-terms" class="form-label">Payment
-                                                                    Terms</label>
-                                                                <input type="text" id="payment-terms"
-                                                                    class="form-control"
-                                                                    placeholder="Enter payment terms">
+                                                            <div class="mb-1">
+                                                                <label for="payment-terms" class="form-label fw-bold">Bill Address:
+                                                                    </label>
+                                                                    <div class="col-sm-6">
+                                                                        <ng-container *ngIf="isBusiness; else personalAddress">
+                                                                            <select class="text-truncate form-control"
+                                                                                *ngIf="!selectedBusinessAddressID && currentRoute.includes('detail/new')"
+                                                                                [(ngModel)]="addressId">
+                                                                                <option *ngFor="let address of addresses"
+                                                                                    [value]="address.rowId">
+                                                                                    {{ address.streetAddress }}
+                                                                                </option>
+                                                                            </select>
+                                                                    
+                                                                            <label *ngIf="!currentRoute.includes('detail/new')">
+                                                                                {{ getAddressLabel(selectedBusinessAddressID) }}
+                                                                            </label>
+        
+                                                                        </ng-container>
+                                                                        <ng-template #personalAddress>
+                                                                            <span class="pre-wrap">{{
+                                                                                customer?.streetAddress }}</span>
+                                                                        </ng-template>
+                                                                    </div>
                                                             </div>
-                                                            <div class="mb-1  d-flex">
-                                                                <label for="due-date" class="form-label">Due
-                                                                    Date</label>
-                                                                <input type="date" id="due-date" class="form-control">
-                                                            </div>
-                                                            <div class="mb-1  d-flex">
-                                                                <label for="po-number" class="form-label">PO
-                                                                    Number</label>
-                                                                <input type="text" id="po-number" class="form-control"
-                                                                    placeholder="Enter PO number">
-                                                            </div>
+                                                           
                                                         </div>
-
-
-                                                        <!-- Time :</span>  {{invoiceData?.createdDate  | date: 'hh:mm a'}} -->
-
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
                                                     </td>
-                                                </tr>
+                                                <td  style="width: 30%;">
+
+                                                    <div class="mb-3">
+                                                        <label for="notes" class="form-label fw-bold">Ship To Address</label>
+                                                        <textarea id="notes" class="form-control" rows="3"
+                                                            placeholder="Ship Address"></textarea>
+                                                    </div>
+
+
+
+
+
+
+
+                                                </td>
+
+                                                
+
+
+                                                <td>
+
+                                                    <div class="col-sm-12 sidebar-inputox">
+
+                                                        <div class="mb-1 d-flex">
+                                                            <label for="date" class="form-label">Date</label>
+                                                            <input type="date" id="date" class="form-control">
+                                                        </div>
+                                                        <div class="mb-1  d-flex">
+                                                            <label for="payment-terms" class="form-label">Payment
+                                                                Terms</label>
+                                                            <input type="text" id="payment-terms"
+                                                                class="form-control"
+                                                                placeholder="Enter payment terms">
+                                                        </div>
+                                                        <div class="mb-1  d-flex">
+                                                            <label for="due-date" class="form-label">Due
+                                                                Date</label>
+                                                            <input type="date" id="due-date" class="form-control">
+                                                        </div>
+                                                        <div class="mb-1  d-flex">
+                                                            <label for="po-number" class="form-label">PO
+                                                                Number</label>
+                                                            <input type="text" id="po-number" class="form-control"
+                                                                placeholder="Enter PO number">
+                                                        </div>
+                                                    </div>
+
+
+
+
+
+
+
+                                                </td>
+                                            </tr>
 
                                             </tbody>
                                         </table>
@@ -324,53 +342,76 @@
 
                                         </div>
                                         <div class="col-lg-4 col-sm-6">
-                                            <div class="d-flex justify-content-end mb-1 align-items-center">
+
+                                            <div class="d-flex justify-content-end mb-1 sidebar-button text-end">
+                                                <button class="btn btn-primary me-1" (click)="showTax()"> <i
+                                                        class="fa fa-plus"></i> Tax</button>
+                                                <button class="btn btn-primary  me-1" (click)="showShipping()"> <i
+                                                        class="fa fa-plus"></i> Shipping
+
+
+
+                                                </button>
+                                                <button class="btn btn-success  me-1" (click)="showDiscount()"> <i
+                                                        class="fa fa-plus"></i>Discount</button>
+
+                                            </div>
+
+                                            
+                                            
+
+                                            <!-- <div class="d-flex justify-content-end mb-1 align-items-center">
                                                 <div class="fw-bold mr-1">Subtotal:</div>
                                                 <div>
                                                     <input type="number" readonly class="form-control w-100" 
                                                         [value]="totalAmount">
                                                 </div>
+                                            </div> -->
+
+                                            <div class="d-flex justify-content-end  align-items-center" *ngIf="isshowDiscount">
+                                                <div class="fw-bold mr-1">Discount(%) :</div>
+                                                <div class="d-flex   justify-content-between align-items-center  input-container">
+                                                    <input (change)="addDiscount()" 
+                                                        type="text"  [(ngModel)]="discountAmount" class="form-control w-100">
+                                                    <a class="fw-bold remove-x" href="javascript:void(0)"
+                                                        (click)="isshowDiscount =  false;removeDiscount()">X</a>
+                                                </div>
                                             </div>
-                                            <div class="d-flex justify-content-end  align-items-center" *ngIf="isshowTax">
-                                                <div class="fw-bold mr-1">Tax:</div>
+
+
+                                            <div class="d-flex justify-content-end  align-items-start" *ngIf="isshowTax">
+                                                <div class="fw-bold mr-2">Tax(%): </div>
                                                 <div class="d-flex justify-content-between align-items-center  input-container"> <input
-                                                        type="number" (keydown)="getTaxAmount()" [(ngModel)]="taxAmount" class="form-control w-100">
+                                                        type="number" (change)="getTaxAmount()" [(ngModel)]="taxAmount" class="form-control w-100">
                                                     <a href="javascript:void(0)" class="fw-bold  remove-x"
                                                         (click)="isshowTax =  false;removeTax()">X</a>
                                                 </div>
                                             </div>
 
 
-                                            <div class="d-flex justify-content-end  align-items-center" *ngIf="isshowDiscount">
-                                                <div class="fw-bold mr-1">Discount :</div>
-                                                <div class="d-flex   justify-content-between align-items-center  input-container">
-                                                    <input (keydown)="addDiscount()" 
-                                                        type="text"  [(ngModel)]="discountAmount" class="form-control w-100">
-                                                    <a class="fw-bold remove-x" href="javascript:void(0)"
-                                                        (click)="isshowDiscount =  false;removeDiscount()">X</a>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-content-end  align-items-center " *ngIf="isshowShipping">
-                                                <div class="fw-bold mr-1">Shipping :</div>
+                                           
+                                            <div class="d-flex justify-content-end  align-items-start " *ngIf="isshowShipping">
+                                                <div class="fw-bold mr-2">Shipping : </div>
                                                 <div class="d-flex  justify-content-between align-items-center input-container ">
                                                     <input
-                                                        type="text" (keydown)="addShip()"  [(ngModel)]="shippingAmount" class="form-control w-100">
+                                                        type="text" (change)="addShip()"  [(ngModel)]="shippingAmount" class="form-control w-100">
                                                     <a class="fw-bold remove-x" href="javascript:void(0)"
                                                         (click)="isshowShipping =  false;removeShip()">X</a>
                                                 </div>
                                             </div>
 
-
-
-
-                                            <div class="d-flex justify-content-end mt-1 align-items-center">
+                                            <div class="d-flex justify-content-end mt-1 align-items-start">
                                                 <div class="fw-bold mr-1">Total:</div>
                                                 <div  class="d-flex   justify-content-between align-items-center">
                                                      <input  
-                                                        type="text" [(ngModel)]="totalActualAmount"  readonly class="form-control w-100">
+                                                        type="text" [(ngModel)]="finalAmount"  readonly class="form-control w-100">
                                                   
                                                 </div>
                                             </div>
+
+
+
+
 
 
                                             <div class="d-flex justify-content-end mt-1 align-items-center">
@@ -390,19 +431,7 @@
 
 
                                             
-                                            <div class="d-flex justify-content-start mt-1 sidebar-button">
-                                                <button class="btn btn-primary me-1" (click)="showTax()"> <i
-                                                        class="fa fa-plus"></i> Tax</button>
-                                                <button class="btn btn-primary  me-1" (click)="showShipping()"> <i
-                                                        class="fa fa-plus"></i> Shipping
-
-
-
-                                                </button>
-                                                <button class="btn btn-success  me-1" (click)="showDiscount()"> <i
-                                                        class="fa fa-plus"></i>Discount</button>
-
-                                            </div>
+                                            
 
 
                                         </div>

@@ -218,6 +218,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   shippingAmount = 0;
   paidAmount = 0.0;
   balanceDue = 0;
+
+  finalAmount = 0;
   @ViewChild(InvoiceCalculatorComponent) InvoiceCalculatorComponent!:InvoiceCalculatorComponent;
   
       constructor(private route: ActivatedRoute,
@@ -866,6 +868,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
     this.totalAmount = Math.round(this.totalActualAmount);
     this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
+
+    this.finalAmount = this.totalAmount;
     this.totalAdjustment = invoices.reduce(function (sum: any, invoices: any) {
       // return sum + (invoices.isAdjusmentSet ? invoices.amount * -1 : 0);
       return sum + (invoices.isAdjusmentSet ? invoices.amount : 0);
@@ -878,43 +882,54 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
   getTaxAmount() {
-    // how to calculate tax on total number of material
-     const taxAMount = this.totalAmount *  (1 + this.taxAmount / 100);
-     console.log(taxAMount)
-
-     this.totalActualAmount =  taxAMount;
-     
-     console.log(taxAMount, this.totalActualAmount )
-
-    // this.totalAmount = this.totalActualAmount + this.taxAmount;
-    // this.totalAmount = Math.round(this.totalAmount);
-    // this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
-
-    
-    // const taxAdd =  this.totalAmount % 
-
-    //  this.totalAmount + this.totalRoundingAmount + this.totalAdjustment;
+    this.calculate()
   }
 
-  removeTax() {
+  calculate() {
+    let _tax = 0;
+    let _discount = 0;
+    // Calculate the tax and discount
+    if(this.taxAmount > 0){
+      _tax = (this.totalActualAmount * this.taxAmount) / 100;
+    }
+    
 
+    if(this.discountAmount > 0){
+      _discount = (this.totalActualAmount * this.discountAmount) / 100;
+    }
+   
+
+
+    // Calculate the final amount after tax, discount, and shipping charge
+    this.finalAmount = this.totalActualAmount + _tax - _discount + Number(this.shippingAmount);
+
+    console.log(this.finalAmount)
+  }
+
+
+  removeTax() {
+    this.taxAmount = 0;
+    this.calculate()
 
   }
 
   addShip(){
 
+    this.calculate()
   }
 
   removeShip(){
-
+    this.shippingAmount = 0
+    this.calculate()
   }
 
   addDiscount(){
-
+    this.calculate()
   }
 
   removeDiscount(){
-
+    this.discountAmount = 0
+    this.calculate()
   }
 
   addTotal(){
