@@ -150,6 +150,10 @@
 
 
 
+                                                    
+
+
+
 
 
 
@@ -336,8 +340,14 @@
                                         <div class="col-lg-8 col-sm-6">
                                             <div class="mb-3">
                                                 <label for="notes" class="form-label">Notes</label>
-                                                <textarea id="notes" class="form-control" rows="3"
+                                                <textarea id="notes" [(ngModel)]="notes" class="form-control" rows="3"
                                                     placeholder="Any relevant information not already covered"></textarea>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="notes" class="form-label">Terms</label>
+                                                <textarea id="notes" [(ngModel)]="terms" class="form-control" rows="3"
+                                                    placeholder="Terms an conditions"></textarea>
                                             </div>
 
                                         </div>
@@ -417,7 +427,7 @@
                                             <div class="d-flex justify-content-end mt-1 align-items-center">
                                                 <div class="fw-bold mr-1">Amount Paid  :</div>
                                                 <div class="d-flex  justify-content-between align-items-center">
-                                                    <input type="text" (keydown)="calculateBalanceDue()" [(ngModel)]="paidAmount"   class="form-control ">
+                                                    <input type="text" (change)="calculateBalanceDue()" [(ngModel)]="paidAmount"   class="form-control ">
                                                   
                                                 </div>
                                             </div>

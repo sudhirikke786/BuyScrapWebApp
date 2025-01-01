@@ -220,6 +220,9 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   balanceDue = 0;
 
   finalAmount = 0;
+
+  notes = '';
+  terms  = '';
   @ViewChild(InvoiceCalculatorComponent) InvoiceCalculatorComponent!:InvoiceCalculatorComponent;
   
       constructor(private route: ActivatedRoute,
@@ -314,16 +317,16 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
   showTax() {
-    this.isshowTax = !this.isshowTax;
+    this.isshowTax = true;
   }
 
 
   showDiscount(){
-    this.isshowDiscount = !this.isshowDiscount;
+    this.isshowDiscount = true;
   }
 
   showShipping(){
-    this.isshowShipping =  !this.isshowShipping;
+    this.isshowShipping = true;
   }
 
 
@@ -938,7 +941,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
   calculateBalanceDue(): void {
-    this.balanceDue = this.totalActualAmount - this.paidAmount;
+    this.balanceDue = this.finalAmount - this.paidAmount;
   }
 
   searchMaterial(searchTerm:any){
