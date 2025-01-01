@@ -889,19 +889,20 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     let _tax = 0;
     let _discount = 0;
     // Calculate the tax and discount
-    if(this.taxAmount > 0){
-      _tax = (this.totalActualAmount * this.taxAmount) / 100;
-    }
+    let total = this.totalActualAmount;
     
-
     if(this.discountAmount > 0){
-      _discount = (this.totalActualAmount * this.discountAmount) / 100;
+      _discount = (total * this.discountAmount) / 100;
     }
-   
+    total = total - _discount;
+
+    if(this.taxAmount > 0){
+      _tax = (total * this.taxAmount) / 100;
+    }
 
 
     // Calculate the final amount after tax, discount, and shipping charge
-    this.finalAmount = this.totalActualAmount + _tax - _discount + Number(this.shippingAmount);
+    this.finalAmount = total + _tax + Number(this.shippingAmount);
 
     console.log(this.finalAmount)
   }
