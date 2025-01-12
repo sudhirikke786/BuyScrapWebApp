@@ -947,6 +947,9 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
   editInvoiceDetails() {
     this.isEditModeOn = true;
+    this.isshowTax =  true;
+    this.isshowDiscount = true;
+    this.isshowShipping = true;
     this.getAllGroupMaterial();
   }
 
@@ -1373,7 +1376,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.invoiceData.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
       this.invoiceData.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
       this.invoiceData.totalAmount = parseFloat(this.totalActualAmount.toFixed(3));
-      this.invoiceData.paidAmount = parseFloat(paidAmount.toString());
+      this.invoiceData.paidAmount =  parseFloat(Number(this.paidAmount).toFixed(2));
       this.invoiceData.lstttransactionMasterDTO = this.invoiceObj;
       this.invoiceData.updatedBy = this.logInUserId;
       this.invoiceData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
@@ -1387,8 +1390,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.invoiceData.notes = this.notes;
       this.invoiceData.terms = this.terms;
       this.invoiceData.tax = this.tax;
-      this.invoiceData.shippingCharges =  parseFloat(this.shippingCharges.toFixed(2));
-      this.invoiceData.discount =  parseFloat(this.discount.toFixed(2));
+      this.invoiceData.shippingCharges = parseFloat(Number(this.shippingCharges).toFixed(2));
+      this.invoiceData.discount =  parseFloat(Number(this.discount).toFixed(2));
       this.invoiceData.dueDate = this.dueDate;
     } else {
       const newInvoice = new Invoice();
@@ -1405,7 +1408,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       newInvoice.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
       newInvoice.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
       newInvoice.totalAmount = parseFloat(this.totalActualAmount.toFixed(3));
-      newInvoice.paidAmount = parseFloat(paidAmount.toString());
+      newInvoice.paidAmount = parseFloat(Number(this.paidAmount).toFixed(2));
       newInvoice.dateOpened = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       newInvoice.dateClosed = null;
       newInvoice.customerName = this.customer?.fullName;
@@ -1420,8 +1423,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       newInvoice.notes = this.notes;
       newInvoice.terms = this.terms;
       newInvoice.tax = this.tax;
-      newInvoice.shippingCharges = parseFloat(this.shippingCharges.toFixed(2)); // K parseFloat(this.shippingCharges);
-      newInvoice.discount =  parseFloat(this.discount.toFixed(2));
+      newInvoice.shippingCharges = parseFloat(Number(this.shippingCharges).toFixed(2)); // K parseFloat(this.shippingCharges);
+      newInvoice.discount =  parseFloat(Number(this.discount).toFixed(2));
       newInvoice.dueDate = this.dueDate;
       
 
