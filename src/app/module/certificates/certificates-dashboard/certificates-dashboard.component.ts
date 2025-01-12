@@ -266,7 +266,7 @@ export class CertificatesDashboardComponent implements OnInit {
     const paramObject = {
       TicketId: this.selectedTicketId,
       locid: this.locId,
-      IsCOD: false,
+      IsCOD: true,
       IsCODDone: false
     };
     this.commonService.GetTicketMaterialsDetailsByTicketId(paramObject)
@@ -278,11 +278,13 @@ export class CertificatesDashboardComponent implements OnInit {
         //   return item
         // });
         this.ticketObj = data.body.data
-        .filter((item: any) => item.isCOD === true)
-        .map((item: any) => {
-            item.isSelected = false;
-            return item;
-        });
+            .filter((item: any) => item.isCOD) 
+            .map((item: any) => ({
+              ...item,              
+              // item.isSelected: false     
+            }));
+
+          console.log('COD Items:', this.ticketObj);
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';

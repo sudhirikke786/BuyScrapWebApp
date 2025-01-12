@@ -1205,14 +1205,8 @@ export class TicketDetailComponent implements OnInit {
     }
     if (this.isCODRequired) {
       this.ticketObj = this.ticketObj.map((item: TicketItem) => {
-        // Only update COD flags if the item is selected
-        if (item.selected) {
-          item.isCOD = true;
-          item.isCODDone = false;
-          item.isCODupdated = false;
-        } else {
-          // If not selected, reset COD flags
-          item.isCOD = false;
+        // Only update if item is marked for COD
+        if (item.isCOD) {
           item.isCODDone = false;
           item.isCODupdated = false;
         }
@@ -1224,10 +1218,10 @@ export class TicketDetailComponent implements OnInit {
         item.isCOD = false;
         item.isCODDone = false;
         item.isCODupdated = false;
-        item.selected = false;
         return item;
       });
     }
+
     let ticketStatus = 'OPEN';
     if (paidAmount > 0 && paidAmount == this.totalAmount) {
       ticketStatus = 'PAID';
@@ -1310,18 +1304,6 @@ export class TicketDetailComponent implements OnInit {
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
-  }
-
-  onCODToggle() {
-    if (!this.isCODRequired) {
-      this.ticketObj = this.ticketObj.map((item: TicketItem) => {
-        item.selected = false;
-        item.isCOD = false;
-        item.isCODDone = false;
-        item.isCODupdated = false;
-        return item;
-      });
-    }
   }
 
   cancelEditTicket(ticketId: any) {

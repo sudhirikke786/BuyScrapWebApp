@@ -1,6 +1,7 @@
 export class Invoice {
     rowId: number = 0;
     addressID:any;
+    shipOutID: any;
     createdBy: number = 0;
     createdDate: any;
     updatedBy: number = 0;
@@ -24,5 +25,14 @@ export class Invoice {
     voidReason: any;
     voidDate: any;
     buyerSignature: any;
+    shipToAddress:  string ='';
+    paymentTerms : string ='';
+    poNumber  :   string ='';
+    notes  :   string ='';
+    terms  :   string ='';
+    tax  :any;
+    shippingCharges: number=0;
+    discount: number=0;
+    dueDate  :   any;
     lstttransactionMasterDTO: any;
 }
