@@ -17,7 +17,7 @@ export class DispatchLatestDetailsComponent {
   orgName:any;
   invoiceId:any;
   sellerId:any;
-  addressId:Number=0;
+  addressId:any;
   locId:any;
   logInUserId: any;
   locationName: any;
@@ -216,8 +216,6 @@ constructor(private route: ActivatedRoute, private router:Router,
       (data) => {
         console.log('getSellerById Response:', data);
         this.customer = data.body.data;
-        console.log('idscanImage:', this.customer.idscanImage);
-
         this.isBusiness = this.customer?.sellerType === 'Business';
   
         if (this.isBusiness) {
@@ -377,7 +375,7 @@ constructor(private route: ActivatedRoute, private router:Router,
       "rowID": this.dispatchObj?.rowID ?? 0,
       "ticketID": 0,
       "sellerID": parseInt(this.sellerId),
-      "addressID":this.addressId,
+      "addressID":parseInt(this.addressId),
       "pickUpAddress": "string",
       "pickUpDate":new Date(this.pickupdate).toISOString(),
       "charges": this.invoiceObj.reduce((acc,curr) => acc + curr.charges,0),
