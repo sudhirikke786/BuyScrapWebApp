@@ -214,10 +214,10 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   isshowDiscount = false;
   isshowShipping =  false;
 
-  discountAmount = 0;
-  taxAmount = 0;
-  shippingAmount = 0;
-  paidAmount = 0.0;
+  discount = 0.0;
+  tax= 0;
+  shippingCharges = 0;
+  paidAmount = 0;
   balanceDue = 0;
 
   finalAmount = 0;
@@ -960,25 +960,25 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     // Calculate the tax and discount
     let total = this.totalActualAmount;
     
-    if(this.discountAmount > 0){
-      _discount = (total * this.discountAmount) / 100;
+    if(this.discount > 0){
+      _discount = (total * this.discount) / 100;
     }
     total = total - _discount;
 
-    if(this.taxAmount > 0){
-      _tax = (total * this.taxAmount) / 100;
+    if(this.tax > 0){
+      _tax = (total * this.tax) / 100;
     }
 
 
     // Calculate the final amount after tax, discount, and shipping charge
-    this.finalAmount = total + _tax + Number(this.shippingAmount);
+    this.finalAmount = total + _tax + Number(this.shippingCharges);
 
     console.log(this.finalAmount)
   }
 
 
   removeTax() {
-    this.taxAmount = 0;
+    this.tax = 0;
     this.calculate()
 
   }
@@ -989,7 +989,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
   removeShip(){
-    this.shippingAmount = 0
+    this.shippingCharges = 0
     this.calculate()
   }
 
@@ -998,7 +998,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
   removeDiscount(){
-    this.discountAmount = 0
+    this.discount = 0
     this.calculate()
   }
 
@@ -1387,8 +1387,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.invoiceData.notes = this.notes;
       this.invoiceData.terms = this.terms;
       this.invoiceData.tax = this.tax;
-      this.invoiceData.shippingCharges = this.shippingCharges;
-      this.invoiceData.discount = this.discount;
+      this.invoiceData.shippingCharges =  parseFloat(this.shippingCharges.toFixed(2));
+      this.invoiceData.discount =  parseFloat(this.discount.toFixed(2));
       this.invoiceData.dueDate = this.dueDate;
     } else {
       const newInvoice = new Invoice();
@@ -1413,15 +1413,15 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       newInvoice.lstttransactionMasterDTO = this.invoiceObj;
       newInvoice.buyerSignature = this.sellerSignatureImagePath;
 
-      newInvoice.shipOutID =parseInt (this.shipOutID)||0;
+      newInvoice.shipOutID  =parseInt (this.shipOutID)|| 0;
       newInvoice.shipToAddress = this.shipToAddress;
       newInvoice.paymentTerms = this.paymentTerms;
       newInvoice.poNumber = this.poNumber;
       newInvoice.notes = this.notes;
       newInvoice.terms = this.terms;
       newInvoice.tax = this.tax;
-      newInvoice.shippingCharges = parseFloat(this.shippingCharges);
-      newInvoice.discount =parseFloat (this.discount);
+      newInvoice.shippingCharges = parseFloat(this.shippingCharges.toFixed(2)); // K parseFloat(this.shippingCharges);
+      newInvoice.discount =  parseFloat(this.discount.toFixed(2));
       newInvoice.dueDate = this.dueDate;
       
 
@@ -1449,9 +1449,6 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         this.cancelEditInvoice(isReceiptPrint, this.invoiceId);
       }
 
-      // this.confirmSave();
-      // alert('Invoice Inserted/ updated successfully');
-      // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Invoice Inserted/ updated successfully' });
       
     }, (error: any) => {
       console.log(error);
