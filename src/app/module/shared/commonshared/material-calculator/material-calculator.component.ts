@@ -62,7 +62,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   
     this.grossInput = this.itemGross;
     this.tareInput = this.itemTare;
-    this.priceInput=this.itemPrice;
+    this.priceInput= this.itemPrice;
     const netQty = this.grossInput - this.tareInput
     this.netInput = isNaN(netQty) ?  0 : netQty;
     this.availableNetInput = this.itemAvailableNet;
@@ -106,7 +106,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   // }
 
   ngAfterViewInit(): void {
-    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox4,this.inputBox3,, this.inputBox5];
+    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox5];
     setTimeout(()=>{
       this.inputBoxes[this.currentFocusIndex]?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     },100)

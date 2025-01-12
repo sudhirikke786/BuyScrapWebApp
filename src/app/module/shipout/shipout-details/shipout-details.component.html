@@ -125,7 +125,7 @@
                                                     <th>Tare</th>
                                                     <th>Net</th>
                                                     <th>Price</th>
-
+                                                    <th>Amount</th>
                                                     <th *ngIf="isEditModeOn">Action</th>
                                                 </tr>
                                             </ng-template>
@@ -139,6 +139,7 @@
                                                         <td>{{ ticket.tare }}</td>
                                                         <td>{{ ticket.net }}</td>
                                                         <td>{{ ticket.price }}</td>
+                                                        <td>{{ ticket.net * ticket.price }}</td>
                                                         <td *ngIf="isEditModeOn">                                                            
                                                             <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editItem(ticket)"
                                                             class="btn btn-grid btn-primary waves-effect waves-light me-1">
@@ -154,7 +155,7 @@
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                    <tr [ngClass]="{'no-border-tr': ticket.note !=''}"  *ngIf="ticket.note != ''">
+                                                    <tr [ngClass]="{'no-border-tr': ticket.note !=''}"  *ngIf="ticket.note && ticket.note != ''">
                                                         <!-- <td class="cod-item">
                                                             {{ ticket?.codNote }}
                                                         </td> -->
@@ -170,9 +171,8 @@
                                                         <td>{{ ticket.gross  }}</td>
                                                         <td>{{ ticket.tare }}</td>
                                                         <td>{{ ticket.net }}</td>
-                                                        <td>{{ ticket.price }}</td>
-
-                                                        
+                                                        <td>{{ ticket.price }}</td>                                                        
+                                                        <td>{{ ticket.net * ticket.price }}</td>                                                        
                                                     </tr>
                                                     <tr [ngClass]="{'no-border-tr': ticket.note !=''}"  *ngIf="ticket.note != ''">
                                                         <!-- <td class="cod-item">
@@ -200,13 +200,12 @@
                                                 <table class="ticket-details-tbl">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 25%;">Material</th>
-                                                            <th style="width: 25%;">Gross(M)</th>
-                                                            <th style="width: 25%;">Tare</th>
-                                                            <th style="width: 25%;">Net</th>
-                                                            <th style="width: 25%;">Price</th>
-                                                    </tr></thead>
-        
+                                                            <th style="width: 20%;">Material #</th>
+                                                            <th style="width: 20%;">Gross(M)</th>
+                                                            <th style="width: 15%;">Tare</th>
+                                                            <th style="width: 20%;">Net</th>
+                                                            <th style="width: 25%;">Total Amount</th>
+                                                    </tr></thead>        
                                                     <tbody> 
                                                         <tr>
                                                             <td>{{totalNoOfMaterial}}</td>
@@ -214,7 +213,6 @@
                                                             <td>{{totalTare}}</td>
                                                             <td>{{totalNet}}</td>
                                                             <td>{{totalPrice}}</td>
-
                                                         </tr>                                                     
                                                     </tbody>
                                                     

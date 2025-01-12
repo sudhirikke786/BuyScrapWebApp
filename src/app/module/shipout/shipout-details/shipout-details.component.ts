@@ -408,7 +408,7 @@ export class ShipoutDetailsComponent implements OnInit {
       return sum + tickets.net;
     }, 0);
     this.totalPrice = tickets.reduce(function (sum:any, tickets:any) {
-      return sum + tickets.price;
+      return sum + (tickets.net * tickets.price);
     }, 0);
   }
 
@@ -500,7 +500,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.shipOutDetails.totalGross = this.totalGross;
     this.shipOutDetails.totalTare = this.totalTare;
     this.shipOutDetails.totalNet = this.totalNet;
-    this.shipOutDetails.totalPrice = this.totalPrice;
+    this.shipOutDetails.totalAmount = this.totalPrice;
     this.shipOutDetails.shipoutmaterial = this.ticketObj;
     // this.shipOutDetails.customerId = parseFloat(this.sellerId);
     this.shipOutDetails.customerId = this.customerId ? parseFloat(this.customerId) : null;
@@ -643,7 +643,7 @@ export class ShipoutDetailsComponent implements OnInit {
   updateExistingItemDataResponse() {
 
     if (this.itemLeveloperationPerform === 'Add') {
-      // const arr = [];
+      const net = parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)) - parseFloat(parseFloat(this.itemTare.toString()).toFixed(3));
       let rowData = {
         rowId : 0,
         localRowId : this.localRowIdCounter++,
@@ -652,8 +652,9 @@ export class ShipoutDetailsComponent implements OnInit {
         materialId : this.itemMaterialId,
         gross : parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)),
         tare : parseFloat(parseFloat(this.itemTare.toString()).toFixed(3)),
-        net : parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)) - parseFloat(parseFloat(this.itemTare.toString()).toFixed(3)),
+        net : net,
         price : parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3)),
+        amount : (net * parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3))),
         note : (this.materialNote || this.materialNote == '' ? this.materialNote : null)
       };   
 
@@ -673,6 +674,7 @@ export class ShipoutDetailsComponent implements OnInit {
           rowData.tare = parseFloat(parseFloat(this.itemTare.toString()).toFixed(3));
           rowData.net = rowData.gross - rowData.tare ;
           rowData.price= parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
+          rowData.amount= rowData.net * parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
           rowData.note = (this.materialNote || this.materialNote == '' ? this.materialNote : null);
         }
       });
