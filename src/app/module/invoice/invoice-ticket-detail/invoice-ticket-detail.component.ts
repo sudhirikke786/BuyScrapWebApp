@@ -218,7 +218,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   tax= 0;
   shippingCharges = 0;
   paidAmount = 0;
-  balanceDue = 0;
+  balanceAmount = 0;
 
   finalAmount = 0;
 
@@ -697,6 +697,11 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         this.totalRecords = data.totalRecords;
         const userId = data.body.data[0].createdBy;
 
+        this.isshowTax = this.invoiceData.tax &&  this.invoiceData.tax > 0 ;
+        this.isshowShipping = this.invoiceData.shippingCharges  &&  this.invoiceData.shippingCharges > 0;
+        this.isshowDiscount = this.invoiceData.discount  &&  this.invoiceData.discount > 0;
+        
+
         this.getAllUsers(userId);
       },
         (err: any) => {
@@ -947,11 +952,15 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
   editInvoiceDetails() {
     this.isEditModeOn = true;
-    this.isshowTax =  true;
-    this.isshowDiscount = true;
-    this.isshowShipping = true;
+   
     this.getAllGroupMaterial();
   }
+
+  // this.isshowTax =  true;
+  // this.isshowDiscount = true;
+  // this.isshowShipping = true;
+
+
 
   getTaxAmount() {
     this.calculate()
@@ -1010,7 +1019,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
   calculateBalanceDue(): void {
-    this.balanceDue = this.finalAmount - this.paidAmount;
+    this.balanceAmount = this.finalAmount - this.paidAmount;
   }
 
   searchMaterial(searchTerm:any){
@@ -1373,7 +1382,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.isEditModeOn = false;
       this.invoiceData.status = invoiceStatus;
       this.invoiceData.amount = parseFloat(this.totalAmount.toFixed(3));
-      this.invoiceData.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
+      this.invoiceData.balanceAmount = parseFloat(this.balanceAmount.toFixed(3));
       this.invoiceData.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
       this.invoiceData.totalAmount = parseFloat(this.totalActualAmount.toFixed(3));
       this.invoiceData.paidAmount =  parseFloat(Number(this.paidAmount).toFixed(2));
@@ -1405,7 +1414,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       newInvoice.invoiceId = 0;
       newInvoice.status = invoiceStatus;
       newInvoice.amount = parseFloat(this.totalAmount.toFixed(3));
-      newInvoice.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
+      newInvoice.balanceAmount = parseFloat(this.balanceAmount.toFixed(3));
       newInvoice.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
       newInvoice.totalAmount = parseFloat(this.totalActualAmount.toFixed(3));
       newInvoice.paidAmount = parseFloat(Number(this.paidAmount).toFixed(2));

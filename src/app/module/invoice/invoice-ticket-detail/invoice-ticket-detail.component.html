@@ -374,15 +374,15 @@
                                         <div class="col-lg-4 col-sm-6">
 
                                             <div class="d-flex justify-content-end mb-1 sidebar-button text-end">
-                                                <button class="btn btn-primary me-1" (click)="showTax()"> <i
+                                                <button class="btn btn-primary me-1" (click)="showTax()" *ngIf="!isshowTax"> <i
                                                         class="fa fa-plus"></i> Tax</button>
-                                                <button class="btn btn-primary  me-1" (click)="showShipping()"> <i
+                                                <button class="btn btn-primary  me-1" (click)="showShipping()" *ngIf="!isshowShipping"> <i
                                                         class="fa fa-plus"></i> Shipping
 
 
 
                                                 </button>
-                                                <button class="btn btn-success  me-1" (click)="showDiscount()"> <i
+                                                <button class="btn btn-success  me-1" (click)="showDiscount()" *ngIf="!isshowDiscount"> <i
                                                         class="fa fa-plus"></i>Discount</button>
 
                                             </div>
@@ -454,8 +454,8 @@
                                             <div class="d-flex justify-content-end mt-1 align-items-center">
                                                 <div class="fw-bold mr-1">Balance Due :</div>
                                                 <div class="d-flex readonly   justify-content-between align-items-center">
-                                                    <input [(ngModel)]="balanceDue" readonly  type="text" class="form-control ">
-                                                   
+                                                    <input [(ngModel)]="balanceAmount" readonly  type="text" class="form-control ">
+                                                    <!-- balanceAmount -->
                                                 </div>
                                             </div>
 
