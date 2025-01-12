@@ -906,7 +906,10 @@ export class TicketDashboardComponent implements OnInit {
 
     if (this.selectedPayAmount <= 0) {
  
-      this.messageAlert('Please Enter Amount')
+      // this.messageAlert('Please Enter Amount')
+      // return;
+      const text = 'The amount is zero or less than zero. Do you want to continue?';
+      this.confirmationMessage(text, 'proceedWithZeroAmount', null);
       return;
     }
 
@@ -950,6 +953,8 @@ export class TicketDashboardComponent implements OnInit {
           this.proceedWithAddTransaction();
         } else if (triggerPoint == 'payAndSave') {
           this.proceedPayAndSave(additionData);
+        }else if (triggerPoint === 'proceedWithZeroAmount') {
+          this.proceedWithAddTransaction(); 
         }
       },
       reject: () => {       
@@ -957,6 +962,7 @@ export class TicketDashboardComponent implements OnInit {
       },
     });
   }
+  
 
   proceedWithAddTransaction() {
     const findItemExist = this.transactionPaymentType.findIndex((item: any) => item.typeofPayment?.toLowerCase() == this.activeSection?.toLowerCase())
@@ -1088,10 +1094,10 @@ export class TicketDashboardComponent implements OnInit {
       
     this.payAmount = this.getTotal();
 
-    if (!this.payAmount) {    
-      this.messageAlert('Enter Amount')
-      return
-    }
+    // if (!this.payAmount) {    
+    //   this.messageAlert('Enter Amount')
+    //   return
+    // }
     if (this.payAmount > 0 && parseFloat(this.payAmount.toString()) > (parseFloat(this.totalAmount.toString()) - this.selectedSellerTicketsPaidAmount)) {
       this.messageAlert('Please enter valid amount!!!')
       return;

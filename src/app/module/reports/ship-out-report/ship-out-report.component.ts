@@ -41,6 +41,7 @@ export class ShipOutReportComponent implements OnInit {
   ];
 
   reportData: any;
+  shipOutId:any;
   orgName: any;
   locId: any;
   fromDate: any;
@@ -70,7 +71,7 @@ export class ShipOutReportComponent implements OnInit {
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.checkTabView = this.helperService.isTab();
     this.setDefaultDate();
-    this.getAllShipOutDetails();
+    this.getShipOutReport();
   }
 
   setDefaultDate() {
@@ -82,27 +83,28 @@ export class ShipOutReportComponent implements OnInit {
     console.log(this.fromDate);
   }
 
-  getAllShipOutDetails() {
+  getShipOutReport() {
 
     const param = {
-      //TicketId: this.ticketNumber || 0,
-      // LocationId: this.locId,
-      // TicketSettingsId: 0,
-      // FromDate: this.fromDate,
-      // Todate: this.toDate,
-      // SellerName: this.sellerName
-      SerachText: this.ticketNumber,
-      PageNumber: 1,
-      RowOfPage: 100,
+     
+      Entername: this.sellerName,
+      FromDate: this.fromDate,
+      Todate: this.toDate,
+      ShipOutID: this.ticketNumber || 0,
       LocationId: this.locId,
-      first: 0,
+      
     }
     this.showLoader = true;
-    this.commonService.getAllShipOutDetails(param)
+    this.commonService.getShipOutReport(param)
       .subscribe(data => {
-        console.log('getAllShipOutDetails :: ');
+        console.log('getShipOutReport :: ');
         console.log(data);
         this.reportData = data.body.data;
+        if (this.sellerName) {
+          this.reportData = this.reportData.filter((item: any) =>
+            item.customerName.toLowerCase().includes(this.sellerName.toLowerCase())  
+          );
+        }
       },
         (err: any) => {
           this.showLoader = false;
@@ -176,11 +178,11 @@ export class ShipOutReportComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.getAllShipOutDetails();
+        this.getShipOutReport();
         break;
       case 'mdi-refresh':
         this.setDefaultDate();
-        this.getAllShipOutDetails();
+        this.getShipOutReport();
         break;
       case 'mdi-download':
         this.generateSingleTicketReport();

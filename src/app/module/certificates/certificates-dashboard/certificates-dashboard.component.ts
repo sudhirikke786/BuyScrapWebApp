@@ -273,9 +273,15 @@ export class CertificatesDashboardComponent implements OnInit {
       .subscribe(data => {
         console.log('GetTicketMaterialsDetailsByTicketId :: ');
         console.log(data);
-        this.ticketObj = data.body.data.map((item: any) => {
-          item.isSelected = false;
-          return item
+        // this.ticketObj = data.body.data.map((item: any) => {
+        //   item.isSelected = false;
+        //   return item
+        // });
+        this.ticketObj = data.body.data
+        .filter((item: any) => item.isCOD === true)
+        .map((item: any) => {
+            item.isSelected = false;
+            return item;
         });
       },
         (err: any) => {

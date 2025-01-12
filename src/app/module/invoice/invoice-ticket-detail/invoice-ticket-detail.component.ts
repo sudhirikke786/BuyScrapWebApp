@@ -58,6 +58,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   orgName: any;
   sellerId: any;
   invoiceId: any;
+  shipOutID:any;
   locId: any;
   logInUserId: any;
   locationName: any;
@@ -223,6 +224,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
   notes = '';
   terms  = '';
+
   @ViewChild(InvoiceCalculatorComponent) InvoiceCalculatorComponent!:InvoiceCalculatorComponent;
   
       constructor(private route: ActivatedRoute,
@@ -289,6 +291,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     });
 
     this.route.queryParams.subscribe(params => {
+      console.log('Query Params:', params); 
 
       const types  = params['type'];
       if(types=='seller'){
@@ -296,6 +299,11 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       }else{
         this.backUrl = `/${this.orgName}/invoice`;
       }
+     this.shipOutID=params['shipOutID'];
+     this.customerID = params['customerID'];
+    console.log('Customer ID:', this.customerID);
+     
+
 
     });
 
@@ -305,9 +313,52 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       middleName : [''],
       lastName : ['']
     });
-
+    if ((this.shipOutID)) {
+      this.getShipOutMaterialbyID(); 
+    }
 
   }
+
+  getShipOutMaterialbyID() {
+    const paramObject = {
+      ShipOutIDId: this.shipOutID,
+      locid: this.locId
+    };
+    this.commonService.getShipOutMaterialbyID(paramObject).subscribe(
+      (data: { body: { data: { localRowId: number; rowId: number; materialName: string; net: number; price: number; createdBy: number;
+        createdDate: string; updatedBy: number; updatedDate: string; invoiceDate:string }[] } }) => {
+        console.log('getShipOutMaterialbyID Response:', data);
+  
+        const materialData = data.body.data;
+  
+        this.invoiceObj = materialData.map(material => ({
+          localRowId: this.localRowIdCounter + 1, 
+          rowId: 0,           
+          itemName: material.materialName,
+          quantity: material.net,
+          rate: material.price,
+          amount: material.net * material.price,
+          createdBy: material.createdBy,        
+          createdDate: material.createdDate,   
+          updatedBy: material.updatedBy,         
+          updatedDate: material.updatedDate,
+          invoiceDate:material.createdDate      
+        }));
+  
+        console.log('Mapped invoiceObj:', this.invoiceObj);
+  
+  
+  
+        this.calculateTotal(this.invoiceObj); 
+      },
+      (err: any) => {
+        console.error('Error fetching ShipOut material data', err);
+      }
+    );
+  }
+  
+
+ 
 
   addInvoice() {
     if (this.newItem.name && this.newItem.quantity > 0 && this.newItem.rate > 0) {
@@ -619,6 +670,21 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         console.log('getAllInvoicesDetails for invoiceId :: ');
         console.log(data);
         this.invoiceData = data.body.data[0];
+
+        this.shipToAddress = this.invoiceData.shipToAddress ;
+        this.paymentTerms = this.invoiceData.paymentTerms ;
+        this.dueDate = this.invoiceData.dueDate ? new Date(this.invoiceData.dueDate).toISOString().split('T')[0] : ''; 
+        this.createdDate = this.invoiceData.createdDate ? new Date(this.invoiceData.createdDate).toISOString().split('T')[0]:''; 
+        this.poNumber = this.invoiceData.poNumber ;
+        this.notes = this.invoiceData.notes ;
+        this.terms = this.invoiceData.terms ;
+        this.tax = this.invoiceData.tax ;
+        this.shippingCharges = this.invoiceData.shippingCharges ;
+        this.discount = this.invoiceData.discount ;
+        this.finalAmount = this.invoiceData.totalAmount ;
+        this.paidAmount = this.invoiceData.paidAmount;
+        this.balanceAmount = this.invoiceData.balanceAmount ;
+
          //logic for display address
          if (this.invoiceData.addressID === 0) {
           this.addressName = this.customer?.streetAddress || 'N/A';
@@ -1313,6 +1379,17 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.invoiceData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       this.invoiceData.customerId = parseFloat(this.sellerId);
       this.invoiceData.customerName = this.customer?.fullName;
+
+      this.invoiceData.shipOutID = parseInt(this.shipOutID) ||0;
+      this.invoiceData.shipToAddress = this.shipToAddress;
+      this.invoiceData.paymentTerms = this.paymentTerms;
+      this.invoiceData.poNumber = this.poNumber;
+      this.invoiceData.notes = this.notes;
+      this.invoiceData.terms = this.terms;
+      this.invoiceData.tax = this.tax;
+      this.invoiceData.shippingCharges = this.shippingCharges;
+      this.invoiceData.discount = this.discount;
+      this.invoiceData.dueDate = this.dueDate;
     } else {
       const newInvoice = new Invoice();
       newInvoice.rowId = 0;
@@ -1336,12 +1413,26 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       newInvoice.lstttransactionMasterDTO = this.invoiceObj;
       newInvoice.buyerSignature = this.sellerSignatureImagePath;
 
+      newInvoice.shipOutID =parseInt (this.shipOutID)||0;
+      newInvoice.shipToAddress = this.shipToAddress;
+      newInvoice.paymentTerms = this.paymentTerms;
+      newInvoice.poNumber = this.poNumber;
+      newInvoice.notes = this.notes;
+      newInvoice.terms = this.terms;
+      newInvoice.tax = this.tax;
+      newInvoice.shippingCharges = parseFloat(this.shippingCharges);
+      newInvoice.discount =parseFloat (this.discount);
+      newInvoice.dueDate = this.dueDate;
+      
+
       this.invoiceData = newInvoice;
       this.sellerSignatureImagePath = null;
     }
 
 
     console.log("Final invoiceData :: " + JSON.stringify(this.invoiceData));
+    console.log("Invoice Data to be sent:", JSON.stringify(this.invoiceData));
+
 
     this.commonService.insertUpdateInvoice(this.invoiceData).subscribe(data => {
       console.log(data);

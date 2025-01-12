@@ -309,6 +309,26 @@
 
 
                             </div>
+                            <div class="row mt-2 img-business" *ngIf="this.sellerType === 'Business'">
+                                <h4>Business Logo</h4>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card h-100">
+                                        <div class="card-body py-0 px-0">
+                                            <div class="image-box">
+                                                <img [src]="idfaceShotImage" class="dl-img1" alt="Business Logo">
+                                            </div>
+                                            <ul class="upload-options-ul">
+                                                <li><a href="javascript:void()" (click)="uploadPicture('4','Capture Image')"><i
+                                                            class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="showSelectedImage(idfaceShotImage, '4')"><i
+                                                            class="mdi mdi-cust-upload mdi-eye mdi-white-color"></i></a></li>
+                                                <li><a href="javascript:void()" (click)="showConfirmation('4')"><i
+                                                            class="mdi mdi-cust-upload mdi-trash-can-outline mdi-white-color"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <hr>
 
@@ -741,8 +761,8 @@
 
     <div class="mt-2" *ngIf="captureType!='Using Signature Pad' && captureType!='Using Sign'">
 
-        <div class="d-flex">
-            <div class="form-group me-2" *ngIf="type == 2">
+        <div class="d-flex" >
+            <div class="form-group me-2" *ngIf="type == 2 && sellerType !== 'Business'">
                 <select class="form-select" id="example-select" [(ngModel)]="selectedImageType" (change)="changeType(selectedImageType)">
                     <option value="ID">ID</option>
                     <option value="Driving Licence">Driver License</option>

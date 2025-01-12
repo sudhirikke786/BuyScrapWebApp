@@ -12,6 +12,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   @ViewChild('inputBox2') inputBox2: ElementRef | undefined;
   @ViewChild('inputBox3') inputBox3: ElementRef | undefined;
   @ViewChild('inputBox4') inputBox4: ElementRef | undefined;
+  @ViewChild('inputBox5') inputBox5: ElementRef | undefined;
 
   @Input() materialNote = '';
   @Input() itemGroupName = 'Motors/Motores';
@@ -22,6 +23,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   @Input() itemTare: any;
   @Input() itemNet: number = 0;
   @Input() itemAvailableNet: number = 0;
+  @Input() itemPrice:any;
   @Input() itemMaterialPrice: number = 0;
 
   @Output() calculateObj = new EventEmitter<any>();
@@ -29,6 +31,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
 
   grossInput:any;
   tareInput:any;
+  priceInput: any;
   netInput:any =0;
   availableNetInput:any =0;
   focusedInput: string | null = null;
@@ -59,6 +62,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   
     this.grossInput = this.itemGross;
     this.tareInput = this.itemTare;
+    this.priceInput=this.itemPrice;
     const netQty = this.grossInput - this.tareInput
     this.netInput = isNaN(netQty) ?  0 : netQty;
     this.availableNetInput = this.itemAvailableNet;
@@ -102,7 +106,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   // }
 
   ngAfterViewInit(): void {
-    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox4,this.inputBox3];
+    this.inputBoxes = [this.inputBox1, this.inputBox2, this.inputBox4,this.inputBox3,, this.inputBox5];
     setTimeout(()=>{
       this.inputBoxes[this.currentFocusIndex]?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     },100)
@@ -120,13 +124,16 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   changeFocus() {
     // Set focus on the current input
 
-    if (this.currentFocusIndex === this.inputBoxes.length-2) {
-      this.tareInput = (isNaN(this.tareInput) || this.tareInput == '') ? 0 : this.tareInput;
+    // if (this.currentFocusIndex === this.inputBoxes.length-2) {
+    //   this.tareInput = (isNaN(this.tareInput) || this.tareInput == '') ? 0 : this.tareInput;
+      if (this.currentFocusIndex === this.inputBoxes.length - 1) {
+        this.tareInput = (isNaN(this.tareInput) || this.tareInput === '') ? 0 : this.tareInput;
       const obj = {
         itemGross: this.grossInput,
         itemTare: this.tareInput,
         itemNet: isNaN(this.grossInput - this.tareInput) ?  0 : (this.grossInput - this.tareInput),
         itemAvailableNet: this.availableNetInput,
+        itemPrice: this.priceInput,
         materialNote: this.materialNote
       }
       // if (obj.itemNet > obj.itemAvailableNet) {
@@ -136,15 +143,17 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
       this.grossInput = '';
       this.tareInput = ''; 
       this.netInput = 0;
+      this.priceInput='';
       this.calculateObj.emit(obj);
      }
      
      
      // Increment the focus index, resetting to 0 if it exceeds the number of inputs
-     if(this.currentFocusIndex > 3){
+     if(this.currentFocusIndex > 4){
        this.currentFocusIndex = 0;
      }else{
        this.currentFocusIndex = (this.currentFocusIndex + 1) % this.inputBoxes.length;
+       
      }
 
      this.inputBoxes[this.currentFocusIndex]?.nativeElement.focus();
@@ -193,6 +202,14 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
         this.availableNetInput = number.toString().trim();
       } else {
         this.availableNetInput += number.toString().trim();
+      }
+    } else if (this.focusedInput === 'inputBox5') {
+      this.renderer.selectRootElement(this.inputBox5?.nativeElement).focus();
+      let data = this.priceInput ?? '';
+      if (data === '') {
+        this.priceInput = number.toString().trim();
+      } else {
+        this.priceInput += number.toString().trim();
       }
     } else {
       console.log('No input box is currently focused');
@@ -288,6 +305,12 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
         this.availableNetInput = this.grossInput.slice(0, -1);
       } else {
         this.availableNetInput = '';
+      }
+    }else if (this.focusedInput === 'inputBox5') {
+      if (this.priceInput.length > 1) {
+        this.priceInput = this.priceInput.slice(0, -1);
+      } else {
+        this.priceInput = '';
       }
     }
 

@@ -64,6 +64,7 @@ export class ShipoutDetailsComponent implements OnInit {
   user: any;
   totalNoOfMaterial: any;
   totalGross: any;
+  totalPrice:any;
   totalTare: any;
   totalNet: any;
 
@@ -151,7 +152,11 @@ export class ShipoutDetailsComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         console.log('Query Params:', params); 
         this.customerId = params['customerId'];
+        console.log('Extracted Customer ID:', this.customerId);
+
        // console.log(this.customerId); 
+       this.sellerId = this.customerId;
+
       });
 
        if (this.customerId) {
@@ -200,6 +205,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
       this.totalNoOfMaterial = 0;
       this.totalGross = 0;
+      this.totalPrice = 0;
       this.totalTare = 0;
       this.totalNet = 0;
       this.editTicketDetails();
@@ -401,6 +407,9 @@ export class ShipoutDetailsComponent implements OnInit {
     this.totalNet = tickets.reduce(function (sum:any, tickets:any) {
       return sum + tickets.net;
     }, 0);
+    this.totalPrice = tickets.reduce(function (sum:any, tickets:any) {
+      return sum + tickets.price;
+    }, 0);
   }
 
   editTicketDetails() {
@@ -491,8 +500,10 @@ export class ShipoutDetailsComponent implements OnInit {
     this.shipOutDetails.totalGross = this.totalGross;
     this.shipOutDetails.totalTare = this.totalTare;
     this.shipOutDetails.totalNet = this.totalNet;
+    this.shipOutDetails.totalPrice = this.totalPrice;
     this.shipOutDetails.shipoutmaterial = this.ticketObj;
-    this.shipOutDetails.customerId = parseFloat(this.sellerId);
+    // this.shipOutDetails.customerId = parseFloat(this.sellerId);
+    this.shipOutDetails.customerId = this.customerId ? parseFloat(this.customerId) : null;
     this.shipOutDetails.addressID= Number(this.addressId);
     
     
@@ -557,6 +568,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemCodNote = '';      
     this.itemGross = '';
     this.itemTare = '';
+    this.totalPrice = '';
     // this.materialNote = '';
     setTimeout(() =>{
       this.focusChildInput()
@@ -585,6 +597,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemGross = rowData.gross;
     this.itemTare = rowData.tare;
     this.itemNet = isNaN(rowData.net) ?  0 : rowData.net;
+    this.itemPrice = rowData.price;
 
     this.itemAvailableNet = rowData?.availableMaterialStock + this.itemNet;
     this.itemMaterialPrice = rowData?.price;
@@ -616,6 +629,7 @@ export class ShipoutDetailsComponent implements OnInit {
     const netQty = this.itemGross - this.itemTare
     this.itemNet = isNaN(netQty) ?  0 : netQty;
     this.itemAvailableNet = rowData.itemAvailableNet;
+    this.itemPrice = rowData.itemPrice;
     this.materialNote = rowData.materialNote;
     this.updateExistingItemDataResponse();
   }
@@ -639,6 +653,7 @@ export class ShipoutDetailsComponent implements OnInit {
         gross : parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)),
         tare : parseFloat(parseFloat(this.itemTare.toString()).toFixed(3)),
         net : parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)) - parseFloat(parseFloat(this.itemTare.toString()).toFixed(3)),
+        price : parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3)),
         note : (this.materialNote || this.materialNote == '' ? this.materialNote : null)
       };   
 
@@ -657,6 +672,7 @@ export class ShipoutDetailsComponent implements OnInit {
           rowData.gross = parseFloat(parseFloat(this.itemGross.toString()).toFixed(3));
           rowData.tare = parseFloat(parseFloat(this.itemTare.toString()).toFixed(3));
           rowData.net = rowData.gross - rowData.tare ;
+          rowData.price= parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
           rowData.note = (this.materialNote || this.materialNote == '' ? this.materialNote : null);
         }
       });
@@ -671,6 +687,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.backToMainMaterials();
     this.itemGross = '';
     this.itemTare = '';
+    this.itemPrice = '';
     this.materialNote = '';
 
   }

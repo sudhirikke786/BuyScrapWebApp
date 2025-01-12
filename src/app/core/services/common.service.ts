@@ -512,7 +512,18 @@ export class CommonService {
   getAccountingReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Reports/GetAccountReport', 'GET', paramObj);
   }
-
+//For ShipOut report
+  getShipOutReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllShipOutReport', 'GET', paramObj);
+  }
+//InOut report
+getInOutReport(paramObj: any): Observable<any> {
+  return this.callAPI(environment.baseUrl + '/Reports/GetAllInOutReport', 'GET', paramObj);
+}
+//Dispatch Report
+getDispatchReport(paramObj: any): Observable<any> {
+  return this.callAPI(environment.baseUrl + '/Reports/GetAllDispatchReport', 'GET', paramObj);
+}
 
   /** Pdf Reports */
 

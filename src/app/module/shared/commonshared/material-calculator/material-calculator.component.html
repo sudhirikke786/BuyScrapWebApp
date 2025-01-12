@@ -82,6 +82,19 @@
             </div>
         </div>
     </div>
+    <div class="row">
+      <div class="col-md-4">
+          <label for="Price">Price:</label>
+      </div>
+      <div class="col-md-8">
+          <div class="input-group">
+              <input type="text" (keypress)="onKeyPress($event)" placeholder="Enter Price" #inputBox5
+                [(ngModel)]="priceInput" (focus)="focusedInput = 'inputBox5'" id="price"
+                class="form-control mb-1 ps-0">
+          </div>
+      </div>
+  </div>
+  
     </div>
 
     

@@ -144,7 +144,7 @@
 
                                                     <div>
                                                         <label for="ship" class="form-label fw-bold">Ship To Address</label>
-                                                        <textarea id="ship" class="form-control" rows="3"
+                                                        <textarea id="ship" [(ngModel)]="shipToAddress" class="form-control" rows="3"
                                                             placeholder="Ship Address"></textarea>
                                                     </div>
 
@@ -164,13 +164,14 @@
                                                 <td  style="width: 30%;">
                                                     <div class="col-sm-12 sidebar-inputox">
                                                     <div class="mb-1 d-flex">
-                                                        <label for="date" class="form-label">Date</label>
-                                                        <input type="date" id="date" class="form-control">
+                                                        <label for="created-date" class="form-label">Date</label>
+                                                        <input type="date" id="created-date" [value]="createdDate | date: 'yyyy-MM-dd'"
+                                                        class="form-control">
                                                     </div>
                                                     <div class="mb-1  d-flex">
                                                         <label for="payment-terms" class="form-label">Payment
                                                             Terms</label>
-                                                        <input type="text" id="payment-terms"
+                                                        <input type="text" id="payment-terms" [(ngModel)]="paymentTerms"
                                                             class="form-control"
                                                             placeholder="Enter payment terms">
                                                     </div>
@@ -196,12 +197,12 @@
                                                         <div class="mb-1  d-flex">
                                                             <label for="due-date" class="form-label">Due
                                                                 Date</label>
-                                                            <input type="date" id="due-date" class="form-control">
+                                                            <input type="date" id="due-date" [(ngModel)]="dueDate" class="form-control">
                                                         </div>
                                                         <div class="mb-1  d-flex">
                                                             <label for="po-number" class="form-label">PO
                                                                 Number</label>
-                                                            <input type="text" id="po-number" class="form-control"
+                                                            <input type="text" id="po-number" [(ngModel)]="poNumber" class="form-control"
                                                                 placeholder="Enter PO number">
                                                         </div>
                                                     </div>
@@ -401,7 +402,7 @@
                                                 <div class="fw-bold mr-1">Discount(%) :</div>
                                                 <div class="d-flex   justify-content-between align-items-center  input-container">
                                                     <input (change)="addDiscount()" 
-                                                        type="text"  [(ngModel)]="discountAmount" class="form-control w-100">
+                                                        type="text"  [(ngModel)]="discount" class="form-control w-100">
                                                     <a class="fw-bold remove-x" href="javascript:void(0)"
                                                         (click)="isshowDiscount =  false;removeDiscount()">X</a>
                                                 </div>
@@ -411,7 +412,7 @@
                                             <div class="d-flex justify-content-end  align-items-start" *ngIf="isshowTax">
                                                 <div class="fw-bold mr-2">Tax(%): </div>
                                                 <div class="d-flex justify-content-between align-items-center  input-container"> <input
-                                                        type="number" (change)="getTaxAmount()" [(ngModel)]="taxAmount" class="form-control w-100">
+                                                        type="number" (change)="getTaxAmount()" [(ngModel)]="tax" class="form-control w-100">
                                                     <a href="javascript:void(0)" class="fw-bold  remove-x"
                                                         (click)="isshowTax =  false;removeTax()">X</a>
                                                 </div>
@@ -423,7 +424,7 @@
                                                 <div class="fw-bold mr-2">Shipping : </div>
                                                 <div class="d-flex  justify-content-between align-items-center input-container ">
                                                     <input
-                                                        type="text" (change)="addShip()"  [(ngModel)]="shippingAmount" class="form-control w-100">
+                                                        type="text" (change)="addShip()"  [(ngModel)]="shippingCharges" class="form-control w-100">
                                                     <a class="fw-bold remove-x" href="javascript:void(0)"
                                                         (click)="isshowShipping =  false;removeShip()">X</a>
                                                 </div>

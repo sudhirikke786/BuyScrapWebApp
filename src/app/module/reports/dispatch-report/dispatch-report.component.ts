@@ -46,6 +46,7 @@ export class DispatchReportComponent implements OnInit {
   fromDate: any;
   toDate: any;
   ticketNumber: any;
+  dispatchID: any;
   sellerName: string = '';
   fileDataObj: any;
   showDownload = false;
@@ -70,7 +71,7 @@ export class DispatchReportComponent implements OnInit {
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.checkTabView = this.helperService.isTab();
     this.setDefaultDate();
-    this.getSingleTicketReport();
+    this.getDispatchReport();
   }
 
   setDefaultDate() {
@@ -82,18 +83,17 @@ export class DispatchReportComponent implements OnInit {
     console.log(this.fromDate);
   }
 
-  getSingleTicketReport() {
+  getDispatchReport() {
 
     const param = {
-      TicketId: this.ticketNumber || 0,
-      LocationId: this.locId,
-      TicketSettingsId: 0,
       FromDate: this.fromDate,
-      Todate: this.toDate,
-      SellerName: this.sellerName
+      ToDate: this.toDate,
+      DispatchID: this.dispatchID || 0,
+      SellerName:this.sellerName,
+      LocationId: this.locId,
     }
     this.showLoader = true;
-    this.commonService.getSingleTicketReport(param)
+    this.commonService.getDispatchReport(param)
       .subscribe(data => {
         console.log('getSingleTicketReport :: ');
         console.log(data);
@@ -167,15 +167,18 @@ export class DispatchReportComponent implements OnInit {
   }
 
 
+  
+
+
   getAction(actionCode: any) {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.getSingleTicketReport();
+        this.getDispatchReport();
         break;
       case 'mdi-refresh':
         this.setDefaultDate();
-        this.getSingleTicketReport();
+        this.getDispatchReport();
         break;
       case 'mdi-download':
         this.generateSingleTicketReport();

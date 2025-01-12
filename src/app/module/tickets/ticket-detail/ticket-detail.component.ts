@@ -849,7 +849,7 @@ export class TicketDetailComponent implements OnInit {
         console.log('GetTicketMaterialsDetailsByTicketId :: ');
         console.log(data);
         this.ticketObj = data.body.data.map((item: any) => {
-          item.isSelected = false;
+          item.isSelected =  item.isCOD;
           return item
         });
 
@@ -1203,6 +1203,31 @@ export class TicketDetailComponent implements OnInit {
     } else {
       this.isReceiptPrint = false;
     }
+    if (this.isCODRequired) {
+      this.ticketObj = this.ticketObj.map((item: TicketItem) => {
+        // Only update COD flags if the item is selected
+        if (item.selected) {
+          item.isCOD = true;
+          item.isCODDone = false;
+          item.isCODupdated = false;
+        } else {
+          // If not selected, reset COD flags
+          item.isCOD = false;
+          item.isCODDone = false;
+          item.isCODupdated = false;
+        }
+        return item;
+      });
+    } else {
+      // If COD is not required, reset all COD flags
+      this.ticketObj = this.ticketObj.map((item: TicketItem) => {
+        item.isCOD = false;
+        item.isCODDone = false;
+        item.isCODupdated = false;
+        item.selected = false;
+        return item;
+      });
+    }
     let ticketStatus = 'OPEN';
     if (paidAmount > 0 && paidAmount == this.totalAmount) {
       ticketStatus = 'PAID';
@@ -1285,6 +1310,18 @@ export class TicketDetailComponent implements OnInit {
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
+  }
+
+  onCODToggle() {
+    if (!this.isCODRequired) {
+      this.ticketObj = this.ticketObj.map((item: TicketItem) => {
+        item.selected = false;
+        item.isCOD = false;
+        item.isCODDone = false;
+        item.isCODupdated = false;
+        return item;
+      });
+    }
   }
 
   cancelEditTicket(ticketId: any) {

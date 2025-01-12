@@ -165,7 +165,8 @@
                                             >
                 
                                             <ng-template pTemplate="header">
-                                                <tr>                                                    
+                                                <tr>    
+                                                    <th *ngIf="isCODRequired">COD</th>                                                
                                                     <th *ngIf="!isEditModeOn">Material Name</th>
                                                     <th>Gross(M)</th>
                                                     <th>Tare</th>
@@ -187,6 +188,9 @@
                                                     </tr> -->
 
                                                     <tr    [ngClass]="{'border-tr nested-table': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
+                                                        <td *ngIf="isCODRequired">
+                                                            <p-checkbox [(ngModel)]="ticket.isSelected" [binary]="true"></p-checkbox>
+                                                        </td>
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
                                                             <td colspan="5">
                                                                 <table style="width: 100%;">
@@ -260,6 +264,9 @@
                                                 <ng-container *ngIf="!isEditModeOn" >
 
                                                     <tr class="border-tr" [ngClass]="{'border-tr': ticket.materialNote ==''}" >
+                                                        <td *ngIf="isCODRequired">
+                                                            <p-checkbox [(ngModel)]="ticket.isSelected" [binary]="true"></p-checkbox>
+                                                        </td>
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
                                                             <td class="cod-item" style="width: 25%;">{{ ticket.materialName }}</td>
                                                             <td class="cod-item"></td>
@@ -349,7 +356,7 @@
                                                         </div> 
                                                         <div class="ms-2" *ngIf="!isEditModeOn">
                                                             <div class="d-flex justify-content-start align-items-center">
-                                                                <div><p-inputSwitch [disabled]="true"  [(ngModel)]="isCODRequired"></p-inputSwitch></div>
+                                                                <div><p-inputSwitch [disabled]="true"  [(ngModel)]="isCODRequired" (onChange)="onCODToggle()"></p-inputSwitch></div>
                                                                 <div class="ms-2" >COD <span *ngIf="!isCODRequired">Required</span></div> 
                                                             </div>
                                                           

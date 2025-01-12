@@ -29,6 +29,11 @@ export class ShipoutDashboardComponent implements OnInit {
       iconcode:'mdi-plus',
       title:'New Ship Out',
       label:'New Ship Out',
+    },
+    {
+      iconcode:'mdi-plus',
+      title:'Bulk Ship Out',
+      label:'Bulk Ship Out',
     }
   ];
 
@@ -92,6 +97,15 @@ export class ShipoutDashboardComponent implements OnInit {
     LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
     first: 0,
   }
+
+  bulkShipOutVisible = false; 
+  searchMaterialInput = ''; 
+  materials: any[] = []; 
+  filteredMaterials: any[] = []; 
+
+  addressID:any;
+  customerId:any;
+  
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -106,8 +120,14 @@ export class ShipoutDashboardComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+
+    this.route.params.subscribe((params)=>{
+      this.customerId = params["customerId"];
+    });
     
     this.getAllShipOutDetails(this.pagination);
+    this.getAllMaterialsDetails();
+
   }
 
   getAllShipOutDetails(pagination: any = this.pagination) {   
@@ -119,11 +139,12 @@ export class ShipoutDashboardComponent implements OnInit {
         this.showLoader = false;
           console.log('getAllShipOutDetails :: ');
           console.log(data);
+          console.log('API Response:', data.body.data);
+
           this.shipouts = data.body.data;
         },
         (err: any) => {
           this.showLoader = false;
-          // this.errorMsg = 'Error occured';
         },
         () => {
           this.showLoader = false;
@@ -213,7 +234,16 @@ export class ShipoutDashboardComponent implements OnInit {
     this.dataService.setNewShipOut(newShipOut);
     
     // this.router.navigateByUrl(`/${this.orgName}/ship-out/detail/new/new`);
-    this.router.navigate([`/${this.orgName}/ship-out/detail/new/new`], { queryParams: { customerId: this.selectedSeller.rowId } });
+   // this.router.navigate([`/${this.orgName}/ship-out/detail/new/new`], { queryParams: { customerId: this.selectedSeller.rowId } });
+   if (this.actionType === 'newShipOut') {
+    this.router.navigate([`/${this.orgName}/ship-out/detail/new/new`], {
+      queryParams: { customerId: this.selectedSeller.rowId },
+    });
+  } else if (this.actionType === 'bulkShipOut') {
+    this.bulkShipOutVisible = true;
+  }
+  this.newDriverScreenVisible = false; 
+  this.visible=false;
 
   }
 
@@ -274,6 +304,149 @@ export class ShipoutDashboardComponent implements OnInit {
     });
   }
 
+  convertToInvoice(customerID: any, rowId: any) {
+    console.log('Navigating with customerID:', customerID, 'rowId:', rowId);
+    if (!customerID) {
+        console.error('CustomerID is undefined!');
+        return;
+    }
+    this.router.navigate([`/${this.orgName}/invoice/detail/new/${customerID}`], {
+      queryParams: { shipOutID: rowId},
+      }); 
+ }
+
+ showInvoice(invoiceID: any, customerID: any , rowId: any) {
+  // this.router.navigate([`/${this.orgName}/invoice/detail/${invoiceID}/${customerID}`])
+  this.router.navigate([`/${this.orgName}/invoice/detail/${invoiceID}/${customerID}`], {
+    queryParams: { shipOutID: rowId},
+    }); 
+    
+}
+
+
+
+
+  getAllMaterialsDetails() {
+    this.showPageLoader = true;
+  
+    const paramObj = { 
+      LocationId: this.locId
+    };
+  
+    this.commonService.getSubMaterials(paramObj).subscribe(
+      (response) => {
+  
+        if (response && response.body && response.body.data) {
+          this.materials = response.body.data.map((material: any) => ({
+            ...material,
+            isSelected: material.isSelecetd || false 
+          })) || [];
+          
+          console.log('Mapped Materials:', this.materials); 
+        } else {
+          console.error('Data not found in response:', response);
+        }
+  
+        this.filteredMaterials = [...this.materials];
+        console.log('Filtered Materials:', this.filteredMaterials);
+  
+        this.showPageLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching materials:', error);
+        this.showPageLoader = false;
+      }
+    );
+  }
+  
+  
+  filterMaterials() {
+    const searchText = this.searchMaterialInput.toLowerCase();
+    this.filteredMaterials = this.materials.filter(
+      (material) =>
+        material.materialName.toLowerCase().includes(searchText) ||
+        (material.net && material.net.toString().includes(searchText)) ||
+        (material.scrapPrice && material.scrapPrice.toString().includes(searchText))
+    );
+  }
+
+  saveSelectedMaterials() {
+  // Filter out the selected materials
+  const selectedMaterials = this.materials.filter(material => material.isSelected);
+
+  if (selectedMaterials.length === 0) {
+    alert('Please select at least one material.');
+    return;
+  }
+
+  for (let material of selectedMaterials) {
+    if (material.shipOutNet > material.net || material.shipOutNet <= 0) {
+      alert('Ship Out Weight cannot exceed Net Weight or be less than or equal to zero.');
+      return;
+    }
+  }
+
+  
+  const shipOut: ShipOut = new ShipOut();
+
+  shipOut.addressID = this.addressID;  
+  shipOut.createdBy = this.logInUserId; 
+  shipOut.createdDate = new Date().toISOString(); 
+  shipOut.updatedBy = this.logInUserId;  
+  shipOut.updatedDate = new Date().toISOString(); 
+  shipOut.customerId = parseFloat(this.selectedSeller.rowId); 
+  shipOut.locID = this.locId; 
+  shipOut.customerName = this.selectedSeller?.fullName || '';;  
+  shipOut.streetAddress =this.selectedSeller?.streetAddress || '';
+  shipOut.from = ''; 
+  shipOut.fromAddress = ''; 
+  shipOut.carrier = this.carrier; 
+  shipOut.truck = this.truck; 
+  shipOut.make = this.make; 
+  shipOut.model = this.model; 
+  shipOut.driverName = this.driverName; 
+  shipOut.note = this.note; 
+  shipOut.driverlicense = ''; 
+  shipOut.licenseplate = ''; 
+
+  
+  shipOut.totalGross = selectedMaterials.reduce((total, material) => total + material.shipOutNet, 0); 
+  shipOut.totalTare = 0; 
+  shipOut.totalNet = selectedMaterials.reduce((total, material) => total + material.shipOutNet, 0); 
+
+  shipOut.shipoutmaterial = selectedMaterials.map(material => ({
+    rowID: material.rowId,
+    materialId: material.rowId, 
+    gross: material.shipOutNet, 
+    net: material.shipOutNet, 
+    price: material.scrapPrice 
+  }));
+
+
+  this.commonService.insertShipOutDTO(shipOut).subscribe(
+    (response) => {
+      console.log('Material saved successfully:', response);
+      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Materials saved successfully!' });
+      this.bulkShipOutVisible = false; 
+      
+      
+      
+    },
+    (error) => {
+      console.error('Error saving materials:', error);
+      alert('Error saving materials');
+    }
+  );
+}
+
+  onShipOutWeightChange(material: any) {
+   if (material.shipOutNet > material.net) {
+    material.shipOutNet = material.net;
+    this.messageService.add({ severity: 'error', summary: 'error', detail: 'Ship Out Weight cannot exceed Net Weight.' });
+
+   }
+  }
+
 
   getSellerAction(actionCode: any) {
 
@@ -292,6 +465,8 @@ export class ShipoutDashboardComponent implements OnInit {
     }
   }
 
+  actionType: 'newShipOut' | 'bulkShipOut' = 'newShipOut'; 
+
   getShipOutAction(actionCode:any){
 
     switch (actionCode?.iconcode) {
@@ -303,6 +478,11 @@ export class ShipoutDashboardComponent implements OnInit {
         this.getAllShipOutDetails(this.pagination);
         break;
       case 'mdi-plus':
+        if (actionCode?.title === 'New Ship Out') {
+          this.actionType = 'newShipOut'; 
+        } else if (actionCode?.title === 'Bulk Ship Out') {
+          this.actionType = 'bulkShipOut'; 
+        }
         this.showDialog();
         break;
       default:
@@ -310,5 +490,6 @@ export class ShipoutDashboardComponent implements OnInit {
     }
   
   }
+  
 
 }

@@ -66,7 +66,7 @@
 
 
                                                     <ng-container *ngIf="isBusiness; else personalAddress">
-                                                        <select class="text-truncate" *ngIf="!selectedBusinessAddressID && currentRoute.includes('detail/new')" [(ngModel)]="addressId">
+                                                        <select class="text-truncate" *ngIf="!selectedBusinessAddressID && currentRoute.includes('detail/new/new')" [(ngModel)]="addressId">
                                                             <option *ngFor="let address of addresses" [value]="address.rowId">
                                                               {{ address.streetAddress }}
                                                             </option>
@@ -76,7 +76,7 @@
                                                           {{ address.streetAddress }}
                                                         </option>
                                                       </select> -->
-                                                      <label *ngIf="!currentRoute.includes('detail/new')">
+                                                      <label *ngIf="!currentRoute.includes('detail/new/new')">
                                                         {{ getAddressLabel(selectedBusinessAddressID) }}
                                                       </label>
                                                       
@@ -124,6 +124,8 @@
                                                     <th>Gross(M)</th>
                                                     <th>Tare</th>
                                                     <th>Net</th>
+                                                    <th>Price</th>
+
                                                     <th *ngIf="isEditModeOn">Action</th>
                                                 </tr>
                                             </ng-template>
@@ -136,6 +138,7 @@
                                                         <td>{{ ticket.gross  }}</td>
                                                         <td>{{ ticket.tare }}</td>
                                                         <td>{{ ticket.net }}</td>
+                                                        <td>{{ ticket.price }}</td>
                                                         <td *ngIf="isEditModeOn">                                                            
                                                             <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editItem(ticket)"
                                                             class="btn btn-grid btn-primary waves-effect waves-light me-1">
@@ -166,7 +169,10 @@
                                                         <td style="width: 40%;">{{ ticket.materialName }}</td>
                                                         <td>{{ ticket.gross  }}</td>
                                                         <td>{{ ticket.tare }}</td>
-                                                        <td>{{ ticket.net }}</td>                                                        
+                                                        <td>{{ ticket.net }}</td>
+                                                        <td>{{ ticket.price }}</td>
+
+                                                        
                                                     </tr>
                                                     <tr [ngClass]="{'no-border-tr': ticket.note !=''}"  *ngIf="ticket.note != ''">
                                                         <!-- <td class="cod-item">
@@ -198,6 +204,7 @@
                                                             <th style="width: 25%;">Gross(M)</th>
                                                             <th style="width: 25%;">Tare</th>
                                                             <th style="width: 25%;">Net</th>
+                                                            <th style="width: 25%;">Price</th>
                                                     </tr></thead>
         
                                                     <tbody> 
@@ -206,6 +213,8 @@
                                                             <td>{{totalGross}}</td>
                                                             <td>{{totalTare}}</td>
                                                             <td>{{totalNet}}</td>
+                                                            <td>{{totalPrice}}</td>
+
                                                         </tr>                                                     
                                                     </tbody>
                                                     
@@ -344,7 +353,7 @@
     <p-sidebar [style]="{'width':'60%'}" [(visible)]="isEditModeOn && editItemCloseImageCapture" position="right">
       
         <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()"
-        [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" (backClose)="changeItem()" 
+        [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" [itemPrice]="itemPrice" (backClose)="changeItem()" 
         [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" 
         [itemMaterialPrice]="itemMaterialPrice" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
     </app-material-calculator>
