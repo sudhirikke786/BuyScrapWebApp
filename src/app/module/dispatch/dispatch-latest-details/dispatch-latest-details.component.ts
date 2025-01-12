@@ -17,7 +17,7 @@ export class DispatchLatestDetailsComponent {
   orgName:any;
   invoiceId:any;
   sellerId:any;
-  addressId:any;
+  addressId:Number=0;
   locId:any;
   logInUserId: any;
   locationName: any;
@@ -279,6 +279,7 @@ constructor(private route: ActivatedRoute, private router:Router,
         this.dispatchMaterial = this.dispatchObj?.dispatchType;
         this.pickupdate =  this.setDateToInput(this.dispatchObj.pickUpDate) ;
         this.driversName = this.dispatchObj.driverID;
+        this.notes = this.dispatchObj.notes;
       },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -307,7 +308,6 @@ constructor(private route: ActivatedRoute, private router:Router,
           obj.liveLeadEQ = "";
           obj.dropoffbox = item.dropOffBox;
           obj.boxpickup = item.boxPickUp;
-          obj.notes = item.notes
           obj.fullName =  item.fullName;
           obj.notes = item.notes;
         
@@ -375,7 +375,7 @@ constructor(private route: ActivatedRoute, private router:Router,
       "rowID": this.dispatchObj?.rowID ?? 0,
       "ticketID": 0,
       "sellerID": parseInt(this.sellerId),
-      "addressID":parseInt(this.addressId),
+      "addressID":this.addressId,
       "pickUpAddress": "string",
       "pickUpDate":new Date(this.pickupdate).toISOString(),
       "charges": this.invoiceObj.reduce((acc,curr) => acc + curr.charges,0),
@@ -383,6 +383,7 @@ constructor(private route: ActivatedRoute, private router:Router,
       "isDeleted": false,
       "typeID": 1,
       "type": this.dispatchMaterial,
+      "notes": this.notes,
       "driverID":this.driversName ? Number(this.driversName) : 0 ,
       "closedDate": "2024-12-01T14:41:32.385Z",
       "vehicalNo": "",

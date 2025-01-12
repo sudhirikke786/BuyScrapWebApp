@@ -273,9 +273,7 @@ export class AddSellersComponent implements OnInit {
       ...{
         "idscanImage": this.idscanImage.includes('images/custom/id_scan.png') ? null : this.idscanImage,
         "idsignatureImage": this.idsignatureImage.includes('images/custom/id_signature.png') ? null : this.idsignatureImage,
-        "idfaceShotImage": this.sellerType === 'Business' 
-      ? (this.idfaceShotImage.includes('images/custom/id_face.png') ? null : this.idfaceShotImage) 
-      : this.idfaceShotImage.includes('images/custom/id_face.png') ? null : this.idfaceShotImage,
+        "idfaceShotImage": this.idfaceShotImage.includes('images/custom/id_face.png') ? null : this.idfaceShotImage,
         "fingerPrints": this.fingerPrints.includes('images/custom/id_fingerprint.png') ? null : this.fingerPrints,
       },
       ...this.sellerForm.value,
@@ -447,22 +445,15 @@ export class AddSellersComponent implements OnInit {
     if(this.type=='2') {
       this.idscanImage = this.imageUrl;
       requestObj['base64Data'] =  this.imageUrl.split(';base64,')[1];
-
     } else if(this.type=="3") {
       this.idsignatureImage = this.imageUrl;
       requestObj['base64Data'] =  this.imageUrl.split(';base64,')[1];
-
     }else if (this.type == '4') {
-      if (this.sellerType === 'Business') {
-        this.idfaceShotImage = this.imageUrl; // Reusing idfaceShotImage for business logo
-      } else {
-        this.idfaceShotImage = this.imageUrl;
-      }
-      requestObj['base64Data'] = this.imageUrl.split(';base64,')[1];
+      this.idfaceShotImage = this.imageUrl;
+      requestObj['base64Data'] =  this.imageUrl.split(';base64,')[1];
     } else if(this.type=="5") {
       this.fingerPrints = this.imageUrl;
-      requestObj['base64Data'] =  this.imageUrl;
-      
+      requestObj['base64Data'] =  this.imageUrl;      
     }
 
    
