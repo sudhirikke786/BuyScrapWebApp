@@ -1384,7 +1384,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.invoiceData.amount = parseFloat(this.totalAmount.toFixed(3));
       this.invoiceData.balanceAmount = parseFloat(this.balanceAmount.toFixed(3));
       this.invoiceData.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
-      this.invoiceData.totalAmount = parseFloat(this.totalActualAmount.toFixed(3));
+      this.invoiceData.totalAmount = parseFloat(this.finalAmount.toFixed(3));
       this.invoiceData.paidAmount =  parseFloat(Number(this.paidAmount).toFixed(2));
       this.invoiceData.lstttransactionMasterDTO = this.invoiceObj;
       this.invoiceData.updatedBy = this.logInUserId;
@@ -1416,7 +1416,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       newInvoice.amount = parseFloat(this.totalAmount.toFixed(3));
       newInvoice.balanceAmount = parseFloat(this.balanceAmount.toFixed(3));
       newInvoice.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
-      newInvoice.totalAmount = parseFloat(this.totalActualAmount.toFixed(3));
+      newInvoice.totalAmount = parseFloat(this.finalAmount.toFixed(3));
       newInvoice.paidAmount = parseFloat(Number(this.paidAmount).toFixed(2));
       newInvoice.dateOpened = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       newInvoice.dateClosed = null;
