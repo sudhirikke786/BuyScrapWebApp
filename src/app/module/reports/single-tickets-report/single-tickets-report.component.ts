@@ -122,7 +122,7 @@ export class SingleTicketsReportComponent implements OnInit {
       Type: 'A4Size'
     }
 
-    this.commonService.generateSingleTicketReport(param)
+    this.commonService.generateSingleTicketReport(param, this.customerObj.isParent)
       .subscribe(data => {
         console.log('generateSingleTicketReport :: ');
         console.log(data);

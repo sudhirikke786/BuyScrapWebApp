@@ -850,7 +850,7 @@ export class TicketDashboardComponent implements OnInit {
   closePaymentPopup() {
     console.log('close');
     this.paymentVisible = false;
-    this.transactionPaymentType = [];
+    // this.transactionPaymentType = [];
   }
 
   
@@ -1320,15 +1320,16 @@ export class TicketDashboardComponent implements OnInit {
 
       const checkPaymentTransaction = this.transactionPaymentType.filter((item: any) => item.typeofPayment == 'Check');
       const checkAmount = checkPaymentTransaction[0]?.typeofAmount;
-      const customerFullName = this.selectedSellerName;
+      //const customerFullName = this.selectedSellerName;
 
-      // const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
-      // const customerFullName = selectedTicketDetail[0].customerName;
+      const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
+      const customerFullName = selectedTicketDetail[0].customerName;
       // TO DO :: Open Pdf viewer          
       this.showDownload = true;
       this.pdfViwerTitle = 'Check For Print';
       this.generateCheckPrintReport(ticketId, checkAmount, customerFullName);
       // this.router.navigateByUrl(`${this.orgName}/home`);
+      this.transactionPaymentType = [];
     } else {
       this.closePdfReport();
     }

@@ -1743,7 +1743,7 @@ export class TicketDetailComponent implements OnInit {
     }
      this.showLoaderReport = false;
 
-    this.commonService.generateSingleTicketReport(param)
+    this.commonService.generateSingleTicketReport(param, this.ticketData.isParent)
       .subscribe(data => {
         console.log('generateSingleTicketReport :: ');
         console.log(data);

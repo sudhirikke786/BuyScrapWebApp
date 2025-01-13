@@ -123,7 +123,7 @@ export class InOutReportComponent implements OnInit {
       Type: 'A4Size'
     }
 
-    this.commonService.generateSingleTicketReport(param)
+    this.commonService.generateSingleTicketReport(param, false)
       .subscribe(data => {
         console.log('generateSingleTicketReport :: ');
         console.log(data);

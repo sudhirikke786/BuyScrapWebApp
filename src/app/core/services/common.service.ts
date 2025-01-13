@@ -531,8 +531,11 @@ getDispatchReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetDailyTicketData', 'GET', paramObj);
   }
 
-  generateSingleTicketReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/PdfReports/GetTransactionsTicketReceipt', 'GET', paramObj);
+  generateSingleTicketReport(paramObj: any, isParent: boolean): Observable<any> {
+    if (isParent)
+      return this.callAPI(environment.baseUrl + '/PdfReports/GetMergeTransactionsTicketReceipt', 'GET', paramObj);
+    else 
+      return this.callAPI(environment.baseUrl + '/PdfReports/GetTransactionsTicketReceipt', 'GET', paramObj);
   }
 
   generateInventoryReport(paramObj: any): Observable<any> {
