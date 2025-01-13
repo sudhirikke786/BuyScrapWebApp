@@ -1387,6 +1387,11 @@ export class TicketDetailComponent implements OnInit {
   }
 
   editItem(rowData: any) {
+    // alert('testing.......')
+    // this.editItemCloseImageCapture = false;
+    this.clearMaterialCalculatorData();
+    // this.backToChangeItemMainMaterials();
+    // alert('111111111')
 
     if (rowData.isAdjusmentSet == true) {
       this.addEditAdjustmentVisible = true;
@@ -1425,7 +1430,18 @@ export class TicketDetailComponent implements OnInit {
 
   }
 
-  
+  private clearMaterialCalculatorData() {
+    this.itemPrice = null;
+    this.itemNet = null;
+    this.itemTare = null;
+    this.itemGross = null;
+    this.itemGroupName = '';
+    this.itemMaterialName = '';
+    this.materialNote = '';
+    this.itemImagePath = '';
+    this.imageUrl = null;
+  }
+
   deleteItem(i: number) {
     this.ticketObj.splice(i, 1);    
     console.log("updated ticketObj :: " + JSON.stringify(this.ticketObj));
@@ -1620,6 +1636,11 @@ export class TicketDetailComponent implements OnInit {
   }
 
   addAdjustments() {
+    
+    this.editItemCloseImageCapture = false;
+    this.clearMaterialCalculatorData();
+    this.backToChangeItemMainMaterials();
+
     this.modalAdjustmentHeader = 'Add Adjustment';
     this.addEditAdjustmentVisible = true;
     this.itemLeveloperationPerform = 'Add';

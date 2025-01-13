@@ -245,15 +245,38 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   ngOnChanges(changes: SimpleChanges): void {
     this.currentSize();
 
-    if(changes && changes.itemImagePath){
-      if (changes.itemImagePath.currentValue != 'assets/images/custom/id_scan.png') {
-        this.showWebcam = false;
-        this.showCamera = false; 
-        this.imageUrl =  changes.itemImagePath.currentValue;
-        
-      } else {
-        this.imageUrl =  '';
-        this.showWebcam = true;
+    if(changes){
+      if(changes.itemImagePath) {
+        if (changes.itemImagePath.currentValue != 'assets/images/custom/id_scan.png') {
+          this.showWebcam = false;
+          this.showCamera = false; 
+          this.imageUrl =  changes.itemImagePath.currentValue;
+          
+        } else {
+          this.imageUrl =  '';
+          this.showWebcam = true;
+        }
+      }
+      if(changes.itemGross) {
+        this.grossInput = this.itemGross = changes.itemGross.currentValue;
+      }
+      if(changes.itemTare) {
+        this.tareInput = this.itemTare = changes.itemTare.currentValue;
+      }
+      if(changes.itemGroupName) {
+        this.itemGroupName = changes.itemGroupName.currentValue;
+      }
+      if(changes.itemMaterialName) {
+        this.itemMaterialName = changes.itemMaterialName.currentValue;
+      }
+      if(changes.itemNet) {
+        this.netInput = this.itemNet = changes.itemNet.currentValue;
+      }
+      if(changes.itemPrice) {
+        this.priceInput = this.itemPrice = changes.itemPrice.currentValue;
+      }
+      if (this.inputBox1) {
+        this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
       }
     }
     
