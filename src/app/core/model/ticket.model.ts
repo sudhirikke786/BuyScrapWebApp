@@ -35,5 +35,13 @@ export class Ticket {
     codDoneDate: any;
     codDescription: any;
     sellerSignature: any;
+    carrier: string = ''
+    driverlicense: string = ''
+    licenseplate: string = ''
+    truck: string = '';
+    make: string = '';
+    model: string = '';
+    driverName: string = '';
+    note: string = '';
     lstttransactionMasterDTO: any;
 }

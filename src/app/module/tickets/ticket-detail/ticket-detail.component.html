@@ -251,7 +251,8 @@
                                                           
                                                         </td>
                                                     </tr>
-                                                    <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}"  *ngIf="ticket.materialNote != ''">
+                                                    <!-- <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}"  *ngIf="ticket.materialNote != ''"> -->
+                                                    <tr [ngClass]="{'no-border-tr': ticket.materialNote || ticket.materialNote !=''}" *ngIf="ticket.materialNote || ticket.materialNote !=''">
                                                         <!-- <td class="cod-item">
                                                             {{ ticket?.codNote }}
                                                         </td> -->
@@ -263,9 +264,9 @@
 
                                                 <ng-container *ngIf="!isEditModeOn" >
 
-                                                    <tr class="border-tr" [ngClass]="{'border-tr': ticket.materialNote ==''}" >
+                                                    <tr class="border-tr" [ngClass]="{'border-tr': ticket.materialNote}" >
                                                         <td *ngIf="isCODRequired">
-                                                            <p-checkbox [(ngModel)]="ticket.isCOD" [binary]="true"></p-checkbox>
+                                                            <p-checkbox [disabled]="true" [(ngModel)]="ticket.isCOD" [binary]="true"></p-checkbox>
                                                         </td>
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
                                                             <td class="cod-item" style="width: 25%;">{{ ticket.materialName }}</td>
@@ -288,7 +289,8 @@
                                                         </td>
                                                         
                                                     </tr>
-                                                    <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}"  *ngIf="ticket.materialNote != ''">
+                                                    <!-- <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}"  *ngIf="ticket.materialNote != ''"> -->
+                                                    <tr [ngClass]="{'no-border-tr': ticket.materialNote || ticket.materialNote !=''}" *ngIf="ticket.materialNote || ticket.materialNote !=''">
                                                         <!-- <td class="cod-item">
                                                             {{ ticket.codNote }}
                                                         </td> -->

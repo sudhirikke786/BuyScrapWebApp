@@ -8,6 +8,7 @@ import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 
 import { MaterialsDashboardComponent } from './materials-dashboard/materials-dashboard.component';
 import { MaterialsDetailsComponent } from './materials-details/materials-details.component';
+import { MaterialPriceListComponent } from './material-price-list/material-price-list.component';
 
 export const routes: Routes = [
   {
@@ -17,13 +18,18 @@ export const routes: Routes = [
   {
     path:'detail/:materialId',
     component: MaterialsDetailsComponent
+  },
+  {
+    path:'materialpricelist',
+    component: MaterialPriceListComponent
   }
 ]
 
 @NgModule({
   declarations: [
     MaterialsDashboardComponent,
-    MaterialsDetailsComponent
+    MaterialsDetailsComponent,
+    MaterialPriceListComponent
   ],
   imports: [
     CommonModule,

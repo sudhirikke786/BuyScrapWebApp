@@ -524,7 +524,10 @@ getInOutReport(paramObj: any): Observable<any> {
 getDispatchReport(paramObj: any): Observable<any> {
   return this.callAPI(environment.baseUrl + '/Reports/GetAllDispatchReport', 'GET', paramObj);
 }
-
+//For MAterial Price List
+getMaterialPriceList(paramObj: any): Observable<any> {
+  return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterial', 'GET', paramObj);
+}
   /** Pdf Reports */
 
   generateDailyTicketsReport(paramObj: any): Observable<any> {

@@ -1,0 +1,57 @@
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  
+  .view-report-button {
+    margin-left: 20px;
+    margin-right: 10px;
+    padding: 5px 10px;
+    margin-top: 5px;
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .view-report-button:hover {
+    background-color: #0056b3; 
+  }
+  
+  .checkbox-controls {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .checkbox-controls label {
+    margin-left: 20px;
+    margin-top: 8px;
+  }
+  
+  .scroll-container {
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 10px;
+  }
+  
+  .material-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+  }
+  
+  .material-table th, 
+  .material-table td {
+    border: 1px solid #ddd;
+    padding: 5px;
+  }
+  
+  .material-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  

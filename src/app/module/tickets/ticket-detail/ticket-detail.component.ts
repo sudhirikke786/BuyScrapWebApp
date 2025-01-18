@@ -623,6 +623,20 @@ export class TicketDetailComponent implements OnInit {
         console.log('getAllTicketsDetails for ticketId :: ');
         console.log(data);
         this.ticketData = data.body.data[0];
+
+        if (!this.isEditModeOn) {
+          this.driverDetails = {
+            driverName: this.ticketData.driverName,
+            driverlicense: this.ticketData.driverlicense,
+            licenseplate: this.ticketData.licenseplate,
+            carrier: this.ticketData.carrier,
+            truck: this.ticketData.truck,
+            make: this.ticketData.make,
+            model: this.ticketData.model,
+            note: this.ticketData.note,
+          };
+        }
+
         //logic for display address
         if (this.ticketData.addressID === 0) {
           this.addressName = this.customer?.streetAddress || 'N/A';
@@ -1163,10 +1177,9 @@ export class TicketDetailComponent implements OnInit {
       lstickettransaction : payTransactionObj
     };
 
-    this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {     
-      this.printTicket(this.ticketId); 
+    this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {    
+      this.printTicket(this.ticketId);
       this.getCashDrawerAmountAndPaidTicketCount();
-
     }, (error: any) => {
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
@@ -1273,6 +1286,14 @@ export class TicketDetailComponent implements OnInit {
       newTicket.sellerSignature = this.sellerSignatureImagePath;
       newTicket.isCOD = this.isCODRequired;
       newTicket.dispatchID = parseFloat(this.dispatchID);
+      newTicket.carrier = this.driverDetails?.carrier;
+      newTicket.driverlicense = this.driverDetails?.driverlicense;
+      newTicket.licenseplate = this.driverDetails?.licenseplate;
+      newTicket.truck = this.driverDetails?.truck;
+      newTicket.make = this.driverDetails?.make;
+      newTicket.model = this.driverDetails?.model;
+      newTicket.driverName = this.driverDetails?.driverName;
+      newTicket.note = this.driverDetails?.note;
     
 
       this.ticketData = newTicket;
@@ -1293,7 +1314,7 @@ export class TicketDetailComponent implements OnInit {
         this.saveConfirmVisible = false;
       } else {     
         this.ticketId = data.body.insertedRow;
-        this.saveConfirmVisible = false;     
+        this.saveConfirmVisible = false; 
         this.printTicket(this.ticketId);
       }
 
@@ -1585,7 +1606,7 @@ export class TicketDetailComponent implements OnInit {
       rowData.amount = parseFloat(parseFloat((rowData.price * (rowData.gross - rowData.tare)).toString()).toFixed(3));
       rowData.imagePath = (this.itemImagePath?.indexOf('assets/images') >= 0 ? null : this.itemImagePath);
       rowData.codNote = '';
-      rowData.materialNote = (this.materialNote || this.materialNote == '' ? this.materialNote : null );
+      rowData.materialNote = (this.materialNote || this.materialNote == '' ? this.materialNote : '' );
 
 
       rowData.createdBy = this.logInUserId;

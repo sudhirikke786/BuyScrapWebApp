@@ -85,8 +85,8 @@ export class InoutDetailsComponent implements OnInit {
   itemMaterialPrice: number = 0;
   itemImagePath: string = 'assets/images/custom/id_scan.png';
   itemDefaultImagePath: string = 'assets/images/custom/id_scan.png';
-  materialNote: any = null;
-  itemCodNote: any = null;
+  materialNote: any = '';
+  itemCodNote: any = '';
   itemLeveloperationPerform: string = '';
   localRowIdCounter: number = 0;
 
@@ -564,7 +564,7 @@ inwardStatusUpdate() {
         gross : parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)),
         tare : parseFloat(parseFloat(this.itemTare.toString()).toFixed(3)),
         net : parseFloat(parseFloat(this.itemGross.toString()).toFixed(3)) - parseFloat(parseFloat(this.itemTare.toString()).toFixed(3)),
-        note : (this.materialNote || this.materialNote == '' ? this.materialNote : null)
+        note : (this.materialNote || this.materialNote == '' ? this.materialNote : '')
       };   
 
       this.ticketObj.push(rowData);
@@ -582,7 +582,7 @@ inwardStatusUpdate() {
           rowData.gross = parseFloat(parseFloat(this.itemGross.toString()).toFixed(3));
           rowData.tare = parseFloat(parseFloat(this.itemTare.toString()).toFixed(3));
           rowData.net = rowData.gross - rowData.tare ;
-          rowData.note = (this.materialNote || this.materialNote == '' ? this.materialNote : null);
+          rowData.note = (this.materialNote || this.materialNote == '' ? this.materialNote : '');
         }
       });
       this.itemLeveloperationPerform = '';

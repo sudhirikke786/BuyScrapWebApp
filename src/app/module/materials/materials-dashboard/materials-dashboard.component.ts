@@ -34,6 +34,11 @@ export class MaterialsDashboardComponent implements OnInit {
       iconcode:'mdi-currency-usd',
       title:'Quick Price Update',
       label:'Quick Price Update'
+    },
+    {
+      iconcode:'mdi-currency-usd',
+      title:'Material Price List',
+      label:'Material Price List'
     }
   ];
 
@@ -307,9 +312,18 @@ export class MaterialsDashboardComponent implements OnInit {
       case 'mdi-plus':
         this.showDialog();
         break;
+      // case 'mdi-currency-usd':
+      //  this.showBulkDialog();
+      //   break;
       case 'mdi-currency-usd':
-       this.showBulkDialog();
-        break;
+      if (actionCode?.title === 'Material Price List') {
+        console.log('Navigating to Material Price List');
+        this.router.navigate([`/${this.orgName}/materials/materialpricelist`]);
+      } else if (actionCode?.title === 'Quick Price Update') {
+        console.log('Showing Bulk Dialog');
+        this.showBulkDialog();
+      }
+      break;
       default:
         break;
     }

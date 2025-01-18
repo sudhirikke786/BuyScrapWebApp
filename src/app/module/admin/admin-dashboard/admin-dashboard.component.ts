@@ -119,7 +119,7 @@ export class AdminDashboardComponent implements OnInit {
   onRoleChange(event: Event): void {
     const selectedRole = (event.target as HTMLSelectElement).value;
 
-    if (selectedRole === '4' || selectedRole === '5') {
+    if (selectedRole === '4') {
       this.userForm.get('firstName')?.enable();
       this.userForm.get('lastName')?.enable();
       this.userForm.get('userName')?.disable();

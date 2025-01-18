@@ -46,7 +46,7 @@
                                             (click)="inword(inoutDetails)" class="btn  btn-primary waves-effect waves-light ticket-edit me-1">
                                                 <i class="mdi mdi-pencil"></i> Inword
                                             </a> -->
-                                            <a *ngIf="inoutDetails?.status == 'Out' && !inoutDetails?.inwarddate" data-bs-toggle="modal" data-bs-target="#capture-image" 
+                                            <a *ngIf="inoutDetails?.locIn == locId && inoutDetails?.status != 'In'" data-bs-toggle="modal" data-bs-target="#capture-image" 
                                             (click)="inwardStatusUpdate()"
                                              class="btn  btn-primary waves-effect waves-light ticket-edit me-1">
                                                 <i class="mdi mdi-pencil"></i> Inword

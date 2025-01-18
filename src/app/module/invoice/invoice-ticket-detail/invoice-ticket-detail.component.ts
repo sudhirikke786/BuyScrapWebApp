@@ -1100,7 +1100,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     } else {
       if (this.signPadVisible && this.currentRole !== 'Scale') {
         this.saveConfirmVisible = false;
-        this.signaturePadVisible = true;
+        // this.signaturePadVisible = true; // Change on request by client to do not show sign on invoice
       } else {
         this.saveConfirmVisible = true;
         this.signaturePadVisible = false;
