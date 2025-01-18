@@ -404,7 +404,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   // }
 
   updateNewItemAmount() {
-    this.newItem.amount = this.newItem.quantity * this.newItem.rate; // Update the new item amount dynamically
+    this.newItem.amount = Number((this.newItem.quantity * this.newItem.rate).toFixed(2)) // Update the new item amount dynamically
   }
 
   ngAfterViewInit() {
@@ -940,10 +940,11 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     }, 0);
 
 
-    this.totalAmount = Math.round(this.totalActualAmount);
+    this.totalAmount =  Math.round(this.totalActualAmount)
     this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
 
-    this.finalAmount = this.totalAmount;
+    this.finalAmount = this.totalAmount.toFixed(2);
+    this.balanceAmount =  this.totalAmount.toFixed(2);
     this.totalAdjustment = invoices.reduce(function (sum: any, invoices: any) {
       // return sum + (invoices.isAdjusmentSet ? invoices.amount * -1 : 0);
       return sum + (invoices.isAdjusmentSet ? invoices.amount : 0);
@@ -984,6 +985,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
     // Calculate the final amount after tax, discount, and shipping charge
     this.finalAmount = total + _tax + Number(this.shippingCharges);
+
+    this.balanceAmount = this.finalAmount - this.paidAmount;
 
     console.log(this.finalAmount)
   }

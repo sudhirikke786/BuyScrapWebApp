@@ -401,7 +401,7 @@
                                             <div class="d-flex justify-content-end  align-items-center" *ngIf="isshowDiscount && isEditModeOn">
                                                 <div class="fw-bold mr-1">Discount(%) :</div>
                                                 <div class="d-flex   justify-content-between align-items-center  input-container">
-                                                    <input (change)="addDiscount()" 
+                                                    <input (input)="addDiscount()" 
                                                         type="text"  [(ngModel)]="discount" class="form-control w-100">
                                                     <a class="fw-bold remove-x" href="javascript:void(0)"
                                                         (click)="isshowDiscount =  false;removeDiscount()">X</a>
@@ -416,7 +416,7 @@
                                             <div class="d-flex justify-content-end  align-items-start" *ngIf="isshowTax && isEditModeOn">
                                                 <div class="fw-bold mr-2">Tax(%): </div>
                                                 <div class="d-flex justify-content-between align-items-center  input-container"> <input
-                                                        type="number" (change)="getTaxAmount()" [(ngModel)]="tax" class="form-control w-100">
+                                                        type="number" (input)="getTaxAmount()" [(ngModel)]="tax" class="form-control w-100">
                                                     <a href="javascript:void(0)" class="fw-bold  remove-x"
                                                         (click)="isshowTax =  false;removeTax()">X</a>
                                                 </div>
@@ -432,7 +432,7 @@
                                                 <div class="fw-bold mr-2">Shipping : </div>
                                                 <div class="d-flex  justify-content-between align-items-center input-container ">
                                                     <input
-                                                        type="text" (change)="addShip()"  [(ngModel)]="shippingCharges" class="form-control w-100">
+                                                        type="text" (input)="addShip()"  [(ngModel)]="shippingCharges" class="form-control w-100">
                                                     <a class="fw-bold remove-x" href="javascript:void(0)"
                                                         (click)="isshowShipping =  false;removeShip()">X</a>
                                                 </div>
@@ -461,7 +461,7 @@
                                                 <div class="fw-bold mr-1">Amount Paid  :</div>
                                                 <div class="d-flex  justify-content-between align-items-center">
                                                     <span *ngIf="!isEditModeOn">$ {{ paidAmount }}</span>
-                                                    <input *ngIf="isEditModeOn" type="text" (change)="calculateBalanceDue()" [(ngModel)]="paidAmount"   class="form-control ">
+                                                    <input *ngIf="isEditModeOn" type="text" (input)="calculate()" [(ngModel)]="paidAmount"   class="form-control ">
                                                   
                                                 </div>
                                             </div>
