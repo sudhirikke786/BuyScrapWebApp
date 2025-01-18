@@ -403,9 +403,9 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   //   item.amount = item.quantity * item.rate; // Update the amount dynamically
   // }
 
-  // updateNewItemAmount() {
-  //   this.newItem.amount = this.newItem.quantity * this.newItem.rate; // Update the new item amount dynamically
-  // }
+  updateNewItemAmount() {
+    this.newItem.amount = this.newItem.quantity * this.newItem.rate; // Update the new item amount dynamically
+  }
 
   ngAfterViewInit() {
     // if(this.searchMaterialInput){
