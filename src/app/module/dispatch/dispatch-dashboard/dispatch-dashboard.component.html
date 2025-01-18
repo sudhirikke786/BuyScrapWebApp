@@ -64,7 +64,7 @@
                       <td>{{ certificate.rowId }}</td>
                       <td>{{ certificate?.pickUpDate | date: 'short' }}</td>
                       <td>{{ certificate.sellerName }}</td>
-                      <td>{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>
+                      <td>{{ certificate?.closedDate | date: 'short' }}</td>
                       <td>
                           <div class="d-flex align-items-center">
                               <a class="btn btn-primary me-1" [routerLink]="['dispatch-detail', certificate.rowId, certificate.sellerID,'show']"

@@ -52,7 +52,7 @@
                     <th>In Out #</th>
                     <th>Date Created</th>
                     <th>Total Net</th>
-                    <th>Status</th>
+                    <th>From Location >> Current Status >> To Location</th>
                     <th>Action</th>
                   </tr>
                 </ng-template>
@@ -63,7 +63,7 @@
                     <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">{{ inout.totalNet }}</td>
                     <!-- <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">{{ inout.status }}</td> -->
                     <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">
-                      {{ inout.status === 'Out' ? 'Out >> ' + inout.locOutName : inout.status === 'In' ? 'In << ' + inout.locOutName : inout.status === 'InTransient' ? 'InTransient << ' + inout.locOutName : inout.status }}
+                      {{inout.locOutName}} <b> >> {{inout.status}} >> </b> {{inout.locInName}}
                     </td>
                     <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">
                       <a *ngIf="inout.status != 'InTransient'" type="button"routerLinkActive="router-link-active" (click)="showDetails(inout.rowId)"

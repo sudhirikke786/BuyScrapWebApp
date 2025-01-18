@@ -70,17 +70,17 @@
                                         <table class="seller-view-tbl">
                                             <tbody>
                                             <tr>
-                                                <td *ngIf="inoutDetails?.status == 'Out'" >To Location : {{inoutDetails?.locOutName}}</td>
-                                                <td *ngIf="inoutDetails?.status == 'In'" >From Location : {{inoutDetails?.locInName}}</td>
-                                                <td *ngIf="inoutDetails?.status != 'In' && inoutDetails?.status != 'Out'" >Location : {{inoutDetails?.locInName}}</td>
-                                                <td>Status : {{inoutDetails?.status}}</td>
-                                                <td>Driver : {{inoutDetails?.driverName}}</td>
+                                                <td style="width: 25%;"><b>From Location :</b> {{inoutDetails?.locInName}}</td>
+                                                <td style="width: 25%;"><b>To Location :</b> {{inoutDetails?.locOutName}}</td>
+                                                <!-- <td *ngIf="inoutDetails?.status != 'In' && inoutDetails?.status != 'Out'" >Location : {{inoutDetails?.locInName}}</td> -->
+                                                <td style="width: 25%;"><b>Status :</b> {{inoutDetails?.status}}</td>
+                                                <td style="width: 25%;"><b>Driver :</b> {{inoutDetails?.driverName}}</td>
                                             </tr>
         
                                             <tr>
-                                                <td>DL# - {{inoutDetails?.driverlicense}}</td>
-                                                <td>Truck - {{inoutDetails?.truck}}</td>
-                                                <td>By - <label>{{user?.firstName}} {{user?.lastName}}</label></td>
+                                                <td style="width: 25%;"><b>DL# -</b> {{inoutDetails?.driverlicense}}</td>
+                                                <td style="width: 25%;"><b>Truck -</b> {{inoutDetails?.truck}}</td>
+                                                <td colspan="2"><b>By -</b> <label>{{user?.firstName}} {{user?.lastName}}</label></td>
                                             </tr>
                                         </tbody></table>
                                     </div>

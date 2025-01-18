@@ -151,6 +151,7 @@ export class DispatchDashboardComponent implements OnInit {
             return {
               rowId: item.rowID,       
               pickUpDate: item.pickUpDate,
+              closedDate: item.closedDate,
               customerName: item.customerName,
               sellerName: item.sellerName,
               sellerID:item.sellerID,

@@ -404,7 +404,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   // }
 
   updateNewItemAmount() {
-    this.newItem.amount = Number((this.newItem.quantity * this.newItem.rate).toFixed(2)) // Update the new item amount dynamically
+    this.newItem.amount = Number((this.newItem.quantity * this.newItem.rate)) // Update the new item amount dynamically
   }
 
   ngAfterViewInit() {
@@ -940,11 +940,11 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     }, 0);
 
 
-    this.totalAmount =  Math.round(this.totalActualAmount)
+    this.totalAmount =  (this.totalActualAmount)
     this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
 
-    this.finalAmount = this.totalAmount.toFixed(2);
-    this.balanceAmount =  this.totalAmount.toFixed(2);
+    this.finalAmount = this.totalAmount;
+    this.balanceAmount =  this.totalAmount;
     this.totalAdjustment = invoices.reduce(function (sum: any, invoices: any) {
       // return sum + (invoices.isAdjusmentSet ? invoices.amount * -1 : 0);
       return sum + (invoices.isAdjusmentSet ? invoices.amount : 0);
@@ -1096,19 +1096,21 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
 
-  confirmSave() {
-    if (this.invoiceId != 0) {
-      this.saveConfirmVisible = true;
-      this.signaturePadVisible = false;
-    } else {
-      if (this.signPadVisible && this.currentRole !== 'Scale') {
-        this.saveConfirmVisible = false;
-        // this.signaturePadVisible = true; // Change on request by client to do not show sign on invoice
-      } else {
-        this.saveConfirmVisible = true;
-        this.signaturePadVisible = false;
-      }
-    }
+  confirmSave() {    
+    this.saveConfirmVisible = true;
+    this.signaturePadVisible = false;
+    // if (this.invoiceId != 0) {
+    //   this.saveConfirmVisible = true;
+    //   this.signaturePadVisible = false;
+    // } else {
+    //   if (this.signPadVisible && this.currentRole !== 'Scale') {
+    //     this.saveConfirmVisible = false;
+    //     this.signaturePadVisible = true;
+    //   } else {
+    //     this.saveConfirmVisible = true;
+    //     this.signaturePadVisible = false;
+    //   }
+    // }
   }
 
   showPayment(isReceiptPrint: boolean) {
@@ -1388,7 +1390,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.invoiceData.balanceAmount = parseFloat(this.balanceAmount.toFixed(3));
       this.invoiceData.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
       this.invoiceData.totalAmount = parseFloat(this.finalAmount.toFixed(3));
-      this.invoiceData.paidAmount =  parseFloat(Number(this.paidAmount).toFixed(2));
+      this.invoiceData.paidAmount =  parseFloat(Number(this.paidAmount).toFixed(3));
       this.invoiceData.lstttransactionMasterDTO = this.invoiceObj;
       this.invoiceData.updatedBy = this.logInUserId;
       this.invoiceData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
@@ -2061,7 +2063,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       FullName: this.customer?.fullName.toUpperCase(),
       PrintDate: this.formatDate(new Date()),
       CheckDate: this.formatDate(this.selectedCheckDate),
-      CheckAmount: (Math.round(checkAmount*100)/100).toFixed(2),
+      CheckAmount: ((checkAmount*100)/100).toFixed(3),
       AmountInWord: amountInWord
     }
 

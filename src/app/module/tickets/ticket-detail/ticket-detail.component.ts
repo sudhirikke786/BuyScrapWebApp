@@ -959,19 +959,21 @@ export class TicketDetailComponent implements OnInit {
   }
 
 
-  confirmSave() {
-    if (this.ticketId != 0) {
-      this.saveConfirmVisible = true;
-      this.signaturePadVisible = false;
-    } else {
-      if (this.signPadVisible && this.currentRole !== 'Scale') {
-        this.saveConfirmVisible = false;
-        this.signaturePadVisible = true;
-      } else {
-        this.saveConfirmVisible = true;
-        this.signaturePadVisible = false;
-      }
-    }
+  confirmSave() {    
+    this.saveConfirmVisible = true;
+    this.signaturePadVisible = false;
+    // if (this.ticketId != 0) {
+    //   this.saveConfirmVisible = true;
+    //   this.signaturePadVisible = false;
+    // } else {
+    //   if (this.signPadVisible && this.currentRole !== 'Scale') {
+    //     this.saveConfirmVisible = false;
+    //     this.signaturePadVisible = true;
+    //   } else {
+    //     this.saveConfirmVisible = true;
+    //     this.signaturePadVisible = false;
+    //   }
+    // }
   }
 
   showPayment(isReceiptPrint: boolean) {
@@ -1074,8 +1076,12 @@ export class TicketDetailComponent implements OnInit {
       // msg = 'You selected as Cash as payment mode, please confirm?';
       // this.messageAlert(msg);
     }
-        
-    this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
+
+    if (this.signPadVisible && this.currentRole !== 'Scale') {
+      this.signaturePadVisible = true;
+    } else {
+      this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
+    }        
   }
 
 
@@ -1260,6 +1266,7 @@ export class TicketDetailComponent implements OnInit {
       this.ticketData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       this.ticketData.customerId = parseFloat(this.sellerId);
       this.ticketData.dispatchID = parseFloat(this.dispatchID);
+      this.ticketData.sellerSignature = this.sellerSignatureImagePath;
 
     } else {
       const newTicket = new Ticket();
@@ -1297,8 +1304,8 @@ export class TicketDetailComponent implements OnInit {
     
 
       this.ticketData = newTicket;
-      this.sellerSignatureImagePath = null;
     }
+    this.sellerSignatureImagePath = null;
 
 
     console.log("Final ticketData :: " + JSON.stringify(this.ticketData));
@@ -1488,9 +1495,12 @@ export class TicketDetailComponent implements OnInit {
       },100)
     } else if (imagetype == 7) {
       console.log('Capture Adjustment image');
-    } else {
-      this.saveConfirmVisible = true;
-      this.signaturePadVisible = false;
+    } else if (imagetype == 8) {
+      console.log('Close Signature pad');
+      // this.saveConfirmVisible = true;
+      if (this.signaturePadVisible === true) {
+        this.signaturePadVisible = false;      
+      }
     }
   }
 
@@ -1535,8 +1545,17 @@ export class TicketDetailComponent implements OnInit {
         this.itemImagePath = this.imageUrl;
       } else {
         this.sellerSignatureImagePath = this.imageUrl;
+        this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
       }
       this.imageUrl = null;
+    },
+    (err: any) => {
+      //if error occurs while saving the signature
+      if (type == 8) {
+        console.log('error occurs while saving the signature');
+        this.sellerSignatureImagePath = null;
+        this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
+      }
     })
 
     this.imageUrl = null;

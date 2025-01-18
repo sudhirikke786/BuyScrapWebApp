@@ -276,7 +276,7 @@
                                                                             placeholder="Enter rate" />
                                                                     </td>
                                                                     <td style="width:15%">
-                                                                        <span>$</span> {{item.amount}}
+                                                                        {{item.amount | currency: currencySymbol :'symbol': numberFormat }}
                                                                     </td>
                                                                     <td style="width:15%">
                                                                         <button class="btn btn-danger me-1"
@@ -293,10 +293,10 @@
                                                                         {{item.quantity}}
                                                                     </td>
                                                                     <td style="width:15%">
-                                                                        {{item.rate}}
+                                                                        {{item.rate | currency: currencySymbol :'symbol': numberFormat }}
                                                                     </td>
                                                                     <td style="width:15%">
-                                                                        {{item.amount}}
+                                                                        {{item.amount | currency: currencySymbol :'symbol': numberFormat }}
                                                                     </td>
                                                                 </tr>
                                                             </ng-container>
@@ -399,7 +399,7 @@
                                             </div> -->
 
                                             <div class="d-flex justify-content-end  align-items-center" *ngIf="isshowDiscount && isEditModeOn">
-                                                <div class="fw-bold mr-1">Discount(%) :</div>
+                                                <div class="fw-bold mr-1">Discount (%) :  </div>
                                                 <div class="d-flex   justify-content-between align-items-center  input-container">
                                                     <input (input)="addDiscount()" 
                                                         type="text"  [(ngModel)]="discount" class="form-control w-100">
@@ -408,13 +408,13 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-end align-items-center" *ngIf="isshowDiscount && !isEditModeOn">
-                                                <div class="fw-bold mr-1">Discount(%):</div>
+                                                <div class="fw-bold mr-1">Discount (%):  </div>
                                                 <div>{{ discount }}</div>
                                             </div>
 
 
                                             <div class="d-flex justify-content-end  align-items-start" *ngIf="isshowTax && isEditModeOn">
-                                                <div class="fw-bold mr-2">Tax(%): </div>
+                                                <div class="fw-bold mr-2">Tax (%):  </div>
                                                 <div class="d-flex justify-content-between align-items-center  input-container"> <input
                                                         type="number" (input)="getTaxAmount()" [(ngModel)]="tax" class="form-control w-100">
                                                     <a href="javascript:void(0)" class="fw-bold  remove-x"
@@ -422,14 +422,14 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-end align-items-start" *ngIf="isshowTax && !isEditModeOn">
-                                                <div class="fw-bold mr-2">Tax(%):</div>
+                                                <div class="fw-bold mr-2">Tax (%):  </div>
                                                 <div>{{ tax }}</div>
                                             </div>
 
 
                                            
                                             <div class="d-flex justify-content-end  align-items-start " *ngIf="isshowShipping && isEditModeOn">
-                                                <div class="fw-bold mr-2">Shipping : </div>
+                                                <div class="fw-bold mr-2">Shipping :  </div>
                                                 <div class="d-flex  justify-content-between align-items-center input-container ">
                                                     <input
                                                         type="text" (input)="addShip()"  [(ngModel)]="shippingCharges" class="form-control w-100">
@@ -438,17 +438,14 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-end align-items-start" *ngIf="isshowShipping && !isEditModeOn">
-                                                <div class="fw-bold mr-2">Shipping:</div>
-                                                <div> <span>$</span> {{ shippingCharges }}</div>
+                                                <div class="fw-bold mr-2">Shipping:  </div>
+                                                <div> {{ shippingCharges | currency: currencySymbol :'symbol': numberFormat }}</div>
                                             </div>
 
                                             <div class="d-flex justify-content-end mt-1 align-items-start">
-                                                <div class="fw-bold mr-1">Total:</div>
+                                                <div class="fw-bold mr-1">Total:  </div>
                                                 <div  class="d-flex   justify-content-between align-items-center">
-                                                    <span *ngIf="!isEditModeOn">$ {{ finalAmount }}</span>
-                                                     <input  
-                                                        type="text" *ngIf="isEditModeOn" [(ngModel)]="finalAmount"  readonly class="form-control w-100">
-                                                  
+                                                    <span> {{ finalAmount | currency: currencySymbol :'symbol': numberFormat }}</span>                                                  
                                                 </div>
                                             </div>
 
@@ -458,20 +455,17 @@
 
 
                                             <div class="d-flex justify-content-end mt-1 align-items-center">
-                                                <div class="fw-bold mr-1">Amount Paid  :</div>
+                                                <div class="fw-bold mr-1">Amount Paid  :  </div>
                                                 <div class="d-flex  justify-content-between align-items-center">
-                                                    <span *ngIf="!isEditModeOn">$ {{ paidAmount }}</span>
+                                                    <span *ngIf="!isEditModeOn"> {{ paidAmount | currency: currencySymbol :'symbol': numberFormat }}</span>
                                                     <input *ngIf="isEditModeOn" type="text" (input)="calculate()" [(ngModel)]="paidAmount"   class="form-control ">
                                                   
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-end mt-1 align-items-center">
-                                                <div class="fw-bold mr-1">Balance Due :</div>
+                                                <div class="fw-bold mr-1">Balance Due :  </div>
                                                 <div class="d-flex readonly   justify-content-between align-items-center">
-                                                    <span *ngIf="!isEditModeOn">$ {{ balanceAmount }}</span>
-                                                    <input *ngIf="isEditModeOn" [(ngModel)]="balanceAmount" readonly  type="text" class="form-control ">
-                                                    
-                                                    <!-- balanceAmount -->
+                                                    <span> {{ balanceAmount | currency: currencySymbol :'symbol': numberFormat }}</span>                                                    
                                                 </div>
                                             </div>
 
