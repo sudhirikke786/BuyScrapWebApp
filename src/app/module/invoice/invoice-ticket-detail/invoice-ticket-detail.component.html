@@ -401,14 +401,14 @@
                                            
                                             <div class="card p-3 shadow-sm">
                                                 <!-- Discount Section -->
-                                                <div class="row mb-3" *ngIf="isshowDiscount">
+                                                <div class="row mb-1" *ngIf="isshowDiscount">
                                                     <div class="col-6 text-end fw-bold">Discount (%):</div>
                                                     <div class="col-6 d-flex align-items-center">
                                                         <input 
                                                             *ngIf="isshowDiscount && isEditModeOn" 
                                                             type="text" 
                                                             [(ngModel)]="discount" 
-                                                            class="form-control w-50"
+                                                            class="form-control w-100"
                                                             placeholder="Enter Discount" 
                                                             (input)="addDiscount()">
                                                            <span *ngIf="isshowDiscount && !isEditModeOn" class="text-secondary">{{ discount }}</span>
@@ -424,14 +424,14 @@
                                                 </div>
                                             
                                                 <!-- Tax Section -->
-                                                <div class="row mb-3" *ngIf="isshowTax">
+                                                <div class="row mb-1" *ngIf="isshowTax">
                                                     <div class="col-6 text-end fw-bold">Tax (%):</div>
                                                     <div class="col-6 d-flex align-items-center">
                                                         <input 
                                                             *ngIf="isshowTax && isEditModeOn" 
                                                             type="number" 
                                                             [(ngModel)]="tax" 
-                                                            class="form-control w-50"
+                                                            class="form-control w-100"
                                                             placeholder="Enter Tax" 
                                                             (input)="getTaxAmount()">
                                                         <span *ngIf="isshowTax && !isEditModeOn" class="text-secondary">{{ tax }}</span>
@@ -446,14 +446,14 @@
                                                 </div>
                                             
                                                 <!-- Shipping Section -->
-                                                <div class="row mb-3" *ngIf="isshowShipping">
+                                                <div class="row mb-1" *ngIf="isshowShipping">
                                                     <div class="col-6 text-end fw-bold">Shipping:</div>
                                                     <div class="col-6 d-flex align-items-center">
                                                         <input 
                                                             *ngIf="isshowShipping && isEditModeOn" 
                                                             type="text" 
                                                             [(ngModel)]="shippingCharges" 
-                                                            class="form-control w-50"
+                                                            class="form-control w-100"
                                                             placeholder="Enter Shipping Charges" 
                                                             (input)="addShip()">
                                                         <span *ngIf="isshowShipping && !isEditModeOn" class="text-secondary">
@@ -470,20 +470,20 @@
                                                 </div>
                                             
                                                 <!-- Total Section -->
-                                                <div class="row mb-3">
+                                                <div class="row mb-1">
                                                     <div class="col-6 text-end fw-bold">Total:</div>
                                                     <div class="col-6 text-secondary">{{ finalAmount | currency: currencySymbol: 'symbol': numberFormat }}</div>
                                                 </div>
                                             
                                                 <!-- Amount Paid Section -->
-                                                <div class="row mb-3">
+                                                <div class="row mb-1">
                                                     <div class="col-6 text-end fw-bold">Amount Paid:</div>
                                                     <div class="col-6">
                                                         <input 
                                                             *ngIf="isEditModeOn" 
                                                             type="text" 
                                                             [(ngModel)]="paidAmount" 
-                                                            class="form-control w-50"
+                                                            class="form-control w-100"
                                                             placeholder="Enter Paid Amount" 
                                                             (input)="calculate()">
                                                         <span *ngIf="!isEditModeOn" class="text-secondary">
