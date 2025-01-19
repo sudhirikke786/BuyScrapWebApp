@@ -112,25 +112,24 @@ export class InOutReportComponent implements OnInit {
       );
   }
 
-  generateSingleTicketReport() {
+  getInoutReportByID() {
 
     this.isReportShow = true;
     this.showLoaderReport = true;
-
+    
     const param = {
-      TicketId:this.customerObj.ticketId,
-      LocationId: this.locId,
-      Type: 'A4Size'
+      InoutId: this.customerObj.rowId,
+      LocationId: this.locId
     }
 
-    this.commonService.generateSingleTicketReport(param, false)
+    this.commonService.getInoutReportByID(param)
       .subscribe(data => {
-        console.log('generateSingleTicketReport :: ');
+        console.log('getInoutReportByID :: ');
         console.log(data);
         this.showLoaderReport = false;
         this.fileDataObj = data.body.data;
         if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,this.customerObj.ticketId)
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Inout Report "+this.customerObj.rowId)
         }
 
        
@@ -180,7 +179,7 @@ export class InOutReportComponent implements OnInit {
         this.getInOutReport();
         break;
       case 'mdi-download':
-        this.generateSingleTicketReport();
+        this.getInoutReportByID();
         break;
       default:
         break;

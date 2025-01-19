@@ -64,6 +64,13 @@
                                                 </div>
                                                 <div>
                                                     <a *ngIf="!isEditModeOn && invoiceData.status == 'OPEN'"
+                                                        class="btn  btn-primary flt-right me-1"
+                                                        (click)="generateSingleInvoiceReport(invoiceId)">
+                                                        <i class="mdi printing"></i> Print
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <a *ngIf="!isEditModeOn && invoiceData.status == 'OPEN'"
                                                         class="btn  btn-primary flt-right"
                                                         (click)="editInvoiceDetails()">
                                                         <i class="mdi mdi-pencil"></i> Edit
