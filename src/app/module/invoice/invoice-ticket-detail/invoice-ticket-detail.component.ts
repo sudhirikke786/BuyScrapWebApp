@@ -219,6 +219,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   shippingCharges = 0;
   paidAmount = 0;
   balanceAmount = 0;
+  subTotalAmount = 0;
 
   finalAmount = 0;
 
@@ -479,6 +480,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.invoiceData['status'] = 'NEW INVOICE';
       this.invoiceData['paidAmount'] = 0;
       this.invoiceData['balanceAmount'] = 0;
+      this.invoiceData['SubTotalAmount'] = 0;
       
 
       this.invoiceObj = [];
@@ -681,6 +683,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         this.tax = this.invoiceData.tax ;
         this.shippingCharges = this.invoiceData.shippingCharges ;
         this.discount = this.invoiceData.discount ;
+        this.subTotalAmount = this.invoiceData.subTotalAmount ;
         this.finalAmount = this.invoiceData.totalAmount ;
         this.paidAmount = this.invoiceData.paidAmount;
         this.balanceAmount = this.invoiceData.balanceAmount ;
@@ -941,6 +944,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
 
     this.totalAmount =  (this.totalActualAmount)
+    this.subTotalAmount =  this.totalAmount;
     this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
 
     this.finalAmount = this.totalAmount;
@@ -1387,6 +1391,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       this.isEditModeOn = false;
       this.invoiceData.status = invoiceStatus;
       this.invoiceData.amount = parseFloat(this.totalAmount.toFixed(3));
+      this.invoiceData.subTotalAmount = parseFloat(this.subTotalAmount.toFixed(3));
       this.invoiceData.balanceAmount = parseFloat(this.balanceAmount.toFixed(3));
       this.invoiceData.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
       this.invoiceData.totalAmount = parseFloat(this.finalAmount.toFixed(3));
@@ -1419,6 +1424,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       newInvoice.invoiceId = 0;
       newInvoice.status = invoiceStatus;
       newInvoice.amount = parseFloat(this.totalAmount.toFixed(3));
+      newInvoice.subTotalAmount = parseFloat(this.subTotalAmount.toFixed(3));
       newInvoice.balanceAmount = parseFloat(this.balanceAmount.toFixed(3));
       newInvoice.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
       newInvoice.totalAmount = parseFloat(this.finalAmount.toFixed(3));

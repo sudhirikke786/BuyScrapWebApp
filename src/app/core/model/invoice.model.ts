@@ -10,6 +10,7 @@ export class Invoice {
     invoiceId: number = 0;
     status: string = 'OPEN';
     amount: number = 0.000;
+    subTotalAmount: number = 0.000;
     balanceAmount: number = 0.000;
     roundingAmount: number = 0.000;
     totalAmount: number = 0.000;
