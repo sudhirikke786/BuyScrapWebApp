@@ -409,9 +409,16 @@
                                             <div class="card p-3 shadow-sm">
                                                 <!-- Discount Section -->
                                                 <div class="row mb-1" *ngIf="isshowDiscount">
-                                                    <div class="col-6 text-end fw-bold">Discount (%):</div>
+                                                    <div class="col-6 text-end fw-bold">Discount:</div>
                                                     <div class="col-6 d-flex align-items-center">
-                                                        <input 
+
+                                                        <div class="input-group flex-nowrap">
+                                                            <div class="input-group-prepend" *ngIf="isEditModeOn">
+                                                              <div class="input-group-text">%</div>
+                                                            </div>
+                                                            
+
+                                                            <input 
                                                             *ngIf="isshowDiscount && isEditModeOn" 
                                                             type="text" 
                                                             [(ngModel)]="discount" 
@@ -423,32 +430,48 @@
                                                         <a 
                                                             *ngIf="isshowDiscount && isEditModeOn" 
                                                             href="javascript:void(0)" 
-                                                            class="text-danger ms-2 remove-x"
+                                                            class="text-danger ms-2 mt-1 remove-x"
                                                             (click)="isshowDiscount = false; removeDiscount()">
                                                             X
                                                         </a>
+                                                          </div>
+
+
+                        
                                                     </div>
                                                 </div>
                                             
                                                 <!-- Tax Section -->
                                                 <div class="row mb-1" *ngIf="isshowTax">
-                                                    <div class="col-6 text-end fw-bold">Tax (%):</div>
+                                                    <div class="col-6 text-end fw-bold">Tax:</div>
                                                     <div class="col-6 d-flex align-items-center">
+
+                                                        <div class="input-group flex-nowrap">
+                                                            <div class="input-group-prepend" *ngIf="isEditModeOn">
+                                                              <div class="input-group-text">%</div>
+                                                            </div>
+                                                            
+
                                                         <input 
-                                                            *ngIf="isshowTax && isEditModeOn" 
-                                                            type="number" 
-                                                            [(ngModel)]="tax" 
-                                                            class="form-control w-100"
-                                                            placeholder="Enter Tax" 
-                                                            (input)="getTaxAmount()">
-                                                        <span *ngIf="isshowTax && !isEditModeOn" class="text-secondary">{{ tax }}</span>
-                                                        <a 
-                                                            *ngIf="isshowTax && isEditModeOn" 
-                                                            href="javascript:void(0)" 
-                                                            class="text-danger ms-2 remove-x"
-                                                            (click)="isshowTax = false; removeTax()">
-                                                            X
-                                                        </a>
+                                                        *ngIf="isshowTax && isEditModeOn" 
+                                                        type="number" 
+                                                        [(ngModel)]="tax" 
+                                                        class="form-control w-100"
+                                                        placeholder="Enter Tax" 
+                                                        (input)="getTaxAmount()">
+                                                    <span *ngIf="isshowTax && !isEditModeOn" class="text-secondary">{{ tax }}</span>
+                                                    <a 
+                                                        *ngIf="isshowTax && isEditModeOn" 
+                                                        href="javascript:void(0)" 
+                                                        class="text-danger ms-2 mt-1 remove-x"
+                                                        (click)="isshowTax = false; removeTax()">
+                                                        X
+                                                    </a>
+
+                                                        </div>
+                                                            
+
+
                                                     </div>
                                                 </div>
                                             
@@ -456,7 +479,11 @@
                                                 <div class="row mb-1" *ngIf="isshowShipping">
                                                     <div class="col-6 text-end fw-bold">Shipping:</div>
                                                     <div class="col-6 d-flex align-items-center">
-                                                        <input 
+                                                        <div class="input-group flex-nowrap">
+                                                            <div class="input-group-prepend" *ngIf="false">
+                                                              <div class="input-group-text">%</div>
+                                                            </div>
+                                                            <input 
                                                             *ngIf="isshowShipping && isEditModeOn" 
                                                             type="text" 
                                                             [(ngModel)]="shippingCharges" 
@@ -469,10 +496,19 @@
                                                         <a 
                                                             *ngIf="isshowShipping && isEditModeOn" 
                                                             href="javascript:void(0)" 
-                                                            class="text-danger ms-2 remove-x"
+                                                            class="text-danger ms-2 mt-1 remove-x"
                                                             (click)="isshowShipping = false; removeShip()">
                                                             X
                                                         </a>
+                                                        </div>
+                                                            
+
+
+
+
+
+
+                                                        
                                                     </div>
                                                 </div>
                                             
