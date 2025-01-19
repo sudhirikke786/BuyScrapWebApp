@@ -73,7 +73,7 @@
                               <a class="btn btn-danger me-1" *ngIf="certificate.ticketRowID === 0" (click)="deletePickup(certificate.rowId)">Delete</a>
                               <a class="btn btn-primary" *ngIf="certificate.ticketRowID === 0" (click)="convertToTicket(certificate.sellerID,certificate.rowId)">Convert to Ticket</a>
                               <a class="btn btn-success me-1" *ngIf="certificate.ticketRowID > 0" (click)="showTicketclick(certificate.ticketRowID,certificate.sellerID)">Show Ticket</a>
-                              <a class="btn btn-success me-1 ms-1"  (click)="printTicket(certificate.ticketRowID,certificate.sellerID)">Print</a>
+                              <a class="btn btn-success me-1 ms-1"  (click)="generateDispatchReport(certificate.rowId)">Print</a>
 
                              </div>
                       </td>
@@ -279,3 +279,21 @@
 </p-confirmDialog>
 <p-toast position="top-right"></p-toast>
 
+
+
+<ng-container *ngIf="!checkTabView">
+
+  <p-dialog header="Dispatch Report" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+       
+    <div *ngIf="showLoaderReport">
+      <app-page-loader type="reportloader"></app-page-loader>
+    </div>
+
+    <div class="row" >
+      <div style="height: 500px;" *ngIf="!showLoaderReport">                
+        <ngx-extended-pdf-viewer #pdfViewer [base64Src]="fileDataObj" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
+      </div>
+    </div>
+
+  </p-dialog>
+  </ng-container> 

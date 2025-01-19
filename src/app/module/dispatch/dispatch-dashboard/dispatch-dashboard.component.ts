@@ -6,6 +6,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { DispatchModule } from '../dispatch.module';
 import { FormGroup,FormBuilder,Validators } from '@angular/forms';
 import { MessageService,ConfirmationService } from 'primeng/api';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-dispatch-dashboard',
@@ -90,7 +91,6 @@ export class DispatchDashboardComponent implements OnInit {
   pageTotal = 0;
   tiketSelectedObj: any;
   currentRole: any;
-  isLoading = false;
   sellerLoader: boolean = false;
   
   alertVisible = false;
@@ -106,6 +106,12 @@ export class DispatchDashboardComponent implements OnInit {
 
   checkVisible =  false;
   newDriverScreenVisible = false;
+
+  fileDataObj: any;
+  showDownload = false;
+  showLoaderReport = false;
+  isReportShow = false;
+  isLoading = false;
   checkTabView: boolean = false;
 
 
@@ -113,6 +119,7 @@ export class DispatchDashboardComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public commonService: CommonService,
+    public helperService:HelperService,
    // private datePipe: DatePipe
    private fb: FormBuilder,
    private messageService:MessageService,
@@ -200,8 +207,34 @@ export class DispatchDashboardComponent implements OnInit {
       
   }
 
-  printTicket(ticketRowID: any, sellerID: any) {
-    console.log("Print");
+  closePdfReport() {
+    this.showDownload = false;    
+  }
+
+  generateDispatchReport(rowId: any) {
+    this.isReportShow =true;
+    this.showLoaderReport = true;
+
+    const param = {
+      PickUpID: rowId,
+      LocationId: this.locId
+    }
+
+    this.commonService.getDispatchReportData(param)
+      .subscribe(data => {
+        console.log('getDispatchReportData :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showLoaderReport = false;
+
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Dispatch Report " + rowId);
+        }
+      },
+        (err: any) => {
+          this.showLoaderReport = false;
+        }
+      );
   }
   
 

@@ -605,6 +605,10 @@ getMaterialPriceList(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetSingleInvoiceData', 'GET', paramObj);
   }
 
+  getDispatchReportData(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetDispatchReportData', 'GET', paramObj);
+  }
+
   /** Admin API */
 
   GetAllUsers(paramObj: any): Observable<any> {

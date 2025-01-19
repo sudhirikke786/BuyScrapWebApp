@@ -102,6 +102,7 @@ export class InoutDetailsComponent implements OnInit {
   fileDataObj: any;
   showDownload = false;
   showLoaderReport = false;
+  isReportShow = false;
   isLoading = false;
   checkTabView: boolean = false;
   @ViewChild(MaterialCalculatorComponent) materialCalculatorComponent!: MaterialCalculatorComponent;

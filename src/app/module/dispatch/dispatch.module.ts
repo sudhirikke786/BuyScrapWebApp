@@ -1,4 +1,4 @@
-import { Component, NgModule } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DispatchDashboardComponent } from './dispatch-dashboard/dispatch-dashboard.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -9,6 +9,7 @@ import { FullCalnderDispatchComponent } from './full-calnder-dispatch/full-calnd
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DispatchLatestDetailsComponent } from './dispatch-latest-details/dispatch-latest-details.component';
 import { DispatchOrderStatusComponent } from './dispatch-order-status/dispatch-order-status.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 export const routes: Routes = [
   {
@@ -44,7 +45,9 @@ export const routes: Routes = [
     FullCalendarModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
+    NgxExtendedPdfViewerModule,
     PrimengModule,
-  ]
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class DispatchModule { }
