@@ -403,7 +403,7 @@
                                                 <!-- Discount Section -->
                                                 <div class="row mb-3" *ngIf="isshowDiscount">
                                                     <div class="col-6 text-end fw-bold">Discount (%):</div>
-                                                    <div class="col-6 d-flex align-items-center  position-relative">
+                                                    <div class="col-6 d-flex align-items-center">
                                                         <input 
                                                             *ngIf="isshowDiscount && isEditModeOn" 
                                                             type="text" 
@@ -412,7 +412,7 @@
                                                             placeholder="Enter Discount" 
                                                             (input)="addDiscount()">
                                                            <span *ngIf="isshowDiscount && !isEditModeOn" class="text-secondary">{{ discount }}</span>
-                                                           <span class="input-symbol">%</span>
+                                                          
                                                         <a 
                                                             *ngIf="isshowDiscount" 
                                                             href="javascript:void(0)" 
