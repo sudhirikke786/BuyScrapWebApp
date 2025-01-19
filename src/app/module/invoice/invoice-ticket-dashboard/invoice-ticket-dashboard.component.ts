@@ -315,7 +315,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
 
 
   markasPaid(ticketData: any){
-
+    alert('Development is in-progress!!!')
   }
 
   getColor(type: any, isParent: boolean) {
