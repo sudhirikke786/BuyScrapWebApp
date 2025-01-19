@@ -398,77 +398,108 @@
                                                 </div>
                                             </div> -->
 
-                                            <div class="d-flex justify-content-end  align-items-center" *ngIf="isshowDiscount && isEditModeOn">
-                                                <div class="fw-bold mr-1">Discount (%) :  </div>
-                                                <div class="d-flex   justify-content-between align-items-center  input-container">
-                                                    <input (input)="addDiscount()" 
-                                                        type="text"  [(ngModel)]="discount" class="form-control w-100">
-                                                    <a class="fw-bold remove-x" href="javascript:void(0)"
-                                                        (click)="isshowDiscount =  false;removeDiscount()">X</a>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-content-end align-items-center" *ngIf="isshowDiscount && !isEditModeOn">
-                                                <div class="fw-bold mr-1">Discount (%):  </div>
-                                                <div>{{ discount }}</div>
-                                            </div>
-
-
-                                            <div class="d-flex justify-content-end  align-items-start" *ngIf="isshowTax && isEditModeOn">
-                                                <div class="fw-bold mr-2">Tax (%):  </div>
-                                                <div class="d-flex justify-content-between align-items-center  input-container"> <input
-                                                        type="number" (input)="getTaxAmount()" [(ngModel)]="tax" class="form-control w-100">
-                                                    <a href="javascript:void(0)" class="fw-bold  remove-x"
-                                                        (click)="isshowTax =  false;removeTax()">X</a>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-content-end align-items-start" *ngIf="isshowTax && !isEditModeOn">
-                                                <div class="fw-bold mr-2">Tax (%):  </div>
-                                                <div>{{ tax }}</div>
-                                            </div>
-
-
                                            
-                                            <div class="d-flex justify-content-end  align-items-start " *ngIf="isshowShipping && isEditModeOn">
-                                                <div class="fw-bold mr-2">Shipping :  </div>
-                                                <div class="d-flex  justify-content-between align-items-center input-container ">
-                                                    <input
-                                                        type="text" (input)="addShip()"  [(ngModel)]="shippingCharges" class="form-control w-100">
-                                                    <a class="fw-bold remove-x" href="javascript:void(0)"
-                                                        (click)="isshowShipping =  false;removeShip()">X</a>
+                                            <div class="card p-3 shadow-sm">
+                                                <!-- Discount Section -->
+                                                <div class="row mb-3" *ngIf="isshowDiscount">
+                                                    <div class="col-6 text-end fw-bold">Discount (%):</div>
+                                                    <div class="col-6 d-flex align-items-center  position-relative">
+                                                        <input 
+                                                            *ngIf="isshowDiscount && isEditModeOn" 
+                                                            type="text" 
+                                                            [(ngModel)]="discount" 
+                                                            class="form-control w-50"
+                                                            placeholder="Enter Discount" 
+                                                            (input)="addDiscount()">
+                                                           <span *ngIf="isshowDiscount && !isEditModeOn" class="text-secondary">{{ discount }}</span>
+                                                           <span class="input-symbol">%</span>
+                                                        <a 
+                                                            *ngIf="isshowDiscount" 
+                                                            href="javascript:void(0)" 
+                                                            class="text-danger ms-2 remove-x"
+                                                            (click)="isshowDiscount = false; removeDiscount()">
+                                                            X
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            
+                                                <!-- Tax Section -->
+                                                <div class="row mb-3" *ngIf="isshowTax">
+                                                    <div class="col-6 text-end fw-bold">Tax (%):</div>
+                                                    <div class="col-6 d-flex align-items-center">
+                                                        <input 
+                                                            *ngIf="isshowTax && isEditModeOn" 
+                                                            type="number" 
+                                                            [(ngModel)]="tax" 
+                                                            class="form-control w-50"
+                                                            placeholder="Enter Tax" 
+                                                            (input)="getTaxAmount()">
+                                                        <span *ngIf="isshowTax && !isEditModeOn" class="text-secondary">{{ tax }}</span>
+                                                        <a 
+                                                            *ngIf="isshowTax" 
+                                                            href="javascript:void(0)" 
+                                                            class="text-danger ms-2 remove-x"
+                                                            (click)="isshowTax = false; removeTax()">
+                                                            X
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            
+                                                <!-- Shipping Section -->
+                                                <div class="row mb-3" *ngIf="isshowShipping">
+                                                    <div class="col-6 text-end fw-bold">Shipping:</div>
+                                                    <div class="col-6 d-flex align-items-center">
+                                                        <input 
+                                                            *ngIf="isshowShipping && isEditModeOn" 
+                                                            type="text" 
+                                                            [(ngModel)]="shippingCharges" 
+                                                            class="form-control w-50"
+                                                            placeholder="Enter Shipping Charges" 
+                                                            (input)="addShip()">
+                                                        <span *ngIf="isshowShipping && !isEditModeOn" class="text-secondary">
+                                                            {{ shippingCharges | currency: currencySymbol: 'symbol': numberFormat }}
+                                                        </span>
+                                                        <a 
+                                                            *ngIf="isshowShipping" 
+                                                            href="javascript:void(0)" 
+                                                            class="text-danger ms-2 remove-x"
+                                                            (click)="isshowShipping = false; removeShip()">
+                                                            X
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            
+                                                <!-- Total Section -->
+                                                <div class="row mb-3">
+                                                    <div class="col-6 text-end fw-bold">Total:</div>
+                                                    <div class="col-6 text-secondary">{{ finalAmount | currency: currencySymbol: 'symbol': numberFormat }}</div>
+                                                </div>
+                                            
+                                                <!-- Amount Paid Section -->
+                                                <div class="row mb-3">
+                                                    <div class="col-6 text-end fw-bold">Amount Paid:</div>
+                                                    <div class="col-6">
+                                                        <input 
+                                                            *ngIf="isEditModeOn" 
+                                                            type="text" 
+                                                            [(ngModel)]="paidAmount" 
+                                                            class="form-control w-50"
+                                                            placeholder="Enter Paid Amount" 
+                                                            (input)="calculate()">
+                                                        <span *ngIf="!isEditModeOn" class="text-secondary">
+                                                            {{ paidAmount | currency: currencySymbol: 'symbol': numberFormat }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            
+                                                <!-- Balance Due Section -->
+                                                <div class="row">
+                                                    <div class="col-6 text-end fw-bold">Balance Due:</div>
+                                                    <div class="col-6 text-secondary">{{ balanceAmount | currency: currencySymbol: 'symbol': numberFormat }}</div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-end align-items-start" *ngIf="isshowShipping && !isEditModeOn">
-                                                <div class="fw-bold mr-2">Shipping:  </div>
-                                                <div> {{ shippingCharges | currency: currencySymbol :'symbol': numberFormat }}</div>
-                                            </div>
-
-                                            <div class="d-flex justify-content-end mt-1 align-items-start">
-                                                <div class="fw-bold mr-1">Total:  </div>
-                                                <div  class="d-flex   justify-content-between align-items-center">
-                                                    <span> {{ finalAmount | currency: currencySymbol :'symbol': numberFormat }}</span>                                                  
-                                                </div>
-                                            </div>
-
-
-
-
-
-
-                                            <div class="d-flex justify-content-end mt-1 align-items-center">
-                                                <div class="fw-bold mr-1">Amount Paid  :  </div>
-                                                <div class="d-flex  justify-content-between align-items-center">
-                                                    <span *ngIf="!isEditModeOn"> {{ paidAmount | currency: currencySymbol :'symbol': numberFormat }}</span>
-                                                    <input *ngIf="isEditModeOn" type="text" (input)="calculate()" [(ngModel)]="paidAmount"   class="form-control ">
-                                                  
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-content-end mt-1 align-items-center">
-                                                <div class="fw-bold mr-1">Balance Due :  </div>
-                                                <div class="d-flex readonly   justify-content-between align-items-center">
-                                                    <span> {{ balanceAmount | currency: currencySymbol :'symbol': numberFormat }}</span>                                                    
-                                                </div>
-                                            </div>
-
+                                            
+                                            
 
                                             
                                             

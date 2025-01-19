@@ -338,3 +338,16 @@ button {
   line-height: 2rem !important;  
 }
 }
+
+input {
+  transition: box-shadow 0.3s ease;
+}
+input:focus {
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.remove-x:hover {
+  color: #dc3545;
+  text-decoration: underline;
+}

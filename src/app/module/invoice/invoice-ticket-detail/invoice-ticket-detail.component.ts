@@ -405,7 +405,9 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   // }
 
   updateNewItemAmount() {
-    this.newItem.amount = Number((this.newItem.quantity * this.newItem.rate)) // Update the new item amount dynamically
+    this.newItem.amount = Number((this.newItem.quantity * this.newItem.rate))
+    this.calculate();
+     // Update the new item amount dynamically
   }
 
   ngAfterViewInit() {
@@ -953,6 +955,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       // return sum + (invoices.isAdjusmentSet ? invoices.amount * -1 : 0);
       return sum + (invoices.isAdjusmentSet ? invoices.amount : 0);
     }, 0);
+
+    this.calculate();
   }
 
   editInvoiceDetails() {
@@ -1785,6 +1789,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     this.backToChangeItemMainMaterials();
     this.backToMainMaterials();
     this.itemGross = '';
+    
   }
 
   // addAdjustments() {
