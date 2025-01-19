@@ -586,7 +586,7 @@ getMaterialPriceList(paramObj: any): Observable<any> {
   }
 
   getInoutReportByID(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/PdfReports/GetShipOutDetailsByID', 'GET', paramObj);
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetInOutDetailsByID', 'GET', paramObj);
   }
 
   getMergeTransactionsTicketReceipt(paramObj: any): Observable<any> {
