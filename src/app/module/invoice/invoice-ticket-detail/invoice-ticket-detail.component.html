@@ -421,7 +421,7 @@
                                                            <span *ngIf="isshowDiscount && !isEditModeOn" class="text-secondary">{{ discount }}</span>
                                                           
                                                         <a 
-                                                            *ngIf="isshowDiscount" 
+                                                            *ngIf="isshowDiscount && isEditModeOn" 
                                                             href="javascript:void(0)" 
                                                             class="text-danger ms-2 remove-x"
                                                             (click)="isshowDiscount = false; removeDiscount()">
@@ -443,7 +443,7 @@
                                                             (input)="getTaxAmount()">
                                                         <span *ngIf="isshowTax && !isEditModeOn" class="text-secondary">{{ tax }}</span>
                                                         <a 
-                                                            *ngIf="isshowTax" 
+                                                            *ngIf="isshowTax && isEditModeOn" 
                                                             href="javascript:void(0)" 
                                                             class="text-danger ms-2 remove-x"
                                                             (click)="isshowTax = false; removeTax()">
@@ -467,7 +467,7 @@
                                                             {{ shippingCharges | currency: currencySymbol: 'symbol': numberFormat }}
                                                         </span>
                                                         <a 
-                                                            *ngIf="isshowShipping" 
+                                                            *ngIf="isshowShipping && isEditModeOn" 
                                                             href="javascript:void(0)" 
                                                             class="text-danger ms-2 remove-x"
                                                             (click)="isshowShipping = false; removeShip()">
