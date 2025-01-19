@@ -110,25 +110,23 @@ export class DispatchReportComponent implements OnInit {
       );
   }
 
-  generateSingleTicketReport() {
-
+  getDispatchReportData() {
     this.isReportShow = true;
     this.showLoaderReport = true;
-
+    
     const param = {
-      TicketId:this.customerObj.ticketId,
-      LocationId: this.locId,
-      Type: 'A4Size'
+      PickUpID: this.customerObj.rowID,
+      LocationId: this.locId
     }
 
-    this.commonService.generateSingleTicketReport(param, false)
+    this.commonService.getDispatchReportData(param)
       .subscribe(data => {
-        console.log('generateSingleTicketReport :: ');
+        console.log('getDispatchReportData :: ');
         console.log(data);
         this.showLoaderReport = false;
         this.fileDataObj = data.body.data;
         if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,this.customerObj.ticketId)
+          this.helperService.downloadBase64Pdf(this.fileDataObj, "Dispatch Report " + this.customerObj.rowID)
         }
 
        
@@ -181,7 +179,7 @@ export class DispatchReportComponent implements OnInit {
         this.getDispatchReport();
         break;
       case 'mdi-download':
-        this.generateSingleTicketReport();
+        this.getDispatchReportData();
         break;
       default:
         break;

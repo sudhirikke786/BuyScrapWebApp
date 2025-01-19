@@ -117,25 +117,24 @@ export class ShipOutReportComponent implements OnInit {
       );
   }
 
-  generateSingleTicketReport() {
+  getShipOutReportByID() {
 
     this.isReportShow = true;
     this.showLoaderReport = true;
 
     const param = {
-      TicketId:this.customerObj.ticketId,
-      LocationId: this.locId,
-      Type: 'A4Size'
+      ShipOutId: this.customerObj.rowId,
+      LocationId: this.locId
     }
 
-    this.commonService.generateSingleTicketReport(param, false)
+    this.commonService.getShipOutReportByID(param)
       .subscribe(data => {
-        console.log('generateSingleTicketReport :: ');
+        console.log('getShipOutReportByID :: ');
         console.log(data);
         this.showLoaderReport = false;
         this.fileDataObj = data.body.data;
         if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,this.customerObj.ticketId)
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Shipout Report "+ this.customerObj.rowId)
         }
 
        
@@ -185,7 +184,7 @@ export class ShipOutReportComponent implements OnInit {
         this.getShipOutReport();
         break;
       case 'mdi-download':
-        this.generateSingleTicketReport();
+        this.getShipOutReportByID();
         break;
       default:
         break;

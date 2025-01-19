@@ -720,7 +720,7 @@ export class ShipoutDetailsComponent implements OnInit {
         this.fileDataObj = data.body.data;
         this.showLoaderReport = false;
         if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,"Shipout Report"+this.shipoutId)
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Shipout Report "+this.shipoutId)
         }
 
         //this.showDownload = true;
