@@ -32,5 +32,6 @@ export class ShipOut {
     totalTare: number = 0;
     totalNet: number = 0;
     totalPrice:number=0;
+    totalAmount:number=0;
     shipoutmaterial: any;
 }

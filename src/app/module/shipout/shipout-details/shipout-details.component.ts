@@ -555,7 +555,7 @@ export class ShipoutDetailsComponent implements OnInit {
     // }
   }
 
-  addItem(materialId: any, materialName: any, selectedMaterial: string, availableStock: any) {
+  addItem(materialId: any, materialName: any, selectedMaterial: string, availableStock: any, scrapPrice: any) {
   
     
     this.editItemCloseImageCapture = true;
@@ -564,6 +564,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemGroupName = selectedMaterial;
     this.itemMaterialName = materialName;
     this.itemAvailableNet = availableStock;
+    this.itemPrice = scrapPrice;
     this.itemLeveloperationPerform = this.itemLeveloperationPerform == '' ? 'Add' : this.itemLeveloperationPerform;
     this.itemCodNote = '';      
     this.itemGross = '';

@@ -54,7 +54,7 @@
 
                                 <ng-container *ngIf="subScriptionType?.organisationPlan =='pro'">
 
-                                    <div class="col-md-3 col-sm-6">
+                                    <div class="col-md-3 col-sm-6" *ngIf="this.sellerType == 'Personal'">
 
 
                                         <div class="card h-100">
@@ -120,7 +120,7 @@
                                             </ul>
                                         </div> -->
                                     </div>
-                                    <div class="col-md-3 col-sm-6" *ngIf="this.sellerType == 'Personal'">
+                                    <div class="col-md-3 col-sm-6">
     
                                         <div class="card h-100">
                                             <div class="card-body  py-0 px-0">

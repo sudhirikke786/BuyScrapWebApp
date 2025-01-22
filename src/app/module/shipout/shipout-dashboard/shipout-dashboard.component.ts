@@ -316,10 +316,10 @@ export class ShipoutDashboardComponent implements OnInit {
  }
 
  showInvoice(invoiceID: any, customerID: any , rowId: any) {
-  // this.router.navigate([`/${this.orgName}/invoice/detail/${invoiceID}/${customerID}`])
-  this.router.navigate([`/${this.orgName}/invoice/detail/${invoiceID}/${customerID}`], {
-    queryParams: { shipOutID: rowId},
-    }); 
+  this.router.navigate([`/${this.orgName}/invoice/detail/${invoiceID}/${customerID}`])
+  // this.router.navigate([`/${this.orgName}/invoice/detail/${invoiceID}/${customerID}`], {
+  //   queryParams: { shipOutID: rowId},
+  //   }); 
     
 }
 
@@ -412,14 +412,19 @@ export class ShipoutDashboardComponent implements OnInit {
   
   shipOut.totalGross = selectedMaterials.reduce((total, material) => total + material.shipOutNet, 0); 
   shipOut.totalTare = 0; 
-  shipOut.totalNet = selectedMaterials.reduce((total, material) => total + material.shipOutNet, 0); 
+  shipOut.totalNet = selectedMaterials.reduce((total, material) => total + material.shipOutNet, 0);
+  shipOut.totalAmount = selectedMaterials.reduce(
+    (total, material) => total + (material.shipOutNet * material.scrapPrice),
+    0
+  ); 
 
   shipOut.shipoutmaterial = selectedMaterials.map(material => ({
     rowID: material.rowId,
     materialId: material.rowId, 
     gross: material.shipOutNet, 
     net: material.shipOutNet, 
-    price: material.scrapPrice 
+    price: material.scrapPrice,
+    amount: material.shipOutNet * material.scrapPrice
   }));
 
 
@@ -428,8 +433,7 @@ export class ShipoutDashboardComponent implements OnInit {
       console.log('Material saved successfully:', response);
       this.messageService.add({ severity: 'success', summary: 'success', detail: 'Materials saved successfully!' });
       this.bulkShipOutVisible = false; 
-      
-      
+      this.getAllShipOutDetails();      
       
     },
     (error) => {

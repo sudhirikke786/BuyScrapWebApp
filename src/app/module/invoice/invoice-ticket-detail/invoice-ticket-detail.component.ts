@@ -333,7 +333,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         const materialData = data.body.data;
   
         this.invoiceObj = materialData.map(material => ({
-          localRowId: this.localRowIdCounter + 1, 
+          localRowId: this.localRowIdCounter++, 
           rowId: 0,           
           itemName: material.materialName,
           quantity: material.net,
@@ -1683,7 +1683,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
 
   updateItems(index: number) {
-    // alert('Hiiiiiiiiiiiii')
+    // alert(index)
     this.itemLeveloperationPerform = 'Edit';
     const item = this.invoiceObj[index];
     console.log(item);

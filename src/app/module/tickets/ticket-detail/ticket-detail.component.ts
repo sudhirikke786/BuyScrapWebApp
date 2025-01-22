@@ -1499,7 +1499,9 @@ export class TicketDetailComponent implements OnInit {
       console.log('Close Signature pad');
       // this.saveConfirmVisible = true;
       if (this.signaturePadVisible === true) {
-        this.signaturePadVisible = false;      
+        this.signaturePadVisible = false;
+      } else {        
+        this.signPadVisible = false;     
       }
     }
   }
