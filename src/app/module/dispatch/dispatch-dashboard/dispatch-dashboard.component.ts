@@ -7,6 +7,8 @@ import { DispatchModule } from '../dispatch.module';
 import { FormGroup,FormBuilder,Validators } from '@angular/forms';
 import { MessageService,ConfirmationService } from 'primeng/api';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+
 
 @Component({
   selector: 'app-dispatch-dashboard',
@@ -124,10 +126,13 @@ export class DispatchDashboardComponent implements OnInit {
    private fb: FormBuilder,
    private messageService:MessageService,
    private confirmationService:ConfirmationService,
+   private authService:AuthService
 
   ) {}
 
   ngOnInit() {
+    this.currentRole = this.authService.userCurrentRole();
+
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.route.params.subscribe((params)=>{

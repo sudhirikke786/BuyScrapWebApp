@@ -577,7 +577,7 @@ export class TicketDetailComponent implements OnInit {
 
     } else {
       const total = this.getTotal();
-      if (Number(total) > Number(this.totalAmount)) {
+      if (Number(total) > (Number(this.totalAmount)- Number(this.totalAdjustment))) {
         checkError = true;
       }
     }
@@ -800,6 +800,7 @@ export class TicketDetailComponent implements OnInit {
   }
 
   getSellerById() {
+    this.isLoading = true;
     const paramObject = {
       ID: this.sellerId,
       LocationId: Number(this.locId)
@@ -822,7 +823,11 @@ export class TicketDetailComponent implements OnInit {
         }
       },
       (err: any) => {
+        this.isLoading = false;
         console.error('Error fetching seller details:', err);
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }

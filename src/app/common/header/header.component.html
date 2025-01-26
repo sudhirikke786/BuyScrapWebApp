@@ -70,11 +70,11 @@
                             </a>
 
                             <!-- item-->
-                            <a routerLink="/{{orgName}}/settings" routerLinkActive="router-link-active"  class="dropdown-item notify-item">
+                            <a routerLink="/{{orgName}}/settings" routerLinkActive="router-link-active"  class="dropdown-item notify-item" *ngIf="currentRole !== 'Driver'">
                                 <i class="fe-settings"></i>
                                 <span>Settings</span>
                             </a>
-                            <a routerLink="/{{orgName}}/my-account/subscription" routerLinkActive="router-link-active"  class="dropdown-item notify-item">
+                            <a routerLink="/{{orgName}}/my-account/subscription" routerLinkActive="router-link-active"  class="dropdown-item notify-item" *ngIf="currentRole !== 'Driver'">
                                 <i class="fe-lock"></i>
                                 <span>Subscription</span>
                             </a>
@@ -83,7 +83,7 @@
                                 <span>Change Password</span>
                             </a>
 
-                            <a routerLink="/{{orgName}}/my-account/change-location" routerLinkActive="router-link-active" class="dropdown-item notify-item">
+                            <a routerLink="/{{orgName}}/my-account/change-location" routerLinkActive="router-link-active" class="dropdown-item notify-item" *ngIf="currentRole !== 'Driver'">
                                 <i class="bi bi-geo-alt-fill"></i>
                                 <span>Change Location</span>
                             </a>

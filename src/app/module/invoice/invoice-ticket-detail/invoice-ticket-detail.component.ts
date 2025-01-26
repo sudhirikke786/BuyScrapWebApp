@@ -857,6 +857,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
   getSellerById() {
+    this.isLoading = true;
     const paramObject = {
       ID: this.sellerId,
       LocationId: Number(this.locId)
@@ -874,7 +875,11 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         }
       },
       (err: any) => {
+        this.isLoading = false;
         console.error('Error fetching seller details:', err);
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }
@@ -1683,7 +1688,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
 
   updateItems(index: number) {
-    // alert(index)
+    // alert('Hiiiiiiiiiiiii')
     this.itemLeveloperationPerform = 'Edit';
     const item = this.invoiceObj[index];
     console.log(item);

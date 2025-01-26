@@ -41,6 +41,8 @@ export class DispatchLatestDetailsComponent {
   addresses: any[] = [];
   isBusiness: boolean = false;
   notes:any;
+  isLoading = false;
+
   // Array to store invoice items
   invoiceObj: Array<any> = [];
   
@@ -208,6 +210,7 @@ constructor(private route: ActivatedRoute, private router:Router,
 
   
   getSellerById() {
+    this.isLoading = true
     const paramObject = {
       ID: this.sellerId,
       LocationId: Number(this.locId)
@@ -225,7 +228,11 @@ constructor(private route: ActivatedRoute, private router:Router,
         }
       },
       (err: any) => {
+        this.isLoading = false;
         console.error('Error fetching seller details:', err);
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }
@@ -269,6 +276,7 @@ constructor(private route: ActivatedRoute, private router:Router,
   }
 
   GetAllPickUpDetailsByID() {
+    this.isLoading = true;
     const paramObject = {
      RowID: Number(this.invoiceId)
     };
@@ -282,7 +290,11 @@ constructor(private route: ActivatedRoute, private router:Router,
         this.notes = this.dispatchObj.notes;
       },
         (err: any) => {
+          this.isLoading = false;
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.isLoading = false;
         }
       );
   }

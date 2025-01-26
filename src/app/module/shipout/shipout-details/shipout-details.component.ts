@@ -252,7 +252,8 @@ export class ShipoutDetailsComponent implements OnInit {
   }
   
   getSellerById() {
-    console.log('customerId in getSellerById:', this.customerId); // Debug log
+    this.isLoading = true;
+    console.log('customerId in getSellerById:', this.customerId); 
     const paramObject = {
       ID: this.customerId,
       LocationId: Number(this.locId)
@@ -275,7 +276,11 @@ export class ShipoutDetailsComponent implements OnInit {
         }
       },
       (err: any) => {
+        this.isLoading = false;
         console.error('Error fetching seller details:', err);
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }
@@ -331,6 +336,8 @@ export class ShipoutDetailsComponent implements OnInit {
 
     
   getShipOutDetailsByID() {
+    this.isLoading = true;
+
     const paramObject = {
       rowId: this.shipoutId,
       LocID: this.locId
@@ -360,9 +367,15 @@ export class ShipoutDetailsComponent implements OnInit {
           
         },
         (err: any) => {
+          this.isLoading = false;
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.isLoading = false;
         }
+        
       );
+      
   }
   getAddressName(addressID: number): string {
     const selectedAddress = this.addresses.find(address => address.rowId === addressID);

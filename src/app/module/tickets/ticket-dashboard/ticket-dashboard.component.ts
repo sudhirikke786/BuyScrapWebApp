@@ -1294,6 +1294,54 @@ export class TicketDashboardComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
   }
+  mergeAndSaveSelectedTickets() {
+    if (
+      (!this.selectedSellerTickets) ||
+      (this.selectedSellerTickets && this.selectedSellerTickets.length <= 1)
+    ) {
+      this.messageAlert('Please select more than one ticket to merge!!!');
+      return;
+    }
+  
+    this.ticketId = this.selectedSellerTickets
+      .map((item: any) => item.ticketId)
+      .join(',');
+  
+    const newTicket = {
+      rowId: 0,
+      userID: this.logInUserId,
+      date: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+      ticketId: this.ticketId,
+      type: '', 
+      amount: 0,
+      checkNumber: '',
+      checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+      customerID: this.selectedSellerId,
+      locID: this.locId,
+      lstTTicketTransactionDTO: null, 
+    };
+  
+    console.log('New Merge ticketData :: ', newTicket);
+      this.commonService.insertUpdateMergeTickets(newTicket).subscribe(
+      (data: any) => {
+        console.log(data);
+        this.messageAlert('Tickets merged and saved successfully');
+        this.mergeTicketVisible = false;
+        this.dialogPopupVisible = false;
+        this.getAllTicketsDetails(this.pagination);
+
+      },
+      (error: any) => {
+        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error while saving merged tickets',
+        });
+      }
+    );
+  }
+  
 
   printTicket(ticketId: any, isCheckPrint: boolean) {  
     let isReceiptPrint = this.isReceiptPrint;  

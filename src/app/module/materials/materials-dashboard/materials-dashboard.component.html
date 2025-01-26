@@ -193,7 +193,7 @@
                                             <input type="text" class="form-control" 
                                             id="textbox{{ i + 1 }}"
                                             name="textbox{{ i + 1 }}"
-                                            [ngModel]="item.scrapPrice | number : numberFormat"
+                                            [ngModel]="item.scrapPrice "
                                             (ngModelChange)="captureData($event, i)"/>
                                         </td>
                                     </tr> 

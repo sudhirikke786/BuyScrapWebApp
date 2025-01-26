@@ -85,7 +85,7 @@ export class HeaderComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.mobileName = this.userFullName?.split(" ").map((name :any) => name.charAt(0).toUpperCase()).join("");
 
-    if (this.currentRole !== 'Scale') {
+    if (this.currentRole !== 'Scale' && this.currentRole !== 'Driver') {
       const paramObject = {
         LocationId: this.locId
       };

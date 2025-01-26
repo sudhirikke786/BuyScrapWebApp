@@ -299,12 +299,23 @@ export class MaterialsDashboardComponent implements OnInit {
   }
 
   // Method to capture data from textboxes
+  // captureData(value: any, index: number) {
+  //   console.log(value);
+  //   console.log(index);
+  //   this.subMaterialList[index].scrapPrice = value;
+  //   // console.log(`Textbox ${index + 1} value: ${value}`);
+  // }
   captureData(value: any, index: number) {
     console.log(value);
     console.log(index);
-    this.subMaterialList[index].scrapPrice = value;
-    // console.log(`Textbox ${index + 1} value: ${value}`);
+    const parsedValue = parseFloat(value);
+    if (!isNaN(parsedValue)) {
+      this.subMaterialList[index].scrapPrice = parsedValue;
+    } else {
+      console.warn(`Invalid value entered for index ${index}: ${value}`);
+    }
   }
+  
 
   getAction(actionCode:any){
 

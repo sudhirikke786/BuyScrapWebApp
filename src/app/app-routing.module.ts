@@ -48,13 +48,13 @@ const routes: Routes = [
           loadChildren:() => import('./module/tickets/tickets.module').then(m => m.TicketsModule),
           pathMatch: 'full',
           canActivate: [RoleGuard],
-          data: { requiredRole:['Administrator','Scale','Cashier']},
+          data: { requiredRole:['Administrator','Scale','Cashier','Driver']},
         },
         { 
           path: 'home', 
           loadChildren:() => import('./module/tickets/tickets.module').then(m => m.TicketsModule),
           canActivate: [RoleGuard],
-          data: { requiredRole:['Administrator','Scale','Cashier']},
+          data: { requiredRole:['Administrator','Scale','Cashier','Driver']},
         },
         { 
           path: 'invoice', 
@@ -126,7 +126,7 @@ const routes: Routes = [
           path:'my-account',
           loadChildren:() => import('./my-account/my-account.module').then(m => m.MyAccountModule),
           canActivate: [RoleGuard],
-          data: { requiredRole: ['Administrator','Cashier']},
+          data: { requiredRole: ['Administrator','Cashier','Driver','Scale']},
         },
         {
           path:'settings',
@@ -143,6 +143,7 @@ const routes: Routes = [
         { 
           path: 'dispatch', 
           loadChildren:() => import('./module/dispatch/dispatch.module').then((m =>m.DispatchModule)),
+          data: { requiredRole: ['Administrator','Driver']},
         
         },
         {

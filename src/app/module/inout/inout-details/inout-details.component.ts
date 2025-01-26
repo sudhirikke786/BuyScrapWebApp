@@ -194,14 +194,23 @@ export class InoutDetailsComponent implements OnInit {
   // }
 
   getAllUsers(userId: any){
+    this.isLoading = true;
     const reqObj = {
       LocationId: this.locId,
       UserID: parseInt(userId)
     }
     this.commonService.GetAllUsers(reqObj).subscribe((res) =>{
       this.user =  res?.body?.data[0];     
-    })
-  }
+    },
+    (err: any) => {
+      this.isLoading = false;
+      console.error('Error fetching user details:', err);
+    },
+    () => {
+      this.isLoading = false;
+    }
+  );
+}
 
 
   searchMaterial(searchTerm:any){
@@ -229,6 +238,7 @@ export class InoutDetailsComponent implements OnInit {
 
     
   getInoutDetailsByID() {
+    this.isLoading = true;
     const paramObject = {
       rowId: this.inoutId,
       LocID: this.locId
@@ -243,7 +253,11 @@ export class InoutDetailsComponent implements OnInit {
           this.getAllUsers(userId);
         },
         (err: any) => {
+          this.isLoading = false;
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.isLoading = false;
         }
       );
   }

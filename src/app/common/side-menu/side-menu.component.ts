@@ -52,7 +52,7 @@ export class SideMenuComponent implements OnInit {
         title:'Dispatch',
         url:'/dispatch',
         icon:'/assets/images/custom/icons/ship-out.png',
-        role: ['Administrator','Cashier']
+        role: ['Administrator','Cashier','Driver']
       },
       {
         title:'Materials',
@@ -128,8 +128,23 @@ export class SideMenuComponent implements OnInit {
           roleName = [...roleName,'Scale']
           this.menuItemList[menuIndex].role = roleName;
           this.menuItemList = [...this.menuItemList];
-      }     
+      }   
+      const isDriverUser = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'isdrivermanageshipout')[0];
+      if (isDriverUser?.values.toLowerCase() == 'true') {
+        const driverAccessibleUrls = ['/dispatch'];
+        driverAccessibleUrls.forEach((url) => {
+          const menuIndex = this.menuItemList.findIndex((item: any) => item.url == url);
+          if (menuIndex !== -1) {
+            let roleName = this.menuItemList[menuIndex].role;
+            roleName = [...roleName, 'Driver'];
+            this.menuItemList[menuIndex].role = roleName;
+          }
+        });
+        this.menuItemList = [...this.menuItemList];
+      }
+    
     }
+    
     //alert(this.orgName.toLowerCase());
 
     if (this.orgName.toLowerCase() != 'prodtest' && this.orgName.toLowerCase() != 'siddhi eneterprise') {
