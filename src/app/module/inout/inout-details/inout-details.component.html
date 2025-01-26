@@ -70,8 +70,8 @@
                                         <table class="seller-view-tbl">
                                             <tbody>
                                             <tr>
-                                                <td style="width: 25%;"><b>From Location :</b> {{inoutDetails?.locInName}}</td>
-                                                <td style="width: 25%;"><b>To Location :</b> {{inoutDetails?.locOutName}}</td>
+                                                <td style="width: 25%;"><b>From Location :</b> {{inoutDetails?.locInName || locationName}}</td>
+                                                <td style="width: 25%;"><b>To Location :</b> {{inoutDetails?.locOutName || locationToName}}</td>
                                                 <!-- <td *ngIf="inoutDetails?.status != 'In' && inoutDetails?.status != 'Out'" >Location : {{inoutDetails?.locInName}}</td> -->
                                                 <td style="width: 25%;"><b>Status :</b> {{inoutDetails?.status}}</td>
                                                 <td style="width: 25%;"><b>Driver :</b> {{inoutDetails?.driverName}}</td>
@@ -332,7 +332,7 @@
     <p-sidebar [style]="{'width':'60%'}" [(visible)]="isEditModeOn && editItemCloseImageCapture" position="right">
       
         <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()"
-        [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" (backClose)="changeItem()" 
+        [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" [itemPrice]="itemPrice" (backClose)="changeItem()" 
         [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" 
         [itemMaterialPrice]="itemMaterialPrice" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
     </app-material-calculator>

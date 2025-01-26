@@ -56,6 +56,7 @@ export class InoutDashboardComponent implements OnInit {
   selectedLocation: any;
   orgName: any;
   locId: any;
+  locationName!: string | null;
   logInUserId: any;
 
   showLoader =  false;
@@ -79,6 +80,7 @@ export class InoutDashboardComponent implements OnInit {
   packslip = '';
   note = '';
   showPageLoader: boolean = false;
+  popupHeadertext = 'Select Transfer To Location';
 
   pagination: any = {
     SerachText: this.serachText,
@@ -100,6 +102,8 @@ export class InoutDashboardComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.locationName = localStorage.getItem('locationName');    
+    this.popupHeadertext = `Select Transfer To Location (From :: ${this.locationName})` ;
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     
     this.getAllInoutDetails(this.pagination);

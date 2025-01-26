@@ -577,7 +577,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemGroupName = selectedMaterial;
     this.itemMaterialName = materialName;
     this.itemAvailableNet = availableStock;
-    this.itemPrice = scrapPrice;
+    this.itemPrice = 0; // scrapPrice; @Sal asked to make it as Zero as default price
     this.itemLeveloperationPerform = this.itemLeveloperationPerform == '' ? 'Add' : this.itemLeveloperationPerform;
     this.itemCodNote = '';      
     this.itemGross = '';

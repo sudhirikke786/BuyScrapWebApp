@@ -49,6 +49,7 @@ export class InoutDetailsComponent implements OnInit {
   locId: any;
   logInUserId: any;
   locationName: any;
+  locationToName: any;
   isInwardUpdating = false;
 
   ticketData:any = {};
@@ -135,6 +136,7 @@ export class InoutDetailsComponent implements OnInit {
       }
       else {
         this.inoutDetails = this.dataService.getNewInout();
+        this.locationToName = this.inoutDetails?.locationName || '';
         this.getAllUsers(this.logInUserId);
         this.isNewInout = true;
       }
@@ -493,6 +495,7 @@ inwardStatusUpdate() {
     this.itemGroupName = selectedMaterial;
     this.itemMaterialName = materialName;
     this.itemAvailableNet = availableStock;
+    this.itemPrice = 0;
     this.itemLeveloperationPerform = this.itemLeveloperationPerform == '' ? 'Add' : this.itemLeveloperationPerform;
     this.itemCodNote = '';      
     this.itemGross = '';
@@ -524,6 +527,7 @@ inwardStatusUpdate() {
     this.itemMaterialId = rowData.materialId;
     this.itemGross = rowData.gross;
     this.itemTare = rowData.tare;
+    this.itemPrice = 0;
     this.itemNet = isNaN(rowData.net) ?  0 : rowData.net;
 
     this.itemAvailableNet = rowData?.availableMaterialStock + this.itemNet;
