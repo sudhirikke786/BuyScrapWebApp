@@ -237,8 +237,12 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     private stroarge: StorageService,
     private dataService: DataService,
     private confirmationService: ConfirmationService,
+    
     public commonService: CommonService) { 
       this.currentRoute = this.route.snapshot.url.join('/');
+      const today = new Date();
+      this.createdDate = today.toISOString().split('T')[0]; 
+      this.dueDate = today.toISOString().split('T')[0];
 
     }
 
@@ -677,7 +681,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
         this.shipToAddress = this.invoiceData.shipToAddress ;
         this.paymentTerms = this.invoiceData.paymentTerms ;
-        this.dueDate = this.invoiceData.dueDate ? new Date(this.invoiceData.dueDate).toISOString().split('T')[0] : ''; 
+        this.dueDate = this.invoiceData.dueDate ? new Date(this.invoiceData.dueDate).toLocaleDateString('en-CA'):''; 
         this.createdDate = this.invoiceData.createdDate ? new Date(this.invoiceData.createdDate).toISOString().split('T')[0]:''; 
         this.poNumber = this.invoiceData.poNumber ;
         this.notes = this.invoiceData.notes ;
@@ -2200,5 +2204,20 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     this.showImage = false;
   }
 
+ 
+
+  openDatePicker() {
+    const dateInput = document.getElementById('created-date') as HTMLInputElement;
+    if (dateInput) {
+      dateInput.showPicker(); 
+    }
+  }
+
+  openDueDatePicker() {
+    const dueDateInput = document.getElementById('due-date') as HTMLInputElement;
+    if (dueDateInput) {
+      dueDateInput.showPicker(); 
+    }
+  }
 
 }

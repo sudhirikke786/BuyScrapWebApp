@@ -71,7 +71,8 @@
                       <!-- <p-tableCheckbox   [disabled]="certificate.selected" id="{{'pp'+ rowIndex}}"  (onChange)="onCheckboxChange(certificate)" >
                       </p-tableCheckbox> -->
 
-                      <p-checkbox [binary]="true" [disabled]="certificate.selected"  [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
+                      <!-- <p-checkbox [binary]="true" [disabled]="certificate.selected"  [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox> -->
+                      <p-checkbox [binary]="true" [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
                       <!-- <p-tableCheckbox  [(ngModel)]="certificate.selected" (onChange)="onCheckboxChange(certificate)"></p-tableCheckbox> -->
 
                  
@@ -81,16 +82,17 @@
                     <td>{{ certificate?.dateOpened | date: 'MM/dd/yyyy' }}</td>
                     <td>{{ certificate?.ticketAmount }}</td>
                     <td>{{ certificate.customerName }}</td>
-                    <td>{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>
-                    <td *ngIf="certificate?.dateClosed != null">
-					          <a (click)="getCODImagesbyID(certificate,'show')" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i> Show</a>
+                    <td *ngIf="certificate?.isCODDone">{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>
+                    <td *ngIf="!certificate?.isCODDone"></td> 
+                    <td *ngIf="certificate?.isCODDone">
+					          <a (click)="getCODImagesbyID(certificate,'show')" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i>Open</a>
 
                       <a (click)="generateCODReport(certificate.rowId)" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-printer"></i> Print</a>
 
                       <!-- <a href="" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-restore"></i> Restore</a>  -->
                     </td>
-                    <td *ngIf="certificate?.dateClosed == null">
-                      <a (click)="getCODImagesbyID(certificate,'cod')" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-certificate"></i> COD</a>
+                    <td *ngIf="!certificate?.isCODDone">
+                      <a (click)="getCODImagesbyID(certificate,'cod')" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-certificate"></i>Edit COD</a>
 
                       <!-- <a data-bs-target="" data-bs-toggle="modal" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-close"></i> Close</a> -->
                   </td>
@@ -337,7 +339,7 @@
       </div>
   </ng-template>
   <div class="m-0">
-      <h3>Do you need to confirm ticket for COD ? </h3>
+      <h3>{{ checkOBj?.selected ? 'Do you need to confirm ticket for COD?' : 'Do you want to cancel confirm ticket for COD?' }}</h3>
   </div>
   <ng-template pTemplate="footer">
     <button class="btn btn-primary" (click)="confirmData()">Confirm</button>

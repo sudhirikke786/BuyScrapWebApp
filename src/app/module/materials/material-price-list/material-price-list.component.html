@@ -1,4 +1,7 @@
 <div *ngIf="error" class="error">{{ error }}</div>
+<div class="content" *ngIf="isLoading">
+  <app-page-loader type="ftable"></app-page-loader>
+</div>
 
 <div *ngIf="!error">
   <div class="bdcmb mt-2">

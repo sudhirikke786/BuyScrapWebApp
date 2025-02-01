@@ -1,5 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { DispatchDashboardComponent } from './dispatch-dashboard/dispatch-dashboard.component';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -48,6 +48,7 @@ export const routes: Routes = [
     NgxExtendedPdfViewerModule,
     PrimengModule,
   ],
+  providers: [DatePipe],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class DispatchModule { }

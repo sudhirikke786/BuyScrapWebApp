@@ -60,7 +60,7 @@ export class MaterialsDashboardComponent implements OnInit {
     groupName: ['', Validators.required],
     description: '',
     uomId: 1,
-    isEnable: false,
+    isEnable: true,
     isCRV: false
   });
 
@@ -100,7 +100,7 @@ export class MaterialsDashboardComponent implements OnInit {
       groupName: ['', Validators.required],
       description: '',
       uomId: 1,
-      isEnable: false,
+      isEnable: true,
       isCRV: false,
       createdBy: this.logInUserId,
       createdDate: '',
@@ -181,7 +181,7 @@ export class MaterialsDashboardComponent implements OnInit {
         groupName: ['', Validators.required],
         description: '',
         uomId: 1,
-        isEnable: false,
+        isEnable: true,
         isCRV: false,
         createdBy: this.logInUserId,
         createdDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),

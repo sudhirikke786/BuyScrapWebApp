@@ -60,28 +60,60 @@ export class DispatchOrderStatusComponent implements OnInit {
   
     this.selecteddriverID =  this.targetBoxes[index];
     console.log(this.draggedItem);
-    if (this.draggedItem) {
-      this.targetBoxes[index].items.push(this.draggedItem);
+    // if (this.draggedItem) {
+    //   this.targetBoxes[index].items.push(this.draggedItem);
+  
+    let pendingItem = this.mainItems.some((item: { id: number }) => item.id === this.draggedItem.id);
+  
+    if (pendingItem) {
       this.mainItems = this.mainItems.filter(item => item.id != this.draggedItem?.id);
       this.mainItems.sort((a,b) => b.id - a.id);
       console.log("Drop Element",this.targetBoxes);
-      this.draggedItem = null;
-     
-    
-    }
-    
-  setTimeout(() => {
-    if(this.targetBoxes.length > 0){
-      this.submitSave();
-    }
-  }, 1000);
-
+    } else {
+      let previousDriver = this.targetBoxes.find((driver: { items: any[] }) =>
+        driver.items.some((item: { id: number }) => item.id === this.draggedItem.id)
+      );
   
-
-    
+      if (previousDriver) {
+        previousDriver.items = previousDriver.items.filter((item: { id: number }) => item.id !== this.draggedItem.id);
+      }
+    }
   
+    this.targetBoxes[index].items.push(this.draggedItem);
+  
+    this.draggedItem = null;
+  
+    console.log("Updated Target Boxes:", this.targetBoxes);
+    console.log("Updated Pending Requests:", this.mainItems);
+  
+    setTimeout(() => {
+      if(this.targetBoxes.length > 0){
+        this.submitSave();
+      }
+    }, 1000);
+
+
+
+
 
   }
+  
+
+
+onDropToPending(event: any) {
+  if (this.draggedItem) {
+      // Remove item from the current driver
+      this.targetBoxes.forEach((driver: { items: any[] }) => {
+          driver.items = driver.items.filter((item: any) => item.id !== this.draggedItem.id);
+      });
+
+      // Add item back to Pending Requests
+      this.mainItems.push(this.draggedItem);
+      this.draggedItem = null;
+  }
+}
+
+
 
   getAllCODTickets() {
     const paramObject = {

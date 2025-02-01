@@ -15,6 +15,8 @@ export class MaterialPriceListComponent implements OnInit {
   materialData: any[] = [];
   groupedData: { [key: string]: any[] } = {};
   error: string | null = null;
+  isLoading = false;
+
 
   constructor(
     private commonService: CommonService,
@@ -33,6 +35,7 @@ export class MaterialPriceListComponent implements OnInit {
   }
 
   fetchMaterialPriceList(): void {
+    this.isLoading = true;
     this.error = null;
 
     this.commonService.getMaterialPriceList({}).subscribe({
@@ -48,9 +51,13 @@ export class MaterialPriceListComponent implements OnInit {
         }
       },
       error: (error) => {
+        this.isLoading = false; 
         this.error = 'Failed to load material price list. Please try again.';
         console.error('Error fetching material price list:', error);
-      }
+      },
+      complete: () => {
+        this.isLoading = false; 
+      },
     });
   }
 

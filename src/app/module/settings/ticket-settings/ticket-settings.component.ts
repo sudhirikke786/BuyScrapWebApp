@@ -20,6 +20,7 @@ export class TicketSettingsComponent implements OnInit {
   logInUserId: any;
   orgName: any;
   locationName: any;
+  rowId:any;
 
   constructor(private formBuilder: FormBuilder,
     private stroarge:StorageService,
@@ -55,6 +56,7 @@ export class TicketSettingsComponent implements OnInit {
       const responseObj = res?.body?.data[0];
       if(responseObj)
       this.logo = responseObj.logo;
+    this.rowId = responseObj.rowId;
       this.ticketForm.patchValue(responseObj);
     },(error)=>{
 
@@ -68,7 +70,7 @@ export class TicketSettingsComponent implements OnInit {
       emailID: [],
       phone: [],
       website:[],
-      locID:[],
+      locID:[Number(localStorage.getItem('locId'))],
       field1:[],
       field2:[],
       disclaimer:[],
@@ -88,7 +90,7 @@ export class TicketSettingsComponent implements OnInit {
       "updatedBy": this.logInUserId,
       "createdDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      "rowId": 1,
+      "rowId": this.rowId || 0,
     }
 
     const reqObj = {...userInfo,...obj};

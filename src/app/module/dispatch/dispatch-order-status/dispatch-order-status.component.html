@@ -63,7 +63,7 @@
                     <div class="d-flex  sr-pending">
                         <h5 class="service-title text-primary">Pending Service Requests</h5>
                     </div>
-                    <div class="item-container">
+                    <div class="item-container" pDroppable (onDrop)="onDropToPending($event)">
                         <div class="inner-card-wrapper" style="cursor:grab;"
                         *ngFor="let item of mainItems" pDraggable (onDragStart)="onDragStart(item)"
                         (onDragEnd)="onDragEnd()">
@@ -92,8 +92,6 @@
             </div>
         
         
-        
-        
             <div class="col-9">
                 <div class="target-boxes-container">
                     <div class="target-boxes">
@@ -118,7 +116,9 @@
         
                             </div>
                             <div class="item-container">
-                            <div *ngFor="let item of box.items" class="dropped-item">
+                            <div *ngFor="let item of box.items" class="dropped-item" pDraggable 
+                            (onDragStart)="onDragStart(item)" 
+                            (onDragEnd)="onDragEnd()">
                                 
                                 <div style="border:1px solid {{item.colorStatus}};text-align: left; border-left:3px solid {{item.colorStatus}};padding:5px;overflow: hidden;" [ngStyle]="item.ticketStatus === 'Unassigned' ? { 'border-left': '3px solid red' } : {}">
 

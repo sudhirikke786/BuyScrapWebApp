@@ -95,21 +95,28 @@ export class CertificatesDashboardComponent implements OnInit {
     this.isConfirmModel =  true;
   }
 
-  confirmData(){
-
+  confirmData() {
+    const isCodDone = this.checkOBj.selected;
+  
     const userObj = {
-      UserID:this.logInUserId,
-      TicketID:this.checkOBj?.rowId
+      UserID: this.logInUserId,
+      TicketID: this.checkOBj?.rowId,
+      IsCodDone: isCodDone 
+    };
+  
+    this.commonService.CODCloseUpdate(userObj).subscribe(
+      (res) => {
+        if (res.data === true) {
+          if (isCodDone) {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: "Ticket is confirm for COD " });
+          } else {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Ticket confirmation for COD is canceled.',});
+          }
+        }
+        this.isConfirmModel =  false;
+        this.getAllCODTickets(); 
+      })
     }
-
-
-    this.commonService.CODCloseUpdate(userObj).subscribe((res) => {
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: "Ticket is confirm for COD " });
-      this.isConfirmModel =  false;
-      this.getAllCODTickets();
-    })
-    
-  }
 
  
 
@@ -183,7 +190,9 @@ export class CertificatesDashboardComponent implements OnInit {
           console.log('getAllCODTickets :: ');
           console.log(data);
           this.certificates = data.body.data.map((item:any) => {
-            item.selected =  item?.dateClosed ? true : false;
+            // item.selected =  item?.dateClosed ? true : false;
+            item.selected = item?.isCODDone ? true : false;
+
             return item;
           });
           console.log(this.certificates);
@@ -201,7 +210,7 @@ export class CertificatesDashboardComponent implements OnInit {
   setChecked(item: any,rowIndex:any): void {
       this.currentIndex = rowIndex;
       this.checkOBj = item;
-      this.confirm1();
+        this.confirm1(); 
     
       
   }

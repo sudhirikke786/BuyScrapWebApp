@@ -64,7 +64,9 @@
                       <td>{{ certificate.rowId }}</td>
                       <td>{{ certificate?.pickUpDate | date: 'short' }}</td>
                       <td>{{ certificate.sellerName }}</td>
-                      <td>{{ certificate?.closedDate | date: 'short' }}</td>
+                      <!-- <td>{{ certificate?.closedDate | date: 'short' }}</td> -->
+                      <td>
+                        <span *ngIf="certificate.ticketRowID > 0">{{ certificate?.closedDate | date: 'short' }}</span>
                       <td>
                           <div class="d-flex align-items-center">
                               <a class="btn btn-primary me-1" [routerLink]="['dispatch-detail', certificate.rowId, certificate.sellerID,'show']"
@@ -183,8 +185,8 @@
             <span class="font-bold white-space-nowrap">Add New Customer</span>
         </div>
     </ng-template>
-          <form [formGroup]="sellerForm">  
-         <!-- <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()">  -->
+          <!-- <form [formGroup]="sellerForm">   -->
+          <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()"> 
             <div class="row" style="min-width: 500px;">
                 <div class="d-flex row align-items-center">
                     <div class="col-sm-3">
@@ -230,16 +232,48 @@
             </div>
 
             <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
-                <h4>Business Information</h4>
-
-                <div class="form-group col-sm-6 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="firstName" class="form-control"
-                            id="bfirstName" placeholder="Business Name">
-                        <label for="floatingInput">Business Name</label>
-                    </div>
-                </div>
-            </div>
+              <h4>Business Information</h4>
+          
+              <div class="form-group col-sm-4 mt-1">
+                  <div class="form-floating">
+                      <input type="text" formControlName="firstName" class="form-control"
+                          id="bfirstName" placeholder="Business Name">
+                      <label for="floatingInput">Business Name</label>
+                  </div>
+              </div>
+          
+              <div class="form-group col-sm-4 mt-1">
+                  <div class="form-floating">
+                      <input type="text" formControlName="streetAddress" class="form-control"
+                          id="streetAddress" placeholder="Street Address">
+                      <label for="streetAddress">Business Address</label>
+                  </div>
+              </div>
+          
+              <div class="form-group col-sm-4 mt-1">
+                  <div class="form-floating">
+                      <input type="text" formControlName="cellNumber" class="form-control"
+                          id="cellNumber" placeholder="Cell Number">
+                      <label for="cellNumber">Phone Number</label>
+                  </div>
+              </div>
+          
+              <div class="form-group col-sm-4 mt-1">
+                  <div class="form-floating">
+                      <input type="text" formControlName="idnumber" class="form-control"
+                          id="taxIdNumber" placeholder="Tax ID Number">
+                      <label for="taxIdNumber">Tax ID Number</label>
+                  </div>
+              </div>
+          
+              <div class="form-group col-sm-4 mt-1">
+                  <div class="form-floating">
+                      <input type="text" formControlName="contactName" class="form-control"
+                          id="contactName" placeholder="Contact Name">
+                      <label for="contactName">Contact Name</label>
+                  </div>
+              </div>
+          </div>
             
             
 
@@ -259,8 +293,8 @@
         </form>
     
         <ng-template pTemplate="footer">
-          <!-- <button class="btn btn-primary me-1" (click)="onSubmit()">Save</button>  -->
-          <button class="btn btn-primary me-1">Save</button> 
+          <button class="btn btn-primary me-1" (click)="onSubmit()">Save</button> 
+          <!-- <button class="btn btn-primary me-1">Save</button>  -->
         </ng-template>
 </p-dialog>
   

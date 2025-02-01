@@ -249,7 +249,11 @@ export class InvoiceTicketDashboardComponent implements OnInit {
       firstName : ['',Validators.required],
       sellerType:[this.sellerType],
       middleName : [''],
-      lastName : ['']
+      lastName : [''],
+      streetAddress : [],
+      idnumber : [''],
+      cellNumber : [''],
+      contactName : ['']
     });
   }
 
@@ -1587,7 +1591,11 @@ export class InvoiceTicketDashboardComponent implements OnInit {
         this.sellerForm.patchValue({
           firstName: '',
           middleName: '',
-          lastName: ''
+          lastName: '',
+          streetAddress: '', 
+          idnumber: '',
+          cellNumber: '',
+          contactName: ''
         });
         
         this.clickOnSeller(data.body.insertedRow, sellerFullname);

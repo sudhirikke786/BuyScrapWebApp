@@ -134,6 +134,10 @@ export class AddSellersComponent implements OnInit {
        lastName : [''],
        fullName: [''],
        dob : [],
+       height: [''], 
+       hair: [''],   
+       weight: [''], 
+       eyes: [''],   
        profilePic : [],
        streetAddress : [],
        city : [],
@@ -142,6 +146,7 @@ export class AddSellersComponent implements OnInit {
        streetNumber : [],
        streetName : [],
        idnumber : [''],
+       contactName : [''],
        expiryDate : [],
        class : [],
        gender : ['undefind'],
@@ -311,6 +316,10 @@ export class AddSellersComponent implements OnInit {
      lastName: obj.lastName,
      fullName: obj.fullName,
      dob: this.formatDate(obj?.dob),
+     height: obj.height, 
+     hair: obj.hair,     
+     weight: obj.weight, 
+     eyes: obj.eyes,     
      profilePic: obj.profilePic,
      streetAddress: obj.streetAddress,
      city: obj.city,
@@ -334,7 +343,8 @@ export class AddSellersComponent implements OnInit {
      vehicleModel: obj.vehicleModel,
      emailId: obj.emailId,
      cellNumber: obj.cellNumber,
-     sellerType: obj.sellerType
+     sellerType: obj.sellerType,
+     contactName: obj.contactName
     });
 
     if(obj.sellerType){
@@ -740,7 +750,17 @@ export class AddSellersComponent implements OnInit {
     );
   }
 
-  
-
+  openDatePicker() {
+    const dateInput = document.getElementById('birthdate') as HTMLInputElement;
+    if (dateInput) {
+      dateInput.showPicker(); 
+    }
+  }
+  openExpiryDatePicker() {
+    const dateInput = document.getElementById('expiryDate') as HTMLInputElement;
+    if (dateInput) {
+      dateInput.showPicker(); 
+    }
+  }
 
 }

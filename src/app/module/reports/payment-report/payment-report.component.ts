@@ -169,5 +169,17 @@ export class PaymentReportComponent implements OnInit {
     //   this.fileUrl = URL.createObjectURL(blob);
     // });
   }
+  openDatePicker() {
+    const dateInput = document.getElementById('fromDate') as HTMLInputElement;
+    if (dateInput) {
+      dateInput.showPicker(); 
+    }
+  }
 
+  openToDatePicker() {
+    const dateInput = document.getElementById('toDate') as HTMLInputElement;
+    if (dateInput) {
+      dateInput.showPicker(); 
+    }
+  }
 }

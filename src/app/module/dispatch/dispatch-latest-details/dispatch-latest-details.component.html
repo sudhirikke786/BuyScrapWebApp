@@ -86,8 +86,8 @@
                           <span class="text-truncate">{{ customer?.streetAddress }}</span>
                         </ng-template>
                       </td>
-                      <td class="w-25">Created on : <label>{{customer?.createdDate | date: 'MM/dd/yyyy'}}</label></td>
-                      <td class="w-25">Time : {{customer?.createdDate | date: 'hh:mm a'}}</td>
+                      <td class="w-25">Created on : <label>{{customer?.createdDate  ?? currentDate | date: 'MM/dd/yyyy'}}</label></td>
+                      <td class="w-25">Time : {{customer?.createdDate ?? currentDate | date: 'hh:mm a'}}</td>
                     </tr>
                     <tr>
                       <td>
@@ -107,10 +107,10 @@
                       </td>
                       <td>
                         <div class="form-group  mt-1  d-flex justify-content-left align-items-center">
-                          <label for="floatingInput" class="form-label w-25">Pickup Date<span
+                          <label for="floatingInput" class="form-label w-25" >Pickup Date<span
                               class="text-danger">*</span></label>
                           <input type="date" [min]="minDate" class="form-control" [(ngModel)]="pickupdate"
-                            id="birthdate" placeholder="Pick up Date">
+                            id="birthdate" placeholder="Pick up Date"  (click)="openDatePicker()">
 
 
                         </div>

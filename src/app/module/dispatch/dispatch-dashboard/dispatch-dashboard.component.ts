@@ -8,6 +8,10 @@ import { FormGroup,FormBuilder,Validators } from '@angular/forms';
 import { MessageService,ConfirmationService } from 'primeng/api';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { DatePipe } from '@angular/common';
+import { StorageService } from 'src/app/core/services/storage.service';
+
+
 
 
 @Component({
@@ -122,11 +126,12 @@ export class DispatchDashboardComponent implements OnInit {
     private router: Router,
     public commonService: CommonService,
     public helperService:HelperService,
-   // private datePipe: DatePipe
+   private datePipe: DatePipe,
    private fb: FormBuilder,
    private messageService:MessageService,
    private confirmationService:ConfirmationService,
-   private authService:AuthService
+   private authService:AuthService,
+    private stroarge: StorageService,
 
   ) {}
 
@@ -135,6 +140,7 @@ export class DispatchDashboardComponent implements OnInit {
 
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.route.params.subscribe((params)=>{
       this.sellerID = params["sellerID"];
       this.rowID = params["rowID"];
@@ -192,7 +198,12 @@ export class DispatchDashboardComponent implements OnInit {
       firstName : ['',Validators.required],
       sellerType:[this.sellerType],
       middleName : [''],
-      lastName : ['']
+      lastName : [''],
+      streetAddress : [],
+      idnumber : [''],
+      cellNumber : [''],
+      contactName : ['']
+
     });
   }
   clickOnSeller(sellerId: string | number, sellerName: string,sellerAddress: string) {
@@ -383,6 +394,42 @@ refreshSellerData() {
 addNewSeller() {
   // this.router.navigateByUrl(${this.orgName}/sellers-buyers/add-seller);
   this.addSellerPopupVisible = true;
+}
+
+onSubmit() {
+  const reqObj = {
+    ...this.sellerForm.value,
+    ...{ 
+      rowId: 0,
+      locID: this.locId,
+      createdBy: this.logInUserId,
+      createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+      updatedBy: this.logInUserId,
+      updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+    }
+  }
+  console.log(reqObj);
+  this.commonService.addSeller(reqObj).subscribe(data =>{
+    console.log(data);
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller updated Successfully' });
+      const sellerFullname = reqObj.firstName + (reqObj.middleName != '' ? ' ' + reqObj.middleName : '') 
+      + (reqObj.lastName != '' ? ' ' + reqObj.lastName : '') ;
+         
+      this.addSellerPopupVisible = false;
+      this.sellerForm.patchValue({
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        streetAddress: '', 
+        idnumber: '',
+        cellNumber: '',
+        contactName: ''
+      });
+      this.clickOnSeller(data.body.insertedRow, sellerFullname, this.sellerType);
+    },(error: any) =>{
+    console.log(error);
+  })
+
 }
  changeSellerType() {
     if (this.sellerType == 'Personal') {

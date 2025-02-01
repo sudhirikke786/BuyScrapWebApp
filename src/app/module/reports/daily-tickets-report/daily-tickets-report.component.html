@@ -23,10 +23,10 @@
                     <div class="row mt-2">
                       <div class="col-sm-6 d-flex mb-1">
                         <label class="mr-10">From Date</label>
-                        <input type="date" id="fromDate" [(ngModel)]="fromDate" name="fromDate" class="form-control mr-10">
+                        <input type="date" id="fromDate" [(ngModel)]="fromDate" name="fromDate" class="form-control mr-10" (click)="openDatePicker()">
 
                         <label class="mr-10">To Date</label>
-                        <input type="date" id="toDate" [(ngModel)]="toDate" name="toDate" class="form-control">
+                        <input type="date" id="toDate" [(ngModel)]="toDate" name="toDate" class="form-control" (click)="openToDatePicker()">
                       </div>  
                       <div class="col-sm-6">
                         <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>

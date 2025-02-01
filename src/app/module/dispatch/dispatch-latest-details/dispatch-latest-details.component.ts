@@ -43,6 +43,8 @@ export class DispatchLatestDetailsComponent {
   notes:any;
   isLoading = false;
 
+  currentDate: any;
+
   // Array to store invoice items
   invoiceObj: Array<any> = [];
   
@@ -94,6 +96,8 @@ constructor(private route: ActivatedRoute, private router:Router,
     this.locationName = localStorage.getItem('locationName');
     this.checkTabView = this.helperService.isTab();
     this.minDate =  this.formateDate();
+    
+    this.currentDate = new Date();   
 
     this.route.params.subscribe((param) => {
       this.invoiceId = param["rowId"];
@@ -448,6 +452,11 @@ constructor(private route: ActivatedRoute, private router:Router,
     })
   }
 
-  
+  openDatePicker() {
+    const dateInput = document.getElementById('birthdate') as HTMLInputElement;
+    if (dateInput) {
+      dateInput.showPicker(); 
+    }
+  }
 
 }

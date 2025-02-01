@@ -284,7 +284,14 @@ export class TicketDashboardComponent implements OnInit {
       firstName : ['',Validators.required],
       sellerType:[this.sellerType],
       middleName : [''],
-      lastName : ['']
+      lastName : [''],
+      streetAddress : [],
+      idnumber : [''],
+      cellNumber : [''],
+      contactName : ['']
+
+
+
     });
 
     this.driverDetails = new driver();
@@ -831,7 +838,7 @@ export class TicketDashboardComponent implements OnInit {
     });
     this.isHoldTrue = (this.holdticketObj.length > 0) ? true : false;
 
-    var totalbalanceAmount = this.selectedSellerTickets.reduce((totalAmount: any, item: any) => totalAmount + item.amount, 0);
+    var totalbalanceAmount = this.selectedSellerTickets.reduce((totalAmount: any, item: any) => totalAmount + item.amount -item.adjustmentAmount, 0);
         
     const totalActualAmount = this.selectedSellerTickets.reduce(function (sum: any, tickets: any) {
       return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : tickets.amount);
@@ -1705,7 +1712,11 @@ export class TicketDashboardComponent implements OnInit {
         this.sellerForm.patchValue({
           firstName: '',
           middleName: '',
-          lastName: ''
+          lastName: '',
+          streetAddress: '', 
+          idnumber: '',
+          cellNumber: '',
+          contactName: ''
         });
         this.clickOnSeller(data.body.insertedRow, sellerFullname, this.sellerType);
       },(error: any) =>{

@@ -763,15 +763,48 @@
 
             <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
                 <h4>Business Information</h4>
-
-                <div class="form-group col-sm-6 mt-1">
+            
+                <div class="form-group col-sm-4 mt-1">
                     <div class="form-floating">
                         <input type="text" formControlName="firstName" class="form-control"
                             id="bfirstName" placeholder="Business Name">
                         <label for="floatingInput">Business Name</label>
                     </div>
                 </div>
+            
+                <div class="form-group col-sm-4 mt-1">
+                    <div class="form-floating">
+                        <input type="text" formControlName="streetAddress" class="form-control"
+                            id="streetAddress" placeholder="Street Address">
+                        <label for="streetAddress">Business Address</label>
+                    </div>
+                </div>
+            
+                <div class="form-group col-sm-4 mt-1">
+                    <div class="form-floating">
+                        <input type="text" formControlName="cellNumber" class="form-control"
+                            id="cellNumber" placeholder="Cell Number">
+                        <label for="cellNumber">Phone Number</label>
+                    </div>
+                </div>
+            
+                <div class="form-group col-sm-4 mt-1">
+                    <div class="form-floating">
+                        <input type="text" formControlName="idnumber" class="form-control"
+                            id="taxIdNumber" placeholder="Tax ID Number">
+                        <label for="taxIdNumber">Tax ID Number</label>
+                    </div>
+                </div>
+            
+                <div class="form-group col-sm-4 mt-1">
+                    <div class="form-floating">
+                        <input type="text" formControlName="contactName" class="form-control"
+                            id="contactName" placeholder="Contact Name">
+                        <label for="contactName">Contact Name</label>
+                    </div>
+                </div>
             </div>
+            
             
             
 

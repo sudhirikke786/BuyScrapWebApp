@@ -170,11 +170,11 @@
 
                                                 <td  style="width: 30%;">
                                                     <div class="col-sm-12 sidebar-inputox">
-                                                    <div class="mb-1 d-flex">
-                                                        <label for="created-date" class="form-label">Date</label>
-                                                        <input type="date" id="created-date" [value]="createdDate | date: 'yyyy-MM-dd'"
-                                                        class="form-control">
-                                                    </div>
+                                                        <div class="mb-1 d-flex">
+                                                            <label for="created-date" class="form-label">Date</label>
+                                                            <input type="date" id="created-date" [value]="createdDate | date: 'yyyy-MM-dd'"
+                                                                   class="form-control" (click)="openDatePicker()">
+                                                          </div>
                                                     <div class="mb-1  d-flex">
                                                         <label for="payment-terms" class="form-label">Payment
                                                             Terms</label>
@@ -201,11 +201,10 @@
                                                     <div class="col-sm-12 sidebar-inputox">
 
                                                         
-                                                        <div class="mb-1  d-flex">
-                                                            <label for="due-date" class="form-label">Due
-                                                                Date</label>
-                                                            <input type="date" id="due-date" [(ngModel)]="dueDate" class="form-control">
-                                                        </div>
+                                                        <div class="mb-1 d-flex">
+                                                            <label for="due-date" class="form-label">Due Date</label>
+                                                            <input type="date" id="due-date" [(ngModel)]="dueDate" class="form-control" (click)="openDueDatePicker()">
+                                                          </div>
                                                         <div class="mb-1  d-flex">
                                                             <label for="po-number" class="form-label">PO
                                                                 Number</label>
@@ -274,7 +273,8 @@
                                                                     <td style="width:15%">
                                                                         <input type="number" [(ngModel)]="item.quantity"
                                                                             (input)="updateItems(i)"
-                                                                            placeholder="Enter quantity" />
+                                                                            placeholder="Enter quantity" 
+                                                                            [value]="item.quantity || ''"/>
                                                                     </td>
                                                                     <td style="width:15%">
                                                                         <span>$</span>
