@@ -65,7 +65,7 @@
                     </div>
                     <div class="item-container" pDroppable (onDrop)="onDropToPending($event)">
                         <div class="inner-card-wrapper" style="cursor:grab;"
-                        *ngFor="let item of mainItems" pDraggable (onDragStart)="onDragStart(item)"
+                        *ngFor="let item of mainItems;let i = index" pDraggable (onDragStart)="onDragStart(item,i,'PT')"
                         (onDragEnd)="onDragEnd()">
                         <div style="border:1px solid {{item.colorStatus}};text-align: left; border-left:3px solid {{item.colorStatus}};padding:5px;overflow: hidden;">
 
@@ -95,13 +95,13 @@
             <div class="col-9">
                 <div class="target-boxes-container">
                     <div class="target-boxes">
-                        <div class="target-box" *ngFor="let box of targetBoxes; let i = index" pDroppable (onDrop)="onDrop(i)">
+                        <div class="target-box" *ngFor="let tbox of targetBoxes; let i = index" pDroppable (onDrop)="onDrop(i)">
                             <div class="d-flex justify-content-between  sr-pending">
                                 <div>
-                                    <div class="total-order" pTooltip="Pending Order">{{ box.items.length}}
+                                    <div class="total-order" pTooltip="Pending Order">{{ tbox.items.length}}
                                     </div>
                                 </div>
-                                <div class="text-primary">{{ box.driverFullName }}</div>
+                                <div class="text-primary">{{ tbox.driverFullName }}</div>
                                 <div class="d-flex">
                                     <div class="me-1 align-item-center">
                                         <img class="dash-icons" src="/assets/images/custom/icons/ship-out.png">
@@ -116,8 +116,8 @@
         
                             </div>
                             <div class="item-container">
-                            <div *ngFor="let item of box.items" class="dropped-item" pDraggable 
-                            (onDragStart)="onDragStart(item)" 
+                            <div *ngFor="let item of tbox.items;let boxindex = index" class="dropped-item" pDraggable 
+                            (onDragStart)="onDragStart(item,i,'D',boxindex)" 
                             (onDragEnd)="onDragEnd()">
                                 
                                 <div style="border:1px solid {{item.colorStatus}};text-align: left; border-left:3px solid {{item.colorStatus}};padding:5px;overflow: hidden;" [ngStyle]="item.ticketStatus === 'Unassigned' ? { 'border-left': '3px solid red' } : {}">

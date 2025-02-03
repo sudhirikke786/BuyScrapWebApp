@@ -29,6 +29,10 @@ export class DispatchOrderStatusComponent implements OnInit {
   //driverList = [];
   totalUnassignTickets:any= []
   backUrl: any;
+  indexbox!: number;
+  pendingIndexbox: any;
+  draggedFrom!: string;
+  boxindex !: number;
   constructor( public commonService: CommonService, private messageService: MessageService,){
 
   }
@@ -44,74 +48,116 @@ export class DispatchOrderStatusComponent implements OnInit {
 
   draggedItem: any | null = null;
 
-  onDragStart(item: any): void {
+  onDragStart(item: any,index:any,dragfrom:string,_boxindex?:number): void {
     console.log('Drag Start:', item);
+    this.draggedFrom = dragfrom;
+    if (_boxindex !== undefined && _boxindex !== null) {
+      this.boxindex = _boxindex;
+    }
+   
+    if(dragfrom == 'PT'){
+      this.pendingIndexbox = index;
+    }else{
+      this.indexbox = index;
+    }
+  
+    this.draggedItem = item;  // Save the dragged item
+
+
+    // this.draggedItem.driverID = driverObj.driverID;
+    // this.draggedItem.driverFullName = driverObj.driverFullName;
     
-    this.draggedItem = item; // Save the dragged item
   }
 
-  onDragEnd(): void {
+onDragEnd(): void {
     console.log('Drag End');
-    this.draggedItem = null; // Reset the dragged item
+    this.draggedItem = null;  // Reset the dragged item
+}
+
+onDrop(index: number): void {
+ // this.indexbox = index;
+  if (!this.draggedItem) return;
+
+  // // Ensure the dragged item isn't already in the target box
+  // const isItemInTargetBox = this.targetBoxes[index].items.some(
+  //     (item: { id: number }) => item.id === this.draggedItem.id
+  // );
+
+  // if (isItemInTargetBox) {
+  //     console.log('Item already in target box:', this.draggedItem);
+  //     return; // Skip if already in the target box
+  // }
+
+  // Remove the item from the pending list or other boxes
+
+  this.mainItems = this.mainItems.filter(item => item.id !== this.draggedItem.id);
+  if(this.draggedFrom == 'PT'){
+    this.targetBoxes[index].items.push(this.draggedItem);
    
   }
 
-  onDrop(index:number): void {
-  
-    this.selecteddriverID =  this.targetBoxes[index];
-    console.log(this.draggedItem);
-    // if (this.draggedItem) {
-    //   this.targetBoxes[index].items.push(this.draggedItem);
-  
-    let pendingItem = this.mainItems.some((item: { id: number }) => item.id === this.draggedItem.id);
-  
-    if (pendingItem) {
-      this.mainItems = this.mainItems.filter(item => item.id != this.draggedItem?.id);
-      this.mainItems.sort((a,b) => b.id - a.id);
-      console.log("Drop Element",this.targetBoxes);
-    } else {
-      let previousDriver = this.targetBoxes.find((driver: { items: any[] }) =>
-        driver.items.some((item: { id: number }) => item.id === this.draggedItem.id)
-      );
-  
-      if (previousDriver) {
-        previousDriver.items = previousDriver.items.filter((item: { id: number }) => item.id !== this.draggedItem.id);
-      }
-    }
+  if(this.draggedFrom == 'D'){
   
     this.targetBoxes[index].items.push(this.draggedItem);
-  
-    this.draggedItem = null;
-  
-    console.log("Updated Target Boxes:", this.targetBoxes);
-    console.log("Updated Pending Requests:", this.mainItems);
-  
-    setTimeout(() => {
-      if(this.targetBoxes.length > 0){
-        this.submitSave();
-      }
-    }, 1000);
-
-
-
-
-
+    if (this.boxindex !== undefined && this.boxindex !== null) {
+       this.targetBoxes[this.indexbox].items.splice(this.boxindex,1)
+    }
+   
   }
+  console.log(this.targetBoxes[index])
   
+  this.draggedItem = null;
+  
+  // this.targetBoxes.forEach((driver:any) => {
+  //     driver.items = driver.items.filter((item:any) => item.id !== this.draggedItem.id);
+  // });
 
+  // Add the dragged item to the new target box
+  // if(this.pendingIndexbox > 0){
+  // //  const targetBoxIndex = this.targetBoxes.findIndex((box: any) => box.items.some((item: any) => item.id === this.draggedItem.id));
+  //   if(this.draggedFrom == 'PT'){
+  //     this.mainItems.splice(this.pendingIndexbox, 1);
+  //   }
+  //   //delete this.targetBoxes[index].items[this.indexbox];
+  //   this.targetBoxes[index].items.push(this.draggedItem);
+  // } 
+  
+  // else{
+  //   this.mainItems.push(this.draggedItem)
+  // }
 
-onDropToPending(event: any) {
+  // console.log('Item added to new target box:', this.targetBoxes[index]);
+
+  // this.draggedItem = null;
+
+  // Optionally submit changes after drop
+  setTimeout(() => {
+      if (this.targetBoxes.length > 0) {
+        let driverObj = {
+          driverID : this.targetBoxes[index].driverID,
+          driverFullName : this.targetBoxes[index].driverFullName
+        }
+          this.submitSave(this.targetBoxes[index].items[this.targetBoxes[index].items.length - 1],driverObj);
+      }
+  }, 1000);
+}
+
+onDropToPending(event: any): void {
   if (this.draggedItem) {
-      // Remove item from the current driver
-      this.targetBoxes.forEach((driver: { items: any[] }) => {
-          driver.items = driver.items.filter((item: any) => item.id !== this.draggedItem.id);
-      });
+      // Remove item from current driver box or target box
 
-      // Add item back to Pending Requests
+      const targetBoxIndex = this.targetBoxes.findIndex((box: any) => box.items.some((item: any) => item.id === this.draggedItem.id));
+
+      //delete this.targetBoxes[this.indexbox].items[targetBoxIndex]
+      this.targetBoxes[this.indexbox].items.splice(targetBoxIndex,1)
+
+      // Return the item to the Pending Requests
       this.mainItems.push(this.draggedItem);
+      console.log('Item returned to Pending Requests:', this.draggedItem);
       this.draggedItem = null;
   }
 }
+
 
 
 
@@ -162,7 +208,9 @@ onDropToPending(event: any) {
               sellerAddress: item.streetAddress         
             };
           });
-          this.mainItems = _mainItems;
+          this.mainItems = _mainItems.filter((item:any) => {
+            return item.closedDate==null
+          });
           console.log(this.mainItems)
           
 
@@ -174,6 +222,7 @@ onDropToPending(event: any) {
         let  groupedData:any = [];
         _driverList.forEach((item:any) => {
           item.ticketStatus = this.addStatus(item);
+          item.driverID = item.driverID;
           item.colorStatus = this.addColorStatus(item);
             if(!groupedData[item.driverID]) {
               groupedData[item.driverID] = [];
@@ -193,6 +242,8 @@ onDropToPending(event: any) {
         this.targetBoxes =  this.driverList.map((element:any,index:number) => {
           element.items =  groupedData[element.rowId] ? groupedData[element.rowId] : [] ;
           element.id = index;
+          element.driverID = element.rowId;
+          element.driverFullName = element.driverFullName;
           return element
         });
         console.log("targetdata",this.targetBoxes);
@@ -226,38 +277,42 @@ onDropToPending(event: any) {
 
 
 
-  submitSave(){
-    // "pickUpDate": this.datePipe.transform(this.pickupdate, 'YYYY-MM-ddTHH:mm:ss.SSS'),
-  try {
-    const  dragObjIndex = this.targetBoxes[0].items.findIndex((item:any) =>  item.ticketStatus == 'Unassigned');
-    console.log(dragObjIndex);
-    if(dragObjIndex > -1){
-      this.targetBoxes[0].items[dragObjIndex]['driverID'] =  this.selecteddriverID.rowId;
-      this.targetBoxes[0].items[dragObjIndex]['driverName'] = this.selecteddriverID.firstName;
-  
+  submitSave(obj:any,driverObj:any){
+ 
+
+    try {
+      // Find the correct target box where the item is being dropped
+    //  const targetBoxIndex = this.targetBoxes.findIndex((box: any) => box.items.some((item: any) => item.id === this.draggedItem.id));
     
-      const objectData = this.targetBoxes[0].items[dragObjIndex] 
-      console.log(objectData);
-      this.commonService.InsertUpdatePickup(objectData).subscribe((res) =>{
-
-        this.messageService.add({ severity: 'success', summary: 'success', detail: ' Order Assigned Successfully' });
-      this.getAllCODTickets();
-      
-      },(error) =>{
-
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
-
-        console.log("Error")
-      })
+   
+        const targetBox =  obj;
+       //const draggedItemIndex = targetBox.items.findIndex((item: any) => item.id === this.draggedItem.id);
+    
+        // Check if the dragged item has 'Unassigned' status
+       
+          // Update the driver info for the dragged item
+       
+    
+          const objectData = {...targetBox,...driverObj};
+          console.log(objectData);
+    
+          // Call your service to update the backend with the new driver info
+          this.commonService.InsertUpdatePickup(objectData).subscribe(
+            (res) => {
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order Assigned Successfully' });
+              this.getAllCODTickets();
+            },
+            (error) => {
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+              console.log('Error');
+            }
+          );
+        
+     
+    } catch (error) {
+      console.log(error);
     }
     
-
-
-
-  } catch (error) {
-    console.log(error);
-  }
-
 
    
   }

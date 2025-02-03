@@ -109,7 +109,7 @@
   }
 
   .item-container{
-    height: calc(100vh - 150px); 
+    height: calc(100vh - 210px); 
     overflow-y: scroll;
     padding: 8px;
   }
@@ -147,3 +147,9 @@
   .inner-card-wrapper {
     margin-top: 20px;
   }
+
+
+  .dragging {
+    opacity: 0.5; /* Optional: make the dragged item semi-transparent */
+    cursor: grabbing;
+}
