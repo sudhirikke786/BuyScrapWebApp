@@ -153,7 +153,9 @@ onDropToPending(event: any): void {
 
       // Return the item to the Pending Requests
       this.mainItems.push(this.draggedItem);
-      console.log('Item returned to Pending Requests:', this.draggedItem);
+
+      this.submitSave(this.draggedItem,{driverID :null,driverFullName : null});
+      
       this.draggedItem = null;
   }
 }
@@ -246,8 +248,7 @@ onDropToPending(event: any): void {
           element.driverFullName = element.driverFullName;
           return element
         });
-        console.log("targetdata",this.targetBoxes);
-
+        
         
       
       },
@@ -279,7 +280,7 @@ onDropToPending(event: any): void {
 
   submitSave(obj:any,driverObj:any){
  
-
+    this.isLoading =  true
     try {
       // Find the correct target box where the item is being dropped
     //  const targetBoxIndex = this.targetBoxes.findIndex((box: any) => box.items.some((item: any) => item.id === this.draggedItem.id));
@@ -299,10 +300,13 @@ onDropToPending(event: any): void {
           // Call your service to update the backend with the new driver info
           this.commonService.InsertUpdatePickup(objectData).subscribe(
             (res) => {
-              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order Assigned Successfully' });
+           
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Assigned Order Successfully' });
+              this.isLoading =  false;
               this.getAllCODTickets();
             },
             (error) => {
+              this.isLoading =  false;
               this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
               console.log('Error');
             }
