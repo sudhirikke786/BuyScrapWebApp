@@ -65,7 +65,7 @@ export class TicketDetailComponent implements OnInit {
   totalAmount: any;
   totalAdjustment: any;
   totalActualAmount: any;
-  totalRoundingAmount: any;
+  totalRoundingAmount: any = 0;
 
   isEditModeOn = false;
   materialList: any;
@@ -151,7 +151,8 @@ export class TicketDetailComponent implements OnInit {
   checkAmount = 0;
   isLoading = false;
   systemInfo: any;
-  signPadVisible = false;
+  signPadVisible = false;  
+  isRounding = true;
   isEnable = true;
   isVirtual = false;
 
@@ -272,6 +273,10 @@ export class TicketDetailComponent implements OnInit {
 
       const isSignatureOnReceipt = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'signatureonreceipt')[0];
       this.signPadVisible = (isSignatureOnReceipt?.values.toLowerCase() === "true");
+
+      
+      const isRounding = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'isrounding')[0];
+      this.isRounding = (isRounding?.values.toLowerCase() === "true");
     }
 
 
@@ -902,8 +907,14 @@ export class TicketDetailComponent implements OnInit {
       return sum + (tickets.isAdjusmentSet ? 0 : tickets.amount);
     }, 0);
 
-    this.totalAmount = Math.round(this.totalActualAmount);
-    this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
+    if (this.isRounding) {
+      //rounding true
+      this.totalAmount = Math.round(this.totalActualAmount);
+      this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
+    } else {
+      this.totalAmount = this.totalActualAmount;
+      this.totalRoundingAmount = 0;
+    }
     this.totalAdjustment = tickets.reduce(function (sum: any, tickets: any) {
       // return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : 0);
       return sum + (tickets.isAdjusmentSet ? tickets.amount : 0);

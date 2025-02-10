@@ -76,7 +76,7 @@
         </div>
         <div class="col-md-8">
             <div class="input-group">
-              <input type="text" (keypress)="onKeyPress($event)" #inputBox3
+              <input type="text" readonly (keypress)="onKeyPress($event)" #inputBox3
                 [(ngModel)]="availableNetInput" (focus)="focusedInput = 'inputBox3'" id="availanleNet"
                 class="form-control   mb-1 ps-0">
             </div>

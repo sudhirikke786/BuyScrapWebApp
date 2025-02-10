@@ -82,7 +82,11 @@ export class SystemPerfComponent implements OnInit {
         return item
       });
       this.copyObj = res?.body?.data.map;
-    
+      // To remove and add system info setting
+      if (res?.body?.data) {
+        localStorage.removeItem('systemInfo');
+        this.stroarge.setLocalStorage('systemInfo', res?.body?.data);
+      }
     },(error)=>{
 
     })

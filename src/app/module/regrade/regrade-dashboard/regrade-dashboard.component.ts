@@ -382,7 +382,9 @@ export class RegradeDashboardComponent implements OnInit {
 
 
   submitRegrate() {
-
+    const totalMaterialNet = this.metarialObj.reduce((acc: number, curr: any) => {
+      return acc + Number(curr.quanitity);
+    }, 0);
     const requestObj = this.metarialObj.map((item:any) => {
 
            const obj =  {
@@ -398,7 +400,8 @@ export class RegradeDashboardComponent implements OnInit {
       UserId:this.logInUserId,
       LocID:this.locId,
       MaterialID:this.currentRegradedMaterialRowID,
-      // MaterialNet:this.regStock,
+      MaterialNet: totalMaterialNet,
+      // MaterialNet:this.regStock
       // LossMaterialNet:this.netLoss,
       // LossReason:this.netDescription ?? 'Net Loss',
     }

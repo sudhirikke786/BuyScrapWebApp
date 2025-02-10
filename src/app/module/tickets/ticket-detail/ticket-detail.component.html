@@ -321,8 +321,8 @@
                                                             <th style="width: 10%;">Gross(M)</th>
                                                             <th style="width: 7%;">Tare</th>
                                                             <th style="width: 8%;">Net</th>
-                                                            <th style="width: 20%;">Actual Amount</th>
-                                                            <th style="width: 12%;">Rounding</th>
+                                                            <th style="width: 20%;" *ngIf="totalRoundingAmount != 0">Actual Amount</th>
+                                                            <th style="width: 12%;" *ngIf="totalRoundingAmount != 0">Rounding</th>
                                                             <th style="width: 18%;">Amount</th>
                                                             <th style="width: 15%;">Adjustment</th>
                                                     </tr></thead>
@@ -333,8 +333,8 @@
                                                             <td>{{totalGross}}</td>
                                                             <td>{{totalTare}}</td>
                                                             <td>{{totalNet}}</td>
-                                                            <td>{{totalActualAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                            <td>{{totalRoundingAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                            <td *ngIf="totalRoundingAmount != 0">{{totalActualAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                            <td *ngIf="totalRoundingAmount != 0">{{totalRoundingAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                             <td>{{totalAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                             <td>{{(totalAdjustment * -1) | currency: currencySymbol :'symbol': numberFormat}}</td>
                                                         </tr>                                                     
