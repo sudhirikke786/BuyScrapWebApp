@@ -180,6 +180,17 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/CashDrawers/InsertCashDrawerDetails', 'POST', requestObj);
   }
 
+  UpdateCashDrawerStatus(requestObj: any,postParams:any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/UpdateCashDrawerStatus', 'POST', requestObj, null , postParams);
+  }
+
+  
+  InsertUpdateMaterialDocuments(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InsertUpdateMaterialDocuments', 'POST', requestObj);
+  }
+
+
+
   getAllTicketsDetails(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsDetails', 'GET', paramObj);
   }
@@ -219,6 +230,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Invoice/VoidCopyInvoice', 'POST', requestObj);
   }
 
+  UpdateIsMarkAsPaid(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Invoice/UpdateIsMarkAsPaid', 'POST', requestObj);
+  }
+  
   getAllTicketsByParentID(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsByParentID', 'GET', paramObj);
   }
@@ -271,6 +286,18 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/DeleteAddressbyId', 'DELETE', params);
   }
 
+  InsertBusinessCertificates(postParams:any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/InsertBusinessCertificates', 'POST',  null, null , postParams);
+  }
+
+  GetBusinessCertificatesByID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/GetBusinessCertificatesByID', 'GET', paramObj);
+  }
+  
+  DeleteCertificatebyId(params: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/DeleteCertificatebyId', 'DELETE', params);
+  }
+
 
 
 
@@ -294,6 +321,10 @@ export class CommonService {
 
   DeletePickUpMaterialbyId(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PickUp/DeletePickUpMaterialbyId', 'DELETE', requestObj);
+  }
+
+  GetAllContainerLocations(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Pickup/GetAllContainerLocations', 'GET', paramObj);
   }
 
 
@@ -359,6 +390,10 @@ export class CommonService {
   }
   InsertUpdatePickup(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PickUp/InsertUpdatePickup', 'POST', requestObj);
+  }
+  
+  DispatchCloseDateUpdate(requestObj: any,postParams:any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PickUp/DispatchCloseDateUpdate', 'POST', requestObj, null , postParams);
   }
 
 
@@ -664,15 +699,19 @@ getMaterialPriceList(paramObj: any): Observable<any> {
   InsertUpdateRegradedMaterials(requestObj:any, postParams: any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Regrades/InsertUpdateRegradedMaterials', 'POST', requestObj, null , postParams);
   }
-
   
   UpdateRegradedStatus(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Regrades/UpdateRegradedStatus', 'POST', null , null, paramObj);
   }
 
+  ticketEditMode(postParams:any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/UpdateTicketEditMode', 'POST',  null, null , postParams);
+  }
 
-
-
+  getContainerTrackingReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllContainerTrackingReport', 'GET', paramObj);
+  }
+  
   paySubscriptionFee(requestObj: any): Observable<any> {
     requestObj.callbackUrl = this.buildCallbackUrl();
     return this.callAPI(environment.baseUrl + '/Payment/CreateCheckoutSession', 'POST', requestObj);

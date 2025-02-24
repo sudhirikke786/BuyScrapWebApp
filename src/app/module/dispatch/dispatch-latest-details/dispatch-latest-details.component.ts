@@ -71,6 +71,7 @@ export class DispatchLatestDetailsComponent {
   admins: any;
   driverList:any[] =[];
   editItemObj: any = { };
+  isContainerValid: boolean = true;
 
 
 constructor(private route: ActivatedRoute, private router:Router,
@@ -366,6 +367,59 @@ constructor(private route: ActivatedRoute, private router:Router,
          }
        );
   }
+
+  checkContainerAvailability(containerNumber: string, type: string) {
+    if (this.dispatchMaterial == 'Exchange') {
+      if (type == 'dropoff' && containerNumber == this.newItem.boxpickup) {
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: 'Error', 
+          detail: 'Drop-off and Box Pickup cannot have the same container!' 
+        });
+        this.newItem.dropoffbox = '';
+        return;
+      }
+      if (type == 'pickup' && containerNumber == this.newItem.dropoffbox) {
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: 'Error', 
+          detail: 'Drop-off and Box Pickup cannot have the same container!' 
+        });
+        this.newItem.boxpickup = '';
+        return;
+      }
+    }
+    const paramObject = {
+      Containernumber: containerNumber
+    };
+  
+    this.commonService.GetAllContainerLocations(paramObject)
+      .subscribe((data: any) => {
+        console.log('API Response:', data); 
+        
+        const containerData = data.body.data[0];
+        
+          if (containerData.isAtWearhouse && type == 'pickup') {
+            this.newItem.boxpickup = '';
+            this.messageService.add({ 
+              severity: 'error', 
+              summary: 'Error', 
+              detail: 'Container is in Warehouse. Not available for Pickup.' 
+            });
+          } else if (!containerData.isAtWearhouse && type == 'dropoff') {
+            this.newItem.dropoffbox = '';
+            this.messageService.add({ 
+              severity: 'error', 
+              summary: 'Error', 
+              detail: 'Container is at Client Location. Not available for Drop-off.' 
+            });
+          }
+      },
+      (err: any) => {
+        console.error('API Error:', err); 
+      });
+  }
+  
   getTotalCharges(): number {
     return this.invoiceObj.reduce((total, item) => total + item.charges, 0);
   }

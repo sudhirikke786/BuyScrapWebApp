@@ -39,6 +39,8 @@ export class AdjustmentDashboardComponent implements OnInit {
   logInUserId: any;
   locId: any;
   adjustmentList: any;
+  searchText: string = '';  
+  filteredAdjustmentList: any[] = []; 
   currentRole:any;
   form: FormGroup = this.formBuilder.group({
     rowId: 0,
@@ -102,6 +104,7 @@ export class AdjustmentDashboardComponent implements OnInit {
           console.log('GetAllAdjustmentType :: ');
           console.log(data);
           this.adjustmentList = data.body.data;
+          this.filteredAdjustmentList = [...this.adjustmentList];
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -112,7 +115,17 @@ export class AdjustmentDashboardComponent implements OnInit {
         }
       );
   }
-
+  
+  filterAdjustments() {
+    if (!this.searchText || this.searchText.trim() === '') {
+      this.filteredAdjustmentList = [...this.adjustmentList];
+    } else {
+      this.filteredAdjustmentList = this.adjustmentList.filter((item: any) => {
+        return item.adjustmentName?.toLowerCase().includes(this.searchText.toLowerCase());
+      });
+    }
+  }
+  
   showDialog(adjustmentData?: any){
     if (adjustmentData) {
       this.headerTitle = 'Edit Adjustment';
@@ -176,8 +189,11 @@ export class AdjustmentDashboardComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
+        this.filterAdjustments();
         break;
       case 'mdi-refresh':
+        this.searchText = ''; 
+        this.GetAllAdjustmentType(); 
         break;
       case 'mdi-plus':
         this.showDialog();

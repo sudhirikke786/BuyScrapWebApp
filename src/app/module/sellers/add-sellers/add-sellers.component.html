@@ -334,6 +334,16 @@
                                         <span><h5>Address</h5></span>
                                     </a>
                                 </li>
+                                <li class="nav-item" *ngIf="sellerType === 'Business'">
+                                    <a
+                                        class="nav-link"
+                                        [class.active]="activeTab === 'certificates'"
+                                        (click)="activeTab = 'certificates'"
+                                        href="javascript:void(0);"
+                                    >
+                                        <span><h5>Certificates</h5></span>
+                                    </a>
+                                </li>
                             </ul>
 
                             <div class="row mt-2" *ngIf="this.sellerType == 'Personal' && activeTab === 'personal'">
@@ -576,7 +586,7 @@
                                         <option>Dealer 3</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-sm-3">
+                                <div class="form-group col-sm-3" *ngIf="this.sellerType == 'Business'">
                                     <label for="floatingInput"  class="form-label w-100">Contact Name</label>
                                    
                                         <input type="text" class="form-control" formControlName="contactName" id="contactName"
@@ -660,13 +670,75 @@
                                       <td>{{ address.streetName }}</td> -->
                                       <td>
                                         <button type="button"  class="btn btn-primary btn-sm" (click)="editAddress(i)">Edit</button>
-                                        <button class="btn btn-danger btn-sm" (click)="deleteAddress(i,  address.rowId)">Delete</button>
+                                        <button type="button"  class="btn btn-danger btn-sm" (click)="deleteAddress(i,  address.rowId)">Delete</button>
                                       </td>
                                     </tr>
                                   </tbody>
                                 </table>
                               </div>
                             </div>
+                            
+                            <div *ngIf="activeTab === 'certificates'">
+                                <div class="row mt-2">
+                                    <div class="form-group col-sm-6">
+                                        <label for="floatingInput" class="form-label w-100">Certificate Description</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="certificateDescription" 
+                                            placeholder="Enter certificate description"
+                                            formControlName="certificateDescription"
+                                        />
+
+                                    </div>
+                            
+                                    <div class="form-group col-sm-4">
+                                        <label for="certificateFile" class="form-label w-100">Upload Certificate</label>
+                                        <input 
+                                            type="file" 
+                                            class="form-control" 
+                                            id="certificateFile"
+                                            (change)="onFileSelected($event)"
+                                            accept=".bmp, .gif, .jpeg, .jpg, .png, .tiff"
+                                        >
+                                        <img *ngIf="isEditMode && imageUrl" [src]="imageUrl" alt="Certificate Preview" width="100" class="mt-2">
+                                    </div>
+                            
+                                    <div class="form-group col-sm-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-primary w-100" (click)="saveCertificate()">
+                                            {{ isEditMode ? 'Update Certificate' : 'Add Certificate' }}
+                                        </button>
+
+                                          
+                                    </div>
+                                </div>
+                            
+                                <div class="mt-4">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Description</th>
+                                                <th>Certificate</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let cert of certificatesList">
+                                                <td>{{ cert.description }}</td>
+                                                <td>
+                                                    <img *ngIf="cert.images" [src]="cert.images" alt="Certificate" width="100" 
+                                                    class="clickable-image"  (click)="showSelectedImage(cert.images, '10')">
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary btn-sm me-2" (click)="editCertificate(cert)">Edit</button>
+                                                    <button type="button" class="btn btn-danger btn-sm" (click)="confirmDelete(cert)">Delete</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
 
                         </form>
 

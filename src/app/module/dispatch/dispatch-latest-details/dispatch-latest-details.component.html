@@ -160,10 +160,11 @@
                       <thead>
                         <tr>
                           <th style="width:15%">Container Type</th>
-                          <th style="width:15%">Drop-off Box #</th>
-                          <th style="width:15%">Box Pickup #</th>
+                          <th style="width:12%">Container Quantity</th> 
+                          <th style="width:12%">Drop-off Box #</th>
+                          <th style="width:12%">Box Pickup #</th>
                           <th style="width:10%">Charges</th>
-                          <th style="width:30%">Notes</th>
+                          <th style="width:25%">Notes</th>
                           <th style="width:15%" *ngIf="type!=='show'">Action</th>
                         </tr>
                       </thead>
@@ -172,9 +173,10 @@
 
                         <tr *ngFor="let item of invoiceObj; let i = index">
                           <td style="width:15%">{{item?.containerType}}</td>
-                          <td style="width:15%">{{item?.dropoffbox}}</td>
-                          <td style="width:15%">{{item?.boxpickup}}</td>
-                          <td style="width:15%">{{item?.charges}}</td>
+                          <td style="width:12%">{{ item?.containerQuantity }}</td> 
+                          <td style="width:12%">{{item?.dropoffbox}}</td>
+                          <td style="width:12%">{{item?.boxpickup}}</td>
+                          <td style="width:10%">{{item?.charges}}</td>
                           <td colspan="2" style="width:20%;white-space: pre-wrap;">{{item?.notes}}</td>
                        
                         </tr>
@@ -183,7 +185,7 @@
                         <ng-template #showtemp>
                           <tr *ngFor="let item of invoiceObj; let i = index">
                             <td style="width:15%" *ngIf="editingIndex !== i">{{ item?.containerType }}</td>
-                            <td style="width:15%" *ngIf="editingIndex === i">
+                            <td style="width:12%" *ngIf="editingIndex === i">
                               <select [(ngModel)]="editItemObj.containerType" class="form-control">
                                 <option value="-- None --" selected="true">-- None --</option>
                                 <option *ngFor="let option of allContainerType" [value]="option.containerType">
@@ -191,20 +193,24 @@
                                 </option>
                               </select>
                             </td>
-                            <td style="width:15%" *ngIf="editingIndex !== i">{{ item?.dropoffbox}}</td>
-                            <td style="width:15%" *ngIf="editingIndex === i">
+                            <td  style="width:12%" *ngIf="editingIndex !== i">{{ item?.containerQuantity }}</td> 
+                            <td  style="width:12%" *ngIf="editingIndex === i">
+                              <input type="number" [(ngModel)]="editItemObj.containerQuantity" />
+                            </td>
+                            <td style="width:12%" *ngIf="editingIndex !== i">{{ item?.dropoffbox}}</td>
+                            <td style="width:12%" *ngIf="editingIndex === i">
                               <input type="text" [(ngModel)]="editItemObj.dropoffbox" />
                             </td>
-                            <td style="width:15%" *ngIf="editingIndex !== i">{{ item?.boxpickup }}</td>
-                            <td style="width:15%" *ngIf="editingIndex === i">
+                            <td style="width:12%" *ngIf="editingIndex !== i">{{ item?.boxpickup }}</td>
+                            <td style="width:12%" *ngIf="editingIndex === i">
                               <input type="text" [(ngModel)]="editItemObj.boxpickup " />
                             </td>
-                            <td style="width:15%" *ngIf="editingIndex !== i">{{ item?.charges }}</td>
-                            <td style="width:15%" *ngIf="editingIndex === i">
+                            <td style="width:10%" *ngIf="editingIndex !== i">{{ item?.charges }}</td>
+                            <td style="width:10%" *ngIf="editingIndex === i">
                               <input type="number" [(ngModel)]="editItemObj.charges" />
                             </td>
-                            <td style="width:30%" *ngIf="editingIndex !== i" style="white-space: pre-wrap;">{{ item?.notes }}</td>
-                            <td style="width:30%" *ngIf="editingIndex === i">
+                            <td style="width:25%" *ngIf="editingIndex !== i" style="white-space: pre-wrap;">{{ item?.notes }}</td>
+                            <td style="width:25%" *ngIf="editingIndex === i">
                               <textarea cols="50" rows="2" [(ngModel)]="editItemObj.notes"></textarea>
 
 
@@ -248,16 +254,23 @@
                               </select>
                               <!-- <input type="text" [(ngModel)]="newItem.containerID" placeholder="Container ID" /> -->
                             </td>
-                            <td style="width:15%">
-                              <input type="text" [(ngModel)]="newItem.dropoffbox" placeholder="Drop-off Box" />
+                            <td style="width:12%">
+                              <input min="0" type="number" [(ngModel)]="newItem.containerQuantity" placeholder="Container Quantity" />
+                            </td> 
+                            <td style="width:12%">
+                              <input type="text" [(ngModel)]="newItem.dropoffbox" placeholder="Drop-off Box"
+                              (change)="checkContainerAvailability(newItem.dropoffbox, 'dropoff')" 
+                              [disabled]="dispatchMaterial == 'Pickup' || newItem.containerQuantity > 0" />
                             </td>
-                            <td style="width:15%">
-                              <input type="text" [(ngModel)]="newItem.boxpickup" placeholder="Box Pickup" />
+                            <td style="width:12%">
+                              <input type="text" [(ngModel)]="newItem.boxpickup" placeholder="Box Pickup" 
+                              (change)="checkContainerAvailability(newItem.boxpickup, 'pickup')" 
+                              [disabled]="dispatchMaterial == 'Drop off' || newItem.containerQuantity > 0" />
                             </td>
-                            <td style="width:15%">
+                            <td style="width:10%">
                               <input min="0" type="number" [(ngModel)]="newItem.charges" placeholder="Charges" />
                             </td>
-                            <td style="width:30%">
+                            <td style="width:25%">
                               <textarea cols="50" rows="2" [(ngModel)]="newItem.notes" placeholder="Notes">
                                           </textarea>
 

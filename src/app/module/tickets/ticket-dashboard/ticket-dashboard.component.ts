@@ -1751,6 +1751,25 @@ export class TicketDashboardComponent implements OnInit {
     this.showImage = false;
   }
 
+  TicketEditMode(ticket: any, editFlag:boolean){
+    const paramObject = {
+      TicketID: ticket.rowId,
+      Flag :editFlag,
+      UserID: this.logInUserId,
+      Role:this.currentRole
+    };
+    this.commonService.ticketEditMode(paramObject).subscribe(data => {
+        console.log('ticketEditMode :: ');
+        console.log(data);
+        alert('Unlock the ticket for editing !!!');
+        this.refreshData();
+      },
+      (err: any) => {
+        // this.errorMsg = 'Error occured';
+      }
+    );
+  }
+
   /** Seller pop up actions end */
 
 

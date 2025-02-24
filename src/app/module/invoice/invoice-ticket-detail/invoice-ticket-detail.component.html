@@ -70,7 +70,7 @@
                                                     </a>
                                                 </div>
                                                 <div>
-                                                    <a *ngIf="!isEditModeOn && invoiceData.status == 'OPEN'"
+                                                    <a *ngIf="!isEditModeOn && invoiceData.status == 'OPEN' && !invoiceData.isMarkAsPaid"
                                                         class="btn  btn-primary flt-right"
                                                         (click)="editInvoiceDetails()">
                                                         <i class="mdi mdi-pencil"></i> Edit
@@ -329,7 +329,7 @@
                                                                 <td>
                                                                     <button *ngIf="isEditModeOn"
                                                                         class="btn btn-primary me-1"
-                                                                        [disabled]="!newItem.name || newItem.quantity <= 0 || newItem.rate <= 0"
+                                                                        [disabled]="!newItem.name ||!newItem.quantity || !newItem.rate || newItem.quantity <= 0 || newItem.rate <= 0"
                                                                         (click)="addNewItem()">
                                                                         Add Item
 

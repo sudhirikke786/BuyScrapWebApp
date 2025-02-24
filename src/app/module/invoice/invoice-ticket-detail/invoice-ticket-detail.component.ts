@@ -208,7 +208,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   copySubMaterialData:any[]  = [];
   
   items:any[] = [];
-  newItem = { name: '', quantity: 0, rate: 0, amount: 0 };
+  newItem = { name: '', quantity: null, rate: null, amount: 0 };
 
   isshowTax =  false;
   isshowDiscount = false;
@@ -365,12 +365,14 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
  
 
+  
   addInvoice() {
-    if (this.newItem.name && this.newItem.quantity > 0 && this.newItem.rate > 0) {
-      this.items.push({ ...this.newItem }); // Add the new item
-      this.newItem = { name: '', quantity: 0, rate: 0, amount: 0 }; // Reset the new item
+    if (this.newItem.name && this.newItem.quantity && this.newItem.rate && 
+        this.newItem.quantity > 0 && this.newItem.rate > 0) {
+        this.items.push({ ...this.newItem }); // Add the new item
+        this.newItem = { name: '', quantity: null, rate: null, amount: 0 }; // Reset the new item
     }
-  }
+}
 
   showTax() {
     this.isshowTax = true;
@@ -408,11 +410,19 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   //   item.amount = item.quantity * item.rate; // Update the amount dynamically
   // }
 
+  // updateNewItemAmount() {
+  //   this.newItem.amount = Number((this.newItem.quantity * this.newItem.rate))
+  //   this.calculate();
+  //    // Update the new item amount dynamically
+  // }
   updateNewItemAmount() {
-    this.newItem.amount = Number((this.newItem.quantity * this.newItem.rate))
+    if (this.newItem.quantity && this.newItem.rate) {
+        this.newItem.amount = Number((this.newItem.quantity * this.newItem.rate));
+    } else {
+        this.newItem.amount = 0;  // Set to 0 instead of null
+    }
     this.calculate();
-     // Update the new item amount dynamically
-  }
+}
 
   ngAfterViewInit() {
     // if(this.searchMaterialInput){
@@ -1704,24 +1714,25 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   }
 
   addNewItem() {
-    
-    if (this.newItem.name && this.newItem.quantity > 0 && this.newItem.rate > 0) {
-      this.itemLeveloperationPerform = 'Add';
-      
-      console.log('Calculation data ::');
-      console.log(this.newItem);
-      // this.editItemCloseImageCapture = false;
-      // this.mainMaterialsVisible = true;
-      this.itemMaterialName = this.newItem.name;
-      this.itemGross = this.newItem.quantity;
-      this.itemPrice = this.newItem.rate;
-      // this.materialNote = rowData.materialNote;
-      // this.itemImagePath = rowData.itemImagePath;
-      this.updateExistingItemDataResponse();
-      this.newItem = { name: '', quantity: 0, rate: 0, amount: 0 }; // Reset the new item
+    if (this.newItem.name && this.newItem.quantity && this.newItem.rate && 
+        this.newItem.quantity > 0 && this.newItem.rate > 0) {
+        this.itemLeveloperationPerform = 'Add';
+        
+        console.log('Calculation data ::');
+        console.log(this.newItem);
+        // this.editItemCloseImageCapture = false;
+        // this.mainMaterialsVisible = true;
+        
+        this.itemMaterialName = this.newItem.name;
+        this.itemGross = this.newItem.quantity;
+        this.itemPrice = this.newItem.rate;
+         // this.materialNote = rowData.materialNote;
+        // this.itemImagePath = rowData.itemImagePath;
+        
+        this.updateExistingItemDataResponse();
+        this.newItem = { name: '', quantity: null, rate: null, amount: 0 }; // Reset the new item
     }
-
-  }
+}
 
   // changeItem() {
   //   this.editItemCloseImageCapture = false;

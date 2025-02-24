@@ -117,9 +117,14 @@
 
                                                         </ng-container>
                                                        
-                                                        <a class="btn btn-grid btn-success"
+                                                        <a class="btn btn-grid btn-success me-1"
                                                             (click)="showTicketDetails(ticket)">
                                                             <i class="mdi mdi-eye pe-1"></i> Open Ticket
+                                                        </a>
+                                                       
+                                                        <a *ngIf="currentRole == 'Administrator' && ticket.isEditMode == true" class="btn btn-grid btn-success"
+                                                            (click)="TicketEditMode(ticket,false)">
+                                                            <i class="mdi mdi-eye pe-1"></i> Unlock Ticket
                                                         </a>
 
                                                     </div>

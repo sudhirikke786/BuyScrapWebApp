@@ -102,7 +102,8 @@
                                                 <td><span class="{{ticket?.statusClass}}">{{ ticket?.status | uppercase }}</span></td>
                                                 <td>{{ ticket?.totalAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
                                                 <td>{{ ticket?.customerName }}</td>
-                                                <td>{{ ticket?.dateClosed ? (ticket?.dateClosed | date: 'MM/dd/yyyy') : ''}}</td>
+                                                <td>{{ ticket?.isMarkAsPaid && ticket?.dateClosed ? (ticket?.dateClosed | date: 'MM/dd/yyyy') : '' }}
+                                                </td>
                                                 <td>
                                                     <div class="d-flex no-wrap">
                                                         <ng-container *ngIf="currentRole!== 'Scale'">
@@ -123,8 +124,9 @@
                                                         </a>
 
                                                         <a class="btn btn-grid btn-success  me-1"
-                                                        (click)="markasPaid(ticket)">
-                                                        <i class="mdi mdi-eye pe-1"></i>Mark as Paid
+                                                        (click)="markasPaid(ticket)"
+                                                        [ngClass]="ticket?.isMarkAsPaid ? 'btn-danger' : 'btn-success'">
+                                                        <i class="mdi mdi-eye pe-1"></i>{{ ticket?.isMarkAsPaid ? 'Mark as Unpaid' : 'Mark as Paid' }}
                                                     </a>
 
                                                     </div>

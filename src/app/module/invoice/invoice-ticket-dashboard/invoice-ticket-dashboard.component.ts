@@ -319,7 +319,26 @@ export class InvoiceTicketDashboardComponent implements OnInit {
 
 
   markasPaid(ticketData: any){
-    alert('Development is in-progress!!!')
+    // alert('Development is in-progress!!!')
+    const updatedFlag = !ticketData.isMarkAsPaid; 
+    const requestObj = {
+      rowID: ticketData.rowId,
+      flag: updatedFlag,
+      userID: this.logInUserId,  
+      updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+      locID: this.locId    
+    };
+  
+    this.commonService.UpdateIsMarkAsPaid(requestObj).subscribe(
+      (response) => {
+        if (response) {
+          ticketData.isMarkAsPaid = updatedFlag;
+        }
+      },
+      (error) => {
+        console.error("Error updating payment status:", error);
+      }
+    );
   }
 
   getColor(type: any, isParent: boolean) {

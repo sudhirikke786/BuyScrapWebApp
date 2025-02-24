@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 
 
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -238,16 +238,6 @@ export class TicketDetailComponent implements OnInit {
 
     console.log(this.currentRoute);
 	
-    // const userAgent = navigator.userAgent;
-    // const isAndroid = /Android/i.test(userAgent);
-
-    // this.deviceInfo = this.deviceService.getDeviceInfo();
-    // this.isMobile = this.deviceService.isMobile();
-    // this.isTablet = this.deviceService.isTablet();
-    // this.isDesktop = this.deviceService.isDesktop();
-
-    // alert(JSON.stringify(this.deviceInfo) + ' :: isMobile :: ' +JSON.stringify(this.isMobile) + ' :: isTablet :: ' +JSON.stringify(this.isTablet) + ' :: isDesktop :: ' +JSON.stringify(this.isDesktop) + ' :: ' + ' :: isAndroid :: ' +JSON.stringify(isAndroid) + ' :: ')
-
     window.addEventListener('afterprint', this.afterPrintHandler);
     this.currentRole = this.authService.userCurrentRole();
 
@@ -259,7 +249,6 @@ export class TicketDetailComponent implements OnInit {
     if(mCamera) {
       this.dCamera = mCamera;
     }
-
 
     const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
     if (_dataObj) {
@@ -287,13 +276,8 @@ export class TicketDetailComponent implements OnInit {
     this.route.params.subscribe((param) => {
       this.ticketId = param["ticketId"];
       this.sellerId = param["customerId"];
-
-      console.log(this.sellerId);
-     
-
       this.route.queryParams.subscribe(params => {
         this.dispatchID = params['dispatchID'];
-        // console.log('Dispatch ID:', dispatchID);
       });
      
       this.getSellerById();
@@ -303,15 +287,12 @@ export class TicketDetailComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe(params => {
-
       const types  = params['type'];
       if(types=='seller'){
         this.backUrl = `/${this.orgName}/sellers-buyers`;
       }else{
-        this.backUrl = `/${this.orgName}/home`;
- 
+        this.backUrl = `/${this.orgName}/home`; 
       }
-
     });
 
     this.sellerForm = this.fb.group({
@@ -320,8 +301,30 @@ export class TicketDetailComponent implements OnInit {
       middleName : [''],
       lastName : ['']
     });
+    
+    // this.routerEventsSubscription = this.router.events.subscribe(event => {
+    //   if (event instanceof NavigationStart) {
+    //    this.TicketEditMode(false);
+    //   }
+    // });
   }
 
+  TicketEditMode(editFlag:boolean){
+    const paramObject = {
+      TicketID: this.ticketId,
+      Flag :editFlag,
+      UserID: this.logInUserId,
+      Role:this.currentRole
+    };
+    this.commonService.ticketEditMode(paramObject).subscribe(data => {
+        console.log('ticketEditMode :: ');
+        console.log(data);
+      },
+      (err: any) => {
+        // this.errorMsg = 'Error occured';
+      }
+    );
+  }
   
   searchMaterial(searchTerm:any){
 
@@ -921,8 +924,19 @@ export class TicketDetailComponent implements OnInit {
     }, 0);
   }
 
-  editTicketDetails() {
-    this.isEditModeOn = true;
+  editTicketDetails() {    
+    if(this.ticketData.isEditMode){      
+      if ( this.currentRole === "Administrator") {       
+        if (!confirm("Ticket is in edit mode. Still you want to continue?")) { 
+          return;
+        }
+      } else if ((this.currentRole === "Scale" || this.currentRole === "Cashier") && (this.ticketData.EditedBy == this.logInUserId)) {       
+        alert("Ticket is in edit mode. Please contact administartor !!!"); 
+        return;
+      } 
+    } 
+    this.TicketEditMode(true);
+    this.isEditModeOn = true; 
     this.getAllGroupMaterial();
   }
 

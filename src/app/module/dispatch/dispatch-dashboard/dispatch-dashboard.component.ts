@@ -33,6 +33,9 @@ export class DispatchDashboardComponent implements OnInit {
   ticketId:number=0;
   selectedRowId: number=0;
 
+  showCompletePopup: boolean = false;
+  completionNote: string = '';
+  selectedDriverId: number=0;
 
   dispatchRes = [
     
@@ -157,29 +160,51 @@ export class DispatchDashboardComponent implements OnInit {
       SerachText: ''
     };
     this.isLoading = true;
-
+  
     this.commonService.GetAllPickUpDetails(paramObject).subscribe(
       
       (data: any) => {
         //console.log('API Response:', data); 
         console.log('getAllCODTickets :: ', data);
         if (data && data.body && data.body.data) {
-          this.dispatchRes = data.body.data.map((item: any) => {
-            //console.log('Mapped item:', item.ticketRowID);
-            return {
-              rowId: item.rowID,       
-              pickUpDate: item.pickUpDate,
-              closedDate: item.closedDate,
-              customerName: item.customerName,
-              sellerName: item.sellerName,
-              sellerID:item.sellerID,
-              ticketRowID:item.ticketRowID,
-              charges: item.charges,
-              selected: item.closedDate ? true : false,
-              ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
-              sellerAddress: item.streetAddress         
-            };
-          });
+          if (this.currentRole === 'Driver' && this.logInUserId) {
+            this.dispatchRes = data.body.data.filter((item: any) => item.driverID === this.logInUserId).map((item: any) => {
+              return {
+                rowId: item.rowID,
+                pickUpDate: item.pickUpDate,
+                closedDate: item.closedDate,
+                customerName: item.customerName,
+                sellerName: item.sellerName,
+                sellerID:item.sellerID,
+                ticketRowID:item.ticketRowID,
+                charges: item.charges,
+                isCompleted: item.isCompleted,
+                selected: item.closedDate ? true : false,
+                ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
+                sellerAddress: item.streetAddress,
+                driverID: item.driverID
+              };
+            });
+          } else {
+            this.dispatchRes = data.body.data.map((item: any) => {
+              //console.log('Mapped item:', item.ticketRowID);
+              return {
+                rowId: item.rowID,       
+                pickUpDate: item.pickUpDate,
+                closedDate: item.closedDate,
+                customerName: item.customerName,
+                sellerName: item.sellerName,
+                sellerID:item.sellerID,
+                ticketRowID:item.ticketRowID,
+                charges: item.charges,
+                isCompleted: item.isCompleted,
+                selected: item.closedDate ? true : false,
+                ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
+                sellerAddress: item.streetAddress,
+                driverID: item.driverID         
+              };
+            });
+          }
         } else {
           console.error('No data found or incorrect response structure.');
         }
@@ -206,6 +231,53 @@ export class DispatchDashboardComponent implements OnInit {
 
     });
   }
+  openCompletePopup(rowId: number, driverID?: number) {
+    console.log(`Popup opened for RowID: ${rowId}, DriverID: ${driverID}`);
+
+    if (!driverID || driverID == 0) {
+        this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'No driver assigned to this pickup!' });
+        return;
+    }
+
+    this.selectedRowId = rowId;
+    this.selectedDriverId = driverID;
+    this.completionNote = '';
+    this.showCompletePopup = true;
+}
+
+
+  closePopup() {
+    console.log('Closing popup');  
+    this.showCompletePopup = false;
+  }
+  saveCompletion() {
+    const requestObj = {
+      PickUpID: this.selectedRowId,
+      IsCompleted: true,
+      notes: this.completionNote,
+      driverID: this.selectedDriverId  
+    };
+  
+    const postParams = {
+      PickUpID: this.selectedRowId,
+      IsCompleted: true,
+      notes: this.completionNote,
+      driverID: this.selectedDriverId  
+    };
+
+    this.commonService.DispatchCloseDateUpdate(requestObj, postParams).subscribe(
+      (response) => {
+        console.log('API Response:', response);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Dispatch Completed successfully!' });
+        this.closePopup();
+      },
+      (error) => {
+        console.error('Error saving note:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to save note. Try again!' });
+      }
+    );
+  }
+  
   clickOnSeller(sellerId: string | number, sellerName: string,sellerAddress: string) {
    
     this.router.navigate([`/${this.orgName}/dispatch/dispatch-detail`,'New',sellerId,'new']);

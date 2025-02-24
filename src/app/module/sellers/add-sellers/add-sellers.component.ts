@@ -8,6 +8,8 @@ import { DataService } from 'src/app/core/services/data.service';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-add-sellers',
@@ -64,6 +66,11 @@ export class AddSellersComponent implements OnInit {
   isEditing: boolean = false;  
   selectedAddressIndex: number | null = null;  
 
+  certificatesList: any[] = [];
+  certificateDescription: string = ''; 
+  selectedCertificate: any = null;
+  isEditMode: boolean = false;
+
 
   
 
@@ -77,7 +84,8 @@ export class AddSellersComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private stroarge: StorageService,
-    private commonService: CommonService) { 
+    private commonService: CommonService,
+   private datePipe: DatePipe) { 
 
       this.orgName = localStorage.getItem('orgName');
       this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
@@ -161,7 +169,8 @@ export class AddSellersComponent implements OnInit {
        dealerType : [''],
        vehicleModel : [],
        emailId : [''],
-       cellNumber : ['']
+       cellNumber : [''],
+       certificateDescription :[]
     })
 
    
@@ -212,6 +221,7 @@ export class AddSellersComponent implements OnInit {
         }
       );
       this.fetchSellerAddresses();
+      this.fetchBusinessCertificates();
 
 
   }
@@ -270,6 +280,11 @@ export class AddSellersComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.sellerForm.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Enter EmailID' });
+      return;
+  }
+
     const dateObject = new Date(this.sellerForm?.value?.dob);
     const ExpDate =  new Date(this.sellerForm.value.expiryDate);
     const _dob = dateObject.toISOString();
@@ -344,7 +359,8 @@ export class AddSellersComponent implements OnInit {
      emailId: obj.emailId,
      cellNumber: obj.cellNumber,
      sellerType: obj.sellerType,
-     contactName: obj.contactName
+     contactName: obj.contactName,
+     certificateDescription:obj.certificateDescription
     });
 
     if(obj.sellerType){
@@ -414,6 +430,8 @@ export class AddSellersComponent implements OnInit {
       this.showImageHeader = 'Show face image';
     } else if(selectionType=="5") {
       this.showImageHeader = 'Show fingerprint image';
+    }else if (selectionType == '10') {
+      this.showImageHeader = 'Business Certificate image';
     }
   }
 
@@ -464,7 +482,9 @@ export class AddSellersComponent implements OnInit {
     } else if(this.type=="5") {
       this.fingerPrints = this.imageUrl;
       requestObj['base64Data'] =  this.imageUrl;      
-    }
+    } else if (this.type == "10") {
+      requestObj['base64Data'] = this.imageUrl.split(';base64,')[1];
+  }
 
    
 
@@ -481,7 +501,9 @@ export class AddSellersComponent implements OnInit {
         this.idfaceShotImage = this.imageUrl;
       } else if(this.type=="5") {
         this.fingerPrints = this.imageUrl;
-      }
+      } else if (this.type == "10") {
+        console.log('Document uploaded successfully!');
+    }
       console.log("22222222222222222222222222", this.idscanImage,this.idsignatureImage,this.idfaceShotImage,this.fingerPrints);
     })
 
@@ -492,13 +514,147 @@ export class AddSellersComponent implements OnInit {
     console.log("1111111111111111111111111111", this.idscanImage,this.idsignatureImage,this.idfaceShotImage,this.fingerPrints);
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+        this.fileObj = file;
+        const reader = new FileReader();
+        
+        reader.onload = (e: any) => {
+            this.imageUrl = e.target.result; // Convert file to Base64
+            this.type = '10'; 
+            this.SaveImage(); 
+        };
+
+        reader.readAsDataURL(file);
+    }
+  }
+
+  saveCertificate() {
+    const description = this.sellerForm.get('certificateDescription')?.value;
+
+    if (!description || !this.imageUrl) {
+      alert('Please enter a description and upload an image.');
+      return;
+    }
+    const paramObj: any = {
+      RowId: this.isEditMode ? this.selectedCertificate?.RowId : 0,
+      LocID: this.locId,
+      SellerId: this.sellerId,
+      Description: description,
+      Images: this.imageUrl,
+      CreatedBy: this.logInUserId,
+      UpdatedBy: this.logInUserId,
+      CreatedDate: new Date().toISOString(),
+      UpdatedDate: new Date().toISOString(),
+      IsDeleted: false
+    };
+
+    this.commonService.InsertBusinessCertificates(paramObj).subscribe(
+      (response: any) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: this.isEditMode ? 'Certificate updated successfully.' : 'Certificate added successfully.'
+        });
+        this.fetchBusinessCertificates();
+        this.resetForm();
+      },
+      (error: any) => {
+        console.error("Error saving certificate:", error);
+      }
+    );
+  }
+
+
+  fetchBusinessCertificates() {
+    const paramObj = {
+        SellerId: this.sellerId
+      };
+
+      this.commonService.GetBusinessCertificatesByID(paramObj).subscribe(
+        (response: any) => {
+          this.certificatesList = response.body.data;
+        },
+        (error: any) => {
+          console.error("Error fetching certificate:", error);
+        }
+      );
+    
+  }
+  
+  editCertificate(cert: any) {
+    this.isEditMode = true;
+    this.selectedCertificate = {
+      ...cert, 
+      RowId: cert.rowID 
+    };
+
+      this.sellerForm.patchValue({
+        certificateDescription: cert.description
+      });
+      this.imageUrl = cert.images; 
+  }
+
+  resetForm() {
+    this.sellerForm.get('certificateDescription')?.reset();
+    this.imageUrl = ''; 
+    this.isEditMode = false; 
+    this.selectedCertificate = null;
+
+    const fileInput = document.getElementById('certificateFile') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
+
+  confirmDelete(cert: any) {
+    this.confirmationService.confirm({
+        message: 'Are you sure you want to delete this user?',
+        header: 'Confirm Deletion',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.removeCertificate(cert); 
+        },
+        reject: () => {
+            this.messageService.add({
+                severity: 'info',
+                summary: 'Cancelled',
+                detail: 'User deletion cancelled',
+            });
+        }
+    });
+  }
+
+  removeCertificate(cert: any) {
+    const paramObj = { 
+      RowID: cert.rowID 
+    };
+
+    this.commonService.DeleteCertificatebyId(paramObj).subscribe(
+      (response: any) => {
+        this.fetchBusinessCertificates();
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Certificate deleted successfully.'
+        });
+      },
+      (error: any) => {
+        console.error("Error deleting certificate:", error);
+      }
+    );
+    
+  }
+
   closeImageCapture() {
     this.imageUrl = null;
     this.type = '';
     this.cameraVisible = false;
   }
 
-
+  
   changeSellerType() {
     if (this.sellerForm.get('sellerType')?.value) {
       this.sellerType = this.sellerForm.get('sellerType')?.value;

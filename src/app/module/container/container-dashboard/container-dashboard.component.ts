@@ -39,6 +39,8 @@ export class ContainerDashboardComponent implements OnInit {
   logInUserId: any;
   locId: any;
   containerList: any;
+  searchText: string = '';
+  filteredContainerList: any[] = [];
   currentRole:any;
   form: FormGroup = this.formBuilder.group({
     rowId: 0,
@@ -104,6 +106,7 @@ export class ContainerDashboardComponent implements OnInit {
           console.log('GetAllContainer :: ');
           console.log(data);
           this.containerList = data.body.data;
+          this.filteredContainerList = [...this.containerList];
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -113,6 +116,12 @@ export class ContainerDashboardComponent implements OnInit {
           this.showLoader = false;
         }
       );
+  }
+  filterContainers() {
+    this.filteredContainerList = this.containerList.filter((item: { containerType: string; containerSize: string }) =>
+        item.containerType.toLowerCase().includes(this.searchText.toLowerCase()) || 
+        item.containerSize.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
 
   showDialog(containerData?: any){
@@ -180,8 +189,11 @@ export class ContainerDashboardComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
+        this.filterContainers();
         break;
       case 'mdi-refresh':
+        this.searchText = ''; 
+        this.GetAllContainer();
         break;
       case 'mdi-plus':
         this.showDialog();

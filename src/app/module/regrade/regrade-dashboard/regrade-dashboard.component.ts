@@ -401,7 +401,7 @@ export class RegradeDashboardComponent implements OnInit {
       LocID:this.locId,
       MaterialID:this.currentRegradedMaterialRowID,
       MaterialNet: totalMaterialNet,
-      // MaterialNet:this.regStock
+      // MaterialNet:this.regStock,
       // LossMaterialNet:this.netLoss,
       // LossReason:this.netDescription ?? 'Net Loss',
     }

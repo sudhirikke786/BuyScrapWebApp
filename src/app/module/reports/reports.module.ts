@@ -23,6 +23,7 @@ import { RequisitionReportComponent } from './requisition-report/requisition-rep
 import { ShipOutReportComponent } from './ship-out-report/ship-out-report.component';
 import { InOutReportComponent } from './in-out-report/in-out-report.component';
 import { DispatchReportComponent } from './dispatch-report/dispatch-report.component';
+import { ContainerTrackingComponent } from './container-tracking/container-tracking.component';
 
 export const routes: Routes = [
   {
@@ -85,6 +86,10 @@ export const routes: Routes = [
   {
     path:'dispatch-report',
     component:DispatchReportComponent
+  },
+  {
+    path:'container-report',
+    component:ContainerTrackingComponent
   }
 
 ]
@@ -105,7 +110,8 @@ export const routes: Routes = [
     RequisitionReportComponent,
     ShipOutReportComponent,
     InOutReportComponent,
-    DispatchReportComponent
+    DispatchReportComponent,
+    ContainerTrackingComponent
   ],
   imports: [
     CommonModule,
