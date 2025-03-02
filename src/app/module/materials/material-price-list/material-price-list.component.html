@@ -30,9 +30,9 @@
         <!-- Checkboxe -->
         <div class="checkbox-controls">
           <label>
-            <input type="checkbox"  /> Blank Price
+            <input type="checkbox" [(ngModel)]="isBlankPriceChecked"  /> Blank Price
           </label>
-          <button class="view-report-button">View Report</button>
+          <button class="view-report-button" (click)="openReportPopup()">View Report</button>
         </div>
     </div>
   <div class="scroll-container">
@@ -64,3 +64,16 @@
     </ng-container>
   </div>
 </div>
+<p-dialog header="Material Price List" [(visible)]="isReportShow"  [modal]="true" [style]="{ width: '70vw' }">
+       
+  <div *ngIf="showLoaderReport">
+    <app-page-loader type="reportloader"></app-page-loader>
+  </div>
+
+  <div class="row" >
+    <div style="height: 500px;" *ngIf="!showLoaderReport">                
+      <ngx-extended-pdf-viewer #pdfViewer [base64Src]="fileDataObj"  ></ngx-extended-pdf-viewer>
+    </div>
+  </div>
+
+</p-dialog>

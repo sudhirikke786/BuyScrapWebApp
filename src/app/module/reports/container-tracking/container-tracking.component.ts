@@ -88,6 +88,9 @@ reportData: any;
         console.log('getContainerTrackingReport :: ');
         console.log(data);
         this.reportData = data.body.data;
+        if (this.reportData.length > 0) {
+          this.actionList.find(action => action.iconcode === 'mdi-download')!.isDisable = false;
+        }
       },
         (err: any) => {
           this.showLoader =  false;
@@ -98,6 +101,34 @@ reportData: any;
         }
       );
   }
+
+
+  generateContainerTrackingReport() {
+
+    this.isReportShow = true;
+    const param = {
+      ContainerName : this.containerName
+    }
+    this.showDownload = true;
+    this.commonService.generateContainerTrackingReport(param)
+      .subscribe(data => {
+        console.log('generateContainerTrackingReport :: ');
+        console.log(data);
+        this.fileDataObj = data.body.data;
+        this.showDownload = false;
+
+        if(this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Container Tracking Report"+this.toDate)
+        }
+
+      },
+        (err: any) => {
+          this.showDownload = false;
+          // this.errorMsg = 'Error occured';
+        }
+      );
+  }
+
   getAction(actionCode: any) {
 
     switch (actionCode?.iconcode) {
@@ -109,7 +140,7 @@ reportData: any;
         this.getAllContainerLocation();
         break;
       case 'mdi-download':
-       
+       this.generateContainerTrackingReport();
         break;
       default:
         break;

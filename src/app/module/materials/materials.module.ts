@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PrimengModule } from '../shared/primeng/primeng.module';
 import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
-
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { MaterialsDashboardComponent } from './materials-dashboard/materials-dashboard.component';
 import { MaterialsDetailsComponent } from './materials-details/materials-details.component';
 import { MaterialPriceListComponent } from './material-price-list/material-price-list.component';
@@ -37,7 +37,8 @@ export const routes: Routes = [
     CommonsharedModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
-    PrimengModule
+    PrimengModule,
+    NgxExtendedPdfViewerModule
   ]
 })
 export class MaterialsModule { }

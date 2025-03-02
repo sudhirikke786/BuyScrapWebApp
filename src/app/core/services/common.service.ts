@@ -588,6 +588,9 @@ getMaterialPriceList(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetCashDrawerReportData', 'GET', paramObj);
   }
 
+  generateContainerTrackingReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetAllContainerLocationsReportData', 'GET', paramObj);
+  }
   generateCustomerReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetCustomerData', 'GET', paramObj);
   }
@@ -644,6 +647,10 @@ getMaterialPriceList(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetDispatchReportData', 'GET', paramObj);
   }
 
+  getMaterialPricelistReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetMaterialPricelist', 'GET', paramObj);
+  }
+ 
   /** Admin API */
 
   GetAllUsers(paramObj: any): Observable<any> {
