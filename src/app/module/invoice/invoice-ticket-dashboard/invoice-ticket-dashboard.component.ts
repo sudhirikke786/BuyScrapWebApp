@@ -69,7 +69,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   ticketsTypes = [
     { name: 'ALL', code: 'ALL' , },
     { name: 'OPEN', code: 'OPEN' },
-    { name: 'Partially Paid', code: 'Partially Paid' },
+    // { name: 'Partially Paid', code: 'Partially Paid' },
     { name: 'PAID', code: 'PAID' },
     { name: 'VOIDED', code: 'VOIDED' }
   ];
@@ -77,7 +77,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
 
   defaultSelectedTicketsTypes = [
     { name: 'OPEN', code: 'OPEN' },
-    { name: 'Partially Paid', code: 'Partially Paid' }
+    // { name: 'Partially Paid', code: 'Partially Paid' }
   ];
 
   tickets: any;
@@ -184,6 +184,9 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   
   numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
+
+  isConfirmModel: boolean = false;
+  selectedTicket: any;
 
 
   checkVisible =  false;
@@ -318,27 +321,43 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   }
 
 
-  markasPaid(ticketData: any){
+  openConfirmDialog(ticketData: any) {
+    this.selectedTicket = ticketData;
+    this.isConfirmModel = true;
+  }
+
+  markasPaid(){
     // alert('Development is in-progress!!!')
-    const updatedFlag = !ticketData.isMarkAsPaid; 
+    const updatedFlag = !this.selectedTicket.isMarkAsPaid;
     const requestObj = {
-      rowID: ticketData.rowId,
+      rowID: this.selectedTicket.rowId,
       flag: updatedFlag,
-      userID: this.logInUserId,  
+      userID: this.logInUserId,
       updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      locID: this.locId    
+      locID: this.locId
     };
-  
+
     this.commonService.UpdateIsMarkAsPaid(requestObj).subscribe(
       (response) => {
         if (response) {
-          ticketData.isMarkAsPaid = updatedFlag;
+          this.selectedTicket = null;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: updatedFlag ? 'Invoice marked as Paid successfully' : 'Invoice marked as Unpaid successfully'
+          });
         }
+        this.isConfirmModel = false;
+        this.getAllTicketsDetails(this.pagination);
       },
       (error) => {
         console.error("Error updating payment status:", error);
       }
     );
+  }
+
+  cancelClick() {
+    this.isConfirmModel = false;
   }
 
   getColor(type: any, isParent: boolean) {

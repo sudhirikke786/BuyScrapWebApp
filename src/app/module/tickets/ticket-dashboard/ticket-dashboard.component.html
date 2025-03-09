@@ -123,7 +123,7 @@
                                                         </a>
                                                        
                                                         <a *ngIf="currentRole == 'Administrator' && ticket.isEditMode == true" class="btn btn-grid btn-success"
-                                                            (click)="TicketEditMode(ticket,false)">
+                                                        (click)="openUnlockConfirm(ticket)">
                                                             <i class="mdi mdi-eye pe-1"></i> Unlock Ticket
                                                         </a>
 
@@ -955,4 +955,19 @@
       <a class="btn btn-primary " (click)="saveDriverInfo()" >Save</a>
     </div>
   </div>
+</p-dialog>
+
+<p-dialog header="Unlock Ticket" [(visible)]="isUnlockConfirmModel" [modal]="true" [style]="{ width: '40rem' }" [breakpoints]="{'767px': '100vw'}">
+    <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <span>Unlock Ticket Confirmation</span>
+        </div>
+    </ng-template>
+    <div class="m-0">
+        <h3>The ticket is in edit mode. Do you still want to unlock it?</h3>
+    </div>
+    <ng-template pTemplate="footer">
+      <button class="btn btn-primary" (click)="confirmUnlock()">Yes</button>
+      <button type="button" class="btn btn-danger" (click)="isUnlockConfirmModel=false">No</button>
+    </ng-template>
 </p-dialog>

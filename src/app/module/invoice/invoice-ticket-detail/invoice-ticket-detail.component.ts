@@ -1252,11 +1252,11 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     }
     
     this.isReceiptPrint = true;
-    this.saveInvoiceDetails(this.payAmount, this.isReceiptPrint);
+    this.saveInvoiceDetails(this.payAmount, this.isReceiptPrint,false);
   }
 
 
-  saveTransactionData(activeSection: any) {
+  saveTransactionData(activeSection: any,isSendEmail:boolean) {
     this.isCheckPrint = false;
     let isCheckTransaction = false;
     let payTransactionObj: any = [];
@@ -1362,7 +1362,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
     this.commonService.insertInvoiceTransactions(transactionObj).subscribe(data => {
      
-      this.cancelEditInvoice(this.isReceiptPrint, this.invoiceId); 
+      this.cancelEditInvoice(this.isReceiptPrint, this.invoiceId,isSendEmail); 
       this.getCashDrawerAmountAndPaidTicketCount();
 
     }, (error: any) => {
@@ -1397,7 +1397,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
 
 
-  saveInvoiceDetails(paidAmount: number, isReceiptPrint: boolean) {
+  saveInvoiceDetails(paidAmount: number, isReceiptPrint: boolean,isSendEmail:boolean) {
     // alert(paidAmount);
     // alert(this.totalAmount);
     let invoiceStatus = 'OPEN';
@@ -1487,12 +1487,12 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       if (this.transactionPaymentType.length > 0) { 
         const oldInvoiceId = this.invoiceId;       
         this.invoiceId = data.body.insertedRow;
-        this.saveTransactionData(this.activeSection);
+        this.saveTransactionData(this.activeSection,isSendEmail);
         this.saveConfirmVisible = false;
       } else {     
         this.invoiceId = data.body.insertedRow;
         this.saveConfirmVisible = false;     
-        this.cancelEditInvoice(isReceiptPrint, this.invoiceId);
+        this.cancelEditInvoice(isReceiptPrint, this.invoiceId,isSendEmail);
       }
 
       
@@ -1502,20 +1502,24 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     });
   }
 
-  cancelEditInvoice(isReceiptPrint: boolean, invoiceId: any) {
+  cancelEditInvoice(isReceiptPrint: boolean, invoiceId: any,isSendEmail:boolean) {
     // alert('Refresh' + this.invoiceId);
     if (invoiceId && invoiceId != 0) {
       console.log('11111');
       this.isEditModeOn = false;
       this.editItemCloseImageCapture = false;
       this.processDataBasedOnInvoiceId();
-    } else if (invoiceId == 0 && !isReceiptPrint) {
+    } else if (invoiceId == 0 && !isReceiptPrint && !isSendEmail) {
       console.log('222222');
       this.router.navigateByUrl(`${this.orgName}/invoice`);
     }
     if (isReceiptPrint) {
       this.generateSingleInvoiceReport(invoiceId);
-    } else {
+    } else if(isSendEmail){
+      this.sendInvoice();
+      this.router.navigateByUrl(`${this.orgName}/invoice`);
+    } 
+    else {
       if (this.isCheckPrint) {
         this.checkPrintAction();
       } else {
@@ -2215,7 +2219,35 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     this.showImage = false;
   }
 
+  sendInvoice(){
+
+    this.isLoading = true;
  
+    const paramObj: any = {
+      LocationId: this.locId,
+      InvoiceId: this.invoiceId,
+      
+    }
+    this.commonService.sendInvoice(paramObj)
+      .subscribe(data => {
+          console.log('sendInvoice :: ');
+          console.log(data);
+          this.tickets = data.body.data;
+          if (data.body?.success) { 
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Invoice sent successfully' });
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: data.body?.message || 'Failed to send invoice' });
+          }
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+          this.isLoading = false;
+        },
+        () =>{
+          this.isLoading = false;
+        }
+      );
+  }
 
   openDatePicker() {
     const dateInput = document.getElementById('created-date') as HTMLInputElement;

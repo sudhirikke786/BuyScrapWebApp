@@ -199,11 +199,15 @@
                             </td>
                             <td style="width:12%" *ngIf="editingIndex !== i">{{ item?.dropoffbox}}</td>
                             <td style="width:12%" *ngIf="editingIndex === i">
-                              <input type="text" [(ngModel)]="editItemObj.dropoffbox" />
+                              <input type="text" [(ngModel)]="editItemObj.dropoffbox" 
+                              (change)="checkContainerAvailability(editItemObj.dropoffbox, 'dropoff')" 
+                              [disabled]="dispatchMaterial == 'Pickup' || editItemObj.containerQuantity > 0"/>
                             </td>
                             <td style="width:12%" *ngIf="editingIndex !== i">{{ item?.boxpickup }}</td>
                             <td style="width:12%" *ngIf="editingIndex === i">
-                              <input type="text" [(ngModel)]="editItemObj.boxpickup " />
+                              <input type="text" [(ngModel)]="editItemObj.boxpickup "
+                              (change)="checkContainerAvailability(editItemObj.boxpickup, 'pickup')" 
+                              [disabled]="dispatchMaterial == 'Drop off' || editItemObj.containerQuantity > 0"/>
                             </td>
                             <td style="width:10%" *ngIf="editingIndex !== i">{{ item?.charges }}</td>
                             <td style="width:10%" *ngIf="editingIndex === i">

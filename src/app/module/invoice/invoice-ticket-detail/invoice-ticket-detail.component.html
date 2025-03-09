@@ -50,6 +50,11 @@
 
                                             <div class="col-sm-6 col-md-8 d-flex justify-content-end mb-1">
 
+                                                <div>
+                                                    <a *ngIf="!isEditModeOn" class="btn btn-primary me-1" (click)="sendInvoice()">
+                                                        Send Invoice
+                                                    </a>
+                                                </div>
                                                 <div *ngIf="isEditModeOn">
                                                     <a class="btn btn-primary me-1 mb-1" (click)="editSeller()">
                                                         Edit
@@ -80,7 +85,7 @@
 
                                                 <div *ngIf="isEditModeOn">
                                                     <a class="btn btn-danger me-1"
-                                                        (click)="cancelEditInvoice(false, 0)">Cancel</a>
+                                                        (click)="cancelEditInvoice(false, 0,false)">Cancel</a>
                                                     <a class="btn btn-primary" (click)="confirmSave()">Save</a>
                                                 </div>
 
@@ -794,14 +799,16 @@
     </div>
     <div class="d-flex justify-content-center">
         <!-- <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-info justify-content-center  equal-h me-2" (click)="showPayment(false)"  style="line-height: 18px !important;">Pay Amount without printing</button></div> -->
-        <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveInvoiceDetails(0, true)"
+        <div><button class="btn btn-danger justify-content-center   equal-h me-2" (click)="saveInvoiceDetails(0, true,false)"
                 style="line-height: 18px  !important;">Print and Save</button></div>
         <!-- <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-secondary justify-content-center  equal-h me-2" (click)="showPayment(true)"  style="line-height: 18px  !important;">Pay Amount and Print </button></div> -->
+        <div><button  class="btn btn-primary justify-content-center   equal-h me-2" (click)="saveInvoiceDetails(0, false,true)"
+            style="line-height: 18px  !important;">Email Invoice and Save</button></div>
     </div>
 
     <div class="d-flex justify-content-center mt-2">
         <div><button class="btn btn-success justify-content-center equal-h me-2"
-                (click)="saveInvoiceDetails(0, false)">Close and Save</button></div>
+                (click)="saveInvoiceDetails(0, false,false)">Close and Save</button></div>
     </div>
 
 </p-dialog>
@@ -1222,6 +1229,8 @@
         <button class="btn btn-outline-primary" (click)="checkVisible = false">Cancel </button>
     </div>
 </p-dialog>
+
+<p-toast></p-toast>
 
 
 <!-- <p-confirmDialog  [style]="{width: '50vw'}">

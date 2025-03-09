@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-sellers-buyers-details',
   templateUrl: './sellers-buyers-details.component.html',
-  styleUrls: ['./sellers-buyers-details.component.scss']
+  styleUrls: ['./sellers-buyers-details.component.scss'],
+  providers: [MessageService, ConfirmationService]
 })
 export class SellersBuyersDetailsComponent implements OnInit {
 
@@ -21,7 +22,8 @@ export class SellersBuyersDetailsComponent implements OnInit {
   
   constructor(private route: ActivatedRoute,
     private router: Router,
-    public commonService: CommonService) { }
+    public commonService: CommonService,
+    private messageService: MessageService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -78,7 +80,34 @@ export class SellersBuyersDetailsComponent implements OnInit {
   }
 
 
-
+  sendMaterialPriseList() {   
+    this.sellerLoader = true;
+ 
+    const paramObj: any = {
+      SellerId: this.sellerId,
+      LocationId: this.locId
+    }
+    this.commonService.sendMaterialPriseList(paramObj)
+      .subscribe(data => {
+          console.log('sendMaterialPriseList :: ');
+          console.log(data);
+          this.tickets = data.body.data;
+          if (data.body?.success) { 
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Price list sent successfully' });
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: data.body?.message || 'Failed to send price list' });
+          }
+        
+        },
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+          this.sellerLoader = false;
+        },
+        () =>{
+          this.sellerLoader = false;
+        }
+      );
+  }
 
   showTicketDetails(ticketData: any) {   
       this.router.navigateByUrl(`/${this.orgName}/home/detail/${ticketData.rowId}/${ticketData.customerId}/${this.isBuniessUser}?type=seller`);

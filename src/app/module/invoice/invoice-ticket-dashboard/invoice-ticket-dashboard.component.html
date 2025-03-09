@@ -124,7 +124,7 @@
                                                         </a>
 
                                                         <a class="btn btn-grid btn-success  me-1"
-                                                        (click)="markasPaid(ticket)"
+                                                        (click)="openConfirmDialog(ticket)"
                                                         [ngClass]="ticket?.isMarkAsPaid ? 'btn-danger' : 'btn-success'">
                                                         <i class="mdi mdi-eye pe-1"></i>{{ ticket?.isMarkAsPaid ? 'Mark as Unpaid' : 'Mark as Paid' }}
                                                     </a>
@@ -829,4 +829,20 @@
             <button class="btn btn-primary me-1" (click)="onSubmit()">Save</button>
         </ng-template>
 </p-dialog>
+<p-dialog header="Confirmation" [(visible)]="isConfirmModel" [modal]="true" [style]="{ width: '40rem' }" [breakpoints]="{'767px': '100vw'}">
+    <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <span class="font-bold white-space-nowrap">Payment Confirmation</span>
+        </div>
+    </ng-template>
+    <div class="m-0">
+        <h3>{{ selectedTicket?.isMarkAsPaid ? 'Do you want to mark this invoice as unpaid?' : 'Do you want to mark this invoice as paid?' }}</h3>
+    </div>
+    <ng-template pTemplate="footer">
+      <button class="btn btn-primary" (click)="markasPaid()">Yes</button>
+      <button type="button" class="btn btn-danger" (click)="cancelClick()">Cancel</button>
+    </ng-template>
+  </p-dialog>
+  
+  <p-toast></p-toast> 
 

@@ -195,4 +195,24 @@ h4{
   //   text-align: center; /* Adjust as needed */
   // }
 
+  .uploaded-images {
+    margin-top: 10px;
+  }
+  
+  .image-container {
+    display: inline-block;
+    margin: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+  }
+  
+  .uploaded-image {
+    max-width: 150px;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+
   

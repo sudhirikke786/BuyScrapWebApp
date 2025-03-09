@@ -118,6 +118,8 @@ export class TicketDashboardComponent implements OnInit {
   locId: any;
   logInUserId: any;
 
+  isUnlockConfirmModel: boolean = false;
+
   maxItem = 2;
   parentTicketIDVisible = false;
   isParentTicketVisible = false;
@@ -278,6 +280,7 @@ export class TicketDashboardComponent implements OnInit {
     }else{
       this.pagination.Status = result;
     }
+    this.pagination.LocationId = this.locId;
     this.getAllTicketsDetails(this.pagination);
 
     this.sellerForm = this.fb.group({
@@ -1751,6 +1754,18 @@ export class TicketDashboardComponent implements OnInit {
     this.showImage = false;
   }
 
+  openUnlockConfirm(ticket: any) {
+    this.selectedTicket = ticket;
+    this.isUnlockConfirmModel = true;
+  }
+
+  confirmUnlock() {
+    if (this.selectedTicket) {
+        this.TicketEditMode(this.selectedTicket, false);
+        this.isUnlockConfirmModel = false;
+    }
+  }
+
   TicketEditMode(ticket: any, editFlag:boolean){
     const paramObject = {
       TicketID: ticket.rowId,
@@ -1761,7 +1776,12 @@ export class TicketDashboardComponent implements OnInit {
     this.commonService.ticketEditMode(paramObject).subscribe(data => {
         console.log('ticketEditMode :: ');
         console.log(data);
-        alert('Unlock the ticket for editing !!!');
+       // alert('Unlock the ticket for editing !!!');
+        this.messageService.add({
+         severity: 'success',
+         summary: 'Success',
+         detail: editFlag ? 'Ticket is now in Edit Mode' : 'Ticket unlocked successfully'
+        });
         this.refreshData();
       },
       (err: any) => {

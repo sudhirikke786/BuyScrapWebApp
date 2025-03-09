@@ -6,11 +6,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-adjustment-dashboard',
   templateUrl: './adjustment-dashboard.component.html',
-  styleUrls: ['./adjustment-dashboard.component.scss']
+  styleUrls: ['./adjustment-dashboard.component.scss'],
+  providers: [MessageService]
 })
 export class AdjustmentDashboardComponent implements OnInit {
 
@@ -59,7 +61,8 @@ export class AdjustmentDashboardComponent implements OnInit {
     private router: Router,
     private authService:AuthService,
     private stroarge:StorageService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private messageService: MessageService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -175,8 +178,8 @@ export class AdjustmentDashboardComponent implements OnInit {
       this.isEditModeOn = false;
       this.adjustmentData = null;
       this.visible = false;      
-      alert('Adjustment data Inserted/ updated successfully');
-      
+      // alert('Adjustment data Inserted/ updated successfully');
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Adjustment data Inserted/ updated successfully' });
       this.GetAllAdjustmentType();
     },(error: any) =>{  
       console.log(error);  

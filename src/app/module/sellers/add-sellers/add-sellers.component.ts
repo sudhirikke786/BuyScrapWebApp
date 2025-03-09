@@ -306,10 +306,14 @@ export class AddSellersComponent implements OnInit {
     this.commonService.addSeller(reqObj).subscribe(data =>{
       if(this.sellerId > 0){
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller updated Successfully' });
-        this.router.navigateByUrl(`/${this.orgName}/sellers-buyers`);
+        setTimeout(() => {
+          this.router.navigateByUrl(`/${this.orgName}/sellers-buyers`);
+        }, 1000);
       }else{
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller added Successfully' });
-        this.router.navigateByUrl(`/${this.orgName}/sellers-buyers`);
+        setTimeout(() => {
+          this.router.navigateByUrl(`/${this.orgName}/sellers-buyers`);
+        }, 1000);
       }
      
     },(error: any) =>{
@@ -647,6 +651,12 @@ export class AddSellersComponent implements OnInit {
     );
     
   }
+
+  cancelEdit() {
+    this.resetForm();
+    this.isEditMode = false; 
+  }
+  
 
   closeImageCapture() {
     this.imageUrl = null;

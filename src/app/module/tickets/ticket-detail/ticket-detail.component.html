@@ -243,9 +243,13 @@
                                                                    Edit
                                                                 </a> 
                                                                 
-                                                                <a class="btn btn-grid btn-danger waves-effect waves-light" (click)="deleteItem(rowIndex)">
+                                                                <a class="btn btn-grid btn-danger waves-effect waves-light me-1" (click)="deleteItem(rowIndex)">
                                                                     Delete
                                                                 </a>
+                                                                <a *ngIf="isTicketDocumentsEnabled" (click)="showUploadDialog(ticket)" class="btn btn-grid waves-effect waves-light">
+                                                                    <img src="/assets/images/custom/icons/upload.png" alt="Upload" style="width: 20px; height: 20px;" />
+                                                                </a>
+                                                            
                                                             </div>
                                                             
                                                           
@@ -1092,7 +1096,6 @@ header="Edit Seller"
           name="driverName"
           [(ngModel)]="driverDetails.driverName"
           #driverName="ngModel"
-          required
           placeholder="Driver Name"
         />
 
@@ -1114,7 +1117,6 @@ header="Edit Seller"
             #driverlicense="ngModel"
             [ngClass]="{'border-danger': driverlicense.invalid && (driverlicense.dirty || driverlicense.touched) }"
 
-            required
             placeholder="Driver License"
           />
           <div *ngIf="driverlicense.invalid && (driverlicense.dirty || driverlicense.touched)">
@@ -1135,7 +1137,6 @@ header="Edit Seller"
             #licenseplate="ngModel"
             [ngClass]="{'border-danger': licenseplate.invalid && (licenseplate.dirty || licenseplate.touched) }"
 
-            required
             placeholder="License Plate"
           />
           <div *ngIf="licenseplate.invalid && (licenseplate.dirty || licenseplate.touched)">
@@ -1157,7 +1158,6 @@ header="Edit Seller"
           name="carrier"
           [(ngModel)]="driverDetails.carrier"
           #carrier="ngModel"
-          required
           placeholder="Carrier"
         />
         
@@ -1236,4 +1236,29 @@ header="Edit Seller"
 
 
 
+</p-dialog>
+<p-dialog header="Upload File" [(visible)]="uploadDialogVisible" [modal]="true" [closable]="false" [resizable]="false">
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="certificateFile" class="form-label w-100">Upload Document</label>
+            <input 
+                type="file" 
+                class="form-control" 
+                id="certificateFile"
+                #fileInput 
+                multiple
+                (change)="onFileChanged($event)"
+                accept=".bmp, .gif, .jpeg, .jpg, .png, .tiff"
+            >
+        </div>
+        <div class="uploaded-images mt-3">
+            <div class="image-container" *ngFor="let imageUrl of ticketImages">
+                <img [src]="imageUrl" alt="Uploaded Document" class="uploaded-image">
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <button class="btn btn-danger" type="button" (click)="uploadDialogVisible = false">Cancel</button>
+        <button class="btn btn-primary" type="button" (click)="onSave()">Save</button>
+    </p-footer>
 </p-dialog>

@@ -460,9 +460,9 @@ constructor(private route: ActivatedRoute, private router:Router,
       "route": "",
       "carrierName": "",
       "driverName": this.driversName ? this.driverList.filter((item) => item.rowId == Number(this.driversName))[0].firstName : '',
-      "createdBy": 0,
+      "createdBy": this.logInUserId,
       "createdDate": "2024-12-01T14:41:32.385Z",
-      "updatedBy": 0,
+      "updatedBy": this.logInUserId,
       "updatedDate": "2024-12-01T14:41:32.385Z",
       "lstTPickUpMaterialDTO": containerObj
     }
@@ -470,7 +470,9 @@ constructor(private route: ActivatedRoute, private router:Router,
     this.commonService.InsertUpdatePickup(submitObj).subscribe((res) =>{
 
       this.messageService.add({ severity: 'success', summary: 'success', detail: 'Dispatch Order Successfully' });
-      this.router.navigate([this.backUrl]);
+      setTimeout(() => {
+        this.router.navigate([this.backUrl]);
+      }, 1000);
     
     },(error) =>{
 

@@ -7,6 +7,7 @@ import { PrimengModule } from '../shared/primeng/primeng.module';
 import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 
 import { AdjustmentDashboardComponent } from './adjustment-dashboard/adjustment-dashboard.component';
+import { ToastModule } from 'primeng/toast';
 
 export const routes: Routes = [
   {
@@ -25,7 +26,9 @@ export const routes: Routes = [
     CommonsharedModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
-    PrimengModule
+    PrimengModule,
+    ToastModule
+
   ]
 })
 export class AdjustmentModule { }

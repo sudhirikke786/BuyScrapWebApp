@@ -6,11 +6,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-container-dashboard',
   templateUrl: './container-dashboard.component.html',
-  styleUrls: ['./container-dashboard.component.scss']
+  styleUrls: ['./container-dashboard.component.scss'],
+  providers: [MessageService]
 })
 export class ContainerDashboardComponent implements OnInit {
 
@@ -60,7 +62,8 @@ export class ContainerDashboardComponent implements OnInit {
     private router: Router,
     private authService:AuthService,
     private stroarge:StorageService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private messageService: MessageService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -175,7 +178,9 @@ export class ContainerDashboardComponent implements OnInit {
       this.isEditModeOn = false;
       this.containerData = null;
       this.visible = false;      
-      alert('Container data Inserted/ updated successfully');
+      // alert('Container data Inserted/ updated successfully');
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Container data Inserted/ updated successfully' });
+
       
       this.GetAllContainer();
     },(error: any) =>{  

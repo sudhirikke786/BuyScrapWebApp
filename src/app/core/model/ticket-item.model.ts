@@ -29,4 +29,5 @@ export class TicketItem {
      isCRV: boolean = false;
      codDescription: string = '';
      codImagePath: string = '';
+     materialDocumentsImages: string = '';  
 }

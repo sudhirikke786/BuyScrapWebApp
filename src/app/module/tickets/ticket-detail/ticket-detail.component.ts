@@ -174,7 +174,12 @@ export class TicketDetailComponent implements OnInit {
   isBuniessUser = false;
   addresses: any[] = [];
   isBusiness: boolean = false;
-  
+
+  uploadDialogVisible: boolean = false;
+  ticketImages: string[] = [];
+  selectedItemForUpload: TicketItem | null = null;
+  isTicketDocumentsEnabled: boolean = false;
+
   newTicketList = [{
     iconcode: 'mdi-magnify',
     title: 'Search',
@@ -266,6 +271,9 @@ export class TicketDetailComponent implements OnInit {
       
       const isRounding = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'isrounding')[0];
       this.isRounding = (isRounding?.values.toLowerCase() === "true");
+
+      const isTicketDocuments = _dataObj.filter((item: any) => item?.keys?.toLowerCase() === 'isticketdocuments')[0];
+      this.isTicketDocumentsEnabled = (isTicketDocuments?.values.toLowerCase() === 'true');      
     }
 
 
@@ -809,6 +817,7 @@ export class TicketDetailComponent implements OnInit {
 
   getSellerById() {
     this.isLoading = true;
+    console.log('customerId in getSellerById:', this.customerId); 
     const paramObject = {
       ID: this.sellerId,
       LocationId: Number(this.locId)
@@ -877,6 +886,10 @@ export class TicketDetailComponent implements OnInit {
         console.log(data);
         this.ticketObj = data.body.data.map((item: any) => {
           item.isSelected =  item.isCOD;
+          
+          if (item.materialDocumentsImages) {
+            this.ticketImages = item.materialDocumentsImages.split(',');
+          }
           return item
         });
 
@@ -930,7 +943,7 @@ export class TicketDetailComponent implements OnInit {
         if (!confirm("Ticket is in edit mode. Still you want to continue?")) { 
           return;
         }
-      } else if ((this.currentRole === "Scale" || this.currentRole === "Cashier") && (this.ticketData.EditedBy == this.logInUserId)) {       
+      } else if ((this.currentRole === "Scale" || this.currentRole === "Cashier") && (this.ticketData.editedBy !== this.logInUserId)) {       
         alert("Ticket is in edit mode. Please contact administartor !!!"); 
         return;
       } 
@@ -1341,9 +1354,7 @@ export class TicketDetailComponent implements OnInit {
     console.log("Final ticketData :: " + JSON.stringify(this.ticketData));
 
     this.commonService.insertUpdateTickets(this.ticketData).subscribe(data => {
-      console.log(data);
-
-      
+      console.log(data);      
       if (this.transactionPaymentType.length > 0) { 
         const oldTicketId = this.ticketId;       
         this.ticketId = data.body.insertedRow;
@@ -1356,7 +1367,7 @@ export class TicketDetailComponent implements OnInit {
       }
 
       // this.confirmSave();
-      // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
+      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       
     }, (error: any) => {
       console.log(error);
@@ -1557,6 +1568,60 @@ export class TicketDetailComponent implements OnInit {
     this.signaturePadVisible = false;
   }
 
+  showUploadDialog(ticket: TicketItem) {
+    console.log('selected item imge',ticket)
+    this.selectedItemForUpload = ticket;
+    this.uploadDialogVisible = true;
+    
+    if (ticket.materialDocumentsImages) {
+        this.ticketImages = ticket.materialDocumentsImages.split(',');
+    } else {
+        this.ticketImages = [];
+    }
+  }
+
+  onFileChanged(event: any) {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      Array.from(files).forEach((file: any) => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.ticketImages.push(e.target.result); 
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }
+
+  onSave() {
+    if (!this.selectedItemForUpload) {
+        console.error('No item selected for upload');
+        return;
+    }
+    const fileInput: HTMLInputElement = document.querySelector('#certificateFile') as HTMLInputElement;
+    const files = fileInput?.files;
+
+    if (files && files.length > 0) {
+        const selectedFiles = Array.from(files); 
+
+        for (let i = 0; i < selectedFiles.length; i++) {
+            const file = selectedFiles[i];
+            const reader = new FileReader();
+
+            reader.onload = (e: any) => {
+                this.imageUrl = e.target.result as string;
+                this.type = 11;
+                console.log('File selected:', file);
+                this.SaveImage(11);
+            };
+            reader.readAsDataURL(file);
+        }
+        fileInput.value = ''; 
+    }
+}
+
+  
+  
   SaveImage(type: number) {
 
     let requestObj: any = {
@@ -1575,11 +1640,21 @@ export class TicketDetailComponent implements OnInit {
       this.imageUrl = res.body.data;
       if (type == 1 || type == 7) {
         this.itemImagePath = this.imageUrl;
+      }else if (type == 11 && this.selectedItemForUpload) {
+        console.log("File uploaded for type 11");
+        if (this.selectedItemForUpload.materialDocumentsImages) {
+          this.selectedItemForUpload.materialDocumentsImages += ',' + this.imageUrl;
+      } else {
+          this.selectedItemForUpload.materialDocumentsImages = this.imageUrl;
+      }
+      // Updating the display images array 
+      this.ticketImages = this.selectedItemForUpload.materialDocumentsImages.split(',');        
+      this.uploadDialogVisible = false;
       } else {
         this.sellerSignatureImagePath = this.imageUrl;
         this.saveTicketDetails(this.payAmount, this.isReceiptPrint);
       }
-      this.imageUrl = null;
+      // this.imageUrl = null;
     },
     (err: any) => {
       //if error occurs while saving the signature

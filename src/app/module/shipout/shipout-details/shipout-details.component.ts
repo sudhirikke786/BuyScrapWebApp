@@ -536,6 +536,7 @@ export class ShipoutDetailsComponent implements OnInit {
       if (this.isReceiptPrint) {
         this.generateShipOutReport();
       }
+      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Shipout inserted/updated Successfully' });
     },(error: any) =>{  
       console.log(error);  
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });

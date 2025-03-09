@@ -106,12 +106,12 @@ export class CertificatesDashboardComponent implements OnInit {
   
     this.commonService.CODCloseUpdate(userObj).subscribe(
       (res) => {
-        if (res.data === true) {
-          if (isCodDone) {
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: "Ticket is confirm for COD " });
-          } else {
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Ticket confirmation for COD is canceled.',});
-          }
+        if (res?.body?.data === true) {
+          this.messageService.add({ severity: "success", summary: "Success",
+            detail: isCodDone
+              ? "Ticket is confirmed for COD"
+              : "Ticket confirmation for COD is canceled.",
+          });
         }
         this.isConfirmModel =  false;
         this.getAllCODTickets(); 

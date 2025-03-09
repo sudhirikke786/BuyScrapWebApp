@@ -454,6 +454,7 @@ inwardStatusUpdate() {
       if (this.isReceiptPrint) {
         this.generateInoutReport();
       }
+      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Inout inserted/updated Successfully' });
     },(error: any) =>{  
       console.log(error);  
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });

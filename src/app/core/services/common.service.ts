@@ -506,6 +506,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/SystemPreferences/InsertUpdateSystemPreferences', 'POST', requestObj);
   }
   
+
+  sendMaterialPriseList(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Materialss/SendPriceList', 'GET', paramObj);
+  }
   /** Reports */
 
   getDailyTicketsReport(paramObj: any): Observable<any> {
@@ -650,7 +654,11 @@ getMaterialPriceList(paramObj: any): Observable<any> {
   getMaterialPricelistReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetMaterialPricelist', 'GET', paramObj);
   }
- 
+
+  sendInvoice(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Invoice/SendInvoice', 'GET', paramObj);
+  }
+
   /** Admin API */
 
   GetAllUsers(paramObj: any): Observable<any> {

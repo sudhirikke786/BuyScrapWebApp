@@ -23,8 +23,8 @@
                 <a  class="btn btn-primary mt-1" routerLink="/{{orgName}}//sellers-buyers">
                     Back
                 </a>
-                <a class="btn btn-primary mt-1">
-                    Send Price
+                <a class="btn btn-primary mt-1" (click)="sendMaterialPriseList()">
+                    Send Material Prise List
                 </a>
 
             </div>
@@ -123,3 +123,4 @@
     <app-page-loader type="ftable"></app-page-loader>
 
 </div>
+<p-toast></p-toast>
