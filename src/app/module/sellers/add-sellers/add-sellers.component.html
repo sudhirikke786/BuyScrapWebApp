@@ -61,7 +61,7 @@
                                             <div class="card-body  py-0 px-0">
                                               <!-- Image Box -->
                                               <div class="image-box">
-                                                <img [src]="idscanImage" class="dl-img1">
+                                                <img [src]="idscanImage">
                                               </div>
                                               <ul class="upload-options-ul">
                                                 <li><a href="javascript:void()" (click)="uploadPicture('2','Capture Image')"><i
@@ -85,7 +85,7 @@
                                             <div class="card-body py-0 px-0">
                                               <!-- Image Box -->
                                               <div class="image-box">
-                                                <img [src]="idsignatureImage" class="dl-img1">
+                                                <img [src]="idsignatureImage">
                                               </div>
                                               <ul class="upload-options-ul">
                                                 <li><a href="javascript:void()" (click)="uploadPicture('3','Using Signature Pad')"><i
@@ -105,7 +105,7 @@
     
     
                                         <!-- <div class=" div-small">
-                                            <img [src]="idsignatureImage" class="dl-img1">
+                                            <img [src]="idsignatureImage">
                                             <ul class="upload-options-ul">
                                                 <li><a href="javascript:void()" (click)="uploadPicture('3','Using Signature Pad')"><i
                                                             class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a>
@@ -126,7 +126,7 @@
                                             <div class="card-body  py-0 px-0">
                                               <!-- Image Box -->
                                               <div class="image-box">
-                                                <img [src]="idfaceShotImage" class="dl-img1">
+                                                <img [src]="idfaceShotImage">
                                               </div>
                                               <ul class="upload-options-ul">
                                                 <li><a href="javascript:void()" (click)="uploadPicture('4','Capture Image')"><i
@@ -145,7 +145,7 @@
     
     
                                         <!-- <div class="box div-small">
-                                            <img [src]="idfaceShotImage" class="dl-img1">
+                                            <img [src]="idfaceShotImage">
                                             <ul class="upload-options-ul">
                                                 <li><a href="javascript:void()" (click)="uploadPicture('4','Capture Image')"><i
                                                             class="mdi mdi-cust-upload mdi-upload mdi-white-color"></i></a>
@@ -168,9 +168,9 @@
                                               <!-- Image Box -->
                                               <div class="image-box">
                                                 <img *ngIf="!imagePath" [src]="fingerPrints"
-                                                class="dl-img1">
+                                            >
                                                 <img *ngIf="imagePath" [src]="'data:image/jpg;base64,' + imagePath?.BMPBase64 "
-                                                class="dl-img1">
+                                            >
                                                
                                               </div>
                                               <ul class="upload-options-ul">
