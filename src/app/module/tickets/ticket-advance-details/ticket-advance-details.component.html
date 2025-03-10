@@ -1,0 +1,45 @@
+<div class="container">
+    <form [formGroup]="metarialForm" (ngSubmit)="submit()">
+      <div formArrayName="materials">
+        <div *ngFor="let material of materials.controls; let i = index" [formGroupName]="i" class="material-form">
+          <div>
+            <label>Material Name:</label>
+            <select formControlName="materialName">
+              <option *ngFor="let material of materialsList" [value]="material">{{ material }}</option>
+            </select>
+          </div>
+          <div>
+            <label>Gross:</label>
+            <input formControlName="gross" type="number" />
+          </div>
+          <div>
+            <label>Tare:</label>
+            <input formControlName="tare" type="number" />
+          </div>
+          <div>
+            <label>Net:</label>
+            <input formControlName="net" type="number" />
+          </div>
+          <div>
+            <label>Price:</label>
+            <input formControlName="price" type="number" />
+          </div>
+          <div>
+            <label>Amount:</label>
+            <input formControlName="amount" type="number" />
+          </div>
+          <div>
+            <label>Image URL:</label>
+            <input formControlName="image" />
+          </div>
+          <div>
+            <button type="button" (click)="removeMaterial(i)">Remove</button>
+            <button type="button" (click)="editMaterial(i)">Edit</button>
+          </div>
+        </div>
+      </div>
+      <button type="button" (click)="addMaterial()">Add Material</button>
+      <button type="submit" [disabled]="metarialForm.invalid">Submit</button>
+    </form>
+  </div>
+  

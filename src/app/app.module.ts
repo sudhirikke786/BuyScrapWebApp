@@ -25,6 +25,9 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SuccessPageComponent } from './success-page/success-page.component'
 import { NgChartsModule } from 'ng2-charts';
 import { ChatbotComponent } from './common/chatbot/chatbot.component';
+import { SuperadminlayoutComponent } from './common/Superadmin/superadminlayout/superadminlayout.component';
+import { SuperadminSidemenuComponent } from './common/Superadmin/superadmin-sidemenu/superadmin-sidemenu.component';
+import { SuperadminheaderComponent } from './common/Superadmin/superadminheader/superadminheader.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,9 @@ import { ChatbotComponent } from './common/chatbot/chatbot.component';
     ErrorComponent,
     SignUpComponent,
     SuccessPageComponent,
-    ChatbotComponent
+    ChatbotComponent,
+    SuperadminlayoutComponent,
+    SuperadminheaderComponent,
   ],
   imports: [
     BrowserModule,

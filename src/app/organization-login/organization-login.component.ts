@@ -55,6 +55,8 @@ export class OrganizationLoginComponent implements OnInit {
       .subscribe(data => {
           console.log('data :: ');
           console.log(data);
+
+         
           if (data.body.data.organisationName) {
             const orgName = data.body.data.organisationName;
             const orgId = data.body.data.rowId;
@@ -64,8 +66,14 @@ export class OrganizationLoginComponent implements OnInit {
             } else {
               localStorage.clear();
             }
+            if(this.org.orgName == 'buyscrapadmin'){
+              this.router.navigateByUrl(`/superadmin/home`);
+            } else {
             this.router.navigateByUrl(`${orgName}/user-login`);
+           }
           } else {
+            localStorage.setItem('orgName','buyscrapadmin');
+            this.router.navigateByUrl(`/superadmin/home`);
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials or No user found.' });
 
           }

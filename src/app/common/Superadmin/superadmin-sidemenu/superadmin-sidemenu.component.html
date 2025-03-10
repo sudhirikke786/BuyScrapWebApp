@@ -1,0 +1,118 @@
+<div class="app-menu">
+
+    <!-- Brand Logo -->
+    <div class="logo-box">
+        <!-- Brand Logo Light -->
+        <a class="logo-light">
+            <img src="/assets/images/custom/logo-buyscrapapp1.png" alt="BUYSCRAPAPP Logo" class="logo-lg">
+            <img src="/assets/images/custom/logo-buyscrapapp1.png" alt="BUYSCRAPAPP Logo" class="logo-sm">
+        </a>
+
+        <!-- Brand Logo Dark -->
+        <a class="logo-dark">
+            <img src="/assets/images/custom/logo-buyscrapapp2.png" alt="BUYSCRAPAPP Logo" class="logo-lg">
+            <img src="/assets/images/custom/logo-buyscrapapp2.png" alt="BUYSCRAPAPP Logo" class="logo-sm">
+        </a>
+        <span class="pro-user-name ml-1 color-white"></span>
+    </div>
+
+    <!-- menu-left -->
+    <div class="scrollbar">
+        <div class="simplebar-wrapper">
+          
+            <div class="simplebar-mask">
+                <div class="simplebar-offset">
+                    <div class="simplebar-content-wrapper">
+                        <div class="simplebar-content">
+
+                            <!-- User box -->
+                            <div class="user-box text-center">
+                              
+                                <div class="dropdown">
+                                    
+                                    <div class="dropdown-menu user-pro-dropdown">
+
+                                        <!-- item-->
+                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                            <i class="fe-user me-1"></i>
+                                            <span>My Account</span>
+                                        </a>
+
+                                        <!-- item-->
+                                        <a href="settings.html" class="dropdown-item notify-item">
+                                            <i class="fe-settings me-1"></i>
+                                            <span>Settings</span>
+                                        </a>
+
+                                        <!-- item-->
+                                        <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                            <i class="fe-lock me-1"></i>
+                                            <span>Lock Screen</span>
+                                        </a> -->
+
+                                        <!-- item-->
+                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                            <i class="fe-log-out me-1"></i>
+                                            <span>Logout</span>
+                                        </a>
+
+                                    </div>
+                                </div>
+                              
+                            </div>
+
+                            <!--- Menu -->
+                            <ul class="menu">
+                                <ng-container *ngFor="let item of menuList">
+ 
+                                    <ng-container>
+                                        <li class="menu-item d-none d-md-block">
+                                            <a  (click)="navigatePage(item)"
+                                                routerLinkActive="active" class="menu-link">,
+                                                <span class="menu-icon">
+                                                    <img src="{{item.icon}}" class="dash-icons"> 
+                                                </span>
+                                                <span class="menu-text menu-links-text">{{item.title}}</span>
+                                            </a>
+                                        </li>
+                                    </ng-container>
+                                   
+                                    <ng-container >
+                                    <li class="menu-item d-sm-block d-md-none">
+                                        <a  (click)="navigatePage(item)"
+                                            routerLinkActive="active" class="menu-link">,
+                                            <span class="menu-icon"><img src="{{item.icon}}" class="dash-icons"></span>
+                                            <span class="menu-text menu-links-text">{{item.title}}</span>
+                                        </a>
+                                    </li>
+                                    </ng-container>
+
+                                </ng-container>
+
+
+
+
+                                <li class="menu-item app-version">
+                                    <a class="menu-link">
+                                        <span class="menu-text menu-links-text">App Version - 2.17</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                            <!--- End Menu -->
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+            <div class="simplebar-scrollbar simplebar-visible" style="width: 0px; display: none;"></div>
+        </div>
+        <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+            <div class="simplebar-scrollbar simplebar-visible"
+                style="height: 39px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+        </div>
+    </div>
+</div>
