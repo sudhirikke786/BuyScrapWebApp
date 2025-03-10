@@ -47,7 +47,17 @@ const routes: Routes = [
       {
         path: 'home',
         loadChildren: () => import('./module/superadmin/superadmin.module').then(m => m.SuperadminModule)
-      }
+      },
+      {
+        path:'my-account',
+        loadChildren:() => import('./my-account/my-account.module').then(m => m.MyAccountModule),
+      
+       
+      },
+      {
+        path:'settings',
+        loadChildren:() => import('./module/settings/settings.module').then(m => m.SettingsModule),
+      },
     ]
   },
   { 
