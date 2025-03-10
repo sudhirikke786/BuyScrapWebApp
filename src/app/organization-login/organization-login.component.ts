@@ -72,8 +72,10 @@ export class OrganizationLoginComponent implements OnInit {
             this.router.navigateByUrl(`${orgName}/user-login`);
            }
           } else {
-            localStorage.setItem('orgName','buyscrapadmin');
+            if(this.org.orgName == 'buyscrapadmin'){
+            localStorage.setItem('orgName','Buyscrapadmin');
             this.router.navigateByUrl(`/superadmin/home`);
+            }
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials or No user found.' });
 
           }
