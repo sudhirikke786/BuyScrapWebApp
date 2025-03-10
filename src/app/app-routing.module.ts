@@ -51,8 +51,7 @@ const routes: Routes = [
       {
         path:'my-account',
         loadChildren:() => import('./my-account/my-account.module').then(m => m.MyAccountModule),
-      
-       
+  
       },
       {
         path:'settings',
