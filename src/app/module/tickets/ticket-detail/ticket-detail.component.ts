@@ -920,6 +920,10 @@ export class TicketDetailComponent implements OnInit {
     }, 0);
     this.totalActualAmount = tickets.reduce(function (sum: any, tickets: any) {
       // return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : tickets.amount);
+      let amount = tickets.amount; 
+      if (tickets.isCOD) {
+        amount = -Math.abs(tickets.amount); 
+      }
       return sum + (tickets.isAdjusmentSet ? 0 : tickets.amount);
     }, 0);
 
@@ -936,6 +940,12 @@ export class TicketDetailComponent implements OnInit {
       return sum + (tickets.isAdjusmentSet ? tickets.amount : 0);
     }, 0);
   }
+
+  onCODChange(ticket: any) {
+    ticket.amount = ticket.isCOD ? -Math.abs(ticket.amount) : Math.abs(ticket.amount);
+    this.calculateTotal(this.ticketObj); 
+  }
+  
 
   editTicketDetails() {    
     if(this.ticketData.isEditMode){      
@@ -1616,6 +1626,18 @@ export class TicketDetailComponent implements OnInit {
             };
             reader.readAsDataURL(file);
         }
+        fileInput.value = ''; 
+    }
+  }
+
+  removeImage(index: number) {
+    this.ticketImages.splice(index, 1); 
+    if (this.selectedItemForUpload) {
+        this.selectedItemForUpload.materialDocumentsImages = this.ticketImages.join(',');
+    }
+
+    const fileInput: HTMLInputElement = document.querySelector('#certificateFile') as HTMLInputElement;
+    if (fileInput) {
         fileInput.value = ''; 
     }
 }

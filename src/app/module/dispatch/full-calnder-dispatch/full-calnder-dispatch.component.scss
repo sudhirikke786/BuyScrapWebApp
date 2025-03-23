@@ -1,0 +1,72 @@
+::ng-deep {
+    .fc-daygrid-event {
+      white-space: normal !important;
+      margin: 3px 0 !important;
+      border: none !important;
+      background: transparent !important;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      
+      &:hover {
+        .event-card {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+        }
+      }
+    }
+    
+    .fc-h-event .fc-event-main {
+      color: inherit !important;
+    }
+    
+    .fc .fc-daygrid-day-frame {
+      padding: 2px !important;
+      min-height: 100px;
+    }
+    
+    .fc-theme-standard td, .fc-theme-standard th {
+      border: 1px solid #eee;
+    }
+    
+    .fc .fc-daygrid-day.fc-day-today {
+      background-color: rgba(102, 88, 221, 0.07);
+    }
+    
+    .fc-daygrid-block-event .fc-event-time, 
+    .fc-daygrid-block-event .fc-event-title {
+      padding: 0 !important;
+    }
+    
+    .fc-daygrid-day-events {
+      margin-bottom: 0 !important;
+    }
+    
+    .fc .fc-daygrid-body-balanced .fc-daygrid-day-events {
+      position: relative !important;
+    }
+    
+    .fc-direction-ltr .fc-daygrid-event.fc-event-end, 
+    .fc-direction-rtl .fc-daygrid-event.fc-event-start {
+      margin-right: 0 !important;
+    }
+    
+    .fc-direction-ltr .fc-daygrid-event.fc-event-start, 
+    .fc-direction-rtl .fc-daygrid-event.fc-event-end {
+      margin-left: 0 !important;
+    }
+    
+    // Hover effect for days
+    .fc-daygrid-day:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .bg-light-green { background-color: #A5D6A7; }
+.bg-light-purple { background-color: #C5CAE9; }
+.bg-light-blue { background-color: #90CAF9; }
+
+  }
+  
+  .fc-calender {
+    width: 100%;
+    overflow-x: auto;
+  }

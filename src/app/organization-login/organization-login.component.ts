@@ -44,52 +44,132 @@ export class OrganizationLoginComponent implements OnInit {
   /**
    * Get the data by calling WebAPI to fetch the details for organization login
    */
-  validateOrganization() {
+  // validateOrganization() {
 
+  //   const requestObj = {
+  //     organisationName: this.org.orgName,
+  //     orgKey: this.org.password
+  //   };
+ 
+  //   this.commonService.validateOrgCredentials(requestObj)
+  //     .subscribe(data => {
+  //         console.log('data :: ');
+  //         console.log(data);
+
+         
+  //         if (data.body.data.organisationName) {
+  //           const orgName = data.body.data.organisationName;
+  //           const orgId = data.body.data.rowId;
+  //           if (this.isChecked) {
+  //             localStorage.setItem('orgName',orgName);
+  //             localStorage.setItem('orgId',orgId);
+  //           } else {
+  //             localStorage.clear();
+  //           }
+  //           if(this.org.orgName == 'buyscrapadmin'){
+  //             this.router.navigateByUrl(`/superadmin/home`);
+  //           } else {
+  //             this.router.navigateByUrl(`${orgName}/user-login`);
+  //           }
+  //         } else {
+  //           if(this.org.orgName == 'buyscrapadmin'){
+  //             localStorage.setItem('orgName','Buyscrapadmin');
+  //             this.router.navigateByUrl(`/superadmin/home`);
+  //           }
+  //           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials or No user found.' });
+
+  //         }
+  //       },
+  //       (err: any) => {
+          
+  //         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials.' });
+  //         // this.messageService.add({ severity: 'error', summary: 'Error', detail: err });
+
+          
+  //       }
+  //     );
+  // }
+
+
+  validateOrganization() {
     const requestObj = {
       organisationName: this.org.orgName,
       orgKey: this.org.password
     };
- 
-    this.commonService.validateOrgCredentials(requestObj)
-      .subscribe(data => {
-          console.log('data :: ');
-          console.log(data);
-
-         
-          if (data.body.data.organisationName) {
-            const orgName = data.body.data.organisationName;
-            const orgId = data.body.data.rowId;
-            if (this.isChecked) {
-              localStorage.setItem('orgName',orgName);
-              localStorage.setItem('orgId',orgId);
-            } else {
-              localStorage.clear();
-            }
-            if(this.org.orgName == 'buyscrapadmin'){
-              this.router.navigateByUrl(`/superadmin/home`);
-            } else {
-            this.router.navigateByUrl(`${orgName}/user-login`);
-           }
+  
+    if (this.org.orgName.toLowerCase() === 'sal') {
+      
+      this.commonService.GetSuperAdminAuthenticate({ 
+        UserName: this.org.orgName, 
+        Password: this.org.password 
+      }).subscribe(response => {
+          console.log('SuperAdmin Response:', response);
+  
+          
+          const responseBody = response?.body; 
+  
+          if (responseBody && responseBody.token) { 
+            
+            localStorage.setItem('authToken', responseBody.token);
+            localStorage.setItem('orgName', 'Buyscrapadmin');
+            localStorage.setItem('userName', responseBody.userdto?.userName || 'SuperAdmin');
+  
+            this.router.navigateByUrl(`/superadmin/home`);
           } else {
-            if(this.org.orgName == 'buyscrapadmin'){
-              localStorage.setItem('orgName','Buyscrapadmin');
-              this.router.navigateByUrl(`/superadmin/home`);
-            }
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials or No user found.' });
-
+            this.messageService.add({ 
+              severity: 'error', 
+              summary: 'Error', 
+              detail: 'Invalid SuperAdmin credentials.' 
+            });
           }
         },
         (err: any) => {
-          
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials.' });
-          // this.messageService.add({ severity: 'error', summary: 'Error', detail: err });
-
-          
+          console.error('SuperAdmin Login Error:', err);
+          this.messageService.add({ 
+            severity: 'error', 
+            summary: 'Error', 
+            detail: 'Invalid SuperAdmin credentials.' 
+          });
         }
       );
+  
+    } else {
+      
+      this.commonService.validateOrgCredentials(requestObj)
+        .subscribe(data => {
+            console.log('Organization Login Response:', data);
+  
+            if (data?.body?.data?.organisationName) {
+              const orgName = data.body.data.organisationName;
+              const orgId = data.body.data.rowId;
+              if (this.isChecked) {
+                localStorage.setItem('orgName', orgName);
+                localStorage.setItem('orgId', orgId);
+              } else {
+                localStorage.clear();
+              }
+              this.router.navigateByUrl(`${orgName}/user-login`);
+            } else {
+              this.messageService.add({ 
+                severity: 'error', 
+                summary: 'Error', 
+                detail: 'Invalid credentials or No user found.' 
+              });
+            }
+          },
+          (err: any) => {
+            console.error('Org Login Error:', err);
+            this.messageService.add({ 
+              severity: 'error', 
+              summary: 'Error', 
+              detail: 'Invalid credentials.' 
+            });
+          }
+        );
+    }
   }
-
+  
+  
   changeInput() {
     this.inputType = this.inputType == 'password' ? 'text' : 'password';
   }

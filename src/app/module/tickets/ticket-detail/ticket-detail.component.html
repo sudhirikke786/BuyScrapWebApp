@@ -189,7 +189,7 @@
 
                                                     <tr    [ngClass]="{'border-tr nested-table': ticket?.codNote?.trim() == '' || ticket?.materialNote?.trim() ==''}" >
                                                         <td *ngIf="isCODRequired">
-                                                            <p-checkbox [(ngModel)]="ticket.isCOD" [binary]="true"></p-checkbox>
+                                                            <p-checkbox [(ngModel)]="ticket.isCOD" [binary]="true" (onChange)="onCODChange(ticket)"></p-checkbox>
                                                         </td>
                                                         <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
                                                             <td colspan="5">
@@ -1251,9 +1251,10 @@ header="Edit Seller"
                 accept=".bmp, .gif, .jpeg, .jpg, .png, .tiff"
             >
         </div>
-        <div class="uploaded-images mt-3">
-            <div class="image-container" *ngFor="let imageUrl of ticketImages">
+        <div class="uploaded-images mt-3 d-flex flex-wrap">
+            <div class="image-container position-relative m-2" *ngFor="let imageUrl of ticketImages; let i = index">
                 <img [src]="imageUrl" alt="Uploaded Document" class="uploaded-image">
+                <button class="btn-close position-absolute top-0 end-0 p-1" (click)="removeImage(i)"></button>
             </div>
         </div>
     </div>

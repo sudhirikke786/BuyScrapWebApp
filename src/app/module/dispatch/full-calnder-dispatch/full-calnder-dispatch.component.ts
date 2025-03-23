@@ -44,6 +44,7 @@ export class FullCalnderDispatchComponent implements OnInit {
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin],
     initialView: 'dayGridWeek',
+    aspectRatio: 1.8,
     customButtons: {
       myCustomButton: {
         text: 'Back',
@@ -208,7 +209,7 @@ addColorStatus(driver:any) {
     colorStatus = '#06669c'
   }
   if(driver.closedDate){
-    colorStatus = '#6658dd'
+    colorStatus = '#4CAF50'
   }
   return colorStatus;
 
@@ -227,62 +228,84 @@ goToNextMonth() {
 
 
 
+
  
-  
  renderEventContent(info: any) {
 
   //[routerLink]="['dispatch-detail', certificate.rowId, certificate.sellerID,'show']
 //this.router.navigateByUrl(`/${this.orgName}/dispatch/dispatch-status`)
  
 
-    const start = new Date(info.event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const end = new Date(info.event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const type = info.event.extendedProps.detailObj.type ? 'Type : ' + info.event.extendedProps?.detailObj?.type : '';
-    const  driverName = info.event.extendedProps?.detailObj?.driverID > 0 ? 'Driver Name : '+  info.event.extendedProps?.detailObj?.driverFullName : '';
-    //Unassign
-    const ticketStatus = info.event.extendedProps?.detailObj?.ticketStatus ;
-    const colorStatus = info.event.extendedProps?.detailObj?.colorStatus ;
-    const rowID = info.event.extendedProps?.detailObj?.rowId
-    let bgColor =  '#FF69B4';
-    let textColor = '#ffffff';
+  const start = new Date(info.event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const end = new Date(info.event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const type = info.event.extendedProps.detailObj?.type || '';
+  const  driverName = info.event.extendedProps?.detailObj?.driverFullName || 'Unassigned';
+  //Unassign
+  const ticketStatus = info.event.extendedProps?.detailObj?.ticketStatus;
+  const colorStatus = info.event.extendedProps?.detailObj?.colorStatus;
+  const rowID = info.event.extendedProps?.detailObj?.rowId;
 
-    switch (info?.event?.extendedProps?.detailObj?.type) {
-      case 'Drop off':
-        bgColor = '#E6FFE6';
-        textColor = '#000000';
-        break;
-      case 'Exchange':
-        bgColor = '#FFC107';
-        textColor = '#FFFFFFF';
-        break;
-      case 'Pickup':
-        bgColor = '#4CAF50';
-        textColor = '#000000';
-        break;
-      default:
-        bgColor = '#000000';
-    }
-  
+  const lightBackgrounds: { [key: string]: string } = {
+    '#4CAF50': '#A5D6A7', 
+    '#6658dd': '#C5CAE9', 
+    '#06669c': '#90CAF9', 
+  };
+
+  let statusBarColor = colorStatus || '#4CAF50'; 
+  let statusTextColor = colorStatus || '#4CAF50';
+  const bgColor = lightBackgrounds[colorStatus] || '#f0f0f0';
+
+
+  // let bgColor =  '#FF69B4';
+  // let textColor = '#ffffff';
+
+  // switch (info?.event?.extendedProps?.detailObj?.type) {
+  //   case 'Drop off':
+  //     bgColor = '#E6FFE6';
+  //     textColor = '#000000';
+  //     break;
+  //   case 'Exchange':
+  //     bgColor = '#FFC107';
+  //     textColor = '#FFFFFFF';
+  //     break;
+  //   case 'Pickup':
+  //     bgColor = '#4CAF50';
+  //     textColor = '#000000';
+  //     break;
+  //   default:
+  //     bgColor = '#000000';
+  // }
+
   return {
     html: `
-      <div style="border:1px solid ${colorStatus};text-align: left;  border-left:3px solid ${colorStatus};padding:5px;overflow: hidden;background-color:${bgColor};color:${textColor}">
-
-      
-        <div>
-           <div style="font-weight: bold;">#${rowID}</div>
-        <div  class="d-flex justify-content-start align-items-center" >
-         <i class="${info.event.extendedProps.icon} me-2"></i>  <div style="font-weight: bold;">${ticketStatus}</div>
-        </div>
-       
-          <div style="font-weight: bold;">Customer Name: ${info.event.title}</div>
-         
-          <div style="font-weight: bold;">${type}</div>
-         <div style="font-weight: bold;">${driverName}</div>
+      <div class="event-card" style="border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); background-color: ${bgColor}; margin: 1px 0; height: auto; display: flex; flex-direction: column; width: 100%; transition: transform 0.2s ease, box-shadow 0.2s ease;">
+        <div style="background-color: ${statusBarColor}; height: 4px; width: 100%;"></div>
+        
+        <div style="padding: 6px; text-align: left; flex: 1; display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+            <div style="font-size: 12px; color: #666;">#${rowID}</div>
+            <div style="font-size: 12px; color: ${statusTextColor}; font-weight: 500;">${ticketStatus}</div>
+          </div>
+          
+          <div style="font-weight: 500; font-size: 13px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            ${info.event.title}
+          </div>
+          
+          <div style="margin-bottom: 3px; font-size: 12px; color: #666;">
+            ${type}
+          </div>
+          
+          <div style="margin-bottom: 3px; font-size: 12px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            Driver: ${driverName}
+          </div>
+          
+          <div style="margin-bottom: 3px; font-size: 12px; color: #888;">
           <div>${start} - ${end}</div>
-        </div>
-        <div display: flex; align-items: center;">
-         <div style="font-weight: bold;">  <a  class="text-primary cursor-hand" href="${info.event?.url}">View All</a></div>
-
+          </div>
+          
+          <div style="margin-top: 2px;">
+            <a href="${info.event?.url}" style="color: #6658dd; text-decoration: none; font-size: 12px;">View All</a>
+          </div>
         </div>
 
       </div>`

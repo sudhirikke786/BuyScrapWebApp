@@ -1,0 +1,263 @@
+<div class="content">
+
+    <!-- Start Content-->
+    <div class="container-fluid">
+
+        <!-- <div class="row mt-2">
+            <div class="col text-center">
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> New Ticket</button> 
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> Merge Ticket and Pay</button>
+            </div>
+            
+        </div> -->
+
+        <div class="bdcmb mt-2">
+            <div class="row">
+                <div class="col-sm-6 col-6">
+                    <h4 class="page-title">Location Management</h4>
+                </div>
+
+                <div class="col-sm-6 col-6">
+                    <div class="b-links">
+                        <a >Home</a> / <a >Admin</a> / <a >Location Management</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-2 d-flex align-items-center">
+            <div class="col-sm-2 col-xs-6 ">
+                <h5>Total Users </h5>
+            </div>
+
+            <div class="col-sm-2 col-xs-6">
+                <h5>Total Tickets </h5>
+            </div>
+
+            <div class="col-sm-2">
+                <h5>Total Locations </h5>
+            </div>
+
+            <div class="col-md-6 d-flex">
+                <!-- <input type="text" style="min-width:250px; width:auto" id="example-palaceholder" class="form-control" placeholder="Search Locations">
+
+                <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Search"><i class="mdi mdi-cust mdi-magnify"></i></a> -->
+
+                <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Refresh"><i class="mdi mdi-cust mdi-refresh"></i></a>
+
+                <a (click)="addpoupOpen()" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location"><i class="mdi mdi-cust mdi-plus"></i> Add Location</a>
+                <a class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location"><i class="mdi mdi-cust mdi-plus"></i>Location Track</a>
+                <a class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location">Ticket Track</a>
+                <a class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location" >Back</a>
+            </div>
+            
+        </div>  
+        <!-- end page title --> 
+
+        <div class="row mt-2" >
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <p-table [value]="locations" [scrollable]="true" 
+                        scrollHeight="50vh" [paginator]="true" [rows]="10"
+                        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [rowsPerPageOptions]="commonService.tableConfig.pageOptions" 
+                      
+                        >
+
+                       
+                        
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Location Name</th>
+                                <th>User Count</th>
+                                <th>Total Tickets</th>
+                                <th>Available Tickets</th>
+                                <th>Action</th>
+                            </tr>
+                        </ng-template>
+
+                        
+                        <ng-template pTemplate="body" let-location >
+                            <tr>
+                                <td>{{ location.locationName }}</td>
+                                <td>{{ location.userCount }}</td>
+                                <td>{{ location.totalTickets }}</td>
+                                <td>{{ location.availableTickets }}</td>
+                                <td>
+                                    <a (click)="editPopupOpen(location)" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
+
+                                    <a (click)="getUserManagment()" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-account"></i> User Management</a>
+                        
+                                     </td>
+                            </tr>
+                        </ng-template>
+                        
+                    </p-table>
+
+
+
+
+
+                     
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div>
+
+
+     
+
+</div>
+
+
+
+<p-dialog [modal]="true" 
+[header]="actionType"
+[(visible)]="locationVisble"
+[style]="{ width: '80vw' }"
+>
+<ng-template pTemplate="header">
+    <div class="d-flex">
+        <a (click)="hideLocationModel()" class="btn btn-primary" title="Back to Location"><i class="mdi mdi-keyboard-backspace"></i></a>
+        <h4 class="modal-title ml-10" id="myLargeModalLabel">{{actionType + ' Locations'}}</h4>
+    </div>
+  
+</ng-template>
+
+<div class="row">
+    <div class="col-sm-12">
+        
+        <form  [formGroup]="locationForm">
+            
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Location Name</label>
+                <input type="text" id="locationname" class="form-control" formControlName="locationName">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Set User Counts for Location</label>
+                <input type="number" min="0" id="usercount" class="form-control" formControlName="userCount">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Set Employee Counts for Location</label>
+                <input type="number" min="0" id="employeecount" class="form-control" formControlName="employeeCount">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Ticket Limits</label>
+                <input type="number" min="0" id="employeecount" class="form-control" formControlName="ticketLimit">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Available Tickets</label>
+                <input type="number" min="0"  class="form-control" formControlName="availableTickets">
+            </div>
+
+            <a class="btn btn-primary " (click)="submitLocation()">{{ actionType == 'Add' ? 'Save' : 'Update' }}</a>
+        </form>
+
+    </div>
+</div> 
+</p-dialog>
+
+
+
+<!-- 
+<p-dialog [modal]="true" 
+[header]="actionType"
+[(visible)]="locationVisble"
+[style]="{ width: '80vw' }"
+>
+<ng-template pTemplate="header">
+    <div class="d-flex">
+        <a (click)="hideLocationModel()" class="btn btn-primary" title="Back to Location"><i class="mdi mdi-keyboard-backspace"></i></a>
+        <h4 class="modal-title ml-10" id="myLargeModalLabel">{{actionType + ' Locations'}}</h4>
+    </div>
+  
+</ng-template>
+
+<div class="row">
+    <div class="col-sm-12">
+        
+        <form  [formGroup]="locationForm">
+            
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Location Name</label>
+                <input type="text" id="locationname" class="form-control" formControlName="locationName">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Set User Counts for Location</label>
+                <input type="number" min="0" id="usercount" class="form-control" formControlName="userCount">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Set Employee Counts for Location</label>
+                <input type="number" min="0" id="employeecount" class="form-control" formControlName="employeeCount">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Ticket Limits</label>
+                <input type="number" min="0" id="employeecount" class="form-control" formControlName="ticketLimit">
+            </div>
+
+            <div class="form-group col-sm-12 mb-2">
+                <label for="simpleinput" class="form-label w-100">Available Tickets</label>
+                <input type="number" min="0"  class="form-control" formControlName="availableTickets">
+            </div>
+
+            <a class="btn btn-primary " (click)="submitLocation()">{{ actionType == 'Add' ? 'Save' : 'Update' }}</a>
+        </form>
+
+    </div>
+</div> 
+</p-dialog> -->
+
+<!-- 
+<p-dialog [(visible)]="isPopupVisible" [modal]="true" [style]="{ width: '80vw' }">
+    <ng-template pTemplate="header">
+        <div class="d-flex">
+            <a (click)="isPopupVisible = false" class="btn btn-primary" title="Back to Location">
+                <i class="mdi mdi-keyboard-backspace"></i>
+            </a>
+            <h4 class="modal-title ml-10">Add Location</h4>
+        </div>
+    </ng-template>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <form>
+                <div class="form-group col-sm-12 mb-2">
+                    <label class="form-label w-100">Location Name</label>
+                    <input type="text" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-12 mb-2">
+                    <label class="form-label w-100">Set User Counts for Location</label>
+                    <input type="number" min="0" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-12 mb-2">
+                    <label class="form-label w-100">Set Employee Counts for Location</label>
+                    <input type="number" min="0" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-12 mb-2">
+                    <label class="form-label w-100">Ticket Limits</label>
+                    <input type="number" min="0" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-12 mb-2">
+                    <label class="form-label w-100">Available Tickets</label>
+                    <input type="number" min="0" class="form-control">
+                </div>
+
+                <a class="btn btn-primary" (click)="submitLocation()">Save</a>
+            </form>
+        </div>
+    </div> 
+</p-dialog> -->

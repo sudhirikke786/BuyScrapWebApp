@@ -377,6 +377,7 @@ constructor(private route: ActivatedRoute, private router:Router,
           detail: 'Drop-off and Box Pickup cannot have the same container!' 
         });
         this.newItem.dropoffbox = '';
+        this.editItemObj.dropoffbox = '';
         return;
       }
       if (type == 'pickup' && containerNumber == this.newItem.dropoffbox) {
@@ -386,6 +387,7 @@ constructor(private route: ActivatedRoute, private router:Router,
           detail: 'Drop-off and Box Pickup cannot have the same container!' 
         });
         this.newItem.boxpickup = '';
+        this.editItemObj.boxpickup = '';
         return;
       }
     }
@@ -401,6 +403,7 @@ constructor(private route: ActivatedRoute, private router:Router,
         
           if (containerData.isAtWearhouse && type == 'pickup') {
             this.newItem.boxpickup = '';
+            this.editItemObj.boxpickup = '';
             this.messageService.add({ 
               severity: 'error', 
               summary: 'Error', 
@@ -408,6 +411,7 @@ constructor(private route: ActivatedRoute, private router:Router,
             });
           } else if (!containerData.isAtWearhouse && type == 'dropoff') {
             this.newItem.dropoffbox = '';
+            this.editItemObj.dropoffbox = '';
             this.messageService.add({ 
               severity: 'error', 
               summary: 'Error', 

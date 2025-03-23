@@ -152,6 +152,22 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Users/UserAuthentication', 'POST', requestObj);
   }
 
+  GetSuperAdminAuthenticate(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Users/GetSuperAdminAuthenticate', 'GET', paramObj);
+  }
+
+  GetAllOrganisations(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Organisations/GetAllOrganisations', 'GET', paramObj);
+  }
+
+  GetAllDeletedOrganisations(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Organisations/GetAllDeletedOrganisations', 'GET', paramObj);
+  }
+
+  getAdminOrganisaction(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Organisations/GetAdminOrganisaction', 'GET', paramObj);
+  }
+  
   insertConsentdetail(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Consent/Insertconsentdetail', 'POST', requestObj);
   }

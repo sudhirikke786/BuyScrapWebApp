@@ -8,6 +8,8 @@ import { CommonService } from 'src/app/core/services/common.service';
   styleUrls: ['./superadmin-sidemenu.component.css'],
 })
 export class SuperadminSidemenuComponent {
+
+  
   menuItemList = [
     {
       title: 'Home',

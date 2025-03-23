@@ -13,4 +13,8 @@ export class SuperadminheaderComponent {
     this.orgName = localStorage.getItem('orgName');
     
   }
+
+  click(){
+    console.log("Button Clicked");
+  }
 }

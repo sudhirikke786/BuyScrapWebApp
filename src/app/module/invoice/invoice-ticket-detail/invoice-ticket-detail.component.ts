@@ -1492,9 +1492,13 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       } else {     
         this.invoiceId = data.body.insertedRow;
         this.saveConfirmVisible = false;     
-        this.cancelEditInvoice(isReceiptPrint, this.invoiceId,isSendEmail);
-      }
+        // this.cancelEditInvoice(isReceiptPrint, this.invoiceId,isSendEmail);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Invoice inserted/updated Successfully' });
 
+        setTimeout(() => {
+          this.cancelEditInvoice(isReceiptPrint, this.invoiceId,isSendEmail);
+        }, 1000);
+      }
       
     }, (error: any) => {
       console.log(error);

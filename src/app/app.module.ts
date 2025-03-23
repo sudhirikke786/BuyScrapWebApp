@@ -28,6 +28,8 @@ import { ChatbotComponent } from './common/chatbot/chatbot.component';
 import { SuperadminlayoutComponent } from './common/Superadmin/superadminlayout/superadminlayout.component';
 import { SuperadminSidemenuComponent } from './common/Superadmin/superadmin-sidemenu/superadmin-sidemenu.component';
 import { SuperadminheaderComponent } from './common/Superadmin/superadminheader/superadminheader.component';
+import { TooltipModule } from 'primeng/tooltip';
+
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import { SuperadminheaderComponent } from './common/Superadmin/superadminheader/
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NgChartsModule
+    NgChartsModule,
+    TooltipModule
   ],
   providers: [
     MessageService,  

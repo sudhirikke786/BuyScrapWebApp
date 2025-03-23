@@ -36,6 +36,7 @@ export class DispatchDashboardComponent implements OnInit {
   showCompletePopup: boolean = false;
   completionNote: string = '';
   selectedDriverId: number=0;
+  isChecked: boolean = false;
 
   dispatchRes = [
     
@@ -123,6 +124,8 @@ export class DispatchDashboardComponent implements OnInit {
   isLoading = false;
   checkTabView: boolean = false;
 
+  expandedRows: { [key: number]: boolean } = {}; 
+
 
   constructor(
     private route: ActivatedRoute,
@@ -182,7 +185,8 @@ export class DispatchDashboardComponent implements OnInit {
                 selected: item.closedDate ? true : false,
                 ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
                 sellerAddress: item.streetAddress,
-                driverID: item.driverID
+                driverID: item.driverID,
+                driverNotes: item.driverNotes
               };
             });
           } else {
@@ -201,7 +205,8 @@ export class DispatchDashboardComponent implements OnInit {
                 selected: item.closedDate ? true : false,
                 ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
                 sellerAddress: item.streetAddress,
-                driverID: item.driverID         
+                driverID: item.driverID,
+                driverNotes: item.driverNotes         
               };
             });
           }
@@ -231,45 +236,68 @@ export class DispatchDashboardComponent implements OnInit {
 
     });
   }
-  openCompletePopup(rowId: number, driverID?: number) {
-    console.log(`Popup opened for RowID: ${rowId}, DriverID: ${driverID}`);
-
+  openCompletePopup(rowId: number, driverID?: number, isChecked?: boolean) {
+    console.log(`Popup opened for RowID: ${rowId}, DriverID: ${driverID}, Checked: ${isChecked}`);
+  
     if (!driverID || driverID == 0) {
-        this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'No driver assigned to this pickup!' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'No driver assigned to this pickup!' });
+      setTimeout(() => {
+        const selectedRow = this.dispatchRes.find(
+          (item: any) => item.rowId === rowId
+        ) as any;
+      
+        if (selectedRow) {
+          selectedRow.isCompleted = false;
+        }
+      });
         return;
     }
+  
+      this.selectedRowId = rowId;
+      this.selectedDriverId = driverID;
+      this.isChecked = isChecked ?? false;
+    // this.completionNote = '';
+    const selectedCertificate = this.dispatchRes.find(item => (item as any).rowId == rowId) as any;
+    this.completionNote = selectedCertificate?.driverNotes || '';
 
-    this.selectedRowId = rowId;
-    this.selectedDriverId = driverID;
-    this.completionNote = '';
-    this.showCompletePopup = true;
-}
+      this.showCompletePopup = true;
+    }
+  
 
-
-  closePopup() {
-    console.log('Closing popup');  
+  closePopup(rowId: number) {
+    console.log(`Closing popup for RowID: ${rowId}`);  
     this.showCompletePopup = false;
+  
+    const selectedRow = this.dispatchRes.find(
+      (item: any) => item.rowId === rowId
+    ) as any;
+  
+    if (selectedRow) {
+      selectedRow.isCompleted = false;
+    }
   }
+  
   saveCompletion() {
     const requestObj = {
       PickUpID: this.selectedRowId,
-      IsCompleted: true,
+      IsCompleted: this.isChecked,  
       notes: this.completionNote,
       driverID: this.selectedDriverId  
     };
   
     const postParams = {
       PickUpID: this.selectedRowId,
-      IsCompleted: true,
+      IsCompleted: this.isChecked,  
       notes: this.completionNote,
       driverID: this.selectedDriverId  
     };
-
+  
     this.commonService.DispatchCloseDateUpdate(requestObj, postParams).subscribe(
       (response) => {
         console.log('API Response:', response);
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Dispatch Completed successfully!' });
-        this.closePopup();
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Dispatch status updated successfully!' });
+        this.closePopup(this.selectedRowId);
+        this.getAllCODTickets(); 
       },
       (error) => {
         console.error('Error saving note:', error);
@@ -558,6 +586,10 @@ onSubmit() {
       summary: 'Cancelled',
       detail: 'Deletion action was cancelled.',
     });
+  }
+
+  toggleRowExpansion(rowId: number) {
+    this.expandedRows[rowId] = !this.expandedRows[rowId];
   }
 
 

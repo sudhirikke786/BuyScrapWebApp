@@ -99,7 +99,7 @@
                                             <tr (contextmenu)="onRightClick($event)" [ngClass]="{'bg-info': ticket.isParent}">
                                                 <td>{{ ticket?.rowId }}</td>
                                                 <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy' }}</td>
-                                                <td><span class="{{ticket?.statusClass}}">{{ ticket?.status | uppercase }}</span></td>
+                                                <td><span class="status-badge" [ngClass]="'status-' + (ticket?.status ? ticket.status.toLowerCase().replace(' ', '_') : '')">{{ ticket?.status | uppercase }}</span></td>
                                                 <td>{{ ticket?.ticketAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
                                                 <td>{{ ticket?.customerName }}</td>
                                                 <td>{{ ticket?.dateClosed ? (ticket?.dateClosed | date: 'MM/dd/yyyy') : ''}}</td>

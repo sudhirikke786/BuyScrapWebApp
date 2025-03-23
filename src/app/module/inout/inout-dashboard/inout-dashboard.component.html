@@ -34,83 +34,65 @@
       <div class="row mt-2">
         <div class="col-12">
           <div class="card">
-            <div class="card-body">
-              <p-table
-                [value]="inouts"
-                [paginator]="true"
-                [rows]="10"
-                [scrollable]="true" 
-                scrollHeight="50vh"
-                [showCurrentPageReport]="true"
-                [tableStyle]="{ 'min-width': '50rem' }"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions"
-              >
-             
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th>In Out #</th>
-                    <th>Date Created</th>
-                    <th>Total Net</th>
-                    <th>Location Out</th>
-                    <th>Current Status</th>
-                    <th>Location In</th>
-                    <th>Action</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-inout>
-                  <tr>
-                    <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">{{ inout.rowId }}</td>
-                    <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">{{ inout.createdDate | date: 'MM/dd/yyyy' }}</td>
-                    <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">{{ inout.totalNet }}</td>
-                    <!-- <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">{{ inout.status }}</td> -->
-                    <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">
-                      {{inout.locOutName}}
-                    </td>
-                    <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">
-                      <b> {{inout.status}} </b>
-                    </td>
-                    <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">
-                      {{inout.locInName}}
-                    </td>
-                    <td [ngClass]="{'bg-danger text-white': inout.isDeleted}">
-                      <a *ngIf="inout.status != 'InTransient'" type="button"routerLinkActive="router-link-active" (click)="showDetails(inout.rowId)"
-                        class="btn btn-grid btn-success waves-effect waves-light me-1">
-                          <i class="mdi mdi-eye"></i> Show
-                      </a>
-                      <a *ngIf="!inout.isDeleted && inout.status != 'In' && inout.status != 'InTransient'" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editDetails(inout.rowId)"
-                      class="btn btn-grid btn-primary waves-effect waves-light me-1">
-                          <i class="mdi mdi-pencil"></i> Edit
-                      </a>                       
-                      <!-- <a *ngIf="!inout.isDeleted && inout.status != 'In' && inout.status != 'InTransient'" class="btn btn-grid btn-danger waves-effect waves-light" (click)="confirmationMessage(inout.rowId)">
-                          <i class="mdi mdi-trash-can-outline"></i> Delete -->
-                      <a *ngIf="!inout.isDeleted && inout.status != 'In' && inout.status != 'InTransient'" class="btn btn-grid btn-danger waves-effect waves-light"  (click)="deleteDetailsInout(inout.rowId)">
-                            <i class="mdi mdi-trash-can-outline"></i> Delete
-                      </a>
-                      <a *ngIf="!inout.isDeleted && inout.status == 'InTransient'" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="inword(inout.rowId)"
-                      class="btn btn-grid btn-primary waves-effect waves-light me-1">
-                          <i class="mdi mdi-pencil"></i> Inword
-                      </a> 
-                    </td>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="paginatorleft">
-                  <p-button
-                    type="button"
-                    icon="pi pi-plus"
-                    styleClass="p-button-text"
-                  >
-                  </p-button>
-                </ng-template>
-                <ng-template pTemplate="paginatorright">
-                  <p-button
-                    type="button"
-                    icon="pi pi-cloud"
-                    styleClass="p-button-text"
-                  >
-                  </p-button>
-                </ng-template>
-              </p-table>
+            <div class="card-body d-flex flex-column" style="height:calc(100vh - 200px); overflow: hidden;">
+              <!-- Scrollable cards container -->
+              <div class="inout-cards-scrollable">
+                <div class="row card-container">
+                  <div class="col-sm-6 col-md-4 col-lg-3 col-xxl-card-5 mb-2" *ngFor="let inout of inouts">
+                    <div class="card inout-card compact" [ngClass]="{'bg-danger text-white': inout.isDeleted}">
+                      <div class="card-body p-2">
+                        <div class="d-flex justify-content-between mb-1">
+                          <h6 class="inout-id mb-0">#{{ inout.rowId }}</h6>
+                          <span class="badge" [ngClass]="{'bg-success': inout.status === 'In', 'bg-warning': inout.status === 'InTransient', 'bg-info': inout.status !== 'In' && inout.status !== 'InTransient'}">
+                            {{ inout.status }}
+                          </span>
+                        </div>
+                        
+                        <div class="inout-details">
+                          <div class="mb-1">
+                            <small class="text-muted">From Location → To Location</small>
+                            <div class="small-text">{{ inout.locOutName }} → {{ inout.locInName }}</div>
+                          </div>
+                          
+                          <div class="row mb-1">
+                            <div class="col-6 pe-0">
+                              <small class="text-muted">Date</small>
+                              <div class="small-text">{{ inout.createdDate | date: 'MM/dd/yy' }}</div>
+                            </div>
+                            <div class="col-6 ps-0">
+                              <small class="text-muted">Total Net</small>
+                              <div class="small-text">{{ inout.totalNet }}</div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                          <a *ngIf="inout.status != 'InTransient'" type="button" (click)="showDetails(inout.rowId)"
+                            class="btn btn-sm btn-success waves-effect waves-light">
+                            <i class="mdi mdi-eye"></i>
+                          </a>
+                          <a *ngIf="!inout.isDeleted && inout.status != 'In' && inout.status != 'InTransient'" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editDetails(inout.rowId)"
+                            class="btn btn-sm btn-primary waves-effect waves-light">
+                            <i class="mdi mdi-pencil"></i>
+                          </a>                       
+                          <a *ngIf="!inout.isDeleted && inout.status != 'In' && inout.status != 'InTransient'" class="btn btn-sm btn-danger waves-effect waves-light" (click)="deleteDetailsInout(inout.rowId)">
+                            <i class="mdi mdi-trash-can-outline"></i>
+                          </a>
+                          <a *ngIf="!inout.isDeleted && inout.status == 'InTransient'" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="inword(inout.rowId)"
+                            class="btn btn-sm btn-primary waves-effect waves-light">
+                            <i class="mdi mdi-pencil"></i> Inword
+                          </a> 
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="paginator-container" *ngIf="inouts?.length > 0">
+                <!-- <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" > -->
+                  <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator>
+              </div>
             </div>
             <!-- end card body-->
           </div>
