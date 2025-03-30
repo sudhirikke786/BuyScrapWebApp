@@ -40,8 +40,8 @@
 
             <div class="row mt-2">
                 <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-body" style="height:calc(100vh - 200px)">
+                    <div class="card  flex-auto place-content-inherit align-items-inherit break-words text-left overflow-y-auto subpixel-antialiased flex h-full flex-row items-start">
+                        <div  style="height:calc(100vh - 200px)">
                             <div class="seller-cards-scrollable">
                                 <div class="row seller-card-container">
                                     <div class="col-seller-card" *ngFor="let seller of sellers">
@@ -65,9 +65,20 @@
                                                     <p class="seller-detail"><strong>Address:</strong> {{ seller.streetAddress }}</p>
                                                     
                                                     <div class="d-flex justify-content-between w-100 mt-1">
-                                                        <a routerLink = "/{{orgName}}/sellers-buyers/view-seller/{{seller?.rowId}}" type="button" class="btn btn-grid btn-success waves-effect waves-light me-1 "><i class="mdi mdi-eye pe-1"></i> Show</a> 
-                                                        <a routerLink = "/{{orgName}}/sellers-buyers/edit-seller/{{seller?.rowId}}" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
-                                                    </div>
+                                                        <a
+                                                          routerLink="/{{orgName}}/sellers-buyers/view-seller/{{seller?.rowId}}"
+                                                          type="button"
+                                                          class="btn btn-grid btn-success waves-effect waves-light me-1"
+                                                        >
+                                                          <i class="mdi mdi-eye pe-1"></i> Show
+                                                        </a>
+                                                        <a
+                                                          routerLink="/{{orgName}}/sellers-buyers/edit-seller/{{seller?.rowId}}"
+                                                          class="btn btn-grid btn-primary waves-effect waves-light me-1"
+                                                        >
+                                                          <i class="mdi mdi-pencil"></i> Edit
+                                                        </a>
+                                                      </div>
                                                 </div>
                                             </div>
                                         </div>
