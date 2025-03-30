@@ -87,8 +87,8 @@
               </div>
               
               <div class="paginator-container" *ngIf="certificates?.length > 0">
-                <!-- <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator> -->
-                <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator>
+                <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator>
+                <!-- <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" (onPageChange)="onPageChange($event)" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator> -->
 
 
               </div>

@@ -71,6 +71,15 @@ export class CertificatesDashboardComponent implements OnInit {
   numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
 
+  currentPage = 1;
+  pageSize = 10;
+  first = 0;
+  last = 0;
+  pageTotal = 0;
+
+  
+
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private confirmationService: ConfirmationService, 
@@ -87,7 +96,11 @@ export class CertificatesDashboardComponent implements OnInit {
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.checkTabView = this.helperService.isTab();
     
-    this.getAllCODTickets();
+    this.getAllCODTickets({
+      PageNumber: this.currentPage,
+      RowOfPage: this.pageSize,
+      LocationId: this.locId
+    });
   }
 
 
@@ -114,7 +127,7 @@ export class CertificatesDashboardComponent implements OnInit {
           });
         }
         this.isConfirmModel =  false;
-        this.getAllCODTickets(); 
+        this.getAllCODTickets();
       })
     }
 
@@ -178,10 +191,10 @@ export class CertificatesDashboardComponent implements OnInit {
 
 
   
-  getAllCODTickets() {
+  getAllCODTickets(pagObj?: any) {
     const paramObject = {
-      PageNumber: 1,
-      RowOfPage: 1000,
+      PageNumber: pagObj?.PageNumber,
+      RowOfPage: pagObj?.RowOfPage,
       LocationId: this.locId
     };
     this.showLoader = true;
@@ -195,6 +208,10 @@ export class CertificatesDashboardComponent implements OnInit {
 
             return item;
           });
+
+          this.pageTotal =  data?.body?.totalRecords
+          this.last = data?.body?.totalIndex;
+
           console.log(this.certificates);
         },
         (err: any) => {
@@ -205,6 +222,20 @@ export class CertificatesDashboardComponent implements OnInit {
           this.showLoader = false;
         }
       );
+  }
+
+
+  onPageChange(event: any) {
+    this.currentPage = event.first / event.rows + 1;
+     this.first = event.first ;
+    let pagObj = {
+      PageNumber: this.currentPage,
+      RowOfPage: event.rows,
+      LocationId: this.locId,
+  }
+    this.pageSize = event.rows;
+ // this.pagination = {...this.pagination,...pagObj};
+    this.getAllCODTickets(pagObj);
   }
 
   setChecked(item: any,rowIndex:any): void {

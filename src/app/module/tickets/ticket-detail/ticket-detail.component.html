@@ -1206,24 +1206,23 @@ header="Edit Seller"
           />
       </div>
     </div>
-  
     <div class="row mt-2">
-      <!-- Note Field -->
-      <div class="form-group col-sm-12">
+        <!-- Note Field -->
+        <div class="form-group col-sm-12">
           <label for="note">Note</label>
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control"
-            id="note"
-            name="note"
-            [(ngModel)]="driverDetails.note"
-            #note="ngModel"
-            placeholder="Note"
-          />
+          <div class="form-floating">
+            <textarea
+              class="form-control"
+              id="note"
+              name="note"
+              [(ngModel)]="driverDetails.note"
+              #note="ngModel"
+              placeholder="Enter your note here"
+              rows="4"
+            ></textarea>
+          </div>
         </div>
       </div>
-    </div>
   
     <div class="row mt-3" *ngIf="isEditModeOn">
       <div class="col-sm-12">
