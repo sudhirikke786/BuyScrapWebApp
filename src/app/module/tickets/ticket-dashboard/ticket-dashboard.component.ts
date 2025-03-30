@@ -1412,8 +1412,9 @@ export class TicketDashboardComponent implements OnInit {
 
   payRemainder() {
     const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
-    this.totalAmount = selectedTicketDetail.reduce((totalAmount: any, item: any) => totalAmount + item.balanceAmount, 0);
+    this.totalAmount = selectedTicketDetail.reduce((totalAmount: any, item: any) => totalAmount + item.amount - item.adjustmentAmount, 0);
     // this.totalAmount = selectedTicketDetail[0].balanceAmount;
+    this.selectedSellerTicketsPaidAmount = selectedTicketDetail.reduce((paidAmount: any, item: any) => paidAmount + item.paidAmount, 0);
     
     this.paymentVisible = true;    
 

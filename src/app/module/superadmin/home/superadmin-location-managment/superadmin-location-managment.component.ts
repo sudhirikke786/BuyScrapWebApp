@@ -28,6 +28,10 @@ export class SuperadminLocationManagmentComponent implements OnInit{
   addlocationVisble: boolean = false;
   isPopupVisible: boolean = false;
   userForm!: FormGroup<any>;
+  totalUsers: number = 0;
+  totalTickets: number = 0;
+  totalLocations: number = 0;
+
 
   locationForm!: FormGroup;
   constructor(private route: ActivatedRoute,
@@ -59,6 +63,11 @@ export class SuperadminLocationManagmentComponent implements OnInit{
       this.commonService.getOrgLocation().subscribe(
         (data) => {
           this.locations = data.body.data; 
+          const locationData = this.locations[0];
+          console.log('LocationDate checking',locationData)
+          this.totalUsers = locationData.totalUserCount;
+          this.totalTickets = locationData.totalTicke;
+          this.totalLocations = locationData.totalLocations;
         },
         (error) => {
           console.error('Error fetching locations:', error);
@@ -90,7 +99,10 @@ export class SuperadminLocationManagmentComponent implements OnInit{
         "ticketLimit": formObj.ticketLimit,
         "availableTickets": formObj.availableTickets,
         "isHeadOffice": false,
-        "adminID": 0
+        "adminID": 0,
+        "contactName": formObj.contactName,
+        "address": formObj.address,
+        "phoneNo": formObj.phoneNo
       }
   
       this.commonService.InsertUpdateLocationDTO(reqObj).subscribe((res) =>{
@@ -108,6 +120,9 @@ export class SuperadminLocationManagmentComponent implements OnInit{
         ticketLimit:['',],
         userCount:[''],
         availableTickets:[''],
+        address:[''],
+        contactName:[''],
+        phoneNo:['']
       })
   
     }
@@ -136,6 +151,9 @@ export class SuperadminLocationManagmentComponent implements OnInit{
           lastName: ['',Validators.required],
           mobileNumber:['',Validators.required],
           emailID: ['',Validators.required],
+          contactName:['',Validators.required],
+          address:['',Validators.required],
+          phoneNo:['',Validators.required]
       },)
   
      
@@ -153,8 +171,14 @@ export class SuperadminLocationManagmentComponent implements OnInit{
     
   
     }
+    back(){
+      this.router.navigateByUrl(`/superadmin/home`);
+    }
 
-    getUserManagment(){
-      this.router.navigate(['/superadmin/home/superadmin-usermanagment']);
+    getUserManagment(locationId :any){
+      this.router.navigate(['/superadmin/home/superadmin-usermanagment'],{queryParams:{locationId: locationId}});
+    }
+    getTicketTrack(){
+      this.router.navigate(['/superadmin/home/ticket-track']);
     }
 }

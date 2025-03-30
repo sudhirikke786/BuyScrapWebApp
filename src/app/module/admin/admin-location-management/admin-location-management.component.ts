@@ -109,6 +109,9 @@ export class AdminLocationManagementComponent implements OnInit {
         lastName: ['',Validators.required],
         mobileNumber:['',Validators.required],
         emailID: ['',Validators.required],
+        contactName:['',Validators.required],
+        address:['',Validators.required],
+        phoneNo:['',Validators.required]
     },{ 
       validator: ConfirmedValidator('password', 'confirmPassword')
     })
@@ -140,6 +143,9 @@ export class AdminLocationManagementComponent implements OnInit {
       ticketLimit:['',],
       userCount:[''],
       availableTickets:[''],
+      address:[''],
+      contactName:[''],
+      phoneNo:['']
     })
 
   }
@@ -161,7 +167,10 @@ export class AdminLocationManagementComponent implements OnInit {
       "ticketLimit": formObj.ticketLimit,
       "availableTickets": formObj.availableTickets,
       "isHeadOffice": false,
-      "adminID": 0
+      "adminID": 0,
+      "contactName": formObj.contactName,
+      "address": formObj.address,
+      "phoneNo": formObj.phoneNo
     }
 
     this.commonService.InsertUpdateLocationDTO(reqObj).subscribe((res) =>{

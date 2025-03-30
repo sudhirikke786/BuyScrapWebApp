@@ -260,7 +260,8 @@
         <ng-template pTemplate="body" let-seller>
           <tr style="cursor: pointer;" (click)="showCustomerModel(seller)">
             <td>
-              <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img"></a>
+              <a *ngIf="seller.idfaceShotImage"><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" ></a>
+              <img *ngIf="!seller.idfaceShotImage" src="/assets/images/custom/icons/user.png" class="default-img">            
             </td>
             <td>{{ seller?.fullName }}</td>
             <td>{{ seller?.driverLicenseNumber }}</td>

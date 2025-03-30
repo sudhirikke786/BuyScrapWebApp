@@ -27,8 +27,8 @@ export class InoutDashboardComponent implements OnInit {
     },
     {
       iconcode:'mdi-plus',
-      title:'New In-Out',
-      label:'New In-Out',
+      title:'New Internal-Transfer',
+      label:'New Internal-Transfer',
     }
   ];
 
@@ -85,10 +85,15 @@ export class InoutDashboardComponent implements OnInit {
   pagination: any = {
     SerachText: this.serachText,
     PageNumber: 1,
-    RowOfPage: 100,
+    RowOfPage: 10,
     LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
     first: 0,
   }
+  currentPage = 1;
+  pageSize = 10;
+  first = 0;
+  last = 0;
+  pageTotal = 0;
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -106,11 +111,35 @@ export class InoutDashboardComponent implements OnInit {
     this.popupHeadertext = `Select Transfer To Location (From :: ${this.locationName})` ;
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     
-    this.getAllInoutDetails(this.pagination);
+    const pagination: any = {
+      SerachText: this.serachText,
+      PageNumber: 1,
+      RowOfPage: 10,
+      LocationId: this.locId,
+      first: 0
+    }
+    this.getAllInoutDetails(pagination);
+  }
+
+  
+  onPageChange(event: any) {
+    this.currentPage = event.first / event.rows + 1;
+    this.first = event.first ;
+    console.log("pagination",this.first)
+  
+    let pagObj = {
+      PageNumber: this.currentPage,
+      RowOfPage: event.rows,
+      LocationId: this.locId,
+      SerachText: this.searchLocationInput.replace(/ /g, "%")
+    };
+    this.pageSize = event.rows;
+
+  
+    this.getAllInoutDetails(pagObj);
   }
 
   getAllInoutDetails(pagination: any = this.pagination) {   
-    pagination.SerachText = this.serachText;
     this.showLoader = true;
 
     this.commonService.getAllInoutDetails(pagination)
@@ -119,6 +148,8 @@ export class InoutDashboardComponent implements OnInit {
           console.log('getAllInoutDetails :: ');
           console.log(data);
           this.inouts = data.body.data;
+          this.pageTotal =  data?.body?.totalRecord
+          this.last = data?.body?.totalIndex;
         },
         (err: any) => {
           this.showLoader = false;

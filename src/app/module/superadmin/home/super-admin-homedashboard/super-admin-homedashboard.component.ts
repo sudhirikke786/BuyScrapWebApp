@@ -117,7 +117,11 @@ export class SuperAdminHomedashboardComponent  implements OnInit {
       default:
         break;
     }
-
-
+  }
+  credentialM(){
+    console.log('crendential click')
+   
+   //this.router.navigateByUrl(`/superadmin/credential`);
+    this.router.navigateByUrl(`/superadmin/syspref`);
   }
 }

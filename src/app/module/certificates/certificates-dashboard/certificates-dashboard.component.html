@@ -39,70 +39,62 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <p-table
-                [value]="certificates"
-                [paginator]="true"
-                [rows]="10"
-                [scrollable]="true" 
-                scrollHeight="50vh"
-                [showCurrentPageReport]="true"
+              <div class="certificates-scrollable">
+                <div class="certificates-card-container">
+                  <div *ngFor="let certificate of certificates; let rowIndex = index" class="col-certificate-card">
+                    <div class="certificates-card" [ngClass]="{'selected-card': certificate.selected, 'unselected-card': !certificate.selected}">
+                      <div class="certificate-card-header">
+                        <div class="certificate-id-circle" [ngClass]="{'selected-circle': certificate.selected, 'unselected-circle': !certificate.selected}">
+                          <span>{{ certificate.rowId }}</span>
+                        </div>
+                        <div class="certificate-checkbox">
+                          <p-checkbox [binary]="true" [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
+                        </div>
+                      </div>
+                      <div class="certificate-card-body">
+                        <div class="cert-info-row">
+                          <span class="cert-label">Date Created:</span>
+                          <span class="cert-value">{{ certificate?.dateOpened | date: 'MM/dd/yyyy' }}</span>
+                        </div>
+                        <div class="cert-info-row">
+                          <span class="cert-label">Ticket Amount:</span>
+                          <span class="cert-value">{{ certificate?.ticketAmount }}</span>
+                        </div>
+                        <div class="cert-info-row">
+                          <span class="cert-label">Seller:</span>
+                          <span class="cert-value">{{ certificate.customerName }}</span>
+                        </div>
+                        <div class="cert-info-row">
+                          <span class="cert-label">Date Closed:</span>
+                          <span class="cert-value" *ngIf="certificate?.isCODDone">{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</span>
+                          <span class="cert-value" *ngIf="!certificate?.isCODDone">-</span>
+                        </div>
+                      </div>
+                      <div class="certificate-card-footer">
+                        <div *ngIf="certificate?.isCODDone">
+                          <a (click)="getCODImagesbyID(certificate,'show')" class="btn btn-sm btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i>Open</a>
+                          <a (click)="generateCODReport(certificate.rowId)" class="btn btn-sm btn-success waves-effect waves-light me-1"><i class="mdi mdi-printer"></i> Print</a>
+                        </div>
+                        <div *ngIf="!certificate?.isCODDone">
+                          <a (click)="getCODImagesbyID(certificate,'cod')" class="btn btn-sm btn-danger waves-effect waves-light"><i class="mdi mdi-certificate"></i>Edit COD</a>
+                          <!-- <a data-bs-target="" data-bs-toggle="modal" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-close"></i> Close</a> -->
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               
-                [tableStyle]="{ 'min-width': '50rem' }"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" 
-              >
-             
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th></th>
-                    <th>Ticket ID</th>
-                    <th>Date Created</th>
-                    <th>Ticket Amount</th>
-                    <th>Seller</th>
-                    <th>Date Closed</th>
-                    <th>Action</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-certificate let-rowIndex="rowIndex">
-                  <tr>
-                    <td>
-                      <!-- <p-tableCheckbox [value]="product" [disabled]="isOutOfStock(product)"></p-tableCheckbox> -->
+              <div class="paginator-container" *ngIf="certificates?.length > 0">
+                <!-- <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator> -->
+                <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator>
 
-                      <!-- <p-tableCheckbox   [disabled]="certificate.selected" id="{{'pp'+ rowIndex}}"  (onChange)="onCheckboxChange(certificate)" >
-                      </p-tableCheckbox> -->
 
-                      <!-- <p-checkbox [binary]="true" [disabled]="certificate.selected"  [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox> -->
-                      <p-checkbox [binary]="true" [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
-                      <!-- <p-tableCheckbox  [(ngModel)]="certificate.selected" (onChange)="onCheckboxChange(certificate)"></p-tableCheckbox> -->
-
-                 
-                      
-                      </td>
-                    <td>{{ certificate.rowId }}</td>
-                    <td>{{ certificate?.dateOpened | date: 'MM/dd/yyyy' }}</td>
-                    <td>{{ certificate?.ticketAmount }}</td>
-                    <td>{{ certificate.customerName }}</td>
-                    <td *ngIf="certificate?.isCODDone">{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>
-                    <td *ngIf="!certificate?.isCODDone"></td> 
-                    <td *ngIf="certificate?.isCODDone">
-					          <a (click)="getCODImagesbyID(certificate,'show')" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i>Open</a>
-
-                      <a (click)="generateCODReport(certificate.rowId)" class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-printer"></i> Print</a>
-
-                      <!-- <a href="" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-restore"></i> Restore</a>  -->
-                    </td>
-                    <td *ngIf="!certificate?.isCODDone">
-                      <a (click)="getCODImagesbyID(certificate,'cod')" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-certificate"></i>Edit COD</a>
-
-                      <!-- <a data-bs-target="" data-bs-toggle="modal" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-close"></i> Close</a> -->
-                  </td>
-                  </tr>
-                </ng-template>
-               
-              </p-table>
-            </div>
+              </div>
+            </div> 
             <!-- end card body-->
-          </div>
+          </div> 
           <!-- end card -->
         </div>
         <!-- end col-->

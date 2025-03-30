@@ -50,7 +50,7 @@ export class SideMenuComponent implements OnInit {
       },
       {
         title:'Dispatch',
-        url:'/dispatch',
+        url:'/dispatch/meeting',
         icon:'/assets/images/custom/icons/ship-out.png',
         role: ['Administrator','Cashier','Driver']
       },

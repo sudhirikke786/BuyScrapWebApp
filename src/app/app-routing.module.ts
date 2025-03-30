@@ -57,6 +57,14 @@ const routes: Routes = [
         path:'settings',
         loadChildren:() => import('./module/settings/settings.module').then(m => m.SettingsModule),
       },
+      {
+        path:'credential',
+        loadChildren:() => import('./module/superadmin/credential/credential.module').then(m => m.CredentialModule),
+      },
+      {
+        path:'syspref',
+        loadChildren:() => import('./module/superadmin/syspref/syspref.module').then(m => m.SysprefModule),
+      }
     ]
   },
   { 

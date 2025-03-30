@@ -113,7 +113,7 @@ export class OrganizationLoginComponent implements OnInit {
             localStorage.setItem('authToken', responseBody.token);
             localStorage.setItem('orgName', 'Buyscrapadmin');
             localStorage.setItem('userName', responseBody.userdto?.userName || 'SuperAdmin');
-  
+            localStorage.setItem('userData', JSON.stringify(responseBody.userdto));
             this.router.navigateByUrl(`/superadmin/home`);
           } else {
             this.messageService.add({ 

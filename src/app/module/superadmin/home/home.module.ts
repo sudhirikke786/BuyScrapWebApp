@@ -7,6 +7,7 @@ import { CommonsharedModule } from '../../shared/commonshared/commonshared.modul
 import { SuperadminLocationManagmentComponent } from './superadmin-location-managment/superadmin-location-managment.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuperadminUsermanagmentComponent } from './superadmin-usermanagment/superadmin-usermanagment.component';
+import { TicketTrackComponent } from './ticket-track/ticket-track.component';
 const routes = [
     {
     path: '',
@@ -19,6 +20,10 @@ const routes = [
     {
       path: 'superadmin-usermanagment',
       component: SuperadminUsermanagmentComponent
+    },
+    {
+      path: 'ticket-track',
+      component: TicketTrackComponent
     }
   ];
 
@@ -30,6 +35,7 @@ const routes = [
     SuperAdminHomedashboardComponent,
     SuperadminLocationManagmentComponent,
     SuperadminUsermanagmentComponent,
+    TicketTrackComponent,
   ],
   imports: [
     CommonModule,

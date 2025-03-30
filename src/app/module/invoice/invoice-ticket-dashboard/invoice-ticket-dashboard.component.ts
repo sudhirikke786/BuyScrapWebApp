@@ -245,6 +245,18 @@ export class InvoiceTicketDashboardComponent implements OnInit {
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
+
+    const storedPagination = localStorage.getItem('invoicePaginationData');
+    if (storedPagination) {
+      this.pagination = JSON.parse(storedPagination);
+      this.currentPage = this.pagination.PageNumber;
+      this.pageSize = this.pagination.RowOfPage;
+      this.first = this.pagination.first;
+    } else {
+      this.currentPage = 1;
+      this.pageSize = 10;
+      this.first = 0;
+    }
     this.pagination.Status = result;
     this.getAllTicketsDetails(this.pagination);
 
@@ -308,6 +320,9 @@ export class InvoiceTicketDashboardComponent implements OnInit {
         });
         this.pageTotal = data?.body?.totalRecord
         this.last = data?.body?.totalIndex;
+
+        localStorage.setItem('invoicePaginationData', JSON.stringify(this.pagination));
+
 
       },
         (err: any) => {

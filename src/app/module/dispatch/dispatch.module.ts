@@ -10,11 +10,18 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { DispatchLatestDetailsComponent } from './dispatch-latest-details/dispatch-latest-details.component';
 import { DispatchOrderStatusComponent } from './dispatch-order-status/dispatch-order-status.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-
+import { DispatchLayoutComponent } from './dispatch-layout/dispatch-layout.component';
 export const routes: Routes = [
   {
     path: '',
-    component: DispatchDashboardComponent
+    component: DispatchLayoutComponent, 
+    children: [
+      { path: '', 
+        component: DispatchDashboardComponent 
+      }, 
+      { path: 'meeting', 
+        component: FullCalnderDispatchComponent } 
+    ]
   },
   {
     path: 'dispatch-detail/:rowId/:sellerID/:type',
@@ -23,10 +30,6 @@ export const routes: Routes = [
   {
     path: 'dispatch-status',
     component: DispatchOrderStatusComponent
-  },
-  {
-    path:'meeting',
-    component:FullCalnderDispatchComponent
   }
 ]
 
@@ -36,8 +39,9 @@ export const routes: Routes = [
     DispatchDashboardComponent,
     FullCalnderDispatchComponent,
     DispatchLatestDetailsComponent,
-    DispatchOrderStatusComponent
-  ],
+    DispatchOrderStatusComponent,
+    DispatchLayoutComponent
+    ],
   imports: [
     CommonModule,
     FormsModule,

@@ -168,6 +168,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Organisations/GetAdminOrganisaction', 'GET', paramObj);
   }
   
+  InsertUpdateSuperAdminDTO(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Users/InsertUpdateSuperAdminDTO', 'POST', requestObj);
+  }
+
   insertConsentdetail(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Consent/Insertconsentdetail', 'POST', requestObj);
   }

@@ -910,36 +910,36 @@ export class TicketDetailComponent implements OnInit {
   calculateTotal(tickets: any) {
     this.totalNoOfMaterial = tickets.length;
     this.totalGross = tickets.reduce(function (sum: any, tickets: any) {
-      return sum + tickets.gross;
+        return sum + tickets.gross;
     }, 0);
     this.totalTare = tickets.reduce(function (sum: any, tickets: any) {
-      return sum + tickets.tare;
+        return sum + tickets.tare;
     }, 0);
     this.totalNet = tickets.reduce(function (sum: any, tickets: any) {
-      return sum + tickets.net;
+        return sum + tickets.net;
     }, 0);
     this.totalActualAmount = tickets.reduce(function (sum: any, tickets: any) {
       // return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : tickets.amount);
-      let amount = tickets.amount; 
-      if (tickets.isCOD) {
-        amount = -Math.abs(tickets.amount); 
-      }
-      return sum + (tickets.isAdjusmentSet ? 0 : tickets.amount);
+      // let amount = tickets.amount; 
+      // if (tickets.isCOD) {
+      //   amount = -Math.abs(tickets.amount); 
+      // }
+        return sum + (tickets.isAdjusmentSet  ? 0 : (tickets.isCOD ? 0 : tickets.amount));
     }, 0);
 
     if (this.isRounding) {
-      //rounding true
-      this.totalAmount = Math.round(this.totalActualAmount);
-      this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
+        //rounding true
+        this.totalAmount = Math.round(this.totalActualAmount);
+        this.totalRoundingAmount = this.totalAmount - this.totalActualAmount;
     } else {
-      this.totalAmount = this.totalActualAmount;
-      this.totalRoundingAmount = 0;
+        this.totalAmount = this.totalActualAmount;
+        this.totalRoundingAmount = 0;
     }
     this.totalAdjustment = tickets.reduce(function (sum: any, tickets: any) {
       // return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : 0);
-      return sum + (tickets.isAdjusmentSet ? tickets.amount : 0);
+        return sum + (tickets.isAdjusmentSet ? tickets.amount : 0);
     }, 0);
-  }
+}
 
   onCODChange(ticket: any) {
     ticket.amount = ticket.isCOD ? -Math.abs(ticket.amount) : Math.abs(ticket.amount);
@@ -1309,11 +1309,11 @@ export class TicketDetailComponent implements OnInit {
       this.ticketData.isCOD = this.isCODRequired;
       this.ticketData.status = ticketStatus;
       this.ticketData.amount = parseFloat(this.totalAmount.toFixed(3));
-      this.ticketData.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
       this.ticketData.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
       this.ticketData.ticketAmount = parseFloat(this.totalActualAmount.toFixed(3));
       this.ticketData.paidAmount = parseFloat(paidAmount.toString());
       this.ticketData.adjustmentAmount = parseFloat(this.totalAdjustment.toFixed(3));
+      this.ticketData.balanceAmount = this.ticketData.amount - this.ticketData.adjustmentAmount;
       this.ticketData.lstttransactionMasterDTO = this.ticketObj;
       this.ticketData.updatedBy = this.logInUserId;
       this.ticketData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
@@ -1333,14 +1333,14 @@ export class TicketDetailComponent implements OnInit {
       newTicket.ticketId = 0;
       newTicket.status = ticketStatus;
       newTicket.amount = parseFloat(this.totalAmount.toFixed(3));
-      newTicket.balanceAmount = parseFloat(this.totalAmount.toFixed(3));
       newTicket.roundingAmount = parseFloat(this.totalRoundingAmount.toFixed(3));
       newTicket.ticketAmount = parseFloat(this.totalActualAmount.toFixed(3));
       newTicket.paidAmount = parseFloat(paidAmount.toString());
       newTicket.dateOpened = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       newTicket.dateClosed = null;
       newTicket.customerName = this.customer?.fullName;
-      newTicket.adjustmentAmount = parseFloat(this.totalAdjustment.toFixed(3));
+      newTicket.adjustmentAmount = parseFloat(this.totalAdjustment.toFixed(3));      
+      newTicket.balanceAmount = newTicket.amount - newTicket.adjustmentAmount;
       newTicket.locID = this.locId;
       newTicket.lstttransactionMasterDTO = this.ticketObj;
       newTicket.sellerSignature = this.sellerSignatureImagePath;

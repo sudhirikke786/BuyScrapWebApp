@@ -8,7 +8,7 @@
                 <div class="col-sm-6 col-6">
                     <h4 class="page-title">Invoice</h4>
                 </div>
-
+    
                 <div class="col-sm-6 col-6">
                     <div class="b-links">
                         <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()">Invoice</a>
@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <!-- <div class="row mt-2">
+         <!-- <div class="row mt-2">
                     <div class="col text-center">
                         <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> New Ticket</button> 
                         <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> Merge Ticket and Pay</button>
@@ -70,77 +70,96 @@
 
         </div>
         <!-- end page title -->
-
+    
         <div class="row mt-2">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
 
                       
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <p-table #dt1 [value]="tickets" [paginator]="false" [rows]="pageSize"
-                                        [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" 
-                                          scrollHeight="calc(100vh - 290px)"
-                                         [loading]="isLoading"
-                                        [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']">
-                                        <ng-template pTemplate="header">
-                                            <tr>
-                                                <th>Invoice ID</th>
-                                                <th>Date Created</th>
-                                                <th>Status</th>
-                                                <th>Amount</th>
-                                                <th>Buyer</th>
-                                                <th>Date Closed</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </ng-template>
-                                        <ng-template pTemplate="body" let-ticket>
-                                            <tr (contextmenu)="onRightClick($event)" [ngClass]="{'bg-info': ticket.isParent}">
-                                                <td>{{ ticket?.rowId }}</td>
-                                                <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy' }}</td>
-                                                <td><span class="status-badge" [ngClass]="'status-' + ticket.status.toLowerCase()">{{ ticket?.status | uppercase }}</span></td>                                                
-                                                <td>{{ ticket?.totalAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
-                                                <td>{{ ticket?.customerName }}</td>
-                                                <td>{{ ticket?.isMarkAsPaid && ticket?.dateClosed ? (ticket?.dateClosed | date: 'MM/dd/yyyy') : '' }}
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex no-wrap">
-                                                        <ng-container *ngIf="currentRole!== 'Scale'">
-                                                            <a *ngIf="ticket?.status !== 'VOIDED'" type="button" (click)="showVoideCancelCopy(ticket)"
-                                                                class="btn btn-grid btn-danger  me-1">
-                                                                <i class="mdi mdi-trash-can-outline pe-1"></i> Void
-                                                            </a>
-                                                            <a *ngIf="ticket?.status == 'VOIDED'" type="button" (click)="showRestoreTicket(ticket)"
-                                                                class="btn btn-grid btn-success  me-1">
-                                                                <i class="mdi mdi-restore me-1 pe-1"></i> Restore
-                                                            </a>
-
-                                                        </ng-container>
-                                                       
-                                                        <a class="btn btn-grid btn-success me-1"
-                                                            (click)="showTicketDetails(ticket)">
-                                                            <i class="mdi mdi-eye pe-1"></i> Open Invoice
-                                                        </a>
-
-                                                        <a class="btn btn-grid btn-success  me-1"
-                                                        (click)="openConfirmDialog(ticket)"
-                                                        [ngClass]="ticket?.isMarkAsPaid ? 'btn-danger' : 'btn-success'">
-                                                        <i class="mdi mdi-eye pe-1"></i>{{ ticket?.isMarkAsPaid ? 'Mark as Unpaid' : 'Mark as Paid' }}
-                                                    </a>
-
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="invoice-scroll-container" [ngClass]="{'loading': isLoading}">
+                                    <div class="row invoice-card-container">
+                                        <ng-container *ngFor="let ticket of tickets; let i = index">
+                                            <div class="col-md-4 col-lg-2-4 mb-3">
+                                                <div class="card invoice-card" [ngClass]="{'parent-card': ticket.isParent}">
+                                                    <div class="card-header">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <h5 class="card-title">#{{ ticket?.rowId }}</h5>
+                                                            <span class="status-badge" [ngClass]="'status-' + ticket.status.toLowerCase()">
+                                                                {{ ticket?.status | uppercase }}
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                            </tr>
-                                        </ng-template>
-
-
-
-                                    </p-table>
-                                 
-
+                                                    
+                                                    <div class="invoice-separator" [ngClass]="'separator-' + ticket.status.toLowerCase()"></div>
+                                                    
+                                                    <div class="card-body">
+                                                        <div class="invoice-amount">
+                                                            {{ ticket?.totalAmount | currency: currencySymbol :'symbol': numberFormat }}
+                                                        </div>
+                                                        
+                                                        <div class="invoice-details">
+                                                            <div class="detail-item">
+                                                                <span class="detail-label">Date Created:</span>
+                                                                <span class="detail-value">{{ ticket?.createdDate | date: 'MM/dd/yyyy' }}</span>
+                                                            </div>
+                                                            
+                                                            <div class="detail-item">
+                                                                <span class="detail-label">Buyer:</span>
+                                                                <span class="detail-value">{{ ticket?.customerName }}</span>
+                                                            </div>
+                                                            
+                                                            <div class="detail-item">
+                                                                <span class="detail-label">Date Closed:</span>
+                                                                <span class="detail-value">{{ ticket?.isMarkAsPaid && ticket?.dateClosed ? (ticket?.dateClosed | date: 'MM/dd/yyyy') : '' }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="card-footer">
+                                                        <div class="action-buttons">
+                                                            <ng-container *ngIf="currentRole !== 'Scale'">
+                                                                <a *ngIf="ticket?.status !== 'VOIDED'" 
+                                                                    (click)="showVoideCancelCopy(ticket)"
+                                                                    class="btn btn-danger btn-sm">
+                                                                    <i class="mdi mdi-trash-can-outline"></i> Void
+                                                                </a>
+                                                                <a *ngIf="ticket?.status == 'VOIDED'" 
+                                                                    (click)="showRestoreTicket(ticket)"
+                                                                    class="btn btn-success btn-sm">
+                                                                    <i class="mdi mdi-restore"></i> Restore
+                                                                </a>
+                                                            </ng-container>
+                                                            
+                                                            <a class="btn btn-success btn-sm"
+                                                                (click)="showTicketDetails(ticket)">
+                                                                <i class="mdi mdi-eye pe-1"></i> Open
+                                                            </a>
+                                                            
+                                                            <ng-container *ngIf="ticket?.isMarkAsPaid">
+                                                                <a class="btn btn-danger btn-sm unpaid-btn"
+                                                                    (click)="openConfirmDialog(ticket)">
+                                                                    <i class="mdi mdi-eye pe-1"></i> <span>Unpaid</span>
+                                                                </a>
+                                                            </ng-container>
+                                                            
+                                                            <ng-container *ngIf="!ticket?.isMarkAsPaid">
+                                                                <a class="btn btn-success btn-sm"
+                                                                    (click)="openConfirmDialog(ticket)">
+                                                                    <i class="mdi mdi-eye pe-1"></i> Paid
+                                                                </a>
+                                                            </ng-container>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
                                 </div>
-                                <div class="col-sm-12">
+                            </div>
+                            <div class="col-sm-12">
                                 <div *ngIf="tickets?.length > 0">
                                     <p-paginator class="serverside-paginator" [showCurrentPageReport]="true"
                                         (onPageChange)="onPageChange($event)"
@@ -148,8 +167,8 @@
                                         [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal"
                                         [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions"></p-paginator>
                                 </div>
-                                </div>
                             </div>
+                        </div>
                     
                     </div> <!-- end card -->
                 </div><!-- end col-->

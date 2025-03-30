@@ -61,30 +61,49 @@ export class SellersBuyersDashboardComponent implements OnInit {
     private messageService: MessageService,
     public commonService: CommonService) { }
 
-  ngOnInit() {
-    this.orgName = localStorage.getItem('orgName');
-    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
-    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    ngOnInit() {
+      this.orgName = localStorage.getItem('orgName');
+      this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+      this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    
+      const storedPagination = localStorage.getItem('sellerPaginationData');
+      if (storedPagination) {
+        const parsedData = JSON.parse(storedPagination);
+        this.currentPage = parsedData.currentPage;
+        this.pageSize = parsedData.pageSize;
+        this.first = parsedData.first;
+      } else {
+        this.pageSize = 10;
+        this.currentPage = 1;
+        this.first = 0;
+      }
+    
+      const paramObject = {
+        PageNumber: this.currentPage,
+        RowOfPage: this.pageSize,
+        LocationId: this.locId,
+        SerachText: this.searchSellerInput.replace(/ /g, "%")
+      };
+      this.getAllsellersDetails(paramObject);
+    }
 
-    const paramObject = {
-      PageNumber: 1,
-      RowOfPage: 10,
-      LocationId: this.locId,
-      SerachText: this.searchSellerInput.replace(/ /g, "%")
-    };
-    this.getAllsellersDetails(paramObject);
-  }
-
-  
-  getAllsellersDetails(paramObject: any) {
-    this.sellerLoader =  true;
-    this.commonService.getAllsellersDetails(paramObject)
+    
+    getAllsellersDetails(paramObject: any) {
+      this.sellerLoader =  true;
+      this.commonService.getAllsellersDetails(paramObject)
       .subscribe(data => {
           console.log('getAllsellersDetails :: ');
           console.log(data);
           this.sellers = data.body.data;
           this.pageTotal =  data?.body?.totalRecord
           this.last = data?.body?.totalIndex;
+    
+          const paginationData = {
+            currentPage: paramObject.PageNumber,
+            pageSize: paramObject.RowOfPage,
+            first: (paramObject.PageNumber - 1) * paramObject.RowOfPage
+          };
+          localStorage.setItem('sellerPaginationData', JSON.stringify(paginationData));
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
@@ -94,22 +113,22 @@ export class SellersBuyersDashboardComponent implements OnInit {
           this.sellerLoader =  false;
         }
       );
-  }
+    }
 
-
-  onPageChange(event: any) {
-    this.currentPage = event.first / event.rows + 1;
+    
+    onPageChange(event: any) {
+      this.currentPage = event.first / event.rows + 1;
     this.first = event.first ;
-    let pagObj = {
-      PageNumber: this.currentPage,
+      let pagObj = {
+        PageNumber: this.currentPage,
       RowOfPage: event.rows,
-      LocationId: this.locId,
-      SerachText: this.searchSellerInput.replace(/ /g, "%")
+        LocationId: this.locId,
+        SerachText: this.searchSellerInput.replace(/ /g, "%")
     }
     this.pageSize = event.rows;
    // this.pagination = {...this.pagination,...pagObj};
-    this.getAllsellersDetails(pagObj);
-  }
+      this.getAllsellersDetails(pagObj);
+    }
   
 
   /** Seller pop up actions start */

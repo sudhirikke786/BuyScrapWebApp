@@ -245,8 +245,6 @@ deleteUser(userObj: any) {
     }
     this.commonService.GetAllUsers(reqObj).subscribe((res) =>{
       this.admins =  res?.body?.data;
-
-     
     })
   }
 

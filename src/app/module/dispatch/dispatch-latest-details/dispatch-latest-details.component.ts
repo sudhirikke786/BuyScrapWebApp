@@ -42,6 +42,9 @@ export class DispatchLatestDetailsComponent {
   isBusiness: boolean = false;
   notes:any;
   isLoading = false;
+  contactName: string = '';
+  contactNumber: string = '';
+
 
   currentDate: any;
 
@@ -293,6 +296,8 @@ constructor(private route: ActivatedRoute, private router:Router,
         this.pickupdate =  this.setDateToInput(this.dispatchObj.pickUpDate) ;
         this.driversName = this.dispatchObj.driverID;
         this.notes = this.dispatchObj.notes;
+        this.contactName = this.dispatchObj.contactName;
+        this.contactNumber = this.dispatchObj.contactNumber;
       },
         (err: any) => {
           this.isLoading = false;
@@ -391,6 +396,16 @@ constructor(private route: ActivatedRoute, private router:Router,
         return;
       }
     }
+
+    // default container quantity to 1 if dropoffbox or boxpickup is entered
+    if (containerNumber) {
+      if (this.editingIndex !== null && this.editingIndex !== undefined) {
+          this.editItemObj.containerQuantity = 1;
+      } else {
+          this.newItem.containerQuantity = 1;
+      }
+  }
+
     const paramObject = {
       Containernumber: containerNumber
     };
@@ -468,6 +483,8 @@ constructor(private route: ActivatedRoute, private router:Router,
       "createdDate": "2024-12-01T14:41:32.385Z",
       "updatedBy": this.logInUserId,
       "updatedDate": "2024-12-01T14:41:32.385Z",
+      "contactName": this.contactName,   
+      "contactNumber": this.contactNumber, 
       "lstTPickUpMaterialDTO": containerObj
     }
 

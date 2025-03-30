@@ -130,6 +130,11 @@
                         </div>
                       </td>
                     </tr>
+                    <tr>
+                      <td class="w-25"><b>Contact Name:</b> {{ contactName }}</td>
+                      <td class="w-25"><b>Contact Number:</b> {{ contactNumber }}</td>
+                    </tr>
+                    
 
 
                   </table>
@@ -201,13 +206,13 @@
                             <td style="width:12%" *ngIf="editingIndex === i">
                               <input type="text" [(ngModel)]="editItemObj.dropoffbox" 
                               (change)="checkContainerAvailability(editItemObj.dropoffbox, 'dropoff')" 
-                              [disabled]="dispatchMaterial == 'Pickup' || editItemObj.containerQuantity > 0"/>
+                              [disabled]="dispatchMaterial == 'Pickup' || editItemObj.containerQuantity > 1"/>
                             </td>
                             <td style="width:12%" *ngIf="editingIndex !== i">{{ item?.boxpickup }}</td>
                             <td style="width:12%" *ngIf="editingIndex === i">
                               <input type="text" [(ngModel)]="editItemObj.boxpickup "
                               (change)="checkContainerAvailability(editItemObj.boxpickup, 'pickup')" 
-                              [disabled]="dispatchMaterial == 'Drop off' || editItemObj.containerQuantity > 0"/>
+                              [disabled]="dispatchMaterial == 'Drop off' || editItemObj.containerQuantity > 1"/>
                             </td>
                             <td style="width:10%" *ngIf="editingIndex !== i">{{ item?.charges }}</td>
                             <td style="width:10%" *ngIf="editingIndex === i">
@@ -264,12 +269,12 @@
                             <td style="width:12%">
                               <input type="text" [(ngModel)]="newItem.dropoffbox" placeholder="Drop-off Box"
                               (change)="checkContainerAvailability(newItem.dropoffbox, 'dropoff')" 
-                              [disabled]="dispatchMaterial == 'Pickup' || newItem.containerQuantity > 0" />
+                              [disabled]="dispatchMaterial == 'Pickup' || newItem.containerQuantity > 1" />
                             </td>
                             <td style="width:12%">
                               <input type="text" [(ngModel)]="newItem.boxpickup" placeholder="Box Pickup" 
                               (change)="checkContainerAvailability(newItem.boxpickup, 'pickup')" 
-                              [disabled]="dispatchMaterial == 'Drop off' || newItem.containerQuantity > 0" />
+                              [disabled]="dispatchMaterial == 'Drop off' || newItem.containerQuantity > 1" />
                             </td>
                             <td style="width:10%">
                               <input min="0" type="number" [(ngModel)]="newItem.charges" placeholder="Charges" />
