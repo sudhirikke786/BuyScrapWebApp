@@ -68,11 +68,12 @@
 }
 
 .invoice-scroll-container {
-  max-height: calc(100vh - 250px); 
+  max-height: calc(100vh - 280px);
   overflow-y: auto;
   overflow-x: hidden; 
   width: 100%;
   padding-right: 3px;
+  padding-bottom: 10px;
   
   &.loading {
       display: flex;
@@ -248,5 +249,60 @@
 @media (max-width: 767.98px) {
   .col-md-4 {
       margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .serverside-paginator {
+    .p-paginator {
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 10px;
+      
+      .p-paginator-current {
+        width: 100%;
+        text-align: center;
+        order: -1;
+        margin-bottom: 8px;
+      }
+      
+      .p-paginator-pages {
+        margin: 0 auto;
+      }
+      
+      .p-paginator-rpp-options {
+        margin-top: 5px;
+      }
+    }
+  }
+  
+  .invoice-scroll-container {
+    max-height: calc(100vh - 340px);
+  }
+}
+
+@media (min-width: 768px) and (max-height: 674px) {
+  .invoice-scroll-container {
+    max-height: calc(100vh - 350px);
+  }
+  
+  .serverside-paginator {
+    .p-paginator {
+      padding: 5px;
+      
+      .p-paginator-current {
+        font-size: 0.85rem;
+      }
+      
+      .p-paginator-page-options {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .p-dropdown {
+        max-width: 75px;
+      }
+    }
   }
 }

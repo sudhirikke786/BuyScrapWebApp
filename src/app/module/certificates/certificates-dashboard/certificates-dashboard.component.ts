@@ -95,6 +95,18 @@ export class CertificatesDashboardComponent implements OnInit {
     this.locationName = localStorage.getItem('locationName');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.checkTabView = this.helperService.isTab();
+
+    const storedPagination = localStorage.getItem('certificatesPaginationData');
+    if (storedPagination) {
+      const paginationData = JSON.parse(storedPagination);
+      this.currentPage = paginationData.PageNumber || 1;
+      this.pageSize = paginationData.RowOfPage || 10;
+      this.first = paginationData.first || 0;
+    } else {
+      this.currentPage = 1;
+      this.pageSize = 10;
+      this.first = 0;
+    }
     
     this.getAllCODTickets({
       PageNumber: this.currentPage,
@@ -127,7 +139,7 @@ export class CertificatesDashboardComponent implements OnInit {
           });
         }
         this.isConfirmModel =  false;
-        this.getAllCODTickets();
+        this.getAllCODTickets(JSON.parse(localStorage.getItem('certificatesPaginationData') || '{}'));
       })
     }
 
@@ -213,6 +225,7 @@ export class CertificatesDashboardComponent implements OnInit {
           this.last = data?.body?.totalIndex;
 
           console.log(this.certificates);
+          localStorage.setItem('certificatesPaginationData', JSON.stringify(pagObj));
         },
         (err: any) => {
           this.showLoader = false;

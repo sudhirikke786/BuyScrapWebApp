@@ -1,0 +1,142 @@
+<!-- <p>invoice-layout works!</p> -->
+<div class="content-page">
+    <div class="content" >
+        <div class="container-fluid">
+        <div class="bdcmb">
+            <div class="row">
+                <div class="col-sm-6 col-6">
+                    <h4 class="page-title">Invoice</h4>
+                </div>
+
+                <div class="col-sm-6 col-6">
+                    <div class="b-links">
+                        <a routerLink="/home">Home</a> / <a href="javscript:void()">Invoice</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2" >
+            <div class="ticket-card col-md-12 d-flex  display-mobile flex-wrap">
+                <div class="col-xs-12 col-md-4 col-lg-3  mb-1">
+                    <p-multiSelect [class.fixed-multiselect]="true"   [options]="ticketsTypes" [style]="{'minWidth':'100%'}"
+                        [(ngModel)]="selectedTickets"  [maxSelectedLabels]="maxItem" defaultLabel="You can choose  ..."
+                        optionLabel="name" display="chip" (onChange)="addRemoveStatus($event)">
+                    
+                    </p-multiSelect>
+                </div>
+                <div class="col-xs-12 col-md-3 col-lg-2  mb-1">
+                    <select class="form-control" id="example-select" [(ngModel)]="searchOrder">
+                        <option value="All">All</option>
+                        <option value="TicketId">Invoice ID</option>
+                        <option value="DateCreatedLatest">Date Created : Latest</option>
+                        <option value="DateCreatedOldest">Date Created : Oldest</option>
+                        <option value="LowTicketAmount">Low Ticket Amount</option>
+                        <option value="HighTicketAmount">High Ticket Amount</option>
+                        <option value="Status">Status</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-md-4 col-lg-3  mb-1">
+                    <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText" (keyup.enter)="searchTickets()" placeholder="Search">
+                </div>
+                <div class="col">
+                    <div  class="d-flex justify-content-between">
+                        <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
+                        <div class="form-check form-switch ms-3">
+                            <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            id="dispatchToggle" 
+                            [(ngModel)]="isInvoiceMode"
+                            (ngModelChange)="onToggleChange()"
+                            >
+                            <label class="form-check-label" for="dispatchToggle">
+                            {{ isInvoiceMode ? 'Invoice Card' : 'Invoice Grid' }}
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- <div class="d-flex justify-content-between align-items-start">
+                        <a  type="button" (click)="addNewTicket()" 
+                        class="btn btn-primary me-1  cursor-pointer" >
+                        New Ticket
+                        </a>
+                        <a  type="button"  (click)="showMergeDialog();" 
+                            class="btn btn-primary  me-1  cursor-pointer"  >
+                            Merge Ticket
+                        </a>
+                    </div> -->
+                
+
+                
+                </div>
+                
+            </div>
+        
+
+        </div>
+        <div class="dynamic-content">
+            <router-outlet></router-outlet>
+        </div>
+        </div>
+
+    </div>
+</div>
+
+<p-dialog [modal]="true" 
+[header]="newTicketVisible ? 'New Ticket' : ( ticketvisible ? 'Merge Ticket and Pay' : '' )"
+[(visible)]="dialogPopupVisible" [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
+
+
+<div class="row" *ngIf="sellerLoader">
+ 
+        <app-page-loader type="ftable"></app-page-loader>
+   
+</div>
+
+
+<div class="row" *ngIf="!sellerLoader">
+
+    <div class="col-md-6">
+        <input type="text" #searchBox id="example-palaceholder"  (keydown)="onKeydown($event, searchBox.value)"  [(ngModel)]="searchSellerInput" class="form-control"
+            placeholder="Search for Sellers, Address, License and License Plate">
+    </div>
+    <div class="col-md-6">
+        <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newTicketList"></app-actionbar>
+
+        <!-- <a  type="button" (click)="addNewSeller()" 
+        class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
+        New Customer
+        </a> -->
+    </div>
+
+</div>
+
+<div class="row mt-3"  *ngIf="!sellerLoader">
+
+    <p-table [value]="sellers" [scrollable]="true" scrollHeight="40vh" [paginator]="true" [rows]="10"
+        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
+
+
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Seller</th>
+                <th>Driver's License</th>
+                <th>Address</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-seller>
+            <tr (click)="clickOnSeller(seller.rowId, seller.fullName)"  style="cursor: pointer;">
+                <td>{{ seller.fullName }}</td>
+                <td>{{ seller.driverLicenseNumber }}</td>
+                <td>{{ seller.streetAddress }}</td>
+            </tr>
+        </ng-template>
+      
+    </p-table>
+</div>
+
+
+</p-dialog>

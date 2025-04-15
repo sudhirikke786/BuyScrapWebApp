@@ -1,0 +1,100 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f8f8;
+}
+
+.bdcmb {
+    margin-bottom: 1rem;
+    
+    .page-title {
+        margin-bottom: 0;
+    }
+    
+    .b-links {
+        text-align: right;
+        
+        @media (max-width: 767px) {
+            text-align: left;
+            margin-top: 0.5rem;
+        }
+    }
+}
+
+.action-container {
+    display: flex;
+    align-items: center;
+    
+    @media (max-width: 576px) {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+.toggle-container {
+    display: flex;
+    background: white;
+    padding: 5px;
+    border-radius: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-option {
+    flex: 1;
+    padding: 5px 10px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: background 0.3s, color 0.3s;
+    
+    @media (max-width: 767px) {
+        padding: 5px 6px;
+        font-size: 0.9rem;
+    }
+    
+    @media (max-width: 576px) {
+        padding: 4px 4px;
+        font-size: 0.8rem;
+    }
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label {
+    background: #6fcf97;
+    color: white;
+}
+
+.view-switch {
+    @media (max-width: 576px) {
+        margin-left: 0 !important;
+        margin-top: 8px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .form-check-label {
+        font-size: 0.9rem;
+    }
+    
+    .col-sm-6.d-flex {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .d-flex.align-items-center.flex-wrap {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    
+    app-actionbar {
+        margin-right: auto;
+    }
+}

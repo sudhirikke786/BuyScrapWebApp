@@ -682,9 +682,10 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       SearchOrder: 'InvoiceId',
       PageNumber: 1,
       RowOfPage: 10
-    };
+    }; 
+    setTimeout(() => {
     this.commonService.GetAllInvoiceDetails(paramObject)
-      .subscribe(data => {
+      .subscribe({ next: (data) => {
         console.log('getAllInvoicesDetails for invoiceId :: ');
         console.log(data);
         this.invoiceData = data.body.data[0];
@@ -704,7 +705,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         this.paidAmount = this.invoiceData.paidAmount;
         this.balanceAmount = this.invoiceData.balanceAmount ;
 
-         //logic for display address
+        //logic for display address
          if (this.invoiceData.addressID === 0) {
           this.addressName = this.customer?.streetAddress || 'N/A';
           this.selectedBusinessAddressID = 0; 
@@ -723,14 +724,15 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
         this.getAllUsers(userId);
       },
-        (err: any) => {
+        error: (err: any) => {
           this.isLoading = false;
           // this.errorMsg = 'Error occured';
         },
-        () => {
+        complete: () => {
           this.isLoading = false;
         }
-      );
+      });
+  }, 0); 
   }
   getAddressName(addressID: number): string {
     const selectedAddress = this.addresses.find((address: { rowId: number; }) => address.rowId === addressID);
@@ -876,8 +878,9 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       ID: this.sellerId,
       LocationId: Number(this.locId)
     };
-    this.commonService.getSellerById(paramObject).subscribe(
-      (data) => {
+    setTimeout(() => {
+    this.commonService.getSellerById(paramObject).subscribe({
+        next: (data) => {
         console.log('getSellerById Response:', data);
         this.customer = data.body.data;
         this.isBusiness = this.customer?.sellerType === 'Business';
@@ -886,16 +889,18 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
           this.fetchSellerAddresses();
         } else {
           this.addresses = [this.customer.streetAddress];
+          this.isLoading = false; 
         }
       },
-      (err: any) => {
+        error: (err: any) => {
         this.isLoading = false;
         console.error('Error fetching seller details:', err);
       },
-      () => {
+      complete: () => {
         this.isLoading = false;
       }
-    );
+      });
+    }, 0);
   }
 
   fetchSellerAddresses() {

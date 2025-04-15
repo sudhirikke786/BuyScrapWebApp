@@ -38,7 +38,7 @@ export class DispatchDashboardComponent implements OnInit {
   selectedDriverId: number=0;
   isChecked: boolean = false;
 
-  dispatchRes = [
+  dispatchRes : any = [
     
   ];
 
@@ -152,6 +152,19 @@ export class DispatchDashboardComponent implements OnInit {
       this.rowID = params["rowID"];
     });
 
+    const storedPagination = localStorage.getItem('dispatchPaginationData_grid');
+    if (storedPagination) {
+      const paginationData = JSON.parse(storedPagination);
+      this.currentPage = paginationData.PageNumber || 1;
+      this.pageSize = paginationData.RowOfPage || 10;
+      this.first = paginationData.first || 0;
+    } else {
+      this.currentPage = 1;
+      this.pageSize = 10;
+      this.first = 0;
+    }
+  
+
     this.getAllCODTickets();
   }
 
@@ -209,6 +222,14 @@ export class DispatchDashboardComponent implements OnInit {
                 driverNotes: item.driverNotes         
               };
             });
+            this.pageTotal = data?.body?.totalRecord;
+            this.last = data?.body?.totalIndex;
+
+            localStorage.setItem('dispatchPaginationData_grid', JSON.stringify({
+              PageNumber: this.currentPage,
+              RowOfPage: this.pageSize,
+              first: this.first
+            }));
           }
         } else {
           console.error('No data found or incorrect response structure.');
@@ -236,6 +257,15 @@ export class DispatchDashboardComponent implements OnInit {
 
     });
   }
+
+  onPageChange(event: any) {
+    this.currentPage = event.first / event.rows + 1;
+    this.first = event.first;
+    this.pageSize = event.rows;
+  
+    this.getAllCODTickets();
+  }
+  
   openCompletePopup(rowId: number, driverID?: number, isChecked?: boolean) {
     console.log(`Popup opened for RowID: ${rowId}, DriverID: ${driverID}, Checked: ${isChecked}`);
   
@@ -257,7 +287,7 @@ export class DispatchDashboardComponent implements OnInit {
       this.selectedDriverId = driverID;
       this.isChecked = isChecked ?? false;
     // this.completionNote = '';
-    const selectedCertificate = this.dispatchRes.find(item => (item as any).rowId == rowId) as any;
+    const selectedCertificate = this.dispatchRes.find((item:any) => (item as any).rowId == rowId) as any;
     this.completionNote = selectedCertificate?.driverNotes || '';
 
       this.showCompletePopup = true;
@@ -575,7 +605,7 @@ onSubmit() {
     );
   }
   removeFromList(rowID: number): void {
-    const index = this.dispatchRes.findIndex((item) => item && (item as any).rowId === rowID);
+    const index = this.dispatchRes.findIndex((item:any) => item && (item as any).rowId === rowID);
     if (index > -1) {
       this.dispatchRes.splice(index, 1);
     }

@@ -7,6 +7,9 @@ import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { style } from '@angular/animations';
 import { FullCalendarComponent } from '@fullcalendar/angular';
+import interactionPlugin from '@fullcalendar/interaction';
+import { ConfirmationService, MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-full-calnder-dispatch',
@@ -31,6 +34,8 @@ export class FullCalnderDispatchComponent implements OnInit {
     private route: ActivatedRoute,
     private router:Router,
     private localService:StorageService,
+    private messageService: MessageService,
+    
 
   ) {}
 
@@ -42,9 +47,11 @@ export class FullCalnderDispatchComponent implements OnInit {
 
 
   calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin],
-    initialView: 'dayGridWeek',
+    plugins: [dayGridPlugin, interactionPlugin],
+    initialView: 'dayGridMonth',
     aspectRatio: 1.8,
+    editable: true,
+    droppable: true,
     customButtons: {
       myCustomButton: {
         text: 'Back',
@@ -75,7 +82,10 @@ export class FullCalnderDispatchComponent implements OnInit {
       next: 'Next'
     },
     events: [],
-    eventContent: this.renderEventContent
+    eventContent: this.renderEventContent,
+    eventDrop: (info) => {
+      this.handleEventDrop(info);
+    }
   };
 
   @ViewChild('calendarRef') calendarRef!: FullCalendarComponent;
@@ -85,9 +95,68 @@ export class FullCalnderDispatchComponent implements OnInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = localStorage.getItem('locId');
     this.getAllCODTickets();
-    this.backUrl = `/${this.orgName}/dispatch`;
+    this.backUrl = `/${this.orgName}/dispatch/meeting`;
   }
+  
+  handleEventDrop(info: any) {
+    const dispatchID = info.event.extendedProps.detailObj?.rowId || info.event.id;
 
+    const status = info.event.extendedProps.detailObj?.ticketStatus;
+
+    if (status === 'Completed') {
+      this.messageService.add({ 
+        severity: "warn", 
+        summary: "Warning",
+        detail: "This Pickup is completed and cannot be moved."
+      });
+      info.revert(); // cancel drop
+      return; 
+    }
+    
+    const newDate = new Date(info.event.start);
+    const formattedDate = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${String(newDate.getDate()).padStart(2, '0')} 00:00:00.000`;
+    
+    console.log('Original date:', info.oldEvent.start);
+    console.log('New date:', newDate);
+    console.log('Formatted date for API:', formattedDate);
+    
+    if (dispatchID) {
+      this.updateDispatchDateAPI(dispatchID, formattedDate);
+    }
+  }
+  
+  updateDispatchDateAPI(dispatchID: number, pickUpDate: string) {
+    const requestObj = {
+      dispatchID: dispatchID,
+      pickUpDate: pickUpDate
+    };
+    const postParams = {
+      dispatchID: dispatchID,
+      pickUpDate: pickUpDate
+    };
+        this.commonService.UpdateDispatchDateDispatch(requestObj,postParams).subscribe(
+      (res) => {
+        console.log('API Response:', res); 
+        
+        if (res?.body?.data === true) {
+          this.messageService.add({ 
+            severity: "success", 
+            summary: "Success",
+            detail: "Dispatch date updated successfully."
+          });
+        }
+        this.getAllCODTickets();  
+      },
+      (error) => {
+        this.messageService.add({ 
+          severity: "error", 
+          summary: "Error",
+          detail: "An error occurred while updating dispatch date."
+        });
+      }
+    );
+  }
+  
 
   getAllCODTickets() {
     const paramObject = {
@@ -192,7 +261,7 @@ addStatus(driver:any) {
   }else{
      status = 'Unassigned'
   }
-  if(driver.closedDate){
+  if(driver.isCompleted === true){
     status = 'Completed'
   }
   return status;
@@ -208,7 +277,7 @@ addColorStatus(driver:any) {
   }else{
     colorStatus = '#06669c'
   }
-  if(driver.closedDate){
+  if(driver.isCompleted === true){
     colorStatus = '#4CAF50'
   }
   return colorStatus;

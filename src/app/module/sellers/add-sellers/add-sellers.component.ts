@@ -253,6 +253,11 @@ export class AddSellersComponent implements OnInit {
         expiryDate: this.formatDate(res["EXP"]),
         dob: this.formatDate(res["DOB"]),
         gender:res["SEX"] == '' ? 'undefind' : res["SEX"] == 'M' ? 'Male' : 'Female',
+        hair:res["HAIR"],
+        eyes:res["EYES"],
+        height:res["HGT"],
+        weight:res["WGT"],
+        class:res["CLASS"]
 
        }   
        this.sellerForm.patchValue({...userObj})

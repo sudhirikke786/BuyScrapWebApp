@@ -17,7 +17,7 @@ export class DispatchLatestDetailsComponent {
   orgName:any;
   invoiceId:any;
   sellerId:any;
-  addressId:Number=0;
+  addressId:number=0;
   locId:any;
   logInUserId: any;
   locationName: any;
@@ -464,7 +464,7 @@ constructor(private route: ActivatedRoute, private router:Router,
       "rowID": this.dispatchObj?.rowID ?? 0,
       "ticketID": 0,
       "sellerID": parseInt(this.sellerId),
-      "addressID":this.addressId,
+      "addressID": Number(this.addressId) || 0,
       "pickUpAddress": "string",
       "pickUpDate":new Date(this.pickupdate).toISOString(),
       "charges": this.invoiceObj.reduce((acc,curr) => acc + curr.charges,0),

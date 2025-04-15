@@ -94,6 +94,9 @@ export class InoutDashboardComponent implements OnInit {
   first = 0;
   last = 0;
   pageTotal = 0;
+
+  isInoutMode = false;
+
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -111,6 +114,13 @@ export class InoutDashboardComponent implements OnInit {
     this.popupHeadertext = `Select Transfer To Location (From :: ${this.locationName})` ;
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     
+    const savedPagination = JSON.parse(localStorage.getItem('inOutPagination') || '{}');
+
+    this.first = savedPagination.first || 0;
+    this.pageSize = savedPagination.rows || 10;
+    this.currentPage = savedPagination.pageNumber || 1;
+    this.serachText = savedPagination.searchText || '';
+    
     const pagination: any = {
       SerachText: this.serachText,
       PageNumber: 1,
@@ -120,6 +130,9 @@ export class InoutDashboardComponent implements OnInit {
     }
     this.getAllInoutDetails(pagination);
   }
+
+ 
+
 
   
   onPageChange(event: any) {
@@ -135,6 +148,14 @@ export class InoutDashboardComponent implements OnInit {
     };
     this.pageSize = event.rows;
 
+    const paginationLocal = {
+      first: this.first,
+      pageNumber: this.currentPage,
+      rows: this.pageSize,
+      searchText: this.searchLocationInput.replace(/ /g, "%")
+    };
+    localStorage.setItem('inOutPagination', JSON.stringify(paginationLocal));
+
   
     this.getAllInoutDetails(pagObj);
   }
@@ -148,7 +169,7 @@ export class InoutDashboardComponent implements OnInit {
           console.log('getAllInoutDetails :: ');
           console.log(data);
           this.inouts = data.body.data;
-          this.pageTotal =  data?.body?.totalRecord
+          this.pageTotal =  data?.body?.totalRecords
           this.last = data?.body?.totalIndex;
         },
         (err: any) => {

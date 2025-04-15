@@ -102,6 +102,14 @@ export class RegradeDashboardComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.storage.getLocalStorage('userObj').userdto?.rowId);
 
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+
+    const storedPagination = localStorage.getItem('regradePagination');
+  if (storedPagination) {
+    this.pagination = JSON.parse(storedPagination);
+    this.first = this.pagination.first || 0;
+    this.currentPage = this.pagination.PageNumber || 1;
+    this.pageSize = this.pagination.RowOfPage || 10;
+  }
     this.getAllRegrades(this.pagination);
   }
 
@@ -127,6 +135,7 @@ export class RegradeDashboardComponent implements OnInit {
           item.formattedText = item.formattedText.replace(/(?:\r\n|\r|\n)/g, '<br>');
           return item;
         } );
+        localStorage.setItem('regradePagination', JSON.stringify(this.pagination));
         this.pageTotal = data?.body?.totalRecord;
         this.last = data?.body?.totalIndex;
         console.log(this.regrades);

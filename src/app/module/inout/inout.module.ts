@@ -9,13 +9,29 @@ import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 import { InoutDashboardComponent } from './inout-dashboard/inout-dashboard.component';
 import { InoutDetailsComponent } from './inout-details/inout-details.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { InoutLayoutComponent } from './inout-layout/inout-layout.component';
+import { InoutGridComponent } from './inout-grid/inout-grid.component';
 
 
 export const routes: Routes = [
+  // {
+  //   path: '',
+  //   component: InoutDashboardComponent
+  // },
   {
-    path: '',
-    component: InoutDashboardComponent
-  },
+        path: '',
+        component: InoutLayoutComponent, 
+        children: [
+          {
+            path:'',
+            component:InoutDashboardComponent
+          },
+          {
+            path: 'grid',
+            component: InoutGridComponent, 
+          }
+        ]
+      },
   {
     path:'detail/:inoutId/:action',
     component: InoutDetailsComponent
@@ -25,8 +41,10 @@ export const routes: Routes = [
 @NgModule({
   declarations: [
     InoutDashboardComponent,
-    InoutDetailsComponent
-  ],
+    InoutDetailsComponent,
+    InoutLayoutComponent,
+    InoutGridComponent
+    ],
   imports: [
     CommonModule,
     FormsModule,

@@ -12,13 +12,24 @@ import { AddSellersComponent } from './add-sellers/add-sellers.component';
 import { RoleGuard } from 'src/app/core/guard/role.guard';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { CheckplanGuard } from 'src/app/core/guard/checkplan.guard';
+import { SellerLayoutComponent } from './seller-layout/seller-layout.component';
+import { SellerGridComponent } from './seller-grid/seller-grid.component';
 
 
 export const routes: Routes = [
   {
     path: '',
-    component: SellersBuyersDashboardComponent,
-   
+    component: SellerLayoutComponent, 
+    children: [
+      {
+        path: '',
+        component: SellersBuyersDashboardComponent, 
+      },
+      {
+        path: 'grid',
+        component: SellerGridComponent, 
+      }
+    ]
   },
   {
     path:'add-seller',
@@ -42,7 +53,9 @@ export const routes: Routes = [
   declarations: [
     SellersBuyersDashboardComponent,
     SellersBuyersDetailsComponent,
-    AddSellersComponent
+    AddSellersComponent,
+    SellerLayoutComponent,
+    SellerGridComponent
   ],
   imports: [
     CommonModule,

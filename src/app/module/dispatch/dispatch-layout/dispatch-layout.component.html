@@ -126,7 +126,7 @@
         </div>
     </ng-template>
           <!-- <form [formGroup]="sellerForm">   -->
-          <form [formGroup]="sellerForm"> 
+          <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()"> 
             <div class="row" style="min-width: 500px;">
                 <div class="d-flex row align-items-center">
                     <div class="col-sm-3">
@@ -233,7 +233,7 @@
         </form>
     
         <ng-template pTemplate="footer">
-          <button class="btn btn-primary me-1" >Save</button> 
+          <button class="btn btn-primary me-1" (click)="onSubmit()" >Save</button> 
           <!-- <button class="btn btn-primary me-1">Save</button>  -->
         </ng-template>
 </p-dialog>

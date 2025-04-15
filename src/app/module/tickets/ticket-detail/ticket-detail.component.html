@@ -463,7 +463,7 @@
                                       <ng-container  *ngFor="let item of materialList" >
                                           <li>
                                               <a id="showInnerDiv1" class="btn custom-lh"  
-                                              pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
+                                              placeholder="Bottom"
                                               (click)="getSubMaterials(item.rowId, item.groupName, false)">
                                                   {{item.groupName}}
                                               </a>
@@ -796,6 +796,15 @@
     </div>
     
 </p-dialog>
+
+<p-dialog header="Confirm Payment" [(visible)]="confirmZeroAmountVisible" [modal]="true">
+    <p>Ticket amount is zero. Do you want to pay the ticket?</p>
+    <div class="d-flex justify-content-end mt-3">
+      <button class="btn btn-success me-2" (click)="ZeroAmountConfirmation(true)">Yes</button>
+      <button class="btn btn-danger" (click)="ZeroAmountConfirmation(false)">No</button>
+    </div>
+  </p-dialog>
+  
 
 <p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
    

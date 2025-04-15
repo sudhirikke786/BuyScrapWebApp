@@ -24,27 +24,30 @@
                         </div>
                         
                         <div class="row mt-2">
-                            <div class="col-md-6 d-flex mb-2">
+                            <div class="col-md-6 col-lg-6 col-xl-6 col-sm-12 d-flex mb-2">
                                 <input type="text" (keyup)="searchMetarial($event)" id="example-palaceholder" class="form-control" placeholder="Search Materials">
                             </div>
-                            <div class="col-md-6"> 
+                            <div class="col-md-6 col-lg-6 col-xl-6 col-sm-12 mb-2"> 
                                 <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
                             </div>
                             
                         </div>  
-                        <div class="row mt-2">
+                        <!-- <div class="row mt-2">
                             <div class="col-12">
                                 <p class="text-muted" style="font-size: 20px; text-align: center;">
                                     Click on Material category to add your sub materials
                                 </p>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- end page title --> 
 
                         <div class="row mt-2">
                             <div class="col-12">
                                 <div class="card custom-height">
                                     <div class="card-body">
+                                        <p class="text-muted" style="font-size: 20px; text-align: center;">
+                                            Click on Material category to add your sub materials
+                                        </p>
                                         <div class="row">
                                         <div class="img-grid">
                                             <ng-container  *ngFor="let item of materialList">

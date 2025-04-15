@@ -61,7 +61,7 @@
                                         <table class="seller-view-tbl">
                                             <tbody>
                                             <tr>
-                                                <td>Business : {{shipOutDetails?.customerName}}</td>
+                                                <td>ShipTo : {{shipOutDetails?.customerName}}</td>
                                                 <td class="w-25"><b>Address:</b>
 
 
@@ -92,6 +92,7 @@
                                                 <td>DL# - {{shipOutDetails?.rowId}}</td>
                                                 <td>Truck - {{shipOutDetails?.truck}}</td>
                                                 <td>By - <label>{{user?.firstName}} {{user?.lastName}}</label></td>
+                                                <td>Created Date - {{shipOutDetails?.createdDate | date:'yyyy-MM-dd'}}</td>
                                             </tr>
                                         </tbody></table>
                                     </div>
@@ -250,7 +251,7 @@
                                       <ng-container  *ngFor="let item of materialList" >
                                           <li>
                                             <a id="showInnerDiv1" class="btn custom-lh"  
-                                            pTooltip="{{item.groupName}}" tooltipPosition="bottom" placeholder="Bottom"
+                                            placeholder="Bottom"
                                               (click)="getSubMaterials(item.rowId, item.groupName, false)">
                                                   {{item.groupName}}
                                               </a>

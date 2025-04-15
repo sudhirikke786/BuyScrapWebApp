@@ -180,6 +180,11 @@ export class TicketDetailComponent implements OnInit {
   selectedItemForUpload: TicketItem | null = null;
   isTicketDocumentsEnabled: boolean = false;
 
+  confirmZeroAmountVisible: boolean = false;
+  isZeroAmountConfirmedPaid = false;
+
+
+
   newTicketList = [{
     iconcode: 'mdi-magnify',
     title: 'Search',
@@ -627,6 +632,7 @@ export class TicketDetailComponent implements OnInit {
 
   getAllTicketsDetails() {
     this.isLoading = true;
+      setTimeout(() => {
     const paramObject = {
       LocationId: this.locId,
       SerachText: this.ticketId,
@@ -635,7 +641,7 @@ export class TicketDetailComponent implements OnInit {
       RowOfPage: 10
     };
     this.commonService.getAllTicketsDetails(paramObject)
-      .subscribe(data => {
+      .subscribe({ next: (data) => {
         console.log('getAllTicketsDetails for ticketId :: ');
         console.log(data);
         this.ticketData = data.body.data[0];
@@ -667,14 +673,15 @@ export class TicketDetailComponent implements OnInit {
 
         this.getAllUsers(userId);
       },
-        (err: any) => {
+        error: (err: any) => {
           this.isLoading = false;
           // this.errorMsg = 'Error occured';
         },
-        () => {
+        complete: () => {
           this.isLoading = false;
         }
-      );
+      });
+  }, 0);  
   }
 
   getAddressName(addressID: number): string {
@@ -818,12 +825,15 @@ export class TicketDetailComponent implements OnInit {
   getSellerById() {
     this.isLoading = true;
     console.log('customerId in getSellerById:', this.customerId); 
+    
+    setTimeout(() => {
     const paramObject = {
       ID: this.sellerId,
       LocationId: Number(this.locId)
     };
-    this.commonService.getSellerById(paramObject).subscribe(
-      (data) => {
+      
+    this.commonService.getSellerById(paramObject).subscribe({
+        next: (data) => {
         console.log('getSellerById :: ');
         console.log(data);
         this.customer = data.body.data;
@@ -837,16 +847,18 @@ export class TicketDetailComponent implements OnInit {
           this.fetchSellerAddresses();
         } else {
           this.addresses = [this.customer.streetAddress];
+          this.isLoading = false;
         }
       },
-      (err: any) => {
+      error: (err: any) => {
         this.isLoading = false;
         console.error('Error fetching seller details:', err);
       },
-      () => {
+      complete: () => {
         this.isLoading = false;
       }
-    );
+      });
+    }, 0);
   }
 
   fetchSellerAddresses() {
@@ -1029,12 +1041,38 @@ export class TicketDetailComponent implements OnInit {
     // }
   }
 
+  // showPayment(isReceiptPrint: boolean) {
+  //   this.isReceiptPrint = isReceiptPrint;
+  //   this.paymentVisible = true;
+  //   this.selectedPayAmount = this.remainingAmount = this.payAmount = this.totalAmount - this.totalAdjustment - this.ticketData?.paidAmount;
+  //   this.showSection('Cash');
+  // }
+
   showPayment(isReceiptPrint: boolean) {
     this.isReceiptPrint = isReceiptPrint;
-    this.paymentVisible = true;
     this.selectedPayAmount = this.remainingAmount = this.payAmount = this.totalAmount - this.totalAdjustment - this.ticketData?.paidAmount;
-    this.showSection('Cash');
+  
+    if (this.selectedPayAmount === 0) {
+      this.confirmZeroAmountVisible = true;
+    } else {
+      this.paymentVisible = true;
+      this.showSection('Cash');
+    }
   }
+
+  ZeroAmountConfirmation(userConfirmed: boolean) {
+    this.confirmZeroAmountVisible = false;
+  
+    if (userConfirmed) {
+      this.isZeroAmountConfirmedPaid = true;
+      this.saveTicketDetails(0, this.isReceiptPrint);
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Ticket paid Successfully' });
+    } else {
+      this.isZeroAmountConfirmedPaid = false;
+    }
+  }
+  
+  
 
 
   showSection(paymentType: string) {
@@ -1295,7 +1333,17 @@ export class TicketDetailComponent implements OnInit {
     }
 
     let ticketStatus = 'OPEN';
-    if (paidAmount > 0 && paidAmount == this.totalAmount) {
+    // if (paidAmount > 0 && paidAmount == this.totalAmount) {
+    //   ticketStatus = 'PAID';
+    // }
+
+    if (this.totalAmount === 0) {
+      if (this.isZeroAmountConfirmedPaid) {
+        ticketStatus = 'PAID';
+      } else {
+        ticketStatus = 'OPEN';  
+      }
+    } else  if (paidAmount > 0 && paidAmount == this.totalAmount) {
       ticketStatus = 'PAID';
     }
 
@@ -1364,7 +1412,10 @@ export class TicketDetailComponent implements OnInit {
     console.log("Final ticketData :: " + JSON.stringify(this.ticketData));
 
     this.commonService.insertUpdateTickets(this.ticketData).subscribe(data => {
-      console.log(data);      
+      console.log(data);  
+
+      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
+ 
       if (this.transactionPaymentType.length > 0) { 
         const oldTicketId = this.ticketId;       
         this.ticketId = data.body.insertedRow;
@@ -1373,11 +1424,17 @@ export class TicketDetailComponent implements OnInit {
       } else {     
         this.ticketId = data.body.insertedRow;
         this.saveConfirmVisible = false; 
-        this.printTicket(this.ticketId);
+        
+        if (this.isReceiptPrint) {
+          this.printTicket(this.ticketId);
+        } else if (this.isCheckPrint) {
+          this.checkPrintAction();
+        } else {
+          setTimeout(() => {
+            this.router.navigateByUrl(`${this.orgName}/home`);
+          }, 1500);
+        }
       }
-
-      // this.confirmSave();
-      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       
     }, (error: any) => {
       console.log(error);

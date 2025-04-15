@@ -310,7 +310,8 @@ export class MaterialsDashboardComponent implements OnInit {
     console.log(index);
     const parsedValue = parseFloat(value);
     if (!isNaN(parsedValue)) {
-      this.subMaterialList[index].scrapPrice = parsedValue;
+      // this.subMaterialList[index].scrapPrice = parsedValue;
+      this.subMaterialList[index].scrapPrice = value;
     } else {
       console.warn(`Invalid value entered for index ${index}: ${value}`);
     }

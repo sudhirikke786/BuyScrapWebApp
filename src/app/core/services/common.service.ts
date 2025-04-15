@@ -347,6 +347,9 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Pickup/GetAllContainerLocations', 'GET', paramObj);
   }
 
+  UpdateDispatchDateDispatch(requestObj: any, postParams: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PickUp/UpdateDispatchDateDispatch', 'POST', requestObj, null , postParams);
+  }
 
 
 

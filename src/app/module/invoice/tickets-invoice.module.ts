@@ -12,12 +12,24 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { CheckplanGuard } from 'src/app/core/guard/checkplan.guard';
 import { InvoiceCalculatorComponent } from './Invoice-calculator/invoice-calculator.component';
 import { TotalPricePipe } from './total-price.pipe';
+import { InvoiceLayoutComponent } from './invoice-layout/invoice-layout.component';
+import { InvoiceGridComponent } from './invoice-grid/invoice-grid.component';
 
 export const routes: Routes = [
-  {
-    path:'',
-    component:InvoiceTicketDashboardComponent
-  },
+   {
+      path: '',
+      component: InvoiceLayoutComponent, 
+      children: [
+        {
+          path:'',
+          component:InvoiceTicketDashboardComponent
+        },
+        {
+          path: 'grid',
+          component: InvoiceGridComponent, 
+        }
+      ]
+    },
   {
     path:'detail/:invoiceId/:customerId',
     canActivate: [CheckplanGuard],
@@ -30,7 +42,9 @@ export const routes: Routes = [
     InvoiceTicketDashboardComponent,
     InvoiceTicketDetailComponent,
     InvoiceCalculatorComponent,
-    TotalPricePipe
+    TotalPricePipe,
+    InvoiceLayoutComponent,
+    InvoiceGridComponent
   ],
   imports: [
     CommonModule,

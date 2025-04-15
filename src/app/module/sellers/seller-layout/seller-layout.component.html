@@ -1,0 +1,68 @@
+<div class="content-page">
+    <div class="content" >
+        <div class="container-fluid">
+
+            <div class="bdcmb mt-2">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <h4 class="page-title">Sellers Buyers</h4>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="b-links">
+                            <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/sellers-buyers">Sellers Buyers</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-lg-6 col-md-12 d-flex mb-1">
+                    <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control" (keyup.enter)="searchSeller()" placeholder="Search for Sellers, Address, License and License Plate">
+                </div>
+                <div class="col-lg-6 col-md-12 mb-1"> 
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <div class="d-flex align-items-center action-container">
+                            <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
+                             <!-- <a  type="button" (click)="addNewSeller()" 
+                            class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
+                            Add Seller
+                            </a> -->                  
+                            <div class="toggle-container ms-2">
+                                <input type="radio" id="sea" name="toggle" [(ngModel)]="selectedSellerType" value="Business" (change)="filterSellers('Business')" checked>
+                                <label for="sea" class="toggle-option">Business</label>
+                        
+                                <input type="radio" id="land" [(ngModel)]="selectedSellerType" value="" (change)="filterSellers('')" name="toggle">
+                                <label for="land" class="toggle-option">All</label>
+                        
+                                <input type="radio" id="air" [(ngModel)]="selectedSellerType" value="Personal" (change)="filterSellers('Personal')" name="toggle">
+                                <label for="air" class="toggle-option">Personal</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-check form-switch ms-md-3 view-switch">
+                            <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            id="dispatchToggle" 
+                            [(ngModel)]="isSellerMode"
+                            (ngModelChange)="onToggleChange()"
+                            >
+                            <label class="form-check-label" for="dispatchToggle">
+                            {{ isSellerMode ? 'Seller Card' : 'Seller Grid' }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+
+            <div class="dynamic-content">
+                <router-outlet></router-outlet>
+            </div>
+        </div>    
+
+    </div>
+</div>  
+  <!-- <div class="content" *ngIf="isLoading">
+    <app-page-loader type="ftable"></app-page-loader>
+</div> -->

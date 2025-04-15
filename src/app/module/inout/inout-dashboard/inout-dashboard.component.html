@@ -3,10 +3,10 @@
 <!-- ============================================================== -->
 
 <div class="content-page" *ngIf="!showLoader">
-  <div class="content">
+  <!-- <div class="content"> -->
     <!-- Start Content-->
-    <div class="container-fluid">
-      <div class="bdcmb mt-2">
+    <!-- <div class="container-fluid"> -->
+      <!-- <div class="bdcmb mt-2">
         <div class="row">
           <div class="col-sm-6 col-6">
             <h4 class="page-title">Internal Transfer</h4>
@@ -18,9 +18,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="row mt-2">
+      <!-- <div class="row mt-2">
         <div class="col-md-6 d-flex">
           <input type="text" id="example-palaceholder" [(ngModel)]="serachText" class="form-control" (keyup.enter)="getAllInoutDetails()"
               placeholder="Search ...">    
@@ -28,7 +28,7 @@
         <div class="col-md-6">
           <app-actionbar (iconAction)="getInoutAction($event)"  [actions]="actionList"></app-actionbar>
         </div>
-      </div>
+      </div> -->
       <!-- end page title -->
 
       <div class="row mt-2">
@@ -52,6 +52,7 @@
                           <div class="mb-1">
                             <small class="text-muted">From Location → To Location</small>
                             <div class="small-text">{{ inout.locOutName }} → {{ inout.locInName }}</div>
+                            <div class="small-text">{{ inout.locationOutAddress }} → {{ inout.locationInAddress }}</div>
                           </div>
                           
                           <div class="row mb-1">
@@ -90,8 +91,7 @@
               </div>
               
               <div class="paginator-container" *ngIf="inouts?.length > 0">
-                <!-- <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" > -->
-                  <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator>
+                  <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator>
               </div>
             </div>
             <!-- end card body-->
@@ -101,9 +101,9 @@
         <!-- end col-->
       </div>
       <!-- end row-->
-    </div>
+    <!-- </div> -->
     <!-- container -->
-  </div>
+  <!-- </div> -->
   <!-- content -->
 
   <!-- Footer Start -->

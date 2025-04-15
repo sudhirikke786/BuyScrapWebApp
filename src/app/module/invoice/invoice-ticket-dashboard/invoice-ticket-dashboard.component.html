@@ -1,9 +1,9 @@
-<div class="content" *ngIf="!isLoading">
+<div class="content-page" *ngIf="!isLoading">
 
     <!-- Start Content-->
-    <div class="container-fluid">
+    <!-- <div class="container-fluid"> -->
 
-        <div class="bdcmb">
+        <!-- <div class="bdcmb">
             <div class="row">
                 <div class="col-sm-6 col-6">
                     <h4 class="page-title">Invoice</h4>
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
          <!-- <div class="row mt-2">
                     <div class="col text-center">
@@ -26,7 +26,7 @@
                 </div> -->
         <div class="row mt-2" >
             <div class="ticket-card col-md-12 d-flex  display-mobile flex-wrap">
-                <div class="col-xs-12 col-md-4 col-lg-3  mb-1">
+                <!-- <div class="col-xs-12 col-md-4 col-lg-3  mb-1">
                     <p-multiSelect [class.fixed-multiselect]="true"   [options]="ticketsTypes" [style]="{'minWidth':'100%'}"
                         [(ngModel)]="selectedTickets"  [maxSelectedLabels]="maxItem" defaultLabel="You can choose  ..."
                         optionLabel="name" display="chip" (onChange)="addRemoveStatus($event)">
@@ -46,11 +46,11 @@
                 </div>
                 <div class="col-xs-12 col-md-4 col-lg-3  mb-1">
                     <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText" (keyup.enter)="searchTickets()" placeholder="Search">
-                </div>
+                </div> -->
                 <div class="col">
-                    <div  class="d-flex justify-content-between">
+                    <!-- <div  class="d-flex justify-content-between">
                         <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
-                    </div>
+                    </div> -->
                     <!-- <div class="d-flex justify-content-between align-items-start">
                         <a  type="button" (click)="addNewTicket()" 
                         class="btn btn-primary me-1  cursor-pointer" >
@@ -179,7 +179,8 @@
 
 
       
-    </div> <!-- content -->
+    <!-- </div>  -->
+    <!-- content -->
 
 </div>
 

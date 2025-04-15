@@ -98,6 +98,13 @@ export class ShipoutDashboardComponent implements OnInit {
     first: 0,
   }
 
+  currentPage: number = 1;
+  pageSize: number = 10;
+  first: number = 0;
+  pageTotal: number = 0;
+  last = 0;
+
+
   bulkShipOutVisible = false; 
   searchMaterialInput = ''; 
   materials: any[] = []; 
@@ -124,6 +131,20 @@ export class ShipoutDashboardComponent implements OnInit {
     this.route.params.subscribe((params)=>{
       this.customerId = params["customerId"];
     });
+
+    const storedPagination = localStorage.getItem('shipoutsPaginationData_grid');
+    if (storedPagination) {
+      const paginationData = JSON.parse(storedPagination);
+      this.currentPage = paginationData.PageNumber || 1;
+      this.pageSize = paginationData.RowOfPage || 10;
+      this.first = paginationData.first || 0;
+    }
+  
+    this.getAllShipOutDetails({
+      PageNumber: this.currentPage,
+      RowOfPage: this.pageSize,
+      LocationId: this.locId
+    });
     
     this.getAllShipOutDetails(this.pagination);
     this.getAllMaterialsDetails();
@@ -142,6 +163,15 @@ export class ShipoutDashboardComponent implements OnInit {
           console.log('API Response:', data.body.data);
 
           this.shipouts = data.body.data;
+          this.pageTotal = data.body.totalRecords;
+          // this.pageSize = pagination.RowOfPage;
+          this.last = data.body.totalIndex;
+    
+          localStorage.setItem('shipoutsPaginationData_grid', JSON.stringify({
+            PageNumber: this.currentPage,
+            RowOfPage: this.pageSize,
+            first: this.first
+          }));
         },
         (err: any) => {
           this.showLoader = false;
@@ -151,6 +181,22 @@ export class ShipoutDashboardComponent implements OnInit {
         }
       );
   }
+
+  onPageChange(event: any) {
+    this.currentPage = event.first / event.rows + 1;
+    this.first = event.first;
+    this.pageSize = event.rows;
+  
+    const pagObj = {
+      PageNumber: this.currentPage,
+      RowOfPage: this.pageSize,
+      first: this.first,
+      LocationId: this.locId
+    };
+  
+    this.getAllShipOutDetails(pagObj);
+  }
+  
   
   getAllsellersDetails() {
 

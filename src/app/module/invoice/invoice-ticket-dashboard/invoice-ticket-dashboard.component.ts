@@ -246,6 +246,12 @@ export class InvoiceTicketDashboardComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
 
+    this.route.queryParams.subscribe(params => {
+      const status = params['status'] ; 
+      this.pagination.Status = status;
+      this.getAllTicketsDetails(this.pagination);
+    });
+
     const storedPagination = localStorage.getItem('invoicePaginationData');
     if (storedPagination) {
       this.pagination = JSON.parse(storedPagination);

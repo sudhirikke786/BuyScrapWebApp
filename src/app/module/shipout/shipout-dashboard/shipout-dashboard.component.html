@@ -37,14 +37,11 @@
             <div class="card-body">
               <p-table
                 [value]="shipouts"
-                [paginator]="true"
-                [rows]="10"
+                [paginator]="false"
                 [scrollable]="true" 
                 scrollHeight="50vh"
-                [showCurrentPageReport]="true"
+                [showCurrentPageReport]="false"
                 [tableStyle]="{ 'min-width': '50rem' }"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions"
               >
              
                 <ng-template pTemplate="header">
@@ -116,6 +113,19 @@
                   </p-button>
                 </ng-template>
               </p-table>
+              <div class="paginator-container mt-3" *ngIf="shipouts?.length > 0">
+                <p-paginator
+                  class="serverside-paginator"
+                  [showCurrentPageReport]="true"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  [first]="first"
+                  [last]="last"
+                  [rows]="pageSize"
+                  [totalRecords]="pageTotal"
+                  [rowsPerPageOptions]="commonService.tableConfig?.pageOptions"
+                  (onPageChange)="onPageChange($event)"
+                ></p-paginator>
+              </div>
             </div>
             <!-- end card body-->
           </div>

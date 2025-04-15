@@ -1,0 +1,81 @@
+.ticket-particulars-img {
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    object-fit: contain; 
+    border: 2px solid #ddd; 
+  }
+  
+  .default-img {
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+    object-fit: contain; 
+    border: 2px solid #ddd;
+  }
+
+  /* Adjustments for the card and table container */
+.card-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Keep the existing scrollable behavior */
+p-table {
+  width: 100%;
+}
+
+/* Create space for the paginator */
+:host ::ng-deep .p-datatable-wrapper {
+  height: calc(100vh - 300px) !important; /* Reduced to make space for paginator */
+}
+
+/* Paginator positioning */
+.paginator-container {
+  position: relative;
+  background-color: white;
+  padding: 10px 0;
+  border-top: 1px solid #e5e5e5;
+  width: 100%;
+  margin-top: auto;
+}
+
+/* Ensure paginator stays visible at tablet breakpoint */
+@media (max-width: 991px) {
+  :host ::ng-deep .p-datatable-wrapper {
+    height: calc(100vh - 310px) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  :host ::ng-deep .p-datatable-wrapper {
+    height: calc(100vh - 330px) !important;
+  }
+  
+  /* Adjust paginator at tablet size to prevent it from appearing too low */
+  .paginator-container {
+    bottom: 0;
+    z-index: 10;
+  }
+  
+  /* Ensure the table doesn't push paginator out of view */
+  .card-body {
+    padding-bottom: 60px !important; /* Extra space at bottom for paginator */
+  }
+}
+
+@media (max-width: 575px) {
+  :host ::ng-deep .p-datatable-wrapper {
+    height: calc(100vh - 350px) !important;
+  }
+}
+
+/* Ensure the paginator dropdown appears above instead of below at tablet size */
+@media (max-width: 768px) {
+  :host ::ng-deep .p-paginator .p-dropdown-panel {
+    transform-origin: center bottom;
+    top: auto !important;
+    bottom: 100% !important;
+  }
+}

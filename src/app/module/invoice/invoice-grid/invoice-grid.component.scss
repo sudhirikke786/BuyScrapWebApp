@@ -1,0 +1,75 @@
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+  }
+  
+  .status-paid {
+    background-color: #cce5ff; 
+    color: #0066cc; 
+  }
+  
+  .status-open {
+    background-color: #e5ccff; 
+    color: #6600cc; 
+  }
+  
+  .status-voided {
+    background-color: #e0e0e0; 
+    color: #333333; 
+  }
+  
+.paginator-container {
+  margin-top: 1rem;
+  
+  @media (max-width: 991px) {
+    .responsive-paginator {
+      ::ng-deep {
+        .p-paginator {
+          flex-wrap: wrap;
+          justify-content: center;
+          
+          .p-paginator-current {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 0.5rem;
+          }
+          
+          .p-paginator-page-options {
+            margin-bottom: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .responsive-paginator {
+      ::ng-deep {
+        .p-paginator {
+          .p-paginator-pages {
+            margin-top: 0.5rem;
+          }
+          
+          .p-paginator-current,
+          .p-paginator-rpp-options {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .p-datatable-scrollable .p-datatable-wrapper {
+    @media (max-width: 768px) {
+      max-height: calc(100vh - 350px) !important; 
+    }
+  }
+}

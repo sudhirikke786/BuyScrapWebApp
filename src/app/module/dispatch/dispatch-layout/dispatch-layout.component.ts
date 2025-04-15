@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { CommonService } from 'src/app/core/services/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup,FormBuilder,Validators } from '@angular/forms';
+import { MessageService,ConfirmationService } from 'primeng/api';
+import { DatePipe } from '@angular/common';
+import { StorageService } from 'src/app/core/services/storage.service';
+
 
 
 
@@ -41,9 +45,9 @@ export class DispatchLayoutComponent {
   actionList = [
     { iconcode: 'mdi-magnify', title: 'Search' },
     { iconcode: 'mdi-refresh', title: 'Refresh' },
-    { iconcode: 'mdi-calendar', title: 'Calendar View', label: 'Calendar View' },
+    // { iconcode: 'mdi-calendar', title: 'Calendar View', label: 'Calendar View' },
     { iconcode: 'mdi-plus', title: 'Sellers', label: 'New Dispatch' },
-    { iconcode: 'mdi-add', title: 'Dispatch', label: 'Driver Assign' }
+    // { iconcode: 'mdi-add', title: 'Dispatch', label: 'Driver Assign' }
   ];
 
   newTicketList = [{
@@ -68,14 +72,15 @@ export class DispatchLayoutComponent {
     private router: Router,
     public commonService: CommonService,
     private fb: FormBuilder,
-
-  
-    ) {}
+    private messageService:MessageService,
+    private datePipe: DatePipe,
+    private stroarge: StorageService,
+  ) {}
 
   ngOnInit() {  
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
-    // this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     // this.route.params.subscribe((params)=>{
     //   this.sellerID = params["sellerID"];
     //   this.rowID = params["rowID"];
@@ -262,6 +267,42 @@ refreshSellerData() {
 addNewSeller() {
   // this.router.navigateByUrl(${this.orgName}/sellers-buyers/add-seller);
   this.addSellerPopupVisible = true;
+}
+
+onSubmit() {
+  const reqObj = {
+    ...this.sellerForm.value,
+    ...{ 
+      rowId: 0,
+      locID: this.locId,
+      createdBy: this.logInUserId,
+      createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+      updatedBy: this.logInUserId,
+      updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+    }
+  }
+  console.log(reqObj);
+  this.commonService.addSeller(reqObj).subscribe(data =>{
+    console.log(data);
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller updated Successfully' });
+      const sellerFullname = reqObj.firstName + (reqObj.middleName != '' ? ' ' + reqObj.middleName : '') 
+      + (reqObj.lastName != '' ? ' ' + reqObj.lastName : '') ;
+         
+      this.addSellerPopupVisible = false;
+      this.sellerForm.patchValue({
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        streetAddress: '', 
+        idnumber: '',
+        cellNumber: '',
+        contactName: ''
+      });
+      this.clickOnSeller(data.body.insertedRow, sellerFullname, this.sellerType);
+    },(error: any) =>{
+    console.log(error);
+  })
+
 }
 
 onKeydown(event: KeyboardEvent, searchValue: string): void {

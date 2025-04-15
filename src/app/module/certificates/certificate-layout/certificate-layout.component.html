@@ -1,0 +1,56 @@
+<!-- <p>certificate-layout works!</p> -->
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="bdcmb mt-2">
+                <div class="row align-items-center">
+                  <!-- Page Title -->
+                  <div class="col-sm-6">
+                    <h4 class="page-title">Certificates of Destruction</h4>
+                  </div>
+              
+                  <!-- Breadcrumb Links -->
+                  <div class="col-sm-6 text-sm-end text-start">
+                    <div class="b-links">
+                      <a routerLink="/{{orgName}}/home" class="breadcrumb-link">Home</a>
+                      <span class="breadcrumb-separator">/</span>
+                      <a routerLink="/{{orgName}}/certificates" class="breadcrumb-link">Certificates of Destruction</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-md-6 d-flex">
+                  <input
+                    type="text"
+                    id="example-palaceholder"
+                    class="form-control"
+                    placeholder="Search.."
+                  />
+                </div>
+                <div class="col-md-6 d-flex align-items-center">
+                    <app-actionbar [actions]="actionList"></app-actionbar>
+                
+                    <div class="form-check form-switch ms-3">
+                        <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            id="dispatchToggle"
+                            [(ngModel)]="isCertificateMode"
+                            (ngModelChange)="onToggleChange()"
+                        >
+                        <label class="form-check-label" for="dispatchToggle">
+                            {{ isCertificateMode ? 'Certificate Card View' : 'Certificate Grid View' }}
+                        </label>
+                    </div>
+                </div>
+                
+              </div>
+            <div class="dynamic-content">
+                <router-outlet></router-outlet>
+            </div>
+            
+        </div>    
+    </div>
+</div>

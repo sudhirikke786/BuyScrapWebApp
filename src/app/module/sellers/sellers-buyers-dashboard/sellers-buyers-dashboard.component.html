@@ -4,12 +4,12 @@
 
 <div class="content-page" *ngIf="!sellerLoader">
 
-    <div class="content" >
+    <!-- <div class="content" > -->
 
         <!-- Start Content-->
-        <div class="container-fluid">
+        <!-- <div class="container-fluid"> -->
 
-            <div class="bdcmb mt-2">
+            <!-- <div class="bdcmb mt-2">
                 <div class="row">
                     <div class="col-sm-6 col-6">
                         <h4 class="page-title">Sellers Buyers</h4>
@@ -21,21 +21,31 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             
-            <div class="row mt-2">
-                <div class="col-sm-6 d-flex mb-1">
+            <!-- <div class="row mt-2"> -->
+                <!-- <div class="col-sm-6 d-flex mb-1">
                     <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control" (keyup.enter)="searchSeller()" placeholder="Search for Sellers, Address, License and License Plate">
-                </div>
-                <div class="col-sm-6 mb-1"> 
-                    <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
+                </div> -->
+                <!-- <div class="col-sm-6 mb-1 d-flex align-items-center gap-2">  -->
+                    <!-- <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar> -->
                     <!-- <a  type="button" (click)="addNewSeller()" 
                     class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
                     Add Seller
                     </a> -->
-                </div>
+                    <!-- <div class="toggle-container">
+                        <input type="radio" id="sea" name="toggle" [(ngModel)]="selectedSellerType" value="Business" (change)="filterSellers('Business')"  checked>
+                        <label for="sea" class="toggle-option">Business</label>
                 
-            </div>  
+                        <input type="radio" id="land" [(ngModel)]="selectedSellerType" value="" (change)="filterSellers('')" name="toggle">
+                        <label for="land" class="toggle-option">All</label>
+                
+                        <input type="radio" id="air" [(ngModel)]="selectedSellerType" value="Personal" (change)="filterSellers('Personal')" name="toggle">
+                        <label for="air" class="toggle-option">Personal</label>
+                    </div> -->
+                <!-- </div> -->
+                
+            <!-- </div>   -->
             <!-- end page title --> 
 
             <div class="row mt-2">
@@ -95,9 +105,11 @@
             </div>
             <!-- end row-->     
             
-        </div> <!-- container -->
+        <!-- </div>  -->
+        <!-- container -->
 
-    </div> <!-- content -->
+    <!-- </div>  -->
+    <!-- content -->
 
            
 

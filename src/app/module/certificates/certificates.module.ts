@@ -8,17 +8,31 @@ import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 import { CertificatesDashboardComponent } from './certificates-dashboard/certificates-dashboard.component';
+import { CertificateLayoutComponent } from './certificate-layout/certificate-layout.component';
+import { CertificateGridComponent } from './certificate-grid/certificate-grid.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: CertificatesDashboardComponent
+    component: CertificateLayoutComponent, 
+    children: [
+      {
+        path: '',
+        component: CertificatesDashboardComponent
+      },
+      {
+        path: 'grid',
+        component: CertificateGridComponent, 
+      }
+    ]
   }
 ]
 
 @NgModule({
   declarations: [
-    CertificatesDashboardComponent
+    CertificatesDashboardComponent,
+    CertificateLayoutComponent,
+    CertificateGridComponent
   ],
   imports: [
     CommonModule,
