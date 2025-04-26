@@ -9,6 +9,7 @@ import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminLocationManagementComponent } from './admin-location-management/admin-location-management.component';
 import { ToastModule } from 'primeng/toast';
+import { DropdownModule } from 'primeng/dropdown';
 
 export const routes: Routes = [
   {
@@ -33,7 +34,8 @@ export const routes: Routes = [
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     PrimengModule,
-    ToastModule
+    ToastModule,
+    DropdownModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

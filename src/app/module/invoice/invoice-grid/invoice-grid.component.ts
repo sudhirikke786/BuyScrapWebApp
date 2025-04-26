@@ -704,7 +704,9 @@ export class InvoiceGridComponent implements OnInit {
       this.isParentTicketVisible = true;
     } else {
       this.parentTicketIDVisible = false;
-      this.router.navigateByUrl(`/${this.orgName}/invoice/detail/${this.ticketId}/${this.customerId}`);
+      // this.router.navigateByUrl(`/${this.orgName}/invoice/detail/${this.ticketId}/${this.customerId}`);
+      this.router.navigateByUrl(`/${this.orgName}/invoice/detail/${this.ticketId}/${this.customerId}?view=grid`);
+
     }
 
   }

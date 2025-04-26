@@ -209,6 +209,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/InsertUpdateMaterialDocuments', 'POST', requestObj);
   }
 
+  GetMaterialDocumnetsByID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/GetMaterialDocumnetsByID', 'GET', paramObj);
+  }
+
 
 
   getAllTicketsDetails(paramObj: any): Observable<any> {
@@ -284,6 +288,10 @@ export class CommonService {
 
   RestoreVoidTickets(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/RestoreVoidTickets', 'POST', requestObj);
+  }
+
+  getLeadsOnlineData(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/GetLeadsOnlineData', 'GET', paramObj);
   }
 
   getAllsellersDetails(pagination: any): Observable<any> {
@@ -797,6 +805,14 @@ getMaterialPriceList(paramObj: any): Observable<any> {
 
   getAllOrganisationPlanDetails(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Master/GetAllOrganisationPlanDetails', 'GET', paramObj);
+  }
+
+  getAllCurrency(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Master/GetAllCurrency', 'GET', paramObj);
+  }
+
+  getAllTimeZones(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Master/GetAllTimeZones', 'GET', paramObj);
   }
 
   getAllOrganisationPlanName(paramObj: any): Observable<any> {

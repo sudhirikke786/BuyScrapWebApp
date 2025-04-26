@@ -19,6 +19,8 @@ export class SellersBuyersDetailsComponent implements OnInit {
   isBuniessUser = false;
 
   sellerLoader = false;
+  backUrl: string = '';
+
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -32,6 +34,14 @@ export class SellersBuyersDetailsComponent implements OnInit {
       this.sellerId = param["sellerId"];
       this.getSellerById();      
       this.getAllTicketsBySellerId();
+    });
+    this.route.queryParams.subscribe(params => {
+      const view = params['view'];
+      if (view === 'grid') {
+        this.backUrl = `/${this.orgName}/sellers-buyers/grid`;
+      } else {
+        this.backUrl = `/${this.orgName}/sellers-buyers`;
+      }
     });
   }
   

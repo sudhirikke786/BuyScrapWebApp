@@ -39,7 +39,7 @@
                                            </div>
         
                                            <div class="col-sm-6 d-flex justify-content-end">
-                                            <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/inout">
+                                            <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1"[routerLink]="backUrl">
                                                 Back
                                             </a>
                                             <!-- <a *ngIf="inoutDetails?.status == 'Out' && !inoutDetails?.inwarddate" data-bs-toggle="modal" data-bs-target="#capture-image" 

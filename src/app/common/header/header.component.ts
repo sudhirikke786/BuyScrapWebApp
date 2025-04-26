@@ -47,7 +47,9 @@ export class HeaderComponent implements OnInit {
 
   locations :any;
   locationName!: string | null;
-
+  
+  strCashDrawerStatus: string = 'OPEN';
+  
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
     public dataService: DataService,
@@ -96,9 +98,48 @@ export class HeaderComponent implements OnInit {
        });
       this.getCashDrawerAmountDTO(paramObject);
     }
+    this.updateCashDrawerStatus();
   }
 
+  private async updateCashDrawerStatus() {
+    try {
+      const cashDrawerData = await this.commonService.getCashDrawerAmountDTO({
+        LocationId: this.locId
+      }).toPromise();
+  
+      if (!cashDrawerData?.body.data) return;
+  
+      const status = cashDrawerData.body.data.status.toUpperCase();
+      const updatedDate = new Date(cashDrawerData.body.data.updatedDate);
+      const today = new Date();
+  
+  
+      const oldDate = updatedDate.toISOString().split('T')[0];
+    const todayDate = today.toISOString().split('T')[0];
+    
+    if (oldDate !== todayDate) {
+      const postParams = {
+        status: 'CLOSED',
+        LocId: this.locId,
+        LastCloseError: true,
+        date: new Date().toISOString()
+      };
 
+      await this.commonService.UpdateCashDrawerStatus(null, postParams).toPromise();
+      this.strCashDrawerStatus = 'CLOSED';
+    } else {
+      this.strCashDrawerStatus = status;
+    }
+
+    this.isReopenRegister = this.strCashDrawerStatus === 'CLOSED';
+  } catch (error) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Cash drawer status check failed'
+    });
+  }
+} 
 
   
   getCashDrawerAmountAndPaidTicketCount(paramObject: any) {
@@ -146,7 +187,7 @@ export class HeaderComponent implements OnInit {
           this.cashDrawerBalanceAmount = data.body.data.balanceAmount;
           this.previousDayCDBalanceAmount = this.cashDrawerBalanceAmount;
 
-          if (data.body.data.status.toUpperCase() === 'CLOSE') {
+          if (data.body.data.status.toUpperCase() === 'CLOSED') {
             this.isReopenRegister = true;
             this.dataService.setCashDrawerAmountDTO(0);
           } else {
@@ -191,7 +232,7 @@ export class HeaderComponent implements OnInit {
     } else {
       this.errorAlert('Total Amount is not matched with Cash Drawer Balance');
     }
-    
+    this.strCashDrawerStatus = 'OPEN';
   }
 
 
@@ -283,6 +324,7 @@ export class HeaderComponent implements OnInit {
     this.closeRegisterWithDiffernceExplaination = '';
     this.differntOpeningAmount = 0;    
     this.closeRegisterWithDiffernceVisible = false;
+    this.strCashDrawerStatus = 'OPEN';
   }
 
   backToUserLogin() {

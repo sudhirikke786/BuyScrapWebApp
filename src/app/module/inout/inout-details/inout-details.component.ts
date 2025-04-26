@@ -143,6 +143,15 @@ export class InoutDetailsComponent implements OnInit {
       this.processDataBasedOnTicketId();
     });
 
+    this.route.queryParams.subscribe(params => {
+      const view = params['view'];
+      if (view === 'grid') {
+        this.backUrl = `/${this.orgName}/inout/grid`;
+      } else {
+        this.backUrl = `/${this.orgName}/inout`;
+      }
+    });
+
     
   }
 

@@ -37,6 +37,10 @@ export class AdminLocationManagementComponent implements OnInit {
    userForm!: FormGroup<any>;
   isSubmit: boolean = false;
   patternMsg:any = RegexPattern;
+
+  currencies: any[] = [];
+  timeZones: any[] = [];
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private fb:FormBuilder,
@@ -50,6 +54,8 @@ export class AdminLocationManagementComponent implements OnInit {
     this.getLocations();
     this.getAllLocatoins();
     this.creatLocation();
+    this.getAllCurrencies();
+    this.getAllTimeZones();
     this.getAllUsersRoles();
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
   }
@@ -67,12 +73,52 @@ export class AdminLocationManagementComponent implements OnInit {
     this.editObj =  obj;
     this.showLocationModel();
     this.actionType = 'Edit';
+
+    const selectedCurrency = this.currencies?.find(c => c.currencyCode === obj.currencyCode);
+    const selectedCurrencyID = selectedCurrency ? selectedCurrency.rowID : null;
+
+    const selectedTimeZone = this.timeZones?.find(tz => tz.timeZoneID === obj.timeZone);
+    const selectedTimeZoneID = selectedTimeZone ? selectedTimeZone.rowID : null;
+   
     console.log(obj)
     setTimeout(()=>{
-      this.locationForm.patchValue({...obj});
+      this.locationForm.patchValue({...obj,
+      currencyID: selectedCurrencyID,
+      timeZoneID: selectedTimeZoneID
+      });
     },100)
   
 
+  }
+
+  getAllCurrencies() {
+    const params = { 
+      CurrencyID: 0 
+    }; 
+    this.commonService.getAllCurrency(params).subscribe({
+      next: (response: any) => {
+        this.currencies = response?.body?.data 
+        console.log('Currencies loaded:', this.currencies);
+      },
+      error: (error) => {
+        console.error('Error loading currencies:', error);
+      }
+    });
+  }
+  
+  getAllTimeZones() {
+    const params = { 
+      TimeZoneID: 0 
+    }; 
+    this.commonService.getAllTimeZones(params).subscribe({
+      next: (response: any) => {
+        this.timeZones = response?.body?.data 
+        console.log('TimeZones loaded:', this.timeZones);
+      },
+      error: (error) => {
+        console.error('Error loading time zones:', error);
+      }
+    });
   }
 
   showLocationModel(){
@@ -145,7 +191,9 @@ export class AdminLocationManagementComponent implements OnInit {
       availableTickets:[''],
       address:[''],
       contactName:[''],
-      phoneNo:['']
+      phoneNo:[''],
+      timeZoneID: [''],  
+      currencyID: [''] 
     })
 
   }
@@ -153,6 +201,12 @@ export class AdminLocationManagementComponent implements OnInit {
     const datePipe = new DatePipe('en-US');
 
     const formObj =  this.locationForm.value;
+    const selectedTimeZone = this.timeZones.find(tz => tz.rowID === formObj.timeZoneID);
+    const selectedCurrency = this.currencies.find(cur => cur.rowID === formObj.currencyID);
+
+    console.log("selectdTimezone",selectedTimeZone);
+    console.log("selectedCurrency",selectedCurrency);
+
     const reqObj = {
       "rowId": this.actionType == 'Add' ? 0 : this.editObj?.rowId,
       "createdBy": this.logInUserId,
@@ -170,7 +224,9 @@ export class AdminLocationManagementComponent implements OnInit {
       "adminID": 0,
       "contactName": formObj.contactName,
       "address": formObj.address,
-      "phoneNo": formObj.phoneNo
+      "phoneNo": formObj.phoneNo,
+      timezone: selectedTimeZone?.timeZoneID,   
+      currency: selectedCurrency?.currencyCode
     }
 
     this.commonService.InsertUpdateLocationDTO(reqObj).subscribe((res) =>{

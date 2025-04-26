@@ -85,6 +85,11 @@ export class DispatchLayoutComponent {
     //   this.sellerID = params["sellerID"];
     //   this.rowID = params["rowID"];
     // });
+    const userObj = this.stroarge.getLocalStorage('userObj');
+    this.currentRole = userObj?.userdto?.role;
+    if (this.currentRole === 'Driver') {
+      this.actionList = this.actionList.filter(action => action.label !== 'New Dispatch');
+    }
     this.navigateToInitialView();
     this.getAllCODTickets();
   }

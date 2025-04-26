@@ -317,6 +317,7 @@ enablePriceItem(){
     returnedTarget.dealerPrice1 = returnedTarget.dealerPrice1 ? parseFloat(returnedTarget.dealerPrice1) : 0;
     returnedTarget.dealerPrice2 = returnedTarget.dealerPrice2 ? parseFloat(returnedTarget.dealerPrice2) : 0;
     returnedTarget.dealerPrice3 = returnedTarget.dealerPrice3 ? parseFloat(returnedTarget.dealerPrice3) : 0;
+    returnedTarget.updatedBy = this.logInUserId;
     // alert(JSON.stringify(returnedTarget));
     
     this.commonService.insertUpdateMaterials(returnedTarget).subscribe(data =>{    

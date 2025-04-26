@@ -235,7 +235,7 @@ export class FullCalnderDispatchComponent implements OnInit {
           colorStatus:item.colorStatus,
         },
         description: item.sellerName,
-        url:`/${this.orgName}/dispatch/dispatch-detail/${item.rowId}/${item.sellerID}/show`,
+        url: `/${this.orgName}/dispatch/dispatch-detail/${item.rowId}/${item.sellerID}/show?view=calendar`,
         icon: 'fa-solid fa-calendar'
         };
     })

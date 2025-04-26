@@ -90,7 +90,7 @@
                       <td class="w-25">Time : {{customer?.createdDate ?? currentDate | date: 'hh:mm a'}}</td>
                     </tr>
                     <tr>
-                      <td>
+                      <!-- <td>
                         <div class="form-group mt-1 d-flex justify-content-left align-items-center">
                           <label for="floatingInput" class="form-label w-25">Type<span
                               class="text-danger">*</span></label>
@@ -104,7 +104,7 @@
                           </select>
 
                         </div>
-                      </td>
+                      </td> -->
                       <td>
                         <div class="form-group  mt-1  d-flex justify-content-left align-items-center">
                           <label for="floatingInput" class="form-label w-25" >Pickup Date<span
@@ -131,9 +131,16 @@
                       </td>
                     </tr>
                     <tr>
-                      <td class="w-25"><b>Contact Name:</b> {{ contactName }}</td>
-                      <td class="w-25"><b>Contact Number:</b> {{ contactNumber }}</td>
+                      <td class="w-25" >
+                        <b>Contact Name:</b>
+                        <input type="text" class="form-control" [(ngModel)]="contactName" placeholder="Enter contact name">
+                      </td>
+                      <td class="w-25">
+                        <b>Contact Number:</b>
+                        <input type="text" class="form-control" [(ngModel)]="contactNumber" placeholder="Enter contact number">
+                      </td>
                     </tr>
+                    
                     
 
 
@@ -164,6 +171,7 @@
                     <table>
                       <thead>
                         <tr>
+                          <th style="width:15%">Dispatch Type</th>
                           <th style="width:15%">Container Type</th>
                           <th style="width:12%">Container Quantity</th> 
                           <th style="width:12%">Drop-off Box #</th>
@@ -177,6 +185,7 @@
 
 
                         <tr *ngFor="let item of invoiceObj; let i = index">
+                          <td style="width:15%">{{item?.dispatchType}}</td>
                           <td style="width:15%">{{item?.containerType}}</td>
                           <td style="width:12%">{{ item?.containerQuantity }}</td> 
                           <td style="width:12%">{{item?.dropoffbox}}</td>
@@ -189,6 +198,18 @@
                       <tbody>
                         <ng-template #showtemp>
                           <tr *ngFor="let item of invoiceObj; let i = index">
+                            <td style="width:15%" *ngIf="editingIndex !== i">
+                              {{ item.dispatchTypeID }}
+                            </td>
+                            <td style="width:15%" *ngIf="editingIndex === i">
+                              <select [(ngModel)]="editItemObj.dispatchTypeID" id="dispatchTypes" class="form-control">
+                                <option value="Select Type" selected="true">Select Type</option>
+                                <option *ngFor="let option of dispatchTypes" [value]="option.rowID">
+                                  {{ option.type }}
+                                </option>
+                              </select>
+                            </td>
+                            
                             <td style="width:15%" *ngIf="editingIndex !== i">{{ item?.containerType }}</td>
                             <td style="width:12%" *ngIf="editingIndex === i">
                               <select [(ngModel)]="editItemObj.containerType" class="form-control">
@@ -251,8 +272,17 @@
 
                           <!-- New Item Input -->
                           <tr>
-                            <td style="width:15%">
 
+                            <td style="width:15%">
+                              <select class="form-control me-1" id="dispatchTypes" [(ngModel)]="newItem.dispatchTypeID">
+                                <option value="Select Type" selected="true">Select Type</option>
+                                <option *ngFor="let option of dispatchTypes"  [value]="option.rowID">
+                                  {{ option.type }}
+                                </option>
+                              </select>
+                            </td>
+                          
+                            <td style="width:15%">
                               <select class="form-control me-1" id="allContainerType" name="defaultSelectedMaterial"
                                 [(ngModel)]="newItem.containerType">
                                 <option value="-- None --" selected="true">-- None --</option>

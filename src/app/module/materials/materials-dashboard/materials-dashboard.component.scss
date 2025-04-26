@@ -32,20 +32,16 @@
 @media screen and (max-width: 991px) and (min-width: 768px) {
     .row.mt-2 {
         display: flex;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         margin-bottom: 10px; 
     }
     
-    .col-md-6.d-flex {
-        padding-right: 5px;
+    .col-md-6.col-lg-6.col-xl-6.col-sm-12 {
         width: 50%;
         flex: 0 0 50%;
-    }
-    
-    .col-md-6:not(.d-flex) {
-        padding-left: 5px;
-        width: 50%;
-        flex: 0 0 50%;
+        max-width: 50%;
+        padding-right: 10px;
+        padding-left: 10px;
     }
     
     input.form-control {
@@ -56,6 +52,16 @@
         display: flex;
         justify-content: flex-end;
         width: 100%;
+    }
+    
+    app-actionbar ::ng-deep .btn-group {
+        display: flex;
+        flex-wrap: nowrap;
+    }
+    
+    app-actionbar ::ng-deep .btn {
+        padding: 0.375rem 0.5rem;
+        font-size: 0.875rem;
     }
     
     .card.custom-height {

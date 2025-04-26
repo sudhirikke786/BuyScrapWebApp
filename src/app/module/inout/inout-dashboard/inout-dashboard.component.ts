@@ -263,11 +263,11 @@ export class InoutDashboardComponent implements OnInit {
   }
 
   showDetails(inoutId: any) {
-    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/show`);
+    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/show?view=card`);
   }
 
   editDetails(inoutId: any) {
-    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/edit`);
+    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/edit?view=card`);
   }
 
   inword(inoutId: any) {

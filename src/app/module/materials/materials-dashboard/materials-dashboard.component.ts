@@ -78,6 +78,8 @@ export class MaterialsDashboardComponent implements OnInit {
   defaultSelectedMaterial: any = 1;
   numberFormat: string = '1.3-3';
   defaultImage = 'assets/images/custom/materials/Default-Scrap-Material.png';
+  searchText: string = ''; 
+
   
   @ViewChild('subMaterialContainer') subMaterialContainer: any;
   
@@ -165,6 +167,17 @@ export class MaterialsDashboardComponent implements OnInit {
         }
       );
   }
+
+  filterMaterials() {
+    if (!this.searchText || this.searchText.trim() === '') {
+      this.materialList = [...this.materialListCopy];
+    } else {
+      this.materialList = this.materialListCopy.filter((item: any) => {
+        return item.groupName?.toLowerCase().includes(this.searchText.toLowerCase());
+      });
+    }
+  }
+  
 
   showDialog(materialData?: any){
     if (materialData) {
@@ -336,6 +349,16 @@ export class MaterialsDashboardComponent implements OnInit {
         this.showBulkDialog();
       }
       break;
+  
+      case 'mdi-magnify': 
+        this.filterMaterials();
+        break;
+  
+      case 'mdi-refresh': 
+        this.searchText = '';
+        this.getAllGroupMaterial(); 
+        break;
+  
       default:
         break;
     }

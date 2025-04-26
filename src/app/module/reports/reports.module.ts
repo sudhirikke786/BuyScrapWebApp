@@ -24,6 +24,7 @@ import { ShipOutReportComponent } from './ship-out-report/ship-out-report.compon
 import { InOutReportComponent } from './in-out-report/in-out-report.component';
 import { DispatchReportComponent } from './dispatch-report/dispatch-report.component';
 import { ContainerTrackingComponent } from './container-tracking/container-tracking.component';
+import { LeadsReportComponent } from './leads-report/leads-report.component';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,10 @@ export const routes: Routes = [
   {
     path:'daily-tickets-report',
     component:DailyTicketsReportComponent
+  },
+  {
+    path:'leads-report',
+    component:LeadsReportComponent
   },
   {
     path:'single-tickets-report',
@@ -111,7 +116,8 @@ export const routes: Routes = [
     ShipOutReportComponent,
     InOutReportComponent,
     DispatchReportComponent,
-    ContainerTrackingComponent
+    ContainerTrackingComponent,
+    LeadsReportComponent
   ],
   imports: [
     CommonModule,

@@ -25,7 +25,7 @@
                         
                         <div class="row mt-2">
                             <div class="col-md-6 col-lg-6 col-xl-6 col-sm-12 d-flex mb-2">
-                                <input type="text" (keyup)="searchMetarial($event)" id="example-palaceholder" class="form-control" placeholder="Search Materials">
+                                <input type="text" [(ngModel)]="searchText" id="example-palaceholder" class="form-control" placeholder="Search Materials">
                             </div>
                             <div class="col-md-6 col-lg-6 col-xl-6 col-sm-12 mb-2"> 
                                 <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>

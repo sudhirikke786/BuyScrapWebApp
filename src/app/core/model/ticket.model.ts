@@ -44,4 +44,6 @@ export class Ticket {
     driverName: string = '';
     note: string = '';
     lstttransactionMasterDTO: any;
+    ticketMaterialDocumentsList: any;
+
 }

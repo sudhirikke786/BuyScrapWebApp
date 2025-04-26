@@ -259,11 +259,11 @@ export class InoutGridComponent implements OnInit{
   }
 
   showDetails(inoutId: any) {
-    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/show`);
+    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/show?view=grid`);
   }
 
   editDetails(inoutId: any) {
-    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/edit`);
+    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/edit?view=grid`);
   }
 
   inword(inoutId: any) {

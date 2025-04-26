@@ -67,7 +67,9 @@ export class DispatchLatestDetailsComponent {
     "liveLeadEQ": "string",
     "dropoffbox": "",
     "boxpickup": "",
-    "notes": ""
+    "notes": "",
+    "dispatchTypeID":0,
+    "dispatchType": "--Select--"
   };
 
   allContainerType :any = [];
@@ -109,6 +111,15 @@ constructor(private route: ActivatedRoute, private router:Router,
       this.type = param["type"];
     });
 
+    this.route.queryParams.subscribe(params => {
+      const view = params['view'];
+      if (view === 'calendar') {
+        this.backUrl = `/${this.orgName}/dispatch/meeting`;
+      } else {
+        this.backUrl = `/${this.orgName}/dispatch`;
+      }
+    });
+
 
    
     this.GetAllDispatchTypes();
@@ -123,7 +134,7 @@ constructor(private route: ActivatedRoute, private router:Router,
      }
     // 
     
-    this.backUrl = `/${this.orgName}/dispatch`;
+    // this.backUrl = `/${this.orgName}/dispatch`;
    // this.fetchSellerAddresses();
 
 
@@ -137,6 +148,8 @@ constructor(private route: ActivatedRoute, private router:Router,
   startEditing(index: number, item: any): void {
     this.editingIndex = index;
     this.editItemObj = { ...item }; // Create a copy to avoid directly modifying the original
+    
+    console.log('checking edit object',this.editItemObj)
   }
   
   saveEdit(index: number): void {
@@ -160,6 +173,8 @@ constructor(private route: ActivatedRoute, private router:Router,
   // Add new item to the list
   addNewItem() {
 
+    const selectedDispatchType = this.dispatchTypes.find((x:any) => x.rowID == this.newItem.dispatchTypeID);
+    console.log("Selected Dispatch Type ID:", this.newItem.dispatchTypeID);
       const item = {
         "localRowId": 0,
         "rowID": 0,
@@ -175,8 +190,11 @@ constructor(private route: ActivatedRoute, private router:Router,
         "liveLeadEQ": "string",
         "dropoffbox": "",
         "boxpickup": "",
-        "notes": ""
+        "notes": "",
+        "dispatchTypeID": this.newItem.dispatchTypeID,
+        "dispatchType": selectedDispatchType ? selectedDispatchType.type : "--select--"
       }
+      console.log("Final Item to Push:", item);
       this.invoiceObj.push({...item ,...this.newItem}); // Add a copy of the new item
      
       this.resetNewItem();
@@ -209,7 +227,8 @@ constructor(private route: ActivatedRoute, private router:Router,
       dropoffbox: '',
       boxpickup: '',
       charges: 0,
-      notes: ''
+      notes: '',
+      dispatchType:"--select--"
     };
   }
 
@@ -332,6 +351,7 @@ constructor(private route: ActivatedRoute, private router:Router,
           obj.boxpickup = item.boxPickUp;
           obj.fullName =  item.fullName;
           obj.notes = item.notes;
+          obj.dispatchTypeID = item.dispatchTypeID;
         
           return {...obj,...item};
          
@@ -444,18 +464,31 @@ constructor(private route: ActivatedRoute, private router:Router,
   }
   submitSave(){
     // "pickUpDate": this.datePipe.transform(this.pickupdate, 'YYYY-MM-ddTHH:mm:ss.SSS'),
+  
+    console.log('saving ',this.invoiceObj)
     const containerObj =  this.invoiceObj.map((item) =>{
       item.dropOffBox = item.dropoffbox;
       item.boxPickUp =item.boxpickup ;
       let selectedContainerType = this.allContainerType.filter((item1:any) => item1.containerType === item.containerType);
       item.containerID = selectedContainerType.length > 0 ? selectedContainerType[0].rowId : 0;
-      return item;
-    })
+      let selectedDispatchType = this.dispatchTypes.find((item2: any) => item2.rowID == item.dispatchTypeID);
+      item.dispatchTypeID = selectedDispatchType ? selectedDispatchType.rowID : item.dispatchTypeID;
+      item.dispatchType = selectedDispatchType ? selectedDispatchType.type : '--select--';
+      console.log('selectedDispatchType',selectedDispatchType)
+      
+      //item.dispatchTypeID = selectedDispatchType ? Number(selectedDispatchType.rowID) : Number(item.dispatchTypeID) || 0;
+      // let selectedDispatchType = this.dispatchTypes.find((item2: any) => item2.rowID === item.dispatchTypeID);
+      // item.dispatchTypeID = selectedDispatchType ? selectedDispatchType.rowID : item.dispatchTypeID;
 
-    if(!this.dispatchMaterial){
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Select Type' });
-      return
-    }
+    
+  
+      return item;     }) ;
+  
+
+    // if(!this.dispatchMaterial){
+    //   this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Select Type' });
+    //   return
+    // }
     if(!this.pickupdate){
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Select Pickup Date' });
       return
@@ -470,7 +503,7 @@ constructor(private route: ActivatedRoute, private router:Router,
       "charges": this.invoiceObj.reduce((acc,curr) => acc + curr.charges,0),
       "locID": this.locId,
       "isDeleted": false,
-      "typeID": 1,
+      "typeID": 0,
       "type": this.dispatchMaterial,
       "notes": this.notes,
       "driverID":this.driversName ? Number(this.driversName) : 0 ,
@@ -487,7 +520,7 @@ constructor(private route: ActivatedRoute, private router:Router,
       "contactNumber": this.contactNumber, 
       "lstTPickUpMaterialDTO": containerObj
     }
-
+   
     this.commonService.InsertUpdatePickup(submitObj).subscribe((res) =>{
 
       this.messageService.add({ severity: 'success', summary: 'success', detail: 'Dispatch Order Successfully' });

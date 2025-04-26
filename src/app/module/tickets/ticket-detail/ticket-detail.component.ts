@@ -1363,11 +1363,13 @@ export class TicketDetailComponent implements OnInit {
       this.ticketData.adjustmentAmount = parseFloat(this.totalAdjustment.toFixed(3));
       this.ticketData.balanceAmount = this.ticketData.amount - this.ticketData.adjustmentAmount;
       this.ticketData.lstttransactionMasterDTO = this.ticketObj;
+      this.ticketData.ticketMaterialDocumentsList = null; 
       this.ticketData.updatedBy = this.logInUserId;
       this.ticketData.updatedDate = this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
       this.ticketData.customerId = parseFloat(this.sellerId);
       this.ticketData.dispatchID = parseFloat(this.dispatchID);
       this.ticketData.sellerSignature = this.sellerSignatureImagePath;
+      this.ticketData.locID = this.locId;
 
     } else {
       const newTicket = new Ticket();
@@ -1391,6 +1393,7 @@ export class TicketDetailComponent implements OnInit {
       newTicket.balanceAmount = newTicket.amount - newTicket.adjustmentAmount;
       newTicket.locID = this.locId;
       newTicket.lstttransactionMasterDTO = this.ticketObj;
+      newTicket.ticketMaterialDocumentsList = null; 
       newTicket.sellerSignature = this.sellerSignatureImagePath;
       newTicket.isCOD = this.isCODRequired;
       newTicket.dispatchID = parseFloat(this.dispatchID);

@@ -132,9 +132,9 @@ export class InoutLayoutComponent implements OnInit {
 
   onToggleChange() {
     if (this.isInoutMode) {
-      this.router.navigate([`/${this.orgName}//inout`]);
+      this.router.navigate([`/${this.orgName}/inout`]);
     } else {
-      this.router.navigate([`/${this.orgName}//inout/grid`]);
+      this.router.navigate([`/${this.orgName}/inout/grid`]);
     }
   }
 

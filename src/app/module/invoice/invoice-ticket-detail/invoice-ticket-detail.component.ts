@@ -299,10 +299,15 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       console.log('Query Params:', params); 
 
       const types  = params['type'];
-      if(types=='seller'){
+      const view = params['view']; 
+      if (types =='seller'){
         this.backUrl = `/${this.orgName}/sellers-buyers`;
-      }else{
-        this.backUrl = `/${this.orgName}/invoice`;
+      } else {
+        if (view === 'grid') {
+          this.backUrl = `/${this.orgName}/invoice/grid`;
+        } else {
+          this.backUrl = `/${this.orgName}/invoice`;
+        }
       }
      this.shipOutID=params['shipOutID'];
      this.customerID = params['customerID'];
