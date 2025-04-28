@@ -100,10 +100,11 @@ export class DispatchLayoutComponent {
   }
 
   onToggleChange() {
-    if (this.isDispatchMode) {
-      this.router.navigate([`/${this.orgName}/dispatch`]);
+    if (this.searchSellerInput?.trim()) {
+      const queryParams = { queryParams: { searchText: this.searchSellerInput } };
+      this.router.navigate([`/${this.orgName}/dispatch${this.isDispatchMode ? '' : '/meeting'}`], queryParams);
     } else {
-      this.router.navigate([`/${this.orgName}/dispatch/meeting`]);
+      this.router.navigate([`/${this.orgName}/dispatch${this.isDispatchMode ? '' : '/meeting'}`]);
     }
   }
 
@@ -245,18 +246,16 @@ getSellerAction(actionCode: any) {
 
 }
 searchSeller() {
-  if (!this.searchSellerInput.trim()) {
-    console.warn('Search input is empty, skipping API call');
-    return;
+  if (this.searchSellerInput?.trim()) {
+    const queryParams = { queryParams: { searchText: this.searchSellerInput } };
+    this.router.navigate([`/${this.orgName}/dispatch${this.isDispatchMode ? '' : '/meeting'}`], queryParams);
+  }else {
+    this.router.navigate([`/${this.orgName}/dispatch${this.isDispatchMode ? '' : '/meeting'}`]);
   }
 
-  const paramObject = {
-    PageNumber: 1,
-    RowOfPage: 1000,
-    LocationId: this.locId,
-    SerachText: this.searchSellerInput.replace(/ /g, "%")
-  };
-  this.getAllsellersDetails(paramObject);
+
+
+ // this.getAllsellersDetails(paramObject);
 }
 
 refreshSellerData() {
@@ -339,7 +338,7 @@ changeSellerType() {
   getAction(actionCode: any) {
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        console.log('Search action triggered');
+        this.searchSeller();
         break;
       case 'mdi-refresh':
         this.getAllCODTickets(); 

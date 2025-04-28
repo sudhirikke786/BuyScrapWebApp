@@ -17,7 +17,7 @@
     <div class="row mt-2">
       <div class="col-sm-12 d-flex align-items-center">
         <div class="me-2 col-sm-4">
-          <input type="text" id="example-palaceholder" class="form-control" placeholder="Search.." />
+          <input type="text" [(ngModel)]="searchSellerInput" id="example-palaceholder" class="form-control" placeholder="Search.." />
         </div>
         <div>
           <app-actionbar [actions]="actionList" (iconAction)="getAction($event)"></app-actionbar>

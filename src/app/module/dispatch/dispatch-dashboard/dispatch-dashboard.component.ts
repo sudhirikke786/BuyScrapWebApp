@@ -152,6 +152,13 @@ export class DispatchDashboardComponent implements OnInit {
       this.rowID = params["rowID"];
     });
 
+
+    this.route.queryParams.subscribe(params => {
+      this.searchSellerInput = params['searchText'] || '';
+      this.getAllCODTickets();
+    })
+
+
     const storedPagination = localStorage.getItem('dispatchPaginationData_grid');
     if (storedPagination) {
       const paginationData = JSON.parse(storedPagination);
@@ -165,7 +172,7 @@ export class DispatchDashboardComponent implements OnInit {
     }
   
 
-    this.getAllCODTickets();
+   
   }
 
   getAllCODTickets() {
@@ -173,7 +180,7 @@ export class DispatchDashboardComponent implements OnInit {
       PageNumber: 1,
       RowOfPage: 1000,
       LocationId: this.locId,
-      SerachText: ''
+      SerachText: this.searchSellerInput
     };
     this.isLoading = true;
   

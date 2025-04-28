@@ -75,6 +75,7 @@ export class CertificateLayoutComponent implements OnInit {
   pageTotal = 0;
 
   isCertificateMode = false;
+  searchInput: any;
 
 
   
@@ -122,11 +123,20 @@ export class CertificateLayoutComponent implements OnInit {
   }
 
   onToggleChange() {
-    if (this.isCertificateMode) {
-      this.router.navigate([`/${this.orgName}/certificates`]);
+    // if (this.isCertificateMode) {
+    //   this.router.navigate([`/${this.orgName}/certificates`]);
+    // } else {
+    //   this.router.navigate([`/${this.orgName}/certificates/grid`]);
+    // }
+
+    if (this.searchInput?.trim()) {
+      const queryParams = { queryParams: { searchText: this.searchInput } };
+      this.router.navigate([`/${this.orgName}/certificates${this.isCertificateMode ? '' : '/grid'}`], queryParams);
     } else {
-      this.router.navigate([`/${this.orgName}/certificates/grid`]);
+      this.router.navigate([`/${this.orgName}/certificates${this.isCertificateMode ? '' : '/grid'}`]);
     }
+   
+    
   }
 
 
@@ -454,6 +464,36 @@ export class CertificateLayoutComponent implements OnInit {
     this.showDownload = false;    
     //this.router.navigateByUrl(`${this.orgName}/ship-out`);
   }
+
+
+  getAction(actionCode:any){
+    
+    switch (actionCode?.iconcode) {
+      case 'mdi-magnify':
+        this.searchSeller();
+        break;
+      case 'mdi-refresh':
+      
+        break;
+    
+      default:
+        break;
+    }
+  
+  }
+
+  searchSeller() {
+   
+    if (this.searchInput?.trim()) {
+      const queryParams = { queryParams: { searchText: this.searchInput } };
+      this.router.navigate([`/${this.orgName}/certificates${this.isCertificateMode ? '' : '/grid'}`], queryParams);
+    } else {
+      this.router.navigate([`/${this.orgName}/certificates${this.isCertificateMode ? '' : '/grid'}`]);
+    }
+
+  }
+
+  
   
 }
 

@@ -73,6 +73,7 @@ export class CertificateGridComponent implements OnInit {
   last: number = 0;
   currentPage: number = 1;
   pageSize: number = 10;
+  searchSellerInput: any;
 
 
   constructor(private route: ActivatedRoute,
@@ -81,11 +82,25 @@ export class CertificateGridComponent implements OnInit {
     private messageService: MessageService,
     private stroarge:StorageService,
     public helperService:HelperService,
-    public commonService: CommonService) { }
+    public commonService: CommonService) { 
+      
+      this.orgName = localStorage.getItem('orgName');
+      this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+
+      this.route.queryParams.subscribe(params => {
+      this.searchSellerInput = params['searchText'] || '';
+      this.getAllCODTickets({
+        PageNumber: this.currentPage,
+        RowOfPage: this.pageSize,
+        LocationId: this.locId
+      });
+      })
+
+
+     }
 
   ngOnInit() {
-    this.orgName = localStorage.getItem('orgName');
-    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+   
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
@@ -103,11 +118,7 @@ export class CertificateGridComponent implements OnInit {
       this.first = 0;
     }
   
-    this.getAllCODTickets({
-      PageNumber: this.currentPage,
-      RowOfPage: this.pageSize,
-      LocationId: this.locId
-    });
+   
   }
 
 
@@ -202,7 +213,9 @@ export class CertificateGridComponent implements OnInit {
     const paramObject = {
       PageNumber: pagObj?.PageNumber,
       RowOfPage: pagObj?.RowOfPage,
-      LocationId: this.locId
+      LocationId: this.locId,
+      SerachText: this.searchSellerInput,
+
     };
     this.showLoader = true;
   

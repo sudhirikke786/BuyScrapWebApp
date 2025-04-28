@@ -76,6 +76,7 @@ export class CertificatesDashboardComponent implements OnInit {
   first = 0;
   last = 0;
   pageTotal = 0;
+  searchSellerInput: any;
 
   
 
@@ -86,11 +87,24 @@ export class CertificatesDashboardComponent implements OnInit {
     private messageService: MessageService,
     private stroarge:StorageService,
     public helperService:HelperService,
-    public commonService: CommonService) { }
+    public commonService: CommonService) { 
+
+      this.route.queryParams.subscribe(params => {
+        this.searchSellerInput = params['searchText'] || '';
+        this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+        this.getAllCODTickets({
+          PageNumber: this.currentPage,
+          RowOfPage: this.pageSize,
+          LocationId: this.locId
+        });
+      })
+     
+
+    }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
-    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+ 
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
@@ -107,12 +121,11 @@ export class CertificatesDashboardComponent implements OnInit {
       this.pageSize = 10;
       this.first = 0;
     }
+
+
+  
     
-    this.getAllCODTickets({
-      PageNumber: this.currentPage,
-      RowOfPage: this.pageSize,
-      LocationId: this.locId
-    });
+  
   }
 
 
@@ -207,7 +220,8 @@ export class CertificatesDashboardComponent implements OnInit {
     const paramObject = {
       PageNumber: pagObj?.PageNumber,
       RowOfPage: pagObj?.RowOfPage,
-      LocationId: this.locId
+      LocationId: this.locId,
+      SerachText: this.searchSellerInput
     };
     this.showLoader = true;
     this.commonService.getAllCODTickets(paramObject)

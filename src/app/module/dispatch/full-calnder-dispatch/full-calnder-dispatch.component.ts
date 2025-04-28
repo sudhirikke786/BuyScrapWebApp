@@ -29,6 +29,7 @@ export class FullCalnderDispatchComponent implements OnInit {
   isLoading: boolean = false;
   showLoader: boolean = false;
   dispatchRes: any;
+  searchInput: any;
   constructor(
     private commonService: CommonService,
     private route: ActivatedRoute,
@@ -37,7 +38,14 @@ export class FullCalnderDispatchComponent implements OnInit {
     private messageService: MessageService,
     
 
-  ) {}
+  ) {
+
+
+    this.route.queryParams.subscribe(params => {
+      this.searchInput = params['searchText'] || '';
+      this.getAllCODTickets();
+    })
+  }
 
 
 
@@ -163,7 +171,7 @@ export class FullCalnderDispatchComponent implements OnInit {
       PageNumber: 1,
       RowOfPage: 1000,
       LocationId: this.locId,
-      SerachText: ''
+      SerachText: this.searchInput
     };
     this.isLoading = true;
 
