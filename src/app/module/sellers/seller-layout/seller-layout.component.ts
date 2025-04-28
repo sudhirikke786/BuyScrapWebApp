@@ -96,11 +96,32 @@ export class SellerLayoutComponent implements OnInit {
   }
 
   onToggleChange() {
-    if (this.isSellerMode) {
+  
+    if(this.isSellerMode) {
+    if(this.searchSellerInput) {
+      this.router.navigate([`/${this.orgName}/sellers-buyers`], { queryParams: { searchText: this.searchSellerInput } });
+
+    }else{
       this.router.navigate([`/${this.orgName}/sellers-buyers`]);
-    } else {
-      this.router.navigate([`/${this.orgName}/sellers-buyers/grid`]);
+
     }
+     
+     
+
+      // this.router.navigate([`/${this.orgName}/sellers-buyers/grid`]);
+    } else {
+      
+      if( !this.searchSellerInput || this.selectedSellerType == '') {
+        this.router.navigate([`/${this.orgName}/sellers-buyers/grid`], { queryParams: { searchText: this.searchSellerInput } });
+  
+      }else{
+        this.router.navigate([`/${this.orgName}/sellers-buyers/grid`]);
+  
+      }
+ 
+    }
+
+
   }
 
   getAllsellersDetails(paramObject: any) {
@@ -162,7 +183,19 @@ export class SellerLayoutComponent implements OnInit {
       LocationId: this.locId,
       SerachText: this.searchSellerInput.replace(/ /g, "%")
     };
-    this.getAllsellersDetails(paramObject);
+
+    if(this.isSellerMode) {
+      this.router.navigate([`/${this.orgName}/sellers-buyers`], { queryParams: { searchText: this.searchSellerInput } });
+
+      // this.router.navigate([`/${this.orgName}/sellers-buyers/grid`]);
+    } else { 
+      this.router.navigate([`/${this.orgName}/sellers-buyers/grid`], { queryParams: { searchText: this.searchSellerInput } });
+ 
+    }
+
+    
+  
+
 
   }
 

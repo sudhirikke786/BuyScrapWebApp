@@ -68,6 +68,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
 
     this.route.queryParams.subscribe(params => {
       this.selectedSellerType = params['sellerType'] || '';
+      this.searchSellerInput = params['searchText'] || '';
       this.filterSellers(this.selectedSellerType);
     });
   
@@ -87,7 +88,7 @@ export class SellersBuyersDashboardComponent implements OnInit {
       PageNumber: this.currentPage,
       RowOfPage: this.pageSize,
       LocationId: this.locId,
-      SerachText: this.searchSellerInput.replace(/ /g, "%"),
+      SerachText: this.searchSellerInput?.replace(/ /g, "%"),
       SellerType: this.selectedSellerType
     };
     this.getAllsellersDetails(paramObject);

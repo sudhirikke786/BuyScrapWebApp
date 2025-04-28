@@ -56,6 +56,7 @@
 .col-seller-card {
     width: calc(20% - 15px); /* 5 cards per row with gap consideration */
     margin-bottom: 0; 
+    min-width: 250px; /* Minimum width for cards */
 }
 
 .seller-card {
