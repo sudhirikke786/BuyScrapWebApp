@@ -29,8 +29,8 @@ export class SuperadminlayoutComponent {
 
   menuItemList = [
     {
-      title: 'Home/Tickets',
-      url: '/home',
+      title: 'Home',
+      url: '/superadmin/home',
       icon: '/assets/images/custom/icons/home.png',
      
     }
@@ -61,10 +61,8 @@ backToUserLogin() {
 navigatePage(item:any){
   this.commonService.showHidePanel('sidemenu');
   if(item.url == '/home'){
-    this.router.navigate([`/${this.organizationName}/home`]);
+    this.router.navigate([`/superadmin/home`]);
     // window.location.href = '/home';
-  }else{
-    this.router.navigate([`/${this.organizationName}/${item.url}`]);
   }
  
 //  this.route.navigate(`${organizationName}/${item.url}`)
