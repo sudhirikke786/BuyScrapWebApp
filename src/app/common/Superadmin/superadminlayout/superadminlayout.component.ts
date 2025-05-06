@@ -16,6 +16,58 @@ import { MessageService } from 'primeng/api';
 })
 export class SuperadminlayoutComponent {
 
+  organizationName: any;
+
+
+    
  
 
+  constructor(public commonService: CommonService, public router:Router) {
+    this.organizationName = localStorage.getItem('orgName');
+    
+  }
+
+  menuItemList = [
+    {
+      title: 'Home/Tickets',
+      url: '/home',
+      icon: '/assets/images/custom/icons/home.png',
+     
+    }
+]
+
+orgName: any;
+
+menuList: any = [];
+
+
+ngOnInit() {
+  this.menuList = this.menuItemList;    
+  
+}
+backToUserLogin() {
+  
+  const orgName = localStorage.getItem('orgName');
+  localStorage.removeItem('userObj');
+  localStorage.removeItem('locId');
+  localStorage.removeItem('locationName');
+  localStorage.removeItem('currencyCode');
+  localStorage.removeItem('ticketPagination');
+  localStorage.removeItem('filterObj');
+  this.router.navigateByUrl(`${orgName}/user-login`);
+}
+
+
+navigatePage(item:any){
+  this.commonService.showHidePanel('sidemenu');
+  if(item.url == '/home'){
+    this.router.navigate([`/${this.organizationName}/home`]);
+    // window.location.href = '/home';
+  }else{
+    this.router.navigate([`/${this.organizationName}/${item.url}`]);
+  }
+ 
+//  this.route.navigate(`${organizationName}/${item.url}`)
+ // routerLink="/{{organizationName}}{{item.url}}"
+}
 }
