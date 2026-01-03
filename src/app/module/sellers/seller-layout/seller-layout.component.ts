@@ -5,6 +5,8 @@ import { MessageService } from 'primeng/api';
 
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { SellersService } from 'src/app/core/services/sellers.service';
+
 @Component({
   selector: 'app-seller-layout',
   templateUrl: './seller-layout.component.html',
@@ -60,7 +62,8 @@ export class SellerLayoutComponent implements OnInit {
     private router: Router,
     private stroarge:StorageService,
     private messageService: MessageService,
-    public commonService: CommonService) { }
+    public commonService: CommonService,
+  public sellersService:SellersService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -96,32 +99,11 @@ export class SellerLayoutComponent implements OnInit {
   }
 
   onToggleChange() {
-  
-    if(this.isSellerMode) {
-    if(this.searchSellerInput) {
-      this.router.navigate([`/${this.orgName}/sellers-buyers`], { queryParams: { searchText: this.searchSellerInput } });
-
-    }else{
+    if (this.isSellerMode) {
       this.router.navigate([`/${this.orgName}/sellers-buyers`]);
-
-    }
-     
-     
-
-      // this.router.navigate([`/${this.orgName}/sellers-buyers/grid`]);
     } else {
-      
-      if( !this.searchSellerInput || this.selectedSellerType == '') {
-        this.router.navigate([`/${this.orgName}/sellers-buyers/grid`], { queryParams: { searchText: this.searchSellerInput } });
-  
-      }else{
-        this.router.navigate([`/${this.orgName}/sellers-buyers/grid`]);
-  
-      }
- 
+      this.router.navigate([`/${this.orgName}/sellers-buyers/grid`]);
     }
-
-
   }
 
   getAllsellersDetails(paramObject: any) {
@@ -175,45 +157,15 @@ export class SellerLayoutComponent implements OnInit {
   /** Seller pop up actions start */
 
   searchSeller() {
-    this.first = 0;
-    this.last = 9;
-    const paramObject = {
-      PageNumber: 1,
-      RowOfPage: 10,
-      LocationId: this.locId,
-      SerachText: this.searchSellerInput.replace(/ /g, "%")
-    };
-
-    if(this.isSellerMode) {
-      this.router.navigate([`/${this.orgName}/sellers-buyers`], { queryParams: { searchText: this.searchSellerInput } });
-
-      // this.router.navigate([`/${this.orgName}/sellers-buyers/grid`]);
-    } else { 
-      this.router.navigate([`/${this.orgName}/sellers-buyers/grid`], { queryParams: { searchText: this.searchSellerInput } });
- 
-    }
-
-
-    
-
-    
-  
-
-
+    const searchInput = this.searchSellerInput.replace(/ /g, "%");
+    this.sellersService.updateSearchSeller(searchInput);
   }
 
   refreshSellerData() {
     this.searchSellerInput = '';
-    this.first = 0;
-    this.last = 9;
-    const paramObject = {
-      PageNumber: 1,
-      RowOfPage: 10,
-      LocationId: this.locId,
-      SerachText: this.searchSellerInput.replace(/ /g, "%")
-    };
-    this.getAllsellersDetails(paramObject);
+    this.sellersService.updateRefreshSeller(); 
   }
+  
 
   addNewSeller() {    
     this.router.navigateByUrl(`${this.orgName}/sellers-buyers/add-seller`)

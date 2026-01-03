@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -14,13 +14,30 @@ import { CameraSettingsComponent } from './camera-settings/camera-settings.compo
 import { SystemPerfComponent } from './system-perf/system-perf.component';
 import { MessageService } from 'primeng/api';
 import { UserPerfComponent } from './user-perf/user-perf.component';
+import { CurrencySettingComponent } from './currency-setting/currency-setting.component';
+import { CashDrawerManagementComponent } from './cash-drawer-management/cash-drawer-management.component';
+import { RedemptionProgramComponentComponent } from './redemption-program-component/redemption-program-component.component';
+import { ScaleMachineComponent } from './scale-machine/scale-machine.component';
 
 
 
 export const routes: Routes = [{
   path:'',
   component:SettingsDashboardComponent
-}]
+  },
+ {
+    path: 'cash-drawer-management',
+    component: CashDrawerManagementComponent
+  },
+  {
+    path: 'redemption-program-component',
+    component: RedemptionProgramComponentComponent
+  },
+  {
+    path: 'scale-machine',
+    component: ScaleMachineComponent
+  }
+]
 
 
 @NgModule({
@@ -32,7 +49,11 @@ export const routes: Routes = [{
     TicketSettingsComponent,
     CameraSettingsComponent,
     SystemPerfComponent,
-    UserPerfComponent
+    UserPerfComponent,
+    CurrencySettingComponent,
+    CashDrawerManagementComponent,
+    RedemptionProgramComponentComponent,
+    ScaleMachineComponent
   ],
   imports: [
     CommonModule,
@@ -44,6 +65,6 @@ export const routes: Routes = [{
     ReactiveFormsModule,
 
   ],
-  providers: [MessageService],
+  providers: [MessageService,DatePipe],
 })
 export class SettingsModule { }

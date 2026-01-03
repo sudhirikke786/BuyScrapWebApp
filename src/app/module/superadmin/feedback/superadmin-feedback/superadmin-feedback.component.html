@@ -1,0 +1,89 @@
+<div class="content">
+
+    <!-- Start Content-->
+    <div class="container-fluid">
+
+        <!-- <div class="row mt-2">
+            <div class="col text-center">
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> New Ticket</button> 
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> Merge Ticket and Pay</button>
+            </div>
+            
+        </div> -->
+
+        <div class="bdcmb mt-2">
+            <div class="row">
+                <div class="col-sm-6 col-6">
+                    <h4 class="page-title">Feedback</h4>
+                </div>
+
+                <div class="col-sm-6 col-6">
+                    <div class="b-links">
+                        <a >Home</a>/ <a >Feedback</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+          
+        <!-- end page title --> 
+
+        <div class="row mt-2" >
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <p-table [value]="getFeedbackSuggestions" [scrollable]="true" 
+                        scrollHeight="50vh" [paginator]="true" [rows]="10"
+                        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [rowsPerPageOptions]="commonService.tableConfig.pageOptions" 
+                      
+                        >
+
+                       
+                        
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Organization Name</th>
+                                <th>Location Name</th>
+                                <th>Name</th>
+                                <th style="width: 400px; max-width: 400px;">Feedback</th>
+                            </tr>
+                        </ng-template>
+
+                        
+                        <ng-template pTemplate="body" let-getFeedbackSuggestions >
+                            <tr >
+                                <td>{{getFeedbackSuggestions.organisationName}}</td>
+                                <td>{{getFeedbackSuggestions.locationName}}</td>
+                                <td>{{getFeedbackSuggestions.username}}</td>
+                                <td style="max-width: 400px; 
+                                word-wrap: break-word; 
+                                white-space: pre-wrap; 
+                                overflow: hidden;">{{getFeedbackSuggestions.content}}</td>
+                               
+                               
+                               
+                            </tr>
+                        </ng-template>
+                        
+                    </p-table>
+
+
+
+
+
+                     
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div>
+
+
+     
+
+</div>
+
+
+

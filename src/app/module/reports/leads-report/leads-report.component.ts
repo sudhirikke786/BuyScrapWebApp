@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { HelperService } from 'src/app/core/services/helper.service';
 
@@ -46,18 +46,22 @@ export class LeadsReportComponent implements OnInit {
   startDate: any;
   endDate: any;
   showLoader = false;
+  currentRole:any;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
     private helperService: HelperService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private authService: AuthService,) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+    this.currentRole = this.authService.userCurrentRole();
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.setDefaultDate(); 
     this.getLeadsOnlineData();
+    this.setActionsByRole();
   }
 
  setDefaultDate() {
@@ -92,6 +96,23 @@ export class LeadsReportComponent implements OnInit {
   }
   
 
+  setActionsByRole(){
+    const allActions = [
+      { iconcode: 'mdi-magnify', title: 'Search' },
+      { iconcode: 'mdi-refresh', title: 'Download CSV' },
+      { iconcode: 'mdi-download', title: 'PDF' }
+      
+    ];
+    if (this.currentRole === 'Administrator') {
+      this.actionList = allActions;
+    } else {
+      
+      this.actionList = allActions.filter(
+        action => action.iconcode !== 'mdi-download'
+      );
+    }
+  }
+
   getAction(actionCode:any){
   
     switch (actionCode?.iconcode) {
@@ -124,7 +145,7 @@ export class LeadsReportComponent implements OnInit {
 
      const currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
      link.setAttribute('href', url);
-     link.setAttribute('download', `leads_data_${currentDate}.csv`);
+     link.setAttribute('download', `Leads Online Report ${currentDate}.csv`);
      link.style.visibility = 'hidden';
     
      document.body.appendChild(link);

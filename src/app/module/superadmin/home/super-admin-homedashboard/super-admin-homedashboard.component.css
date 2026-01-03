@@ -12,4 +12,6 @@
     transform: translateX(-50%);
     width: 300px; 
 }
-
+.table-danger {
+    background-color: #f8d7da !important;
+  }

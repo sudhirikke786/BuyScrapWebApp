@@ -5,8 +5,10 @@
 export const environment = {
   production: true,
   // baseUrl: 'https://api.buyscrapapp.com' 
-  baseUrl: 'https://devapi.buyscrapsoftware.com' //'https://devapi.buyscrapapp.com'
-  // baseUrl: 'https://localhost:44385'
+  //baseUrl: 'https://devapi.buyscrapsoftware.com', //'https://devapi.buyscrapapp.com'
+  baseUrl: 'https://localhost:44385',
+  //baseUrl: 'https://api.buyscrapsoftware.com',
+  ocrUrl: 'https://ocr.buyscrapsoftware.com'
   // TO DO :: We will be going to add here constant variable/path used through out the application.
 };
 

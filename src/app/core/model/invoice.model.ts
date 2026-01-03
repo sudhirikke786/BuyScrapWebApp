@@ -35,5 +35,7 @@ export class Invoice {
     shippingCharges: number=0;
     discount: number=0;
     dueDate  :   any;
+    currencyCode: string = '';
+    currencySymbol: string = '';
     lstttransactionMasterDTO: any;
 }

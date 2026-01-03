@@ -232,8 +232,11 @@
         </div>
 
     </ng-template>
+    <div class="row" *ngIf="RegradeLoader">
+        <app-page-loader type="ftable"></app-page-loader>
+    </div>
 
-    <div class="row">
+    <div class="row" *ngIf="!RegradeLoader">
 
         <div class="col-md-12">
             <form action="">                           
@@ -379,7 +382,11 @@
 
     </ng-template>
 
-    <div class="row">
+    <div class="row" *ngIf="RegradeLoader">
+        <app-page-loader type="ftable"></app-page-loader>
+    </div>
+
+    <div class="row" *ngIf="!RegradeLoader">
 
         <div class="col-md-12">
                   

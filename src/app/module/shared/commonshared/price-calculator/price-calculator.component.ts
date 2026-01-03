@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { DataService } from 'src/app/core/services/data.service';
 
 @Component({
   selector: 'app-price-calculator',
@@ -77,6 +78,12 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   @Input() itemNet: any = 0;
   @Input() itemPrice: any;
 
+  @Input() originalPrice: number = 0;
+  @Input() isScaleMaterialPriceLimit: boolean = false;
+  @Input() materialPriceLimit: number = 0;
+  @Input() marketPrice: number = 0;
+  @Input() showCameraSection: boolean = true;
+  
   isKeyboard = true;
 
   @Output() calculateObj = new EventEmitter<any>();
@@ -115,13 +122,18 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
   showCamera = true;
   materialkey: string = '';
 
+  isPriceValid: boolean = true;
+  priceErrorMessage: string = '';
+  subScriptionType:any;
+
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef,
     private stroarge: StorageService,
     private authService:AuthService,
     private messageService: MessageService,
     private helperService:HelperService,
-    public commonService: CommonService) {
+    public commonService: CommonService,
+    public dtService:DataService) {
       this.checkTabView = this.helperService.isTab();
   }
 
@@ -176,6 +188,28 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
    
   }
 
+  showPriceHistory: boolean = false;
+
+  priceHistoryList = [
+    {
+      materialName: 'Aluminum Motors',
+      oldPrice: 120,
+      newPrice: 135,
+      updatedDate: '12-Dec-2025'
+    },
+    {
+      materialName: 'Gold Alu',
+      oldPrice: 110,
+      newPrice: 120,
+      updatedDate: '05-Dec-2025'
+    },
+    {
+      materialName: 'Copper',
+      oldPrice: 100,
+      newPrice: 110,
+      updatedDate: '28-Nov-2025'
+    }
+  ];
 
   ngOnInit(): void {
 
@@ -184,6 +218,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    this.subScriptionType = this.dtService.getActivePlan();
 
     const autoCaptureMaterialPhotoItem = this.stroarge.getLocalStorage('systemInfo').find((item: any) => item.keys === "AutoCaptureMaterialPhoto");
     if (autoCaptureMaterialPhotoItem) {
@@ -229,6 +264,7 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     }
 
     this.currentSize();
+    this.priceInput = this.itemPrice;
 
   }
 
@@ -633,25 +669,27 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
 
   SaveImage(type: number) {
 
-    let requestObj: any = {
+    this.itemImagePath = this.imageUrl;
+    
+    // let requestObj: any = {
 
-      organisationName: this.orgName,
-      locationName: this.locationName,
-      imagetype: type,
-      base64Data: this.imageUrl?.split(';base64,')[1]
-    };
+    //   organisationName: this.orgName,
+    //   locationName: this.locationName,
+    //   imagetype: type,
+    //   base64Data: this.imageUrl?.split(';base64,')[1]
+    // };
 
-    // this.itemImagePath = this.imageUrl;
+    // // this.itemImagePath = this.imageUrl;
 
-    this.commonService.FileUploadFromWeb(requestObj).subscribe((res: any) => {
-      console.log('Image url path :: {}', res.body.data);
-      console.log(res.body.data);
-      this.imageUrl = res.body.data;
-      if (type == 1) {
-        this.itemImagePath = this.imageUrl;
-      } 
-      // this.imageUrl = null;
-    })
+    // this.commonService.FileUploadFromWeb(requestObj).subscribe((res: any) => {
+    //   console.log('Image url path :: {}', res.body.data);
+    //   console.log(res.body.data);
+    //   this.imageUrl = res.body.data;
+    //   if (type == 1) {
+    //     this.itemImagePath = this.imageUrl;
+    //   } 
+    //   // this.imageUrl = null;
+    // })
 
     // this.imageUrl = null;
     // this.closeCapturedImage(type);
@@ -701,6 +739,59 @@ export class PriceCalculatorComponent implements OnInit, AfterViewInit {
     this.backClose.emit(true);
   }
 
+  onPriceInputChange() {
+    const newPrice = parseFloat(this.priceInput.toString());
+    
+    if (isNaN(newPrice)) {
+      this.isPriceValid = false;
+      this.priceErrorMessage = 'Please enter a valid price';
+      return;
+    }
 
+    let marketPriceWarning = '';
+    if (this.marketPrice !== null && this.marketPrice !== undefined) {
+      if (newPrice > this.marketPrice) {
+        marketPriceWarning = 'Price is more than market price';
+      }
+    }
 
+    if (this.currentRole === 'Scale' && this.isScaleMaterialPriceLimit) {
+      this.validatePriceLimit(newPrice);
+      
+      if (!this.isPriceValid) {
+        return;
+      }
+      
+      if (marketPriceWarning) {
+        this.isPriceValid = true; 
+        this.priceErrorMessage = marketPriceWarning;
+      }
+    } else {
+      this.isPriceValid = true;
+      this.priceErrorMessage = marketPriceWarning;
+    }
+    
 }
+
+  validatePriceLimit(newPrice: number) {
+      const calculatedPrice = this.originalPrice || this.itemPrice; 
+      const limitPercentage = this.materialPriceLimit;
+      const limitAmount = (calculatedPrice * limitPercentage) / 100;
+      
+      const minPrice = calculatedPrice - limitAmount;
+      const maxPrice = calculatedPrice + limitAmount;
+      
+      if (newPrice < minPrice || newPrice > maxPrice) {
+        this.isPriceValid = false;
+        this.priceErrorMessage = `Price not as per set limit`;
+      } else {
+        this.isPriceValid = true;
+        this.priceErrorMessage = '';
+      }
+    }
+
+  openPriceHistory() {
+    this.showPriceHistory = true;
+  }
+
+  }

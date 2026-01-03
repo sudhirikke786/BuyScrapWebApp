@@ -42,7 +42,7 @@
                                         <div class="row">
                                             <div class="col-sm-6 col-md-4 d-flex">
 
-                                                <h4 class="ticket-number me-1">Invoice # - {{invoiceId}} /
+                                                <h4 class="ticket-number me-1">Invoice # - {{invoicesInvoiceID}} /
                                                     {{invoiceData?.status}} </h4>
 
 
@@ -68,7 +68,7 @@
 
                                                 </div>
                                                 <div>
-                                                    <a *ngIf="!isEditModeOn && invoiceData.status == 'OPEN'"
+                                                    <a *ngIf="!isEditModeOn"
                                                         class="btn  btn-primary flt-right me-1"
                                                         (click)="generateSingleInvoiceReport(invoiceId)">
                                                         <i class="mdi printing"></i> Print
@@ -282,13 +282,13 @@
                                                                             [value]="item.quantity || ''"/>
                                                                     </td>
                                                                     <td style="width:15%">
-                                                                        <span>$</span>
+                                                                        <span>{{ currencySymbol }}</span>
                                                                         <input type="number" [(ngModel)]="item.rate"
                                                                             (input)="updateItems(i)"
                                                                             placeholder="Enter rate" />
                                                                     </td>
                                                                     <td style="width:15%">
-                                                                        {{item.amount | currency: currencySymbol :'symbol': numberFormat }}
+                                                                        {{item.amount | currency:(invoiceData?.currencyCode ? invoiceData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat  }}
                                                                     </td>
                                                                     <td style="width:15%">
                                                                         <button class="btn btn-danger me-1"
@@ -305,10 +305,10 @@
                                                                         {{item.quantity}}
                                                                     </td>
                                                                     <td style="width:15%">
-                                                                        {{item.rate | currency: currencySymbol :'symbol': numberFormat }}
+                                                                        {{item.rate | currency:(invoiceData?.currencyCode ? invoiceData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}
                                                                     </td>
                                                                     <td style="width:15%">
-                                                                        {{item.amount | currency: currencySymbol :'symbol': numberFormat }}
+                                                                        {{item.amount | currency:(invoiceData?.currencyCode ? invoiceData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}
                                                                     </td>
                                                                 </tr>
                                                             </ng-container>
@@ -496,7 +496,7 @@
                                                             placeholder="Enter Shipping Charges" 
                                                             (input)="addShip()">
                                                         <span *ngIf="isshowShipping && !isEditModeOn" class="text-secondary">
-                                                            {{ shippingCharges | currency: currencySymbol: 'symbol': numberFormat }}
+                                                            {{ shippingCharges | currency:(invoiceData?.currencyCode ? invoiceData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}
                                                         </span>
                                                         <a 
                                                             *ngIf="isshowShipping && isEditModeOn" 
@@ -520,7 +520,7 @@
                                                 <!-- Total Section -->
                                                 <div class="row mb-1">
                                                     <div class="col-6 text-end fw-bold">Total:</div>
-                                                    <div class="col-6 text-secondary">{{ finalAmount | currency: currencySymbol: 'symbol': numberFormat }}</div>
+                                                    <div class="col-6 text-secondary">{{ finalAmount |currency:(invoiceData?.currencyCode ? invoiceData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}</div>
                                                 </div>
                                             
                                                 <!-- Amount Paid Section -->
@@ -535,7 +535,7 @@
                                                             placeholder="Enter Paid Amount" 
                                                             (input)="calculate()">
                                                         <span *ngIf="!isEditModeOn" class="text-secondary">
-                                                            {{ paidAmount | currency: currencySymbol: 'symbol': numberFormat }}
+                                                            {{ paidAmount | currency:(invoiceData?.currencyCode ? invoiceData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -543,7 +543,7 @@
                                                 <!-- Balance Due Section -->
                                                 <div class="row">
                                                     <div class="col-6 text-end fw-bold">Balance Due:</div>
-                                                    <div class="col-6 text-secondary">{{ balanceAmount | currency: currencySymbol: 'symbol': numberFormat }}</div>
+                                                    <div class="col-6 text-secondary">{{ balanceAmount |currency:(invoiceData?.currencyCode ? invoiceData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat  }}</div>
                                                 </div>
                                             </div>
                                             
@@ -583,7 +583,7 @@
                                                                 *ngIf="ticketsTransaction?.type == 'Check'"
                                                                 (click)="checkReprint(ticketsTransaction)"><i
                                                                     class="bi bi-printer-fill ms-1"></i></a></td>
-                                                        <td>{{ invoicesTransaction?.amount | currency: currencySymbol
+                                                        <td>{{ invoicesTransaction?.amount |currency:(invoiceData?.currencyCode ? invoiceData.currencyCode : defaultCurrencyCode) 
                                                             :'symbol': numberFormat }}</td>
                                                         <td>{{ invoicesTransaction?.checkNumber }}</td>
                                                     </tr>
@@ -866,7 +866,7 @@
             <div class="d-flex justify-content-between  mb-2 mt-2">
                 <div class="text-xl fz-16 font-bold">Total Amount
                 </div>
-                <div class="font-bold fz-16">{{remainingAmount | currency: currencySymbol :'symbol': numberFormat}}
+                <div class="font-bold fz-16">{{remainingAmount | currency:(invoiceData?.currencyCode ? invoiceData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}
                 </div>
             </div>
         </div>
@@ -993,7 +993,7 @@
     <div class="row" *ngIf="!showLoaderReport">
         <div style="height: 500px; width: 90vw;">
             <ngx-extended-pdf-viewer [base64Src]="fileDataObj" [PageViewMode]="'Single'" [pageChangeOnScrolling]="true"
-                [showScrollbar]="false">
+                [showScrollbar]="false" [filenameForDownload]="'Invoice'+ ' '+'ID_' + invoiceId + '.pdf'">
             </ngx-extended-pdf-viewer>
         </div>
     </div>
@@ -1232,6 +1232,18 @@
 
 <p-toast></p-toast>
 
+<p-dialog 
+  [(visible)]="showConfirmLeavePopup" 
+  [modal]="true" 
+  [closable]="false" 
+  header="Confirmation"
+  [style]="{ width: '400px' }">
+    <p>Invoice details have not been saved. Do you want to continue?</p>
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-secondary me-2" (click)="cancelNavigation()">No</button>
+        <button class="btn btn-primary" (click)="proceedWithNavigation()">Yes</button>
+    </div>
+</p-dialog>
 
 <!-- <p-confirmDialog  [style]="{width: '50vw'}">
     <ng-template pTemplate="header">

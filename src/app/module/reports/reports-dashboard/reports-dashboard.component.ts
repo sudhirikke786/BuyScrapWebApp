@@ -14,6 +14,9 @@ export class ReportsDashboardComponent implements OnInit {
   locId: any;
   subScriptionType: any;
   showPlan = false;
+  isDispatchOnly: boolean = false;
+  isProPlusVersion: boolean = localStorage.getItem('isProPlusVersion') === 'true';
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     
@@ -24,7 +27,7 @@ export class ReportsDashboardComponent implements OnInit {
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.subScriptionType = this.dtService.getActivePlan();
-
+    this.isDispatchOnly = localStorage.getItem('isDispatchOnly') === 'true';
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
   }
 

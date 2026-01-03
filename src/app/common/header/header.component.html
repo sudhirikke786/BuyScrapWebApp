@@ -35,11 +35,12 @@
                         <a class="font-big" (click)="fontIncrease()">A</a> 
                         <a class="font-less" (click)="fontDecrease()">A+</a>
                     </li> -->
-
-                    <li><b>{{wWidth}} * {{wHeight}} </b></li>
+                    <li *ngIf="MultiCashDrawerEnabled && (currentRole === 'Administrator' || currentRole === 'Cashier')" class="text-white"><strong>Drawer: {{drawerName}}</strong></li>
+                    <li class="ms-4"><b>{{wWidth}} * {{wHeight}} </b></li>
 
                     <li class="dropdown d-inline-block">
-                        <ul *ngIf="currentRole!='Scale'" class="balance-details-ul balance-bar-desktop">
+                        <ul *ngIf="(currentRole === 'Administrator' || currentRole === 'Cashier') && !isDispatchOnly" 
+    class="balance-details-ul balance-bar-desktop">
                             <li><strong>Balance</strong>: {{ cashDrawerBalanceAmount | currency: currencySymbol :'symbol': numberFormat}}</li>
                             <li><strong>PaidCount</strong>: {{paidTicketCount}}</li>
                         </ul> 
@@ -74,7 +75,7 @@
                                 <i class="fe-settings"></i>
                                 <span>Settings</span>
                             </a>
-                            <a routerLink="/{{orgName}}/my-account/subscription" routerLinkActive="router-link-active"  class="dropdown-item notify-item" *ngIf="currentRole !== 'Driver'">
+                            <a routerLink="/{{orgName}}/my-account/subscription" routerLinkActive="router-link-active"  class="dropdown-item notify-item" *ngIf="currentRole !== 'Driver'  && currentRole !== 'Scale'">
                                 <i class="fe-lock"></i>
                                 <span>Subscription</span>
                             </a>
@@ -83,7 +84,7 @@
                                 <span>Change Password</span>
                             </a>
 
-                            <a routerLink="/{{orgName}}/my-account/change-location" routerLinkActive="router-link-active" class="dropdown-item notify-item" *ngIf="currentRole !== 'Driver'">
+                            <a routerLink="/{{orgName}}/my-account/change-location" routerLinkActive="router-link-active" class="dropdown-item notify-item" *ngIf="currentRole === 'Administrator'">
                                 <i class="bi bi-geo-alt-fill"></i>
                                 <span>Change Location</span>
                             </a>
@@ -94,11 +95,26 @@
                                 <span>Full screen</span>
                             </a>
 
+                            <a routerLink="/{{orgName}}/my-account/change-cashdrawer" routerLinkActive="router-link-active" class="dropdown-item notify-item" *ngIf="(currentRole == 'Administrator' || currentRole == 'Cashier') && MultiCashDrawerEnabled">
+                                <img src="/assets/images/custom/icons/cash-drawer.png" alt="Cash Drawer" class="cash-drawer-icon" />
+                                <span>Change CashDawer</span>
+                            </a>
+
                             <!-- item-->
                             <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
                                 <i class="fe-lock"></i>
                                 <span>Lock Screen</span>
                             </a> -->
+
+                            <a routerLink="/{{orgName}}/my-account/feedback" routerLinkActive="router-link-active" class="dropdown-item notify-item">
+                                <i class="fe-message-square"></i>
+                                <span>Feedback & Suggestion</span>
+                            </a>
+
+                            <a routerLink="/{{orgName}}/my-account/check-printing-template" routerLinkActive="router-link-active" class="dropdown-item notify-item"   *ngIf="(currentRole !== 'Driver' && currentRole !== 'Scale') && IsUseCheckTemplateEnabled">
+                                <i class="bi bi-layout-text-window"></i>
+                                <span>Check Printing Templates</span>
+                            </a>
 
                             <div class="dropdown-divider"></div>
 
@@ -125,7 +141,7 @@
                 </ul>
             </div>
 
-            <div class="balance-bar-mobile">
+            <div class="balance-bar-mobile" *ngIf="currentRole === 'Administrator' || currentRole === 'Cashier'" >
                 <ul class="balance-details-ul">
                     <li *ngIf="currentRole!='Scale' "><strong>Balance</strong>: {{ cashDrawerBalanceAmount | currency: currencySymbol :'symbol': numberFormat}}</li>
                     <li><strong>PaidCount</strong>: {{paidTicketCount}}</li>
@@ -136,7 +152,8 @@
         <!-- ========== Topbar End ========== -->
 
         <p-dialog [modal]="true" 
-            header="Reopen Register"
+            
+            *ngIf="shouldShowCashDrawerPopup" 
             [(visible)]="isReopenRegister" [closable]="false"
             [style]="{ width: '40vw' }"
             [breakpoints]="{'767px': '100vw'}"
@@ -145,10 +162,12 @@
                 <div class="d-flex">
                     <!-- <a class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a> -->
                                 
-                    <h3 class="modal-title ml-10" id="myLargeModalLabel">Reopen Register</h3>
+                    <h3 class="modal-title ml-10" id="myLargeModalLabel"> {{ isPreviousDayOpen ? 'Close & Reopen Register' : 'Reopen Register' }}</h3>
                     </div>
             </ng-template>
-
+            <div *ngIf="isPreviousDayOpen" class="alert alert-warning mt-2 mb-3" style="font-size: 16px; font-weight: 600;">
+                 Your previous day cash drawer is open. Please close it before opening.
+            </div>
 
             <div class="row">
                 <div class="col-sm-12">
@@ -223,18 +242,16 @@
                         <div class="row">
                             <div>
                                 <h4>Reopen register with previous day balance : </h4>
-                                <h2>{{((cashdrawerdetail.dollar1 * 1) + (cashdrawerdetail.dollar5 * 5) + (cashdrawerdetail.dollar10 * 10) +
-                                    (cashdrawerdetail.dollar20 * 20) + (cashdrawerdetail.dollar50 * 50) + (cashdrawerdetail.dollar100 * 100) + 
-                                    (cashdrawerdetail.cent1 * .01) + (cashdrawerdetail.cent5 * .05) + (cashdrawerdetail.cent10 * .1) + 
-                                    (cashdrawerdetail.cent25 * .25)) | currency: currencySymbol :'symbol': numberFormat}}
+                                <h2>{{cashDrawerBalanceAmount | currency: currencySymbol :'symbol': numberFormat}}
                                 </h2>
                             </div>
                         </div>
 
                         <div class="row">
                             <div>
-                                <a class="btn btn-success me-1" (click)="approvePreviousdayBalance()">Yes</a>
-                                <a class="btn btn-danger" (click)="openWithDifferentAmount()">Open With Different Amount</a>
+                                <a class="btn btn-success me-1" (click)="approvePreviousdayBalance()">{{ isPreviousDayOpen ? 'Close & Reopen' : 'Yes' }}</a>
+                                <a class="btn btn-danger me-1" (click)="openWithDifferentAmount()" *ngIf="!isFirstTimeUser">{{ isPreviousDayOpen ? 'Close & Open With Different Amount' : 'Open With Different Amount' }}</a>
+                                <a class="btn btn-danger" (click)="skipAndContinue()" *ngIf="!isFirstTimeUser">Skip and Continue</a>
                             </div>
                         </div>
 
@@ -276,13 +293,12 @@
                         </div>
 
                         <div class="form-group col-sm-12 mb-2">
+                            <label for="simpleinput" class="form-label w-100">Amount</label>
+                            <input type="text" name="differntOpeningAmount" [(ngModel)]="differntOpeningAmount" class="form-control" placeholder="Add explaination here" readonly>
+                        </div>
+                        <div class="form-group col-sm-12 mb-2">
                             <label for="simpleinput" class="form-label w-100">Explaination</label>
                             <input type="text" name="closeRegisterWithDiffernceExplaination" [(ngModel)]="closeRegisterWithDiffernceExplaination" class="form-control" placeholder="Add explaination here">
-                        </div>
-
-                        <div class="form-group col-sm-12 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Amount</label>
-                            <input type="text" name="differntOpeningAmount" [(ngModel)]="differntOpeningAmount" class="form-control" placeholder="Add explaination here">
                         </div>
 
                         <a class="btn btn-primary " (click)="saveRegisterWithDiffernceAmount()">Save</a>

@@ -20,13 +20,15 @@
         </div>
         <div class="row">
             <div class="col-sm-3 d-flex align-items-center gap-2">
-                <a  class="btn btn-primary mt-1" [routerLink]="backUrl">
+                <a  class="btn btn-primary mt-1 uniform-btn" [routerLink]="backUrl">
                     Back
                 </a>
-                <a class="btn btn-primary mt-1" (click)="sendMaterialPriseList()">
+                <a class="btn btn-primary mt-1 uniform-btn" (click)="sendMaterialPriseList()">
                     Send Material Prise List
                 </a>
-
+                <a  *ngIf="IsCustomerAdvanceEnabled" class="btn btn-primary mt-1 uniform-btn" (click)="toggleAdvancesView()">
+                    {{ showAdvances ? 'Back to Tickets Details' : 'Show Advances' }}
+                </a>
             </div>
         </div>
 
@@ -64,13 +66,11 @@
 
                         <hr>
 
-                        <div class="row mt-3 dt-responsive nowrap w-100">
-                            <p-table #dt1 [value]="tickets" [paginator]="true" [rows]="10"
-                                [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-                                [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions"
+                        <div class="row mt-3 dt-responsive nowrap w-100" *ngIf="!showAdvances">
+                             <p-table #dt1 [value]="tickets" [paginator]="false" [rows]="ticketsPageSize"
+                                [showCurrentPageReport]="false" [tableStyle]="{ 'min-width': '50rem' }"
                                 [scrollable]="true" 
                                 scrollHeight="50vh"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                 [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']"
                                 >
      
@@ -104,6 +104,55 @@
                                 
                                 
                             </p-table>
+                            <div class="paginator-container" *ngIf="tickets?.length > 0">
+                                <p-paginator class="serverside-paginator" 
+                                    [showCurrentPageReport]="true" 
+                                    (onPageChange)="onTicketsPageChange($event)"  
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+                                    [first]="ticketsFirst" 
+                                    [rows]="ticketsPageSize" 
+                                    [totalRecords]="ticketsTotal" 
+                                    [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
+                                </p-paginator>
+                            </div>
+                        </div>
+
+                         <div class="row mt-3 dt-responsive nowrap w-100" *ngIf="showAdvances">
+                            <p-table #dt2 [value]="advances" [paginator]="false" [rows]="advancesPageSize"
+                                [showCurrentPageReport]="false" [tableStyle]="{ 'min-width': '50rem' }"
+                                [scrollable]="true" 
+                                scrollHeight="50vh"
+                                [globalFilterFields]="['advance.createdDate', 'advance.status', 'advance.advanceAmount', 'advance.reason']"
+                                >
+     
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Date Created</th>
+                                        <th>Status</th>
+                                        <th>Advance Amount</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-advance>
+                                    <tr>
+                                        <td>{{ advance?.createdDate | date: 'MM/dd/yyyy'  }}</td>
+                                        <td>{{ advance?.status }}</td>
+                                        <td>{{ advance?.advanceAmount | currency }}</td>
+                                        <td>{{ advance?.reason }}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="paginator-container" *ngIf="advances && advances.length > 0">
+                                <p-paginator class="serverside-paginator" 
+                                    [showCurrentPageReport]="true" 
+                                    (onPageChange)="onAdvancesPageChange($event)"  
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+                                    [first]="advancesFirst" 
+                                    [rows]="advancesPageSize" 
+                                    [totalRecords]="advancesTotal" 
+                                    [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
+                                </p-paginator>
+                            </div>
                         </div>
                     
                     </div> <!-- end card body-->

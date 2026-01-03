@@ -33,7 +33,13 @@
                                 <div class="row">
                                     <div class="col-sm-2 d-flex justify-content-center align-items-center">
                                        
-                                            <img src="{{customer?.idfaceShotImage}}" class="dl-img">
+                                            <img *ngIf="!IsCustomerFacePictureEnabled && customer?.idfaceShotImage"
+                                                src="{{customer?.idfaceShotImage}}"
+                                                class="dl-img">
+
+                                            <img *ngIf="IsCustomerFacePictureEnabled || !customer?.idfaceShotImage"
+                                                src="/assets/images/custom/icons/user.png"
+                                               class="default-img">
                                     
                                        
                                     </div>
@@ -46,7 +52,7 @@
                                             <div class="col-sm-12 d-flex justify-content-between  mb-1">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div>
-                                                        Ticket Id : {{ticketId}} / {{ticketData?.status}}                                                    
+                                                        Ticket Id : {{ticketsParentID ? ticketsParentID : ticketsTicketID}} / {{ticketData?.status}}                                                    
                                                     </div>
                                                     
                                                     <div class="ms-1" *ngIf="isEditModeOn" >
@@ -70,11 +76,25 @@
                                                         </a>
                                                     </div>
 
-                                                    
-                                                </div>
-                                               
-                                                
-                                                
+                                                    <div>
+                                                        <span *ngIf="customer?.notes && currentRole !== 'Scale'" class="cursor-pointer ms-1" pTooltip="{{ customer?.notes }}" tooltipPosition="top">
+                                                            <i class="mdi mdi-note-text-outline text-warning" style="font-size: 1.5rem;"></i>
+                                                        </span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="d-flex flex-column justify-content-center ms-3">
+                                                        <div *ngIf="businessOwnerName && businessOwnerName.trim() !== '' && isBusiness && isEditModeOn" class="form-check mb-0">
+                                                            <input class="form-check-input" type="checkbox" id="isBusinessOwnerName"
+                                                                [(ngModel)]="isBusinessOwnerName" (change)="onBusinessOwnerNameToggle($event)">
+                                                            <label class="form-check-label small" for="isBusinessOwnerName"> Business Owner Name </label>
+                                                        </div>
+
+                                                        <span *ngIf="dispatchID" class="fw-bold text-primary text-nowrap small">
+                                                            Dispatch ID: {{ PickupID }}
+                                                        </span>
+                                                    </div>
 
                                                 <div class="d-flex justify-content-end">
                                                     
@@ -84,7 +104,8 @@
                                                         </a>        
                                                     </div>        
                                                     <div>
-                                                        <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary flt-right" (click)="editTicketDetails()">
+                                                        <a *ngIf="!isEditModeOn && (ticketData.status === 'OPEN' 
+                                                        || (ticketData.status === 'TAG AND HOLD' && ticketData.tagHoldExpired))" class="btn  btn-primary flt-right" (click)="editTicketDetails()">
                                                             <i class="mdi mdi-pencil"></i> Edit
                                                         </a>
                                                     </div>
@@ -174,7 +195,11 @@
                                                     <th>Price</th>
                                                     <th>Amount</th>
                                                     <th>Image</th>
+                                                    <th *ngIf="!isEditModeOn">Created Date</th>
+                                                    <!-- <th *ngIf="isEditModeOn"></th> -->
                                                     <th *ngIf="isEditModeOn">Action</th>
+                                                    <th *ngIf="!isEditModeOn && isTicketDocumentsEnabled && hasAnyDocuments">View</th>
+                                                      
                                                 </tr>
                                             </ng-template>
                                             <ng-template pTemplate="body" let-ticket let-rowIndex="rowIndex">
@@ -204,7 +229,7 @@
                                                                         <td class="cod-item" style="width: 25%;"></td>
                                                                         <td class="cod-item" style="width: 25%;"></td>
                                                                         <td class="cod-item" style="width: 25%;"></td>
-                                                                        <td class="cod-item" style="width: 25%;">{{ ticket?.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                                        <td class="cod-item" style="width: 25%;">{{ ticket?.amount * -1 | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat}}</td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -227,8 +252,8 @@
                                                                         <td style="width: 25%;">{{ ticket?.gross  }}</td>
                                                                         <td style="width: 25%;">{{ ticket?.tare }}</td>
                                                                         <td style="width: 25%;">{{ ticket?.net }}</td>
-                                                                        <td style="width: 25%;">{{ ticket?.price | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                                        <td style="width: 25%;">{{ ticket?.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                                        <td style="width: 25%;">{{ ticket?.price | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat   }}</td>
+                                                                        <td style="width: 25%;">{{ ticket?.amount | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}</td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -236,6 +261,19 @@
                                                         <td>
                                                             <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img" (click)="showSelectedImage(ticket.imagePath, '1')"></a>
                                                         </td>
+                                                        <!-- <td>
+                                                            <select
+                                                                *ngIf="ticket.purchaseOrderMaterialsDropdown?.length > 0"
+                                                                [(ngModel)]="ticket.purchaseOrderMaterialID"
+                                                                (change)="onPurchaseMaterialChange(ticket)"
+                                                                name="purchaseOrderMaterial_{{rowIndex}}"
+                                                            >
+                                                                <option [value]="0">Select Material</option>
+                                                                <option *ngFor="let item of ticket.purchaseOrderMaterialsDropdown" [value]="item.purchaseOrderMaterialID">
+                                                            (PO ID: {{ item.purchaseOrderID }} - Bal Qty:{{item.balanceMaterialQty}})
+                                                                </option>
+                                                            </select>
+                                                        </td> -->
                                                         <td *ngIf="isEditModeOn">
                                                             <div class="d-flex justify-content-center align-items-center">
                                                                 <a  (click)="editItem(ticket)"
@@ -246,14 +284,22 @@
                                                                 <a class="btn btn-grid btn-danger waves-effect waves-light me-1" (click)="deleteItem(rowIndex)">
                                                                     Delete
                                                                 </a>
-                                                                <a *ngIf="isTicketDocumentsEnabled" (click)="showUploadDialog(ticket)" class="btn btn-grid waves-effect waves-light">
+                                                                <!-- <button class="btn btn-grid btn-secondary me-1"
+                                                                (click)="generateBarcode(ticket)">
+                                                          Show Barcode
+                                                        </button> -->
+                                                       
+                                                                <a *ngIf="isTicketDocumentsEnabled" (click)="showUploadDialog(ticket)" class="btn btn-grid waves-effect waves-light me-1">
                                                                     <img src="/assets/images/custom/icons/upload.png" alt="Upload" style="width: 20px; height: 20px;" />
+                                                                </a>
+                                                                <a *ngIf="ticket.purchaseOrderMaterialsDropdown?.length > 0 && currentRole !== 'Scale'" class="btn btn-sm btn-outline-primary"  (click)="openPurchaseOrderPopup(ticket)"> <i class="mdi mdi-link-variant"></i>
                                                                 </a>
                                                             
                                                             </div>
                                                             
                                                           
                                                         </td>
+
                                                     </tr>
                                                     <!-- <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}"  *ngIf="ticket.materialNote != ''"> -->
                                                     <tr [ngClass]="{'no-border-tr': ticket.materialNote || ticket.materialNote !=''}" *ngIf="ticket.materialNote || ticket.materialNote !=''">
@@ -278,19 +324,31 @@
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
                                                             <td class="cod-item"></td>
-                                                            <td class="cod-item">{{ ticket.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                            <td class="cod-item">{{ ticket.amount * -1 | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode)}}</td>
                                                         </ng-container>
                                                         <ng-template #otherThanCOD >
                                                             <td style="width: 25%;">{{ ticket.materialName }}</td>
                                                             <td>{{ ticket.gross  }}</td>
                                                             <td>{{ ticket.tare }}</td>
                                                             <td>{{ ticket.net }}</td>
-                                                            <td>{{ ticket.price | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                            <td>{{ ticket.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                            <td>{{ ticket.price | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat}}</td>
+                                                            <td>{{ ticket.amount | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}</td>
                                                         </ng-template>
+                                                       
                                                         <td>
                                                             <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img" (click)="showSelectedImage(ticket.imagePath, '1')"></a>
                                                         </td>
+                                                        <td>
+                                                            {{ ticket.createdDate | date: 'yyyy-MM-dd' }}
+                                                        </td>
+                                                        <td *ngIf="ticket.purchaseOrderMaterialID">
+                                                            {{ getSelectedPurchaseOrderMaterialDisplay(ticket) }}
+                                                        </td>
+                                                        <td>
+                                                            <button *ngIf="isTicketDocumentsEnabled && hasAnyDocuments" type="button" class="btn btn-grid btn-primary waves-effect waves-light me-1" (click)="onViewDocuments(ticket.rowId)"> <i class="mdi mdi-eye pe-1"></i>View</button>
+                                                        </td>
+                                                          
+                                                          
                                                         
                                                     </tr>
                                                     <!-- <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}"  *ngIf="ticket.materialNote != ''"> -->
@@ -337,10 +395,10 @@
                                                             <td>{{totalGross}}</td>
                                                             <td>{{totalTare}}</td>
                                                             <td>{{totalNet}}</td>
-                                                            <td *ngIf="totalRoundingAmount != 0">{{totalActualAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                            <td *ngIf="totalRoundingAmount != 0">{{totalRoundingAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                            <td>{{totalAmount | currency: currencySymbol :'symbol': numberFormat}}</td>
-                                                            <td>{{(totalAdjustment * -1) | currency: currencySymbol :'symbol': numberFormat}}</td>
+                                                            <td *ngIf="totalRoundingAmount != 0">{{totalActualAmount | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}</td>
+                                                            <td *ngIf="totalRoundingAmount != 0">{{totalRoundingAmount | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}</td>
+                                                            <td>{{totalAmount | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}</td>
+                                                            <td>{{(totalAdjustment * -1) | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat}}</td>
                                                         </tr>                                                     
                                                     </tbody>
                                                     
@@ -354,12 +412,41 @@
                                          
                                                     <div class="ticket-summary-div d-flex justify-content-between align-item-center">
                                                         <div class="me-2">
-                                                            <b class="fz-14">Paid Amount  {{ticketData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
+                                                            <b class="fz-14">Paid Amount  {{ticketData?.paidAmount | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat}}</b>
                                                         </div>
             
                                                         <div class="ms-2 me-2">
-                                                            <b class="fz-14">Balance Amount  {{totalAmount - totalAdjustment - ticketData?.paidAmount | currency: currencySymbol :'symbol': numberFormat}}</b>
-                                                        </div> 
+                                                            <b class="fz-14">Balance Amount  {{totalAmount - totalAdjustment - ticketData?.paidAmount | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat }}</b>
+                                                        </div>
+                                                        <div class="ms-2" *ngIf="isEditModeOn">
+                                                            <div class="d-flex justify-content-start align-items-center">
+                                                                <p-dropdown
+                                                                    [options]="ticketScaleTypeList"
+                                                                    optionLabel="scaleTypeName"
+                                                                    optionValue="rowId"
+                                                                    [(ngModel)]="selectedScaleTypeId"
+                                                                    placeholder="Select Scale Type"
+                                                                    [showClear]="false">
+                                                                </p-dropdown>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="ms-2" *ngIf="!isEditModeOn">
+                                                            <div class="d-flex justify-content-start align-items-center">
+                                                                <p-dropdown
+                                                                    [options]="ticketScaleTypeList"
+                                                                    optionLabel="scaleTypeName"
+                                                                    optionValue="rowId"
+                                                                    [(ngModel)]="selectedScaleTypeId"
+                                                                    placeholder="Select Scale Type"
+                                                                    [showClear]="false"
+                                                                    [disabled]="true">
+                                                                </p-dropdown>
+
+                                                            </div>
+                                                        </div>
+
                                                         <div class="ms-2" *ngIf="!isEditModeOn">
                                                             <div class="d-flex justify-content-start align-items-center">
                                                                 <div><p-inputSwitch [disabled]="true"  [(ngModel)]="isCODRequired"></p-inputSwitch></div>
@@ -387,7 +474,7 @@
                                                  
         
                                                     <div *ngIf="!isEditModeOn" class="pay-print-box">
-                                                        <a *ngIf="(ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid') && (currentRole!== 'Scale')" class="btn btn-danger me-1" (click)="showPayment(true)">Pay Ticket</a>
+                                                        <a *ngIf="(ticketData.status == 'OPEN' || ticketData.status == 'Partially Paid' || (ticketData.status ==='TAG AND HOLD' && ticketData.tagHoldExpired)) && (currentRole!== 'Scale')" class="btn btn-danger me-1" (click)="showPayment(true)">Pay Ticket</a>
                                                         <a class="btn btn-primary" (click)="generateSingleTicketReport(ticketId)">Printout</a>
                                                     </div>        
         
@@ -426,7 +513,7 @@
                                                     <tr>
                                                         <td># </td>
                                                         <td>{{ ticketsTransaction?.type }} <a pTooltip="Check reprint" href="javascript:void()" *ngIf="ticketsTransaction?.type == 'Check'" (click)="checkReprint(ticketsTransaction)" ><i class="bi bi-printer-fill ms-1"></i></a></td>
-                                                        <td>{{ ticketsTransaction?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                                        <td>{{ ticketsTransaction?.amount | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) }}</td>
                                                         <td>{{ ticketsTransaction?.checkNumber }}</td>
                                                     </tr>
                                                 </ng-template>
@@ -439,7 +526,7 @@
 
                             </div>
 
-                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
+                            <!-- <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture" >
                                 
                                 <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 160px)">
                                     <h4 class="materials-heading">Materials</h4>
@@ -497,7 +584,7 @@
                                     <ul class="main-ul mt-1">
                                       <ng-container  *ngFor="let item of subMaterialList" >
                                           <li>
-                                              <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.scrapPrice)"
+                                              <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, calculatePrice(item))"
                                               pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
                                               class="btn  custom-lh">{{item.materialName}}</a>
                                           </li>
@@ -505,14 +592,109 @@
                                     </ul>
   
                                 </div>
-                            </div>
+                            </div> -->
+
+                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture">
+
+    <!-- 1. TOGGLE SWITCH HEADER -->
+    <!-- <div class="d-flex justify-content-between align-items-center mb-2 px-2" *ngIf="mainMaterialsVisible">
+        <span class="fw-bold">Mode: {{ isMetalDetectionEnabled ? 'AI Detection' : 'Standard List' }}</span>
+        <div class="form-check form-switch">
+            <label class="form-check-label me-2" for="metalToggle">Enable Metal Detection</label> -->
+            <!-- Toggle Button -->
+            <!-- <p-inputSwitch 
+                [(ngModel)]="isMetalDetectionEnabled" 
+                (onChange)="onMetalDetectionChange($event)"
+                id="metalToggle">
+            </p-inputSwitch> -->
+        <!-- </div> -->
+    <!-- </div> -->
+
+    <!-- 2. STANDARD LIST VIEW (Works when Toggle is OFF) -->
+    <ng-container *ngIf="!IsAIMetalDetectionEnabled">
+        <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
+            <h4 class="materials-heading">Materials</h4>
+            <div>
+                <input type="text" id="searchMaterialInput" #searchMaterialInput (keyup)="searchMaterial($event)"
+                    class="form-control w-100" placeholder="Search Material" aria-describedby="helpId" />
+            </div>
+            <ul class="main-ul mt-1">
+                <ng-container *ngFor="let item of materialList">
+                    <li>
+                        <a id="showInnerDiv1" class="btn custom-lh" placeholder="Bottom"
+                            (click)="getSubMaterials(item.rowId, item.groupName, false)">
+                            {{item.groupName}}
+                        </a>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
+
+        <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row" style="height:calc(100vh - 160px)">
+            <h1 class="materials-heading">
+                <span>
+                    <a id="backToMainBox1" class="btn btn-primary " (click)="backToMainMaterials()"><i
+                            class="mdi mdi-keyboard-backspace"></i></a>
+                </span>
+                <div class="main-material"> Main Material - {{selectedMaterial}}</div>
+            </h1>
+            <div>
+                <input type="text" #searchsubMaterialInput (keyup)="searchSubMaterial($event)"
+                    class="form-control w-100" placeholder="Search Material" aria-describedby="helpId" />
+            </div>
+            <ul class="main-ul mt-1">
+                <ng-container *ngFor="let item of subMaterialList">
+                    <li>
+                        <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, calculatePrice(item))"
+                            pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
+                            class="btn custom-lh">{{item.materialName}}</a>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
+    </ng-container>
+
+    <!-- 3. METAL DETECTION VIEW (Works when Toggle is ON) -->
+    <ng-container *ngIf="IsAIMetalDetectionEnabled">
+        <div class="card" style="height:calc(100vh - 160px);">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+
+                <!-- Loading Spinner -->
+                <div *ngIf="materialsLoading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted mt-2">Identifying Material...</p>
+                </div>
+
+                <!-- AI Camera Interface -->
+                <div *ngIf="!materialsLoading">
+                    <h4 class="materials-heading">AI Metal Detection</h4>
+                    <p class="text-muted mb-2">Capture an image to predict material.</p>
+
+                    <app-camera (getPicture)="handleImage($event)" [defaultCamera]="dCamera"></app-camera>
+
+                    <!-- <div class="mt-3">
+                        <p class="mb-0">Prediction wrong or camera not working?</p>
+                        <a href="javascript:void(0)" (click)="openManualAddDialog()">
+                            Search or Add Manually
+                        </a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+</div>
 
                             <div class="col-lg-6 col-xs-12 col-sm-6 position-releative" *ngIf="isEditModeOn && editItemCloseImageCapture">
                                 <div  pDraggable dragHandle=".p-panel-header">
                                     <app-price-calculator  (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()" (backClose)="backToChangeItemMainMaterials()"
                                         [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
                                         [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" 
-                                        [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
+                                        [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath" 
+                                        [originalPrice]="originalItemPrice" [isScaleMaterialPriceLimit]="isScaleMaterialPriceLimit" 
+                                        [materialPriceLimit]="materialPriceLimit" [marketPrice]="itemMarketPrice">
                                     </app-price-calculator>
                                 </div>
                             </div>
@@ -635,7 +817,7 @@
 </ng-container>
 
 
-<p-dialog [modal]="true" header="Header"  [breakpoints]="{'1024px': '60vw', '1080px': '70vw','767px': '100vw'}" [modal]="true" [(visible)]="saveConfirmVisible" [style]="{ width: '50vw' }">
+<p-dialog *ngIf="saveConfirmVisible" [modal]="true" header="Header"  [breakpoints]="{'1024px': '60vw', '1080px': '70vw','767px': '100vw'}" [modal]="true" [(visible)]="saveConfirmVisible" [style]="{ width: '50vw' }">
     <ng-template pTemplate="header">        
         <a class="btn btn-primary " (click)="saveConfirmVisible=false;"><i class="mdi mdi-keyboard-backspace"> Back </i></a>
         <span class="text-xl font-bold text-success" style="font-size: 24px;"> Ticket Saved Successfully</span>
@@ -651,8 +833,31 @@
 
     <div class="d-flex justify-content-center mt-2">
         <div><button class="btn btn-success justify-content-center equal-h me-2" (click)="saveTicketDetails(0, false)">Close and Save</button></div>
+        <div><button *ngIf="currentRole!== 'Scale'" class="btn btn-warning justify-content-center equal-h me-2" (click)="openTagHoldPopup()">Tag and Hold</button></div>
     </div>
     
+</p-dialog>
+
+<p-dialog header="Tag and Hold" [(visible)]="tagHoldVisible" [modal]="true"
+  [style]="{width: '35vw'}" [closable]="false">
+  
+  <div class="p-fluid">
+    <div class="field mb-3">
+        <label for="holdDate" class="font-bold">Select Date</label>
+        <input type="date" [min]="minDate" class="form-control" [(ngModel)]="tagHoldDate"
+            id="birthdate" placeholder="Pick up Date" >    
+                        </div>
+
+    <div class="field mb-3">
+      <label for="reason" class="font-bold">Reason</label>
+      <textarea id="reason" rows="4" class="form-control" [(ngModel)]="tagHoldReason" placeholder="Enter reason here..."></textarea>
+    </div>
+
+    <div class="d-flex justify-content-end mt-3">
+      <button class="btn btn-secondary me-2" (click)="closeTagHoldPopup()">Cancel</button>
+      <button class="btn btn-success" (click)="saveTicketDetails(0, false)">Save</button>
+    </div>
+  </div>
 </p-dialog>
 
 
@@ -670,16 +875,24 @@
             * Some items from transactions are in Hold
         </div>
     </div>
+    <div class="mb-3 p-2 border rounded bg-light" *ngIf="isHoldTrue">
+        <h6 class="mb-1">Items on Hold:</h6>
+        <ul class="list-unstyled mb-0 small">
+            <li *ngFor="let item of holdticketObj">{{ item.materialName }} - 
+                <span class="fst-italic">Release Date: {{ item.holdReleaseDate | date:'shortDate' }}</span>
+            </li>
+        </ul>
+    </div>
 
     <div class="d-flex justify-content-between" *ngIf="isHoldTrue">
         <div> <div class="form-check equal-h  form-check-inline">
-            <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdamount" value="Pay Total Amount">
+            <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdamount" value="Pay Total Amount" (change)="onHoldAmountChange()">
             <label class="form-check-label" for="">Pay Total Amount</label>
           </div></div>
         <div>
 
             <div class="form-check equal-h  form-check-inline">
-                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="phamount" value="Partial Pay Amount">
+                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="phamount" value="Partial Pay Amount" (change)="onHoldAmountChange()">
                 <label class="form-check-label" for="">Partial Pay Amount <br>
                     (Exclude Hold Items Amount)
                 
@@ -689,10 +902,10 @@
         </div>
         <div>
 
-            <div class="form-check equal-h form-check-inline">
+            <!-- <div class="form-check equal-h form-check-inline">
                 <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdallamount" value="Hold All Amount">
                 <label class="form-check-label" for="">Hold All Amount</label>
-              </div> 
+              </div>  -->
         </div>
     </div>  
 
@@ -702,7 +915,7 @@
             <div class="d-flex justify-content-between  mb-2 mt-2">
                 <div class="text-xl fz-16 font-bold">Total Amount
                 </div>
-                <div class="font-bold fz-16">{{remainingAmount | currency: currencySymbol :'symbol': numberFormat}}</div>    
+                <div class="font-bold fz-16">{{remainingAmount | currency:(ticketData?.currencyCode ? ticketData.currencyCode : defaultCurrencyCode) :'symbol': numberFormat}}</div>    
             </div>
         </div>
     </div>
@@ -711,10 +924,14 @@
         <div class="col-sm-12">
             <div class="d-flex justify-content-start">
               
-                <div><button class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Cash'}" (click)="showSection('Cash');payAmount=0">Cash</button></div>
+                <div *ngIf="!isCheckOnlyPayment"><button class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Cash'}" (click)="showSection('Cash');payAmount=0">Cash</button></div>
+                <ng-container *ngIf="selectedPayAmount >= 0">
                 <div><button  class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Check'}" (click)="showSection('Check');payAmount=0" >Check</button></div>
-                <div ><button   *ngIf="systemInfo =='True'" class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Electronic Payment'}"  (click)="showSection('Electronic Payment');payAmount=0">Electronic Payment</button></div>
-            </div>        
+                <div *ngIf="!isCheckOnlyPayment" ><button   *ngIf="systemInfo =='True'" class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Electronic Payment'}"  (click)="showSection('Electronic Payment');payAmount=0" [disabled]="isCheckOnlyPayment">Electronic Payment</button></div>
+                <div><button *ngIf="IsCustomerAdvanceEnabled && !isCheckOnlyPayment" class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Advance'}" (click)="showSection('Advance');payAmount=0" [disabled]="isCheckOnlyPayment">Advance Amount</button></div>
+            </ng-container>
+
+        </div> 
             <div>
                 <div class="row">
         
@@ -735,6 +952,12 @@
                             <div class="mb-3">
                                 <label for="" class="form-label">Electronic Payment Type</label>
                                 <input type="text" name="ePaymentType" id="" [(ngModel)]="ePaymentType" class="form-control" placeholder="" aria-describedby="helpId">
+                            </div>
+                        </div>
+                        <div class="col-sm-5 ms-2" *ngIf="activeSection === 'Advance'">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Current Advance Amount</label>
+                                <input type="text" name="currentAdvanceAmount" id="currentAdvanceAmount" [(ngModel)]="currentAdvanceAmount" class="form-control" placeholder="" aria-describedby="helpId" readonly>
                             </div>
                         </div>
                         <div class="col-sm-5 form-group" *ngIf="activeSection === 'Check'">
@@ -831,12 +1054,12 @@
         <div class="col-md-12">
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" [(ngModel)]="signCaptureType" name="radio" id=""
-                    value="Using Signature Pad">
+                    value="Using Signature Pad" (ngModelChange)="onSignCaptureTypeChange($event)">
                 <label class="form-check-label" for="signature">Using Signature Pad</label>
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" [(ngModel)]="signCaptureType" name="radio" id=""
-                    value="Using Sign">
+                    value="Using Sign" (ngModelChange)="onSignCaptureTypeChange($event)">
                 <label class="form-check-label" for="sign">Sign</label>
             </div>
         </div>
@@ -884,6 +1107,54 @@
     </div>
 </p-dialog>
 
+<!-- Prediction Result Dialog -->
+<p-dialog header="Select Predicted Material" [(visible)]="showMlPredictionDialog" [modal]="true" [style]="{width: '90vw', height: '80vh'}">
+    <div *ngIf="mlPredictions.length > 0; else noPredictions" class="container-fluid h-100">
+        <p>Select the best match for the captured material:</p>
+        <div class="row h-100" style="overflow-y: auto;">
+            <div class="col-md-3 mb-3" *ngFor="let prediction of mlPredictions">
+                <!-- Card border changes color based on confidence -->
+                <div class="card h-100" [style.border]="'2px solid ' + (prediction.confidence > 0.5 ? '#4a3ea3' : '#c5bfff')">
+                    
+                    <!-- Click header to select raw prediction -->
+                    <div class="card-header text-white" [style.background-color]="prediction.confidence > 0.5 ? '#4a3ea3' : '#c5bfff'"
+                         (click)="onPredictionHeaderSelected(prediction)" style="cursor: pointer;">
+                        <span class="fw-bold">{{ formatPredictionName(prediction.class_name) }}</span>
+                        <span class="badge bg-light text-dark float-end">{{ prediction.confidence | percent:'1.0-2' }}</span>
+                    </div>
+
+                    <!-- Click list item to select system suggested material -->
+                    <div class="list-group list-group-flush">
+                        <button type="button" class="list-group-item list-group-item-action"
+                            *ngFor="let material of prediction.suggestedMaterials"
+                            (click)="onSuggestedMaterialSelected(material)">
+                            <strong>{{ material.materialName }}</strong>
+                            <small class="text-muted d-block">Group: {{ material.groupName }}</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #noPredictions>
+        <div class="text-center p-3">No predictions returned.</div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <!-- <button class="btn btn-primary me-auto" (click)="openManualSearchFromPrediction()">Manual Search</button> -->
+        <button class="btn btn-danger" (click)="showMlPredictionDialog = false">Cancel</button>
+    </ng-template>
+</p-dialog>
+
+<!-- Manual Add Dialog -->
+<p-dialog header="Add Material Manually" [(visible)]="showManualAddDialog" [modal]="true" [style]="{width: '600px'}">
+    <div class="form-group">
+        <label class="form-label">New Material Name</label>
+        <input type="text" class="form-control" [(ngModel)]="manualMaterialName" placeholder="e.g., Mixed Scrap">
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-primary" (click)="onManualMaterialSubmit()" [disabled]="!manualMaterialName.trim()">Add</button>
+    </div>
+</p-dialog>
 
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
@@ -956,7 +1227,8 @@ header="Edit Seller"
             <tr style="cursor: pointer;" (click)="clickOnSeller(seller.rowId)">
                 <td>
                     <!-- <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" (click)="showSelectedImage(seller.idfaceShotImage, '2')"></a> -->
-                    <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img"></a>
+                    <a><img *ngIf="!IsCustomerFacePictureEnabled && seller.idfaceShotImage" src="{{seller.idfaceShotImage}}" class="ticket-particulars-img"></a>
+                    <img *ngIf="IsCustomerFacePictureEnabled || !seller.idfaceShotImage" src="/assets/images/custom/icons/user.png" class="default-img">
                 </td>
                 <td>{{ seller.fullName }}</td>
                 <td>{{ seller.driverLicenseNumber }}</td>
@@ -1245,58 +1517,259 @@ header="Edit Seller"
 
 
 </p-dialog>
+<p-dialog
+*ngIf="uploadDialogVisible"
+  header="Upload Document"
+  [(visible)]="uploadDialogVisible"
+  [modal]="true"
+  [closable]="true"
+  [resizable]="false"
+  [style]="{width: '600px'}">
+
+  <div *ngIf="uploadingLoader" class="text-center my-5">
+    <app-page-loader type="ftable"></app-page-loader> 
+  </div>
+
+  <div class="p-fluid mt-2" *ngIf="!uploadingLoader">
+    <div class="p-field">
+      <label for="certificateFile" class="form-label w-100">Choose Files</label>
+      <input 
+        type="file" 
+        class="form-control" 
+        id="certificateFile"
+        #fileInput 
+        multiple
+        (change)="onFileChanged($event)"
+        accept=".bmp, .gif, .jpeg, .jpg, .png, .tiff, .pdf, .doc, .docx, .xls, .xlsx, .txt"
+      >
+    </div>
+
+    <div class="p-field mt-3">
+      <label for="description" class="form-label w-100">Description</label>
+      <textarea 
+        id="description" 
+        class="form-control" 
+        [(ngModel)]="description" 
+        rows="3"
+        placeholder="Enter document description...">
+      </textarea>
+    </div>
+
+    <div class="d-flex justify-content-end mt-2">
+      <button class="btn btn-success btn-sm" (click)="onDocumentUpload()">
+        {{ editingIndex !== null ? 'Update Document' : 'Add Document' }}
+      </button>
+      <button *ngIf="editingIndex !== null" class="btn btn-secondary btn-sm ms-2" (click)="cancelEditing()">
+        Cancel Editing
+      </button>
+    </div>
+
+    <!-- Preview of selected files that haven't been uploaded yet -->
+    <div *ngIf="selectedImagesPreview.length > 0" class="mt-4">
+      <h6>{{ editingIndex !== null ? 'Document Preview' : 'Selected Documents' }}:</h6>
+      <div class="uploaded-images d-flex flex-wrap">
+        <div class="image-container position-relative m-2" *ngFor="let image of selectedImagesPreview; let i = index">
+          <img [src]="image" alt="Document Preview" class="uploaded-image">
+          <button class="btn-close position-absolute top-0 end-0 p-1" (click)="removeSelectedImage(i)"></button>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4">
+      <div *ngIf="documentsList.length > 0" class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Documents</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let doc of documentsList; let i = index" [class.table-active]="editingIndex === i">
+              <td>{{ doc.description || 'No description' }}</td>
+              <td>
+                <ng-container *ngIf="doc.fileType === 'image'; else otherFile">
+                  <img [src]="doc.imagePreview" class="clickable-image uploaded-image"
+                    (click)="showSelectedImage(doc.imagePreview, '11')" alt="Document">
+                </ng-container>
+                <ng-template #otherFile>
+                  <a [href]="doc.imageUrl" target="_blank">View Document</a>
+                </ng-template>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-primary me-1" (click)="editDocument(i)">Edit</button>
+                <button class="btn btn-sm btn-danger" (click)="removeDocument(i)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-primary" (click)="saveAllDocuments()">Save All</button>
+        <button class="btn btn-secondary" (click)="saveAllDocuments()">Close</button>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog header="Material Documents" [(visible)]="displayDocumentPopup" [modal]="true" [style]="{width: '50vw'}">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Document</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doc of documentsList">
+            <td>{{ doc.description }}</td>
+            <td>
+            <ng-container *ngIf="doc.fileType === 'image'; else docLink">
+                <img [src]="doc.imagePreview" class="clickable-image"
+                (click)="showSelectedImage(doc.imagePreview, '11')" alt="Document Image" width="100" height="100">
+            </ng-container>
+            <ng-template #docLink>
+                <a [href]="doc.imageUrl" target="_blank">View Document</a>
+            </ng-template>
+            </td>
+          </tr>
+          
+      </tbody>
+    </table>
+  </p-dialog>
+
 <p-dialog 
-    header="Upload File" 
-    [(visible)]="uploadDialogVisible" 
-    [modal]="true" 
-    [closable]="true" 
-    [resizable]="false" 
-    [style]="{width: '600px'}">
-
-    <div class="p-fluid mt-2">
-        <div class="p-field">
-            <label for="certificateFile" class="form-label w-100">Choose File</label>
-            <input 
-                type="file" 
-                class="form-control" 
-                id="certificateFile"
-                #fileInput 
-                multiple
-                (change)="onFileChanged($event)"
-                accept=".bmp, .gif, .jpeg, .jpg, .png, .tiff"
-            >
-        </div>
-
-        <div class="p-field mt-3">
-            <label for="description" class="form-label w-100">Description</label>
-            <textarea 
-                id="description" 
-                class="form-control" 
-                [(ngModel)]="description" 
-                rows="3"
-                placeholder="Enter document description...">
-            </textarea>
-        </div>
-
-        <div class="d-flex justify-content-end mt-2">
-            <button class="btn btn-success btn-sm" (click)="onSave()">Add Document</button>
-        </div>
-
-        <div class="uploaded-images mt-4 d-flex flex-wrap">
-            <div class="image-container position-relative m-2" *ngFor="let image of selectedImagesPreview; let i = index">
-                <img [src]="image" alt="Selected Document" class="uploaded-image">
-                <button class="btn-close position-absolute top-0 end-0 p-1" (click)="removeSelectedImage(i)"></button>
-            </div>
-        </div>
-
-        <div *ngIf="ticketImages?.length" class="mt-4">
-            <h6> Uploaded Documents:</h6>
-            <div class="uploaded-images d-flex flex-wrap">
-                <div class="image-container position-relative m-2" *ngFor="let imageUrl of ticketImages; let i = index">
-                    <img [src]="imageUrl" alt="Uploaded Document" class="uploaded-image">
-                    <button class="btn-close position-absolute top-0 end-0 p-1" (click)="removeImage(i)"></button>
-                </div>
-            </div>
-        </div>
+  [(visible)]="showConfirmLeavePopup" 
+  [modal]="true" 
+  [closable]="false" 
+  header="Confirmation"
+  [style]="{ width: '400px' }">
+    <p>Ticket has not been saved. Do you want to continue?</p>
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-secondary me-2" (click)="cancelNavigation()">No</button>
+        <button class="btn btn-primary" (click)="proceedWithNavigation()">Yes</button>
     </div>
 </p-dialog>
+
+<p-dialog header="Confirmation" [(visible)]="showHoldConfirmDialog" [modal]="true" [closable]="false" [style]="{width: '400px'}">
+
+  <p>{{ holdConfirmationMessage }}</p>
+
+  <ng-template pTemplate="footer">
+    <button class="btn btn-primary me-1" (click)="confirmHoldAmount()">Yes</button>
+    <button class="btn btn-danger" (click)="cancelHoldAmount()">No</button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog header="Confirmation" [(visible)]="isConfirmDialogVisible" [modal]="true" [closable]="false"[style]="{width: '400px'}">
+
+  <p>Ticket is in edit mode. Still you want to continue?</p>
+
+  <ng-template pTemplate="footer">
+    <button class="btn btn-primary me-1" (click)="onConfirmEdit()">Yes</button>
+    <button class="btn btn-danger" (click)="onCancelEdit()">No</button>
+  </ng-template>
+</p-dialog>
+
+<!-- <p-dialog
+  header="Material Details"
+  [(visible)]="showBarcodeDialog"
+  [modal]="true"
+  [closable]="true"
+  [responsive]="true"
+  [style]="{ width: '400px' }"
+>
+  <div *ngIf="selectedTicket" class="p-fluid text-left">
+    <div class="mb-3">
+      <strong>Group:</strong> {{ selectedTicket.groupName }}
+    </div>
+    <div class="mb-3">
+      <strong>Material:</strong> {{ selectedTicket.materialName }}
+    </div>
+    <div class="mb-3">
+      <strong>Gross:</strong> {{ selectedTicket.gross }}
+    </div>
+    <div class="mb-3">
+      <strong>Tare:</strong> {{ selectedTicket.tare }}
+    </div>
+    <div class="mb-3">
+      <strong>Net:</strong> {{ selectedTicket.net }}
+    </div>
+    <div class="mb-3">
+      <strong>Price:</strong> {{ selectedTicket.price }}
+    </div>
+    <div class="mb-3">
+      <strong>Amount:</strong> {{ selectedTicket.amount }}
+    </div>
+    <div class="mb-3" *ngIf="selectedTicket.materialNote">
+      <strong>Material Note:</strong> {{ selectedTicket.materialNote }}
+    </div>
+
+    
+   
+  </div>
+  <p-footer class="text-center mt-3">
+    <button pButton type="button" label="Print" icon="pi pi-print" (click)="printBarcode()" class="p-button-sm p-button-success"></button>
+  </p-footer>
+</p-dialog> -->
+
+<p-dialog
+  header="Purchase Order Materials"
+  [(visible)]="purchaseOrderPopupVisible"
+  [modal]="true"
+  [style]="{ width: '900px' }">
+
+  <p-table
+    [value]="selectedTicket?.purchaseOrderMaterialsDropdown"
+    [paginator]="true"
+    [rows]="5"
+    responsiveLayout="scroll">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>PO ID</th>
+        <th>Material Name</th>
+        <th>Ordered Qty</th>
+        <th>Remaining Qty</th>
+        <th>Customer Name</th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row>
+      <tr>
+        <td>{{ row.purchaseOrderID }}</td>
+        <td>{{ row.materialName }}</td>
+        <td>{{ row.orderedQty }}</td>
+        <td>{{ row.balanceMaterialQty }}</td>
+        <td>{{ customer?.fullName }}</td>
+        <td>
+            <button
+                *ngIf="selectedTicket?.purchaseOrderMaterialID !== row.purchaseOrderMaterialID"
+                class="btn btn-sm btn-success"
+                (click)="linkPurchaseOrderMaterial(row)">
+                <i class="mdi mdi-link-variant me-1"></i>
+                Link
+            </button>
+
+            <button
+                *ngIf="selectedTicket?.purchaseOrderMaterialID === row.purchaseOrderMaterialID"
+                class="btn btn-sm btn-danger"
+                (click)="unlinkPurchaseOrderMaterial()">
+                <i class="mdi mdi-link-variant-off me-1"></i>
+                Unlink
+            </button>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</p-dialog>
+
+
+
+
+
+  
+  

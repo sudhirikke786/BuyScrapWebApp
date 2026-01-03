@@ -194,11 +194,18 @@
     </div>
     <div class="d-block fz-14  pd-imgs-box mt-1 border border-secoundary px-2 py-2  d-flex flex-wrap" *ngIf="!certificateLoader">
     <ng-container  *ngFor="let item of certificatesImages">
-      <div class="col-sm-3">
-        <div class="pd-imgs" tabindex="1">
-          <img src="{{item?.codImagePath}}" style="min-height: 150px;" alt="My COD added in role based data" class="img-responsive" />
-        </div>
+     <div class="col-sm-3 position-relative mb-2">
+      <div class="pd-imgs" tabindex="1" style="position: relative;">
+        <img src="{{item?.codImagePath}}" style="min-height: 150px;" alt="Uploaded image" class="img-responsive w-100" />
+        <button 
+          type="button"
+          class="btn btn-danger btn-sm delete-btn" 
+          (click)="deleteImage(item)"
+          style="position: absolute; top: 5px; right: 5px; border-radius: 50%;">
+          &times;
+        </button>
       </div>
+     </div>
     </ng-container>
   </div>
 

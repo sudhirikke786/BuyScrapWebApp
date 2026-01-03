@@ -1,24 +1,55 @@
+/* ============================================
+   Materials Dashboard - Responsive Styles
+   Keeps existing colors, layout, and card sizes
+   ============================================ */
+
+/* Custom height container */
 .custom-height {
     max-height: calc(100vh - 240px);
     overflow: auto;
 }
 
-
+/* Image grid - ORIGINAL sizes preserved */
 .img-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
 }
 
+/* Hover animation for material cards */
+.materials-pg-boxes {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
 
+.materials-pg-boxes:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
 
+.materials-pg-boxes .title {
+    transition: all 0.3s ease;
+}
+
+.materials-pg-boxes:hover .title {
+    opacity: 0.9;
+}
+
+.materials-pg-boxes .btn-outline-primary {
+    transition: all 0.3s ease;
+}
+
+.materials-pg-boxes:hover .btn-outline-primary {
+    transform: scale(1.05);
+}
+
+/* 2K screens */
 @media screen and (min-width: 2038px) {
-  .img-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr))  !important;
-      gap: 20px;
+    .img-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)) !important;
+        gap: 20px;
     }
-
 }
 
 @media only screen and (max-width: 5000px) and (min-width: 2040px) {
@@ -29,13 +60,14 @@
     }
 }
 
+/* Tablet (768px - 991px) */
 @media screen and (max-width: 991px) and (min-width: 768px) {
     .row.mt-2 {
         display: flex;
         flex-wrap: wrap;
-        margin-bottom: 10px; 
+        margin-bottom: 10px;
     }
-    
+
     .col-md-6.col-lg-6.col-xl-6.col-sm-12 {
         width: 50%;
         flex: 0 0 50%;
@@ -43,61 +75,175 @@
         padding-right: 10px;
         padding-left: 10px;
     }
-    
+
     input.form-control {
         width: 100%;
     }
-    
+
     app-actionbar {
         display: flex;
         justify-content: flex-end;
         width: 100%;
     }
-    
+
     app-actionbar ::ng-deep .btn-group {
         display: flex;
         flex-wrap: nowrap;
     }
-    
+
     app-actionbar ::ng-deep .btn {
         padding: 0.375rem 0.5rem;
         font-size: 0.875rem;
     }
-    
+
     .card.custom-height {
         margin-top: 0;
         max-height: calc(100vh - 250px);
     }
 }
 
+/* 4K screens */
 @media screen and (min-width: 3840px) {
-  .img-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)) !important;
-      gap: 12px;
+    .img-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)) !important;
+        gap: 12px;
     }
-
 }
 
-
+/* 6K screens */
 @media screen and (min-width: 6000px) {
-  .img-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)) !important;
-      gap: 12px;
+    .img-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)) !important;
+        gap: 12px;
     }
-
 }
 
+/* 7K+ screens */
+@media only screen and (min-width: 7000px) {
+    .img-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)) !important;
+        gap: 50px;
+    }
+}
 
+/* ============================================
+   Additional Responsive Fixes (no card size changes)
+   ============================================ */
 
-
-@media only screen and (min-width: 7000px)   {
-
-  .img-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)) !important;
-      gap: 50px;
+/* Mobile - adjust page header only */
+@media (max-width: 576px) {
+    .bdcmb .row {
+        flex-direction: column;
     }
 
+    .bdcmb .col-sm-6 {
+        width: 100%;
+    }
+
+    .b-links {
+        text-align: left;
+        margin-top: 5px;
+    }
+
+    .page-title {
+        font-size: 1.1rem;
+    }
+
+    .custom-height {
+        max-height: calc(100vh - 200px);
+    }
+}
+
+/* Very small screens - only header adjustments */
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 1rem;
+    }
+
+    .card-body {
+        padding: 12px;
+    }
+}
+
+/* Short height screens */
+@media (max-height: 700px) {
+    .custom-height {
+        max-height: calc(100vh - 180px);
+    }
+}
+
+@media (max-height: 600px) {
+    .custom-height {
+        max-height: calc(100vh - 150px);
+    }
+}
+
+/* ============================================
+   Popup/Dialog Styling
+   ============================================ */
+:host ::ng-deep .p-dialog {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+    background: linear-gradient(135deg, #0176B8 0%, #015a8c 100%);
+    color: white;
+    padding: 16px 20px;
+    border-bottom: none;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: white;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon {
+    color: white;
+    width: 2rem;
+    height: 2rem;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+    padding: 24px;
+    background: #ffffff;
+}
+
+/* Save button - right aligned */
+:host ::ng-deep .p-dialog .btn-primary,
+.btn-primary {
+    float: right;
+    margin-top: 10px;
+}
+
+/* Form styling in popup */
+:host ::ng-deep .p-dialog .form-control,
+:host ::ng-deep .p-dialog .form-select {
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+}
+
+:host ::ng-deep .p-dialog .form-control:focus,
+:host ::ng-deep .p-dialog .form-select:focus {
+    border-color: #0176B8;
+    box-shadow: 0 0 0 3px rgba(1, 118, 184, 0.15);
+}
+
+:host ::ng-deep .p-dialog .form-floating label {
+    color: #6c757d;
+}
+
+:host ::ng-deep .p-dialog .form-check-input:checked {
+    background-color: #0176B8;
+    border-color: #0176B8;
 }

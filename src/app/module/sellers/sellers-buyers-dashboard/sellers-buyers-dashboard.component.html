@@ -1,15 +1,10 @@
-<!-- ============================================================== -->
-<!-- Start Page Content here -->
-<!-- ============================================================== -->
-
 <div class="content-page" *ngIf="!sellerLoader">
-
-    <!-- <div class="content" > -->
+    <div class="content">
 
         <!-- Start Content-->
-        <!-- <div class="container-fluid"> -->
+        <div class="container-fluid">
 
-            <!-- <div class="bdcmb mt-2">
+            <div class="bdcmb mt-2">
                 <div class="row">
                     <div class="col-sm-6 col-6">
                         <h4 class="page-title">Sellers Buyers</h4>
@@ -17,124 +12,230 @@
 
                     <div class="col-sm-6 col-6">
                         <div class="b-links">
-                            <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/sellers-buyers">Sellers Buyers</a>
+                            <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()"
+                                routerLink="/{{orgName}}/sellers-buyers">Sellers Buyers</a>
                         </div>
                     </div>
                 </div>
-            </div> -->
-            
-            <!-- <div class="row mt-2"> -->
-                <!-- <div class="col-sm-6 d-flex mb-1">
-                    <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control" (keyup.enter)="searchSeller()" placeholder="Search for Sellers, Address, License and License Plate">
-                </div> -->
-                <!-- <div class="col-sm-6 mb-1 d-flex align-items-center gap-2">  -->
-                    <!-- <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar> -->
-                    <!-- <a  type="button" (click)="addNewSeller()" 
-                    class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
-                    Add Seller
-                    </a> -->
-                    <!-- <div class="toggle-container">
-                        <input type="radio" id="sea" name="toggle" [(ngModel)]="selectedSellerType" value="Business" (change)="filterSellers('Business')"  checked>
-                        <label for="sea" class="toggle-option">Business</label>
-                
-                        <input type="radio" id="land" [(ngModel)]="selectedSellerType" value="" (change)="filterSellers('')" name="toggle">
-                        <label for="land" class="toggle-option">All</label>
-                
-                        <input type="radio" id="air" [(ngModel)]="selectedSellerType" value="Personal" (change)="filterSellers('Personal')" name="toggle">
-                        <label for="air" class="toggle-option">Personal</label>
-                    </div> -->
-                <!-- </div> -->
-                
-            <!-- </div>   -->
-            <!-- end page title --> 
+            </div>
 
-            <div class="row mt-2">
-                <div class="col-sm-12">
-                    <div class="card  flex-auto place-content-inherit align-items-inherit break-words text-left overflow-y-auto subpixel-antialiased flex h-full flex-row items-start">
-                        <div  style="height:calc(100vh - 200px)">
-                            <div class="seller-cards-scrollable">
-                                <div class="row seller-card-container">
-                                    <div class="col-seller-card" *ngFor="let seller of sellers">
-                                        <div class="card seller-card mb-3">
-                                            <div class="card-body position-relative">
-                                                <button class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px;" 
-                                                        (click)="deleteSeller(seller)">
-                                                    <i class="mdi mdi-trash-can-outline"></i>
-                                                </button>
-                                                
-                                                <div class="d-flex flex-column">
-                                                    <div class="seller-info-container">
-                                                        <img *ngIf="seller.idfaceShotImage" src="{{seller.idfaceShotImage}}" class="rounded-circle img-thumbnail seller-image" (click)="showSelectedImage(seller.idfaceShotImage, '1')">
-                                                        <img *ngIf="!seller.idfaceShotImage" src="/assets/images/custom/icons/user.png" class="rounded-circle img-thumbnail seller-image">
-                                                        
-                                                        <div class="seller-text-info">
-                                                            <h5 class="seller-name">{{ seller.fullName }}</h5>
+            <div class="search-filter-row mt-2">
+                <div class="search-box">
+                    <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control"
+                        (keyup.enter)="searchSeller()"
+                        placeholder="Search for Sellers, Address, License and License Plate">
+                </div>
+
+                <div class="action-buttons">
+                    <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
+                </div>
+
+                <div class="toggle-container">
+                    <input type="radio" id="sea" name="toggle" [(ngModel)]="selectedSellerType" value="Business"
+                        (change)="filterSellers('Business')" checked>
+                    <label for="sea" class="toggle-option">Business</label>
+
+                    <input type="radio" id="land" [(ngModel)]="selectedSellerType" value="" (change)="filterSellers('')"
+                        name="toggle">
+                    <label for="land" class="toggle-option">All</label>
+
+                    <input type="radio" id="air" [(ngModel)]="selectedSellerType" value="Personal"
+                        (change)="filterSellers('Personal')" name="toggle">
+                    <label for="air" class="toggle-option">Personal</label>
+                </div>
+
+                <div class="view-toggle-container">
+                    <input type="radio" id="cardView" name="viewToggle" [checked]="isCardView"
+                        (change)="isCardView = true; onToggleChange()">
+                    <label for="cardView" class="toggle-option">Card</label>
+
+                    <input type="radio" id="gridView" name="viewToggle" [checked]="!isCardView"
+                        (change)="isCardView = false; onToggleChange()">
+                    <label for="gridView" class="toggle-option">Grid</label>
+                </div>
+
+            </div>
+
+
+            <!-- Card View -->
+            <div class="content-page" *ngIf="isCardView">
+                <div class="row mt-2">
+                    <div class="col-sm-12">
+                        <div
+                            class="card  flex-auto place-content-inherit align-items-inherit break-words text-left overflow-y-auto subpixel-antialiased flex h-full flex-row items-start">
+                            <div class="card-body card-view-container">
+                                <div class="seller-cards-scrollable">
+                                    <div class="row seller-card-container">
+                                        <div class="col-seller-card" *ngFor="let seller of sellers">
+                                            <div class="card seller-card mb-3"
+                                                [ngClass]="{'license-expired': seller.isLicenseExpiry && seller.sellerType === 'Personal'}">
+                                                <div class="card-body position-relative">
+                                                    <button class="btn btn-sm btn-danger position-absolute"
+                                                        style="top: 5px; right: 5px;" (click)="deleteSeller(seller)">
+                                                        <i class="mdi mdi-trash-can-outline"></i>
+                                                    </button>
+
+                                                    <div class="d-flex flex-column">
+                                                        <div class="seller-info-container">
+                                                            <img *ngIf="!IsCustomerFacePictureEnabled && seller.idfaceShotImage"
+                                                                src="{{seller.idfaceShotImage}}"
+                                                                class="rounded-circle img-thumbnail seller-image"
+                                                                (click)="showSelectedImage(seller.idfaceShotImage, '1')">
+                                                            <img *ngIf="IsCustomerFacePictureEnabled || !seller.idfaceShotImage"
+                                                                src="/assets/images/custom/icons/user.png"
+                                                                class="rounded-circle img-thumbnail seller-image">
+
+                                                            <div class="seller-text-info">
+                                                                <h5 class="seller-name">{{ seller.fullName }}</h5>
+                                                            </div>
+                                                        </div>
+                                                        <p class="seller-detail"><strong>Driver's License:</strong> {{
+                                                            seller.driverLicenseNumber }}</p>
+                                                        <p class="seller-detail"><strong>Address:</strong> {{
+                                                            seller.streetAddress }}</p>
+
+                                                        <div class="d-flex justify-content-between w-100 mt-1">
+                                                            <a routerLink="/{{orgName}}/sellers-buyers/view-seller/{{seller?.rowId}}"
+                                                                [queryParams]="{ view: 'card' }" type="button"
+                                                                class="btn btn-grid btn-success waves-effect waves-light">
+                                                                <i class="mdi mdi-eye pe-1"></i> Show
+                                                            </a>
+                                                            <a routerLink="/{{orgName}}/sellers-buyers/edit-seller/{{seller?.rowId}}"
+                                                                [queryParams]="{ view: 'card' }"
+                                                                class="btn btn-grid btn-primary waves-effect waves-light">
+                                                                <i class="mdi mdi-pencil"></i> Edit
+                                                            </a>
+                                                            <button *ngIf="IsCustomerAdvanceEnabled" type="button"
+                                                                class="btn btn-grid btn-success waves-effect waves-light"
+                                                                (click)="openAdvancePopup(seller)">
+                                                                Advance
+                                                            </button>
+                                                            <button type="button" *ngIf="IsRewardEnabled"
+                                                                class="btn btn-grid btn-warning waves-effect waves-light"
+                                                                (click)="openRewardDialog(seller)">
+                                                                Reward
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                    <p class="seller-detail"><strong>Driver's License:</strong> {{ seller.driverLicenseNumber }}</p>
-                                                    <p class="seller-detail"><strong>Address:</strong> {{ seller.streetAddress }}</p>
-                                                    
-                                                    <div class="d-flex justify-content-between w-100 mt-1">
-                                                        <a
-                                                          routerLink="/{{orgName}}/sellers-buyers/view-seller/{{seller?.rowId}}"
-                                                          [queryParams]="{ view: 'card' }"
-                                                          type="button"
-                                                          class="btn btn-grid btn-success waves-effect waves-light me-1"
-                                                        >
-                                                          <i class="mdi mdi-eye pe-1"></i> Show
-                                                        </a>
-                                                        <a
-                                                          routerLink="/{{orgName}}/sellers-buyers/edit-seller/{{seller?.rowId}}"
-                                                          [queryParams]="{ view: 'card' }"
-                                                          class="btn btn-grid btn-primary waves-effect waves-light me-1"
-                                                        >
-                                                          <i class="mdi mdi-pencil"></i> Edit
-                                                        </a>
-                                                      </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="paginator-container" *ngIf="sellers?.length > 0">
-                                <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator>
-                            </div>
-                        </div> <!-- end card body-->
-                    </div> <!-- end card -->
-                </div><!-- end col-->
+                                <div class="paginator-container" *ngIf="sellers?.length > 0">
+                                    <p-paginator class="serverside-paginator" [showCurrentPageReport]="true"
+                                        (onPageChange)="onPageChange($event)"
+                                        currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries"
+                                        [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal"
+                                        [rowsPerPageOptions]="commonService.tableConfig?.pageOptions"></p-paginator>
+                                </div>
+                            </div> <!-- end card body-->
+                        </div> <!-- end card -->
+                    </div><!-- end col-->
+                </div>
             </div>
-            <!-- end row-->     
-            
-        <!-- </div>  -->
-        <!-- container -->
 
-    <!-- </div>  -->
-    <!-- content -->
+            <!-- Grid View -->
+            <div class="content-page" *ngIf="!isCardView">
+                <div class="row mt-2">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body grid-view-container">
+                                <div class="table-container">
+                                    <p-table [value]="sellers" [scrollable]="true" scrollHeight="calc(100vh - 320px)"
+                                        [paginator]="false" [rows]="10" [showCurrentPageReport]="false"
+                                        [tableStyle]="{ 'min-width': '50rem' }">
 
-           
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th></th>
+                                                <th>Seller</th>
+                                                <th>Driver's License</th>
+                                                <th>Address</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-seller>
+                                            <tr>
+                                                <td>
+                                                    <a *ngIf="!IsCustomerFacePictureEnabled && seller.idfaceShotImage">
+                                                        <img src="{{seller.idfaceShotImage}}"
+                                                            class="ticket-particulars-img">
+                                                    </a>
+                                                    <img *ngIf="IsCustomerFacePictureEnabled || !seller.idfaceShotImage"
+                                                        src="/assets/images/custom/icons/user.png" class="default-img">
+                                                </td>
+                                                <td>{{ seller.fullName }}</td>
+                                                <td>{{ seller.driverLicenseNumber }}</td>
+                                                <td>{{ seller.streetAddress }}</td>
+                                                <td>
+                                                    <a routerLink="/{{orgName}}/sellers-buyers/view-seller/{{seller?.rowId}}"
+                                                        [queryParams]="{ view: 'grid' }" type="button"
+                                                        class="btn btn-grid btn-success waves-effect waves-light me-1">
+                                                        <i class="mdi mdi-eye pe-1"></i> Show
+                                                    </a>
+                                                    <a routerLink="/{{orgName}}/sellers-buyers/edit-seller/{{seller?.rowId}}"
+                                                        [queryParams]="{ view: 'grid' }"
+                                                        class="btn btn-grid btn-primary waves-effect waves-light me-1">
+                                                        <i class="mdi mdi-pencil"></i> Edit
+                                                    </a>
+                                                    <button *ngIf="IsCustomerAdvanceEnabled" type="button"
+                                                        class="btn btn-grid btn-success waves-effect waves-light me-1"
+                                                        (click)="openAdvancePopup(seller)">
+                                                        Advance
+                                                    </button>
+                                                    <button type="button" *ngIf="IsRewardEnabled"
+                                                        class="btn btn-grid btn-warning waves-effect waves-light me-1"
+                                                        (click)="openRewardDialog(seller)">
+                                                        Reward
+                                                    </button>
+                                                    <a class="btn btn-grid btn-danger waves-effect waves-light"
+                                                        (click)="deleteSeller(seller)">
+                                                        <i class="mdi mdi-trash-can-outline pe-1"></i> Delete
+                                                    </a>
+                                                </td>
 
-             
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
 
+                                <div class="paginator-container" *ngIf="sellers?.length > 0">
+                                    <p-paginator class="serverside-paginator" [showCurrentPageReport]="true"
+                                        (onPageChange)="onPageChange($event)"
+                                        currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries"
+                                        [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal"
+                                        [rowsPerPageOptions]="commonService.tableConfig?.pageOptions">
+                                    </p-paginator>
+                                </div>
+                            </div> <!-- end card body-->
+                        </div> <!-- end card -->
+                    </div><!-- end col-->
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 <div class="content" *ngIf="sellerLoader">
-         
+
     <app-page-loader type="ftable"></app-page-loader>
-           
+
 </div>
 
 <!-- ============================================================== -->
 <!-- End Page content -->
 <!-- ============================================================== -->
 
-            
 
-<p-dialog header="Header" [(visible)]="isDeleteConfirmModel" [modal]="true" [style]="{ width: '40rem' }" [breakpoints]="{'767px': '100vw'}">
+
+<p-dialog header="Header" [(visible)]="isDeleteConfirmModel" [modal]="true" [style]="{ width: '40rem' }"
+    [breakpoints]="{'767px': '100vw'}">
     <ng-template pTemplate="header">
         <div class="inline-flex align-items-center justify-content-center gap-2">
-            
+
             <span>Delete Seller / Buyer</span>
         </div>
     </ng-template>
@@ -144,19 +245,112 @@
     <ng-template pTemplate="footer">
         <button class="btn btn-primary" (click)="confirmData()">Confirm</button>
         <button type="button" class="btn btn-danger" (click)="cancelClick()">Cancel</button>
-      <!-- <button class="btn btn-primary" (click)="mergeSellerData()">Merge with other Seller / Buyer</button>       -->
-  
+        <!-- <button class="btn btn-primary" (click)="mergeSellerData()">Merge with other Seller / Buyer</button>       -->
+
     </ng-template>
 </p-dialog>
 
 <p-dialog [modal]="true" [header]="showImageHeader" (onHide)="cancelImage()" [(visible)]="showImage">
-  
+
     <div class="over-flow-300 image-center img-profile">
         <img [src]="selectedImageUrl" style="height: 100%; width: 100%;">
     </div>
-    <div class="mt-2">        
+    <div class="mt-2">
         <a class="btn btn-primary " [href]="selectedImageUrl" target="_self" download><i class="mdi"> Download </i></a>
     </div>
 </p-dialog>
 
+<p-dialog header="Customer Advance" [(visible)]="displayAdvanceDialog" [style]="{width: '450px', minHeight: '300px'}"
+    [modal]="true" [closable]="true" [draggable]="false" [resizable]="false">
+
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 15px; margin-top: -10px;">
+        <div
+            style="background: #e8f5e8; border: 1px solid #28a745; border-radius: 4px; padding: 8px 12px; font-size: 13px; font-weight: 600;">
+            <span style="color: #155724;">Total Current Advance: </span>
+            <span style="color: #28a745;">${{selectedSeller?.totalAdvance || 0 | number:'1.2-2'}}</span>
+        </div>
+    </div>
+
+    <div style="padding: 20px 0;">
+        <div style="margin-bottom: 20px;">
+            <label for="advanceAmount" style="display: block; margin-bottom: 8px; font-weight: 500;">Advance
+                Amount</label>
+            <input type="number" pInputText id="advanceAmount" [(ngModel)]="advanceAmount"
+                placeholder="Enter advance amount" style="width: 100%; padding: 8px;">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label for="reason" style="display: block; margin-bottom: 8px; font-weight: 500;">Reason</label>
+            <textarea pInputTextarea id="reason" [(ngModel)]="reason" rows="4" placeholder="Enter reason for advance"
+                style="width: 100%; padding: 8px; resize: vertical;">
+            </textarea>
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div style="text-align: right; padding-top: 15px;">
+            <p-button label="Cancel" styleClass="p-button-danger" (onClick)="closeAdvancePopup()"
+                style="margin-right: 10px;">
+            </p-button>
+            <p-button label="Save" styleClass="p-button-primary" (onClick)="saveAdvance(selectedSeller)">
+            </p-button>
+        </div>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="showRewardDialog" [modal]="true" [style]="{width: '1000px'}" [closable]="true">
+
+    <ng-template pTemplate="header">
+        <div style="display: flex; justify-content: space-between; width: 100%;">
+            <span>Reward Details</span>
+            <span style="font-weight: bold; color: #2563eb;">
+                Total Coupens Amount: {{ remainingBalance | number:'1.2-2' }}
+            </span>
+            <span style="font-weight: bold; color: #2563eb;">
+                Total Coupen Given:{{ redeemedCoupons }}
+            </span>
+        </div>
+    </ng-template>
+    <p-table [value]="rewardList" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Coupen Description</th>
+                <th>Eligibal Amount</th>
+
+                <th style="width: 10rem; text-align: center;">Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-entry>
+            <tr>
+                <td>{{ entry.coupenDescription }}</td>
+                <td>{{ entry.eligibalAmount }}</td>
+
+                <td class="text-center">
+                    <button class="btn btn-danger" (click)="giveReward(entry)">Give Reward</button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+</p-dialog>
+
+<p-dialog header="Advance Receipt" [(visible)]="isAdvanceReportShow" (onHide)="closeAdvancePdfReport()" [modal]="true"
+    [style]="{ width: '70vw' }">
+
+    <div *ngIf="showLoaderAdvanceReport">
+        <app-page-loader type="reportloader"></app-page-loader>
+    </div>
+
+    <div class="row">
+        <div style="height: 500px;" *ngIf="!showLoaderAdvanceReport">
+            <ngx-extended-pdf-viewer *ngIf="!showLoaderAdvanceReport" #pdfViewer [base64Src]="advanceReceiptBase64"
+                [useBrowserLocale]="false" [pageChangeOnScrolling]="true" [showScrollbar]="false"
+                [filenameForDownload]="'Advance Receipt ID_' + advanceId + '.pdf'">
+            </ngx-extended-pdf-viewer>
+        </div>
+    </div>
+
+</p-dialog>
+
 <p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>

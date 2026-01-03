@@ -5,6 +5,8 @@ import { DatePipe } from '@angular/common';
 
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { SellersService } from 'src/app/core/services/sellers.service';
+
 
 @Component({
   selector: 'app-seller-grid',
@@ -25,6 +27,12 @@ export class SellerGridComponent implements OnInit {
   showImage = false;
   showImageHeader = 'Show image';
   selectedImageUrl: any;
+
+  displayAdvanceDialog: boolean = false;
+  advanceAmount: number = 0;
+  reason: string = '';
+  selectedSeller: any = null;
+
 
   actionList = [
     {
@@ -54,21 +62,46 @@ export class SellerGridComponent implements OnInit {
   pageTotal = 0;
   selectedSellerType: string = '';
 
+  IsCustomerAdvanceEnabled: boolean = false;
+  IsCustomerFacePictureEnabled:boolean = false;
+
+
+
   
   constructor(private route: ActivatedRoute,
     private router: Router,
     private stroarge:StorageService,
     private messageService: MessageService,
-    public commonService: CommonService) { }
+    public commonService: CommonService,
+    public sellersService:SellersService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
+    
+    const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
+    if (_dataObj) {
+      const iscustomeradvance = _dataObj.filter((item: any) => item?.keys?.toLowerCase() === 'iscustomeradvance')[0];
+      this.IsCustomerAdvanceEnabled = (iscustomeradvance?.values.toLowerCase() === 'true');
+
+      const isCustomerFacePicture = _dataObj.find((item: any) => item?.keys?.toLowerCase() === 'iscustomerfacepicture');
+      this.IsCustomerFacePictureEnabled = String(isCustomerFacePicture?.values).toLowerCase() === 'true';
+    }
+
     this.route.queryParams.subscribe(params => {
       this.selectedSellerType = params['sellerType'] || '';
-      this.searchSellerInput = params['searchText'] || '';
       this.filterSellers(this.selectedSellerType);
+
+      this.sellersService.searchSeller$.subscribe(searchText => {
+        this.applySearch(searchText);
+      });
+  
+      this.sellersService.refreshSeller$.subscribe(refresh => {
+        if (refresh) {
+          this.refreshData();
+        }
+      });
     });
 
     const storedPagination = localStorage.getItem('sellerPaginationGridData');
@@ -91,6 +124,27 @@ export class SellerGridComponent implements OnInit {
     };
     this.getAllsellersDetails(paramObject);
   }
+
+  applySearch(searchText: string) {
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 10,
+      LocationId: this.locId,
+      SerachText: searchText
+    };
+    this.getAllsellersDetails(paramObject);
+  }
+
+  refreshData() {
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 10,
+      LocationId: this.locId,
+      SerachText: '' 
+    };
+    this.getAllsellersDetails(paramObject);
+  }
+
 
   
   getAllsellersDetails(paramObject: any) {
@@ -257,7 +311,8 @@ export class SellerGridComponent implements OnInit {
 
   mergeSellerData(){
       this.isDeleteConfirmModel = false;
-      alert("Merge Tickets & other data with other seller!!! Functionality still in progress!!!");
+      // alert("Merge Tickets & other data with other seller!!! Functionality still in progress!!!");
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Merge Tickets & other data with other seller!!! Functionality still in progress!!!' });
   }
 
   showSelectedImage(imageUrl: string, selectionType:any) {
@@ -271,6 +326,46 @@ export class SellerGridComponent implements OnInit {
   cancelImage() {
     this.showImage = false;
   }
+
+  openAdvancePopup(seller: any){
+    this.selectedSeller = seller;
+    this.advanceAmount = 0;
+    this.reason = '';
+    this.displayAdvanceDialog = true;
+  }
+
+  closeAdvancePopup(){
+    this.displayAdvanceDialog = false;
+    this.selectedSeller = null;
+  }
+
+  saveAdvance(seller:any) {
+    const requestObj = {
+      rowID: 0,
+      customerID: seller.rowId, 
+      advanceAmount: this.advanceAmount,
+      reason: this.reason,
+      isAdvance: true,
+      locID: this.locId,
+      createdBy: this.logInUserId,
+      createdDate:this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+      isActive: true,
+      updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+      updatedBy: this.logInUserId
+    };
+
+    this.commonService.InsertCustomerAdvance(requestObj).subscribe({
+      next: (response) => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Advance Added Successfully' });
+
+        this.closeAdvancePopup();
+      },
+      error: (error) => {
+        console.error('Error saving advance:', error);
+      }
+    });
+  }
+
 
   // getAction(actionCode:any){
     

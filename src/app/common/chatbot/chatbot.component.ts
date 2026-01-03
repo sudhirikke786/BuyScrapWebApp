@@ -2,468 +2,448 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@ang
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { ChatbotService } from 'src/app/core/services/chatbot.service';
-import { HttpResponse } from '@angular/common/http';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { VoiceRecognitionService } from 'src/app/core/services/voice-recognition.service'; 
 
-interface ChatMessage {
-  isUser: boolean;
-  message: string;
-  timestamp: Date;
+// --- Interfaces for Chat Messages ---
+interface BaseChatMessage { isUser: boolean; timestamp: Date; }
+interface TextMessage extends BaseChatMessage { type: 'text'; text: string; }
+// CHANGED: Added rawAnswer to store original bot response for history
+interface ChartMessage extends BaseChatMessage { type: 'chart'; chartData: ChartData; chartOptions: ChartConfiguration['options']; chartType: ChartType; rawAnswer: string; }
+interface TableMessage extends BaseChatMessage { type: 'table'; tableData: { headers: string[]; rows: string[][] }; rawAnswer: string; }
+type ChatMessage = TextMessage | ChartMessage | TableMessage;
+
+// --- Interface for a Chat Session ---
+export interface ChatSession {
+  id: string;
+  title: string;
+  createdAt: Date;
+  messages: ChatMessage[];
 }
+
+// --- Interface for API Response ---
+interface ApiChartData { explanation: string; chartData: { label: string; value: number }[]; chartType: ChartType; chartTitle: string; }
+
+// --- Interface for Pop-up Modal Content ---
+interface DetailModalContent {
+  type: 'chart' | 'table';
+  title: string;
+  data: any;
+}
+
+// NEW: Interface for history payload sent to backend
+interface HistoryPayloadMessage {
+  role: 'user' | 'bot';
+  content: string;
+}
+
 
 @Component({
   selector: 'app-chatbot',
-  template: `
-    <div class="chatbot-container" *ngIf="shouldShowChat">
-      <!-- Chat Icon -->
-      <button 
-        class="chat-icon" 
-        [class.active]="isChatOpen"
-        (click)="toggleChat()"
-        *ngIf="!isChatOpen">
-        <i class="fas fa-comments"></i>
-      </button>
-
-      <!-- Chat Window -->
-      <div class="chat-window" *ngIf="isChatOpen">
-        <div class="chat-header">
-          <h3>BuyScrapApp Support</h3>
-          <!-- Upload File Button (visible only if username is 'rb') -->
-          <div>
-            <button *ngIf="isAuthorizedOrg && isAuthorizedUser" class="close-btn" (click)="onFileUploadClick()">
-              <i class="fas fa-upload"></i>
-              <!-- <input type="file" #fileInput accept="application/pdf" (change)="onFileSelected($event)" hidden /> -->
-            </button>
-            <button class="close-btn" (click)="toggleChat()">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- File Upload Modal -->
-        <div *ngIf="isUploadModalVisible" class="modal-overlay">
-          <div class="modal-content">
-            <h3>Upload PDF</h3>
-            <form (submit)="submitUploadForm()">
-              <div class="form-group">
-                <label for="file">Choose PDF:</label>
-                <input type="file" #fileInput id="file" accept="application/pdf" (change)="onFileSelected($event)" required />
-              </div>
-              <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" [(ngModel)]="password" name="password" required />
-              </div>
-              <button type="submit" class="btn-upload">Upload</button>
-              <button type="button" class="btn-cancel" (click)="closeUploadModal()">Cancel</button>
-            </form>
-          </div>
-        </div>
-
-
-        <div class="chat-messages" #messageContainer>
-          <div *ngFor="let msg of messages" 
-               [ngClass]="{'user-message': msg.isUser, 'bot-message': !msg.isUser}"
-               class="message">
-            <div class="message-content" [innerHTML]="msg.message"></div>
-            <div class="message-timestamp">
-              {{ msg.timestamp | date:'shortTime' }}
-            </div>
-          </div>
-          <div *ngIf="isLoading" class="bot-message message">
-            <div class="typing-indicator">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="chat-input">
-          <input 
-            #chatInput
-            type="text" 
-            [(ngModel)]="currentMessage" 
-            (keyup.enter)="sendMessage()"
-            [disabled]="isLoading"
-            placeholder="Type your message...">
-          <button (click)="sendMessage()" [disabled]="!currentMessage.trim() || isLoading">
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .chatbot-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
-    }
-
-    .chat-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #007bff;
-      border: none;
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      transition: all 0.3s ease;
-    }
-
-    .chat-icon:hover {
-      transform: scale(1.1);
-    }
-
-    .chat-window {
-      position: fixed;
-      bottom: 50px;
-      right: 20px;
-      width: 350px;
-      height: 500px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .chat-header {
-      padding: 15px;
-      background: #007bff;
-      color: white;
-      border-radius: 10px 10px 0 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .chat-header h3 {
-      margin: 0;
-      font-size: 16px;
-      color: white;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      margin-left: 10px;
-    }
-
-    .chat-messages {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .message {
-      max-width: 80%;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 5px;
-    }
-
-    .user-message {
-      background: #007bff;
-      color: white;
-      align-self: flex-end;
-    }
-
-    .bot-message {
-      background: #f0f0f0;
-      color: black;
-      align-self: flex-start;
-    }
-
-    .message-timestamp {
-      font-size: 0.7em;
-      opacity: 0.7;
-      margin-top: 5px;
-    }
-
-    .chat-input {
-      padding: 15px;
-      border-top: 1px solid #eee;
-      display: flex;
-      gap: 10px;
-    }
-
-    .chat-input input {
-      flex: 1;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 20px;
-      outline: none;
-    }
-
-    .chat-input input:disabled {
-      background: #f5f5f5;
-    }
-
-    .chat-input button {
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 35px;
-      height: 35px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .chat-input button:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-
-    .typing-indicator {
-      display: flex;
-      gap: 4px;
-      padding: 5px 10px;
-    }
-
-    .typing-indicator span {
-      width: 8px;
-      height: 8px;
-      background: #999;
-      border-radius: 50%;
-      animation: typing 1s infinite ease-in-out;
-    }
-
-    .message-content {
-      white-space: pre-wrap;
-      line-height: 1.5;
-    }
-
-    .bot-message .message-content {
-      font-size: 14px;
-    }
-
-    /* Modal Styles */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-    }
-
-    .modal-content {
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 400px;
-      max-width: 100%;
-      text-align: center;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    form input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-top: 5px;
-    }
-
-    .btn-upload {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    .btn-cancel {
-      background-color: #ccc;
-      color: black;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-radius: 4px;
-      margin-left: 10px;
-    }
-
-    .chatbot-container.modal-open {
-      filter: blur(5px); /* Blur the background when modal is open */
-    }
-
-
-    .typing-indicator span:nth-child(1) { animation-delay: 0s; }
-    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes typing {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-  `]
+  templateUrl: './chatbot.component.html',
+  styleUrls: ['./chatbot.component.css']
 })
 export class ChatbotComponent implements OnInit, AfterViewChecked {
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
-  @ViewChild('chatInput') chatInput!: ElementRef; // <-- Add this for input reference
-  @ViewChild('fileInput') fileInput!: ElementRef; // <-- File input reference
+  @ViewChild('chatInput') chatInput!: ElementRef;
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
+  // --- State for Modals & Authorization ---
   isAuthorizedOrg = false;
   isAuthorizedUser = false;
   isUploadModalVisible = false;
+  isDetailModalVisible = false;
   password = '';
   selectedFile: File | null = null;
+  modalContent: DetailModalContent | null = null;
 
+  // --- Core Chat State ---
+  shouldShowChat = true;
   isChatOpen = false;
-  messages: ChatMessage[] = [];
-  currentMessage = '';
-  shouldShowChat = false;
   isLoading = false;
+  currentMessage = '';
+  isHistoryPanelOpen = true;
+  allChats: ChatSession[] = [];
+  activeChat: ChatSession | null = null;
+  private readonly CHAT_STORAGE_KEY = 'buyScrapApp_chatHistory';
+
+  isListening = false;
 
   constructor(
     private router: Router,
-    private chatbotService: ChatbotService
+    private chatbotService: ChatbotService,
+    private sanitizer: DomSanitizer,
+    public voiceService: VoiceRecognitionService
   ) {}
 
+  public sanitizeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
+
   ngOnInit() {
-    this.shouldShowChat=true;
-    this.messages.push({
-      isUser: false,
-      message: 'Hello! How can I help you today?',
-      timestamp: new Date()
-    });
+    this._loadChatsFromStorage();
+    this.initVoiceService();
 
-    const userObj = JSON.parse(localStorage.getItem('userObj') || '{}');
-    const username = userObj.userdto.userName;
-    const orgName = localStorage.getItem('orgName');
-    this.isAuthorizedOrg = orgName === 'ProdTest';
-    this.isAuthorizedUser = username === 'rb';
-
-    // this.router.events.pipe(
-    //   filter(event => event instanceof NavigationEnd)
-    // ).subscribe((event: any) => {
-    //   this.shouldShowChat = event.url.split('/').length > 1 && 
-    //                        !['organization-login', 'user-login', 'error', 'print-layout']
-    //                        .some(path => event.url.includes(path));
-    // });
-  }
-
-  onFileUploadClick() {
-    // this.fileInput.nativeElement.click();
-    this.isUploadModalVisible = true;
-  }
-
-  closeUploadModal() {
-    this.isUploadModalVisible = false;
-  }
-
-  onFileSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      this.selectedFile = file;  // Store the selected file in the selectedFile property
-      console.log('PDF file selected:', file);
-    } else {
-      this.selectedFile = null; // Clear if no file is selected
-    }
-  }
-
-  submitUploadForm() {
-    if (this.password && this.selectedFile) {
-      const formData = new FormData();
-      formData.append('password', this.password);
-      formData.append('file', this.selectedFile);
-
-      console.log(formData)
-
-      // Make the POST request to upload the file
-      this.chatbotService.uploadPDF(formData).subscribe({
-        next: (response: HttpResponse<any>) => {
-          if (response.status === 200) {
-            alert('PDF has been uploaded successfully!');
-            this.closeUploadModal();
-          }
-        },
-        error: (error: any) => {
-          console.error('File upload failed:', error);
-          alert('Failed to upload PDF. Incorrect Password');
-        }
-      });
-    } else {
-      alert('Please fill all fields and select a PDF file.');
-    }
-  }
-
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
-  scrollToBottom(): void {
     try {
-      this.messageContainer.nativeElement.scrollTop = 
-        this.messageContainer.nativeElement.scrollHeight;
-    } catch(err) {}
+      const userObj = JSON.parse(localStorage.getItem('userObj') || '{}');
+      this.isAuthorizedOrg = localStorage.getItem('orgName') === 'ProdTest';
+      this.isAuthorizedUser = userObj?.userdto?.userName === 'rb';
+    } catch (e) {
+      console.error("Could not parse user data from localStorage", e);
+    }
+
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: any) => {
+      const forbiddenPaths = ['organization-login', 'user-login', 'error', 'print-layout'];
+      this.shouldShowChat = !forbiddenPaths.some(path => event.url.includes(path));
+    });
   }
+
+  initVoiceService() {
+    this.voiceService.textAvailable$.subscribe((text) => {
+      // Append text to current message (with a space if needed)
+      this.currentMessage = (this.currentMessage ? this.currentMessage + ' ' : '') + text;
+      this.isListening = false; // Turn off animation when done speaking
+    });
+  }
+
+  toggleVoiceInput() {
+    if (this.isListening) {
+      this.voiceService.stop();
+      this.isListening = false;
+    } else {
+      this.voiceService.start();
+      this.isListening = true;
+    }
+  }
+
+  ngAfterViewChecked() { this.scrollToBottom(); }
 
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;
     if (this.isChatOpen) {
-      setTimeout(() => {
-        this.scrollToBottom();
-        this.chatInput.nativeElement.focus();
-      }, 100);
+      setTimeout(() => { this.scrollToBottom(); this.chatInput?.nativeElement.focus(); }, 100);
     }
   }
 
-  async sendMessage() {
-    if (!this.currentMessage.trim() || this.isLoading) return;
+  toggleHistoryPanel() {
+    this.isHistoryPanelOpen = !this.isHistoryPanelOpen;
+  }
 
-    const userMessage = this.currentMessage;
-    this.messages.push({
-      isUser: true,
-      message: userMessage,
-      timestamp: new Date()
+  // --- Detail Modal (Pop-up) ---
+  openDetailModal(message: ChatMessage) {
+    if (message.type === 'chart') {
+      this.modalContent = {
+        type: 'chart',
+        title: message.chartOptions?.plugins?.title?.text as string || 'Chart Details',
+        data: {
+          chartData: message.chartData,
+          chartOptions: { ...message.chartOptions, responsive: true, maintainAspectRatio: true },
+          chartType: message.chartType
+        }
+      };
+      this.isDetailModalVisible = true;
+    } else if (message.type === 'table') {
+      this.modalContent = {
+        type: 'table',
+        title: 'Table Details',
+        data: message.tableData
+      };
+      this.isDetailModalVisible = true;
+    }
+  }
+
+  closeDetailModal() {
+    this.isDetailModalVisible = false;
+    setTimeout(() => { this.modalContent = null; }, 300);
+  }
+
+  // --- History Management ---
+  createNewChat() {
+    this.closeDetailModal(); // Close any open pop-up when starting a new chat
+    const newChat: ChatSession = {
+      id: `chat_${Date.now()}`,
+      title: 'New Chat',
+      createdAt: new Date(),
+      messages: [{
+        type: 'text', isUser: false,
+        text: 'Hello! I am your AI assistant. How can I help you today?',
+        timestamp: new Date()
+      }]
+    };
+    this.allChats.unshift(newChat);
+    this.selectChat(newChat.id);
+    this._saveChatsToStorage();
+  }
+
+  selectChat(chatId: string) {
+    this.closeDetailModal(); // Close any open pop-up when switching chats
+    this.activeChat = this.allChats.find(c => c.id === chatId) || null;
+  }
+
+  deleteChat(chatIdToDelete: string, event: MouseEvent) {
+    event.stopPropagation();
+    this.closeDetailModal(); // Close pop-up if the active chat is deleted
+    this.allChats = this.allChats.filter(c => c.id !== chatIdToDelete);
+    if (this.activeChat?.id === chatIdToDelete) {
+      this.activeChat = this.allChats.length > 0 ? this.allChats[0] : null;
+      if (!this.activeChat) {
+        this.createNewChat();
+      }
+    }
+    this._saveChatsToStorage();
+  }
+
+  // --- Local Storage ---
+  private _loadChatsFromStorage() {
+    try {
+      const storedChats = localStorage.getItem(this.CHAT_STORAGE_KEY);
+      if (storedChats) {
+        this.allChats = JSON.parse(storedChats);
+        this.allChats.forEach(chat => {
+          chat.createdAt = new Date(chat.createdAt);
+          chat.messages.forEach(msg => msg.timestamp = new Date(msg.timestamp));
+        });
+      }
+    } catch (e) {
+      console.error("Failed to load or parse chats from localStorage", e);
+      this.allChats = [];
+    }
+
+    if (this.allChats.length > 0) {
+      this.selectChat(this.allChats[0].id);
+    } else {
+      this.createNewChat();
+    }
+  }
+
+  private _saveChatsToStorage() {
+    try {
+      localStorage.setItem(this.CHAT_STORAGE_KEY, JSON.stringify(this.allChats));
+    } catch (e) {
+      console.error("Failed to save chats to localStorage", e);
+    }
+  }
+
+  // --- Message Sending & Processing ---
+  sendMessage() {
+    this.isListening = false; 
+    this.closeDetailModal();
+
+    const userMessageText = this.currentMessage.trim();
+    if (!userMessageText || this.isLoading || !this.activeChat) return;
+
+    // --- CHANGED: Assemble history payload ---
+    const recentMessages = this.activeChat.messages.slice(-4); // Get last 4 messages
+    const historyPayload: HistoryPayloadMessage[] = recentMessages.map(msg => {
+        const role = msg.isUser ? 'user' : 'bot';
+        let content = '';
+        if (msg.type === 'text') {
+            content = msg.text;
+        } else if (msg.type === 'chart' || msg.type === 'table') {
+            // Send the original raw response for context
+            content = msg.rawAnswer;
+        }
+        return { role, content };
     });
+    
+    if (this.activeChat.title === 'New Chat' && this.activeChat.messages.length === 1) {
+      this.activeChat.title = userMessageText.substring(0, 35) + (userMessageText.length > 35 ? '...' : '');
+    }
+
+    this.activeChat.messages.push({ type: 'text', isUser: true, text: userMessageText, timestamp: new Date() });
     this.currentMessage = '';
     this.isLoading = true;
+    this.scrollToBottom();
+    this._saveChatsToStorage();
 
-    this.chatbotService.getBotResponse(userMessage).subscribe(
-      response => {
+    // CHANGED: Pass history payload to the service
+    this.chatbotService.getBotResponse(userMessageText, historyPayload).subscribe({
+      next: (response) => {
         this.isLoading = false;
-        this.chatbotService.updateConversationId(response.conversation_id);
-
-        this.messages.push({
-          isUser: false,
-          message: response.answer,
-          timestamp: new Date()
-        });
+        // Pass the raw answer string for processing and storage
+        this.processBotResponse(response.answer);
+        this._saveChatsToStorage();
       },
-      error => {
-        console.error('Error getting bot response:', error);
+      error: (error) => {
         this.isLoading = false;
-        this.messages.push({
-          isUser: false,
-          message: 'Sorry, I encountered an error. Please try again later.',
-          timestamp: new Date()
-        });
-        this.chatbotService.updateConversationId('');
+        if (this.activeChat) {
+          this.activeChat.messages.push({ type: 'text', isUser: false, text: 'Sorry, I encountered an error. Please try again.', timestamp: new Date() });
+          this._saveChatsToStorage();
+        }
+        console.error('Error getting bot response:', error);
       }
-    );
-    if (this.isChatOpen) {
-      setTimeout(() => {
-        this.chatInput.nativeElement.focus();
-      }, 500);
+    });
+  }
+
+  private processBotResponse(answer: string) {
+    if (!this.activeChat) return;
+
+    const chartJson = this.parseChartJson(answer);
+    if (chartJson) {
+      // CHANGED: Pass the raw `answer` string to be stored
+      this.addChartMessage(chartJson, answer);
+      return;
     }
+
+    const tableData = this.parseMarkdownTable(answer);
+    if (tableData) {
+      // CHANGED: Pass the raw `answer` string to be stored
+      this.addTableMessage(tableData, answer);
+      return;
+    }
+
+    this.activeChat.messages.push({ type: 'text', isUser: false, text: answer, timestamp: new Date() });
+  }
+
+  private parseChartJson(text: string): ApiChartData | null {
+    const match = text.match(/```json\n([\s\S]*?)\n```/);
+    if (match?.[1]) {
+      try { return JSON.parse(match[1]); } catch (e) { console.error('Failed to parse chart JSON:', e); return null; }
+    }
+    return null;
+  }
+  
+  // CHANGED: Function signature updated to accept rawAnswer
+  private addChartMessage(apiChartData: ApiChartData, rawAnswer: string) {
+    if (!this.activeChat) return;
+  
+    if (apiChartData.explanation) {
+      this.activeChat.messages.push({
+        type: 'text',
+        isUser: false,
+        text: apiChartData.explanation,
+        timestamp: new Date(),
+      });
+    }
+  
+    const chartType = apiChartData.chartType || 'bar';
+    const vibrantColors = [ /* ... colors ... */ 'rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'];
+    const backgroundColors = apiChartData.chartData.map((_, i) => vibrantColors[i % vibrantColors.length]);
+    const borderColors = backgroundColors.map(c => c.replace(/0\.\d+/, '1'));
+  
+    const newChartMessage: ChartMessage = {
+      type: 'chart',
+      isUser: false,
+      timestamp: new Date(),
+      chartType,
+      rawAnswer: rawAnswer, // Store the raw answer
+      chartData: {
+        labels: apiChartData.chartData.map(d => d.label),
+        datasets: [{
+          data: apiChartData.chartData.map(d => d.value),
+          label: apiChartData.chartTitle,
+          backgroundColor: backgroundColors,
+          borderColor: borderColors,
+          borderWidth: 1.5
+        }]
+      },
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: ['pie', 'doughnut'].includes(chartType) },
+          title: { display: true, text: apiChartData.chartTitle, font: { size: 16 } }
+        },
+        scales: (['bar', 'line'].includes(chartType)) ? { y: { beginAtZero: true } } : undefined
+      }
+    };
+  
+    this.activeChat.messages.push(newChartMessage);
+    this.openDetailModal(newChartMessage);
+  }
+
+  private parseMarkdownTable(text: string): { headers: string[]; rows:string[][] } | null {
+    const lines = text.trim().split('\n').map(l => l.trim()).filter(l => l.startsWith('|'));
+    if (lines.length < 2 || !lines[1].includes('---')) return null;
+    const cleanCell = (cell: string) => cell.trim();
+    const headers = lines[0].split('|').slice(1, -1).map(cleanCell);
+    const rows = lines.slice(2).map(line => line.split('|').slice(1, -1).map(cleanCell));
+    if (headers.length === 0 || rows.some(row => row.length !== headers.length)) return null;
+    return { headers, rows };
+  }
+
+  // CHANGED: Function signature updated to accept rawAnswer
+  private addTableMessage(tableData: { headers: string[]; rows: string[][] }, rawAnswer: string) {
+    if (!this.activeChat) return;
+    
+    const newTableMessage: TableMessage = {
+      type: 'table',
+      isUser: false,
+      timestamp: new Date(),
+      tableData,
+      rawAnswer: rawAnswer // Store the raw answer
+    };
+    this.activeChat.messages.push(newTableMessage);
+    
+    this.openDetailModal(newTableMessage);
+  }
+
+  // --- PDF Upload Modal Logic (no changes needed here) ---
+  onFileUploadClick() { this.isUploadModalVisible = true; }
+  closeUploadModal() {
+    this.isUploadModalVisible = false; this.password = ''; this.selectedFile = null;
+    if (this.fileInput) this.fileInput.nativeElement.value = '';
+  }
+  onFileSelected(event: Event) { this.selectedFile = (event.target as HTMLInputElement).files?.[0] || null; }
+  submitUploadForm() {
+    if (this.password && this.selectedFile) {
+      const formData = new FormData();
+      formData.append('password', this.password); formData.append('file', this.selectedFile);
+      this.chatbotService.uploadPDF(formData).subscribe({
+        next: (res) => { if (res.status === 200) { alert('PDF uploaded successfully!'); this.closeUploadModal(); } },
+        error: (err) => { console.error('File upload failed:', err); alert('Failed to upload PDF. See console for details.'); }
+      });
+    } else { alert('Please select a PDF file and enter the password.'); }
+  }
+
+  private scrollToBottom(): void {
+    if (this.messageContainer?.nativeElement) {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    }
+  }
+
+  downloadTableAsCsv() {
+    // 1. Check if we actually have table data open
+    if (!this.modalContent || this.modalContent.type !== 'table' || !this.modalContent.data) {
+      return;
+    }
+
+    const data = this.modalContent.data; // { headers: string[], rows: string[][] }
+    
+    // 2. Helper function to escape special characters (commas, quotes, newlines)
+    const escapeCsvCell = (cell: any): string => {
+      if (cell === null || cell === undefined) {
+        return '';
+      }
+      const text = String(cell);
+      // If data contains commas, quotes, or newlines, wrap in quotes and escape existing quotes
+      if (text.includes(',') || text.includes('"') || text.includes('\n')) {
+        return `"${text.replace(/"/g, '""')}"`;
+      }
+      return text;
+    };
+
+    // 3. Construct CSV content
+    // Create Header Row
+    const csvContent = [
+      data.headers.map(escapeCsvCell).join(','),
+      // Create Data Rows
+      ...data.rows.map((row: any[]) => row.map(escapeCsvCell).join(','))
+    ].join('\n');
+
+    // 4. Create a Blob and trigger download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    
+    link.setAttribute('href', url);
+    // Generate a filename with a timestamp
+    link.setAttribute('download', `table_export_${new Date().getTime()}.csv`);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 }

@@ -21,19 +21,19 @@
                     </div>
               
                     <div class="row mt-2">
-                      <div class="col-sm-5 d-flex mb-1">
+                      <div class="col-sm-4 d-flex mb-1">
                         <input type="text" id="dispatchID" [(ngModel)]="dispatchID" name="dispatchID" class="form-control mr-10" placeholder="Search by Dispatch No.">
 
                         <input type="text" id="sellerName" [(ngModel)]="sellerName" name="sellerName" class="form-control" placeholder="Search by Seller">
                       </div>
-                      <div class="col-sm-5 d-flex  mb-1">
+                      <div class="col-sm-4 d-flex  mb-1">
                         <label class="mr-10">From Date</label>
                         <input type="date" id="fromDate" [(ngModel)]="fromDate" name="fromDate" class="form-control mr-10" (click)="openDatePicker()">
 
                         <label class="mr-10">To Date</label>
                         <input type="date" id="toDate" [(ngModel)]="toDate" name="toDate" class="form-control" (click)="openToDatePicker()">
                       </div>  
-                      <div class="col-sm-2  mb-1">
+                      <div class="col-sm-4  mb-1">
                         <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
                       </div>
                     </div>
@@ -76,7 +76,7 @@
                                   <td>{{ rowData.pickUpAddress }}</td>
                                   <td>{{ rowData.driverFullName }}</td>
                                   <!-- <td>{{ rowData.status }}</td> -->
-                                  <td>{{ rowData.rowID }}</td>
+                                  <td>{{ rowData.pickupID }}</td>
                                 </tr>
                               </ng-template>
                             </p-table>
@@ -118,7 +118,7 @@
             <ng-container *ngIf="!checkTabView">
 
 
-            <p-dialog   header="Single Ticket Report" [(visible)]="isReportShow" [modal]="true" [style]="{ width: '70vw' }">
+            <p-dialog   header="Dispatch Report" [(visible)]="isReportShow" [modal]="true" [style]="{ width: '70vw' }">
              
               <div *ngIf="showLoaderReport">
                 <app-page-loader type="reportloader"></app-page-loader>
@@ -126,7 +126,7 @@
 
               <div class="row" >
                 <div style="height: 500px;" *ngIf="!showLoaderReport">                
-                  <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
+                  <ngx-extended-pdf-viewer   [base64Src]="fileDataObj" [filenameForDownload]="'Dispatch Report'+ ' '+'ID_' + customerObj.rowID + '.pdf'"></ngx-extended-pdf-viewer>
                 </div>
               </div>
             </p-dialog>

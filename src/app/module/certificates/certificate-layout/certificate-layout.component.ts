@@ -75,8 +75,8 @@ export class CertificateLayoutComponent implements OnInit {
   pageTotal = 0;
 
   isCertificateMode = false;
-  searchInput: any;
 
+  searchText: string = '';
 
   
 
@@ -96,6 +96,10 @@ export class CertificateLayoutComponent implements OnInit {
     this.locationName = localStorage.getItem('locationName');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.checkTabView = this.helperService.isTab();
+
+    this.route.queryParams.subscribe(params => {
+      this.searchText = params['search'] || '';
+    });
 
     const storedPagination = localStorage.getItem('certificatesPaginationData');
     if (storedPagination) {
@@ -117,26 +121,29 @@ export class CertificateLayoutComponent implements OnInit {
     this.navigateToInitialView();
   }
 
+  performSearch() {
+    if (this.searchText) {
+      this.router.navigate([], {
+        queryParams: { search: this.searchText }
+      });
+    } else {
+      this.router.navigate([], {
+        queryParams: { search: null }
+      });
+    }
+  }
+
   navigateToInitialView() {
     const currentUrl = this.router.url;
     this.isCertificateMode = currentUrl.includes('certificates') && !currentUrl.includes('grid');
   }
 
   onToggleChange() {
-    // if (this.isCertificateMode) {
-    //   this.router.navigate([`/${this.orgName}/certificates`]);
-    // } else {
-    //   this.router.navigate([`/${this.orgName}/certificates/grid`]);
-    // }
-
-    if (this.searchInput?.trim()) {
-      const queryParams = { queryParams: { searchText: this.searchInput } };
-      this.router.navigate([`/${this.orgName}/certificates${this.isCertificateMode ? '' : '/grid'}`], queryParams);
+    if (this.isCertificateMode) {
+      this.router.navigate([`/${this.orgName}/certificates`]);
     } else {
-      this.router.navigate([`/${this.orgName}/certificates${this.isCertificateMode ? '' : '/grid'}`]);
+      this.router.navigate([`/${this.orgName}/certificates/grid`]);
     }
-   
-    
   }
 
 
@@ -464,36 +471,24 @@ export class CertificateLayoutComponent implements OnInit {
     this.showDownload = false;    
     //this.router.navigateByUrl(`${this.orgName}/ship-out`);
   }
-
-
-  getAction(actionCode:any){
-    
+  
+  getAction(actionCode: any) {
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.searchSeller();
+        console.log('Search action triggered');
+        this.performSearch();
         break;
       case 'mdi-refresh':
-      
+        this.searchText = '';
+        this.router.navigate([], {
+          queryParams: { search: null }
+          });
         break;
-    
       default:
+        console.warn('Unknown action triggered');
         break;
     }
-  
   }
-
-  searchSeller() {
-   
-    if (this.searchInput?.trim()) {
-      const queryParams = { queryParams: { searchText: this.searchInput } };
-      this.router.navigate([`/${this.orgName}/certificates${this.isCertificateMode ? '' : '/grid'}`], queryParams);
-    } else {
-      this.router.navigate([`/${this.orgName}/certificates${this.isCertificateMode ? '' : '/grid'}`]);
-    }
-
-  }
-
-  
   
 }
 

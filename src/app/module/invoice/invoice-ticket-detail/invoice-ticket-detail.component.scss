@@ -1,266 +1,590 @@
-h4{
-    font-size: 1rem;
+// ============================================
+// Invoice Detail - Design Enhancements
+// Matching Dashboard Layout & Visual Style
+// ============================================
+
+// Variables for consistency (matching Dashboard)
+$primary-color: #0176B8;
+$text-muted: #6c757d;
+$border-color: #e9ecef;
+$card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+$card-hover-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+$transition-speed: 0.3s;
+
+// ============================================
+// Page Structure Enhancements
+// ============================================
+
+h4 {
+  font-size: 1rem;
 }
 
-
-
-.fz-14{
-  font-size: 0.9rem;
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #343a40;
+  margin: 0;
 }
 
-.mainbox-row{
-    // max-height: 110px;
-    overflow-y: scroll !important;
+.bdcmb {
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
-.ticket-card{
+.b-links {
+  text-align: right;
+  font-size: 0.875rem;
+
+  a {
+    color: $text-muted;
+    text-decoration: none;
+    transition: color $transition-speed;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}
+
+// ============================================
+// Card Enhancements
+// ============================================
+
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: $card-shadow;
+  transition: box-shadow $transition-speed;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.ticket-card {
   height: calc(100vh - 100px);
   overflow-y: auto;
+  border-radius: 12px;
+  box-shadow: $card-shadow;
 }
 
+// ============================================
+// Form Control Enhancements
+// ============================================
 
-.cod-item {
-    color: darkred !important;
-}
-
-
-.main-ul {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 0.5fr; 
-  gap: 0.5rem;
-  padding: 2px;
-  list-style-type: none;
- 
-  li {
-     
-   
-      // align-items: top;
-      justify-content: center;
-      text-align: left;
-      align-items: center;
-    
-      background-color:#03659c;
-      box-shadow: inset -1px 0px 1px 4px #ccc;
-      border-radius: 10px 10px 10px 10px;
-      cursor: pointer;
-     a {
-        padding:1.2rem !important;
-        display: flex;
-        height: 100%;
-        color: #fff;
-        font-size: 0.9rem !important;
-        font-weight: 500;
-        cursor: pointer;
-        justify-content: center;
-       
-     }
-     &:hover {
-      background: #bbdaeb;
-      color: #fff !important;
-
-     }
-
-    }  
-}
-
-textarea{
-  border: 1px solid #dee2e6;
-}
-
-.form-control{
-  padding: 0.3rem !important;
-}
-
-.sidebar-inputox {
-
-  label {
-    min-width: 120px;
-  }
-}
-
-.sidebar-button {
-  button {
-    min-width:120px; 
-  }
-  
-}
-
-.remove-x {
-  cursor: pointer;
-    color: red;
-    position: absolute;
-    font-size: 1rem !important;
-    right: -14px;
-    text-decoration: none;
-}
-.input-container {
-  position: relative;
-}
-
-
-
-
-  .border-show {
-    border-bottom: 1px solid #dee2e6 !important;
-  }
-  
-  .border-hide {
-    border-bottom: none !important;
-  }
-
-  .equal-h{
-    width: 160px;
-    height: 60px;
-  }
-
-
-  .button-container {
-    display: flex;
-  }
-
-  .w-98{
-    width: 98%;
-  }
-  .w-75{
-    width:65% !important;
-  }
-  
-
-  
-
-
-
-
-
-
-
-.invoiceTable{
-  /* General Styles */
-.invoice-container {
-  max-width:100%;
- 
-  border: 1px solid #ccc;
+.form-control {
+  border: 1px solid $border-color;
   border-radius: 8px;
- 
+  padding: 10px 14px;
+  transition: border-color $transition-speed, box-shadow $transition-speed;
+  font-size: 0.9rem;
+
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #adb5bd;
+  }
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
-}
+textarea {
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  transition: border-color $transition-speed, box-shadow $transition-speed;
 
-/* Table Styles */
-.table-wrapper {
-  overflow-x: auto; /* Make table scrollable on small screens */
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
- 
-  background-color: #fff;
-}
-
-tbody{
-  max-height: 300px;
-  overflow-x: scroll;
-}
-
-thead {
-  background-color: #03669c;
-  color: white;
-}
-
-thead th {
-  padding: 10px;
-  text-align: left;
-}
-
-tbody td,
-tfoot td {
-  padding: 10px;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-tfoot {
-  background-color: #ddd;
-}
-
-tfoot td {
-  font-weight: bold;
-}
-
-tfoot .text-right {
-  text-align: right;
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+    outline: none;
+  }
 }
 
 input {
-  width: 90%;
-  padding: 4px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  transition: box-shadow $transition-speed ease;
+
+  &:focus {
+    box-shadow: 0 0 8px rgba($primary-color, 0.35);
+    outline: none;
+  }
 }
 
-/* Button Styles */
-button {
-  padding: 8px 12px;
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
+.form-label {
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 4px;
 }
 
-.add-btn {
-  background-color: #4CAF50;
-  color: white;
+// ============================================
+// Table Enhancements
+// ============================================
+
+.seller-view-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+
+  td {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    color: #495057;
+    vertical-align: top;
+
+    .fw-bold {
+      color: #343a40;
+      font-weight: 600;
+    }
+
+    label {
+      color: $text-muted;
+      font-weight: 500;
+    }
+  }
 }
 
-.add-btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
+// Invoice Table Enhancements
+.invoiceTable {
+  .invoice-container {
+    max-width: 100%;
+    border: 1px solid $border-color;
+    border-radius: 10px;
+    overflow: hidden;
+  }
 
-.delete-btn {
-  background-color: #f44336;
-  color: white;
-}
+  .table-wrapper {
+    overflow-x: auto;
+  }
 
-.delete-btn:hover {
-  background-color: #d32f2f;
-}
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0;
+    background-color: #fff;
+  }
 
-.add-button-container {
-  text-align: right;
-}
+  thead {
+    background: linear-gradient(180deg, #03669c 0%, #025a87 100%);
+    color: white;
 
-/* Responsive Design */
-@media (max-width: 600px) {
-  h1 {
-    font-size: 20px;
+    th {
+      padding: 12px 10px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  tbody {
+    max-height: 300px;
+    overflow-y: auto;
+
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid $border-color;
+      font-size: 0.9rem;
+      color: #495057;
+    }
+
+    tr {
+      transition: background-color $transition-speed;
+
+      &:hover {
+        background-color: rgba($primary-color, 0.04);
+      }
+
+      &:nth-child(even) {
+        background-color: #f8f9fa;
+
+        &:hover {
+          background-color: rgba($primary-color, 0.06);
+        }
+      }
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  tfoot {
+    background-color: #f8f9fa;
+
+    td {
+      font-weight: 600;
+      padding: 12px 10px;
+    }
+
+    .text-right {
+      text-align: right;
+    }
   }
 
   input {
-    width: 100%;
+    width: 90%;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: border-color $transition-speed, box-shadow $transition-speed;
+
+    &:focus {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+      outline: none;
+    }
   }
 
   button {
-    font-size: 12px;
-  }
-}
+    padding: 8px 12px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all $transition-speed;
 
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+
+  .add-btn {
+    background-color: #4CAF50;
+    color: white;
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  .delete-btn {
+    background-color: #f44336;
+    color: white;
+
+    &:hover {
+      background-color: #d32f2f;
+    }
+  }
 }
 
 .card-invoice-table {
   overflow-y: auto;
   max-height: calc(100vh - 370px) !important;
+  border-radius: 10px;
+}
+
+// ============================================
+// PrimeNG Component Enhancements
+// ============================================
+
+:host ::ng-deep {
+  .p-datatable {
+    .p-datatable-header {
+      background: transparent;
+      border: none;
+      padding: 0 0 12px 0;
+    }
+
+    .p-datatable-thead>tr>th {
+      background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+      border: none;
+      border-bottom: 2px solid $border-color;
+      color: #495057;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 12px 10px;
+    }
+
+    .p-datatable-tbody>tr {
+      transition: background-color $transition-speed;
+
+      &:hover {
+        background-color: rgba($primary-color, 0.04);
+      }
+
+      >td {
+        border: none;
+        border-bottom: 1px solid $border-color;
+        padding: 12px 10px;
+        vertical-align: middle;
+        font-size: 0.9rem;
+        color: #495057;
+      }
+    }
+  }
+
+  .p-paginator {
+    background: transparent;
+    border: none;
+    padding: 12px 0;
+
+    .p-paginator-pages .p-paginator-page {
+      border-radius: 6px;
+      margin: 0 2px;
+
+      &.p-highlight {
+        background: $primary-color;
+        color: white;
+      }
+    }
+  }
+
+  .p-dropdown {
+    border-radius: 8px;
+    border: 1px solid $border-color;
+
+    &:hover {
+      border-color: darken($border-color, 10%);
+    }
+  }
+
+  .p-dialog {
+    border-radius: 12px;
+    overflow: hidden;
+
+    .p-dialog-header {
+      background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+      color: white;
+      padding: 16px 20px;
+
+      .p-dialog-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+
+      .p-dialog-header-icon {
+        color: white;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+
+    .p-dialog-content {
+      padding: 20px;
+    }
+
+    .p-dialog-footer {
+      padding: 16px 20px;
+      border-top: 1px solid $border-color;
+    }
+  }
+}
+
+// ============================================
+// Summary Section
+// ============================================
+
+.shadow-sm {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid $border-color;
+  box-shadow: $card-shadow;
+}
+
+.sidebar-inputox {
+  label {
+    min-width: 120px;
+    font-weight: 500;
+    color: #495057;
+  }
+}
+
+.sidebar-button {
+  button {
+    min-width: 120px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all $transition-speed;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.input-group {
+  .input-group-text {
+    background-color: #f8f9fa;
+    border: 1px solid $border-color;
+    border-radius: 6px 0 0 6px;
+    font-weight: 500;
+    color: #495057;
+  }
+}
+
+.remove-x {
+  cursor: pointer;
+  color: #dc3545;
+  position: absolute;
+  font-size: 1rem !important;
+  right: -14px;
+  text-decoration: none;
+  transition: color $transition-speed;
+
+  &:hover {
+    color: darken(#dc3545, 10%);
+    text-decoration: underline;
+  }
+}
+
+.input-container {
+  position: relative;
+}
+
+// ============================================
+// Button Enhancements
+// ============================================
+
+.btn-grid {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all $transition-speed;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.equal-h {
+  width: 160px;
+  height: 60px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all $transition-speed;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.button-container {
+  display: flex;
+  gap: 8px;
+}
+
+// ============================================
+// Image Styling
+// ============================================
+
+.default-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: contain;
+  border: 2px solid $border-color;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+// ============================================
+// Utility Classes
+// ============================================
+
+.fz-14 {
+  font-size: 0.9rem;
+}
+
+.fz-16 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.mainbox-row {
+  overflow-y: scroll !important;
+  padding: 12px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid $border-color;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+
+    &:hover {
+      background: #a8a8a8;
+    }
+  }
+}
+
+.cod-item {
+  color: darkred !important;
+}
+
+.main-ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 0.5fr;
+  gap: 0.5rem;
+  padding: 2px;
+  list-style-type: none;
+
+  li {
+    justify-content: center;
+    text-align: left;
+    align-items: center;
+    background-color: #03659c;
+    box-shadow: inset -1px 0px 1px 4px #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all $transition-speed;
+
+    a {
+      padding: 1.2rem !important;
+      display: flex;
+      height: 100%;
+      color: #fff;
+      font-size: 0.9rem !important;
+      font-weight: 500;
+      cursor: pointer;
+      justify-content: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    &:hover {
+      background: #bbdaeb;
+      color: #fff !important;
+    }
+  }
+}
+
+.border-show {
+  border-bottom: 1px solid #dee2e6 !important;
+}
+
+.border-hide {
+  border-bottom: none !important;
+}
+
+.w-98 {
+  width: 98%;
+}
+
+.w-75 {
+  width: 65% !important;
 }
 
 .loader-container {
@@ -268,92 +592,147 @@ button {
   align-items: center;
 }
 
+// ============================================
+// Responsive Design
+// ============================================
 
-
-
-
+// Mobile (max 767px)
 @media (max-width: 767px) {
-  .w-98{
-    width: 100% !important ;
-  }
-  .w-75{
-    width:100% !important;
+  .page-title {
+    font-size: 1.25rem;
   }
 
+  .bdcmb .row {
+    flex-direction: column;
+
+    .col-sm-6,
+    .col-6 {
+      width: 100%;
+
+      &:last-child {
+        margin-top: 8px;
+      }
+    }
+  }
+
+  .b-links {
+    text-align: left;
+  }
+
+  .card-body {
+    padding: 12px;
+  }
+
+  .w-98 {
+    width: 100% !important;
+  }
+
+  .w-75 {
+    width: 100% !important;
+  }
+
+  .equal-h {
+    width: 100%;
+    height: auto;
+    padding: 12px;
+  }
+
+  .seller-view-tbl {
+    td {
+      display: block;
+      width: 100% !important;
+      padding: 8px 0;
+    }
+  }
+
+  .sidebar-inputox {
+    label {
+      min-width: 100px;
+    }
+  }
+
+  .sidebar-button {
+    flex-wrap: wrap;
+
+    button {
+      min-width: 80px;
+      margin-bottom: 8px;
+    }
+  }
 }
 
+// Tablet (max 1024px)
 @media (max-width: 1024px) {
-
-  
-  
-  .equal-h{
+  .equal-h {
     width: 114px;
     height: 60px;
   }
-  .main-ul{
+
+  .main-ul {
     display: block;
+  }
+
+  .seller-view-tbl {
+    td {
+      padding: 8px;
+    }
   }
 }
 
-
-
+// Large screens (min 2000px)
 @media (min-width: 2000px) {
-
   .sidebar-inputox {
-
     label {
       min-width: 220px;
     }
   }
-  
- 
+
+  .page-title {
+    font-size: 1.75rem;
+  }
 }
 
-
-
-/* Media query for screens wider than 3000px */
+// Extra large screens (3000px+)
 @media (min-width: 3000px) {
-
-  .main-ul  li a {
-    padding:1.5rem !important;
+  .main-ul li a {
+    padding: 1.5rem !important;
     font-size: 1.5rem !important;
-    line-height: 1.5rem !important;  
+    line-height: 1.5rem !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
 }
 
-/* Media query for screens wider than 4000px */
 @media (min-width: 4000px) {
-  .main-ul  li a {
-    padding:1.5rem !important;
+  .main-ul li a {
+    padding: 1.5rem !important;
     font-size: 2rem !important;
-    line-height: 2rem !important;  
+    line-height: 2rem !important;
   }
 }
 
-/* Media query for screens wider than 5000px */
 @media (min-width: 5000px) {
-.main-ul  li a {
-  padding:1.5rem !important;
-  font-size:2rem !important;
-  line-height: 2rem !important;  
-}
-}
-
-input {
-  transition: box-shadow 0.3s ease;
-}
-input:focus {
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
-  outline: none;
+  .main-ul li a {
+    padding: 1.5rem !important;
+    font-size: 2rem !important;
+    line-height: 2rem !important;
+  }
 }
 
-.remove-x:hover {
-  color: #dc3545;
-  text-decoration: underline;
-}
+// ============================================
+// Dialog Responsive Fixes
+// ============================================
 
+:host ::ng-deep {
+  @media (max-width: 767px) {
+    .p-dialog {
+      .p-dialog-content {
+        padding: 15px;
+      }
 
-.shadow-sm{
-  background-color: rgb(204 204 204 / 50%);
-
+      .p-dialog-footer {
+        padding: 12px 15px;
+      }
+    }
+  }
 }

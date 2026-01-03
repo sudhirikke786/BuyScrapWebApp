@@ -53,7 +53,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData>
                   <tr>
-                    <td>{{ rowData.ticketNumber }}</td>
+                    <td>{{ rowData.ticketID }}</td>
                     <td>{{ rowData.customerName }}</td>
                     <td>{{ rowData.voidDate | date: 'MM/dd/yyyy' }}</td>
                     <td>{{ rowData.voidReason }}</td>
@@ -107,7 +107,7 @@
 
     <div class="row" >
       <div style="height: 500px;" *ngIf="!showLoaderReport">                
-        <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
+        <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"  [filenameForDownload]="'Void Ticket Report'+ ' '+ '.pdf'"></ngx-extended-pdf-viewer>
       </div>
     </div>
   </p-dialog>

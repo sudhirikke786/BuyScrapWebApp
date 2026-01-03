@@ -53,6 +53,14 @@ export class SystemPerfComponent implements OnInit {
     this.getSystemPreferencesValue();
   }
 
+  isBooleanField(item: any): boolean {
+    return item.type === 'Bool';
+  }
+
+  isNumericField(item: any): boolean {
+    return item.type === 'Int' || item.type === 'Number';
+  }
+
   refershSettings(){
     this.getSystemPreferencesValue();
   }
@@ -78,7 +86,11 @@ export class SystemPerfComponent implements OnInit {
     }
     this.commonService.GetSystemPreferencesValue(reqObj).subscribe((res) =>{
       this.systemPerObj = res?.body?.data.map((item:any) => {
-        item.isChecked = item.values == 'True' ? true : false;
+        if (item.type === 'Bool') {
+          item.isChecked = item.values == 'True' ? true : false;
+        }
+        item.originalValue = item.values;
+
         return item
       });
       this.copyObj = res?.body?.data.map;
@@ -90,6 +102,23 @@ export class SystemPerfComponent implements OnInit {
     },(error)=>{
 
     })
+  }
+
+  saveNumericValue(item: any, rowIndex: number) {
+    if (item.values === item.originalValue) {
+      return; 
+    }
+
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: `Are you sure you want to change ${item.keys} from "${item.originalValue}" to "${item.values}"?`,
+      accept: () => {
+        this.saveForm(item, undefined, item.values);
+      },
+      reject: () => {
+        item.values = item.originalValue;
+      }
+    });
   }
 
 
@@ -117,8 +146,15 @@ export class SystemPerfComponent implements OnInit {
 
 
 
-  saveForm(type?:any,ischecked=false){
+  saveForm(type?:any,ischecked=false, numericValue?: any){
     const datePipe = new DatePipe('en-US');
+    let valueToSave: string;
+
+    if (type.type === 'Bool') {
+      valueToSave = ischecked ? 'True' : 'False';
+    } else {
+      valueToSave = numericValue?.toString() || type.values;
+    }
 
     const sysInfo = {
       "createdBy": this.logInUserId,
@@ -127,12 +163,21 @@ export class SystemPerfComponent implements OnInit {
       "updatedDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "rowId": this.editObj?.rowId || type.rowId,
       "keys":type.keys,
-      "values":ischecked ? 'True' : 'False'
+      "values":valueToSave
     }
 
    // const reqObj = {...sysInfo,...obj};
 
     this.commonService.InsertUpdateSystemPreferences(sysInfo).subscribe((res) =>{
+      const index = this.systemPerObj.findIndex((item: any) => item.rowId === type.rowId);
+      if (index !== -1) {
+        this.systemPerObj[index].originalValue = valueToSave;
+        this.systemPerObj[index].values = valueToSave; 
+        
+        if (type.type === 'Bool') {
+          this.systemPerObj[index].isChecked = ischecked;
+        }
+      }
       this.getSystemPreferencesValue();
       this.visible = false;
       // alert('updated')

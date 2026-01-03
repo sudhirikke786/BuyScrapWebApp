@@ -1,105 +1,560 @@
-/* Main card body styling */
-.card-body {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 200px) !important;
-    overflow: hidden !important;
+// ============================================
+// Inout Dashboard - Modern Design Styles
+// ============================================
+
+// Variables
+$primary-color: #0176B8;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$info-color: #17a2b8;
+$warning-color: #ffc107;
+$text-muted: #6c757d;
+$border-color: #e9ecef;
+$card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+$card-hover-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+$transition-speed: 0.3s;
+
+// Page Header
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #343a40;
+  margin: 0;
+}
+
+// Breadcrumb styling
+.b-links {
+  text-align: right;
+  font-size: 0.875rem;
+
+  a {
+    color: $text-muted;
+    text-decoration: none;
+    transition: color $transition-speed;
+
+    &:hover {
+      color: $primary-color;
+    }
   }
-  
-  .inout-cards-scrollable {
+}
+
+// Search and Action Bar
+.form-control {
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 10px 14px;
+  transition: border-color $transition-speed, box-shadow $transition-speed;
+  font-size: 0.9rem;
+
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #adb5bd;
+  }
+}
+
+/* Search Filter Row - All in one line */
+.search-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+
+  .search-box {
     flex: 1;
-    overflow-y: auto;
-    padding: 12px;
+    min-width: 250px;
   }
-  
-  .paginator-container {
-    flex-shrink: 0;
-    background-color: white;
-    padding: 10px 15px;
-    border-top: 1px solid #e5e5e5;
-  }
-  
-  /* Custom scrollbar styling */
-  .inout-cards-scrollable::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  .inout-cards-scrollable::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-  }
-  
-  .inout-cards-scrollable::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-  }
-  
-  .inout-cards-scrollable::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-  
-  /* Inout card styling */
-  .inout-card {
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: all 0.2s ease;
-    height: 100%;
-  }
-  
-  .inout-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  }
-  
-  .inout-card .card-body {
-    height: auto !important;
-    overflow: visible !important;
-  }
-  
-  .col-xxl-card-5 {
-    width: 20%;
-  }
-  
-  .serverside-paginator {
-    margin-top: 0;
-    z-index: 1;
-  }
-  
-  .small-text {
-    font-size: 0.8rem;
-    font-weight: 500;
-  }
-  
+
   .action-buttons {
     display: flex;
-    gap: 5px;
-    margin-top: 10px;
+    align-items: center;
   }
-  
+
+  .view-toggle-container {
+    display: flex;
+    background: white;
+    padding: 4px;
+    border-radius: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+  }
+}
+
+.toggle-option {
+  padding: 5px 12px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  color: #64748b;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+/* Card/Grid toggle - blue */
+.view-toggle-container input[type="radio"]:checked+label {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+// Card Styling
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: $card-shadow;
+  transition: box-shadow $transition-speed;
+  overflow: visible;
+}
+
+/* Main card body styling - only general enhancements */
+.card-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.inout-cards-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.paginator-container {
+  flex-shrink: 0;
+  background-color: white;
+  padding: 12px 15px;
+  border-top: 1px solid $border-color;
+  margin-top: auto;
+  position: relative;
+  z-index: 10;
+}
+
+/* Custom scrollbar styling */
+.inout-cards-scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.inout-cards-scrollable::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.inout-cards-scrollable::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.inout-cards-scrollable::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Inout card styling */
+.inout-card {
+  border-radius: 12px;
+  box-shadow: $card-shadow;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $primary-color, lighten($primary-color, 15%), $info-color);
+    border-radius: 12px 12px 0 0;
+  }
+}
+
+.inout-card:hover {
+  transform: translateY(-4px);
+  box-shadow: $card-hover-shadow;
+}
+
+.inout-card .card-body {
+  height: auto !important;
+  overflow: visible !important;
+  padding: 14px !important;
+}
+
+.inout-id {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.inout-details {
+  .text-muted {
+    font-size: 0.7rem;
+    color: #94a3b8 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    font-weight: 500;
+  }
+}
+
+.small-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+// Status Badge Styling
+.badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+
+  &.bg-success {
+    background: linear-gradient(135deg, $success-color, darken($success-color, 8%)) !important;
+  }
+
+  &.bg-warning {
+    background: linear-gradient(135deg, $warning-color, darken($warning-color, 8%)) !important;
+    color: #1e293b !important;
+  }
+
+  &.bg-info {
+    background: linear-gradient(135deg, $info-color, darken($info-color, 8%)) !important;
+  }
+}
+
+.col-xxl-card-5 {
+  width: 20%;
+}
+
+.serverside-paginator {
+  margin-top: 0;
+  z-index: 1;
+}
+
+// Action buttons styling
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.action-buttons .btn {
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all $transition-speed;
+
+  i {
+    font-size: 0.85rem;
+  }
+}
+
+// Table Enhancements for Grid View
+:host ::ng-deep {
+  .p-datatable {
+    .p-datatable-header {
+      background: transparent;
+      border: none;
+      padding: 0 0 16px 0;
+    }
+
+    .p-datatable-thead>tr>th {
+      background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+      border: none;
+      border-bottom: 2px solid $border-color;
+      color: #495057;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 14px 12px;
+    }
+
+    .p-datatable-tbody>tr {
+      transition: background-color $transition-speed;
+
+      &:hover {
+        background-color: rgba($primary-color, 0.04);
+      }
+
+      >td {
+        border: none;
+        border-bottom: 1px solid $border-color;
+        padding: 14px 12px;
+        vertical-align: middle;
+        font-size: 0.9rem;
+        color: #495057;
+      }
+    }
+  }
+
+  // Paginator
+  .p-paginator {
+    background: transparent;
+    border: none;
+    padding: 16px 0;
+
+    .p-paginator-current {
+      color: $text-muted;
+      font-size: 0.875rem;
+    }
+
+    .p-paginator-pages .p-paginator-page {
+      border-radius: 8px;
+      margin: 0 2px;
+
+      &.p-highlight {
+        background: $primary-color;
+        color: white;
+      }
+    }
+  }
+}
+
+// Action Buttons in Table
+.btn-grid {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all $transition-speed;
+  white-space: nowrap;
+
+  i {
+    font-size: 0.9rem;
+  }
+
+  &.btn-success {
+    background: linear-gradient(135deg, $success-color, darken($success-color, 8%));
+    border: none;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($success-color, 0.4);
+    }
+  }
+
+  &.btn-primary {
+    background: linear-gradient(135deg, $primary-color, darken($primary-color, 8%));
+    border: none;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+    }
+  }
+
+  &.btn-danger {
+    background: linear-gradient(135deg, $danger-color, darken($danger-color, 8%));
+    border: none;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($danger-color, 0.4);
+    }
+  }
+}
+
+// View Toggle Switch
+.form-check.form-switch {
+  .form-check-input {
+    cursor: pointer;
+
+    &:checked {
+      background-color: $primary-color;
+      border-color: $primary-color;
+    }
+  }
+
+  .form-check-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #495057;
+  }
+}
+
+// Dialog Styling
+:host ::ng-deep {
+  .p-dialog {
+    .p-dialog-header {
+      background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+      color: white;
+      border-radius: 12px 12px 0 0;
+
+      .p-dialog-title {
+        font-weight: 600;
+      }
+
+      .p-dialog-header-icon {
+        color: white;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+
+    .p-dialog-content {
+      padding: 24px;
+    }
+  }
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+@media (max-width: 1399px) {
+  .col-xxl-card-5 {
+    width: 25%;
+  }
+}
+
+@media (max-width: 991px) {
+  .col-xxl-card-5 {
+    width: 33.333%;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .btn-grid {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+
+  :host ::ng-deep {
+
+    .p-datatable .p-datatable-thead>tr>th,
+    .p-datatable .p-datatable-tbody>tr>td {
+      padding: 10px 8px;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .col-xxl-card-5 {
+    width: 50%;
+  }
+
+  .bdcmb {
+    .row {
+      flex-direction: column;
+
+      .col-sm-6 {
+        width: 100%;
+
+        &:last-child {
+          margin-top: 8px;
+        }
+      }
+    }
+  }
+
+  .b-links {
+    text-align: left;
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+
+  .inout-card .card-body {
+    padding: 12px !important;
+  }
+
+  .search-filter-row {
+    gap: 8px;
+
+    .search-box {
+      min-width: 100%;
+      order: 1;
+    }
+
+    .action-buttons {
+      order: 2;
+    }
+
+    .view-toggle-container {
+      order: 3;
+    }
+
+    .toggle-option {
+      padding: 4px 8px;
+      font-size: 0.75rem;
+    }
+  }
+
+  :host ::ng-deep {
+    .p-datatable-wrapper {
+      overflow-x: auto;
+    }
+
+    .p-paginator {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+
+      .p-paginator-current {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .col-xxl-card-5 {
+    width: 100%;
+  }
+
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .inout-card {
+    border-radius: 8px;
+  }
+
   .action-buttons .btn {
-    padding: 0.2rem 0.4rem;
+    padding: 4px 8px;
+    font-size: 0.7rem;
   }
-  
-  @media (max-width: 1399px) {
-    .col-xxl-card-5 {
-      width: 25%;
+}
+
+@media (max-width: 480px) {
+  .row.mt-2 {
+    .col-md-6 {
+      margin-bottom: 10px;
     }
   }
-  
-  @media (max-width: 991px) {
-    .col-xxl-card-5 {
-      width: 33.333%;
-    }
+
+  .btn-grid {
+    padding: 5px 6px;
+    font-size: 0.7rem;
+    border-radius: 4px;
   }
-  
-  @media (max-width: 767px) {
-    .col-xxl-card-5 {
-      width: 50%;
-    }
-  }
-  
-  @media (max-width: 575px) {
-    .col-xxl-card-5 {
-      width: 100%;
-    }
-  }
+}

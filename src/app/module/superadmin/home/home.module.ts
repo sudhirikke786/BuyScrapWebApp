@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { SuperAdminHomedashboardComponent } from './super-admin-homedashboard/super-admin-homedashboard.component';
 import { RouterModule } from '@angular/router';
 import { PrimengModule } from '../../shared/primeng/primeng.module';
@@ -8,6 +8,7 @@ import { SuperadminLocationManagmentComponent } from './superadmin-location-mana
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuperadminUsermanagmentComponent } from './superadmin-usermanagment/superadmin-usermanagment.component';
 import { TicketTrackComponent } from './ticket-track/ticket-track.component';
+import { ConfirmationService } from 'primeng/api';
 const routes = [
     {
     path: '',
@@ -44,6 +45,7 @@ const routes = [
     RouterModule.forChild(routes),
     FormsModule,
     ReactiveFormsModule
-  ]
+  ],
+   providers: [ConfirmationService,DatePipe],
 })
 export class HomeModule { }

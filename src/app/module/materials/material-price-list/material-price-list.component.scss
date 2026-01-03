@@ -1,57 +1,285 @@
+/* ============================================
+   Materials Price List - Modern Responsive Styles
+   ============================================ */
+
+/* Table Controls */
 .table-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* View Report Button */
+.view-report-button {
+  margin-left: 20px;
+  margin-right: 10px;
+  padding: 8px 16px;
+  margin-top: 5px;
+  background: linear-gradient(135deg, #0176B8 0%, #015a8c 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(1, 118, 184, 0.3);
+}
+
+.view-report-button:hover {
+  background: linear-gradient(135deg, #015a8c 0%, #014a75 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(1, 118, 184, 0.4);
+}
+
+/* Checkbox Controls */
+.checkbox-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.checkbox-controls label {
+  margin-left: 20px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkbox-controls input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #0176B8;
+}
+
+/* Scroll Container */
+.scroll-container {
+  max-height: calc(100vh - 280px);
+  overflow-y: auto;
+  padding-right: 10px;
+  padding-left: 15px;
+  margin-left: 10px;
+}
+
+/* Group Name */
+.group-name {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.group-name h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0176B8;
+  border-bottom: 2px solid #0176B8;
+  padding-bottom: 8px;
+}
+
+/* Material Table */
+.material-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.material-table th,
+.material-table td {
+  border: 1px solid #e9ecef;
+  padding: 10px 12px;
+}
+
+.material-table th {
+  background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+  font-weight: 600;
+  color: #495057;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.material-table td {
+  background: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+.material-table tr:hover td {
+  background-color: rgba(1, 118, 184, 0.04);
+}
+
+.material-table input.form-control {
+  border-radius: 6px;
+  border: 2px solid #dee2e6;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.material-table input.form-control:focus {
+  border-color: #0176B8;
+  box-shadow: 0 0 0 3px rgba(1, 118, 184, 0.15);
+}
+
+/* Page Title */
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #343a40;
+}
+
+/* Breadcrumb */
+.b-links {
+  text-align: right;
+}
+
+.b-links a {
+  color: #6c757d;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.b-links a:hover {
+  color: #0176B8;
+}
+
+/* Back Button */
+.btn-primary {
+  background: linear-gradient(135deg, #0176B8 0%, #015a8c 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 8px rgba(1, 118, 184, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(1, 118, 184, 0.4);
+}
+
+/* Dialog Styling */
+:host ::ng-deep .p-dialog {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+  background: linear-gradient(135deg, #0176B8 0%, #015a8c 100%);
+  color: white;
+  padding: 16px 20px;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-title {
+  font-weight: 600;
+  color: white;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon {
+  color: white;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+  padding: 20px;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+/* Mobile (< 576px) */
+@media (max-width: 576px) {
+  .table-controls {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  
-  .view-report-button {
-    margin-left: 20px;
-    margin-right: 10px;
-    padding: 5px 10px;
-    margin-top: 5px;
-    background-color: #007bff; 
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .view-report-button:hover {
-    background-color: #0056b3; 
-  }
-  
+
   .checkbox-controls {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .checkbox-controls label {
-    margin-left: 20px;
-    margin-top: 8px;
-  }
-  
-  .scroll-container {
-    max-height: 600px;
-    overflow-y: auto;
-    padding-right: 10px;
-  }
-  
-  .material-table {
     width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 10px;
+    justify-content: flex-start;
   }
-  
-  .material-table th, 
+
+  .checkbox-controls label {
+    margin-left: 0;
+  }
+
+  .view-report-button {
+    margin-left: 0;
+  }
+
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .bdcmb .row {
+    flex-direction: column;
+  }
+
+  .b-links {
+    text-align: left;
+    margin-top: 5px;
+  }
+
+  .group-name h3 {
+    font-size: 1rem;
+  }
+
+  .material-table th,
   .material-table td {
-    border: 1px solid #ddd;
-    padding: 5px;
+    padding: 8px;
+    font-size: 0.85rem;
   }
-  
-  .material-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+
+  .scroll-container {
+    max-height: calc(100vh - 250px);
   }
-  
+}
+
+/* Tablet (577px - 991px) */
+@media (min-width: 577px) and (max-width: 991px) {
+
+  .material-table th,
+  .material-table td {
+    padding: 10px;
+  }
+
+  .scroll-container {
+    max-height: calc(100vh - 260px);
+  }
+}
+
+/* Short height screens */
+@media (max-height: 700px) {
+  .scroll-container {
+    max-height: calc(100vh - 240px);
+  }
+}
+
+@media (max-height: 600px) {
+  .scroll-container {
+    max-height: calc(100vh - 200px);
+  }
+}
+
+/* Large screens (2000px+) */
+@media (min-width: 2000px) {
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  .group-name h3 {
+    font-size: 1.4rem;
+  }
+
+  .material-table th,
+  .material-table td {
+    padding: 14px 16px;
+    font-size: 1rem;
+  }
+}

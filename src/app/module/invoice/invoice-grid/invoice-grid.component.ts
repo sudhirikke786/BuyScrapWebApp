@@ -9,6 +9,8 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DataService } from 'src/app/core/services/data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { InvoiceService } from 'src/app/core/services/invoice.service';
+
 @Component({
   selector: 'app-invoice-grid',
   templateUrl: './invoice-grid.component.html',
@@ -75,7 +77,8 @@ export class InvoiceGridComponent implements OnInit {
 
 
   defaultSelectedTicketsTypes = [
-    { name: 'OPEN', code: 'OPEN' },
+    // { name: 'OPEN', code: 'OPEN' },
+    { name: 'ALL', code: 'ALL' , },
     // { name: 'Partially Paid', code: 'Partially Paid' }
   ];
 
@@ -182,7 +185,7 @@ export class InvoiceGridComponent implements OnInit {
   sellerType: string = 'Personal';
   
   numberFormat: string = '1.3-3';
-  currencySymbol: string = 'USD';
+  defaultCurrencyCode: string = 'USD';
 
   isConfirmModel: boolean = false;
   selectedTicket: any;
@@ -199,7 +202,8 @@ export class InvoiceGridComponent implements OnInit {
     private datePipe: DatePipe,
     private dataService: DataService,
     private messageService: MessageService,
-    public commonService: CommonService) {
+    public commonService: CommonService,
+    private invoiceService: InvoiceService) {
      // this.setPageSize();
       this.route.params.subscribe((res) =>{
         this.pagination = {
@@ -241,7 +245,7 @@ export class InvoiceGridComponent implements OnInit {
 
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
-    this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
+    this.defaultCurrencyCode = localStorage.getItem('currencyCode') || 'USD';
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
     this.pagination.Status = result;
@@ -274,7 +278,39 @@ export class InvoiceGridComponent implements OnInit {
       cellNumber : [''],
       contactName : ['']
     });
+
+    this.invoiceService.searchInvoice$.subscribe(searchText => {
+      this.applyInvoiceSearch(searchText);
+    });
+  
+    this.invoiceService.refreshInvoice$.subscribe(refresh => {
+      if (refresh) {
+        this.refreshInvoiceData();
+      }
+    });
   }
+
+  applyInvoiceSearch(searchText: string) {
+    const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
+    this.pagination.Status = result;
+    this.pagination.SerachText = searchText;
+    this.pagination.SearchOrder = this.searchOrder;
+  
+    this.getAllTicketsDetails(this.pagination);
+  }
+  
+  refreshInvoiceData() {
+    this.selectedTickets = this.defaultSelectedTicketsTypes;
+    this.serachText = '';
+    this.searchOrder = 'All';
+    const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
+    this.pagination.Status = result;
+    this.pagination.SerachText = this.serachText;
+    this.pagination.SearchOrder = this.searchOrder;
+  
+    this.getAllTicketsDetails(this.pagination);
+  }
+
 
 
   onPageChange(event: any) {
@@ -575,6 +611,7 @@ export class InvoiceGridComponent implements OnInit {
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
     this.tiketSelectedObj['CreatedBy'] = this.logInUserId;
     this.tiketSelectedObj['CreatedDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+    this.tiketSelectedObj['LocID'] = this.locId;
 
     console.log("Restore ticketData :: " + JSON.stringify(this.tiketSelectedObj));
 
@@ -1274,7 +1311,8 @@ export class InvoiceGridComponent implements OnInit {
     this.commonService.insertUpdateMergeTickets(newTicket).subscribe((data: any) => {
       console.log(data);
       const ticketId = data.body.insertedRow;
-      alert('Tickets merged successfully');
+      // alert('Tickets merged successfully');
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tickets merged successfully' });
       this.mergeTicketVisible = false;
       this.dialogPopupVisible = false;
       this.cancelEditTicket(isReceiptPrint, ticketId, isCheckPrint, this.selectedSellerName);

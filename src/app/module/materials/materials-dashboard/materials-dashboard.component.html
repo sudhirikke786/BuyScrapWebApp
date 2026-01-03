@@ -117,7 +117,7 @@
                     </div>
 
                     <div class="form-group col-sm-12 mb-2">
-                        <label for="example-select" class="form-label">Units of Measure</label>
+                        <label for="example-select" class="form-label">Units of Measure For Calculations</label>
                         <select class="form-select" formControlName="uomId">
                             <option *ngFor="let option of unitOfMeasure"
                             [value]="option.value">
@@ -133,12 +133,33 @@
                         <div id="image-preview" class="mt-10"></div>
                     </div> -->
 
-                    <div class="form-group col-sm-12 mb-2">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="isCRV"  formControlName="isCRV">
-                            <label class="form-check-label" for="isCRV">IsCRV</label>
+                    <div class="form-group col-sm-12 mb-2 d-flex align-items-center flex-wrap gap-2">
+                       
+                        <div class="form-check me-3">
+                          <input type="checkbox" class="form-check-input" id="isCRV" formControlName="isCRV">
+                          <label class="form-check-label" for="isCRV">Is CRV</label>
                         </div>
-                    </div>
+                      
+                        <div class="form-check me-2">
+                          <input type="checkbox" class="form-check-input" id="isUomId2" formControlName="isUomId2">
+                          <label class="form-check-label" for="isUomId2">Set UOM</label>
+                        </div>
+                      
+                        
+                        <div class="d-flex align-items-center gap-2 flex-wrap" *ngIf="form.get('isUomId2')?.value">
+                          <select class="form-select" formControlName="uomId2" style="width: 180px;">
+                            <option *ngFor="let option of unitOfMeasure" [value]="option.value">
+                              {{ option.name }}
+                            </option>
+                          </select>
+                      
+                          <div class="form-floating" style="width: 150px;">
+                            <input formControlName="ratioCalculation" type="number" step="0.01" class="form-control">
+                            <label for="ratioCalculation">Ratio</label>
+                          </div>
+                        </div>
+                      </div>
+                      
 
                     <div class="form-group col-sm-12 mb-2">
                         <div class="form-check">
@@ -146,6 +167,14 @@
                             <label class="form-check-label" for="isEnable">Enable</label>
                         </div>
                     </div>
+
+                    <div class="form-group col-sm-12 mb-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="isExpense" formControlName="isExpense">
+                            <label class="form-check-label" for="isExpense">Is Expense</label>
+                        </div>
+                    </div>
+
 
                     <a class="btn btn-primary " (click)="onSubmit(materialData)">Save</a>
 

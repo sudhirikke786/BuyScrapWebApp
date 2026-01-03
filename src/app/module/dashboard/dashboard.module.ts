@@ -14,11 +14,13 @@ import { CardsComponent } from './cards/cards.component';
 import { SellerscountComponent } from './sellerscount/sellerscount.component';
 import { PiechartComponent } from './piechart/piechart.component';
 import { ModalComponent } from './modal/modal.component';
+import { DynamicDashboardComponent } from './dynamic-dashboard/dynamic-dashboard.component';
+import { DashboardManagerComponent } from './dashboard-manager/dashboard-manager.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: DashboardChartsComponent
+    component: DashboardManagerComponent
   }
 ]
 
@@ -30,7 +32,9 @@ export const routes: Routes = [
     CardsComponent,
     SellerscountComponent,
     PiechartComponent,
-    ModalComponent
+    ModalComponent,
+    DynamicDashboardComponent,
+    DashboardManagerComponent
   ],
   imports: [
     CommonModule,

@@ -1,226 +1,256 @@
 <div class="content-page">
-<div class="content" *ngIf="!isLoading">
-    <div class="bdcmb mt-2">
-      <div class="row">
-        <div class="col-sm-6 col-6">
-          <h4 class="page-title">Dispatch</h4>
+    <div class="content" *ngIf="!isLoading">
+        <div class="bdcmb mt-2">
+            <div class="row">
+                <div class="col-sm-6 col-6">
+                    <h4 class="page-title">Dispatch</h4>
+                </div>
+                <div class="col-sm-6 col-6">
+                    <div class="b-links">
+                        <a routerLink="/{{ orgName }}/home">Home</a> /
+                        <a href="javascript:void(0)" routerLink="/{{ orgName }}/dispatch">Dispatch</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-6 col-6">
-          <div class="b-links">
-            <a routerLink="/{{ orgName }}/home">Home</a> /
-            <a href="javascript:void(0)" routerLink="/{{ orgName }}/dispatch">Dispatch</a>
-          </div>
+
+        <div class="row mt-2">
+            <div class="col-sm-12 d-flex align-items-center">
+                <div class="me-2 col-sm-3">
+                    <input type="text" id="example-palaceholder" class="form-control" placeholder="Search.."
+                        [(ngModel)]="searchText" (keyup.enter)="performSearch()" />
+                </div>
+
+                <div *ngIf="isDispatchMode" class="d-flex align-items-center gap-2 me-2" style="flex: 0 0 auto;">
+                    <div class="d-flex align-items-center">
+                        <label for="fromDate" class="form-check-label me-2 mb-0 text-nowrap">From Date</label>
+                        <input type="date" id="fromDate" class="form-control form-control-sm" [(ngModel)]="fromDate"
+                            style="width: 150px;" />
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label for="toDate" class="form-check-label me-2 mb-0 text-nowrap">To Date</label>
+                        <input type="date" id="toDate" class="form-control form-control-sm" [(ngModel)]="toDate"
+                            style="width: 150px;" />
+                    </div>
+                </div>
+                <div>
+                    <app-actionbar [actions]="actionList" (iconAction)="getAction($event)"></app-actionbar>
+                </div>
+                <div *ngIf="(currentRole === 'Administrator' || currentRole === 'Cashier')"
+                    class="view-toggle-container ms-3">
+                    <input type="radio" id="calendarViewToggle" name="dispatchViewToggle" [checked]="!isDispatchMode"
+                        (change)="isDispatchMode = false; onToggleChange()">
+                    <label for="calendarViewToggle" class="toggle-option">Calendar</label>
+
+                    <input type="radio" id="gridViewToggle" name="dispatchViewToggle" [checked]="isDispatchMode"
+                        (change)="isDispatchMode = true; onToggleChange()">
+                    <label for="gridViewToggle" class="toggle-option">Grid</label>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="dynamic-content">
+            <router-outlet></router-outlet>
+        </div>
     </div>
-  
-    <div class="row mt-2">
-      <div class="col-sm-12 d-flex align-items-center">
-        <div class="me-2 col-sm-4">
-          <input type="text" [(ngModel)]="searchSellerInput" id="example-palaceholder" class="form-control" placeholder="Search.." />
-        </div>
-        <div>
-          <app-actionbar [actions]="actionList" (iconAction)="getAction($event)"></app-actionbar>
-        </div>
-        <div class="form-check form-switch ms-3">
-            <input 
-              class="form-check-input" 
-              type="checkbox" 
-              id="dispatchToggle" 
-              [(ngModel)]="isDispatchMode"
-              (ngModelChange)="onToggleChange()"
-            >
-            <label class="form-check-label" for="dispatchToggle">
-              {{ isDispatchMode ? 'Grid View' : 'Calendar View' }}
-            </label>
-          </div>
-      </div>
-    </div>
-  
-    <div class="dynamic-content">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
 </div>
 <div class="content" *ngIf="isLoading">
     <app-page-loader type="ftable"></app-page-loader>
 </div>
-<p-dialog [modal]="true" 
-[header]="newTicketVisible ? 'Sellers' : ( ticketvisible ? 'Merge Ticket and Pay' : '' )"
-[(visible)]="dialogPopupVisible" [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
-<div class="row" *ngIf="sellerLoader">
- 
+<p-dialog [modal]="true" [header]="newTicketVisible ? 'Sellers' : ( ticketvisible ? 'Merge Ticket and Pay' : '' )"
+    [(visible)]="dialogPopupVisible" [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
+    <div class="row" *ngIf="sellerLoader">
+
         <app-page-loader type="ftable"></app-page-loader>
-   
-</div>
 
-
-<div class="row" *ngIf="!sellerLoader">
-
-    <div class="col-md-6">
-      
-
-        <input type="text" #searchBox id="example-palaceholder"  (keydown)="onKeydown($event, searchBox.value)"  [(ngModel)]="searchSellerInput" class="form-control"
-            placeholder="Search for Sellers, Address, License and License Plate">
     </div>
-    <div class="col-md-6">
-      <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newTicketList"></app-actionbar>
 
-        <!-- <a  type="button" (click)="addNewSeller()" 
+
+    <div class="row" *ngIf="!sellerLoader">
+
+        <div [ngClass]="IsMultiCurrencySupportEnabled ? 'col-md-4' : 'col-md-6'">
+
+
+            <input type="text" #searchBox id="example-palaceholder" (keydown)="onKeydown($event, searchBox.value)"
+                [(ngModel)]="searchSellerInput" class="form-control"
+                placeholder="Search for Sellers, Address, License and License Plate">
+        </div>
+        <div [ngClass]="IsMultiCurrencySupportEnabled ? 'col-md-4' : 'col-md-6'">
+            <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newTicketList"></app-actionbar>
+
+            <!-- <a  type="button" (click)="addNewSeller()" 
         class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
         New Customer
         </a> -->
+        </div>
+        <div *ngIf="IsMultiCurrencySupportEnabled" class="col-md-4">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <label class="form-label mb-0"><strong>Currency:</strong></label>
+                </div>
+                <div class="col">
+                    <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrencyID" optionLabel="currencyCode"
+                        optionValue="rowID" placeholder="Select Currency" [filter]="true" filterBy="currencyCode"
+                        filterPlaceholder="Search currency..." [style]="{'width': '100%'}">
+                    </p-dropdown>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-</div>
+    <div class="row mt-3" *ngIf="!sellerLoader">
 
-<div class="row mt-3"  *ngIf="!sellerLoader">
-
-    <p-table [value]="sellers" [scrollable]="true" scrollHeight="40vh" [paginator]="true" [rows]="10"
-        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
+        <p-table [value]="sellers" [scrollable]="true" scrollHeight="40vh" [paginator]="true" [rows]="10"
+            [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
 
 
 
-        <ng-template pTemplate="header">
-            <tr>
-                <th></th>
-                <th>Seller</th>
-                <th>Driver's License</th>
-                <th>Address</th>
-                <!-- <th>Action</th> -->
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-seller>
-          <tr style="cursor: pointer;">
-            <!--<tr style="cursor: pointer;" (click)="clickOnSeller(seller.rowId, seller.fullName, seller.sellerType)"> -->
-              <tr style="cursor: pointer;" (click)="clickOnSeller(seller.rowId, seller.fullName,seller.streetAddress)">
-                <td>
-                    <!-- <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" (click)="showSelectedImage(seller.idfaceShotImage, '1')"></a> -->
-                    <a *ngIf="seller.idfaceShotImage"><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" ></a>
-                    <img *ngIf="!seller.idfaceShotImage" src="/assets/images/custom/icons/user.png" class="default-img">   
-                </td>
-                <td>{{ seller.fullName }}</td>
-                <td>{{ seller.driverLicenseNumber }}</td>
-                <td>{{ seller.streetAddress }}</td>
-                <!-- <td>                                                           
+            <ng-template pTemplate="header">
+                <tr>
+                    <th></th>
+                    <th>Seller</th>
+                    <th>Driver's License</th>
+                    <th>Address</th>
+                    <!-- <th>Action</th> -->
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-seller>
+                <tr style="cursor: pointer;">
+                    <!--<tr style="cursor: pointer;" (click)="clickOnSeller(seller.rowId, seller.fullName, seller.sellerType)"> -->
+                <tr style="cursor: pointer;"
+                    (click)="clickOnSeller(seller.rowId, seller.fullName,seller.streetAddress)">
+                    <td>
+                        <!-- <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" (click)="showSelectedImage(seller.idfaceShotImage, '1')"></a> -->
+                        <a *ngIf="!IsCustomerFacePictureEnabled && seller.idfaceShotImage"><img
+                                src="{{seller.idfaceShotImage}}" class="ticket-particulars-img"></a>
+                        <img *ngIf="IsCustomerFacePictureEnabled || !seller.idfaceShotImage"
+                            src="/assets/images/custom/icons/user.png" class="default-img">
+                    </td>
+                    <td>{{ seller.fullName }}</td>
+                    <td>{{ seller.driverLicenseNumber }}</td>
+                    <td>{{ seller.streetAddress }}</td>
+                    <!-- <td>                                                           
                     <a class="btn btn-grid btn-success"
                         (click)="clickOnSeller(seller.rowId, seller.fullName)" >
                         <i class="mdi mdi-eye pe-1"></i> Select
                     </a>
                 </td> -->
-            </tr>
-        </ng-template>
-      
-    </p-table>
+                </tr>
+            </ng-template>
 
-</div>
+        </p-table>
+
+    </div>
 
 </p-dialog>
 
-<p-dialog header="Header" [(visible)]="addSellerPopupVisible" [modal]="true" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [style]="{width: '500'}">
+<p-dialog header="Header" [(visible)]="addSellerPopupVisible" [modal]="true"
+    [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [style]="{width: '500'}">
     <ng-template pTemplate="header">
         <div class="inline-flex align-items-center justify-content-center gap-2">
             <span class="font-bold white-space-nowrap">Add New Customer</span>
         </div>
     </ng-template>
-          <!-- <form [formGroup]="sellerForm">   -->
-          <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()"> 
-            <div class="row" style="min-width: 500px;">
-                <div class="d-flex row align-items-center">
-                    <div class="col-sm-3">
-                     <label for="example-select" class="form-label">Select Type</label></div>
+    <!-- <form [formGroup]="sellerForm">   -->
+    <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()">
+        <div class="row" style="min-width: 500px;">
+            <div class="d-flex row align-items-center">
+                <div class="col-sm-3">
+                    <label for="example-select" class="form-label">Select Type</label>
+                </div>
 
-                    <div class="form-group" >
-                           <select formControlName="sellerType" class="form-select" id="example-select"
+                <div class="form-group">
+                    <select formControlName="sellerType" class="form-select" id="example-select"
                         (change)="changeSellerType()">
                         <option>Personal</option>
                         <option>Business</option>
-                    </select> 
-                 </div>
-                </div>
-                
-            </div>
-            <hr>
-            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
-                <h4>Personal Information</h4>
-
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="firstName" class="form-control"
-                            id="firstname" placeholder="First Name">
-                        <label for="floatingInput">First Name</label>
-                    </div>
-                </div>
-
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="middleName" class="form-control"
-                            id="middlename" placeholder="Middle Name">
-                        <label for="floatingInput">Middle Name</label>
-                    </div>
-                </div>
-
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" formControlName="lastName" id="lastname"
-                            placeholder="Last Name">
-                        <label for="floatingInput">Last Name</label>
-                    </div>
+                    </select>
                 </div>
             </div>
 
-            <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
-              <h4>Business Information</h4>
-          
-              <div class="form-group col-sm-4 mt-1">
-                  <div class="form-floating">
-                      <input type="text" formControlName="firstName" class="form-control"
-                          id="bfirstName" placeholder="Business Name">
-                      <label for="floatingInput">Business Name</label>
-                  </div>
-              </div>
-          
-              <div class="form-group col-sm-4 mt-1">
-                  <div class="form-floating">
-                      <input type="text" formControlName="streetAddress" class="form-control"
-                          id="streetAddress" placeholder="Street Address">
-                      <label for="streetAddress">Business Address</label>
-                  </div>
-              </div>
-          
-              <div class="form-group col-sm-4 mt-1">
-                  <div class="form-floating">
-                      <input type="text" formControlName="cellNumber" class="form-control"
-                          id="cellNumber" placeholder="Cell Number">
-                      <label for="cellNumber">Phone Number</label>
-                  </div>
-              </div>
-          
-              <div class="form-group col-sm-4 mt-1">
-                  <div class="form-floating">
-                      <input type="text" formControlName="idnumber" class="form-control"
-                          id="taxIdNumber" placeholder="Tax ID Number">
-                      <label for="taxIdNumber">Tax ID Number</label>
-                  </div>
-              </div>
-          
-              <div class="form-group col-sm-4 mt-1">
-                  <div class="form-floating">
-                      <input type="text" formControlName="contactName" class="form-control"
-                          id="contactName" placeholder="Contact Name">
-                      <label for="contactName">Contact Name</label>
-                  </div>
-              </div>
-          </div>
-            
-            
+        </div>
+        <hr>
+        <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
+            <h4>Personal Information</h4>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="firstName" class="form-control" id="firstname"
+                        placeholder="First Name">
+                    <label for="floatingInput">First Name</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="middleName" class="form-control" id="middlename"
+                        placeholder="Middle Name">
+                    <label for="floatingInput">Middle Name</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" class="form-control" formControlName="lastName" id="lastname"
+                        placeholder="Last Name">
+                    <label for="floatingInput">Last Name</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
+            <h4>Business Information</h4>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="firstName" class="form-control" id="bfirstName"
+                        placeholder="Business Name">
+                    <label for="floatingInput">Business Name</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="streetAddress" class="form-control" id="streetAddress"
+                        placeholder="Street Address">
+                    <label for="streetAddress">Business Address</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="cellNumber" class="form-control" id="cellNumber"
+                        placeholder="Cell Number">
+                    <label for="cellNumber">Phone Number</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="idnumber" class="form-control" id="taxIdNumber"
+                        placeholder="Tax ID Number">
+                    <label for="taxIdNumber">Tax ID Number</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="contactName" class="form-control" id="contactName"
+                        placeholder="Contact Name">
+                    <label for="contactName">Contact Name</label>
+                </div>
+            </div>
+        </div>
 
 
-          
 
-            <!-- <div class="row">
+
+
+
+        <!-- <div class="row">
                 <div class="form-group col-sm-6 d-flex flex-center">
                 </div>
 
@@ -230,13 +260,10 @@
                     </div>
                 </div>
             </div> -->
-        </form>
-    
-        <ng-template pTemplate="footer">
-          <button class="btn btn-primary me-1" (click)="onSubmit()" >Save</button> 
-          <!-- <button class="btn btn-primary me-1">Save</button>  -->
-        </ng-template>
+    </form>
+
+    <ng-template pTemplate="footer">
+        <button class="btn btn-primary me-1" (click)="onSubmit()">Save</button>
+        <!-- <button class="btn btn-primary me-1">Save</button>  -->
+    </ng-template>
 </p-dialog>
-
-
-  

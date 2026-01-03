@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { MessageService,ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -33,6 +33,7 @@ export class AddSellersComponent implements OnInit {
   sellerId: any = 0;
   sellerType: string = 'Personal';
   activeTab: string = 'personal';
+  adminAdvertisement!:  string | null;
 
 
   idscanImage:any = 'assets/images/custom/id_scan.png';
@@ -71,8 +72,10 @@ export class AddSellersComponent implements OnInit {
   selectedCertificate: any = null;
   isEditMode: boolean = false;
 
+  isProPlusVersion: boolean = localStorage.getItem('isProPlusVersion') === 'true';
 
-  
+  showConfirmLeavePopup: boolean = false;
+  pendingNavigationUrl: string | null = null;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -120,8 +123,16 @@ export class AddSellersComponent implements OnInit {
 
   ngOnInit() {
 
+    if (this.router.url.includes('edit-seller')) {
+      this.isEditMode = true;
+    }
+
+    if (this.router.url.includes('add-seller')) {
+      this.isEditMode = true;
+    }
     this.subScriptionType = this.dtService.getActivePlan();
     this.checkTabView = this.helperService.isTab();
+    this.adminAdvertisement = localStorage.getItem('adminAdvertisement');
 
     this.createSellerForm();
 
@@ -130,8 +141,33 @@ export class AddSellersComponent implements OnInit {
       this.meTarialCamera = mCamera || null;
     }
 
+    this.router.events.subscribe(event => {
+      if(event instanceof NavigationStart){
+        if(this.isEditMode && !this.showConfirmLeavePopup){
+          this.showConfirmLeavePopup = true;
+          this.pendingNavigationUrl = event.url;
+          this.router.navigateByUrl(this.router.url, { replaceUrl: true });
+        }
+      }
+    })
+
   }
 
+
+  proceedWithNavigation() {
+    this.showConfirmLeavePopup = false;
+    this.isEditMode = false;
+  
+    if (this.pendingNavigationUrl) {
+      this.router.navigateByUrl(this.pendingNavigationUrl);
+      this.pendingNavigationUrl = null;
+    }
+  }
+
+  cancelNavigation() {
+    this.showConfirmLeavePopup = false;
+    this.pendingNavigationUrl = null;
+  }
 
   createSellerForm() {
 
@@ -155,6 +191,8 @@ export class AddSellersComponent implements OnInit {
        streetName : [],
        idnumber : [''],
        contactName : [''],
+       businessOwnerName : [''],
+       notes: [''],
        expiryDate : [],
        class : [],
        gender : ['undefind'],
@@ -228,11 +266,11 @@ export class AddSellersComponent implements OnInit {
 
 
   getUserInfo(file:any){
-
+debugger;
     const formData = new FormData();
 
-    formData.append('File', file);   
-    formData.append('DocumentType', this.selectedImageType);  
+    formData.append('file', file);   
+    formData.append('document_type', this.selectedImageType);  
     this.loaderShow =  true;
 
     this.commonService.ExtractOCRData(formData).subscribe(res1 => {
@@ -281,50 +319,68 @@ export class AddSellersComponent implements OnInit {
 
 
   goBack(){
+    if (this.isEditMode && !this.showConfirmLeavePopup) {
+      this.showConfirmLeavePopup = true;
+      this.pendingNavigationUrl = `/${this.orgName}/sellers-buyers`;
+      return; 
+    }
     this.router.navigateByUrl(`/${this.orgName}/sellers-buyers`);
   }
 
-  onSubmit() {
-    if (this.sellerForm.invalid) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Enter EmailID' });
-      return;
+onSubmit() {
+  debugger;
+  if (this.sellerForm.invalid) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please Enter EmailID' });
+    return;
   }
 
-    const dateObject = new Date(this.sellerForm?.value?.dob);
-    const ExpDate =  new Date(this.sellerForm.value.expiryDate);
-    const _dob = dateObject.toISOString();
-    const expDate = ExpDate.toISOString();
-    const reqObj = {
-      ...{
-        "idscanImage": this.idscanImage.includes('images/custom/id_scan.png') ? null : this.idscanImage,
-        "idsignatureImage": this.idsignatureImage.includes('images/custom/id_signature.png') ? null : this.idsignatureImage,
-        "idfaceShotImage": this.idfaceShotImage.includes('images/custom/id_face.png') ? null : this.idfaceShotImage,
-        "fingerPrints": this.fingerPrints.includes('images/custom/id_fingerprint.png') ? null : this.fingerPrints,
-      },
-      ...this.sellerForm.value,
-      ...{dob:_dob, rowId: parseInt(this.sellerId),expiryDate:expDate, drivingLicenseExpiryDate:expDate, 
-        createdBy: this.logInUserId, 
-        updatedBy: this.logInUserId}
-    }
+  this.showLoader = true; 
 
-    console.log(reqObj);
-    this.commonService.addSeller(reqObj).subscribe(data =>{
+  const dateObject = new Date(this.sellerForm?.value?.dob);
+    const ExpDate =  new Date(this.sellerForm.value.expiryDate);
+  const _dob = isNaN(dateObject.getTime()) ? null : dateObject.toISOString();
+  const expDate = isNaN(ExpDate.getTime()) ? null : ExpDate.toISOString();
+  const reqObj = {
+    ...{
+      "idscanImage": this.idscanImage.includes('images/custom/id_scan.png') ? null : this.idscanImage,
+      "idsignatureImage": this.idsignatureImage.includes('images/custom/id_signature.png') ? null : this.idsignatureImage,
+      "idfaceShotImage": this.idfaceShotImage.includes('images/custom/id_face.png') ? null : this.idfaceShotImage,
+      "fingerPrints": this.fingerPrints.includes('images/custom/id_fingerprint.png') ? null : this.fingerPrints,
+    },
+    ...this.sellerForm.value,
+      ...{dob:_dob, rowId: parseInt(this.sellerId),expiryDate:expDate, drivingLicenseExpiryDate:expDate, 
+      createdBy: this.logInUserId,
+      updatedBy: this.logInUserId}
+  }
+
+  console.log(reqObj);
+  this.commonService.addSeller(reqObj).subscribe({
+    next: (data) => {
+
       if(this.sellerId > 0){
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller updated Successfully' });
+        this.isEditMode = false;
         setTimeout(() => {
           this.router.navigateByUrl(`/${this.orgName}/sellers-buyers`);
         }, 1000);
       }else{
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller added Successfully' });
+        this.isEditMode = false;
         setTimeout(() => {
           this.router.navigateByUrl(`/${this.orgName}/sellers-buyers`);
         }, 1000);
       }
-     
-    },(error: any) =>{
+    },
+    error: (error: any) =>{
       console.log(error);
-    })
-    console.log(this.sellerForm.value);
+      this.showLoader = false; 
+    },
+    complete: () => {
+      this.showLoader = false; 
+    }
+  });
+
+  console.log(this.sellerForm.value);
 
   }
 
@@ -360,7 +416,7 @@ export class AddSellersComponent implements OnInit {
      vehicleType: obj.vehicleType,
      vehicleName: obj.vehicleName,
      licensePlateNumber: obj.licensePlateNumber,
-     locID: obj.locID,
+     locID: this.locId,
      role: obj.role,
      userName: obj.userName,
      dealerType: obj.dealerType,
@@ -369,6 +425,8 @@ export class AddSellersComponent implements OnInit {
      cellNumber: obj.cellNumber,
      sellerType: obj.sellerType,
      contactName: obj.contactName,
+     businessOwnerName: obj.businessOwnerName,
+     notes: obj.notes,
      certificateDescription:obj.certificateDescription
     });
 
@@ -399,7 +457,13 @@ export class AddSellersComponent implements OnInit {
     this.cameraVisible = !this.cameraVisible;
     this.captureType = '';
     this.type =  selectionType;
+     const storedType = localStorage.getItem("sellerCaptureType");
+
+  if (storedType) {
+    this.captureType = storedType;
+  } else {
     this.captureType = capType;
+  }
    
     // if(selectionType == '5'){
     
@@ -413,6 +477,12 @@ export class AddSellersComponent implements OnInit {
 
    
   }
+
+  onCaptureTypeChange(value: string) {
+    this.captureType = value;
+    localStorage.setItem("sellerCaptureType", value);
+  }
+
 
 
 
@@ -543,7 +613,7 @@ export class AddSellersComponent implements OnInit {
     const description = this.sellerForm.get('certificateDescription')?.value;
 
     if (!description || !this.imageUrl) {
-      alert('Please enter a description and upload an image.');
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please enter a description and upload an image.' });
       return;
     }
     const paramObj: any = {
@@ -692,14 +762,15 @@ export class AddSellersComponent implements OnInit {
   }
 
   generateSellerInfoReport() {    
-    alert('generating report .... !!!');
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Report generated successfully.' });
 
     this.showDownload = true;
     this.showLoaderReport = true;
 
     const param = {
       LocationId: this.locId,
-      SellerId: this.sellerId
+      SellerId: this.sellerId,
+      Advertising: this.adminAdvertisement
     };
 
     this.commonService.getSellerInfo(param)
@@ -934,4 +1005,28 @@ export class AddSellersComponent implements OnInit {
     }
   }
 
+  // downloadExe(paramObj: any) {
+  //   this.showLoader = true;
+
+  //   this.commonService.FingerPrintandSignatureDownloadExe(paramObj)
+  //     .subscribe(
+  //       (blob: Blob) => {
+  //         const fileType = paramObj.fileType;
+  //         const fileName = fileType === 'signature' ? 'DigitalSignature.exe' : 'SecugenFingurePrintScanner.exe';
+  //         const url = window.URL.createObjectURL(blob);
+  //         const a = document.createElement('a');
+  //         a.href = url;
+  //         a.download = fileName;
+  //         document.body.appendChild(a);
+  //         a.click();
+  //         document.body.removeChild(a);
+  //         window.URL.revokeObjectURL(url);
+  //         this.showLoader = false;
+  //       },
+  //       (err: any) => {
+  //         console.error('Download error:', err);
+  //         this.showLoader = false;
+  //       }
+  //     );
+  // }
 }

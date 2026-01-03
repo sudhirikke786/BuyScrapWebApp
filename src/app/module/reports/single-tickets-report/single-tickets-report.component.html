@@ -21,19 +21,19 @@
                     </div>
               
                     <div class="row mt-2">
-                      <div class="col-sm-5 d-flex mb-1">
+                      <div class="col-sm-4 d-flex mb-1">
                         <input type="text" id="ticketNumber" [(ngModel)]="ticketNumber" name="ticketNumber" class="form-control mr-10" placeholder="Search by Ticket No.">
 
                         <input type="text" id="sellerName" [(ngModel)]="sellerName" name="sellerName" class="form-control" placeholder="Search by Seller">
                       </div>
-                      <div class="col-sm-5 d-flex  mb-1">
+                      <div class="col-sm-4 d-flex  mb-1">
                         <label class="mr-10">From Date</label>
                         <input type="date" id="fromDate" [(ngModel)]="fromDate" name="fromDate" class="form-control mr-10" (click)="openDatePicker()">
 
                         <label class="mr-10">To Date</label>
                         <input type="date" id="toDate" [(ngModel)]="toDate" name="toDate" class="form-control" (click)="openToDatePicker()">
                       </div>  
-                      <div class="col-sm-2  mb-1">
+                      <div class="col-sm-4  mb-1">
                         <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
                       </div>
                     </div>
@@ -60,6 +60,7 @@
                                   <th>Ticket Id</th>
                                   <th>Date Created</th>
                                   <th>Status</th>
+                                  <th>PaymentTypes</th>
                                   <th>Ticket Amount</th>
                                   <th>Seller</th>
                                   <th>Date Closed</th>
@@ -70,6 +71,7 @@
                                   <td>{{ rowData.ticketId }}</td>
                                   <td>{{ rowData.dateOpened | date: 'MM/dd/yyyy' }}</td>
                                   <td>{{ rowData.status }}</td>
+                                  <td>{{ rowData.paymentTypes }}</td>
                                   <td>{{ rowData.ticketAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
                                   <td>{{ rowData.customerName }}</td>
                                   <td>{{ rowData.dateClosed | date: 'MM/dd/yyyy' }}</td>
@@ -122,7 +124,7 @@
 
               <div class="row" >
                 <div style="height: 500px;" *ngIf="!showLoaderReport">                
-                  <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
+                  <ngx-extended-pdf-viewer   [base64Src]="fileDataObj" [filenameForDownload]="'Single Ticket'+ ' '+'ID_' + customerObj.ticketId + '.pdf'"></ngx-extended-pdf-viewer>
                 </div>
               </div>
             </p-dialog>

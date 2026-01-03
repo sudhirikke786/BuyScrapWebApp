@@ -205,12 +205,13 @@
                                                     <div class="form-check form-check-success div-addons">
                                                         <input class="form-check-input radio-addons"
                                                             [checked]="item.isSelected" type="radio"
-                                                            name="flexRadioDefault" id="addonradio">
+                                                            name="flexRadioDefault" id="addonradio"
+                                                            (click)="selectTicketPlan(item)">
                                                     </div>
                                                 </td>
 
                                                 <td>
-                                                    <label for="addonradio" class="lbl-radio">
+                                                    <label for="addonradio" class="lbl-radio" (click)="selectTicketPlan(item)">
                                                         <p class="addons-features-content">+{{item?.extraTicket}}
                                                             tickets/mo (add ${{item?.extraAmount}})</p>
                                                         <span class="addons-features-content-sub">(Adds approx.
@@ -378,8 +379,7 @@
                                                     <div class="col-4">
 
                                                         <h4 class="summary-h4-2">${{planSelectedObj?.planCost || 0}} /
-                                                            Monthly</h4>
-                                                        
+                                                            {{selectedPlanType}}</h4>
                                                     </div>
 
                                                 </div>
@@ -467,10 +467,7 @@
                                                     </div>
 
                                                     <div class="col-4">
-                                                        <h4 class="summary-total-h4-2">${{(organizationPlanDetails?.defaultMonthPrice
-                                                            * organizationPlanDetails?.extraUserLocation) + (organizationPlanDetails.defaultMonthPrice
-                                                            * organizationPlanDetails.extraUserCount) +  filtermonthlySelectd?.extraAmount +  planSelectedObj?.planCost
-                                                            }} / Monthly</h4>
+                                                        <h4 class="summary-total-h4-2">${{calculateTotalCost()}} / {{selectedPlanType}}</h4>
                                                         <span class="summary-sub-heading" style="text-align: right;">Initial Payment</span>
                                                     </div>
 

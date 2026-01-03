@@ -33,5 +33,9 @@ export class ShipOut {
     totalNet: number = 0;
     totalPrice:number=0;
     totalAmount:number=0;
+    currencyCode: string = '';
+    currencySymbol: string = '';
+    SalesOrderID: number = 0;
+    SalesOrderMaterialID: number = 0;
     shipoutmaterial: any;
 }

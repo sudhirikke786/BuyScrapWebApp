@@ -54,7 +54,9 @@ export class ContainerDashboardComponent implements OnInit {
     createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
     updatedBy: 0,
     updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-    locID: 0
+    locID: 0,
+    count: 0,        
+    isBulk: false,
   });
   
   constructor(private route: ActivatedRoute,
@@ -93,7 +95,9 @@ export class ContainerDashboardComponent implements OnInit {
       createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       updatedBy: this.logInUserId,
       updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      locID: this.locId
+      locID: this.locId,
+      count: 0,        
+      isBulk: false,
     });
 
     this.GetAllContainer();
@@ -148,7 +152,9 @@ export class ContainerDashboardComponent implements OnInit {
         createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         updatedBy: this.logInUserId,
         updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-        locID: this.locId
+        locID: this.locId,
+        count: 0,        
+        isBulk: false,
       });
 
     }
@@ -188,6 +194,14 @@ export class ContainerDashboardComponent implements OnInit {
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
 
+  }
+
+  onContainerClick(item: any) {
+    if (item.isBulk) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Sub containers cannot be created for bulk containers' });
+      return;
+    }
+    this.router.navigate(['/', this.orgName, 'container', 'detail', item.rowId]);
   }
  
   getAction(actionCode:any){

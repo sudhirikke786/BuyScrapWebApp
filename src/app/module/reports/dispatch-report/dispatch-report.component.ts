@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { HelperService } from 'src/app/core/services/helper.service';
 @Component({
@@ -22,10 +22,30 @@ export class DispatchReportComponent implements OnInit {
       title: 'Refresh',
       isDisable:false,
     },
+    // {
+    //   iconcode: 'mdi-download',
+    //   title: 'Download',
+    //   isDisable:true,
+    // }
     {
-      iconcode: 'mdi-download',
-      title: 'Download',
-      isDisable:true,
+      iconcode: 'mdi-file-pdf-box',
+      title: 'Download PDF',
+      isDisable: true
+    },
+    {
+      iconcode: 'mdi-file-excel-box',
+      title: 'Download Excel',
+      isDisable: true
+    },
+    {
+      iconcode: 'mdi-file-word-box',
+      title: 'Download Word',
+      isDisable: true
+    },
+    {
+      iconcode: 'mdi-xml',
+      title: 'Download XML',
+      isDisable: true
     }
   ];
 
@@ -50,7 +70,7 @@ export class DispatchReportComponent implements OnInit {
   sellerName: string = '';
   fileDataObj: any;
   showDownload = false;
-
+  currentRole:any;
   showLoader = false;
   showLoaderReport = false;
   isReportShow = false;
@@ -58,20 +78,25 @@ export class DispatchReportComponent implements OnInit {
   numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
   checkTabView: boolean = false;
+  adminAdvertisement!:  string | null;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
     private helperService:HelperService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
+    this.adminAdvertisement = localStorage.getItem('adminAdvertisement');
     this.checkTabView = this.helperService.isTab();
     this.setDefaultDate();
     this.getDispatchReport();
+    this.currentRole = this.authService.userCurrentRole();
+    this.setActionsByRole();
   }
 
   setDefaultDate() {
@@ -90,7 +115,7 @@ export class DispatchReportComponent implements OnInit {
       ToDate: this.toDate,
       DispatchID: this.dispatchID || 0,
       SellerName:this.sellerName,
-      LocationId: this.locId,
+      LocID: this.locId,
     }
     this.showLoader = true;
     this.commonService.getDispatchReport(param)
@@ -110,13 +135,18 @@ export class DispatchReportComponent implements OnInit {
       );
   }
 
-  getDispatchReportData() {
-    this.isReportShow = true;
-    this.showLoaderReport = true;
+  getDispatchReportData(reportType? : string | null) {
     
     const param = {
       PickUpID: this.customerObj.rowID,
-      LocationId: this.locId
+      LocationId: this.locId,
+      ReportType: reportType,
+      Advertising: this.adminAdvertisement
+    }
+
+    if ((reportType && reportType == 'PDF') || !reportType) {
+      this.isReportShow = true;
+      this.showLoaderReport = true;
     }
 
     this.commonService.getDispatchReportData(param)
@@ -125,10 +155,12 @@ export class DispatchReportComponent implements OnInit {
         console.log(data);
         this.showLoaderReport = false;
         this.fileDataObj = data.body.data;
-        if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj, "Dispatch Report " + this.customerObj.rowID)
+        
+        if(this.checkTabView && !reportType) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Dispatch Report "+this.toDate);
+        } else if (reportType && reportType != 'PDF') {
+          this.helperService.downloadBase64Report(this.fileDataObj,"Dispatch Report "+this.toDate, reportType);
         }
-
        
       },
         (err: any) => {
@@ -146,7 +178,7 @@ export class DispatchReportComponent implements OnInit {
     this.customerObj = event?.data;
     console.log('Selected Row:', event?.data);
     this.actionList =  this.actionList.map((item) => {
-      if(item.iconcode=='mdi-download'){
+      if(item.iconcode=='mdi-download' || item.iconcode=='mdi-file-pdf-box' || item.iconcode=='mdi-file-excel-box' || item.iconcode=='mdi-file-word-box' || item.iconcode=='mdi-xml'){
         item.isDisable = false;
       }
       return item
@@ -157,7 +189,7 @@ export class DispatchReportComponent implements OnInit {
     //this.customerObj = event?.data;
     console.log('Selected Row:', event?.data);
     this.actionList =  this.actionList.map((item) => {
-      if(item.iconcode=='mdi-download'){
+      if(item.iconcode=='mdi-download' || item.iconcode=='mdi-file-pdf-box' || item.iconcode=='mdi-file-excel-box' || item.iconcode=='mdi-file-word-box' || item.iconcode=='mdi-xml'){
         item.isDisable = true;
       }
       return item
@@ -166,7 +198,26 @@ export class DispatchReportComponent implements OnInit {
 
 
   
+  setActionsByRole() {
+    const allActions = [
+      { iconcode: 'mdi-magnify', title: 'Search',isDisable: false  },
+      { iconcode: 'mdi-refresh', title: 'Refresh',isDisable: false  },
+      { iconcode: 'mdi-file-pdf-box', title: 'PDF',isDisable: true  },
+      { iconcode: 'mdi-file-excel-box', title: 'Excel',isDisable: true  },
+      { iconcode: 'mdi-file-word-box', title: 'Word',isDisable: true  },
+      {iconcode: 'mdi-xml',title:'XML',isDisable: true}
+    ];
+  
+    const restrictedActions = ['mdi-file-pdf-box', 'mdi-file-excel-box', 'mdi-file-word-box','mdi-xml'];
 
+    if (this.currentRole === 'Administrator') {
+      this.actionList = allActions;
+    } else {
+      this.actionList = allActions.filter(
+        action => !restrictedActions.includes(action.iconcode)
+      );
+    }
+  }
 
   getAction(actionCode: any) {
 
@@ -178,9 +229,21 @@ export class DispatchReportComponent implements OnInit {
         this.setDefaultDate();
         this.getDispatchReport();
         break;
-      case 'mdi-download':
-        this.getDispatchReportData();
+      // case 'mdi-download':
+      //   this.getDispatchReportData();
+      //   break;
+      case 'mdi-file-pdf-box':
+        this.getDispatchReportData('PDF');
+      break;
+      case 'mdi-file-excel-box':
+        this.getDispatchReportData('Excel');
         break;
+      case 'mdi-file-word-box':
+        this.getDispatchReportData('Word');
+        break;
+        case 'mdi-xml':
+          this.getDispatchReportData('XML');
+          break;
       default:
         break;
     }

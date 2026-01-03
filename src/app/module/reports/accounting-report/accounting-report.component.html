@@ -48,20 +48,26 @@
                            
                               <ng-template pTemplate="header">
                                 <tr>
-                                  <th>Ticket Number</th>
-                                  <th>Date Created</th>
-                                  <th>Total Amount</th>
+                                  <th>Payment Type</th>
+                                  <th>Current Period Amount</th>
+                                  <th>Prior Period Amount</th>
+                                  <th>Increase / Decrease</th>
                                   <th>Type</th>
+                                  
                                 </tr>
                               </ng-template>
                               <ng-template pTemplate="body" let-rowData>
                                 <tr>
-                                  <td>{{ rowData.ticketId }}</td>
-                                  <td>{{ rowData.dateOpened | date: 'MM/dd/yyyy' }}</td>
-                                  <td>{{ rowData.totalAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
-                                  <td>{{ rowData.types }}</td>
+                                 
+                                 
+                                  <td>{{ rowData.paymentType }}</td>
+                                  <td>{{ rowData.currentPeriodAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                  <td>{{ rowData.priorPeriodAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                  <td>{{ rowData.increaseDecrease}}</td>
+                                  <td>{{ rowData.types}}</td>
                                 </tr>
                               </ng-template>
+                              
                             </p-table>
                           </div>
                           <!-- end card body-->
@@ -99,30 +105,20 @@
             <!-- End Page content -->
             <!-- ============================================================== -->
 
-            <ng-container *ngIf="!checkTabView">
+           
 
-            <p-dialog [modal]="true" header="Accounting Report" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
+            <p-dialog [modal]="true" header="Accounting Report" [(visible)]="isReportShow" [modal]="true" [style]="{ width: '70vw' }">
+              <div *ngIf="showDownload">
+                <app-page-loader type="reportloader"></app-page-loader>
+              </div>
+             
 
               <div class="row" >
-                <div style="height: 500px;" *ngIf="showDownload">
-                    <div *ngIf="!showLoader">
-                      <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
+                <div style="height: 500px;" *ngIf="!showDownload">
+                   
+                      <ngx-extended-pdf-viewer   [base64Src]="fileDataObj" [filenameForDownload]="'Accounting Report'+ ' '+ '.pdf'"></ngx-extended-pdf-viewer>
                     </div>
-                
-                
-
-
-
-                </div>
-                
-
-                <div style="height: 500px;" *ngIf="showLoader">
-
-                  <app-page-loader type="ftable"></app-page-loader>
-                
-                  
-                </div>
-
               </div>
-              </p-dialog>
-              </ng-container>
+            </p-dialog>
+              
+             

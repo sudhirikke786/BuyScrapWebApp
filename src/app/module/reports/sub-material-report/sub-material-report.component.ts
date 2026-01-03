@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-sub-material-report',
@@ -21,9 +22,26 @@ export class SubMaterialReportComponent implements OnInit {
       iconcode: 'mdi-refresh',
       title: 'Refresh'
     },
+    // {
+    //   iconcode: 'mdi-download',
+    //   title: 'Download'
+    // },    
     {
-      iconcode: 'mdi-download',
-      title: 'Download'
+      iconcode: 'mdi-file-pdf-box',
+      title: 'Download PDF'
+    },
+    {
+      iconcode: 'mdi-file-excel-box',
+      title: 'Download Excel'
+    },
+    {
+      iconcode: 'mdi-file-word-box',
+      title: 'Download Word'
+    },
+    {
+      iconcode: 'mdi-xml',
+      title: 'Download XML'
+      
     }
   ];
 
@@ -54,12 +72,15 @@ export class SubMaterialReportComponent implements OnInit {
   showLoaderReport = false;
   checkTabView: boolean = false;
   numberFormat: string = '1.3-3';
+  currentRole:any;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
     private helperService:HelperService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private authService: AuthService,
+  private messageService: MessageService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -67,7 +88,8 @@ export class SubMaterialReportComponent implements OnInit {
     this.setDefaultDate();
     this.getAllGroupMaterial();
     this.checkTabView = this.helperService.isTab();
-
+    this.currentRole = this.authService.userCurrentRole();
+    this.setActionsByRole();
    // this.getSubMaterialsReport();
   }
 
@@ -106,10 +128,11 @@ export class SubMaterialReportComponent implements OnInit {
       );
   }
 
-  generateSubMaterialsReport() {
+  generateSubMaterialsReport(reportType? : string | null) {
 
     if (this.defaultSelectedSubMaterial <= 0) {
-      alert("Please select Sub material to generate report !!!")
+      // alert("Please select Sub material to generate report !!!")
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please select Sub material to generate report !!!' });
       return;
     }
 
@@ -117,10 +140,14 @@ export class SubMaterialReportComponent implements OnInit {
       SubMaterialId: this.defaultSelectedSubMaterial,
       LocationId: this.locId,
       FromDate: this.fromDate,
-      Todate: this.toDate
+      Todate: this.toDate,
+      ReportType: reportType
     }
-    this.isReportShow = true;
-    this.showLoaderReport  = true; 
+
+    if ((reportType && reportType == 'PDF') || !reportType) {
+      this.isReportShow = true;
+      this.showLoaderReport  = true;
+    } 
 
     this.commonService.generateSubMaterialsReport(param)
       .subscribe(data => {
@@ -128,8 +155,11 @@ export class SubMaterialReportComponent implements OnInit {
         console.log(data);
         this.showLoaderReport  = false; 
         this.fileDataObj = data.body.data;
-        if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,"Materials Report")
+
+        if(this.checkTabView && !reportType) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Materials Report "+this.toDate);
+        } else if (reportType && reportType != 'PDF') {
+          this.helperService.downloadBase64Report(this.fileDataObj,"Materials Report "+this.toDate, reportType);
         }
        
       },
@@ -184,6 +214,26 @@ export class SubMaterialReportComponent implements OnInit {
       );
   }
 
+  setActionsByRole() {
+    const allActions = [
+      { iconcode: 'mdi-magnify', title: 'Search' },
+      { iconcode: 'mdi-refresh', title: 'Refresh' },
+      { iconcode: 'mdi-file-pdf-box', title: 'PDF'},
+      { iconcode: 'mdi-file-excel-box', title: 'Excel'},
+      { iconcode: 'mdi-file-word-box', title: 'Word'},
+      {iconcode: 'mdi-xml',title:'XML'}
+    ];
+  
+    const restrictedActions = ['mdi-file-pdf-box', 'mdi-file-excel-box', 'mdi-file-word-box','mdi-xml'];
+
+    if (this.currentRole === 'Administrator') {
+      this.actionList = allActions;
+    } else {
+      this.actionList = allActions.filter(
+        action => !restrictedActions.includes(action.iconcode)
+      );
+    }
+  }
 
 
   getAction(actionCode: any) {
@@ -196,9 +246,21 @@ export class SubMaterialReportComponent implements OnInit {
         this.setDefaultDate();
         this.getSubMaterialsReport();
         break;
-      case 'mdi-download':
-        this.generateSubMaterialsReport();
+      // case 'mdi-download':
+      //   this.generateSubMaterialsReport();
+      //   break;
+      case 'mdi-file-pdf-box':
+        this.generateSubMaterialsReport('PDF');
+      break;
+      case 'mdi-file-excel-box':
+        this.generateSubMaterialsReport('Excel');
         break;
+      case 'mdi-file-word-box':
+        this.generateSubMaterialsReport('Word');
+        break;
+        case 'mdi-xml':
+          this.generateSubMaterialsReport('XML');
+          break;
       default:
         break;
     }

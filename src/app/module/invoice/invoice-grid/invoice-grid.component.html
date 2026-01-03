@@ -100,7 +100,7 @@
                                                 <td>{{ ticket?.rowId }}</td>
                                                 <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy' }}</td>
                                                 <td><span class="status-badge" [ngClass]="'status-' + ticket.status.toLowerCase()">{{ ticket?.status | uppercase }}</span></td>                                                
-                                                <td>{{ ticket?.totalAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                                <td>{{ ticket?.totalAmount | currency: (ticket.currencyCode || defaultCurrencyCode) : 'symbol': numberFormat }}</td>
                                                 <td>{{ ticket?.customerName }}</td>
                                                 <td>{{ ticket?.isMarkAsPaid && ticket?.dateClosed ? (ticket?.dateClosed | date: 'MM/dd/yyyy') : '' }}
                                                 </td>
@@ -268,7 +268,7 @@
                             <td>{{ childTicket?.rowId }}</td>
                             <td>{{ childTicket?.createdDate | date: 'MM/dd/yyyy' }}</td>
                             <td>{{ childTicket?.status }}</td>
-                            <td>{{ childTicket?.totalAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                            <td>{{ childTicket?.totalAmount | currency: defaultCurrencyCode :'symbol': numberFormat }}</td>
                             <td>{{ childTicket?.customerName }}</td>
                             <td>{{ childTicket?.dateClosed ? (childTicket?.dateClosed | date: 'MM/dd/yyyy') : '' }}</td>
                             <td>                                
@@ -333,7 +333,7 @@
                             </td>
                             <td>{{ sellerTicket?.rowId }}</td>
                             <td>{{ sellerTicket?.createdDate | date: 'MM/dd/yyyy' }}</td>
-                            <td>{{ sellerTicket?.balanceAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                            <td>{{ sellerTicket?.balanceAmount | currency: defaultCurrencyCode :'symbol': numberFormat }}</td>
                             <td>{{ sellerTicket?.customerName }}</td>
                         </tr>
                     </ng-template>
@@ -468,7 +468,7 @@
                             <tr>
                                 <td># </td>
                                 <td>{{ invoicesTransaction?.type }}</td>
-                                <td>{{ invoicesTransaction?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                <td>{{ invoicesTransaction?.amount | currency: defaultCurrencyCode :'symbol': numberFormat }}</td>
                                 <td>{{ invoicesTransaction?.checkNumber }}</td>
                             </tr>
                         </ng-template>
@@ -553,7 +553,7 @@
             <div class="d-flex justify-content-between  mb-2 mt-2">
                 <div class="text-xl font-bold"  style="font-size: 1rem;">Total Amount
                 </div>
-                <div class="font-bold" style="font-size: 1rem;">{{payAmount | currency: currencySymbol :'symbol': numberFormat}}</div>    
+                <div class="font-bold" style="font-size: 1rem;">{{payAmount | currency: defaultCurrencyCode :'symbol': numberFormat}}</div>    
             </div>
         </div>
     </div>
@@ -562,7 +562,7 @@
             <div class="d-flex justify-content-between  mb-2 mt-2">
                 <div class="text-xl font-bold"  style="font-size: 1rem;">Remaining Amount
                 </div>
-                <div class="font-bold" style="font-size: 1rem;">{{remainingAmount | currency: currencySymbol :'symbol': numberFormat}}</div>    
+                <div class="font-bold" style="font-size: 1rem;">{{remainingAmount | currency: defaultCurrencyCode :'symbol': numberFormat}}</div>    
             </div>
         </div>
     </div>

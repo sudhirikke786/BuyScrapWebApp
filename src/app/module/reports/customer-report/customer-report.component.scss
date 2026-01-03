@@ -1,0 +1,137 @@
+
+.custom-multi-select {
+    position: relative;
+    width: 100%;
+  }
+  
+  .select-trigger {
+    display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 38px;         
+  max-height: 80px;       
+  overflow-y: auto;        
+  flex-wrap: wrap;         
+  gap: 4px;
+  cursor: pointer;
+  }
+  
+  .selected-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    max-height: 70px;  
+    overflow-y: auto;
+  }
+  
+
+  
+  .chip {
+    background-color: #e8f0fe;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  }
+  
+  .chip i {
+    margin-left: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+  }
+  
+  .dropdown-icon {
+    transition: transform 0.3s;
+  }
+  
+  .dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 250px;
+    overflow-y: auto;
+    display: none;
+  }
+  
+  .dropdown-content.show {
+    display: block;
+  }
+  
+  .col-sm-3.d-flex label {
+    flex: 0 0 80px;
+    margin-right: 10px;
+  }
+  
+  .collapsible-container {
+    padding: 10px;
+  }
+  
+  .material-group {
+    margin-bottom: 8px;
+  }
+  
+  .group-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: 600;
+  }
+  
+  .group-header:hover {
+    background-color: #e9ecef;
+  }
+  
+  .group-header i {
+    margin-right: 8px;
+    transition: transform 0.3s;
+    font-size: 0.875rem;
+  }
+  
+  .sub-materials {
+    padding-left: 30px;
+    margin-top: 5px;
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+  }
+  
+  .sub-materials.collapsed {
+    max-height: 0;
+  }
+  
+  .material-checkbox {
+    margin: 5px 0;
+  }
+  
+  .material-checkbox label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0;
+  }
+  
+  .material-checkbox input {
+    margin-right: 8px;
+  }
+
+  .search-box {
+    padding: 8px 10px;
+    border-bottom: 1px solid #dee2e6;
+    background: #f8f9fa;
+  }
+  
+  .search-box input {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+  }

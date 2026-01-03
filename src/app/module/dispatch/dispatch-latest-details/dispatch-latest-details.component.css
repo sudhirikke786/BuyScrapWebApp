@@ -1,83 +1,95 @@
-.invoiceTable{
-    /* General Styles */
+.invoiceTable {
+
+  /* General Styles */
   .invoice-container {
-    max-width:100%;
+    max-width: 100%;
     margin: 20px auto;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
+
   h1 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 24px;
     color: #333;
   }
-  
+
   /* Table Styles */
   .table-wrapper {
-    max-height: 250px; /* Adjust height as needed */
-     overflow-y: auto;
-     overflow-x: hidden;
-     border: 1px solid #ddd; /* Optional: border for visual clarity */
+    max-height: 250px;
+    /* Adjust height as needed */
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid #ddd;
+    /* Optional: border for visual clarity */
+    max-width: 100%;
   }
-  
+
   table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-   
+
     background-color: #fff;
+    min-width: 1200px;
+    table-layout: auto;
   }
-  
-  tbody{
+
+  tbody {
     max-height: 300px;
     overflow-x: scroll;
   }
-  
+
   thead {
     background-color: #03669c;
     color: white;
   }
-  
+
   thead th {
     position: sticky;
     top: 0;
     background-color: #03669c;
-    z-index: 1; 
+    z-index: 1;
   }
-  
+
   tbody td,
   tfoot td {
     padding: 10px;
   }
-  
+
   tbody tr:nth-child(even) {
     background-color: #f2f2f2;
   }
-  
 
-  
+
+
   tfoot .text-right {
     text-align: right;
   }
 
-  td, th {
+  td,
+  th {
     text-align: left;
     padding: 8px;
-    border: 1px solid #ddd; /* Optional: borders for cells */
+    border: 1px solid #ddd;
+    /* Optional: borders for cells */
+    min-width: 120px;
   }
 
-  
-  input {
-    width: 90%;
+  input,
+  select,
+  textarea,
+  .p-dropdown {
+    width: 100% !important;
+    max-width: 100%;
     padding: 4px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
+
   /* Button Styles */
   button {
     padding: 8px 12px;
@@ -86,63 +98,237 @@
     border-radius: 4px;
     font-size: 14px;
   }
-  
+
   .add-btn {
     background-color: #4CAF50;
     color: white;
   }
-  
+
   .add-btn:disabled {
     background-color: #ccc;
     cursor: not-allowed;
   }
-  
+
   .delete-btn {
     background-color: #f44336;
     color: white;
   }
-  
+
   .delete-btn:hover {
     background-color: #d32f2f;
   }
-  
+
   .add-button-container {
     text-align: right;
   }
-  
+
+  .invoiceTable {
+    overflow: visible !important;
+  }
+
+  .invoiceTable .table-wrapper {
+    overflow: visible !important;
+  }
+
+  .invoiceTable table {
+    overflow: visible !important;
+  }
+
+  .invoiceTable td {
+    overflow: visible !important;
+    position: relative;
+  }
+
   /* Responsive Design */
   @media (max-width: 600px) {
     h1 {
       font-size: 20px;
     }
-  
+
     input {
       width: 100%;
     }
-  
+
     button {
       font-size: 12px;
     }
   }
-  
+
+  @media (max-width: 1366px) {
+    .table-wrapper {
+      max-height: 200px;
+    }
+
+    table {
+      min-width: 1000px;
+    }
   }
-  
+}
 
+/* ============================================
+   Fix for Notes Section Visibility
+   Dynamic height calculation ensures Notes section 
+   is always visible below the materials table
+   ============================================ */
+
+/* Make the card body scrollable so Notes section doesn't get hidden */
+.ticket-card {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.ticket-card .card-body {
+  overflow: visible !important;
+  height: auto !important;
+}
+
+/* Dynamic table wrapper height - leaves room for Notes section */
+.invoiceTable .table-wrapper {
+  max-height: calc(100vh - 550px) !important;
+  min-height: 120px;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+}
+
+/* Ensure Notes section is always visible */
+.row:last-of-type {
+  position: relative;
+  z-index: 1;
+}
+
+/* Page-level scrolling when content overflows */
+.content-page {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   Responsive Design - All Screen Sizes
+   ============================================ */
+
+/* Extra large screens (1900px+) */
 @media (min-width: 1900px) {
-    .table-wrapper {
-        max-height: 40vh !important; /* Adjust height based on 80% of the viewport height */
-    }
+  .invoiceTable .table-wrapper {
+    max-height: calc(100vh - 480px) !important;
+  }
 }
 
-/* Responsive Adjustments for Smaller Screens */
+/* Large screens (1400px+) */
+@media (min-width: 1400px) {
+  .invoiceTable .table-wrapper {
+    max-height: calc(100vh - 500px) !important;
+  }
+}
+
+/* Medium screens (1366px and below) */
+@media (max-width: 1366px) {
+  .invoiceTable .table-wrapper {
+    max-height: calc(100vh - 520px) !important;
+    min-height: 100px;
+  }
+}
+
+/* Tablet (991px) */
+@media (max-width: 991px) {
+  .invoiceTable .table-wrapper {
+    max-height: 220px !important;
+    min-height: 100px;
+  }
+
+  .invoiceTable table {
+    min-width: 1000px;
+  }
+}
+
+/* Mobile Landscape (768px) */
 @media (max-width: 768px) {
-    .table-wrapper {
-        max-height: 200px; /* Reduce height for smaller screens */
-    }
+  .invoiceTable .table-wrapper {
+    max-height: 180px !important;
+    min-height: 80px;
+  }
+
+  .invoiceTable table {
+    min-width: 900px;
+  }
+
+  /* Stack breadcrumb */
+  .bdcmb .row {
+    flex-direction: column;
+  }
+
+  .bdcmb .col-sm-6,
+  .bdcmb .col-6 {
+    width: 100%;
+  }
+
+  .b-links {
+    text-align: left;
+    margin-top: 5px;
+  }
+
+  /* Stack action buttons */
+  .d-flex.flex-wrap.align-items-center.gap-2 {
+    justify-content: center;
+  }
+
+  /* Notes section full width */
+  .mb-3.col-sm-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
 
+/* Mobile Portrait (576px) */
+@media (max-width: 576px) {
+  .invoiceTable .table-wrapper {
+    max-height: 160px !important;
+    min-height: 60px;
+  }
+
+  .invoiceTable table {
+    min-width: 800px;
+  }
+
+  .btn {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+  }
+
+  .seller-view-tbl td {
+    display: block;
+    width: 100% !important;
+    padding: 5px 0;
+  }
+
+  .seller-view-tbl tr {
+    display: block;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+}
+
+/* Extra Small (480px) */
 @media (max-width: 480px) {
-    .table-wrapper {
-        max-height: 150px; /* Further adjust for very small screens */
-    }
+  .invoiceTable .table-wrapper {
+    max-height: 140px !important;
+    min-height: 50px;
+  }
+
+  .invoiceTable table {
+    min-width: 700px;
+  }
+
+  .d-flex.flex-wrap.align-items-center.gap-2 {
+    flex-direction: column;
+  }
+
+  .d-flex.flex-wrap.align-items-center.gap-2>div {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .d-flex.flex-wrap.align-items-center.gap-2 .btn {
+    width: 100%;
+  }
 }

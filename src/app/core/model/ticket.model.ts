@@ -43,7 +43,15 @@ export class Ticket {
     model: string = '';
     driverName: string = '';
     note: string = '';
+    isBusinessOwnerName: boolean = false;
+    businessOwnerName: string = '';
+    // currencyId: number = 0;
+    currencyCode: string = '';
+    currencySymbol: string = '';
     lstttransactionMasterDTO: any;
     ticketMaterialDocumentsList: any;
-
+    truckScale: boolean = false;
+    tagHoldDate: any;
+    tagHoldReason: string = '';
+    scaleType: number = 0; 
 }

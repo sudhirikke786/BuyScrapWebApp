@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 
 
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -67,6 +67,7 @@ export class ShipoutDetailsComponent implements OnInit {
   totalPrice:any;
   totalTare: any;
   totalNet: any;
+  SalesOrderMaterialID: any;
 
 
   isEditModeOn = false;
@@ -98,7 +99,7 @@ export class ShipoutDetailsComponent implements OnInit {
   itemCodNote: any = null;
   itemLeveloperationPerform: string = '';
   localRowIdCounter: number = 0;
-
+  adminAdvertisement!:  string | null;
 
   totalRecords = 0;
   currentPage = 1;
@@ -107,6 +108,10 @@ export class ShipoutDetailsComponent implements OnInit {
   selectedRowObj: any;
   isReceiptPrint = true;
   isNewShipOut = false;
+  defaultCurrencyCode: string = 'USD';
+
+  salesOrderMaterialsDropdown: any[] = [];
+
 
   fileDataObj: any;
   showDownload = false;
@@ -134,6 +139,8 @@ export class ShipoutDetailsComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.checkTabView = this.helperService.isTab();
+    this.defaultCurrencyCode = localStorage.getItem('currencyCode') || 'USD';
+    this.adminAdvertisement = localStorage.getItem('adminAdvertisement');
     this.route.url.subscribe(url => {
       this.currentRoute = url.join('/');
     });
@@ -156,6 +163,8 @@ export class ShipoutDetailsComponent implements OnInit {
 
        // console.log(this.customerId); 
        this.sellerId = this.customerId;
+       this.currencyCode = params['currencyCode'];
+       this.currencySymbol = params['currencySymbol'];
 
       });
 
@@ -182,16 +191,40 @@ export class ShipoutDetailsComponent implements OnInit {
         this.shipOutDetails = this.dataService.getNewShipOut();
         this.getAllUsers(this.logInUserId);
         this.isNewShipOut = true;
+        this.shipOutDetails.currencyCode = this.currencyCode;
+        this.shipOutDetails.currencySymbol = this.currencySymbol;
+
       }
       this.processDataBasedOnTicketId();
     });
     this.getSellerById();
 
-
+    this.router.events.subscribe(event => {
+      if(event instanceof NavigationStart){
+        if(this.isEditModeOn && !this.showConfirmLeavePopup){
+          this.showConfirmLeavePopup = true;
+          this.pendingNavigationUrl = event.url;
+          this.router.navigateByUrl(this.router.url, { replaceUrl: true });
+        }
+      }
+    })
     
   }
 
+  proceedWithNavigation() {
+    this.showConfirmLeavePopup = false;
+    this.isEditModeOn = false;
   
+    if (this.pendingNavigationUrl) {
+      this.router.navigateByUrl(this.pendingNavigationUrl);
+      this.pendingNavigationUrl = null;
+    }
+  }
+
+  cancelNavigation() {
+    this.showConfirmLeavePopup = false;
+    this.pendingNavigationUrl = null;
+  }
   private processDataBasedOnTicketId() {
     if (parseInt(this.shipoutId)) {
       this.getShipOutMaterialbyID();
@@ -336,7 +369,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
     
   getShipOutDetailsByID() {
-    this.isLoading = true;
+    // this.isLoading = true;
 
     const paramObject = {
       rowId: this.shipoutId,
@@ -347,6 +380,7 @@ export class ShipoutDetailsComponent implements OnInit {
           console.log('getShipOutDetailsByID :: ');
           console.log(data);
           this.shipOutDetails = data.body.data; 
+          this.shipoutID = this.shipOutDetails.shipOutID;
           if (this.shipOutDetails.addressID === 0) {
             this.addressName = this.customer?.streetAddress || 'N/A';
             this.selectedBusinessAddressID = 0; 
@@ -359,7 +393,7 @@ export class ShipoutDetailsComponent implements OnInit {
           const userId = data.body.data.createdBy;
           this.getAllUsers(userId);
 
-          this.customerID = data.body.data.customerID; 
+          this.customerId = data.body.data.customerID; 
           localStorage.setItem('customerId', this.customerID);
           this.getSellerById();
 
@@ -367,11 +401,11 @@ export class ShipoutDetailsComponent implements OnInit {
           
         },
         (err: any) => {
-          this.isLoading = false;
+          // this.isLoading = false;
           // this.errorMsg = 'Error occured';
         },
         () => {
-          this.isLoading = false;
+          // this.isLoading = false;
         }
         
       );
@@ -389,6 +423,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
   
   getShipOutMaterialbyID() {
+    this.isLoading = true;
     const paramObject = {
       ShipOutIDId: this.shipoutId,
       locid: this.locId
@@ -399,10 +434,19 @@ export class ShipoutDetailsComponent implements OnInit {
           console.log(data);
           this.ticketObj = data.body.data;
 
+          this.ticketObj.forEach((ticket: any) => {
+            if (ticket.materialId) {
+                this.getSalesOrderMaterialsDropdown(ticket.materialId, ticket, true); 
+            }
+          });
           this.calculateTotal(this.ticketObj);
         },
         (err: any) => {
+          this.isLoading = false;
           // this.errorMsg = 'Error occured';
+        },
+        () => {
+          this.isLoading=false;
         }
       );
   }
@@ -496,7 +540,7 @@ export class ShipoutDetailsComponent implements OnInit {
 
 
   confirmSave() {
-
+    console.log("Proceed to Save")
     
     // this.totalGross = tickets.reduce(function (sum:any, tickets:any) {
     //   return sum + tickets.gross;
@@ -509,6 +553,16 @@ export class ShipoutDetailsComponent implements OnInit {
     // }, 0);
        
     // this.isEditModeOn = false;
+
+    // if (this.ticketObj.some((material:any) => 
+    //       material.salesOrderMaterialID && 
+    //       material.balanceMaterialQty != null && 
+    //       Number(material.net) > Number(material.balanceMaterialQty)
+    //     )) {
+    //   this.messageService.add({severity: 'error', summary: 'Over Shipment',detail: 'Entered quantity exceeds balance quantity. Please adjust before saving.'});
+    //   return;
+    // }
+
     this.shipOutDetails.LocID = this.locId;
     this.shipOutDetails.totalGross = this.totalGross;
     this.shipOutDetails.totalTare = this.totalTare;
@@ -518,6 +572,8 @@ export class ShipoutDetailsComponent implements OnInit {
     // this.shipOutDetails.customerId = parseFloat(this.sellerId);
     this.shipOutDetails.customerId = this.customerId ? parseFloat(this.customerId) : null;
     this.shipOutDetails.addressID= Number(this.addressId);
+    this.shipOutDetails.currencyCode = this.currencyCode;
+    this.shipOutDetails.currencySymbol = this.currencySymbol;
     
     
     console.log("Final shipOutDetails :: " + JSON.stringify(this.shipOutDetails));
@@ -530,6 +586,7 @@ export class ShipoutDetailsComponent implements OnInit {
       }
       console.log(data); 
       this.shipoutId = data.body;
+      this.isEditModeOn = false;
 
     
       
@@ -585,6 +642,7 @@ export class ShipoutDetailsComponent implements OnInit {
     this.itemTare = '';
     this.totalPrice = '';
     // this.materialNote = '';
+    // this.SalesOrderMaterialID = null;
     setTimeout(() =>{
       this.focusChildInput()
     },100);
@@ -619,6 +677,8 @@ export class ShipoutDetailsComponent implements OnInit {
 
     this.editItemCloseImageCapture = true;
     this.itemLeveloperationPerform = 'Edit';
+    this.selectedSalesOrderMaterialID = rowData.salesOrderMaterialID || 0; 
+    this.selectedSalesOrderID = rowData.salesOrderID || 0;
     
   }
 
@@ -670,11 +730,16 @@ export class ShipoutDetailsComponent implements OnInit {
         net : net,
         price : parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3)),
         amount : (net * parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3))),
-        note : (this.materialNote || this.materialNote == '' ? this.materialNote : null)
+        note : (this.materialNote || this.materialNote == '' ? this.materialNote : null),
+        salesOrderMaterialsDropdown: [], 
+        salesOrderID: 0,
+        salesOrderMaterialID: 0,     
       };   
 
       this.ticketObj.push(rowData);
       // this.ticketObj = arr;
+      this.getSalesOrderMaterialsDropdown(this.itemMaterialId, rowData, true); 
+
 
     } else if (this.itemLeveloperationPerform === 'Edit') {   
 
@@ -691,6 +756,7 @@ export class ShipoutDetailsComponent implements OnInit {
           rowData.price= parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
           rowData.amount= rowData.net * parseFloat(parseFloat(this.itemPrice.toString()).toFixed(3));
           rowData.note = (this.materialNote || this.materialNote == '' ? this.materialNote : null);
+           this.getSalesOrderMaterialsDropdown(this.itemMaterialId, rowData, false);
         }
       });
       this.itemLeveloperationPerform = '';
@@ -725,7 +791,8 @@ export class ShipoutDetailsComponent implements OnInit {
 
      const param = {
       ShipOutId: this.shipoutId,
-      LocationId: this.locId
+      LocationId: this.locId,
+      Advertising: this.adminAdvertisement
     }
 
     this.commonService.getShipOutReportByID(param)
@@ -747,5 +814,95 @@ export class ShipoutDetailsComponent implements OnInit {
       );
   }
 
+  getSalesOrderMaterialsDropdown(materialId: any, ticket: any, autoSelectIfSingle: boolean = false) {
+      const params = {
+        CustomerID: this.customerId, 
+        MaterialID: materialId
+      };
+
+      console.log(`Fetching SalesOrderMaterials for CustomerID: ${this.customerId}, MaterialID: ${materialId}`);
+
+      this.commonService.GetSalesOrderMaterialsByCustomerAndMaterial(params).subscribe({
+        next: (data: any) => {
+          console.log(' Dropdown API response data:', data);
+
+          if (data?.body?.data && data.body.data.length > 0) {
+            ticket.salesOrderMaterialsDropdown = data.body.data.map((item: any) => ({
+              materialName: item.materialName,
+              salesOrderMaterialID: item.salesOrderMaterialID,
+              salesOrderID: item.salesOrderID,
+              balanceMaterialQty: item.balanceMaterialQty
+            }));
+
+            // Auto-select if only one record is available
+            if (autoSelectIfSingle && ticket.salesOrderMaterialsDropdown.length === 1) {
+              // const singleItem = ticket.salesOrderMaterialsDropdown[0];
+              // ticket.salesOrderMaterialID = singleItem.salesOrderMaterialID;
+              // ticket.salesOrderID = singleItem.salesOrderID;
+            }
+            else if (autoSelectIfSingle && ticket.salesOrderMaterialsDropdown.length === 0) {
+            ticket.salesOrderMaterialID = 0; 
+            ticket.salesOrderID = 0;
+          }
+          } else {
+            ticket.salesOrderMaterialsDropdown = [];
+            ticket.salesOrderMaterialID = 0; 
+            ticket.salesOrderID = 0; 
+          }
+
+          console.log('Updated ticket after dropdown binding:', ticket);
+        },
+        error: (err) => {
+          console.error('Error fetching SalesOrderMaterialsByCustomerAndMaterial:', err);
+          ticket.salesOrderMaterialsDropdown = [];
+          ticket.salesOrderMaterialID = null; 
+          ticket.salesOrderID = null;
+        }
+      });
+  }
+
+  onSalesMaterialChange(ticket: any) {
+    ticket.salesOrderMaterialID = ticket.salesOrderMaterialID ? Number(ticket.salesOrderMaterialID) : 0; 
+
+    const selectedMaterial = ticket.salesOrderMaterialsDropdown.find(
+      (m: any) => m.salesOrderMaterialID === ticket.salesOrderMaterialID
+    );
+
+    if (selectedMaterial) {
+      ticket.salesOrderID = selectedMaterial.salesOrderID;
+      ticket.balanceMaterialQty = selectedMaterial.balanceMaterialQty;
+
+      if (Number(ticket.net) > Number(ticket.balanceMaterialQty)) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Over Shipment',
+          detail: `Entered quantity (${ticket.net}) exceeds balance quantity (${ticket.balanceMaterialQty}). Please adjust.`
+        });
+
+        setTimeout(() => {
+          ticket.salesOrderMaterialID = null; 
+          ticket.salesOrderID = 0;
+          ticket.balanceMaterialQty = 0;
+        }, 0);
+      }
+
+    } else {
+      ticket.salesOrderID = 0; 
+      ticket.balanceMaterialQty = 0;
+    }
+
+    console.log('ticket after sales material selection:', ticket);
+  }
+
+  getSelectedSalesOrderMaterialDisplay(ticket: any) {
+      if (ticket.salesOrderMaterialID && ticket.salesOrderMaterialsDropdown) {
+          const selected = ticket.salesOrderMaterialsDropdown.find(
+              (m: any) => m.salesOrderMaterialID === ticket.salesOrderMaterialID
+          );
+          if (selected) {
+              return `${selected.materialName} (SO ID: ${selected.salesOrderID})`;
+          }
+      }
+  }
 
 }

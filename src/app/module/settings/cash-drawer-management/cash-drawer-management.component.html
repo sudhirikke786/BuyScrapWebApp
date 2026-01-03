@@ -1,0 +1,109 @@
+<div class="container-fluid">
+    <div class="bdcmb mt-2">
+        <div class="row">
+            <div class="col-sm-6 col-6">
+                <h4 class="page-title">Cash Drawer Management</h4>
+            </div>
+
+            <div class="col-sm-6 col-6">
+                <div class="b-links">
+                    <a routerLink="/{{orgName}}/home">Home</a> / <a
+                        routerLink="/{{orgName}}/settings">Settings</a>/<a href="javscript:void()" routerLink="/{{orgName}}/settings/cash-drawer-management">cash-drawer-management</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="cashDrawerName" class="form-label">Cash Drawer Name</label>
+                            <input 
+                                type="text" 
+                                id="cashDrawerName"
+                                class="form-control" 
+                                placeholder="Enter cash drawer name"
+                                [(ngModel)]="cashDrawerName"
+                                maxlength="100">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary me-2" (click)="saveCashDrawer()"> {{ selectedDrawer ? 'Update Cash Drawer' : 'Add Cash Drawer' }}</button>
+                            <button type="button" class="btn btn-secondary" (click)="resetCashDrawer()"> Cancel </button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead >
+                                        <tr>
+                                            <th>Cash Drawer Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let drawer of cashDrawersList">
+                                        <td>{{ drawer.drawerName }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-2" (click)="editCashDrawer(drawer)">Edit</button>
+                                            <button class="btn btn-sm btn-danger me-2" (click)="deleteCashDrawer(drawer)">Delete</button>
+                                            <button class="btn btn-sm btn-primary" (click)="assignCashier(drawer)">Assign Cashier</button>
+                                        </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog 
+  header="Assign Cashier" 
+  [(visible)]="showAssignDialog" 
+  [modal]="true" 
+  [style]="{width: '600px'}" 
+  [closable]="true">
+  
+  <div class="table-responsive" style="max-height:300px; overflow:auto;">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>User Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of admins">
+          <td>
+            <p-checkbox 
+              [binary]="true"
+              [ngModel]="selectedUsers.includes(user.rowId)" 
+              (onChange)="toggleUserSelection(user, $event.checked)">
+            </p-checkbox>
+          </td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.userName }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button  type="button" class="btn btn-primary" (click)="saveAssignCashier()">Save</button>
+    <button  type="button" class="btn btn-danger" (click)="cancelAssignCashier()">Cancel</button>
+  </ng-template>
+</p-dialog>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+

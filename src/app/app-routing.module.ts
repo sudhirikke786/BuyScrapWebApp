@@ -9,16 +9,18 @@ import { RoleGuard } from './core/guard/role.guard';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SuccessPageComponent } from './success-page/success-page.component';
 import { SuperadminlayoutComponent } from './common/Superadmin/superadminlayout/superadminlayout.component';
+import { PrivacyPolicyComponent } from './module/privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
   { 
     path: '', 
-    redirectTo: '/organization-login', 
+    component: OrganizationLoginComponent,  
     pathMatch: 'full' 
   },
   { 
     path: 'organization-login', 
-    component: OrganizationLoginComponent
+    redirectTo: '',  
+    pathMatch: 'full'
   },
   {
     path:'print-layout',
@@ -27,6 +29,10 @@ const routes: Routes = [
   {
     path:'error',
     component: ErrorComponent
+  },
+  {
+    path: 'privacypolicy',
+    component: PrivacyPolicyComponent
   },
   { 
     path: ':orgName/user-login', 
@@ -64,7 +70,24 @@ const routes: Routes = [
       {
         path:'syspref',
         loadChildren:() => import('./module/superadmin/syspref/syspref.module').then(m => m.SysprefModule),
+      },
+      {
+        path:'feedback',
+        loadChildren:() => import('./module/superadmin/feedback/feedback.module').then(m => m.FeedbackModule),
+      },
+      {
+        path:'suggestion',
+        loadChildren:() => import('./module/superadmin/suggestion/suggestion.module').then(m => m.SuggestionModule),
+      },
+      {
+        path:'country',
+        loadChildren:() => import('./module/superadmin/country/country.module').then(m => m.CountryModule),
+      },
+      {
+        path:'currency',
+        loadChildren:() => import('./module/superadmin/currency/currency.module').then(m => m.CurrencyModule),
       }
+      
     ]
   },
   { 
@@ -94,7 +117,7 @@ const routes: Routes = [
           path:'sellers-buyers',
           loadChildren:() => import('./module/sellers/sellers.module').then(m => m.SellersModule),
           canActivate: [RoleGuard],
-          data: { requiredRole:['Administrator','Cashier']},
+          data: { requiredRole:['Administrator','Cashier','Scale']},
         },
         {
           path:'ship-out',
@@ -171,7 +194,22 @@ const routes: Routes = [
         { 
           path: 'dispatch', 
           loadChildren:() => import('./module/dispatch/dispatch.module').then((m =>m.DispatchModule)),
-          data: { requiredRole: ['Administrator','Driver']},
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator','Driver','Scale','Cashier']},
+        
+        },
+        { 
+          path: 'sales-order', 
+          loadChildren:() => import('./module/SalesOrder/sales-order.module').then((m =>m.SalesOrderModule)),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator','Driver','Scale','Cashier']},
+        
+        },
+        { 
+          path: 'purchase-order', 
+          loadChildren:() => import('./module/PurchaseOrder/purchase-order.module').then((m =>m.PurchaseOrderModule)),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator','Driver','Scale','Cashier']},
         
         },
         {
@@ -179,7 +217,15 @@ const routes: Routes = [
           loadChildren:() => import('./module/container/container.module').then(m => m.ContainerModule),
           canActivate: [RoleGuard],
           data: { requiredRole:['Administrator','Cashier']},
-        }
+        },
+        {
+          path: 'truck',
+          loadChildren: () =>
+            import('./module/Truck/truck.module').then(m => m.TruckModule),
+          canActivate: [RoleGuard],
+          data: { requiredRole: ['Administrator', 'Cashier'] }
+        },
+
       ]
   }
 ];

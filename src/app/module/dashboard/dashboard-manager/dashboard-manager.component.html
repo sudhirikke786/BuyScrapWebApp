@@ -1,0 +1,34 @@
+<div class="manager-container">
+  <header class="manager-header">
+    <div class="dashboard-selector">
+      <select class="form-select form-select-lg" (change)="onDashboardChange($event)" [disabled]="isLoading">
+        <option *ngIf="isLoading">Loading Dashboards...</option>
+        <option *ngFor="let dash of dashboards" [value]="dash.dashboard_id" [selected]="dash.dashboard_id === selectedDashboardId">
+          {{ dash.dashboard_name }}
+        </option>
+      </select>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline-primary" (click)="createNewDashboard()">
+        + New Dashboard
+      </button>
+    </div>
+  </header>
+
+  <main class="dashboard-content">
+    <div *ngIf="apiError && !isLoading" class="alert alert-warning">{{ apiError }}</div>
+
+    <!-- Static Dashboard View: Shown only when the 'static-default' ID is selected -->
+    <div *ngIf="isStaticDashboardSelected">
+      <app-dashboard-charts></app-dashboard-charts>
+    </div>
+
+    <!-- Dynamic Dashboard View: Shown for any other selection -->
+    <div *ngIf="!isStaticDashboardSelected && selectedDynamicDashboard">
+      <app-dynamic-dashboard 
+        [initialDashboard]="selectedDynamicDashboard" 
+        (dashboardDeleted)="handleDashboardDeleted()">
+      </app-dynamic-dashboard>
+    </div>
+  </main>
+</div>

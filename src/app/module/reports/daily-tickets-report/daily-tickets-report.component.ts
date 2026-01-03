@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { HelperService } from 'src/app/core/services/helper.service';
 
@@ -21,10 +21,27 @@ export class DailyTicketsReportComponent implements OnInit {
       iconcode:'mdi-refresh',
       title:'Refresh'
     },
+    // {
+    //   iconcode: 'mdi-download',
+    //   title: 'Download'
+    // }	  
     {
-      iconcode: 'mdi-download',
-      title: 'Download'
-    }	  
+      iconcode: 'mdi-file-pdf-box',
+      title: 'Download PDF'
+    },
+    {
+      iconcode: 'mdi-file-excel-box',
+      title: 'Download Excel'
+    },
+    {
+      iconcode: 'mdi-file-word-box',
+      title: 'Download Word'
+    }
+    ,
+    {
+      iconcode: 'mdi-xml',
+      title: 'Download XML'
+    }
 		
 
   ];
@@ -51,19 +68,25 @@ export class DailyTicketsReportComponent implements OnInit {
   isReportShow = false;
   showLoader = false;
   checkTabView: boolean = false;
+  currentRole:any;
+  adminAdvertisement!:  string | null;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
     private helperService: HelperService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private authService: AuthService,) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
+    this.adminAdvertisement = localStorage.getItem('adminAdvertisement');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.setDefaultDate();
     this.getDailyTicketsReport();
     this.checkTabView = this.helperService.isTab();
+    this.currentRole = this.authService.userCurrentRole();
+    this.setActionsByRole();
   }
 
   setDefaultDate() {
@@ -96,15 +119,19 @@ export class DailyTicketsReportComponent implements OnInit {
       );
   }
 
-  generateDailyTicketReport() {
-
-    this.isReportShow = true;
-    this.showLoaderReport = true;
+  generateDailyTicketReport(reportType? : string | null) {
 
     const param = {
       LocationId: this.locId,
       FromDate: this.fromDate,
-      Todate: this.toDate
+      Todate: this.toDate,
+      ReportType: reportType,
+      Advertising: this.adminAdvertisement
+    }
+
+    if ((reportType && reportType == 'PDF') || !reportType) {
+      this.isReportShow = true;
+      this.showLoaderReport = true;
     }
 
     this.commonService.generateDailyTicketsReport(param)
@@ -113,8 +140,11 @@ export class DailyTicketsReportComponent implements OnInit {
         console.log(data);
         this.fileDataObj = data.body.data;
         this.showLoaderReport = false;
-        if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,"Daily_Tickets")
+        
+        if(this.checkTabView && !reportType) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Daily_Tickets"+this.toDate);
+        } else if (reportType && reportType != 'PDF') {
+          this.helperService.downloadBase64Report(this.fileDataObj,"Daily_Tickets"+this.toDate, reportType);
         }
 
       },
@@ -125,6 +155,26 @@ export class DailyTicketsReportComponent implements OnInit {
       );
   }
 
+  setActionsByRole() {
+    const allActions = [
+      { iconcode: 'mdi-magnify', title: 'Search' },
+      { iconcode: 'mdi-refresh', title: 'Refresh' },
+      { iconcode: 'mdi-file-pdf-box', title: 'PDF' },
+      { iconcode: 'mdi-file-excel-box', title: 'Excel' },
+      { iconcode: 'mdi-file-word-box', title: 'Word' },
+      {iconcode: 'mdi-xml',title:'XML'}
+    ];
+  
+    const restrictedActions = ['mdi-file-pdf-box', 'mdi-file-excel-box', 'mdi-file-word-box','mdi-xml'];
+
+    if (this.currentRole === 'Administrator') {
+      this.actionList = allActions;
+    } else {
+      this.actionList = allActions.filter(
+        action => !restrictedActions.includes(action.iconcode)
+      );
+    }
+  }
 
   getAction(actionCode:any){
 
@@ -136,9 +186,21 @@ export class DailyTicketsReportComponent implements OnInit {
         this.setDefaultDate();
         this.getDailyTicketsReport();
         break;
-        case 'mdi-download':
-          this.generateDailyTicketReport();
-         break;
+      // case 'mdi-download':
+      //   this.generateDailyTicketReport();
+      //   break;
+      case 'mdi-file-pdf-box':
+        this.generateDailyTicketReport('PDF');
+      break;
+      case 'mdi-file-excel-box':
+        this.generateDailyTicketReport('Excel');
+        break;
+      case 'mdi-file-word-box':
+        this.generateDailyTicketReport('Word');
+        break;
+        case 'mdi-xml':
+          this.generateDailyTicketReport('XML');
+          break;
       default:
         break;
     }  

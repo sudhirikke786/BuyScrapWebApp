@@ -9,6 +9,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DataService } from 'src/app/core/services/data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { InvoiceService } from 'src/app/core/services/invoice.service';
 
 @Component({
   selector: 'app-ticket-dashboard',
@@ -76,7 +77,8 @@ export class InvoiceTicketDashboardComponent implements OnInit {
 
 
   defaultSelectedTicketsTypes = [
-    { name: 'OPEN', code: 'OPEN' },
+    // { name: 'OPEN', code: 'OPEN' },
+     { name: 'ALL', code: 'ALL' , },
     // { name: 'Partially Paid', code: 'Partially Paid' }
   ];
 
@@ -183,13 +185,21 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   sellerType: string = 'Personal';
   
   numberFormat: string = '1.3-3';
-  currencySymbol: string = 'USD';
+  defaultCurrencyCode: string = 'USD';
+
 
   isConfirmModel: boolean = false;
   selectedTicket: any;
 
 
   checkVisible =  false;
+  isCardView = true;
+  searchOptions: any[] = [];
+  IsMultiCurrencySupportEnabled: boolean = false;
+  selectedCurrencyID: any = null;
+  currencies: any[] = [];
+
+
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -200,20 +210,9 @@ export class InvoiceTicketDashboardComponent implements OnInit {
     private datePipe: DatePipe,
     private dataService: DataService,
     private messageService: MessageService,
-    public commonService: CommonService) {
+    public commonService: CommonService,
+    private invoiceService: InvoiceService) {
      // this.setPageSize();
-      this.route.params.subscribe((res) =>{
-        this.pagination = {
-          SerachText: '',
-          SearchOrder: 'InvoiceId',
-          Status: this.defaultSelectedTicketsTypes.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(','),
-          PageNumber: 1,
-          RowOfPage: 10,
-          LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
-          first: 0,
-        }
-        this.getAllTicketsDetails(this.pagination);
-      })
 
      }
 
@@ -238,19 +237,16 @@ export class InvoiceTicketDashboardComponent implements OnInit {
     if (_dataObj) {
       const isElectronic = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'iselectronicpayment')[0];
       this.systemInfo = isElectronic?.values;
+
+      const isMultiCurrencySupport = _dataObj.find((item: any) => item?.keys?.toLowerCase() === 'ismulticurrencysupport');
+      this.IsMultiCurrencySupportEnabled = String(isMultiCurrencySupport?.values).toLowerCase() === 'true';
     }
 
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
-    this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
+    this.defaultCurrencyCode = localStorage.getItem('currencyCode') || 'USD';
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
-
-    this.route.queryParams.subscribe(params => {
-      const status = params['status'] ; 
-      this.pagination.Status = status;
-      this.getAllTicketsDetails(this.pagination);
-    });
 
     const storedPagination = localStorage.getItem('invoicePaginationData');
     if (storedPagination) {
@@ -264,7 +260,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
       this.first = 0;
     }
     this.pagination.Status = result;
-    this.getAllTicketsDetails(this.pagination);
+    // this.getAllTicketsDetails(this.pagination);
 
     this.sellerForm = this.fb.group({
       firstName : ['',Validators.required],
@@ -276,6 +272,21 @@ export class InvoiceTicketDashboardComponent implements OnInit {
       cellNumber : [''],
       contactName : ['']
     });
+    this.loadInvoiceTypes();
+    this.loadSearchOptions();
+  }
+  
+  refreshInvoiceData() {
+    this.selectedTickets = this.defaultSelectedTicketsTypes;
+    this.serachText = '';
+    this.searchOrder = 'All';
+    const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
+    this.pagination.Status = result;
+    this.pagination.SerachText = this.serachText;
+    this.pagination.SearchOrder = this.searchOrder;
+  
+    // Refresh the data
+    this.getAllTicketsDetails(this.pagination);
   }
 
 
@@ -291,6 +302,68 @@ export class InvoiceTicketDashboardComponent implements OnInit {
     this.pagination = { ...this.pagination, ...pagObj };
     this.getAllTicketsDetails(this.pagination);
   }
+
+   determineViewMode() {
+    this.isCardView = true; 
+  }
+
+  onToggleChange() {
+    if (this.isCardView) {
+        this.router.navigate([`/${this.orgName}/invoice`]);
+      } else {
+        this.router.navigate([`/${this.orgName}/invoice`]);
+    }
+
+    this.getAllTicketsDetails(this.pagination);
+  }
+
+   loadInvoiceTypes() {
+    this.commonService.GetAllInvoiceTypes({}).subscribe(
+      (data: any) => {
+        const rawData = data.body.data || [];
+        this.ticketsTypes = rawData.map((item: any) => ({
+          name: item.types,
+          code: item.rowId
+        }));
+        this.defaultSelectedTicketsTypes = this.ticketsTypes.filter((t: any) => t.name !== '');
+        this.selectedTickets = this.defaultSelectedTicketsTypes;
+      },
+      (error) => {
+        console.error('Error fetching invoice types:', error);
+      }
+    );
+  }
+  
+
+  loadSearchOptions() {
+    const paramObj = {}; 
+    this.commonService.GetAllSearchInvoiceTypes(paramObj).subscribe(
+      (data) => {
+        console.log('Chekcing search dae',data)
+        if (data) {
+          const rawsearchData = data.body.data
+          console.log('Chekcing rawsearchData dae',rawsearchData)
+          this.searchOptions = rawsearchData.map((item: any) => ({
+             value: item.searchTypes, 
+            label: item.searchTypes  
+          }));
+          console.log('Mapped options:', this.searchOptions);
+             const allOption = this.searchOptions.find(o => o.label === 'ALL');
+             this.searchOrder = allOption ? allOption.value : null;
+
+              const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
+              this.pagination.Status = result;
+              this.pagination.SearchOrder = this.searchOrder;
+              this.pagination.SerachText = this.serachText || '';
+              this.getAllTicketsDetails(this.pagination);
+        }
+      },
+      (err) => {
+        console.error('Failed to load search options:', err);
+      }
+    );
+  }
+
 
   // @HostListener('window:resize', ['$event'])
   // onResize(event:any) {
@@ -315,6 +388,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
    */
   getAllTicketsDetails(pagination: Pagination) {
     this.isLoading = true;
+    this.pagination.LocationId = this.locId;
     console.log(this.pagination);
     this.commonService.GetAllInvoiceDetails(pagination)
       .subscribe(data => {
@@ -322,6 +396,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
         console.log(data);
         this.tickets = data.body.data.map((item:any) => {
           item.statusClass = this.getColor(item.status, item.isParent);
+           item.currencyCode = item.currencyCode;
           return item;
         });
         this.pageTotal = data?.body?.totalRecord
@@ -630,6 +705,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
       LocationId: this.locId
     };
     this.getAllsellersDetails(paramObject);
+    this.getAllCurrencies();
   }
 
   getAllsellersDetails(paramObject: any) {
@@ -663,14 +739,19 @@ export class InvoiceTicketDashboardComponent implements OnInit {
 
   addRemoveStatus(event: any) {
     console.log('Change Multiselect :: ');
-    console.log(event);
+    console.log(JSON.stringify(event));
     if (event.itemValue.name === 'ALL') {
-      if (event.originalEvent) {
+      if (event.value.some((item:any)=> item.name ==='ALL')) {
         this.selectedTickets = this.ticketsTypes;
       } else {
         this.selectedTickets = this.defaultSelectedTicketsTypes;
       }
+    } else {
+      // TO DO:: check item is selected or deselected by looking at no.of item in event.value
+      // if less than 6, then remove item with All and bind remaining with this.selectedTickets
+      
     }
+    this.pagination.PageNumber = 1;
     this.searchTickets();
   }
 
@@ -682,8 +763,19 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   clickOnSeller(sellerId: any, sellerFullname: any) {
     this.selectedSellerName = sellerFullname;
     this.selectedSellerId = sellerId;
+    const selectedCurrencyObj = this.currencies.find(c => c.rowID === this.selectedCurrencyID);
+    const currencyCode = selectedCurrencyObj?.currencyCode ?? '';
+    const currencySymbol = selectedCurrencyObj?.currency ?? '';
     if (this.newTicketVisible == true) {
-      this.router.navigateByUrl(`/${this.orgName}/invoice/detail/new/${sellerId}`);
+      // this.router.navigateByUrl(`/${this.orgName}/invoice/detail/new/${sellerId}?currencyCode=${currencyCode}&currencySymbol=${currencySymbol}`);
+      if (this.IsMultiCurrencySupportEnabled) {
+        this.router.navigateByUrl(`/${this.orgName}/invoice/detail/new/${sellerId}?currencyCode=${currencyCode}&currencySymbol=${currencySymbol}`);
+      } else {
+        this.router.navigate([`/${this.orgName}/invoice/detail/new/${sellerId}`],
+        { queryParams: {currencyCode:'',currencySymbol:''} }   
+        );
+      }
+
     } else if (this.ticketvisible == true) {
       this.mergeTicketVisible = true;
       this.getAllTicketsBySellerId(sellerId);
@@ -693,6 +785,7 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   
 
   showTicketDetails(ticketData: any) {
+    this.isLoading = true;
     this.parentTicketId = ticketData.parentTicketID;
     this.tiketSelectedObj = ticketData;
     this.ticketId = ticketData.rowId;
@@ -701,15 +794,18 @@ export class InvoiceTicketDashboardComponent implements OnInit {
     if (this.parentTicketId) {
       this.parentTicketIDVisible = true;
       this.isParentTicketVisible = false;
+       this.isLoading = false;
+
     } else if (this.isParent) {
       this.getAllTicketsByParentID(ticketData.rowId);
       this.parentTicketIDVisible = false;
       this.isParentTicketVisible = true;
+      this.isLoading = false;
     } else {
       this.parentTicketIDVisible = false;
       // this.router.navigateByUrl(`/${this.orgName}/invoice/detail/${this.ticketId}/${this.customerId}`);
       this.router.navigateByUrl(`/${this.orgName}/invoice/detail/${this.ticketId}/${this.customerId}?view=card`);
-
+      this.isLoading = false;
     }
 
   }
@@ -1277,7 +1373,8 @@ export class InvoiceTicketDashboardComponent implements OnInit {
     this.commonService.insertUpdateMergeTickets(newTicket).subscribe((data: any) => {
       console.log(data);
       const ticketId = data.body.insertedRow;
-      alert('Tickets merged successfully');
+      // alert('Tickets merged successfully');
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tickets merged successfully' });
       this.mergeTicketVisible = false;
       this.dialogPopupVisible = false;
       this.cancelEditTicket(isReceiptPrint, ticketId, isCheckPrint, this.selectedSellerName);
@@ -1579,6 +1676,51 @@ export class InvoiceTicketDashboardComponent implements OnInit {
   payTickets() {
 
   }
+
+  getAllCurrencies() {
+    const paramObj = { 
+      CurrencyID: 0 
+    };
+    this.commonService.getAllCurrency(paramObj).subscribe({
+      next: (res: any) => {
+        this.currencies = res?.body?.data || [];
+
+        this.getDefaultCurrencyForTicket();
+      },
+      error: () => {
+        this.currencies = [];
+      }
+    });
+  }
+
+  getDefaultCurrencyForTicket() {
+    const params = { 
+      ModuleName: 'Invoice', 
+      LocID: this.locId };
+    
+    this.commonService.GetCurrencyByModule(params).subscribe({
+      next: (res: any) => {
+        const currencyData = res?.body?.data;
+        if (currencyData && currencyData.currencyID) {
+          this.selectedCurrencyID = currencyData.currencyID;
+        } else {
+          this.selectCurrencyFromLocalStorage();
+        }
+      },
+      error: () => {
+        this.selectCurrencyFromLocalStorage();
+      }
+    });
+  }
+
+  private selectCurrencyFromLocalStorage() {
+    const localCurrencyCode = localStorage.getItem('currencyCode') || 'USD';
+    const currency = this.currencies.find(c => c.currencyCode === localCurrencyCode);
+    if (currency) {
+      this.selectedCurrencyID = currency.rowID;
+    }
+  }
+
 
 
   /** Seller pop up actions start */

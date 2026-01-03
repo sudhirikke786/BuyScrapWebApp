@@ -20,4 +20,7 @@ export class CashDrawer {
     notMatchedAmountReason: any;
     action: any;
     notMatchedAmount: any;
+    drawerName: any;
+    isFirstTimeUser: boolean = false;  
+    isManualClose: boolean = false;
 }

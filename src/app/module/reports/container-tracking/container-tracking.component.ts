@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { HelperService } from 'src/app/core/services/helper.service';
 
@@ -22,10 +22,30 @@ export class ContainerTrackingComponent implements OnInit{
       title: 'Refresh',
       isDisable:false,
     },
+    // {
+    //   iconcode: 'mdi-download',
+    //   title: 'Download',
+    //   isDisable:true,
+    // }
     {
-      iconcode: 'mdi-download',
-      title: 'Download',
-      isDisable:true,
+      iconcode: 'mdi-file-pdf-box',
+      title: 'Download PDF',
+      isDisable: true
+    },
+    {
+      iconcode: 'mdi-file-excel-box',
+      title: 'Download Excel',
+      isDisable: true
+    },
+    {
+      iconcode: 'mdi-file-word-box',
+      title: 'Download Word',
+      isDisable: true
+    },
+    {
+      iconcode: 'mdi-xml',
+      title: 'Download XML',
+      isDisable: true
     }
   ];
 
@@ -51,7 +71,7 @@ reportData: any;
   fileDataObj: any;
   showDownload = false;
   containerName:string='';
-
+  currentRole:any;
   showLoader = false;
   showLoaderReport = false;
   isReportShow = false;
@@ -59,12 +79,14 @@ reportData: any;
   numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
   checkTabView: boolean = false;
+  adminAdvertisement!:  string | null;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
     private helperService:HelperService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private authService: AuthService) { }
 
 
   ngOnInit() {
@@ -72,8 +94,10 @@ reportData: any;
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.checkTabView = this.helperService.isTab();
-  
+    this.adminAdvertisement = localStorage.getItem('adminAdvertisement');
     this.getAllContainerLocation();
+    this.currentRole = this.authService.userCurrentRole();
+    this.setActionsByRole();
   }
 
 
@@ -89,7 +113,12 @@ reportData: any;
         console.log(data);
         this.reportData = data.body.data;
         if (this.reportData.length > 0) {
-          this.actionList.find(action => action.iconcode === 'mdi-download')!.isDisable = false;
+          this.actionList =  this.actionList.map((item) => {
+            if(item.iconcode=='mdi-download' || item.iconcode=='mdi-file-pdf-box' || item.iconcode=='mdi-file-excel-box' || item.iconcode=='mdi-file-word-box' || item.iconcode=='mdi-xml'){
+              item.isDisable = false;
+            }
+            return item
+          })
         }
       },
         (err: any) => {
@@ -103,13 +132,18 @@ reportData: any;
   }
 
 
-  generateContainerTrackingReport() {
-
-    this.isReportShow = true;
+  generateContainerTrackingReport(reportType? : string | null) {
     const param = {
-      ContainerName : this.containerName
+      ContainerName : this.containerName,
+      ReportType: reportType,
+      Advertising: this.adminAdvertisement
     }
-    this.showDownload = true;
+
+    if ((reportType && reportType == 'PDF') || !reportType) {
+      this.isReportShow = true;
+      this.showDownload = true;
+    }
+
     this.commonService.generateContainerTrackingReport(param)
       .subscribe(data => {
         console.log('generateContainerTrackingReport :: ');
@@ -117,8 +151,10 @@ reportData: any;
         this.fileDataObj = data.body.data;
         this.showDownload = false;
 
-        if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,"Container Tracking Report"+this.toDate)
+        if(this.checkTabView && !reportType) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj,"Container Tracking Report"+this.toDate);
+        } else if (reportType && reportType != 'PDF') {
+          this.helperService.downloadBase64Report(this.fileDataObj,"Container Tracking Report"+this.toDate, reportType);
         }
 
       },
@@ -127,6 +163,28 @@ reportData: any;
           // this.errorMsg = 'Error occured';
         }
       );
+  }
+
+setActionsByRole() {
+    const allActions = [
+      { iconcode: 'mdi-magnify', title: 'Search',isDisable: false  },
+      { iconcode: 'mdi-refresh', title: 'Refresh',isDisable: false  },
+      { iconcode: 'mdi-file-pdf-box', title: 'PDF',isDisable: true  },
+      { iconcode: 'mdi-file-excel-box', title: 'Excel',isDisable: true  },
+      { iconcode: 'mdi-file-word-box', title: 'Word',isDisable: true  }
+      ,
+      {iconcode: 'mdi-xml',title:'XML',isDisable: true}
+    ];
+  
+    const restrictedActions = ['mdi-file-pdf-box', 'mdi-file-excel-box', 'mdi-file-word-box','mdi-xml'];
+
+    if (this.currentRole === 'Administrator') {
+      this.actionList = allActions;
+    } else {
+      this.actionList = allActions.filter(
+        action => !restrictedActions.includes(action.iconcode)
+      );
+    }
   }
 
   getAction(actionCode: any) {
@@ -139,9 +197,21 @@ reportData: any;
         this.containerName = '';
         this.getAllContainerLocation();
         break;
-      case 'mdi-download':
-       this.generateContainerTrackingReport();
+      // case 'mdi-download':
+      //  this.generateContainerTrackingReport();
+      //   break;
+      case 'mdi-file-pdf-box':
+        this.generateContainerTrackingReport('PDF');
+      break;
+      case 'mdi-file-excel-box':
+        this.generateContainerTrackingReport('Excel');
         break;
+      case 'mdi-file-word-box':
+        this.generateContainerTrackingReport('Word');
+        break;
+        case 'mdi-xml':
+          this.generateContainerTrackingReport('XML');
+          break;
       default:
         break;
     }

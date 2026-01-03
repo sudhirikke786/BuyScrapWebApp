@@ -44,11 +44,21 @@ export class HeaderComponent implements OnInit {
   wWidth: any;
   wHeight: any;
   defulatFontSize = 100;
-
+  isDispatchOnly : boolean = false;
   locations :any;
   locationName!: string | null;
+  shouldShowCashDrawerPopup: boolean = false;
   
   strCashDrawerStatus: string = 'OPEN';
+  MultiCashDrawerEnabled: boolean = false;
+  selectedCashDrawer: any = null; 
+  activeDrawerId: any;
+  drawerName: string = '';
+  isFirstTimeUser: boolean = false;
+
+  
+  IsUseCheckTemplateEnabled: boolean = false;
+  isPreviousDayOpen: boolean = false;
   
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -76,27 +86,63 @@ export class HeaderComponent implements OnInit {
  
 
   ngOnInit() {
+    const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
+    if (_dataObj) {
+      const UseCheckTemplate = _dataObj.find((item: any) => item?.keys?.toLowerCase() === 'usechecktemplate');
+      this.IsUseCheckTemplateEnabled = String(UseCheckTemplate?.values).toLowerCase() === 'true';
+
+      const MultiCashDrawerEnabled = _dataObj.find((item: any) => item?.keys?.toLowerCase() === 'ismulticashdrawersupport');
+      this.MultiCashDrawerEnabled = String(MultiCashDrawerEnabled?.values).toLowerCase() === 'true';
+    }
+        
     this.orgName = localStorage.getItem('orgName');
     this.locationName = localStorage.getItem('locationName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.currentSize()
      
-    
+    this.isDispatchOnly = localStorage.getItem('isDispatchOnly') === 'true';
     this.userFullName = this.stroarge.getLocalStorage('userObj').userdto?.firstName;
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.mobileName = this.userFullName?.split(" ").map((name :any) => name.charAt(0).toUpperCase()).join("");
 
+    const drawerJson = localStorage.getItem('selectedCashDrawer');
+      if (drawerJson) {
+        this.selectedCashDrawer = JSON.parse(drawerJson);
+      }
+
+    this.activeDrawerId = localStorage.getItem('selectedCashDrawerId') 
+      ? parseInt(localStorage.getItem('selectedCashDrawerId')!, 10) 
+      : (this.selectedCashDrawer ? this.selectedCashDrawer.drawerID : 1);
+
+    const cashDrawerOpenedFlag = localStorage.getItem('cashDrawerOpened');
+
+    // if ((this.currentRole === 'Administrator' || this.currentRole === 'Cashier') && !this.isDispatchOnly && cashDrawerOpenedFlag !== 'false') {
+    //   this.isReopenRegister = true;
+    //   this.shouldShowCashDrawerPopup = true;
+    // } else {
+    //   this.isReopenRegister = false;
+    //   this.shouldShowCashDrawerPopup = false;
+    // }
+    this.isReopenRegister = false;
+    this.shouldShowCashDrawerPopup = false;
+
     if (this.currentRole !== 'Scale' && this.currentRole !== 'Driver') {
       const paramObject = {
-        LocationId: this.locId
+        LocationId: this.locId,
+        DrawerID: this.activeDrawerId
       };
       this.getCashDrawerAmountAndPaidTicketCount(paramObject);
       this.getCashdrawerdetails(paramObject);
-        this.dataService.getCashDrawerAmountDTO().subscribe((amount:any) =>{
-          this.cashDrawerBalanceAmount = amount;
-       });
-      this.getCashDrawerAmountDTO(paramObject);
+      // this.getCashDrawerAmountDTO(paramObject);
+      
+      this.dataService.getCashDrawerAmountDTO().subscribe((amount:any) =>{
+        this.cashDrawerBalanceAmount = amount;
+      });
+
+      this.dataService.getPaidCount().subscribe((count: any) => {
+        this.paidTicketCount = count;
+      });
     }
     this.updateCashDrawerStatus();
   }
@@ -104,42 +150,53 @@ export class HeaderComponent implements OnInit {
   private async updateCashDrawerStatus() {
     try {
       const cashDrawerData = await this.commonService.getCashDrawerAmountDTO({
-        LocationId: this.locId
+        LocationId: this.locId,
+        DrawerID: this.activeDrawerId
       }).toPromise();
   
-      if (!cashDrawerData?.body.data) return;
-  
+      if (!cashDrawerData?.body.data) {
+        localStorage.setItem('cashDrawerStatus', 'CLOSE');
+        return;
+      }
+      
       const status = cashDrawerData.body.data.status.toUpperCase();
-      const updatedDate = new Date(cashDrawerData.body.data.updatedDate);
-      const today = new Date();
+      const updatedDate = new Date(cashDrawerData.body.data.updatedDateOnly);
+      // const updatedDate = new Date();
+      const today = new Date(cashDrawerData.body.data.locationDateOnly);
+      // const today = new Date();
   
+      const oldDate = updatedDate.toLocaleDateString('en-CA'); 
+      const todayDate = today.toLocaleDateString('en-CA'); 
+      
+      if ((this.currentRole === 'Administrator' || this.currentRole === 'Cashier') && !this.isDispatchOnly) {
+      if (oldDate !== todayDate && status === 'OPEN') {
+        this.isPreviousDayOpen = true;  // ★ NEW STATE
+        this.shouldShowCashDrawerPopup = true;
+        this.isReopenRegister = true;
+      } else if (status === 'CLOSE') {
+        this.isPreviousDayOpen = false;  // ★ NEW STATE
+        this.shouldShowCashDrawerPopup = true;
+        this.isReopenRegister = true;
+      } }
+      else {
+        this.isPreviousDayOpen = false;
+      }
   
-      const oldDate = updatedDate.toISOString().split('T')[0];
-    const todayDate = today.toISOString().split('T')[0];
-    
-    if (oldDate !== todayDate) {
-      const postParams = {
-        status: 'CLOSED',
-        LocId: this.locId,
-        LastCloseError: true,
-        date: new Date().toISOString()
-      };
-
-      await this.commonService.UpdateCashDrawerStatus(null, postParams).toPromise();
-      this.strCashDrawerStatus = 'CLOSED';
-    } else {
       this.strCashDrawerStatus = status;
-    }
+      localStorage.setItem('cashDrawerStatus', status);
+  
+      this.cashDrawerBalanceAmount = cashDrawerData.body.data.balanceAmount;
+      this.previousDayCDBalanceAmount = this.cashDrawerBalanceAmount;
+    } catch (error) {
+      // localStorage.setItem('cashDrawerStatus', 'CLOSE');
 
-    this.isReopenRegister = this.strCashDrawerStatus === 'CLOSED';
-  } catch (error) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: 'Cash drawer status check failed'
-    });
-  }
-} 
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to fetch cash drawer status. Please check your connection or try again'
+      });
+    }
+  } 
 
   
   getCashDrawerAmountAndPaidTicketCount(paramObject: any) {
@@ -167,6 +224,9 @@ export class HeaderComponent implements OnInit {
           console.log(data);
           // this.dataService.cashDrawerDetail(data);
           this.cashdrawerdetail = data.body.data[0];
+          this.isFirstTimeUser = this.cashdrawerdetail.isFirstTimeUser;
+          console.log('getCashdrawerdetails :: ',this.isFirstTimeUser);
+          this.drawerName = this.cashdrawerdetail.drawerName;
           this.totalAmount = (this.cashdrawerdetail.dollar1 + (this.cashdrawerdetail.dollar5 * 5) + (this.cashdrawerdetail.dollar10 * 10) +
                             (this.cashdrawerdetail.dollar20 * 20) + (this.cashdrawerdetail.dollar50 * 50) + (this.cashdrawerdetail.dollar100 * 100) + 
                             (this.cashdrawerdetail.cent1 * .01) + (this.cashdrawerdetail.cent5 * .05) + (this.cashdrawerdetail.cent10 * .1) + 
@@ -186,8 +246,10 @@ export class HeaderComponent implements OnInit {
           // this.dataService.cashDrawerAmountDTO(data);
           this.cashDrawerBalanceAmount = data.body.data.balanceAmount;
           this.previousDayCDBalanceAmount = this.cashDrawerBalanceAmount;
+          const status = data.body.data.status.toUpperCase();
+          localStorage.setItem('cashDrawerStatus', status);
 
-          if (data.body.data.status.toUpperCase() === 'CLOSED') {
+          if (data.body.data.status.toUpperCase() === 'CLOSE') {
             this.isReopenRegister = true;
             this.dataService.setCashDrawerAmountDTO(0);
           } else {
@@ -197,13 +259,28 @@ export class HeaderComponent implements OnInit {
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to retrieve current cash drawer balance. Please check your connection or try again.'
+          });
         }
       );
   }
 
   approvePreviousdayBalance() {
     // alert(JSON.stringify(this.cashdrawerdetail));    
-
+    if (this.isFirstTimeUser){
+      this.messageService.add({
+        severity:'warn',
+        summary:'Action Required',
+        detail:'Please add money from Cash Drawer Section',
+        life: 3000
+      });
+      
+    }
+    if (this.isPreviousDayOpen) {
+      this.cashdrawerdetail.isManualClose = true; // ★ For SP_InsertCashDrawerDetailsAudit
+    } else {
+      this.cashdrawerdetail.isManualClose = false;
+    }
     this.cashdrawerdetail.dollar1 = this.cashdrawerdetail.dollar1 ? parseFloat(this.cashdrawerdetail.dollar1.toString()) : 0;
     this.cashdrawerdetail.dollar5 = this.cashdrawerdetail.dollar5 ? parseFloat(this.cashdrawerdetail.dollar5.toString()) : 0;
     this.cashdrawerdetail.dollar10 = this.cashdrawerdetail.dollar10 ? parseFloat(this.cashdrawerdetail.dollar10.toString()) : 0;
@@ -228,11 +305,15 @@ export class HeaderComponent implements OnInit {
       this.cashdrawerdetail.notMatchedAmountReason = '';
       this.cashdrawerdetail.action = 'Open';
       // POST call
+      this.strCashDrawerStatus = 'OPEN';
+      this.isReopenRegister = false;
+      localStorage.setItem('cashDrawerStatus', 'OPEN');
+      localStorage.setItem('cashDrawerOpened', 'false');
       this.saveRegister(this.cashdrawerdetail);
     } else {
       this.errorAlert('Total Amount is not matched with Cash Drawer Balance');
     }
-    this.strCashDrawerStatus = 'OPEN';
+    
   }
 
 
@@ -262,7 +343,18 @@ export class HeaderComponent implements OnInit {
 
   openWithDifferentAmount() {
     // alert('implementation pending .... !!!');
+    const total = this.calculateDenominationTotal();
+    this.differntOpeningAmount = total;
     this.closeRegisterWithDiffernceVisible = true;
+    localStorage.setItem('cashDrawerStatus', 'OPEN');
+    localStorage.setItem('cashDrawerOpened', 'false');
+
+  }
+
+   skipAndContinue() {
+    this.isReopenRegister = false;
+    localStorage.setItem('cashDrawerStatus', 'CLOSE');
+    localStorage.setItem('cashDrawerOpened', 'false');
   }
 
   hideCloseRegister(){
@@ -278,6 +370,11 @@ export class HeaderComponent implements OnInit {
     newCashDrawerdetail.updatedDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.currentDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.locID = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    newCashDrawerdetail.drawerID = this.activeDrawerId;
+    newCashDrawerdetail.isManualClose = this.cashdrawerdetail.isManualClose;
+    if (this.selectedCashDrawer && this.selectedCashDrawer.drawerID === this.activeDrawerId) {
+      newCashDrawerdetail.drawerName = this.selectedCashDrawer.drawerName;
+    }
     
     console.log("Final CashDrawerTransaction :: " + JSON.stringify(newCashDrawerdetail));
     
@@ -294,8 +391,34 @@ export class HeaderComponent implements OnInit {
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
   }
+  calculateDenominationTotal() {
+    let total = 0;
+  
+    // Bills
+    total += (Number(this.cashdrawerdetail.dollar1) || 0) * 1;
+    total += (Number(this.cashdrawerdetail.dollar5) || 0) * 5;
+    total += (Number(this.cashdrawerdetail.dollar10) || 0) * 10;
+    total += (Number(this.cashdrawerdetail.dollar20) || 0) * 20;
+    total += (Number(this.cashdrawerdetail.dollar50) || 0) * 50;
+    total += (Number(this.cashdrawerdetail.dollar100) || 0) * 100;
+  
+    // Cents
+    total += (Number(this.cashdrawerdetail.cent1) || 0) * 0.01;
+    total += (Number(this.cashdrawerdetail.cent5) || 0) * 0.05;
+    total += (Number(this.cashdrawerdetail.cent10) || 0) * 0.10;
+    total += (Number(this.cashdrawerdetail.cent25) || 0) * 0.25;
+  
+    return total;
+  }
+  
 
   saveRegisterWithDiffernceAmount() {
+    debugger;
+    if (this.isPreviousDayOpen) {
+      this.cashdrawerdetail.isManualClose = true; // ★ For SP_InsertCashDrawerDetailsAudit
+    } else {
+      this.cashdrawerdetail.isManualClose = false;
+    }
     
     this.cashdrawerdetail.dollar1 = this.cashdrawerdetail.dollar1 ? parseFloat(this.cashdrawerdetail.dollar1.toString()) : 0;
     this.cashdrawerdetail.dollar5 = this.cashdrawerdetail.dollar5 ? parseFloat(this.cashdrawerdetail.dollar5.toString()) : 0;
@@ -325,22 +448,53 @@ export class HeaderComponent implements OnInit {
     this.differntOpeningAmount = 0;    
     this.closeRegisterWithDiffernceVisible = false;
     this.strCashDrawerStatus = 'OPEN';
+    
+    this.dataService.getCashDrawerAmountDTO().subscribe((amount:any) =>{
+      this.cashDrawerBalanceAmount = amount;
+    });
   }
 
   backToUserLogin() {
-    document.querySelectorAll('iframe').forEach(
-      function(elem: any){
-        elem.parentNode.removeChild(elem);
-    });
+    const userObjStr = localStorage.getItem('userObj');
     const orgName = localStorage.getItem('orgName');
+  let requestObj: any = {};
+
+  if (userObjStr) {
+    const userObj = JSON.parse(userObjStr);
+    requestObj = {
+      Username: userObj.userdto.userName
+    };
+  }
+  this.commonService.UserLogout(requestObj).subscribe({
+    next: (res) => {
+      console.log('Logout success:', res);
+
+      // Cleanup iframes
+      document.querySelectorAll('iframe').forEach((elem: any) => {
+        elem.parentNode.removeChild(elem);
+      });
+    
+    localStorage.removeItem('cashDrawerOpened');
     localStorage.removeItem('userObj');
     localStorage.removeItem('locId');
     localStorage.removeItem('locationName');
     localStorage.removeItem('currencyCode');
     localStorage.removeItem('ticketPagination');
     localStorage.removeItem('filterObj');
+    localStorage.removeItem('selectedCashDrawer');   
+    localStorage.removeItem('selectedCashDrawerId');
+    localStorage.removeItem('cashDrawerStatus');
+    this.router.navigateByUrl(`${orgName}/user-login`);
+  },
+  error: (err) => {
+    console.error('Logout failed:', err);
+
+    // Even if API fails, still clean up and redirect
+    localStorage.clear();
     this.router.navigateByUrl(`${orgName}/user-login`);
   }
+});
+}
 
   toggleFullscreen() {
     const element = document.documentElement;

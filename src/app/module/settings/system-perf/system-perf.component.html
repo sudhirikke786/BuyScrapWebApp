@@ -39,11 +39,20 @@
                 <td>{{ seller.keys }}</td>
                 <td>
 
-                    <div class="d-flex">
+                    <div class="d-flex" *ngIf="seller.type === 'Bool'">
                         <div class="ms-1">Off</div>
                         <div class="ms-1"><p-inputSwitch [(ngModel)]="seller.isChecked" (onChange)="showConfirmation($event,rowIndex,seller)"></p-inputSwitch></div>
                         <div class="ms-1">On</div>
 
+                    </div>
+
+                    <div *ngIf="seller.type === 'Int' || seller.type === 'Number'">
+                        <input type="number" 
+                               class="form-control" 
+                               [(ngModel)]="seller.values"
+                               (keyup.enter)="saveNumericValue(seller, rowIndex)"
+                               (blur)="saveNumericValue(seller, rowIndex)"
+                               style="width: 100px;">
                      </div>
                 </td>
                 <!-- <td> <a class="btn btn-grid btn-primary" (click)="editSystem(seller)"><i class="mdi mdi-pencil"></i> Edit</a>

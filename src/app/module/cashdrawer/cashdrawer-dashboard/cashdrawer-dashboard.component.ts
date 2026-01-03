@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-
+import { HelperService } from 'src/app/core/services/helper.service';
 import { CashDrawerTransaction } from 'src/app/core/model/cash-drawer-transaction.model';
 import { CashDrawer } from 'src/app/core/model/cash-drawer.model';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DataService } from 'src/app/core/services/data.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 	
 
 @Component({
   selector: 'app-cashdrawer-dashboard',
   templateUrl: './cashdrawer-dashboard.component.html',
   styleUrls: ['./cashdrawer-dashboard.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService,ConfirmationService]
 })
 export class CashdrawerDashboardComponent implements OnInit {
 
@@ -49,22 +49,37 @@ export class CashdrawerDashboardComponent implements OnInit {
   
   numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
+
+  activeDrawerId: number = 0; 
+  selectedCashDrawer: any = null; 
   
   constructor(private route: ActivatedRoute,
     private router: Router,
     private commonService: CommonService,
     private stroarge:StorageService,
     private messageService: MessageService,
-    private dataService: DataService) { }
+    private dataService: DataService,
+    public helperService: HelperService,
+    private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
-        
+    
+    const drawerJson = localStorage.getItem('selectedCashDrawer');
+      if (drawerJson) {
+        this.selectedCashDrawer = JSON.parse(drawerJson);
+      }
+
+    this.activeDrawerId = localStorage.getItem('selectedCashDrawerId') 
+      ? parseInt(localStorage.getItem('selectedCashDrawerId')!, 10) 
+      : (this.selectedCashDrawer ? this.selectedCashDrawer.drawerID : 1);
+
     const paramObject = {
-      LocationId: this.locId
+      LocationId: this.locId,
+      DrawerID: this.activeDrawerId
     };
     // this.getCashDrawerAmountAndPaidTicketCount(paramObject);
     this.getCashdrawerdetails(paramObject);
@@ -72,6 +87,10 @@ export class CashdrawerDashboardComponent implements OnInit {
 
   }
   
+  symbol(): string {
+    return this.helperService.getCurrencySymbol(this.currencySymbol);
+  }
+
   getCashDrawerAmountAndPaidTicketCount(paramObject: any) {
     this.commonService.getCashDrawerAmountAndPaidTicketCount(paramObject)
       .subscribe((data: any) => {
@@ -121,11 +140,29 @@ export class CashdrawerDashboardComponent implements OnInit {
   }
 
   showAddModel(){
+    const cashDrawerStatus = localStorage.getItem('cashDrawerStatus');
+    if(cashDrawerStatus == 'CLOSE'){
+      this.messageService.add({
+        severity:'error',
+        summary:'Error',
+        detail:'Open the cash drawer first'
+      });
+      return;
+    }
     this.addWithdrawMoneyPopupVisible =  true;
     this.cashDrawerAction = 'IN';
   }
 
   showPreetyCashModel() {
+    const cashDrawerStatus = localStorage.getItem('cashDrawerStatus');
+    if(cashDrawerStatus == 'CLOSE'){
+      this.messageService.add({
+        severity:'error',
+        summary:'Error',
+        detail:'Open the cash drawer first'
+      });
+      return;
+    }
     this.addWithdrawMoneyPopupVisible =  true;
     this.cashDrawerAction = 'OUT';
   }
@@ -149,7 +186,9 @@ export class CashdrawerDashboardComponent implements OnInit {
     newCashDrawerTransaction.amount = parseFloat(this.enterAmount.toString().replace(/,/g,''));
     newCashDrawerTransaction.reason = this.addReason;
     newCashDrawerTransaction.locID = this.locId;
-    newCashDrawerTransaction.type = this.cashDrawerAction;      
+    newCashDrawerTransaction.type = this.cashDrawerAction;
+    newCashDrawerTransaction.drawerID = this.activeDrawerId;
+     
     
     console.log("Final CashDrawerTransaction :: " + JSON.stringify(newCashDrawerTransaction));
     
@@ -160,13 +199,17 @@ export class CashdrawerDashboardComponent implements OnInit {
       
       // Update values
       const paramObject = {
-        LocationId: this.locId
+        LocationId: this.locId,
+        DrawerID: this.activeDrawerId
       };
       // this.getCashdrawerdetails(paramObject);
       this.getCashDrawerAmountDTO(paramObject);
       this.getCashDrawerAmountAndPaidTicketCount(paramObject);
 
       this.hideAddWithdrawMoneyPopup();
+    //   setTimeout(() => {
+    //     window.location.reload();
+    // }, 1500);
     },(error: any) =>{  
       console.log(error);  
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
@@ -174,8 +217,18 @@ export class CashdrawerDashboardComponent implements OnInit {
   }
 
   showReopenRegister() {
+    const cashDrawerStatus = localStorage.getItem('cashDrawerStatus');
+    if(cashDrawerStatus == 'CLOSE'){
+      this.messageService.add({
+        severity:'error',
+        summary:'Error',
+        detail:'Open the cash drawer first'
+      });
+      return;
+    }
     const paramObject = {
-      LocationId: this.locId
+      LocationId: this.locId,
+      DrawerID: this.activeDrawerId 
     };
     this.getCashdrawerdetails(paramObject);
     this.isReopenRegister = true;
@@ -230,7 +283,16 @@ export class CashdrawerDashboardComponent implements OnInit {
   }
 
 
-  openCloseRegisterPopup(){    
+  openCloseRegisterPopup(){   
+    const cashDrawerStatus = localStorage.getItem('cashDrawerStatus');
+    if(cashDrawerStatus == 'CLOSE'){
+      this.messageService.add({
+        severity:'error',
+        summary:'Error',
+        detail:'Open the cash drawer first'
+      });
+      return;
+    } 
     this.cashdrawerClosingdetail = new CashDrawer();
     this.closeRegisterVisible = true;
   }
@@ -286,23 +348,37 @@ export class CashdrawerDashboardComponent implements OnInit {
     newCashDrawerdetail.updatedDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.currentDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerdetail.locID = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    newCashDrawerdetail.drawerID = this.activeDrawerId;
     
     console.log("Final CashDrawerTransaction :: " + JSON.stringify(newCashDrawerdetail));
     
     this.commonService.insertCashDrawerDetails(newCashDrawerdetail).subscribe(data =>{    
       console.log(data); 
       let text = "Do you want to print receipt?";
+      this.confirmationService.confirm({
+        message: 'Do you want to print receipt?',
+        header: 'Print Receipt',
+
+        acceptLabel: 'Yes',
+        rejectLabel: 'No',
+        accept: () => {
+          this.getCashdrawerReceipt();
+        },
+        reject: () => {
+          this.closeAndRedirect();
+        }
+      });
 
       // alert('Cash Drawer Detail saved successfully');
       // this.messageService.add({ severity: 'success', summary: 'success', detail: 'Ticket Inserted/ updated successfully' });
       this.hideCloseRegister();
       this.hideReopenRegister();
       
-      if (confirm(text) == true) {
-        this.getCashdrawerReceipt();
-      } else {        
-        this.closeAndRedirect()
-      }
+      // if (confirm(text) == true) {
+      //   this.getCashdrawerReceipt();
+      // } else {        
+      //   this.closeAndRedirect()
+      // }
     },(error: any) =>{  
       console.log(error);  
       this.errorAlert('Error!!! Cash Drawer Detail not saved..');

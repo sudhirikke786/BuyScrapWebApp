@@ -86,4 +86,77 @@ export class HelperService {
       downloadLink.click();
     }
   }
+
+ 
+  getCurrencySymbol(currencyCode: string): string {
+    const symbolMap: any = {
+      'NIO': 'C$',
+     
+    };
+    return symbolMap[currencyCode] || currencyCode;
+  }
+  
+  
+  
+  downloadBase64Report(base64Data: string, fileName: string, format: string): void {
+    // const mimeTypes: Record<string, string> = {
+    //     PDF: 'application/pdf',
+    //     Excel: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    //     Word: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    // };
+
+    // const fileExtensions: Record<string, string> = {
+    //     PDF: '.pdf',
+    //     Excel: '.xls',
+    //     Word: '.doc'
+    // };
+
+    const mimeTypes: Record<string, string> = {
+      PDF: 'application/pdf',
+      Excel: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Modern Excel
+      XLS: 'application/vnd.ms-excel',  // Older Excel format
+      Word: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Modern Word
+      DOC: 'application/msword',  // Older Word format
+      CSV: 'text/csv', // Adding support for CSV format
+      XML:'application/xml'
+    };
+    
+    const fileExtensions: Record<string, string> = {
+        PDF: '.pdf',
+        Excel: '.xlsx',
+        XLS: '.xls',
+        Word: '.docx',
+        DOC: '.doc',
+        CSV: '.csv', // Adding support for CSV format
+        XML:'.xml'
+    };
+  
+
+    if (!mimeTypes[format] || !fileExtensions[format]) {
+        console.error('Unsupported format:', format);
+        return;
+    }
+
+    // Convert Base64 string to byte array
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+
+    // Create a Blob and URL
+    const blob = new Blob([byteArray], { type: mimeTypes[format] });
+    const blobUrl = URL.createObjectURL(blob);
+
+    // Create download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = blobUrl;
+    downloadLink.download = fileName ?? `Download Report${fileExtensions[format]}`;
+    document.body.appendChild(downloadLink);
+
+    // Trigger download
+    downloadLink.click();
+  }
+
 }

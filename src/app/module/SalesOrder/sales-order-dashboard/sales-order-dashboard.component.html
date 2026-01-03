@@ -1,0 +1,266 @@
+  <div class="content-page" *ngIf="!showLoader">
+    <div class="content">
+      <div class="container-fluid">
+          <div class="bdcmb">
+              <div class="row">
+                  <div class="col-sm-6 col-6">
+                      <h4 class="page-title">Sales order </h4>
+                  </div>
+
+                  <div class="col-sm-6 col-6">
+                      <div class="b-links">
+                          <a routerLink="/{{orgName}}/home">Home</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="row mt-2" >
+              <div class="ticket-card col-md-12 d-flex  display-mobile flex-wrap">
+                <div class="col-xs-12 col-md-4 col-lg-3 ">
+                    <input type="text" id="example-palaceholder" class="form-control" placeholder="Search"   [(ngModel)]="salesOrderSearchText">
+                </div>
+                <div class="col">
+                  <div  class="d-flex justify-content-between">
+                      <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
+                  </div>                                   
+                </div>
+              </div>
+          </div>
+
+          <div class="row mt-3">
+            <p-table [value]="salesOrders" [scrollable]="true" scrollHeight="40vh" 
+                    [paginator]="true" [rows]="10"
+                    [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [rowsPerPageOptions]="[10, 20, 50]">
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Sales Order ID</th>
+                  <th>Customer Name</th>
+                  <th>Total Amount</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-order>
+                <tr>
+                  <td>{{ order.rowID }}</td>
+                  <td>{{ order.customerName }}</td>
+                  <td>{{ order.totalAmount | currency }}</td>
+                  <td>{{ order.status }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-primary me-1" (click)="EditSalesOrder(order)">Open</button>
+                    <!-- <button class="btn btn-sm btn-success">Ship</button> -->
+                    <button class="btn btn-sm btn-danger me-1" (click)="deleteSalesOrder(order.rowID)">Delete</button>
+                    <button *ngIf="order.status !== 'OPEN'" class="btn btn-sm btn-primary me-1" (click)="ViewShipout(order)">View Ship</button>
+                  </td>
+                </tr>
+              </ng-template>
+
+            </p-table>
+
+          </div>
+      </div>      
+    </div>
+  </div>
+
+  <div class="content-page" *ngIf="showLoader">
+
+    <app-page-loader type="ftable"></app-page-loader>
+
+  </div>
+
+   <p-dialog [modal]="true" 
+        [header]="SalesOrderHeader"
+        [(visible)]="dialogPopupVisible" [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}"> 
+
+        <div class="row" *ngIf="sellerLoader">
+         
+                <app-page-loader type="ftable"></app-page-loader>
+           
+        </div>
+
+        <div class="row" *ngIf="!sellerLoader">
+            <div class="col-md-6">
+                <input type="text" #searchBox id="example-palaceholder"  (keydown)="onKeydown($event, searchBox.value)"  [(ngModel)]="searchSellerInput" class="form-control"
+                    placeholder="Search for Sellers, Address, License and License Plate">
+            </div>
+            <div class="col-md-6">
+                <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newTicketList"></app-actionbar>
+
+                <!-- <a  type="button" (click)="addNewSeller()" 
+                class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
+                New Customer
+                </a> -->
+            </div>
+        </div>
+
+        <div class="row mt-3"  *ngIf="!sellerLoader">
+
+            <p-table [value]="sellers" [scrollable]="true" scrollHeight="40vh" [paginator]="true" [rows]="10"
+                [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
+
+
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th></th>
+                        <th>Seller</th>
+                        <th>Driver's License</th>
+                        <th>Address</th>
+                        <!-- <th>Action</th> -->
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-seller>
+                    <tr style="cursor: pointer;" (click)="clickOnSeller(seller.rowId, seller.fullName, seller.sellerType)">
+                        <td>
+                            <!-- <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" (click)="showSelectedImage(seller.idfaceShotImage, '1')"></a> -->
+                            <a *ngIf="!IsCustomerFacePictureEnabled && seller.idfaceShotImage"><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" ></a>
+                            <img *ngIf="IsCustomerFacePictureEnabled || !seller.idfaceShotImage" src="/assets/images/custom/icons/user.png" class="default-img">
+
+                        </td>
+                        <td>{{ seller.fullName }}</td>
+                        <td>{{ seller.driverLicenseNumber }}</td>
+                        <td>{{ seller.streetAddress }}</td>
+                        <!-- <td>                                                           
+                            <a class="btn btn-grid btn-success"
+                                (click)="clickOnSeller(seller.rowId, seller.fullName)" >
+                                <i class="mdi mdi-eye pe-1"></i> Select
+                            </a>
+                        </td> -->
+                    </tr>
+                </ng-template>
+              
+            </p-table>
+       
+        </div>
+     
+    </p-dialog>
+
+<p-dialog [modal]="true" 
+  header="New Driver"
+  [(visible)]="newDriverScreenVisible"
+  [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}"
+>
+
+  <div class="row mt-3">
+    <h4>Driver Personal Information</h4>
+
+    <div class="form-group col-sm-6">
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          id="carrier" name="carrier" [(ngModel)]="driverDetails.carrier" 
+          placeholder="Carrier"
+        />
+        <label for="floatingInput">Carrier</label>
+      </div>
+    </div>
+    
+    <div class="form-group col-sm-3">
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="driverlicense" name="driverlicense" [(ngModel)]="driverDetails.driverlicense" 
+            placeholder="Driver License"
+          />
+          <label for="floatingInput">Driver License</label>
+        </div>
+    </div>
+    
+    <div class="form-group col-sm-3">
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="licenseplate" name="licenseplate" [(ngModel)]="driverDetails.licenseplate" 
+            placeholder="License Plate"
+          />
+          <label for="floatingInput">License Plate</label>
+        </div>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="form-group col-sm-3">
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          id="truck" name="truck" [(ngModel)]="driverDetails.truck" 
+          placeholder="Truck"
+        />
+        <label for="floatingInput">Truck Type</label>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-3">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="make" name="make" [(ngModel)]="driverDetails.make" 
+        placeholder="Make" />
+        <label for="floatingInput">Make</label>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-3">
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          id="model" name="model" [(ngModel)]="driverDetails.model" 
+          placeholder="Model"
+        />
+        <label for="floatingInput">Model</label>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-3">
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          id="driverName" name="driverName" [(ngModel)]="driverDetails.driverName" 
+          placeholder="Driver Name"
+        />
+        <label for="floatingInput">Driver Name</label>
+      </div>
+    </div>
+  </div>
+
+ 
+  <div class="row mt-2">
+
+    <div class="form-group class=mb-3 col-sm-6">
+      <div class="form-floating">
+        <textarea type="text" class="form-control" id="note" name="note" [(ngModel)]="driverDetails.note" 
+         placeholder="Note"  style="height: 100px; resize: vertical; width: 100%; min-height: 100px; box-sizing: border-box;"></textarea>
+        <label for="floatingInput">Note</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-sm-12">
+      <a class="btn btn-primary " (click)="saveDriverInfo()" >Save</a>
+    </div>
+  </div>
+</p-dialog>
+
+<p-confirmDialog key="deleteDialog" header="Confirmation" 
+  icon="pi pi-exclamation-triangle" 
+  message="Are you sure you want to delete this sales Order?"
+  acceptLabel="Yes" 
+  rejectLabel="No" 
+  acceptButtonStyleClass="p-button-danger" 
+  rejectButtonStyleClass="p-button-outlined" 
+  accept="confirmDeleteSalesOrder()" 
+  reject="cancelDeleteSalesOrder()"></p-confirmDialog>
+
+<p-toast></p-toast>

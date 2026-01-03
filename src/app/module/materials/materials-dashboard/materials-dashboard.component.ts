@@ -45,13 +45,13 @@ export class MaterialsDashboardComponent implements OnInit {
   showLoader = false;
   isEditModeOn = false;
   materialData: any;
-
-  unitOfMeasure =  [
-    {name: 'Lb', value: 1},
-    {name: 'Kg', value: 2},
-    {name: 'Ounce', value: 3},
-    {name: 'Gram', value: 4}
-  ];
+  unitOfMeasure: any[] = [];
+  // unitOfMeasure =  [
+  //   {name: 'Lb', value: 1},
+  //   {name: 'Kg', value: 2},
+  //   {name: 'Ounce', value: 3},
+  //   {name: 'Gram', value: 4}
+  // ];
   
   submitted = false;
 
@@ -61,7 +61,11 @@ export class MaterialsDashboardComponent implements OnInit {
     description: '',
     uomId: 1,
     isEnable: true,
-    isCRV: false
+    isCRV: false,
+    isExpense: false,
+    isUomId2:false,
+    uomId2:0,
+    ratioCalculation:0
   });
 
 
@@ -104,6 +108,10 @@ export class MaterialsDashboardComponent implements OnInit {
       uomId: 1,
       isEnable: true,
       isCRV: false,
+      isExpense: false,
+      isUomId2:false,
+      uomId2:0,
+      ratioCalculation:0,
       createdBy: this.logInUserId,
       createdDate: '',
       updatedBy: this.logInUserId,
@@ -112,8 +120,27 @@ export class MaterialsDashboardComponent implements OnInit {
     });
 
     this.getAllGroupMaterial();
+    this.loadUOM();
   }
 
+
+  loadUOM() {
+    this.commonService.GetAllUOM().subscribe({
+      next: (res: any) => {
+        console.log("UOM API response:", res);
+        if (res && res.body && res.body.data) {
+          this.unitOfMeasure = res.body.data.map((item: any) => ({
+            value: item.rowId,   // API returns RowId
+            name: item.uom       // API returns UOM
+          }));
+          console.log("Mapped UOM:", this.unitOfMeasure);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching UOM:', err);
+      }
+    });
+  }
 
   searchMetarial(inputData:any){
    
@@ -196,6 +223,10 @@ export class MaterialsDashboardComponent implements OnInit {
         uomId: 1,
         isEnable: true,
         isCRV: false,
+        isExpense: false,
+        isUomId2: false,
+        uomId2:0,
+        ratioCalculation:0,
         createdBy: this.logInUserId,
         createdDate: datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         updatedBy: this.logInUserId,
@@ -234,6 +265,9 @@ export class MaterialsDashboardComponent implements OnInit {
     const returnedTarget = Object.assign(target, source);
     returnedTarget.uomId = parseInt(returnedTarget.uomId);
     // alert(JSON.stringify(returnedTarget));
+    returnedTarget.uomId = parseInt(returnedTarget.uomId);
+    returnedTarget.uomId2 = parseInt(returnedTarget.uomId2 || 0);
+    returnedTarget.ratioCalculation = parseFloat(returnedTarget.ratioCalculation || 0);
     
     this.commonService.insertUpdateGroupMaterials(returnedTarget).subscribe(data =>{    
       console.log(data); 

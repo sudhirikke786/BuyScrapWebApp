@@ -1,0 +1,39 @@
+.manager-container {
+  padding: 1.5rem;
+  background-color: #f8f9fa; /* Consistent background color */
+  width: 100%;
+  min-height: 100vh; /* Ensure container takes at least full screen height */
+  box-sizing: border-box;
+}
+
+.manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.dashboard-selector {
+  flex-grow: 1;
+}
+
+.dashboard-selector .form-select {
+  min-width: 300px;
+  max-width: 500px;
+  font-size: 1.25rem;
+  font-weight: 500;
+  border: 1px solid #ced4da;
+  border-radius: 0.3rem;
+  padding: 0.5rem 1rem;
+}
+
+.header-actions .btn {
+  font-size: 1rem;
+  padding: 0.5rem 1.25rem;
+}
+
+.dashboard-content {
+  width: 100%;
+}

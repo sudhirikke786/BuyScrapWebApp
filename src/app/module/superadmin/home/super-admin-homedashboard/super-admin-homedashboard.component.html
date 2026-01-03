@@ -1,4 +1,4 @@
-<div class="content-page">
+<div class="content-page" *ngIf="!isLoading">
 
     <div class="content">
         <div class="container-fluid">
@@ -6,7 +6,7 @@
                 <div class="bdcmb mt-2">
                     <div class="row">
                         <div class="col-sm-6 col-6">
-                            <h4 class="page-title">Location Management</h4>
+                            <h4 class="page-title">Organization Management</h4>
                         </div>
 
                         <div class="col-sm-6 col-6">
@@ -21,41 +21,81 @@
 
         </div>
 
-        <div class="row">
-            <div  class="d-flex justify-content-end mt-1">
-                <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
-            </div>
+
+        <div class="row mt-2">
+          <div class="col-md-6 d-flex">
+            <input type="text" id="example-palaceholder" [(ngModel)]="searchText" class="form-control" (keyup.enter)="searchOrganizations()"
+                placeholder="Search ...">    
+          </div>
+          <div class="col-md-6">
+            <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
+          </div>
         </div>
+
+        <!-- <div class="row">
+          <div class="d-flex justify-content-end mt-1">
+            <div class="input-group me-2" style="width: 250px;">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search organizations..."
+                [(ngModel)]="searchText"
+        
+        name="search"
+              />
+              <button class="btn btn-primary" type="button" (click)="searchOrganizations()">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+        
+            <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
+          </div>
+        </div> -->
+        
         <div class="row">
             <div class="card mt-2">
                 <div class="table-responsive">
-                    <p-table [value]="users">
+                    <p-table [value]="users"  [loading]="isLoading">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Status</th>
+                                <th>Last Login Date</th>
                                 <th>Action</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-user>
-                            <tr>
+                            <tr [ngClass]="{'table-danger': isLoginOlderThan15Days(user.latestLoginDate)}">
                                 <td>{{ user.databaseName }}</td>
                                 <td>{{ user.emailID }}</td>
                                 <td>{{ user.isActive ? 'Active' : 'Deactive' }}</td>
-                            
+                                <td>{{ user.latestLoginDate | date: 'MM-dd-yyyy' }}</td>
                                 <td>
             
                                     <div class="d-flex">
-                                        <a class="btn btn-primary me-1" (click)="credentialM()"
+                                        <a class="btn btn-primary me-1" (click)="editOrganization(user)"
                                             > Edit </a>
                                         <a class="btn btn-primary me-1" (click)="getlocations(user.organisationName)"
-                                            > Location Management</a>
+                                            > Organization Management</a>
                                     </div>
                                 </td>
                             </tr>
                         </ng-template>
                     </p-table>
+                    <div class="paginator-container mt-3" >
+                      <p-paginator
+                        class="serverside-paginator"
+                        [showCurrentPageReport]="true"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [first]="first"
+                        
+                        [rows]="pageSize"
+                        [totalRecords]="pageTotal"
+                        [rowsPerPageOptions]="commonService.tableConfig?.pageOptions"
+                        (onPageChange)="onPageChange($event)"
+                      ></p-paginator>
+                    </div>
                     <div class="text-center mt-3">
                         <button class="btn btn-danger fixed-bottom-btn" (click)="showDeletedOrganizations()">
                             Show Deleted Organizations
@@ -72,10 +112,23 @@
     </div>
 </div>
 
-
+<div class="content" *ngIf="isLoading">
+  <app-page-loader type="ftable"></app-page-loader>
+</div>
 <p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Deleted Users" [(visible)]="showDeletedPopup" [style]="{ width: '70vw' }">
     <div class="row">
         <div class="col-md-12" >
+          <div class="mb-3 d-flex align-items-center justify-content-start gap-2">
+            <input
+                type="text"
+                pInputText
+                [(ngModel)]="searchText"
+                placeholder="Search by Organization Name  "
+                class="form-control"
+                style="max-width: 300px"
+            />
+            <button class="btn btn-primary" (click)="showDeletedOrganizations()">Search</button>
+        </div>
             <p-table #dt1 [value]="deletedUsers" [paginator]="false" [rows]="10" [showCurrentPageReport]="true"
                 [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20, 50]" [scrollable]="true"
                 scrollHeight="80vh" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
@@ -86,6 +139,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </ng-template>
                 
@@ -93,8 +147,10 @@
                     <tr>
                         <td>{{ user.databaseName }}</td>
                         <td>{{ user.emailID }}</td>
-                        <td>{{ user.isActive ? 'Deactive' : 'Deactive' }}</td>
-                       
+                        <td>{{ user.isDeleted ? 'Active' : 'Deactive' }}</td>
+                      
+                       <a icon="pi pi-refresh" class="btn btn-primary me-1" (click)="restoreOrganization(user)"
+                       > Restore </a>
                     </tr>
                 </ng-template>
 
@@ -110,3 +166,259 @@
      
     </div>
 </p-dialog>
+  
+<p-dialog 
+    [(visible)]="displayNewOrgDialog" 
+    [style]="{width: '70vw'}" 
+    [modal]="true" 
+    [draggable]="false" 
+    [resizable]="false"
+    [header]="isEditMode ? 'Edit Organisation' : 'New Organisation'">
+    
+    <div class="row" *ngIf="isSubmitting">
+      <app-page-loader type="form"></app-page-loader>  
+  </div>
+
+    <form [formGroup]="organizationForm" *ngIf="!isSubmitting" >
+      <div class="form-group mb-3">
+        <label for="companyName" class="d-block">Company Name</label>
+        <input id="companyName" type="text" formControlName="companyName" 
+               class="form-control w-100" placeholder="Organisation Name">
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-6">
+          <label for="email" class="d-block">Email Address</label>
+          <input id="email" type="email" formControlName="email" 
+                 class="form-control w-100" placeholder="Email Address">
+        </div>
+        
+        <div class="col-6">
+          <label for="confirmEmail" class="d-block">Confirm Email Address</label>
+          <input id="confirmEmail" type="email" formControlName="confirmEmail" 
+                 class="form-control w-100" placeholder="Confirm Email Address">
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-6">
+          <label for="password" class="d-block">Password</label>
+          <input id="password" type="password" formControlName="password" 
+                 class="form-control w-100" placeholder="Password">
+        </div>
+        
+        <div class="col-6">
+          <label for="confirmPassword" class="d-block">Confirm Password</label>
+          <input id="confirmPassword" type="password" formControlName="confirmPassword" 
+                 class="form-control w-100" placeholder="Confirm Password">
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-6">
+          <label for="contactFirstName" class="d-block">Contact's First Name</label>
+          <input id="contactFirstName" type="text" formControlName="contactFirstName" 
+                 class="form-control w-100" placeholder="Contact's First Name">
+        </div>
+        
+        <div class="col-6">
+          <label for="contactLastName" class="d-block">Contact's Last Name</label>
+          <input id="contactLastName" type="text" formControlName="contactLastName" 
+                 class="form-control w-100" placeholder="Contact's Last Name">
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-6">
+          <label for="phoneNumber" class="d-block">Phone Number</label>
+          <input id="phoneNumber" type="text" formControlName="phoneNumber" 
+                 class="form-control w-100" placeholder="Phone Number">
+        </div>
+        
+        <div class="col-6">
+          <label for="jobTitle" class="d-block">Job Title</label>
+          <input id="jobTitle" type="text" formControlName="jobTitle" 
+                 class="form-control w-100" placeholder="Job Title">
+        </div>
+      </div>
+      
+      <div class="form-group mb-3">
+        <label for="businessAddress" class="d-block">Business Address</label>
+        <textarea id="businessAddress" formControlName="businessAddress" 
+                  rows="3" class="form-control w-100" placeholder="Business Address"></textarea>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-3">
+          <label for="country" class="d-block">Country</label>
+          <select id="country" formControlName="country" class="form-control w-100"
+            (change)="onCountryChange($event)">
+            <option value="">Select Country</option>
+            <option *ngFor="let country of countries" [value]="country.rowID">{{country.name}}</option>
+          </select>
+        </div>
+        
+        <div class="col-3">
+          <label for="state" class="d-block">State</label>
+          <select id="state" formControlName="state" class="form-control w-100"
+            (change)="onStateChange($event)">
+            <option value="">Select State</option>
+            <option *ngFor="let state of states" [value]="state.rowID">{{ state.name }}</option>
+          </select>
+        </div>
+        
+        <div class="col-3">
+          <label for="city" class="d-block">City</label>
+          <select id="city" formControlName="city" class="form-control w-100">
+            <option value="">Select City</option>
+            <option *ngFor="let city of cities" [value]="city.rowID">{{ city.name }}</option>
+          </select>          
+        </div>
+        
+        <div class="col-3">
+          <label for="zip" class="d-block">Zip</label>
+          <input id="zip" type="text" formControlName="zip" 
+                 class="form-control w-100" placeholder="Zip">
+        </div>
+      </div>
+      
+      <div class="form-group mb-2">
+        <label for="billingAddress" class="d-block">Billing Address</label>
+        <div class="form-check mb-2">
+          <input type="checkbox" id="sameAsBillingAddress" formControlName="sameAsBillingAddress" 
+                 class="form-check-input">
+          <label class="form-check-label" for="sameAsBillingAddress">
+            Same as address above
+          </label>
+        </div>
+      </div>
+      
+      <div class="form-group mb-3">
+        <textarea id="billingAddress" formControlName="billingAddress" 
+                  rows="3" class="form-control w-100" placeholder="Business Address"></textarea>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-3">
+          <label for="billingCountry" class="d-block">Country</label>
+          <select id="billingCountry" formControlName="billingCountry" class="form-control w-100">
+            <option value="">Select Country</option>
+            <option *ngFor="let country of countries" [value]="country.rowID">{{country.name}}</option>
+          </select>
+        </div>
+        
+        <div class="col-3">
+          <label for="billingState" class="d-block">State</label>
+          <select id="billingState" formControlName="billingState" class="form-control w-100">
+            <option value="">Select State</option>
+            <option *ngFor="let state of states" [value]="state.rowID">{{ state.name }}</option>
+          </select>
+        </div>
+        
+        <div class="col-3">
+          <label for="billingCity" class="d-block">City</label>
+          <select id="billingCity" formControlName="billingCity" class="form-control w-100">
+            <option value="">Select City</option>
+            <option *ngFor="let city of cities" [value]="city.rowID">{{ city.name }}</option>
+          </select>
+        </div>
+        
+        <div class="col-3">
+          <label for="billingZip" class="d-block">Zip</label>
+          <input id="billingZip" type="text" formControlName="billingZip" 
+                 class="form-control w-100" placeholder="Zip">
+        </div>
+      </div>
+      
+      <div class="form-group row mb-3">
+        <div class="col-4">
+          <label for="totalLocations" class="d-block">Total Location</label>
+          <input id="totalLocations" type="number" formControlName="totalLocations"
+                 class="form-control w-100" placeholder="Total Location">
+        </div>
+        <div class="col-4">
+          <label for="totalUsers" class="d-block">Total User</label>
+          <input id="totalUsers" type="number" formControlName="totalUsers"
+                 class="form-control w-100" placeholder="Total User">
+        </div>
+        <div class="col-4">
+          <label for="totalTickets" class="d-block">Total Ticket</label>
+          <input id="totalTickets" type="number" formControlName="totalTickets"
+                 class="form-control w-100" placeholder="Total Ticket">
+        </div>
+      </div>
+      
+
+      <div class="row mb-2">
+        <div class="col-4">
+          <div class="form-check">
+            <input type="checkbox" id="enable" formControlName="enable" class="form-check-input">
+            <label class="form-check-label" for="enable">Enable</label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-2">
+          <div class="form-check">
+            <input type="checkbox" id="locationCompliance" formControlName="locationCompliance" class="form-check-input">
+            <label class="form-check-label" for="locationCompliance">Location Compliance</label>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-check">
+            <input type="checkbox" id="proVersion" formControlName="proVersion" class="form-check-input">
+            <label class="form-check-label" for="proVersion">Pro Version</label>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-check">
+            <input type="checkbox" id="showReportOnly" formControlName="showReportOnly" class="form-check-input">
+            <label class="form-check-label" for="showReportOnly">Show Report Only</label>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-check">
+            <input type="checkbox" id="showSafety" formControlName="showSafety" class="form-check-input">
+            <label class="form-check-label" for="showSafety">Show Safety</label>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-check">
+            <input type="checkbox" id="freeVersion" formControlName="freeVersion" class="form-check-input">
+            <label class="form-check-label" for="freeVersion">Trail Version</label>
+          </div>
+        </div>
+        
+        <div class="col-2">
+          <div class="form-check">
+            <input type="checkbox" id="lightVersion" formControlName="lightVersion" class="form-check-input">
+            <label class="form-check-label" for="lightVersion">Light Version</label>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-check">
+            <input type="checkbox" id="dispatchOnly" formControlName="dispatchOnly" class="form-check-input">
+            <label class="form-check-label" for="dispatchOnly">Dispatch Only</label>
+          </div>
+        </div>
+        <div *ngIf="organizationForm.get('freeVersion')?.value" class="col-3">
+          <label for="trialEndDate" class="d-block">Trial End Date</label>
+          <input id="trialEndDate" type="date" formControlName="trialEndDate" class="form-control w-100" 
+          style="width: 150px; font-size: 0.9rem; height: 30px; padding: 4px 8px;"/>
+        </div>
+      </div>
+    </form>
+    
+    <ng-template pTemplate="footer">
+      <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-secondary me-2" (click)="displayNewOrgDialog = false">Cancel</button>
+        <button type="button" class="btn btn-primary px-4" [disabled]="isSubmitting" (click)="saveOrganization()">
+          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+          Save
+        </button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <p-toast></p-toast>

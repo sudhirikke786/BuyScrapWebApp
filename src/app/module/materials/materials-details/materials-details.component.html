@@ -171,7 +171,7 @@
                                 </div>
                                 <div class="form-group col-sm-4 mb-2">
                                     <div class="form-floating">
-                                        <input formControlName="scrapPrice" type="text" class="form-control">
+                                        <input formControlName="scrapPrice" type="text" class="form-control"  [readonly]="form.get('priceMapWithMarket')?.value">
                                         <label for="floatingInput">Scrap Price</label>
                                     </div>
                                 </div>
@@ -184,40 +184,147 @@
                             </div>
 
                             <div class="row">
-                                <div class="form-group col-sm-4 mb-2">
-                                    <div class="form-floating">
-                                        <input formControlName="dealerPrice1" type="text" class="form-control">
-                                        <label for="floatingInput">Dealer 1 Percentage</label>
+                                <div class="form-group col-sm-4 mb-2 d-flex align-items-center">
+                                    <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" id="priceMapWithMarket"
+                                            formControlName="priceMapWithMarket"
+                                            (change)="onPriceMapWithMarketChange()" />
+                                    <label class="form-check-label ms-2" for="priceMapWithMarket">Price Map With Market</label>
                                     </div>
                                 </div>
-                                <div class="form-group col-sm-4 mb-2">
-                                    <div class="form-floating">
-                                        <input formControlName="dealerPrice2" type="text" class="form-control">
-                                        <label for="floatingInput">Dealer 2 Percentage</label>
+
+                                <div class="form-group col-sm-4 mb-2 d-flex align-items-center" *ngIf="form.get('priceMapWithMarket')?.value">
+                                    <label class="me-2">Percentage:</label>
+                                    <input type="number" class="form-control" formControlName="percentageOnMarketPrice"
+                                        (input)="calculateScrapPriceFromMarket()" style="width: 100px;" />
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="form-group col-sm-4 mb-2 d-flex align-items-center">
+                                    <div class="form-floating me-2" style="flex: 1;">
+                                        <input formControlName="dealerPrice1" type="text" class="form-control form-control-sm" class="form-control form-control-sm" style="width: 200px;">
+                                        <label for="floatingInput">Dealer 1</label>
+                                    </div>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="dealer1Percentage" formControlName="dealerType1" value="P">
+                                            <label class="form-check-label" for="dealer1Percentage">%</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="dealer1Dollar" formControlName="dealerType1" value="D">
+                                            <label class="form-check-label" for="dealer1Dollar"> {{ currencySymbol }}</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-sm-4 mb-2">
-                                    <div class="form-floating">
-                                        <input formControlName="dealerPrice3" type="text" class="form-control">
-                                        <label for="floatingInput">Dealer 3 Percentage</label>
+
+                                <div class="form-group col-sm-4 mb-2 d-flex align-items-center">
+                                    <div class="form-floating me-2" style="flex: 1;">
+                                        <input formControlName="dealerPrice2" type="text" class="form-control form-control-sm" class="form-control form-control-sm" class="form-control form-control-sm" style="width: 200px;">
+                                        <label for="floatingInput">Dealer 2</label>
+                                    </div>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="dealer2Percentage" formControlName="dealerType2" value="P">
+                                            <label class="form-check-label" for="dealer2Percentage">%</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="dealer2Dollar" formControlName="dealerType2" value="D">
+                                            <label class="form-check-label" for="dealer2Dollar">{{ currencySymbol }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-sm-4 mb-2 d-flex align-items-center">
+                                    <div class="form-floating me-2" style="flex: 1;">
+                                        <input formControlName="dealerPrice3" type="text" class="form-control form-control-sm" class="form-control form-control-sm" class="form-control form-control-sm" style="width: 200px;">
+                                        <label for="floatingInput">Dealer 3</label>
+                                    </div>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="dealer3Percentage" formControlName="dealerType3" value="P">
+                                            <label class="form-check-label" for="dealer3Percentage">%</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="dealer3Dollar" formControlName="dealerType3" value="D">
+                                            <label class="form-check-label" for="dealer3Dollar">{{ currencySymbol }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-sm-4 mb-2 d-flex align-items-center">
+                                    <div class="form-floating me-2" style="flex: 1;">
+                                        <input formControlName="dealerPrice4" type="text" class="form-control form-control-sm" style="width: 200px;">
+                                        <label for="floatingInput">Dealer 4</label>
+                                    </div>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="dealer4Percentage" formControlName="dealerType4" value="P">
+                                            <label class="form-check-label" for="dealer4Percentage">%</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="dealer4Dollar" formControlName="dealerType4" value="D">
+                                            <label class="form-check-label" for="dealer4Dollar">{{ currencySymbol }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-sm-4 mb-2 d-flex align-items-center">
+                                    <div class="form-floating me-2" style="flex: 1;">
+                                        <input formControlName="dealerPrice5" type="text" class="form-control form-control-sm" style="width: 200px;">
+                                        <label for="floatingInput">Dealer 5</label>
+                                    </div>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="dealer5Percentage" formControlName="dealerType5" value="P">
+                                            <label class="form-check-label" for="dealer5Percentage">%</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="dealer5Dollar" formControlName="dealerType5" value="D">
+                                            <label class="form-check-label" for="dealer5Dollar">{{ currencySymbol }}</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="form-group col-sm-4 mb-2">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="isHold"  formControlName="isHold">
-                                        <label class="form-check-label" for="isHold">Payment Hold</label>
-                                    </div>
-                                </div>                                
-                                <div class="form-group col-sm-4 mb-2">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="isEnable"  formControlName="isEnable">
-                                        <label class="form-check-label" for="isEnable">Enable</label>
-                                    </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6 mb-2 d-flex align-items-center gap-2">
+                                <div class="form-check me-2" >
+                                    <input type="checkbox" class="form-check-input" id="isHold" formControlName="isHold">
+                                    <label class="form-check-label" for="isHold">Payment Hold</label>
+                                </div>
+                                <ng-container *ngIf="form.get('isHold')?.value">
+                                    <label for="holdDays">Hold Payment:</label>
+                                    <input type="number" class="form-control" id="holdDays" formControlName="holdDays" min="0" style="width: 100px;">
+                                </ng-container>
+                            </div>
+
+                            <!-- <div class="form-group col-sm-6 mb-2 d-flex align-items-center gap-2">
+                                <div class="form-check me-2">
+                                    <input type="checkbox" class="form-check-input" id="tag" formControlName="tag">
+                                    <label class="form-check-label" for="tag">Tag and Hold</label>
+                                </div>
+                                <ng-container *ngIf="form.get('tag')?.value">
+                                    <label for="holdPeriod">Hold Period:</label>
+                                    <input type="number" class="form-control" id="holdPeriod" formControlName="holdPeriod" min="0" style="width: 100px;">
+                                </ng-container>
+                            </div> -->
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-4 mb-2">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="isEnable"  formControlName="isEnable">
+                                    <label class="form-check-label" for="isEnable">Enable</label>
                                 </div>
                             </div>
+                            <div class="form-group col-sm-4 mb-2">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="isExpense" formControlName="isExpense">
+                                    <label class="form-check-label" for="isExpense">Is Expense</label>
+                                </div>
+                            </div>
+                        </div>
 
 
                             <!-- <div class="form-group col-sm-12 mb-2">

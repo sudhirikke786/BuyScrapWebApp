@@ -13,7 +13,7 @@ import { MessageService } from 'primeng/api';
   providers: [MessageService]
 })
 export class TicketSettingsComponent implements OnInit {
-  
+  locId!: string | number | null;
 @Output() close = new EventEmitter<boolean>();
   ticketForm!: FormGroup;
   logo:any;
@@ -35,7 +35,7 @@ export class TicketSettingsComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.orgName = localStorage.getItem('orgName');
     this.locationName = localStorage.getItem('locationName');
-    
+     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.createForm();
     this.getAllTicketDetails();
   }
@@ -58,6 +58,7 @@ export class TicketSettingsComponent implements OnInit {
       this.logo = responseObj.logo;
     this.rowId = responseObj.rowId;
       this.ticketForm.patchValue(responseObj);
+      this.ticketForm.patchValue({ locID: this.locId }); 
     },(error)=>{
 
     })

@@ -16,20 +16,10 @@ import { InvoiceLayoutComponent } from './invoice-layout/invoice-layout.componen
 import { InvoiceGridComponent } from './invoice-grid/invoice-grid.component';
 
 export const routes: Routes = [
-   {
-      path: '',
-      component: InvoiceLayoutComponent, 
-      children: [
-        {
-          path:'',
-          component:InvoiceTicketDashboardComponent
-        },
-        {
-          path: 'grid',
-          component: InvoiceGridComponent, 
-        }
-      ]
-    },
+   {    
+    path:'',
+    component:InvoiceTicketDashboardComponent
+  },
   {
     path:'detail/:invoiceId/:customerId',
     canActivate: [CheckplanGuard],

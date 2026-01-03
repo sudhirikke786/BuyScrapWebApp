@@ -13,18 +13,8 @@ import { CertificateGridComponent } from './certificate-grid/certificate-grid.co
 
 export const routes: Routes = [
   {
-    path: '',
-    component: CertificateLayoutComponent, 
-    children: [
-      {
         path: '',
         component: CertificatesDashboardComponent
-      },
-      {
-        path: 'grid',
-        component: CertificateGridComponent, 
-      }
-    ]
   }
 ]
 

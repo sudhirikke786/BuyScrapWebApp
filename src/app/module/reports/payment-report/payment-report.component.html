@@ -22,16 +22,19 @@
             
                   <div class="row mt-2">
                     <div class="col-sm-3 d-flex mb-1">
-                      <input type="text" id="paymentType" [(ngModel)]="paymentType" name="paymentType" class="form-control" placeholder="Search by Payment Type">
+                      <p-multiSelect [options]="paymentTypesList" [(ngModel)]="selectedPaymentTypes" [style]="{'minWidth': '100%'}"
+                      optionLabel="label" optionValue="value" display="chip" defaultLabel="Select Payment Types" [maxSelectedLabels]="3"
+                      [filter]="true" (onChange)="getPaymentReport()">
+                      </p-multiSelect>
                     </div>
-                    <div class="col-sm-6 d-flex  mb-1">
+                    <div class="col-sm-4 d-flex  mb-1">
                       <label class="mr-10">From Date</label>
                       <input type="date" id="fromDate" [(ngModel)]="fromDate" name="fromDate" class="form-control mr-10" (click)="openDatePicker()">
 
                       <label class="mr-10">To Date</label>
                       <input type="date" id="toDate" [(ngModel)]="toDate" name="toDate" class="form-control" (click)="openToDatePicker()">
                     </div>  
-                    <div class="col-sm-3 mb-1">
+                    <div class="col-sm-5 mb-1">
                       <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
                     </div>
                   </div>
@@ -116,7 +119,7 @@
 
             <div class="row" >
               <div style="height: 500px;" *ngIf="!showLoaderReport">                
-                <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
+                <ngx-extended-pdf-viewer   [base64Src]="fileDataObj" [filenameForDownload]="'Payment Report'+ ' '+ '.pdf'"></ngx-extended-pdf-viewer>
               </div>
             </div>
           </p-dialog>

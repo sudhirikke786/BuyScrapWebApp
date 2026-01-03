@@ -24,6 +24,69 @@
                       <div class="col-sm-3 d-flex mb-1">
                         <input type="text" id="sellerName" [(ngModel)]="sellerName" name="sellerName" class="form-control mr-10" placeholder="Search by Customer">
                       </div>
+                      <div class="col-sm-3 d-flex mb-1">
+                        <label class="mr-10">Materials</label>
+                        
+                        <!-- Custom Collapsible MultiSelect -->
+                        <div class="custom-multi-select">
+                          <!-- Trigger Button -->
+                          <div class="select-trigger form-control" (click)="toggleDropdown()">
+                            <div class="selected-chips">
+                             
+                              <span *ngFor="let material of selectedMaterials" class="chip">
+                                {{ getMaterialLabel(material) }}
+                                <i class="fas fa-times" (click)="removeMaterial($event, material)"></i>
+                              </span>
+                            </div>
+                            <i class="fas fa-chevron-down dropdown-icon"></i>
+                          </div>
+                          
+                          <!-- Dropdown Content -->
+                          <div class="dropdown-content" [class.show]="dropdownOpen">
+                            <div class="search-box">
+                              <input type="text" class="form-control" 
+                                     placeholder="Search materials..." 
+                                     [(ngModel)]="searchTerm" 
+                                     (input)="filterMaterials()">
+                            </div>
+                            <div class="collapsible-container">
+                              <div *ngFor="let group of filteredGroups" class="material-group">
+                                <!-- Group Header -->
+                                <div class="group-header" (click)="toggleGroup(group)">
+                                  <div class="group-checkbox" (click)="$event.stopPropagation()">
+                                    <input type="checkbox" 
+                                           [indeterminate]="isGroupIndeterminate(group)"
+                                           [checked]="isGroupSelected(group)"
+                                           (change)="toggleGroupSelection(group)">
+                                    <span class="checkmark"></span>
+                                  </div>
+                                  <i class="fas" [ngClass]="group.expanded ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                                  <span class="group-label">{{ group.label }}</span>
+                                  <span class="match-count" *ngIf="searchQuery && group.matchCount > 0">
+                                    ({{ group.matchCount }})
+                                  </span>
+                                  <span class="item-count">
+                                    {{ getSelectedCount(group) }}/{{ group.items.length }}
+                                  </span>
+                                </div>
+                                
+                                <!-- Sub Materials -->
+                                <div class="sub-materials" [class.collapsed]="!group.expanded">
+                                  <div *ngFor="let item of group.items" class="material-checkbox">
+                                    <label>
+                                      <input type="checkbox" 
+                                             [checked]="isSelected(item.value)"
+                                             (change)="toggleMaterial(item)"
+                                             (click)="$event.stopPropagation()">
+                                      {{ item.label }}
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <div class="col-sm-6 d-flex mb-1">
                         <label class="mr-10">From Date</label>
                         <input type="date" id="fromDate" [(ngModel)]="fromDate" name="fromDate" class="form-control mr-10"  (click)="openDatePicker()">
@@ -105,19 +168,17 @@
             <!-- ============================================================== -->
             <!-- End Page content -->
             <!-- ============================================================== -->
-
             <ng-container *ngIf="!checkTabView">
-
-            <p-dialog [modal]="true" header="Customer History Report" [(visible)]="showDownload" [modal]="true" [style]="{ width: '70vw' }">
-
-              <div class="row" >
-                <div style="height: 500px;" *ngIf="showDownload">
-                
-                  <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
-
+              <p-dialog   header="Customer Report" [(visible)]="isReportShow" [modal]="true" [style]="{ width: '70vw' }">
+              
+                <div *ngIf="showLoaderReport">
+                  <app-page-loader type="reportloader"></app-page-loader>
                 </div>
 
-              </div>
+                <div class="row" >
+                  <div style="height: 500px;" *ngIf="!showLoaderReport">                
+                    <ngx-extended-pdf-viewer   [base64Src]="fileDataObj" [filenameForDownload]="'Customer Report'+ ' ' + '.pdf'"></ngx-extended-pdf-viewer>
+                  </div>
+                </div>
               </p-dialog>
-
             </ng-container>

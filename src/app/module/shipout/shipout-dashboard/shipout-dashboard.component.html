@@ -14,7 +14,8 @@
 
           <div class="col-sm-6 col-6">
             <div class="b-links">
-              <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/ship-out">Ship Out</a>
+              <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()"
+                routerLink="/{{orgName}}/ship-out">Ship Out</a>
             </div>
           </div>
         </div>
@@ -22,11 +23,11 @@
 
       <div class="row mt-2">
         <div class="col-md-6 d-flex">
-          <input type="text" id="example-palaceholder" [(ngModel)]="serachText" class="form-control" (keyup.enter)="getAllShipOutDetails()"
-              placeholder="Search ...">    
+          <input type="text" id="example-palaceholder" [(ngModel)]="serachText" class="form-control"
+            (keyup.enter)="getAllShipOutDetails()" placeholder="Search ...">
         </div>
         <div class="col-md-6">
-          <app-actionbar (iconAction)="getShipOutAction($event)"  [actions]="actionList"></app-actionbar>
+          <app-actionbar (iconAction)="getShipOutAction($event)" [actions]="actionList"></app-actionbar>
         </div>
       </div>
       <!-- end page title -->
@@ -35,15 +36,9 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <p-table
-                [value]="shipouts"
-                [paginator]="false"
-                [scrollable]="true" 
-                scrollHeight="50vh"
-                [showCurrentPageReport]="false"
-                [tableStyle]="{ 'min-width': '50rem' }"
-              >
-             
+              <p-table [value]="shipouts" [paginator]="false" [scrollable]="true" scrollHeight="50vh"
+                [showCurrentPageReport]="false" [tableStyle]="{ 'min-width': '50rem' }">
+
                 <ng-template pTemplate="header">
                   <tr>
                     <th>Bill of Lading</th>
@@ -56,75 +51,56 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-shipout>
                   <tr>
-                    <td [ngClass]="{'bg-danger text-white': shipout.isDeleted}">{{ shipout.rowId }}</td>
-                    <td [ngClass]="{'bg-danger text-white': shipout.isDeleted}">{{ shipout.createdDate | date: 'MM/dd/yyyy' }}</td>
+                    <td [ngClass]="{'bg-danger text-white': shipout.isDeleted}">{{ shipout.shipOutID }}</td>
+                    <td [ngClass]="{'bg-danger text-white': shipout.isDeleted}">{{ shipout.createdDate | date:
+                      'MM/dd/yyyy' }}</td>
                     <td [ngClass]="{'bg-danger text-white': shipout.isDeleted}">{{ shipout.carrier }}</td>
                     <td [ngClass]="{'bg-danger text-white': shipout.isDeleted}">{{ shipout.totalNet }}</td>
                     <td [ngClass]="{'bg-danger text-white': shipout.isDeleted}">{{ shipout.customerName }}</td>
                     <td [ngClass]="{'bg-danger text-white': shipout.isDeleted}">
-                      <a type="button"routerLinkActive="router-link-active" (click)="showDetails(shipout.rowId, shipout.customerId)"
-                        class="btn btn-grid btn-success waves-effect waves-light me-1">
+                      <div class="d-flex flex-wrap gap-1">
+                        <a type="button" (click)="showDetails(shipout.rowId, shipout.customerId)"
+                          class="btn btn-grid btn-success waves-effect waves-light">
                           <i class="mdi mdi-eye"></i> Show
-                      </a>
-                      <a *ngIf="!shipout.isDeleted" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editDetails(shipout.rowId, shipout.customerId)"
-                      class="btn btn-grid btn-primary waves-effect waves-light me-1">
+                        </a>
+                        <a *ngIf="!shipout.isDeleted" (click)="editDetails(shipout.rowId, shipout.customerId)"
+                          class="btn btn-grid btn-primary waves-effect waves-light">
                           <i class="mdi mdi-pencil"></i> Edit
-                      </a>                       
-                      <a *ngIf="!shipout.isDeleted && shipout.invoiceID === 0" 
-                      class="btn btn-grid btn-danger waves-effect waves-light" 
-                      (click)="confirmationMessage(shipout.rowId)">
-                       <i class="mdi mdi-trash-can-outline"></i> Delete
-                   </a>
-                   
-                   <a *ngIf="!shipout.isDeleted && shipout.invoiceID === 0" 
-                      type="button" 
-                      routerLinkActive="router-link-active"
-                      class="btn btn-grid btn-success waves-effect waves-light me-1" 
-                      (click)="convertToInvoice(shipout.customerID, shipout.rowId)">
-                       <i class="mdi mdi-eye"></i> Convert To Invoice
-                   </a>
-                   
-                   <a *ngIf="!shipout.isDeleted && shipout.invoiceID !== 0" 
-                      type="button" 
-                      routerLinkActive="router-link-active"
-                      class="btn btn-grid btn-success waves-effect waves-light me-1"
-                      (click)="showInvoice(shipout.invoiceID, shipout.customerID, shipout.rowId)">
-                      <i class="mdi mdi-eye"></i> Show Invoice
-                   </a>
-
-                   
+                        </a>
+                        <a *ngIf="!shipout.isDeleted && shipout.invoiceID === 0"
+                          class="btn btn-grid btn-danger waves-effect waves-light"
+                          (click)="confirmationMessage(shipout.rowId)">
+                          <i class="mdi mdi-trash-can-outline"></i> Delete
+                        </a>
+                        <a *ngIf="!shipout.isDeleted && shipout.invoiceID === 0" type="button"
+                          class="btn btn-grid btn-success waves-effect waves-light"
+                          (click)="convertToInvoice(shipout.customerID, shipout.rowId)">
+                          <i class="mdi mdi-file-document-outline"></i> Convert To Invoice
+                        </a>
+                        <a *ngIf="!shipout.isDeleted && shipout.invoiceID !== 0" type="button"
+                          class="btn btn-grid btn-success waves-effect waves-light"
+                          (click)="showInvoice(shipout.invoiceID, shipout.customerID, shipout.rowId)">
+                          <i class="mdi mdi-file-document"></i> Show Invoice
+                        </a>
+                      </div>
                     </td>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="paginatorleft">
-                  <p-button
-                    type="button"
-                    icon="pi pi-plus"
-                    styleClass="p-button-text"
-                  >
+                  <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
                   </p-button>
                 </ng-template>
                 <ng-template pTemplate="paginatorright">
-                  <p-button
-                    type="button"
-                    icon="pi pi-cloud"
-                    styleClass="p-button-text"
-                  >
+                  <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
                   </p-button>
                 </ng-template>
               </p-table>
               <div class="paginator-container mt-3" *ngIf="shipouts?.length > 0">
-                <p-paginator
-                  class="serverside-paginator"
-                  [showCurrentPageReport]="true"
-                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                  [first]="first"
-                  [last]="last"
-                  [rows]="pageSize"
-                  [totalRecords]="pageTotal"
+                <p-paginator class="serverside-paginator" [showCurrentPageReport]="true"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [first]="first"
+                  [last]="last" [rows]="pageSize" [totalRecords]="pageTotal"
                   [rowsPerPageOptions]="commonService.tableConfig?.pageOptions"
-                  (onPageChange)="onPageChange($event)"
-                ></p-paginator>
+                  (onPageChange)="onPageChange($event)"></p-paginator>
               </div>
             </div>
             <!-- end card body-->
@@ -153,7 +129,7 @@
 
 
 <div class="content-page" *ngIf="showLoader">
-  
+
 
 
   <app-page-loader type="ftable"></app-page-loader>
@@ -230,48 +206,56 @@
  
 </p-dialog> -->
 
-<p-dialog [modal]="true" 
-  header="New Ship Out"
-  [(visible)]="visible"
-  [style]="{ width: '80vw' }"
->
+<p-dialog [modal]="true" header="New Ship Out" [(visible)]="visible" [style]="{ width: '80vw' }">
   <div *ngIf="showPageLoader">
     <app-page-loader type="ftable"></app-page-loader>
   </div>
 
   <div *ngIf="!showPageLoader">
     <div class="row">
-      <div class="col-md-6">
+      <div [ngClass]="IsMultiCurrencySupportEnabled ? 'col-md-4' : 'col-md-6'">
         <input type="text" id="example-palaceholder" [(ngModel)]="searchSellerInput" class="form-control"
-            placeholder="Search for Sellers, Address, License and License Plate" (keyup.enter)="getAllsellersDetails()">
+          placeholder="Search for Sellers, Address, License and License Plate" (keyup.enter)="getAllsellersDetails()">
       </div>
-      <div class="col-md-6">
-          <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newButtonList"></app-actionbar>
+      <div class="col-md-4" [ngClass]="IsMultiCurrencySupportEnabled ? 'col-md-4' : 'col-md-6'">
+        <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newButtonList"></app-actionbar>
+      </div>
+      <div *ngIf="IsMultiCurrencySupportEnabled" class="col-md-4">
+        <div class="row align-items-center">
+          <div class="col-auto">
+            <label class="form-label mb-0"><strong>Currency:</strong></label>
+          </div>
+          <div class="col">
+            <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrencyID" optionLabel="currencyCode"
+              optionValue="rowID" placeholder="Select Currency" [filter]="true" filterBy="currencyCode"
+              filterPlaceholder="Search currency..." [style]="{'width': '100%'}">
+            </p-dropdown>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="row mt-3">
-      <p-table #dt1 [value]="sellers" [paginator]="true" [rows]="10"
-        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-        [scrollable]="true" 
-        scrollHeight="50vh"
+      <p-table #dt1 [value]="sellers" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" scrollHeight="50vh"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [globalFilterFields]="['seller.sellers', 'seller.dLicense', 'seller.licensePlat', 'seller.address']"
-      >
+        [globalFilterFields]="['seller.sellers', 'seller.dLicense', 'seller.licensePlat', 'seller.address']">
         <ng-template pTemplate="header">
           <tr>
-              <th></th>
-              <th>Sellers</th>
-              <th>Driver's License</th>
-              <th>License Plate</th>
-              <th>Address</th>         
+            <th></th>
+            <th>Sellers</th>
+            <th>Driver's License</th>
+            <th>License Plate</th>
+            <th>Address</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-seller>
           <tr style="cursor: pointer;" (click)="showCustomerModel(seller)">
             <td>
-              <a *ngIf="seller.idfaceShotImage"><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" ></a>
-              <img *ngIf="!seller.idfaceShotImage" src="/assets/images/custom/icons/user.png" class="default-img">            
+              <a *ngIf="!IsCustomerFacePictureEnabled && seller.idfaceShotImage"><img src="{{seller.idfaceShotImage}}"
+                  class="ticket-particulars-img"></a>
+              <img *ngIf="IsCustomerFacePictureEnabled || !seller.idfaceShotImage"
+                src="/assets/images/custom/icons/user.png" class="default-img">
             </td>
             <td>{{ seller?.fullName }}</td>
             <td>{{ seller?.driverLicenseNumber }}</td>
@@ -279,18 +263,14 @@
             <td>{{ seller?.streetAddress }}</td>
           </tr>
         </ng-template>
-      </p-table>   
+      </p-table>
     </div>
   </div>
 </p-dialog>
 
-<p-dialog [modal]="true" 
-  header="New Driver"
-  [(visible)]="newDriverScreenVisible"
-  [style]="{ width: '80vw' }"
->
+<p-dialog [modal]="true" header="New Driver" [(visible)]="newDriverScreenVisible" [style]="{ width: '80vw' }">
 
-<!-- <ng-template pTemplate="header">
+  <!-- <ng-template pTemplate="header">
 
     <div>
         <a (click)="closeDriver()" class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a>
@@ -305,12 +285,8 @@
 
     <div class="form-group col-sm-12">
       <div class="form-floating">
-        <input
-          type="text"
-          class="form-control"
-          id="carrier" name="carrier" [(ngModel)]="carrier" 
-          placeholder="Carrier"
-        />
+        <input type="text" class="form-control" id="carrier" name="carrier" [(ngModel)]="carrier"
+          placeholder="Carrier" />
         <label for="floatingInput">Carrier</label>
       </div>
     </div>
@@ -319,44 +295,29 @@
   <div class="row mt-2">
     <div class="form-group col-sm-3">
       <div class="form-floating">
-        <input
-          type="text"
-          class="form-control"
-          id="truck" name="truck" [(ngModel)]="truck" 
-          placeholder="Truck"
-        />
+        <input type="text" class="form-control" id="truck" name="truck" [(ngModel)]="truck" placeholder="Truck" />
         <label for="floatingInput">Truck Type</label>
       </div>
     </div>
 
     <div class="form-group col-sm-3">
       <div class="form-floating">
-        <input type="text" class="form-control" id="make" name="make" [(ngModel)]="make" 
-        placeholder="Make" />
+        <input type="text" class="form-control" id="make" name="make" [(ngModel)]="make" placeholder="Make" />
         <label for="floatingInput">Make</label>
       </div>
     </div>
 
     <div class="form-group col-sm-3">
       <div class="form-floating">
-        <input
-          type="text"
-          class="form-control"
-          id="model" name="model" [(ngModel)]="model" 
-          placeholder="Model"
-        />
+        <input type="text" class="form-control" id="model" name="model" [(ngModel)]="model" placeholder="Model" />
         <label for="floatingInput">Model</label>
       </div>
     </div>
 
     <div class="form-group col-sm-3">
       <div class="form-floating">
-        <input
-          type="text"
-          class="form-control"
-          id="driverName" name="driverName" [(ngModel)]="driverName" 
-          placeholder="Driver Name"
-        />
+        <input type="text" class="form-control" id="driverName" name="driverName" [(ngModel)]="driverName"
+          placeholder="Driver Name" />
         <label for="floatingInput">Driver Name</label>
       </div>
     </div>
@@ -473,8 +434,7 @@
 
     <div class="form-group col-sm-12">
       <div class="form-floating">
-        <input type="text" class="form-control" id="note" name="note" [(ngModel)]="note" 
-         placeholder="Note" />
+        <input type="text" class="form-control" id="note" name="note" [(ngModel)]="note" placeholder="Note" />
         <label for="floatingInput">Note</label>
       </div>
     </div>
@@ -482,18 +442,13 @@
 
   <div class="row mt-3">
     <div class="col-sm-12">
-      <a class="btn btn-primary " (click)="saveDriverInfo()" >Save</a>
+      <a class="btn btn-primary " (click)="saveDriverInfo()">Save</a>
     </div>
   </div>
 </p-dialog>
 
-<p-dialog [modal]="true" 
-  header="Bulk Ship Out"
-  [(visible)]="bulkShipOutVisible"
-  [style]="{ width: '80vw' }"
-  (onShow)="getAllMaterialsDetails()"
-
->
+<p-dialog [modal]="true" header="Bulk Ship Out" [(visible)]="bulkShipOutVisible" [style]="{ width: '80vw' }"
+  (onShow)="getAllMaterialsDetails()">
   <div *ngIf="showPageLoader">
     <app-page-loader type="ftable"></app-page-loader>
   </div>
@@ -501,28 +456,15 @@
   <div *ngIf="!showPageLoader">
     <div class="row">
       <div class="col-md-6">
-        <input
-          type="text"
-          [(ngModel)]="searchMaterialInput"
-          class="form-control"
-          placeholder="Search for Materials"
-          (keyup)="filterMaterials()"
-        />
+        <input type="text" [(ngModel)]="searchMaterialInput" class="form-control" placeholder="Search for Materials"
+          (keyup)="filterMaterials()" />
       </div>
     </div>
 
     <div class="row mt-3">
-      <p-table
-        #dt
-        [value]="filteredMaterials"
-        [paginator]="true"
-        [rows]="10"
-        [showCurrentPageReport]="true"
-        [tableStyle]="{ 'min-width': '50rem' }"
-        [scrollable]="true"
-        scrollHeight="50vh"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      >
+      <p-table #dt [value]="filteredMaterials" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" scrollHeight="50vh"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
         <ng-template pTemplate="header">
           <tr>
             <th>Select</th>
@@ -535,28 +477,17 @@
         <ng-template pTemplate="body" let-material>
           <tr>
             <td>
-              <input
-                type="checkbox"
-                [(ngModel)]="material.isSelected"
-              />
+              <input type="checkbox" [(ngModel)]="material.isSelected" />
             </td>
             <td>{{ material.materialName }}</td>
             <td>{{ material.net }}</td>
             <td>
-              <input
-                type="number"
-                [(ngModel)]="material.shipOutNet"
-                [ngClass]="{
+              <input type="number" [(ngModel)]="material.shipOutNet" [ngClass]="{
                   'invalid-input': material.shipOutNet > material.net || material.shipOutNet <= 0
-                }"
-                (ngModelChange)="onShipOutWeightChange(material)" />
+                }" (ngModelChange)="onShipOutWeightChange(material)" />
             </td>
             <td>
-              <input
-                type="number"
-                [(ngModel)]="material.scrapPrice"
-                class="form-control"
-                min="0" />
+              <input type="number" [(ngModel)]="material.scrapPrice" class="form-control" min="0" />
             </td>
           </tr>
         </ng-template>
@@ -569,6 +500,31 @@
   </div>
 </p-dialog>
 
+<p-dialog header="Sales Orders" [(visible)]="showSalesOrderPopup" [modal]="true" [style]="{ width: '60vw' }">
+  <p-table [value]="salesOrdersByCustomer" [paginator]="true" [rows]="10">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>SalesOrder ID</th>
+        <th>Material Name</th>
+        <th>Total Quantity</th>
+        <th>Balance Quantity</th>
+        <th>Status</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-order>
+      <tr>
+        <td>{{ order.rowID }}</td>
+        <td>{{ order.materialName }}</td>
+        <td>{{ order.totalQuantity }}</td>
+        <td>{{ order.balanceQuantity }}</td>
+        <td>{{ order.status }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-footer>
+    <button type="button" pButton label="OK" (click)="openDriverPopup()"></button>
+  </p-footer>
+</p-dialog>
 
 <p-toast></p-toast>
 

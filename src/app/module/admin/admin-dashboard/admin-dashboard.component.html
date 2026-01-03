@@ -1,205 +1,329 @@
-            <!-- ============================================================== -->
-            <!-- Start Page Content here -->
-            <!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Start Page Content here -->
+<!-- ============================================================== -->
 
-            <div class="content-page">
+<div class="content-page">
 
-                <div class="content">
+    <div class="content">
+        <div class="content" *ngIf="isLoading">
+            <app-page-loader type="ftable"></app-page-loader>
+        </div>
 
-                    <!-- Start Content-->
-                    <div class="container-fluid">
+        <!-- Start Content-->
+        <div class="container-fluid">
 
-                       
-                        <div class="bdcmb mt-2">
-                            <div class="row">
-                                <div class="col-sm-6 col-6">
-                                    <h4 class="page-title">Admin</h4>
-                                </div>
 
-                                <div class="col-sm-6 col-6">
-                                    <div class="b-links">
-                                        <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/admin">Admin</a>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="bdcmb mt-2">
+                <div class="row">
+                    <div class="col-sm-6 col-6">
+                        <h4 class="page-title">Admin</h4>
+                    </div>
+
+                    <div class="col-sm-6 col-6">
+                        <div class="b-links">
+                            <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()"
+                                routerLink="/{{orgName}}/admin">Admin</a>
                         </div>
-                        
-                        <div class="row mt-2">
-                            <div class="col-md-6 d-flex">
-                                <h4>User Management</h4>
-                            </div>
-                            <div class="col-md-6">
-                                <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
-                            </div>
-                            
-                        </div>  
-                        <!-- end page title --> 
-
-                        <div class="row mt-2">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        
-                                        <p-table 
-                                        [value]="admins" 
-                                        [scrollable]="true" 
-                                        responsiveLayout="scroll" 
-                                        scrollHeight="50vh"
-                                        [paginator]="true"
-                                        [rows]="10"
-                                        [showCurrentPageReport]="true"
-                                        [tableStyle]="{ 'min-width': '50rem' }"
-                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                        [rowsPerPageOptions]="commonService.tableConfig.pageOptions" >
-
-                                          
-                                            
-                                            <ng-template pTemplate="header">
-                                                <tr>
-                                                    <th>First Name</th>
-                                                    <th>Last Name</th>
-                                                    <th>Username</th>
-                                                    <th>User Role</th>
-                                                    <th>Mobile No</th>
-                                                    <th>Email</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </ng-template>
-                                            <ng-template pTemplate="body" let-admin>
-                                                <tr>
-                                                    <td>{{ admin.firstName }}</td>
-                                                    <td>{{ admin.lastName }}</td>
-                                                    <td>{{ admin.username }}</td>
-                                                    <td>{{ admin.role }}</td>
-                                                    <td>{{ admin.mobileNumber }}</td>
-                                                    <td>{{ admin.emailID }}</td>
-                                                    <td>
-                                                        <a (click)="showModel(admin,'update')" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
-                                                        <!-- <a (click)="deletUser(admin)"class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a> -->
-                                                        <a (click)="confirmDelete(admin)" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a>
-                                                    </td>
-                                                </tr>
-                                            </ng-template>
-                                            
-                                        </p-table>
-                                    
-                                    </div> <!-- end card body-->
-                                </div> <!-- end card -->
-                            </div><!-- end col-->
-                        </div>
-                        <!-- end row-->     
-                        
-                    </div> <!-- container -->
-
-                </div> <!-- content -->
-
-
-             
-
+                    </div>
+                </div>
             </div>
 
-            <!-- ============================================================== -->
-            <!-- End Page content -->
-            <!-- ============================================================== -->
-
-
-
-            <p-dialog [modal]="true"
-            [header]="title"
-            [(visible)]="visible"
-            [style]="{ width: '80vw' }"
-          >
-
-
-          <div class="row">
-            <div class="col-sm-12">
-                
-                <form [formGroup]="userForm">
-                                            
-                    <div class="row">
-                        <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100" >First Name<span class="text-danger">*</span></label>
-                            <input type="text" formControlName="firstName" id="fistname" class="form-control" [ngClass]="{'border-danger': isSubmit &&  f.firstName.invalid }"  placeholder="First Name">
-                            <app-form-error-message msg=" Name is required" *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.required)"></app-form-error-message>
-                            <app-form-error-message [msg]="patternMsg?.alphabetPattern[1]" *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.pattern)"></app-form-error-message>
-                        </div>
-
-                        <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Last Name <span class="text-danger">*</span></label>
-                            <input type="text" formControlName="lastName" id="lastname" class="form-control" placeholder="Last Name" [ngClass]="{'border-danger': isSubmit &&  f.lastName.invalid}">
-                            <app-form-error-message msg="Last Name is required" *ngIf="(isSubmit && userForm?.get('lastName')?.errors?.required)"></app-form-error-message>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100" [ngClass]="{'border-danger': f.roleId.touched && f.role?.invalid}">Select Role <span class="text-danger">*</span></label>
-                            <select formControlName="roleId" class="form-select" id="selectrole" (change)="onRoleChange($event)">
-                                <option disabled value="null">Select Role</option>
-                                <option *ngFor="let item of roleList" [value]="item?.rowId">{{item?.role}}</option>
-                               
-                            </select>
-                            <app-form-error-message msg="Role Name is required" *ngIf="isSubmit && userForm?.get('roleId')?.errors?.required"></app-form-error-message>
-
-                        </div>
-
-                        <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Username <span class="text-danger">*</span></label>
-                            <input type="text" formControlName="userName" id="username" class="form-control" [ngClass]="{'border-danger': isSubmit && f.userName?.invalid}" placeholder="Enter Username">
-                            <app-form-error-message msg="UserName Name is required" *ngIf="isSubmit && userForm?.get('userName')?.errors?.required"></app-form-error-message>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Password <span class="text-danger">*</span></label>
-                            <input formControlName="password" type="password"  id="password" class="form-control" [ngClass]="{'border-danger': isSubmit && f.password?.invalid}" placeholder="Enter Your Password">
-                            
-                             <app-form-error-message msg="Password is required" *ngIf="isSubmit && userForm?.get('password')?.errors?.required"></app-form-error-message>
-
-                        </div>
-
-                        <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Confirm Password <span class="text-danger">*</span> </label>
-                            <input type="password" formControlName="confirmPassword" id="confirmpassword" class="form-control " [ngClass]="{'border-danger': isSubmit && f.confirmPassword?.invalid}" placeholder="Enter Your Password">
-                           
-
-                            <div *ngIf="isSubmit &&  f.confirmPassword?.invalid">
-                                <app-form-error-message msg="Confirm Password is required" *ngIf="isSubmit && userForm?.get('confirmPassword')?.errors?.required"></app-form-error-message>
-                                <app-form-error-message msg="Password and Confirm Password must be match." *ngIf="userForm?.get('confirmPassword')?.errors?.confirmedValidator"></app-form-error-message>
-                               
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Mobile No <span class="text-danger">*</span></label>
-                            <input formControlName="mobileNumber" type="mobileNumber" id="mobileNumber" class="form-control" [ngClass]="{'border-danger': isSubmit && f.mobileNumber?.invalid}"  placeholder="Enter Mobile No">
-                            <app-form-error-message msg="Mobile Number is required" *ngIf="isSubmit && userForm?.get('mobileNumber')?.errors?.required"></app-form-error-message>
-
-                       </div>
-                        <div class="form-group col-sm-6 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Mail ID <span class="text-danger">*</span></label>
-                            <input formControlName="emailID" type="email" id="mailid" class="form-control" [ngClass]="{'border-danger': isSubmit &&  f.emailID?.invalid}" placeholder="Enter Mail ID">
-                            <app-form-error-message msg="Email is required" *ngIf="isSubmit && userForm?.get('emailID')?.errors?.required"></app-form-error-message>
-
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary " (click)="submitForm()">{{title == 'Add User' ? 'Save' : 'Update'}}</button>
-                </form>
-
+            <div class="row mt-2">
+                <div class="col-md-6 d-flex">
+                    <h4>User Management</h4>
+                </div>
+                <div class="col-md-6">
+                    <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
+                </div>
 
             </div>
-        </div> 
+            <!-- end page title -->
 
-        </p-dialog>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
 
-        <p-toast></p-toast>
-        <p-confirmDialog></p-confirmDialog>
+                            <p-table [value]="admins" [scrollable]="true" responsiveLayout="scroll" scrollHeight="50vh"
+                                [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                                [tableStyle]="{ 'min-width': '50rem' }"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                [rowsPerPageOptions]="commonService.tableConfig.pageOptions">
 
-    
+
+
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                        <th>User Role</th>
+                                        <th>Mobile No</th>
+                                        <th>Email</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-admin>
+                                    <tr>
+                                        <td>{{ admin.firstName }}</td>
+                                        <td>{{ admin.lastName }}</td>
+                                        <td>{{ admin.userName }}</td>
+                                        <td>{{ admin.role }}</td>
+                                        <td>{{ admin.mobileNumber }}</td>
+                                        <td>{{ admin.emailID }}</td>
+                                        <td>
+                                            <a (click)="showModel(admin,'update')"
+                                                class="btn btn-grid btn-primary waves-effect waves-light me-1"><i
+                                                    class="mdi mdi-pencil"></i> Edit</a>
+                                            <!-- <a (click)="deletUser(admin)"class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-trash-can-outline"></i> Delete</a> -->
+                                            <a (click)="confirmDelete(admin)"
+                                                class="btn btn-grid btn-danger waves-effect waves-light me-1"><i
+                                                    class="mdi mdi-trash-can-outline"></i> Delete</a>
+                                            <a *ngIf="admin.isShiftUser" (click)="assignShift(admin)"
+                                                class="btn btn-grid btn-warning waves-effect waves-light"><i
+                                                    class="mdi mdi-clock-outline"></i> Assign Shift</a>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+
+                            </p-table>
+
+                        </div> <!-- end card body-->
+                    </div> <!-- end card -->
+                </div><!-- end col-->
+            </div>
+            <!-- end row-->
+
+        </div> <!-- container -->
+
+    </div> <!-- content -->
+
+
+
+
+</div>
+
+<!-- ============================================================== -->
+<!-- End Page content -->
+<!-- ============================================================== -->
+
+
+
+<p-dialog [modal]="true" [header]="title" [(visible)]="visible" [style]="{ width: '80vw' }">
+
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <form [formGroup]="userForm">
+
+                <div class="row">
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">First Name<span
+                                class="text-danger">*</span></label>
+                        <input type="text" formControlName="firstName" id="fistname" class="form-control"
+                            [ngClass]="{'border-danger': isSubmit &&  f.firstName.invalid }" placeholder="First Name">
+                        <app-form-error-message msg=" Name is required"
+                            *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.required)"></app-form-error-message>
+                        <app-form-error-message [msg]="patternMsg?.alphabetPattern[1]"
+                            *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.pattern)"></app-form-error-message>
+                    </div>
+
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Last Name <span
+                                class="text-danger">*</span></label>
+                        <input type="text" formControlName="lastName" id="lastname" class="form-control"
+                            placeholder="Last Name" [ngClass]="{'border-danger': isSubmit &&  f.lastName.invalid}">
+                        <app-form-error-message msg="Last Name is required"
+                            *ngIf="(isSubmit && userForm?.get('lastName')?.errors?.required)"></app-form-error-message>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100"
+                            [ngClass]="{'border-danger': f.roleId.touched && f.role?.invalid}">Select Role <span
+                                class="text-danger">*</span></label>
+                        <select formControlName="roleId" class="form-select" id="selectrole"
+                            (change)="onRoleChange($event)">
+                            <option disabled value="null">Select Role</option>
+                            <option *ngFor="let item of roleList" [value]="item?.rowId">{{item?.role}}</option>
+
+                        </select>
+                        <app-form-error-message msg="Role Name is required"
+                            *ngIf="isSubmit && userForm?.get('roleId')?.errors?.required"></app-form-error-message>
+
+                    </div>
+
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Username <span
+                                class="text-danger">*</span></label>
+                        <input type="text" formControlName="userName" id="username" class="form-control"
+                            [ngClass]="{'border-danger': isSubmit && f.userName?.invalid}" placeholder="Enter Username">
+                        <app-form-error-message msg="UserName Name is required"
+                            *ngIf="isSubmit && userForm?.get('userName')?.errors?.required"></app-form-error-message>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Password <span
+                                class="text-danger">*</span></label>
+                        <input formControlName="password" type="password" id="password" class="form-control"
+                            [ngClass]="{'border-danger': isSubmit && f.password?.invalid}"
+                            placeholder="Enter Your Password">
+
+                        <app-form-error-message msg="Password is required"
+                            *ngIf="isSubmit && userForm?.get('password')?.errors?.required"></app-form-error-message>
+
+                    </div>
+
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Confirm Password <span
+                                class="text-danger">*</span> </label>
+                        <input type="password" formControlName="confirmPassword" id="confirmpassword"
+                            class="form-control " [ngClass]="{'border-danger': isSubmit && f.confirmPassword?.invalid}"
+                            placeholder="Enter Your Password">
+
+
+                        <div *ngIf="isSubmit &&  f.confirmPassword?.invalid">
+                            <app-form-error-message msg="Confirm Password is required"
+                                *ngIf="isSubmit && userForm?.get('confirmPassword')?.errors?.required"></app-form-error-message>
+                            <app-form-error-message msg="Password and Confirm Password must be match."
+                                *ngIf="userForm?.get('confirmPassword')?.errors?.confirmedValidator"></app-form-error-message>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Mobile No <span
+                                class="text-danger">*</span></label>
+                        <input formControlName="mobileNumber" type="mobileNumber" id="mobileNumber" class="form-control"
+                            [ngClass]="{'border-danger': isSubmit && f.mobileNumber?.invalid}"
+                            placeholder="Enter Mobile No">
+                        <app-form-error-message msg="Mobile Number is required"
+                            *ngIf="isSubmit && userForm?.get('mobileNumber')?.errors?.required"></app-form-error-message>
+
+                    </div>
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Mail ID <span
+                                class="text-danger">*</span></label>
+                        <input formControlName="emailID" type="email" id="mailid" class="form-control"
+                            [ngClass]="{'border-danger': isSubmit &&  f.emailID?.invalid}" placeholder="Enter Mail ID">
+                        <app-form-error-message msg="Email is required"
+                            *ngIf="isSubmit && userForm?.get('emailID')?.errors?.required"></app-form-error-message>
+
+                    </div>
+                </div>
+                <div class="row" *ngIf="userForm.value.roleId !== 1">
+                    <div class="form-group col-sm-6 mb-2">
+                        <div class="form-check mt-4">
+                            <input type="checkbox" class="form-check-input" formControlName="isShiftUser"
+                                id="isShiftUser">
+                            <label class="form-check-label" for="isShiftUser">Is Shift User</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6 mb-2">
+                        <div class="form-check mt-4">
+                            <input type="checkbox" class="form-check-input" formControlName="isGeoLocationEnable"
+                                id="isGeoLocationEnable">
+                            <label class="form-check-label" for="isGeoLocationEnable">Is GeoLocation Enable</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="text-end mt-3">
+                    <button class="btn btn-primary " (click)="submitForm()">{{title == 'Add User' ? 'Save' :
+                        'Update'}}</button>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+</p-dialog>
+
+<p-dialog header="Assign Shift" [(visible)]="assignShiftDialog" [modal]="true" [style]="{width: '700px'}">
+    <div class="p-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-4">
+                <label>Shift Name</label>
+                <input type="text" class="form-control" [(ngModel)]="ShiftName" placeholder="Enter shift name" />
+            </div>
+            <div class="col-sm-4">
+                <label>Shift Start Time</label>
+                <input type="time" class="form-control" [(ngModel)]="ShiftStartTime" />
+            </div>
+            <div class="col-sm-4">
+                <label>Shift End Time</label>
+                <input type="time" class="form-control" [(ngModel)]="ShiftEndTime" />
+            </div>
+        </div>
+
+        <div class="text-end mb-3">
+            <button class="btn btn-success" (click)="saveShift()"
+                [disabled]="!ShiftName || !ShiftStartTime || !ShiftEndTime">
+                Add Shift
+            </button>
+        </div>
+
+        <p-table [value]="assignedShifts" *ngIf="assignedShifts.length > 0">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Shift Name</th>
+                    <th>Shift Start</th>
+                    <th>Shift End</th>
+                    <th>Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-shift let-i="rowIndex">
+                <tr>
+                    <td *ngIf="editIndex !== i">{{ shift.shiftName }}</td>
+                    <td *ngIf="editIndex !== i">{{ shift.startTime }}</td>
+                    <td *ngIf="editIndex !== i">{{ shift.endTime }}</td>
+
+                    <td *ngIf="editIndex === i">
+                        <input type="text" class="form-control" [(ngModel)]="shift.shiftName"
+                            placeholder="Shift name" />
+                    </td>
+                    <td *ngIf="editIndex === i">
+                        <input type="time" class="form-control" [(ngModel)]="shift.startTime" />
+                    </td>
+                    <td *ngIf="editIndex === i">
+                        <input type="time" class="form-control" [(ngModel)]="shift.endTime" />
+                    </td>
+
+                    <td>
+                        <button *ngIf="editIndex !== i" class="btn btn-primary btn-sm me-1"
+                            (click)="startEdit(i)">Edit</button>
+                        <button *ngIf="editIndex === i" class="btn btn-success btn-sm me-1" (click)="saveShift()"
+                            [disabled]="!shift.shiftName || !shift.startTime || !shift.endTime">Save</button>
+                        <button *ngIf="editIndex === i" class="btn btn-secondary btn-sm me-1"
+                            (click)="cancelEdit()">Cancel</button>
+                        <button class="btn btn-danger btn-sm" (click)="DeleteShift(i)"
+                            [disabled]="editIndex === i">Delete</button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div class="text-end">
+            <button class="btn btn-secondary me-2" (click)="assignShiftDialog = false"
+                [disabled]="editIndex !== null">Close</button>
+        </div>
+    </ng-template>
+</p-dialog>
+
+
+
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>

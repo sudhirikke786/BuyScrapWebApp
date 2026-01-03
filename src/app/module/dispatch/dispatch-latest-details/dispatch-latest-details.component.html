@@ -34,29 +34,42 @@
                 <div class="row">
                   <div class="col-sm-6 col-md-4 d-flex">
 
-                    <h4>Dispatch - {{invoiceId == 'New' ? invoiceId +' Ticket' : invoiceId }} </h4>
+                    <h4>Dispatch - {{invoiceId == 'New' ? invoiceId +' Ticket' : pickupID }} </h4>
 
 
                   </div>
 
                   <div class="col-sm-6 col-md-8 d-flex justify-content-end mb-1">
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                      <div *ngIf="currentRole !== 'Driver' && currentRole !== 'Scale' && isCompleted">
+                        <a class="btn btn-primary" *ngIf="ticketRowID === 0"
+                          (click)="convertToTicket(sellerID, rowId, pickupID)">
+                          Convert to Ticket
+                        </a>
+                        <a class="btn btn-success" *ngIf="ticketRowID > 0"
+                          (click)="showTicketclick(ticketRowID, sellerID)">
+                          Show Ticket
+                        </a>
+                      </div>
 
-                    <div *ngIf="type=='show'">
-                      <a class="btn btn-primary me-1 mb-1" (click)="edit()">
-                        Edit
-                      </a>
-                    </div>
-                    <div *ngIf="type=='edit' || type=='new' ">
-                      <a class="btn btn-primary me-1 mb-1" (click)="submitSave()">
-                        Save
-                      </a>
-                    </div>
-
-                    <div>
-                      <a class="btn btn-primary me-1" [routerLink]="backUrl">
-                        Back
-                      </a>
-
+                      <div *ngIf="type=='show' && currentRole !== 'Driver' && currentRole !== 'Scale' && !isCompleted">
+                        <a class="btn btn-primary" (click)="edit()">
+                          Edit
+                        </a>
+                      </div>
+                      <div *ngIf="type=='edit' || type=='new' ">
+                        <a class="btn btn-primary" (click)="submitSave()">
+                          Save
+                        </a>
+                      </div>
+                      <div *ngIf="type !== 'new'">
+                        <a class="btn btn-success me-1 ms-1" (click)="generateDispatchReport(rowId)">Print</a>
+                      </div>
+                      <div>
+                        <a class="btn btn-primary me-1" [routerLink]="backUrl">
+                          Back
+                        </a>
+                      </div>
                     </div>
 
 
@@ -69,25 +82,46 @@
                   </div>
                 </div>
                 <div class="row">
-                  <table class="seller-view-tbl">
-                    <tr>
+                  <table class="seller-view-tbl table-sm">
 
-                      <td class="w-25"><b>Customer Name :</b> {{customer?.fullName}}</td>
-                      <td class="w-25"><b>Address:</b>
-                        <ng-container *ngIf="isBusiness; else personalAddress">
-                          <!-- Dropdown for Business -->
-                          <select class="text-truncate" [(ngModel)]="addressId">
-                            <option *ngFor="let address of addresses" [value]="address.rowId">
-                              {{ address.streetAddress }}
-                            </option>
-                          </select>
-                        </ng-container>
-                        <ng-template #personalAddress>
-                          <span class="text-truncate">{{ customer?.streetAddress }}</span>
-                        </ng-template>
+                    <tr>
+                      <td class="w-25">
+                        <div class="d-flex align-items-center">
+                          <b class="text-nowrap me-2">Customer Name :</b>
+                          <span class="text-truncate" title="{{customer?.fullName}}">{{customer?.fullName}}</span>
+                        </div>
                       </td>
-                      <td class="w-25">Created on : <label>{{customer?.createdDate  ?? currentDate | date: 'MM/dd/yyyy'}}</label></td>
-                      <td class="w-25">Time : {{customer?.createdDate ?? currentDate | date: 'hh:mm a'}}</td>
+                      <td class="w-25">
+                        <div class="d-flex align-items-center">
+                          <b class="text-nowrap me-2">Address:</b>
+                          <ng-container *ngIf="isBusiness; else personalAddress">
+                            <select class="form-control form-control-sm text-truncate" [(ngModel)]="addressID">
+                              <option *ngFor="let address of addresses" [value]="address.rowId">
+                                {{ address.streetAddress }}
+                              </option>
+                            </select>
+                          </ng-container>
+                          <ng-template #personalAddress>
+                            <span class="text-truncate">{{ customer?.streetAddress }}</span>
+                          </ng-template>
+                        </div>
+                      </td>
+                      <td class="w-25">
+                        <div class="d-flex align-items-center">
+                          <b class="text-nowrap me-2">Created On:</b>
+                          <span class="form-control form-control-sm text-truncate"
+                            style="background-color: #f8f9fa; border: 1px solid #dee2e6;">{{customer?.createdDate ??
+                            currentDate | date: 'MM/dd/yyyy'}}</span>
+                        </div>
+                      </td>
+                      <td class="w-25">
+                        <div class="d-flex align-items-center">
+                          <b class="text-nowrap me-2">Time:</b>
+                          <span class="form-control form-control-sm text-truncate"
+                            style="background-color: #f8f9fa; border: 1px solid #dee2e6;">{{customer?.createdDate ??
+                            currentDate | date: 'hh:mm a'}}</span>
+                        </div>
+                      </td>
                     </tr>
                     <tr>
                       <!-- <td>
@@ -106,42 +140,85 @@
                         </div>
                       </td> -->
                       <td>
-                        <div class="form-group  mt-1  d-flex justify-content-left align-items-center">
-                          <label for="floatingInput" class="form-label w-25" >Pickup Date<span
+                        <div class="d-flex  align-items-center mt-1">
+                          <label class="form-label text-nowrap me-2 mb-0">Pickup Date<span
                               class="text-danger">*</span></label>
-                          <input type="date" [min]="minDate" class="form-control" [(ngModel)]="pickupdate"
-                            id="birthdate" placeholder="Pick up Date"  (click)="openDatePicker()">
-
-
+                          <input type="date" [min]="minDate" class="form-control form-control-sm"
+                            [(ngModel)]="pickupdate" id="birthdate" (click)="openDatePicker()">
+                        </div>
+                      </td>
+                      <td>
+                        <div class="d-flex align-items-center mt-1">
+                          <label class="form-label text-nowrap me-2 mb-0">Pickup Time<span
+                              class="text-danger">*</span></label>
+                          <input type="time" class="form-control form-control-sm" id="PickUpTime"
+                            [(ngModel)]="pickUpTime" id="time" (click)="openTimeViewer()">
                         </div>
                       </td>
                       <td colspan="2">
-                        <div class="form-group mt-1 d-flex justify-content-left align-items-center">
-                          <label for="floatingInput" class="form-label w-25">Driver</label>
-
-                          <select class="form-control me-1" id="defaultdriversName" name="defaultdriversName"
+                        <div class="d-flex align-items-center mt-1">
+                          <label class="form-label text-nowrap me-2 mb-0">Driver</label>
+                          <select class="form-control form-control-sm" id="defaultdriversName"
                             [(ngModel)]="driversName">
-                            <option *ngFor="let optionobj of driverList; let i = index" [value]="optionobj?.rowId">
+                            <option *ngFor="let optionobj of driverList" [value]="optionobj?.rowId">
                               {{ optionobj.firstName }}
                             </option>
                           </select>
-
-
+                        </div>
+                      </td>
+                      <!-- <td>
+                        <div class="d-flex align-items-center mt-1">
+                          <label for="PickUpTime" class="form-label text-nowrap me-2 mb-0">Truck</label>
+                          <select class="form-control form-control-sm">
+                            <option value="">Select Truck</option>
+                            <option value="">Flatbed Truck</option>
+                            <option value="">Box Truck</option>
+                          </select>
+                        </div>
+                      </td> -->
+                      <!-- <td>
+                        <div class="d-flex align-items-center mt-1">
+                          <label class="form-label text-nowrap me-2 mb-0">Recurring</label>
+                          <select class="form-control form-control-sm">
+                            <option value="">None</option>
+                            <option value="">Daily</option>
+                            <option value="">Weekly</option>
+                            <option value="">Monthly</option>
+                            <option value="">Custom</option>
+                          </select>
+                        </div>
+                      </td> -->
+                    </tr>
+                    <tr>
+                      <!-- <td>
+                        <div class="d-flex align-items-center mt-1">
+                          <b class="text-nowrap me-2">Schedule Date:</b>
+                          <input type="date" class="form-control form-control-sm">
+                        </div>
+                      </td>
+                      <td>
+                        <div class="d-flex align-items-center mt-1">
+                          <b class="text-nowrap me-2">Schedule Time:</b>
+                          <input type="time" class="form-control form-control-sm">
+                        </div>
+                      </td> -->
+                      <td>
+                        <div class="d-flex align-items-center mt-1">
+                          <b class="text-nowrap me-2">Contact Name:</b>
+                          <input type="text" class="form-control form-control-sm" [(ngModel)]="contactName"
+                            placeholder="Name">
+                        </div>
+                      </td>
+                      <td>
+                        <div class="d-flex align-items-center mt-1">
+                          <b class="text-nowrap me-2">Contact Number:</b>
+                          <input type="text" class="form-control form-control-sm" [(ngModel)]="contactNumber"
+                            placeholder="Number">
                         </div>
                       </td>
                     </tr>
-                    <tr>
-                      <td class="w-25" >
-                        <b>Contact Name:</b>
-                        <input type="text" class="form-control" [(ngModel)]="contactName" placeholder="Enter contact name">
-                      </td>
-                      <td class="w-25">
-                        <b>Contact Number:</b>
-                        <input type="text" class="form-control" [(ngModel)]="contactNumber" placeholder="Enter contact number">
-                      </td>
-                    </tr>
-                    
-                    
+
+
 
 
                   </table>
@@ -173,11 +250,12 @@
                         <tr>
                           <th style="width:15%">Dispatch Type</th>
                           <th style="width:15%">Container Type</th>
-                          <th style="width:12%">Container Quantity</th> 
+                          <th style="width:12%">Container Quantity</th>
                           <th style="width:12%">Drop-off Box #</th>
                           <th style="width:12%">Box Pickup #</th>
                           <th style="width:10%">Charges</th>
                           <th style="width:25%">Notes</th>
+                          <th style="width:15%" *ngIf="type=='show' && currentRole == 'Driver'">Status</th>
                           <th style="width:15%" *ngIf="type!=='show'">Action</th>
                         </tr>
                       </thead>
@@ -187,59 +265,82 @@
                         <tr *ngFor="let item of invoiceObj; let i = index">
                           <td style="width:15%">{{item?.dispatchType}}</td>
                           <td style="width:15%">{{item?.containerType}}</td>
-                          <td style="width:12%">{{ item?.containerQuantity }}</td> 
-                          <td style="width:12%">{{item?.dropoffbox}}</td>
-                          <td style="width:12%">{{item?.boxpickup}}</td>
-                          <td style="width:10%">{{item?.charges}}</td>
-                          <td colspan="2" style="width:20%;white-space: pre-wrap;">{{item?.notes}}</td>
-                       
+                          <td style="width:12%">{{ item?.containerQuantity }}</td>
+                          <td style="width:12%">{{item?.dropOffBox}}</td>
+                          <td style="width:12%">{{item?.boxPickUp}}</td>
+                          <td style="width:10%">{{item?.charges | currency:(CurrencyCode ? CurrencyCode :
+                            defaultCurrencyCode) :'symbol':'1.2-2' }}</td>
+                          <td [attr.colspan]="(type=='show' && currentRole == 'Driver') ? '1' : '2'"
+                            style="width:25%;white-space: pre-wrap;">{{item?.notes}}</td>
+                          <td style="width:15%" *ngIf="type === 'show' && currentRole === 'Driver'">
+                            <button *ngIf="!item?.isCompleted" class="btn btn-success btn-sm"
+                              (click)="markMaterialAsCompleted(item)">Complete</button>
+                            <button *ngIf="item?.isCompleted" class="btn btn-danger btn-sm" disabled>Completed</button>
+                          </td>
+
                         </tr>
                       </tbody>
                       <tbody>
                         <ng-template #showtemp>
                           <tr *ngFor="let item of invoiceObj; let i = index">
                             <td style="width:15%" *ngIf="editingIndex !== i">
-                              {{ item.dispatchTypeID }}
+                              {{ item.dispatchType }}
                             </td>
                             <td style="width:15%" *ngIf="editingIndex === i">
-                              <select [(ngModel)]="editItemObj.dispatchTypeID" id="dispatchTypes" class="form-control">
+                              <select [(ngModel)]="editItemObj.dispatchTypeID" id="dispatchTypes" class="form-control"
+                                (change)="updateDispatchType(editItemObj)">
                                 <option value="Select Type" selected="true">Select Type</option>
                                 <option *ngFor="let option of dispatchTypes" [value]="option.rowID">
                                   {{ option.type }}
                                 </option>
                               </select>
                             </td>
-                            
+
                             <td style="width:15%" *ngIf="editingIndex !== i">{{ item?.containerType }}</td>
+                            <td style="width:15%" *ngIf="editingIndex === i">
+                              <p-dropdown [(ngModel)]="editItemObj.containerType" [options]="allContainerType"
+                                optionLabel="containerType" optionValue="containerType"
+                                placeholder="Select container type*" [filter]="true" filterBy="containerType"
+                                appendTo="body" styleClass="w-100"
+                                (onChange)="onContainerTypeChange(editItemObj, 'edit')">
+                              </p-dropdown>
+                            </td>
+                            <td style="width:12%" *ngIf="editingIndex !== i">{{ item?.containerQuantity }}</td>
                             <td style="width:12%" *ngIf="editingIndex === i">
-                              <select [(ngModel)]="editItemObj.containerType" class="form-control">
-                                <option value="-- None --" selected="true">-- None --</option>
-                                <option *ngFor="let option of allContainerType" [value]="option.containerType">
-                                  {{ option.containerType }}
-                                </option>
-                              </select>
+                              <input type="number" [(ngModel)]="editItemObj.containerQuantity"
+                                (change)="validateContainerQuantity(editItemObj)" />
                             </td>
-                            <td  style="width:12%" *ngIf="editingIndex !== i">{{ item?.containerQuantity }}</td> 
-                            <td  style="width:12%" *ngIf="editingIndex === i">
-                              <input type="number" [(ngModel)]="editItemObj.containerQuantity" />
-                            </td>
-                            <td style="width:12%" *ngIf="editingIndex !== i">{{ item?.dropoffbox}}</td>
+                            <td style="width:12%" *ngIf="editingIndex !== i">{{ item?.dropOffBox}}</td>
                             <td style="width:12%" *ngIf="editingIndex === i">
-                              <input type="text" [(ngModel)]="editItemObj.dropoffbox" 
-                              (change)="checkContainerAvailability(editItemObj.dropoffbox, 'dropoff')" 
-                              [disabled]="dispatchMaterial == 'Pickup' || editItemObj.containerQuantity > 1"/>
+                              <p-dropdown *ngIf="editItemHasSubContainers" [(ngModel)]="editItemObj.dropOffRowId"
+                                [options]="editSubContainersDropOff" optionLabel="containerNumber" optionValue="rowID"
+                                placeholder="Select Drop-off" [filter]="true" appendTo="body" styleClass="w-100"
+                                [disabled]="editItemObj.dispatchType === 'Pickup'"
+                                (onChange)="onDropOffChange(editItemObj, 'edit')"
+                                [disabled]="editItemObj.dispatchType === 'Pickup' || editItemObj.containerQuantity > 1 || isEditItemBulk"></p-dropdown>
+                              <input *ngIf="!editItemHasSubContainers" type="text" [(ngModel)]="editItemObj.dropOffBox"
+                                (change)="checkContainerAvailability(editItemObj.dropOffBox, 'dropoff')"
+                                [disabled]="editItemObj.dispatchType === 'Pickup' || editItemObj.containerQuantity > 1 || isEditItemBulk" />
                             </td>
-                            <td style="width:12%" *ngIf="editingIndex !== i">{{ item?.boxpickup }}</td>
+                            <td style="width:12%" *ngIf="editingIndex !== i">{{ item?.boxPickUp }}</td>
                             <td style="width:12%" *ngIf="editingIndex === i">
-                              <input type="text" [(ngModel)]="editItemObj.boxpickup "
-                              (change)="checkContainerAvailability(editItemObj.boxpickup, 'pickup')" 
-                              [disabled]="dispatchMaterial == 'Drop off' || editItemObj.containerQuantity > 1"/>
+                              <p-dropdown *ngIf="editItemHasSubContainers" [(ngModel)]="editItemObj.boxPickupRowId"
+                                [options]="editSubContainersPickup" optionLabel="containerNumber" optionValue="rowID"
+                                placeholder="Select Pickup" [filter]="true" appendTo="body" styleClass="w-100"
+                                [disabled]="editItemObj.dispatchType === 'Drop off'"
+                                (onChange)="onPickUpChange(editItemObj, 'edit')"
+                                [disabled]="editItemObj.dispatchType === 'Drop off' || editItemObj.containerQuantity > 1 || isEditItemBulk"></p-dropdown>
+                              <input *ngIf="!editItemHasSubContainers" type="text" [(ngModel)]="editItemObj.boxPickUp"
+                                (change)="checkContainerAvailability(editItemObj.boxPickUp, 'pickup')"
+                                [disabled]="editItemObj.dispatchType === 'Drop off' || editItemObj.containerQuantity > 1 || isEditItemBulk" />
                             </td>
-                            <td style="width:10%" *ngIf="editingIndex !== i">{{ item?.charges }}</td>
+                            <td style="width:10%" *ngIf="editingIndex !== i">{{ item?.charges | currency:(CurrencyCode ?
+                              CurrencyCode : defaultCurrencyCode) :'symbol':'1.2-2' }}</td>
                             <td style="width:10%" *ngIf="editingIndex === i">
                               <input type="number" [(ngModel)]="editItemObj.charges" />
                             </td>
-                            <td style="width:25%" *ngIf="editingIndex !== i" style="white-space: pre-wrap;">{{ item?.notes }}</td>
+                            <td style="width:25%" *ngIf="editingIndex !== i" style="white-space: pre-wrap;">{{
+                              item?.notes }}</td>
                             <td style="width:25%" *ngIf="editingIndex === i">
                               <textarea cols="50" rows="2" [(ngModel)]="editItemObj.notes"></textarea>
 
@@ -249,15 +350,15 @@
                             <td style="width:15%">
                               <div class="d-flex">
                                 <button class="btn btn-primary me-1" *ngIf="editingIndex !== i"
-                                (click)="startEditing(i, item)">Edit</button>
-                              <button class="btn btn-danger" *ngIf="editingIndex !== i"
-                                (click)="deleteItem(i)">Delete</button>
-                              <button class="btn btn-success me-1" *ngIf="editingIndex === i"
-                                (click)="saveEdit(i)">Save</button>
-                              <button class="btn btn-secondary" *ngIf="editingIndex === i"
-                                (click)="cancelEdit()">Cancel</button>
+                                  (click)="startEditing(i, item)">Edit</button>
+                                <button class="btn btn-danger" *ngIf="editingIndex !== i"
+                                  (click)="deleteItem(i)">Delete</button>
+                                <button class="btn btn-success me-1" *ngIf="editingIndex === i"
+                                  (click)="saveEdit(i)">Save</button>
+                                <button class="btn btn-secondary" *ngIf="editingIndex === i"
+                                  (click)="cancelEdit()">Cancel</button>
                               </div>
-                            
+
                             </td>
                           </tr>
 
@@ -274,37 +375,50 @@
                           <tr>
 
                             <td style="width:15%">
-                              <select class="form-control me-1" id="dispatchTypes" [(ngModel)]="newItem.dispatchTypeID">
+                              <select class="form-control me-1" id="dispatchTypes" [(ngModel)]="newItem.dispatchTypeID"
+                                (change)="updateDispatchType(newItem)">
                                 <option value="Select Type" selected="true">Select Type</option>
-                                <option *ngFor="let option of dispatchTypes"  [value]="option.rowID">
+                                <option *ngFor="let option of dispatchTypes" [value]="option.rowID">
                                   {{ option.type }}
                                 </option>
                               </select>
                             </td>
-                          
+
                             <td style="width:15%">
-                              <select class="form-control me-1" id="allContainerType" name="defaultSelectedMaterial"
-                                [(ngModel)]="newItem.containerType">
-                                <option value="-- None --" selected="true">-- None --</option>
-                                <option *ngFor="let option of allContainerType; let i = index"
-                                  [value]="option.containerType">
-                                  {{ option.containerType }}
-                                </option>
-                              </select>
-                              <!-- <input type="text" [(ngModel)]="newItem.containerID" placeholder="Container ID" /> -->
+                              <p-dropdown [(ngModel)]="newItem.containerType" [options]="allContainerType"
+                                optionLabel="containerType" optionValue="containerType"
+                                placeholder="Select container type *" [filter]="true" filterBy="containerType"
+                                appendTo="body" styleClass="w-100" (onChange)="onContainerTypeChange(newItem, 'new')">
+                              </p-dropdown>
+                            </td>
+
+                            <td style="width:12%">
+                              <input min="0" type="number" [(ngModel)]="newItem.containerQuantity"
+                                placeholder="Container Quantity" (change)="validateContainerQuantity(newItem)" />
                             </td>
                             <td style="width:12%">
-                              <input min="0" type="number" [(ngModel)]="newItem.containerQuantity" placeholder="Container Quantity" />
-                            </td> 
-                            <td style="width:12%">
-                              <input type="text" [(ngModel)]="newItem.dropoffbox" placeholder="Drop-off Box"
-                              (change)="checkContainerAvailability(newItem.dropoffbox, 'dropoff')" 
-                              [disabled]="dispatchMaterial == 'Pickup' || newItem.containerQuantity > 1" />
+                              <p-dropdown *ngIf="newItemHasSubContainers" [(ngModel)]="newItem.DropOffRowId"
+                                [options]="newSubContainersDropOff" optionLabel="containerNumber" optionValue="rowID"
+                                placeholder="Select Drop-off" [filter]="true" appendTo="body" styleClass="w-100"
+                                [disabled]="newItem.dispatchType === 'Pickup'"
+                                (onChange)="onDropOffChange(newItem, 'new')"
+                                [disabled]="newItem.dispatchType === 'Pickup' || newItem.containerQuantity > 1 || isNewItemBulk"></p-dropdown>
+                              <input *ngIf="!newItemHasSubContainers" type="text" [(ngModel)]="newItem.dropOffBox"
+                                placeholder="Drop-off Box"
+                                (change)="checkContainerAvailability(newItem.dropOffBox, 'dropoff')"
+                                [disabled]="newItem.dispatchType === 'Pickup' || newItem.containerQuantity > 1 || isNewItemBulk" />
                             </td>
                             <td style="width:12%">
-                              <input type="text" [(ngModel)]="newItem.boxpickup" placeholder="Box Pickup" 
-                              (change)="checkContainerAvailability(newItem.boxpickup, 'pickup')" 
-                              [disabled]="dispatchMaterial == 'Drop off' || newItem.containerQuantity > 1" />
+                              <p-dropdown *ngIf="newItemHasSubContainers" [(ngModel)]="newItem.BoxPickupRowId"
+                                [options]="newSubContainersPickup" optionLabel="containerNumber" optionValue="rowID"
+                                placeholder="Select Pickup" [filter]="true" appendTo="body" styleClass="w-100"
+                                [disabled]="newItem.dispatchType === 'Drop off'"
+                                (onChange)="onPickUpChange(newItem, 'new')"
+                                [disabled]="newItem.dispatchType === 'Drop off' || newItem.containerQuantity > 1 || isNewItemBulk"></p-dropdown>
+                              <input *ngIf="!newItemHasSubContainers" type="text" [(ngModel)]="newItem.boxPickUp"
+                                placeholder="Box Pickup"
+                                (change)="checkContainerAvailability(newItem.boxPickUp, 'pickup')"
+                                [disabled]="newItem.dispatchType === 'Drop off' || newItem.containerQuantity > 1 || isNewItemBulk" />
                             </td>
                             <td style="width:10%">
                               <input min="0" type="number" [(ngModel)]="newItem.charges" placeholder="Charges" />
@@ -336,10 +450,10 @@
               <div class="mb-3 col-sm-6 d-flex justify-content-center align-items-center">
                 <label for="notes" class="form-label me-2">Notes</label>
                 <textarea id="notes" [(ngModel)]="notes" class="form-control" rows="2"
-                    placeholder="Any relevant information not already covered"></textarea>
+                  placeholder="Any relevant information not already covered"></textarea>
+              </div>
             </div>
-            </div>
-           
+
 
 
             <!-- <div class="row">
@@ -369,10 +483,41 @@
         </div>
         <p-toast></p-toast>
 
+        <p-dialog [(visible)]="showConfirmLeavePopup" [modal]="true" [closable]="false" header="Confirmation"
+          [style]="{ width: '400px' }">
+          <p>Dispatch details have not been saved. Do you want to continue?</p>
+          <div class="d-flex justify-content-end mt-3">
+            <button class="btn btn-secondary me-2" (click)="cancelNavigation()">No</button>
+            <button class="btn btn-primary" (click)="proceedWithNavigation()">Yes</button>
+          </div>
+        </p-dialog>
 
 
 
       </div>
 
 
+
+
+
     </div>
+
+    <ng-container *ngIf="!checkTabView">
+
+      <p-dialog header="Dispatch Report" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true"
+        [style]="{ width: '70vw' }">
+
+        <div *ngIf="showLoaderReport">
+          <app-page-loader type="reportloader"></app-page-loader>
+        </div>
+
+        <div class="row">
+          <div style="height: 500px;" *ngIf="!showLoaderReport">
+            <ngx-extended-pdf-viewer #pdfViewer [base64Src]="fileDataObj" [pageChangeOnScrolling]="true"
+              [showScrollbar]="false"
+              [filenameForDownload]="'Dispatch'+ ' '+'ID_' + currentDispatchId + '.pdf'"></ngx-extended-pdf-viewer>
+          </div>
+        </div>
+
+      </p-dialog>
+    </ng-container>

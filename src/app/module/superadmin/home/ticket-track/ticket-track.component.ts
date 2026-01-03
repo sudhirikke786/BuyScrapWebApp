@@ -39,8 +39,11 @@ export class TicketTrackComponent implements OnInit{
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     const today = new Date();
-    this.fromDate = this.formatDate(today);
+    const fifteenDaysAgo = new Date();
+  fifteenDaysAgo.setDate(today.getDate() - 15);
+    this.fromDate = this.formatDate(fifteenDaysAgo);
     this.toDate = this.formatDate(today);
+    this.getDailyTicketsReport();
   
   }
   formatDate(date: Date): string {
@@ -75,7 +78,9 @@ export class TicketTrackComponent implements OnInit{
         this.toDate = this.formatDate(today);
         this.getDailyTicketsReport();
         break;
-       
+        case 'mdi-arrow-left':
+      this.back();  
+      break;
       default:
         break;
     }  

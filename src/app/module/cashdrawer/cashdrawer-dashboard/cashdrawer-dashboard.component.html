@@ -1,455 +1,497 @@
-            <!-- ============================================================== -->
-            <!-- Start Page Content here -->
-            <!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Start Page Content here -->
+<!-- ============================================================== -->
 
-            <div class="content-page">
+<div class="content-page">
 
-                <div class="content">
+    <div class="content">
 
-                    <!-- Start Content-->
-                    <div class="container-fluid">
+        <!-- Start Content-->
+        <div class="container-fluid">
 
-                        <div class="bdcmb mt-2">
+            <div class="bdcmb mt-2">
+                <div class="row">
+                    <div class="col-sm-6 col-6">
+                        <h4 class="page-title">Cash Drawer</h4>
+                    </div>
+
+                    <div class="col-sm-6 col-6">
+                        <div class="b-links">
+                            <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()"
+                                routerLink="/{{orgName}}/cash-drawer">Cash Drawer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Previous Close Balance : {{cashDrawerPreviousDayBalanceAmount | currency: currencySymbol
+                                :'symbol': numberFormat}}</h4>
                             <div class="row">
-                                <div class="col-sm-6 col-6">
-                                    <h4 class="page-title">Cash Drawer</h4>
+                                <div class="col-sm-6">
+                                    <div class="bg-light-grey">
+                                        <h3>{{cashDrawerBalanceAmount | currency: currencySymbol :'symbol':
+                                            numberFormat}}</h3>
+                                    </div>
                                 </div>
 
-                                <div class="col-sm-6 col-6">
-                                    <div class="b-links">
-                                        <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/cash-drawer">Cash Drawer</a>
+                                <div class="col-sm-6">
+                                    <div class="bg-light-grey">
+                                        <h3>{{cashDrawerStatus}}</h3>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="row mt-2">
-                            
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4>Previous Close Balance : {{cashDrawerPreviousDayBalanceAmount | currency: currencySymbol :'symbol': numberFormat}}</h4>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="bg-light-grey">
-                                                    <h3>{{cashDrawerBalanceAmount | currency: currencySymbol :'symbol': numberFormat}}</h3>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-6">
-                                                <div class="bg-light-grey">
-                                                    <h3>{{cashDrawerStatus}}</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>  
-                        <!-- end page title --> 
-
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-
-                                        <div class="row">
-                                            <div class="col-sm-6 mb-20">
-                                                <div class="text-center">
-                                                    <a (click)="showAddModel()" class="money-button money-button-red">ADD MONEY</a>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-6 mb-20">
-                                                <div class="text-center">
-                                                    <a (click)="showReopenRegister()"  class="money-button money-button-red">RECALCULATE DAYS BALANCE</a>
-                                                </div>
-                                            </div>
-                                        </div>  
-
-                                        <div class="row">
-                                            <div class="col-sm-6 mb-20">
-                                                <div class="text-center">
-                                                    <a href="" data-bs-target="#eject" data-bs-toggle="modal" class="money-button money-button-green">EJECT</a>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-6 mb-20">
-                                                <div class="text-center">
-                                                    <a (click)="openCloseRegisterPopup()" class="money-button money-button-green">CLOSE</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-sm-6 mb-20">
-                                                <div class="text-center">
-                                                    <a (click)="showPreetyCashModel()" class="money-button money-button-blue">PETTY CASH AMOUNT</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    
-                                    </div> <!-- end card body-->
-                                </div> <!-- end card -->
-                            </div><!-- end col-->
-                        </div>
-                        <!-- end row-->     
-                        
-                    </div> <!-- container -->
-
-                </div> <!-- content -->
-
-            
-
-          
-          
-
-                <!--  Recalculate Days Balance Modal Popup -->
-            
-                <!--  Recalculate Days Balance Modal Popup -->
-
-                <!--  Close Register Modal Popup -->
-               
-                <!--  Close Register Modal Popup -->
+                    </div>
+                </div>
 
             </div>
+            <!-- end page title -->
 
-            <!-- ============================================================== -->
-            <!-- End Page content -->
-            <!-- ============================================================== -->
-                 
-          
-          
-          <!--Add Money / Preety cash-->
-         
-        <p-dialog [modal]="true" 
-        header="Add / Withdraw Money"
-        [(visible)]="addWithdrawMoneyPopupVisible" [closable]="false"
-        [style]="{ width: '40vw' }" [breakpoints]="{'767px': '100vw'}">
-        <ng-template pTemplate="header">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
 
-            <div class="d-flex">
-            <a (click)="hideAddWithdrawMoneyPopup()"  class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a>
-                            
-            <h4 class="modal-title ml-10" id="myLargeModalLabel">{{(cashDrawerAction == 'IN') ? 'Add Amount' : 'Petty Cash Amount'}}</h4>
+                            <div class="row">
+                                <div class="col-sm-6 mb-20">
+                                    <div class="text-center">
+                                        <a (click)="showAddModel()" class="money-button money-button-red">ADD MONEY</a>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 mb-20">
+                                    <div class="text-center">
+                                        <a (click)="showReopenRegister()"
+                                            class="money-button money-button-red">RECALCULATE DAYS BALANCE</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 mb-20">
+                                    <div class="text-center">
+                                        <a href="" data-bs-target="#eject" data-bs-toggle="modal"
+                                            class="money-button money-button-green">EJECT</a>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 mb-20">
+                                    <div class="text-center">
+                                        <a (click)="openCloseRegisterPopup()"
+                                            class="money-button money-button-green">CLOSE</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 mb-20">
+                                    <div class="text-center">
+                                        <a (click)="showPreetyCashModel()" class="money-button money-button-blue">PETTY
+                                            CASH AMOUNT</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div> <!-- end card body-->
+                    </div> <!-- end card -->
+                </div><!-- end col-->
+            </div>
+            <!-- end row-->
+
+        </div> <!-- container -->
+
+    </div> <!-- content -->
+
+
+
+
+
+
+    <!--  Recalculate Days Balance Modal Popup -->
+
+    <!--  Recalculate Days Balance Modal Popup -->
+
+    <!--  Close Register Modal Popup -->
+
+    <!--  Close Register Modal Popup -->
+
+</div>
+
+<!-- ============================================================== -->
+<!-- End Page content -->
+<!-- ============================================================== -->
+
+
+
+<!--Add Money / Preety cash-->
+
+<p-dialog [modal]="true" header="Add / Withdraw Money" [(visible)]="addWithdrawMoneyPopupVisible" [closable]="false"
+    [style]="{ width: '40vw' }" [breakpoints]="{'767px': '100vw'}">
+    <ng-template pTemplate="header">
+
+        <div class="d-flex">
+            <a (click)="hideAddWithdrawMoneyPopup()" class="btn btn-primary "><i
+                    class="mdi mdi-keyboard-backspace"></i></a>
+
+            <h4 class="modal-title ml-10" id="myLargeModalLabel">{{(cashDrawerAction == 'IN') ? 'Add Amount' : 'Petty
+                Cash Amount'}}</h4>
         </div>
-            
-        </ng-template>
+
+    </ng-template>
 
 
 
-        <div class="row">
-            <div class="col-sm-12">
-                
-                <form action="">
-                    
-                    <div class="form-group col-sm-12 mb-2">
-                        <label for="simpleinput" class="form-label w-100">Amount</label>
-                        <input type="text" name="enterAmount" [(ngModel)]="enterAmount" class="form-control" placeholder="Enter Amount">
-                    </div>
+    <div class="row">
+        <div class="col-sm-12">
 
-                    <div class="form-group col-sm-12 mb-2">
-                        <label for="simpleinput" class="form-label w-100">Reason</label>
-                        <input type="text" name="addReason" [(ngModel)]="addReason" class="form-control" placeholder="Add Reason">
-                    </div>
+            <form action="">
 
+                <div class="form-group col-sm-12 mb-2">
+                    <label for="simpleinput" class="form-label w-100">Amount</label>
+                    <input type="text" name="enterAmount" [(ngModel)]="enterAmount" class="form-control"
+                        placeholder="Enter Amount">
+                </div>
+
+                <div class="form-group col-sm-12 mb-2">
+                    <label for="simpleinput" class="form-label w-100">Reason</label>
+                    <input type="text" name="addReason" [(ngModel)]="addReason" class="form-control"
+                        placeholder="Add Reason">
+                </div>
+
+                <div class="text-end mt-3">
                     <a (click)="saveAddWithdrawMoneyAction()" class="btn btn-primary ">Save</a>
-                </form>
-
-            </div>
-        </div>       
-
-        </p-dialog>
-
-
-        
-        <p-dialog [modal]="true" 
-            header="Reopen Register"
-            [(visible)]="isReopenRegister" [closable]="false"
-            [style]="{ width: '40vw' }" [breakpoints]="{'767px': '100vw'}">
-            <ng-template pTemplate="header">
-                <div class="d-flex">
-                    <a (click)="hideReopenRegister()" class="btn btn-primary"><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                    <h4 class="modal-title ml-10" id="myLargeModalLabel">Reopen Register</h4>
                 </div>
-            </ng-template>
+            </form>
 
-            <div class="row">
-                <div class="col-sm-12">
-                    
-                    <form action="">
-                        
-                        <div class="row">
-                            <h4>Bills</h4>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="simpleinput" class="form-label w-100">$1</label>
-                                <input type="text" name="dollar1" class="form-control" [(ngModel)]="cashdrawerdetail.dollar1" placeholder="Enter Number of Bills">
-                            </div>
+        </div>
+    </div>
 
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="simpleinput" class="form-label w-100">$5</label>
-                                <input type="text" name="dollar5" class="form-control" [(ngModel)]="cashdrawerdetail.dollar5" placeholder="Enter Number of Bills">
-                            </div>
+</p-dialog>
 
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="simpleinput" class="form-label w-100">$10</label>
-                                <input type="text" name="dollar10" class="form-control" [(ngModel)]="cashdrawerdetail.dollar10" placeholder="Enter Number of Bills">
-                            </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="simpleinput" class="form-label w-100">$20</label>
-                                <input type="text" name="dollar20" class="form-control" [(ngModel)]="cashdrawerdetail.dollar20" placeholder="Enter Number of Bills">
-                            </div>
 
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="simpleinput" class="form-label w-100">$50</label>
-                                <input type="number" name="dollar50" class="form-control" [(ngModel)]="cashdrawerdetail.dollar50" placeholder="Enter Number of Bills">
-                            </div>
+<p-dialog [modal]="true" header="Reopen Register" [(visible)]="isReopenRegister" [closable]="false"
+    [style]="{ width: '40vw' }" [breakpoints]="{'767px': '100vw'}">
+    <ng-template pTemplate="header">
+        <div class="d-flex">
+            <a (click)="hideReopenRegister()" class="btn btn-primary"><i class="mdi mdi-keyboard-backspace"></i></a>
 
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="simpleinput" class="form-label w-100">$100</label>
-                                <input type="number" name="dollar100" class="form-control" [(ngModel)]="cashdrawerdetail.dollar100" placeholder="Enter Number of Bills">
-                            </div>
-                        </div>
+            <h4 class="modal-title ml-10" id="myLargeModalLabel">Reopen Register</h4>
+        </div>
+    </ng-template>
 
-                        <div class="row mt-3">
-                            <h4>Cents</h4>
-                        </div>
+    <div class="row">
+        <div class="col-sm-12">
 
-                        <div class="row">
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="simpleinput" class="form-label w-100">1C</label>
-                                <input type="text" name="cent1" class="form-control" [(ngModel)]="cashdrawerdetail.cent1" placeholder="Enter Number of Cents">
-                            </div>
+            <form action="">
 
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="simpleinput" class="form-label w-100">5C</label>
-                                <input type="text" name="cent5" class="form-control" [(ngModel)]="cashdrawerdetail.cent5" placeholder="Enter Number of Cents">
-                            </div>
-
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="simpleinput" class="form-label w-100">10C</label>
-                                <input type="text" name="cent10" class="form-control" [(ngModel)]="cashdrawerdetail.cent10" placeholder="Enter Number of Cents">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="simpleinput" class="form-label w-100">25C</label>
-                                <input type="text" name="cent25" class="form-control" [(ngModel)]="cashdrawerdetail.cent25" placeholder="Enter Number of Cents">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div>
-                                <h4>Total Amount : </h4>
-                                <h2>{{((cashdrawerdetail.dollar1 * 1) + (cashdrawerdetail.dollar5 * 5) + (cashdrawerdetail.dollar10 * 10) +
-                                    (cashdrawerdetail.dollar20 * 20) + (cashdrawerdetail.dollar50 * 50) + (cashdrawerdetail.dollar100 * 100) + 
-                                    (cashdrawerdetail.cent1 * .01) + (cashdrawerdetail.cent5 * .05) + (cashdrawerdetail.cent10 * .1) + 
-                                    (cashdrawerdetail.cent25 * .25)) | currency: currencySymbol :'symbol': numberFormat}}
-                                </h2>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div>
-                                <a class="btn btn-primary me-1" (click)="recalculateRegister()">Recalculate Register</a>
-                            </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>Cash Drawer Remaining Balance : {{cashDrawerBalanceAmount | currency: currencySymbol :'symbol': numberFormat}}</h4>
-                            </div>
-                        </div>
-                    </form>
-
+                <div class="row">
+                    <h4>Bills</h4>
                 </div>
-            </div>  
-
-        </p-dialog>
-
-
-
-        <p-dialog [modal]="true" 
-            header="Close Register"
-            [(visible)]="closeRegisterVisible" [closable]="false"
-            [style]="{ width: '40vw' }"
-            [breakpoints]="{'767px': '100vw'}"
-        >
-            <ng-template pTemplate="header">
-                <div class="d-flex">
-                    <a (click)="hideCloseRegister()" class="btn btn-primary"><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                    <h4 class="modal-title ml-10" id="myLargeModalLabel">Close Register</h4>
-                </div>
-            </ng-template>
-
-
-            <div class="row">
-                <div class="col-sm-12">
-                    
-                    <form action="">
-                        
-                        <div class="row">
-                            <h4>Bills</h4>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-sm-4 mb-1">
-                                <label for="simpleinput" class="form-label w-100">$1</label>
-                                <input type="text" name="dollar1" class="form-control" [(ngModel)]="cashdrawerClosingdetail.dollar1" placeholder="Enter Number of Bills">
-                            </div>
-
-                            <div class="form-group col-sm-4 mb-1">
-                                <label for="simpleinput" class="form-label w-100">$5</label>
-                                <input type="text" name="dollar5" class="form-control" [(ngModel)]="cashdrawerClosingdetail.dollar5" placeholder="Enter Number of Bills">
-                            </div>
-
-                            <div class="form-group col-sm-4 mb-1">
-                                <label for="simpleinput" class="form-label w-100">$10</label>
-                                <input type="text" name="dollar10" class="form-control" [(ngModel)]="cashdrawerClosingdetail.dollar10" placeholder="Enter Number of Bills">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-sm-4 mb-1">
-                                <label for="simpleinput" class="form-label w-100">$20</label>
-                                <input type="text" name="dollar20" class="form-control" [(ngModel)]="cashdrawerClosingdetail.dollar20" placeholder="Enter Number of Bills">
-                            </div>
-
-                            <div class="form-group col-sm-4 mb-1">
-                                <label for="simpleinput" class="form-label w-100">$50</label>
-                                <input type="text" name="dollar50" class="form-control" [(ngModel)]="cashdrawerClosingdetail.dollar50" placeholder="Enter Number of Bills">
-                            </div>
-
-                            <div class="form-group col-sm-4 mb-1">
-                                <label for="simpleinput" class="form-label w-100">$100</label>
-                                <input type="text" name="dollar100" class="form-control" [(ngModel)]="cashdrawerClosingdetail.dollar100" placeholder="Enter Number of Bills">
-                            </div>
-                        </div>
-
-                        <div class="row mt-1">
-                            <h4>Cents</h4>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-sm-4 mb-1">
-                                <label for="simpleinput" class="form-label w-100">1C</label>
-                                <input type="text" name="cent1" class="form-control" [(ngModel)]="cashdrawerClosingdetail.cent1" placeholder="Enter Number of Cents">
-                            </div>
-
-                            <div class="form-group col-sm-4 mb-1">
-                                <label for="simpleinput" class="form-label w-100">5C</label>
-                                <input type="text" name="cent5" class="form-control" [(ngModel)]="cashdrawerClosingdetail.cent5" placeholder="Enter Number of Cents">
-                            </div>
-
-                            <div class="form-group col-sm-4 mb-1">
-                                <label for="simpleinput" class="form-label w-100">10C</label>
-                                <input type="text" name="cent10" class="form-control" [(ngModel)]="cashdrawerClosingdetail.cent10" placeholder="Enter Number of Cents">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-sm-4 mb-1">
-                                <label for="simpleinput" class="form-label w-100">25C</label>
-                                <input type="text" name="cent25" class="form-control" [(ngModel)]="cashdrawerClosingdetail.cent25" placeholder="Enter Number of Cents">
-                            </div>
-                        </div>
-
-                    </form>
-                  
-                </div>
-            </div> 
-            
-            <ng-template pTemplate="footer">
-
-                <div class="d-flex jusify-content-between align-items-center">
-                    <div class="d-flex jusify-content-start align-items-center">
-                        <h4>Total Amount : </h4>
-                        <h2>{{((cashdrawerClosingdetail.dollar1 * 1) + (cashdrawerClosingdetail.dollar5 * 5) + (cashdrawerClosingdetail.dollar10 * 10) +
-                            (cashdrawerClosingdetail.dollar20 * 20) + (cashdrawerClosingdetail.dollar50 * 50) + (cashdrawerClosingdetail.dollar100 * 100) + 
-                            (cashdrawerClosingdetail.cent1 * .01) + (cashdrawerClosingdetail.cent5 * .05) + (cashdrawerClosingdetail.cent10 * .1) + 
-                            (cashdrawerClosingdetail.cent25 * .25)) | currency: currencySymbol :'symbol': numberFormat}}
-                        </h2>
+                <div class="row">
+                    <div class="form-group col-sm-4 mb-2">
+                        <label for="simpleinput" class="form-label w-100">{{ 1 | currency:
+                            currencySymbol:'symbol':numberFormat }}</label>
+                        <input type="text" name="dollar1" class="form-control" [(ngModel)]="cashdrawerdetail.dollar1"
+                            placeholder="Enter Number of Bills">
                     </div>
-                    <div class="d-flex jusify-content-start align-items-center">
-                        <a class="btn btn-primary me-1"  (click)="closeRegister()">Close Register</a>
+
+                    <div class="form-group col-sm-4 mb-2">
+                        <label for="simpleinput" class="form-label w-100">{{ 5 | currency:
+                            currencySymbol:'symbol':numberFormat }}</label>
+                        <input type="text" name="dollar5" class="form-control" [(ngModel)]="cashdrawerdetail.dollar5"
+                            placeholder="Enter Number of Bills">
                     </div>
-                  
-                 
+
+                    <div class="form-group col-sm-4 mb-2">
+                        <label for="simpleinput" class="form-label w-100">{{ 10 | currency:
+                            currencySymbol:'symbol':numberFormat }}</label>
+                        <input type="text" name="dollar10" class="form-control" [(ngModel)]="cashdrawerdetail.dollar10"
+                            placeholder="Enter Number of Bills">
+                    </div>
                 </div>
 
                 <div class="row">
-                        <div class="col-sm-12">
-                            <h4 style="text-align: left;">Cash Drawer Remaining Balance : {{cashDrawerBalanceAmount | currency: currencySymbol :'symbol': numberFormat}}</h4>
-                        </div>
-                   
+                    <div class="form-group col-sm-4 mb-2">
+                        <label for="simpleinput" class="form-label w-100">{{ 20 | currency:
+                            currencySymbol:'symbol':numberFormat }}</label>
+                        <input type="text" name="dollar20" class="form-control" [(ngModel)]="cashdrawerdetail.dollar20"
+                            placeholder="Enter Number of Bills">
+                    </div>
+
+                    <div class="form-group col-sm-4 mb-2">
+                        <label for="simpleinput" class="form-label w-100">{{ 50 | currency:
+                            currencySymbol:'symbol':numberFormat }}</label>
+                        <input type="number" name="dollar50" class="form-control"
+                            [(ngModel)]="cashdrawerdetail.dollar50" placeholder="Enter Number of Bills">
+                    </div>
+
+                    <div class="form-group col-sm-4 mb-2">
+                        <label for="simpleinput" class="form-label w-100">{{ 100 | currency:
+                            currencySymbol:'symbol':numberFormat }}</label>
+                        <input type="number" name="dollar100" class="form-control"
+                            [(ngModel)]="cashdrawerdetail.dollar100" placeholder="Enter Number of Bills">
+                    </div>
                 </div>
-            </ng-template>
 
-        </p-dialog>
-
-
-
-
-
-        <!--closeRegisterWithDiffernceVisible-->
-        <p-dialog [modal]="true" 
-            [(visible)]="closeRegisterWithDiffernceVisible" [closable]="false"
-            [style]="{ width: '30vw' }"
-            [breakpoints]="{'767px': '100vw'}"
-          >
-          <ng-template pTemplate="header">
-                <a (click)="closeRegisterWithDiffernceVisible = false" data-bs-dismiss="modal" class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a>
-                                
-                <h4 class="modal-title ml-10" id="myLargeModalLabel">Explaination</h4>
-            </ng-template>
-
-            <div class="row">
-                <div class="col-sm-12">
-                    
-                    <form action="">
-                        
-                        <div class="form-group col-sm-12 mb-2">
-                            <label for="simpleinput" class="form-label w-100" style="color: red;">* Closing amount entered does not match with balance remaning.
-                                Please enter an explanation.</label>                            
-                        </div>
-
-                        <div class="form-group col-sm-12 mb-2">
-                            <label for="simpleinput" class="form-label w-100">Explaination</label>
-                            <input type="text" id="closeRegisterWithDiffernceExplaination" [(ngModel)]="closeRegisterWithDiffernceExplaination" class="form-control" placeholder="Add explaination here">
-                        </div>
-
-                        <a class="btn btn-primary " (click)="saveRegisterWithDiffernceAmount()">Save</a>
-                    </form>
-
+                <div class="row mt-3">
+                    <h4>Cents</h4>
                 </div>
-            </div>      
 
-        </p-dialog>
+                <div class="row">
+                    <div class="form-group col-sm-4 mb-2">
+                        <label for="simpleinput" class="form-label w-100">1C</label>
+                        <input type="text" name="cent1" class="form-control" [(ngModel)]="cashdrawerdetail.cent1"
+                            placeholder="Enter Number of Cents">
+                    </div>
 
-        
+                    <div class="form-group col-sm-4 mb-2">
+                        <label for="simpleinput" class="form-label w-100">5C</label>
+                        <input type="text" name="cent5" class="form-control" [(ngModel)]="cashdrawerdetail.cent5"
+                            placeholder="Enter Number of Cents">
+                    </div>
 
-        <p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closeAndRedirect()" [modal]="true" [style]="{ width: '70vw' }">
-        
-            <div *ngIf="showLoaderReport">
-                <app-page-loader type="reportloader"></app-page-loader>
+                    <div class="form-group col-sm-4 mb-2">
+                        <label for="simpleinput" class="form-label w-100">10C</label>
+                        <input type="text" name="cent10" class="form-control" [(ngModel)]="cashdrawerdetail.cent10"
+                            placeholder="Enter Number of Cents">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-4 mb-2">
+                        <label for="simpleinput" class="form-label w-100">25C</label>
+                        <input type="text" name="cent25" class="form-control" [(ngModel)]="cashdrawerdetail.cent25"
+                            placeholder="Enter Number of Cents">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div>
+                        <h4>Total Amount : </h4>
+                        <h2>{{((cashdrawerdetail.dollar1 * 1) + (cashdrawerdetail.dollar5 * 5) +
+                            (cashdrawerdetail.dollar10 * 10) +
+                            (cashdrawerdetail.dollar20 * 20) + (cashdrawerdetail.dollar50 * 50) +
+                            (cashdrawerdetail.dollar100 * 100) +
+                            (cashdrawerdetail.cent1 * .01) + (cashdrawerdetail.cent5 * .05) + (cashdrawerdetail.cent10 *
+                            .1) +
+                            (cashdrawerdetail.cent25 * .25)) | currency: currencySymbol :'symbol': numberFormat}}
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="text-end mt-3">
+                    <a class="btn btn-primary me-1" (click)="recalculateRegister()">Recalculate Register</a>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4>Cash Drawer Remaining Balance : {{cashDrawerBalanceAmount | currency: currencySymbol
+                            :'symbol': numberFormat}}</h4>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</p-dialog>
+
+
+
+<p-dialog [modal]="true" header="Close Register" [(visible)]="closeRegisterVisible" [closable]="false"
+    [style]="{ width: '40vw' }" [breakpoints]="{'767px': '100vw'}">
+    <ng-template pTemplate="header">
+        <div class="d-flex">
+            <a (click)="hideCloseRegister()" class="btn btn-primary"><i class="mdi mdi-keyboard-backspace"></i></a>
+
+            <h4 class="modal-title ml-10" id="myLargeModalLabel">Close Register</h4>
+        </div>
+    </ng-template>
+
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <form action="">
+
+                <div class="row">
+                    <h4>Bills</h4>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-4 mb-1">
+                        <label for="simpleinput" class="form-label w-100">$1</label>
+                        <input type="text" name="dollar1" class="form-control"
+                            [(ngModel)]="cashdrawerClosingdetail.dollar1" placeholder="Enter Number of Bills">
+                    </div>
+
+                    <div class="form-group col-sm-4 mb-1">
+                        <label for="simpleinput" class="form-label w-100">$5</label>
+                        <input type="text" name="dollar5" class="form-control"
+                            [(ngModel)]="cashdrawerClosingdetail.dollar5" placeholder="Enter Number of Bills">
+                    </div>
+
+                    <div class="form-group col-sm-4 mb-1">
+                        <label for="simpleinput" class="form-label w-100">$10</label>
+                        <input type="text" name="dollar10" class="form-control"
+                            [(ngModel)]="cashdrawerClosingdetail.dollar10" placeholder="Enter Number of Bills">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-4 mb-1">
+                        <label for="simpleinput" class="form-label w-100">$20</label>
+                        <input type="text" name="dollar20" class="form-control"
+                            [(ngModel)]="cashdrawerClosingdetail.dollar20" placeholder="Enter Number of Bills">
+                    </div>
+
+                    <div class="form-group col-sm-4 mb-1">
+                        <label for="simpleinput" class="form-label w-100">$50</label>
+                        <input type="text" name="dollar50" class="form-control"
+                            [(ngModel)]="cashdrawerClosingdetail.dollar50" placeholder="Enter Number of Bills">
+                    </div>
+
+                    <div class="form-group col-sm-4 mb-1">
+                        <label for="simpleinput" class="form-label w-100">$100</label>
+                        <input type="text" name="dollar100" class="form-control"
+                            [(ngModel)]="cashdrawerClosingdetail.dollar100" placeholder="Enter Number of Bills">
+                    </div>
+                </div>
+
+                <div class="row mt-1">
+                    <h4>Cents</h4>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-4 mb-1">
+                        <label for="simpleinput" class="form-label w-100">1C</label>
+                        <input type="text" name="cent1" class="form-control" [(ngModel)]="cashdrawerClosingdetail.cent1"
+                            placeholder="Enter Number of Cents">
+                    </div>
+
+                    <div class="form-group col-sm-4 mb-1">
+                        <label for="simpleinput" class="form-label w-100">5C</label>
+                        <input type="text" name="cent5" class="form-control" [(ngModel)]="cashdrawerClosingdetail.cent5"
+                            placeholder="Enter Number of Cents">
+                    </div>
+
+                    <div class="form-group col-sm-4 mb-1">
+                        <label for="simpleinput" class="form-label w-100">10C</label>
+                        <input type="text" name="cent10" class="form-control"
+                            [(ngModel)]="cashdrawerClosingdetail.cent10" placeholder="Enter Number of Cents">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-4 mb-1">
+                        <label for="simpleinput" class="form-label w-100">25C</label>
+                        <input type="text" name="cent25" class="form-control"
+                            [(ngModel)]="cashdrawerClosingdetail.cent25" placeholder="Enter Number of Cents">
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+
+        <div class="d-flex jusify-content-between align-items-center">
+            <div class="d-flex jusify-content-start align-items-center">
+                <h4>Total Amount : </h4>
+                <h2>{{((cashdrawerClosingdetail.dollar1 * 1) + (cashdrawerClosingdetail.dollar5 * 5) +
+                    (cashdrawerClosingdetail.dollar10 * 10) +
+                    (cashdrawerClosingdetail.dollar20 * 20) + (cashdrawerClosingdetail.dollar50 * 50) +
+                    (cashdrawerClosingdetail.dollar100 * 100) +
+                    (cashdrawerClosingdetail.cent1 * .01) + (cashdrawerClosingdetail.cent5 * .05) +
+                    (cashdrawerClosingdetail.cent10 * .1) +
+                    (cashdrawerClosingdetail.cent25 * .25)) | currency: currencySymbol :'symbol': numberFormat}}
+                </h2>
+            </div>
+            <div class="d-flex jusify-content-start align-items-center">
+                <a class="btn btn-primary me-1" (click)="closeRegister()">Close Register</a>
             </div>
 
 
-            <div class="row" >
-                <div style="height: 500px;" *ngIf="!showLoaderReport">                
-                    <ngx-extended-pdf-viewer   [base64Src]="fileDataObj" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
-                </div>
-            </div>
-        </p-dialog>
+        </div>
 
-        <p-toast></p-toast>
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 style="text-align: left;">Cash Drawer Remaining Balance : {{cashDrawerBalanceAmount | currency:
+                    currencySymbol :'symbol': numberFormat}}</h4>
+            </div>
+
+        </div>
+    </ng-template>
+
+</p-dialog>
+
+
+
+
+
+<!--closeRegisterWithDiffernceVisible-->
+<p-dialog [modal]="true" [(visible)]="closeRegisterWithDiffernceVisible" [closable]="false" [style]="{ width: '30vw' }"
+    [breakpoints]="{'767px': '100vw'}">
+    <ng-template pTemplate="header">
+        <a (click)="closeRegisterWithDiffernceVisible = false" data-bs-dismiss="modal" class="btn btn-primary "><i
+                class="mdi mdi-keyboard-backspace"></i></a>
+
+        <h4 class="modal-title ml-10" id="myLargeModalLabel">Explaination</h4>
+    </ng-template>
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <form action="">
+
+                <div class="form-group col-sm-12 mb-2">
+                    <label for="simpleinput" class="form-label w-100" style="color: red;">* Closing amount entered does
+                        not match with balance remaning.
+                        Please enter an explanation.</label>
+                </div>
+
+                <div class="form-group col-sm-12 mb-2">
+                    <label for="simpleinput" class="form-label w-100">Explaination</label>
+                    <input type="text" id="closeRegisterWithDiffernceExplaination"
+                        [(ngModel)]="closeRegisterWithDiffernceExplaination" class="form-control"
+                        placeholder="Add explaination here">
+                </div>
+
+                <div class="text-end mt-3">
+                    <a class="btn btn-primary " (click)="saveRegisterWithDiffernceAmount()">Save</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</p-dialog>
+
+
+
+<p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closeAndRedirect()" [modal]="true"
+    [style]="{ width: '70vw' }">
+
+    <div *ngIf="showLoaderReport">
+        <app-page-loader type="reportloader"></app-page-loader>
+    </div>
+
+
+    <div class="row">
+        <div style="height: 500px;" *ngIf="!showLoaderReport">
+            <ngx-extended-pdf-viewer [base64Src]="fileDataObj" [pageChangeOnScrolling]="true"
+                [showScrollbar]="false"></ngx-extended-pdf-viewer>
+        </div>
+    </div>
+</p-dialog>
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>

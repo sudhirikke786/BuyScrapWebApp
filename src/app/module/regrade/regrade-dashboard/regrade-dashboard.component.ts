@@ -31,6 +31,7 @@ export class RegradeDashboardComponent implements OnInit {
   regrades: any;
 
   showLoader = false;
+  RegradeLoader: boolean = false;
 
   regreateList = [
     {
@@ -109,6 +110,7 @@ export class RegradeDashboardComponent implements OnInit {
     this.first = this.pagination.first || 0;
     this.currentPage = this.pagination.PageNumber || 1;
     this.pageSize = this.pagination.RowOfPage || 10;
+    this.pagination.LocationId = this.commonService.getProbablyNumberFromLocalStorage('locId');
   }
     this.getAllRegrades(this.pagination);
   }
@@ -269,7 +271,7 @@ export class RegradeDashboardComponent implements OnInit {
   }
 
   GetRegradedMaterialsById(id: any) {
-   
+   this.RegradeLoader = true;
     const param = { RegradedID: id };
     console.log(this.pagination);
     this.commonService.GetRegradedMaterialsById(param).subscribe(
@@ -283,11 +285,11 @@ export class RegradeDashboardComponent implements OnInit {
         });
       },
       (err: any) => {
-      
+      this.RegradeLoader = false;
         // this.errorMsg = 'Error occured';
       },
       () => {
-       
+       this.RegradeLoader = false;
       }
     );
   }

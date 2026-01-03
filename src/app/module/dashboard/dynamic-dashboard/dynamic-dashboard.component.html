@@ -1,0 +1,174 @@
+<!-- MAIN DASHBOARD VIEW -->
+<div class="dashboard-container scrollable-content">
+  <!-- The header has been updated with new icon-based actions -->
+  <header class="dashboard-header">
+    <div class="dashboard-title-container">
+      <h1 class="dashboard-title">{{ activeDashboard?.dashboard_name || 'Loading...' }}</h1>
+      <!-- NEW: Icon buttons for rename and delete actions -->
+      <div class="dashboard-title-actions" *ngIf="activeDashboard">
+        <button class="btn-icon" title="Rename Dashboard" (click)="renameDashboard()">
+          <i class="bi bi-pencil-fill"></i>
+        </button>
+        <button class="btn-icon btn-icon-danger" title="Delete Dashboard" (click)="deleteDashboard()">
+          <i class="bi bi-trash-fill"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- The "Add Widget" button remains here to modify the currently viewed dashboard -->
+    <button class="btn btn-primary btn-add-widget" (click)="openQueryModal()" [disabled]="!activeDashboard">
+      <i class="bi bi-plus-circle"></i>
+      <span>Add Widget</span>
+    </button>
+  </header>
+
+  <!-- Scrollable content wrapper -->
+  <div>
+    <!-- Loading State for Dashboard Data -->
+    <div *ngIf="isDashboardLoading" class="empty-state">
+      <div class="spinner-border text-primary" role="status"></div>
+      <h2 class="empty-state-title mt-3">Loading Dashboard...</h2>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isDashboardLoading && (!activeDashboard || activeDashboard.components.length === 0)" class="empty-state">
+      <div class="empty-state-icon">
+        <i class="bi bi-bar-chart-line"></i>
+      </div>
+      <h2 class="empty-state-title">{{ !activeDashboard ? 'Could Not Load Dashboard' : 'Your Dashboard is Empty' }}</h2>
+      <p class="empty-state-text">
+        {{ !activeDashboard ? 'There was an error loading the selected dashboard.' : 'Click the "Add Widget" button to generate and add visualizations.' }}
+      </p>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div *ngIf="!isDashboardLoading && activeDashboard && activeDashboard.components.length > 0" class="dashboard-grid">
+      <div class="dashboard-card" *ngFor="let item of activeDashboard.components; let i = index">
+        <div class="card-header">
+          <h3 class="card-title">{{ item.visualization.chartTitle }}</h3>
+          <button class="btn-close" (click)="removeComponent(item.component_id)" aria-label="Remove item"></button>
+        </div>
+        <div class="card-body">
+          <ng-container [ngSwitch]="item.visualization.chartType">
+            <div *ngSwitchCase="'table'" class="table-responsive">
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th *ngFor="let header of item.visualization.tableData.headers">{{ header }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of item.visualization.tableData.rows">
+                    <td *ngFor="let cell of row">{{ cell }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngSwitchDefault class="chart-container">
+              <canvas baseChart [data]="item.visualization.chartJsData" [options]="mainChartOptions" [type]="item.visualization.chartType"></canvas>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+
+<!-- 1. Modal for Entering the Query -->
+<div class="modal-overlay" *ngIf="isQueryModalOpen" (click)="closeQueryModal()">
+  <div class="modal-panel" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h4 class="modal-title">Create a New Widget</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeQueryModal()"></button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="generateCharts()">
+        <div class="form-group">
+          <label for="queryText">Enter your query</label>
+          <textarea class="form-control" id="queryText" rows="4" [(ngModel)]="newQuery" name="queryText" placeholder="e.g., Shipouts vs Purchases for last week"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeQueryModal()">Cancel</button>
+      <button type="button" class="btn btn-primary" [disabled]="!newQuery.trim()" (click)="generateCharts()">Generate</button>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Modal for Selecting Visualizations (NEW TWO-STEP DESIGN) -->
+<div class="modal-overlay" *ngIf="isSelectionModalOpen" (click)="closeSelectionModal()">
+  <div class="modal-panel modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h4 class="modal-title">{{ selectionStep === 'format' ? 'Select Format' : 'Preview & Customize' }}</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeSelectionModal()"></button>
+    </div>
+    <div class="modal-body">
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="loading-state">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3">{{ customizationQuery ? 'Customizing...' : 'Generating visualizations...' }}</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="apiError" class="alert alert-danger">
+        {{ apiError }}
+        <button *ngIf="selectionStep === 'preview'" class="btn btn-sm btn-outline-danger float-end" (click)="goBackToFormatSelection()">Try Again</button>
+      </div>
+
+      <!-- Results -->
+      <div *ngIf="!isLoading && !apiError">
+        <!-- STEP 1: FORMAT SELECTION -->
+        <div *ngIf="selectionStep === 'format'">
+          <p class="text-muted">Choose how to display the data</p>
+          <div *ngFor="let option of chartOptionsFromApi" class="format-selection-card" (click)="selectFormat(option)">
+            <div class="format-info">
+              <h5 class="format-title">{{ getFormatName(option.chartType) }}</h5>
+              <p class="format-description">{{ option.explanation }}</p>
+            </div>
+            <div class="format-icon">
+              <i *ngIf="option.chartType === 'table'" class="bi bi-table"></i>
+              <i *ngIf="option.chartType === 'bar'" class="bi bi-bar-chart-line-fill"></i>
+              <i *ngIf="option.chartType === 'line'" class="bi bi-graph-up"></i>
+              <i *ngIf="option.chartType === 'pie'" class="bi bi-pie-chart-fill"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: PREVIEW & CUSTOMIZE -->
+        <div *ngIf="selectionStep === 'preview' && activePreviewChart">
+          <div class="preview-header">
+            <button class="btn btn-sm btn-outline-secondary" (click)="goBackToFormatSelection()"><i class="bi bi-arrow-left"></i> Back to Formats</button>
+          </div>
+          <h5 class="preview-title">{{ activePreviewChart.chartTitle }}</h5>
+          <p class="explanation-text"><em>{{ activePreviewChart.explanation }}</em></p>
+          <div class="preview-container">
+            <ng-container [ngSwitch]="activePreviewChart.chartType">
+              <table *ngSwitchCase="'table'" class="table table-sm table-bordered">
+                <thead>
+                  <tr><th *ngFor="let header of activePreviewChart.tableData.headers">{{ header }}</th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of activePreviewChart.tableData.rows"><td *ngFor="let cell of row">{{ cell }}</td></tr>
+                </tbody>
+              </table>
+              <canvas *ngSwitchDefault baseChart [data]="getPreviewData(activePreviewChart)" [options]="previewChartOptions" [type]="activePreviewChart.chartType"></canvas>
+            </ng-container>
+          </div>
+          <div class="customization-bar">
+            <input type="text" class="form-control" [(ngModel)]="customizationQuery" placeholder="Need changes? Type here and press Enter" (keyup.enter)="customizeCharts()">
+            <button class="btn btn-secondary" (click)="customizeCharts()" [disabled]="!customizationQuery.trim()"><i class="bi bi-pencil-square"></i> Customize</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeSelectionModal()">Cancel</button>
+      <button type="button" class="btn btn-success" *ngIf="selectionStep === 'preview'" [disabled]="!activePreviewChart" (click)="addActiveChartToDashboard()">
+        <i class="bi bi-plus-lg"></i> Add to Dashboard
+      </button>
+    </div>
+  </div>
+</div>

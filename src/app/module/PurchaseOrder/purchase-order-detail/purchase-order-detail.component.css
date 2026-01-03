@@ -1,0 +1,549 @@
+/* ============================================
+   Purchase Order Detail - Modern Design Styles
+   Responsive across all screen sizes
+   ============================================ */
+
+/* Variables */
+:root {
+  --primary-color: #0176B8;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --text-muted: #6c757d;
+  --border-color: #e9ecef;
+  --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --card-hover-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  --transition-speed: 0.3s;
+}
+
+/* Page Header */
+h4 {
+  font-size: 1rem;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #343a40;
+  margin: 0;
+}
+
+/* Breadcrumb styling */
+.b-links {
+  text-align: right;
+  font-size: 0.875rem;
+}
+
+.b-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition-speed);
+}
+
+.b-links a:hover {
+  color: var(--primary-color);
+}
+
+/* Font sizes */
+.fz-14 {
+  font-size: 0.9rem;
+}
+
+/* Main box */
+.mainbox-row {
+  overflow-y: auto !important;
+}
+
+/* Content - no scrolling */
+.content {
+  overflow: hidden;
+}
+
+/* Ticket Card */
+.ticket-card {
+  height: calc(100vh - 120px);
+  overflow: hidden;
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow var(--transition-speed);
+}
+
+.card:hover {
+  box-shadow: var(--card-hover-shadow);
+}
+
+.card-body {
+  padding: 15px;
+}
+
+/* COD Item */
+.cod-item {
+  color: darkred !important;
+}
+
+/* Material Grid */
+.main-ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 0.5fr;
+  gap: 0.5rem;
+  padding: 2px;
+  list-style-type: none;
+}
+
+.main-ul li {
+  justify-content: center;
+  text-align: left;
+  background-color: #03659c;
+  box-shadow: inset -1px 0px 1px 4px #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+}
+
+.main-ul li a {
+  padding: 1.2rem !important;
+  display: flex;
+  height: 100%;
+  color: #fff;
+  font-size: 0.9rem !important;
+  font-weight: 500;
+  cursor: pointer;
+  justify-content: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.main-ul li:hover {
+  background: #bbdaeb;
+  color: #fff !important;
+  transform: translateY(-2px);
+}
+
+/* Border classes */
+.border-show {
+  border-bottom: 1px solid #dee2e6 !important;
+}
+
+.border-hide {
+  border-bottom: none !important;
+}
+
+/* Equal height */
+.equal-h {
+  width: 160px;
+  height: 60px;
+}
+
+/* Driver icons */
+.driver-icons {
+  width: 40px;
+  height: auto;
+  transition: transform var(--transition-speed);
+}
+
+.driver-icons:hover {
+  transform: scale(1.1);
+}
+
+/* Button container */
+.button-container {
+  display: flex;
+  gap: 8px;
+}
+
+/* Width utilities */
+.w-98 {
+  width: 98%;
+}
+
+.w-75 {
+  width: 65% !important;
+}
+
+/* Default Image */
+.default-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: contain;
+  border: 2px solid #ddd;
+}
+
+.dl-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Seller View Table */
+.seller-view-tbl {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.seller-view-tbl td {
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  color: #495057;
+  vertical-align: top;
+}
+
+.seller-view-tbl b {
+  color: #343a40;
+  font-weight: 600;
+}
+
+/* Uploaded Images */
+.uploaded-images {
+  margin-top: 10px;
+}
+
+.image-container {
+  display: inline-block;
+  margin: 5px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 8px;
+  transition: all var(--transition-speed);
+}
+
+.image-container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.uploaded-image {
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Button Styling */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 8px 16px;
+  transition: all var(--transition-speed);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background-color: #0176B8;
+  border: none;
+  box-shadow: 0 2px 8px rgba(1, 118, 184, 0.3);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #015a8c;
+  box-shadow: 0 4px 12px rgba(1, 118, 184, 0.4);
+  color: white;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.btn-danger:hover {
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.8rem;
+}
+
+/* Form Controls */
+.form-control,
+.form-select {
+  background-color: #ffffff !important;
+  border: 2px solid #dee2e6 !important;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  color: #495057;
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #ffffff !important;
+  border-color: #0176B8 !important;
+  box-shadow: 0 0 0 4px rgba(1, 118, 184, 0.15);
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: #adb5bd;
+}
+
+/* Form Labels */
+.form-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 6px;
+}
+
+/* Table Styling */
+:host ::ng-deep .p-datatable .p-datatable-thead>tr>th {
+  background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+  border: none;
+  border-bottom: 2px solid var(--border-color);
+  color: #495057;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 10px;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr {
+  transition: background-color var(--transition-speed);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr:hover {
+  background-color: rgba(1, 118, 184, 0.04);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px 10px;
+  vertical-align: middle;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+/* Card Ticket Table */
+.card-ticket-table {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: var(--card-shadow);
+}
+
+/* Dialog Styling */
+:host ::ng-deep .p-dialog {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+  background: linear-gradient(135deg, #0176B8, #015a8c);
+  color: white;
+  padding: 16px 20px;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-title {
+  font-weight: 600;
+  color: white;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon {
+  color: white;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+  padding: 24px;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (max-width: 767px) {
+  .w-98 {
+    width: 100% !important;
+  }
+
+  .w-75 {
+    width: 100% !important;
+  }
+
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .bdcmb .row {
+    flex-direction: column;
+  }
+
+  .bdcmb .col-sm-6 {
+    width: 100%;
+  }
+
+  .b-links {
+    text-align: left;
+    margin-top: 5px;
+  }
+
+  .card-body {
+    padding: 12px;
+  }
+
+  .ticket-card {
+    height: auto;
+    min-height: calc(100vh - 120px);
+  }
+
+  .seller-view-tbl td {
+    display: block;
+    width: 100% !important;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .seller-view-tbl tr {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .dl-img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .driver-icons {
+    width: 30px;
+  }
+
+  :host ::ng-deep .p-dialog {
+    width: 95vw !important;
+    max-width: 95vw !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .equal-h {
+    width: 114px;
+    height: 60px;
+  }
+
+  .main-ul {
+    display: block;
+  }
+
+  .main-ul li {
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 991px) {
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .btn-sm {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+
+  :host ::ng-deep .p-datatable .p-datatable-thead>tr>th,
+  :host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-title {
+    font-size: 1rem;
+  }
+
+  .card-body {
+    padding: 10px;
+  }
+
+  .default-img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .dl-img {
+    width: 50px;
+    height: 50px;
+  }
+
+  :host ::ng-deep .p-datatable .p-datatable-thead>tr>th {
+    font-size: 0.75rem;
+    padding: 8px 6px;
+  }
+
+  :host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+    font-size: 0.8rem;
+    padding: 8px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .btn-sm {
+    padding: 3px 6px;
+    font-size: 0.7rem;
+  }
+}
+
+/* Large Screens (2000px+) */
+@media (min-width: 2000px) {
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  .card-body {
+    padding: 28px;
+  }
+
+  :host ::ng-deep .p-datatable .p-datatable-thead>tr>th {
+    font-size: 0.95rem;
+    padding: 16px 14px;
+  }
+
+  :host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+    font-size: 1rem;
+    padding: 16px 14px;
+  }
+}
+
+/* Very Large Screens */
+@media (min-width: 3000px) {
+  .main-ul li a {
+    padding: 1.5rem !important;
+    font-size: 1.5rem !important;
+    line-height: 1.5rem !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+}
+
+@media (min-width: 4000px) {
+  .main-ul li a {
+    padding: 2.5rem !important;
+    font-size: 2rem !important;
+    line-height: 2rem !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+}

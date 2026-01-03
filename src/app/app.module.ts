@@ -29,6 +29,7 @@ import { SuperadminlayoutComponent } from './common/Superadmin/superadminlayout/
 import { SuperadminSidemenuComponent } from './common/Superadmin/superadmin-sidemenu/superadmin-sidemenu.component';
 import { SuperadminheaderComponent } from './common/Superadmin/superadminheader/superadminheader.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { PrivacyPolicyComponent } from './module/privacy-policy/privacy-policy.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { TooltipModule } from 'primeng/tooltip';
     ChatbotComponent,
     SuperadminlayoutComponent,
     SuperadminheaderComponent,
+    PrivacyPolicyComponent,
   ],
   imports: [
     BrowserModule,

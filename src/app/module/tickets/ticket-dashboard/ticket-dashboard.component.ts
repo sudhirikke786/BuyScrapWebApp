@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,HostListener  } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
@@ -23,7 +23,7 @@ export class TicketDashboardComponent implements OnInit {
   sellerTicketsloader: boolean = false;
 
   selectedTickets: any;
-  selectedTicket: any = null;  
+  selectedTicket: any = null;
 
 
   actionList = [{
@@ -31,15 +31,15 @@ export class TicketDashboardComponent implements OnInit {
     title: 'Search'
   }, {
     iconcode: 'mdi-refresh',
-    title: 'Refresh', 
+    title: 'Refresh',
   },
   {
     iconcode: 'mdi-ticket',
     title: 'New Ticket',
-    label:'New Ticket'
+    label: 'New Ticket'
   },
-  
- 
+
+
   ];
 
   newTicketList = [{
@@ -55,7 +55,7 @@ export class TicketDashboardComponent implements OnInit {
   {
     iconcode: 'mdi-account',
     title: 'New Customer',
-    label:'New Customer'
+    label: 'New Customer'
   }
   ];
 
@@ -70,21 +70,25 @@ export class TicketDashboardComponent implements OnInit {
 
   ];
 
-  ticketsTypes = [
-    { name: 'ALL', code: 'ALL' , },
-    { name: 'OPEN', code: 'OPEN' },
-    { name: 'Partially Paid', code: 'Partially Paid' },
-    { name: 'ON HOLD', code: 'ON HOLD' },
-    { name: 'PAID', code: 'PAID' },
-    { name: 'VOIDED', code: 'VOIDED' }
-  ];
+  // ticketsTypes = [
+  //   { name: 'ALL', code: 'ALL' , },
+  //   { name: 'OPEN', code: 'OPEN' },
+  //   { name: 'Partially Paid', code: 'Partially Paid' },
+  //   { name: 'ON HOLD', code: 'ON HOLD' },
+  //   { name: 'PAID', code: 'PAID' },
+  //   { name: 'VOIDED', code: 'VOIDED' }
+  // ];
 
 
-  defaultSelectedTicketsTypes = [
-    { name: 'OPEN', code: 'OPEN' },
-    { name: 'Partially Paid', code: 'Partially Paid' },
-    { name: 'ON HOLD', code: 'ON HOLD' }
-  ];
+  // defaultSelectedTicketsTypes = [
+  //   { name: 'OPEN', code: 'OPEN' },
+  //   { name: 'Partially Paid', code: 'Partially Paid' },
+  //   { name: 'ON HOLD', code: 'ON HOLD' }
+  // ];
+
+  ticketsTypes: any[] = [];
+  defaultSelectedTicketsTypes: any[] = [];
+  searchTicketTypes: any[] = [];
 
   tickets: any;
   childTickets: any;
@@ -124,6 +128,7 @@ export class TicketDashboardComponent implements OnInit {
   parentTicketIDVisible = false;
   isParentTicketVisible = false;
   parentTicketId = '';
+  parentRowId = '';
   isParent = false;
   searchOrder = 'All';
   serachText = '';
@@ -134,7 +139,7 @@ export class TicketDashboardComponent implements OnInit {
   showVoidDialogBox = false;
   voidReason: any = '';
   isVoidOrRestore: any = '';
-  
+
 
   /**Print out Variable */
   ticketId: any;
@@ -155,14 +160,16 @@ export class TicketDashboardComponent implements OnInit {
 
   holdticketObj: any = [];
   isHoldTrue: boolean = false;
+  heldMaterialNames: string[] = [];
 
-  selectedHoldAmount = 'Pay Total Amount';
+
+  selectedHoldAmount = 'Partial Pay Amount';
 
   fileDataObj: any;
   showDownload = false;
   showLoaderReport = false;
   pdfViwerTitle = 'Ticket Receipt';
-  
+
 
   pagination: any = {
     SerachText: '',
@@ -171,9 +178,12 @@ export class TicketDashboardComponent implements OnInit {
     PageNumber: 1,
     RowOfPage: 10,
     LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
+    SellerType: 'All',
     first: 0,
+    IsMergeTicket: false
   }
 
+  selectedSellerType: string = 'All';
   currentPage = 1;
   pageSize = 10;
   first = 0;
@@ -184,28 +194,49 @@ export class TicketDashboardComponent implements OnInit {
   isLoading = false;
   childTicketsLoader: boolean = false;
   sellerLoader: boolean = false;
-  
+
   alertVisible = false;
   alertMessage: any;
 
   addSellerPopupVisible = false;
   sellerForm!: FormGroup;
   sellerType: string = 'Personal';
-  
+
   numberFormat: string = '1.3-3';
-  currencySymbol: string = 'USD';
+  defaultCurrencyCode: string = 'USD';
+  currencySymbol: string = '';
 
   showImage = false;
   showImageHeader = 'Show image';
   selectedImageUrl: any;
 
-  checkVisible =  false;
+  checkVisible = false;
   driverDetails!: driver;
   newDriverScreenVisible = false;
   checkTabView: boolean = false;
-  isReportShow= false;
+  isReportShow = false;
 
-  
+  IsCustomerFacePictureEnabled: boolean = false;
+  IsMultiCurrencySupportEnabled: boolean = false;
+  adminAdvertisement!: string | null;
+
+  selectedCurrencyID: any = null;
+  // selectedCurrencyCode: string = '';
+  // selectedCurrencySymbol: string = '';
+  currencies: any[] = [];
+
+  selectedCashDrawer: any;
+  activeDrawerId: number = 0;
+
+  showHoldConfirmDialog: boolean = false;
+  holdConfirmationMessage: string = '';
+
+  licenseExpiryPopupVisible: boolean = false;
+  selectedSellerForLicenseUpdate: any = null;
+  // selectedSellerType: string = ''; 
+  showPurchaseOrderPopup: boolean = false;
+  purchaseOrdersByCustomer: any[] = [];
+  IsMergeTicket: boolean = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -218,88 +249,125 @@ export class TicketDashboardComponent implements OnInit {
     private helperService: HelperService,
     private messageService: MessageService,
     public commonService: CommonService) {
-     // this.setPageSize();
-      // this.route.params.subscribe((res) =>{
-      //   this.pagination = {
-      //     SerachText: '',
-      //     SearchOrder: 'TicketId',
-      //     Status: this.defaultSelectedTicketsTypes.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(','),
-      //     PageNumber: 1,
-      //     RowOfPage: 10,
-      //     LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
-      //     first: 0,
-      //   }
-      //   this.getAllTicketsDetails(this.pagination);
-      // })
+    // this.setPageSize();
+    // this.route.params.subscribe((res) =>{
+    //   this.pagination = {
+    //     SerachText: '',
+    //     SearchOrder: 'TicketId',
+    //     Status: this.defaultSelectedTicketsTypes.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(','),
+    //     PageNumber: 1,
+    //     RowOfPage: 10,
+    //     LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
+    //     first: 0,
+    //   }
+    //   this.getAllTicketsDetails(this.pagination);
+    // })
 
-     }
+  }
 
   ngOnInit() {
+
+    this.currentRole = this.authService.userCurrentRole();
+    const isDispatchOnly = localStorage.getItem('isDispatchOnly');
+    this.adminAdvertisement = localStorage.getItem('adminAdvertisement');
+    if (isDispatchOnly === 'true' && this.currentRole === 'Administrator') {
+      this.router.navigate([`/${this.orgName}/dispatch/meeting`]);
+    }
+
+    if (this.currentRole === 'Driver') {
+      this.router.navigate([`/${this.orgName}/dispatch`]);
+    }
+
     this.currentRole = this.authService.userCurrentRole();
     this.checkTabView = this.helperService.isTab();
-    ['Administrator','Scale','Cashier']
+    ['Administrator', 'Scale', 'Cashier']
     if (['Administrator', 'Cashier'].includes(this.currentRole)) {
       let actionButton = [{
         iconcode: 'mdi-merge',
-        label:'Merge Ticket',
+        label: 'Merge Ticket',
         title: 'Merge Ticket and Pay'
       }]
-      this.actionList = [...this.actionList,...actionButton];
+      this.actionList = [...this.actionList, ...actionButton];
     }
 
     const isFilter = localStorage.getItem('filterObj');
-    if(isFilter){
-      this.selectedTickets =  JSON.parse(isFilter);
-    }else{
+    if (isFilter) {
+      this.selectedTickets = JSON.parse(isFilter);
+    } else {
       this.selectedTickets = this.defaultSelectedTicketsTypes;
     }
-    
+
 
     const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
     if (_dataObj) {
       const isElectronic = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'iselectronicpayment')[0];
       this.systemInfo = isElectronic?.values;
+
+      const isCustomerFacePicture = _dataObj.find((item: any) => item?.keys?.toLowerCase() === 'iscustomerfacepicture');
+      this.IsCustomerFacePictureEnabled = String(isCustomerFacePicture?.values).toLowerCase() === 'true';
+
+      const isMultiCurrencySupport = _dataObj.find((item: any) => item?.keys?.toLowerCase() === 'ismulticurrencysupport');
+      this.IsMultiCurrencySupportEnabled = String(isMultiCurrencySupport?.values).toLowerCase() === 'true';
+
+
     }
 
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
-    this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
+    this.defaultCurrencyCode = localStorage.getItem('currencyCode') || 'USD';
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
     this.pagination.Status = result;
-    
+    this.selectedSellerType = this.pagination.SellerType || 'All';
+
     const ticketPagination = localStorage.getItem('ticketPagination');
-    if(ticketPagination){
+    if (ticketPagination) {
       // this.currentPage = 5;      
       // this.first = 40;   
       // this.last = 49;
-      this.pagination =  JSON.parse(ticketPagination);
-      this.first = (this.pagination?.PageNumber - 1) * this.pagination?.RowOfPage || 0;   
-      this.last = (this.pagination?.PageNumber * this.pagination?.RowOfPage) -1 || 9; 
+      this.pagination = JSON.parse(ticketPagination);
+      this.pagination.IsMergeTicket = this.pagination.IsMergeTicket ?? 0;
+      this.first = (this.pagination?.PageNumber - 1) * this.pagination?.RowOfPage || 0;
+      this.last = (this.pagination?.PageNumber * this.pagination?.RowOfPage) - 1 || 9;
       this.pageSize = this.pagination?.RowOfPage || 10;
-    }else{
+      this.selectedSellerType = this.pagination.SellerType || 'All';
+    } else {
       this.pagination.Status = result;
+      this.pagination.SellerType = this.selectedSellerType;
+      this.pagination.IsMergeTicket = false;
     }
     this.pagination.LocationId = this.locId;
     this.getAllTicketsDetails(this.pagination);
 
     this.sellerForm = this.fb.group({
-      firstName : ['',Validators.required],
-      sellerType:[this.sellerType],
-      middleName : [''],
-      lastName : [''],
-      streetAddress : [],
-      idnumber : [''],
-      cellNumber : [''],
-      contactName : ['']
+      firstName: ['', Validators.required],
+      sellerType: [this.sellerType],
+      middleName: [''],
+      lastName: [''],
+      streetAddress: [],
+      idnumber: [''],
+      cellNumber: [''],
+      contactName: ['']
 
 
 
     });
 
-    this.driverDetails = new driver();
-  }
+    const drawerJson = localStorage.getItem('selectedCashDrawer');
+    if (drawerJson) {
+      this.selectedCashDrawer = JSON.parse(drawerJson);
+    }
 
+    this.activeDrawerId = localStorage.getItem('selectedCashDrawerId')
+      ? parseInt(localStorage.getItem('selectedCashDrawerId')!, 10)
+      : (this.selectedCashDrawer ? this.selectedCashDrawer.drawerID : 1);
+
+    console.log('Active Drawer ID: ', this.activeDrawerId);
+
+    this.driverDetails = new driver();
+    this.GetTicketTypes();
+    this.GetSearchTicketTypes();
+  }
 
   onPageChange(event: any) {
     console.log(event);
@@ -311,6 +379,13 @@ export class TicketDashboardComponent implements OnInit {
     }
     this.pageSize = event.rows;
     this.pagination = { ...this.pagination, ...pagObj };
+    this.getAllTicketsDetails(this.pagination);
+  }
+
+  onSellerTypeChange() {
+    this.pagination.SellerType = this.selectedSellerType;
+    this.pagination.PageNumber = 1;
+    this.pagination.first = 0;
     this.getAllTicketsDetails(this.pagination);
   }
 
@@ -340,12 +415,26 @@ export class TicketDashboardComponent implements OnInit {
     console.log(this.pagination);
     this.commonService.getAllTicketsDetails(pagination)
       .subscribe(data => {
-        localStorage.setItem("filterObj",JSON.stringify(this.selectedTickets));        
-        localStorage.setItem("ticketPagination",JSON.stringify(pagination));
+        localStorage.setItem("filterObj", JSON.stringify(this.selectedTickets));
+        localStorage.setItem("ticketPagination", JSON.stringify(pagination));
         console.log('getAllTicketsDetails :: ');
         console.log(data);
-        this.tickets = data.body.data.map((item:any) => {
+        this.tickets = data.body.data.map((item: any) => {
           item.statusClass = this.getColor(item.status, item.isParent);
+          item.isTagHoldExpired = false;
+          const tag = item.tagHoldDate;
+          if (tag) {
+            try {
+              const tagDate = new Date(tag);
+              tagDate.setHours(0, 0, 0, 0);
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              // highlight if TagHoldDate is before or equal to today
+              item.isTagHoldExpired = tagDate.getTime() <= today.getTime();
+            } catch (e) {
+              item.isTagHoldExpired = false;
+            }
+          }
           return item;
         });
         this.pageTotal = data?.body?.totalRecord
@@ -361,6 +450,62 @@ export class TicketDashboardComponent implements OnInit {
         }
       );
   }
+
+  isFutureTagHold(tagHoldDate: string | Date): boolean {
+    if (!tagHoldDate) return false;
+
+    const today = new Date();
+    const holdDate = new Date(tagHoldDate);
+
+    today.setHours(0, 0, 0, 0);
+    holdDate.setHours(0, 0, 0, 0);
+
+    return holdDate > today;
+  }
+
+
+
+  GetTicketTypes() {
+    this.commonService.GetAllTicketTypes({}).subscribe(
+      (data: any) => {
+        const rawData = data.body?.data || [];
+        this.ticketsTypes = rawData.map((item: any) => ({
+          name: item.types,
+          code: item.rowId
+        }));
+
+        // const defaultTypes = ['OPEN', 'Partially Paid'];
+        // this.defaultSelectedTicketsTypes = this.ticketsTypes.filter(t => defaultTypes.includes(t.name));
+        // this.selectedTickets = [...this.defaultSelectedTicketsTypes];
+        this.selectedTickets = [...this.ticketsTypes];
+      },
+      (error) => {
+        console.error('Error fetching ticket types:', error);
+      }
+    );
+  }
+
+
+  GetSearchTicketTypes() {
+    this.commonService.GetAllSearchTicketTypes({}).subscribe(
+      (data: any) => {
+        const rawData = data.body?.data || [];
+
+        this.searchTicketTypes = rawData.map((item: any) => ({
+          label: item.searchTypes,
+          value: item.searchTypes
+        }));
+
+        const allOption = this.searchTicketTypes.find(opt => opt.label === 'ALL');
+        this.searchOrder = allOption ? allOption.value : null;
+      },
+      (err) => {
+        console.error('Failed to load search ticket types:', err);
+      }
+    );
+  }
+
+
 
 
   getColor(type: any, isParent: boolean) {
@@ -403,7 +548,7 @@ export class TicketDashboardComponent implements OnInit {
         statusClassName = 'text-danger'
         break;
       case 'balance owed':
-          statusClassName = 'text-warning'
+        statusClassName = 'text-warning'
         break;
       case 'partially paid':
         if (isParent) {
@@ -440,11 +585,13 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   showVoideForPartiallyPaid(ticketData: any) {
+    debugger;
     this.tiketSelectedObj = ticketData;
     this.showVoid = true;
   }
 
   showVoidCancel() {
+    debugger;
     console.log(this.tiketSelectedObj);
     this.isVoidOrRestore = 'Void';
     this.getTicketTransactions();
@@ -498,6 +645,7 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   voidCopyTicket() {
+    debugger;
     const datePipe = new DatePipe('en-US');
     console.log("Void Ticket :: " + this.voidReason);
 
@@ -508,6 +656,7 @@ export class TicketDashboardComponent implements OnInit {
     this.tiketSelectedObj['VoidBy'] = this.logInUserId;
     this.tiketSelectedObj['CreatedBy'] = this.logInUserId;
     this.tiketSelectedObj['UpdatedBy'] = this.logInUserId;
+    this.tiketSelectedObj['LocID'] = this.locId;
     this.tiketSelectedObj['VoidDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     this.tiketSelectedObj['CreatedDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     this.tiketSelectedObj['UpdatedDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
@@ -532,21 +681,23 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   voidTicket() {
+    debugger;
     const datePipe = new DatePipe('en-US');
     console.log("Void Ticket :: " + this.voidReason);
 
-    console.log(this.tiketSelectedObj);
+    console.log('Checking Void', this.tiketSelectedObj);
 
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
     this.tiketSelectedObj['VoidFlag'] = true;
     this.tiketSelectedObj['VoidBy'] = this.logInUserId;
     this.tiketSelectedObj['VoidDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     this.tiketSelectedObj['Status'] = 'VOIDED';
+    this.tiketSelectedObj['LocId'] = this.locId;
 
     console.log("Final ticketData :: " + JSON.stringify(this.tiketSelectedObj));
 
     this.commonService.insertUpdateTickets(this.tiketSelectedObj).subscribe(data => {
-      console.log(data); 
+      console.log(data);
       this.addVoidedCashAmount();
       this.refreshData();
       this.voidReason = '';
@@ -567,6 +718,7 @@ export class TicketDashboardComponent implements OnInit {
     this.tiketSelectedObj['VoidReason'] = this.voidReason;
     this.tiketSelectedObj['CreatedBy'] = this.logInUserId;
     this.tiketSelectedObj['CreatedDate'] = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
+    this.tiketSelectedObj['LocID'] = this.locId;
 
     console.log("Restore ticketData :: " + JSON.stringify(this.tiketSelectedObj));
 
@@ -593,43 +745,49 @@ export class TicketDashboardComponent implements OnInit {
     const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
     this.pagination.Status = result;
     this.pagination.SerachText = this.serachText,
-    this.pagination.SearchOrder = this.searchOrder,
-    this.getAllTicketsDetails(this.pagination);
+      this.pagination.SearchOrder = this.searchOrder,
+      this.getAllTicketsDetails(this.pagination);
   }
-  
+
 
   addVoidedCashAmount() {
     const datePipe = new DatePipe('en-US');
     // POST call
-    const newCashDrawerTransaction = new CashDrawerTransaction();     
+    const newCashDrawerTransaction = new CashDrawerTransaction();
     newCashDrawerTransaction.rowId = 0;
     newCashDrawerTransaction.createdBy = this.logInUserId;
     newCashDrawerTransaction.createdDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
     newCashDrawerTransaction.updatedBy = this.logInUserId;
     newCashDrawerTransaction.updatedDate = datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS');
-    newCashDrawerTransaction.amount = parseFloat(this.voidCashAmount.toString().replace(/,/g,''));
+    newCashDrawerTransaction.amount = parseFloat(this.voidCashAmount.toString().replace(/,/g, ''));
     newCashDrawerTransaction.reason = "Void Ticket number = " + this.tiketSelectedObj.rowId;
     newCashDrawerTransaction.locID = this.locId;
-    newCashDrawerTransaction.type = "IN";      
-    
+    newCashDrawerTransaction.type = "IN";
+    newCashDrawerTransaction.drawerID = this.activeDrawerId;
+
     console.log("Final CashDrawerTransaction :: " + JSON.stringify(newCashDrawerTransaction));
-    
-    this.commonService.insertUpdateCashDrawerTransactions(newCashDrawerTransaction).subscribe(data =>{    
-      console.log(data); 
+
+    this.commonService.insertUpdateCashDrawerTransactions(newCashDrawerTransaction).subscribe(data => {
+      console.log(data);
       this.messageService.add({ severity: 'success', summary: 'success', detail: 'Cash Drawer Transaction updated successfully' });
-      
+
       // Update values
       const paramObject = {
-        LocationId: this.locId
+        LocationId: this.locId,
+        DrawerID: this.activeDrawerId
       };
       this.getCashDrawerAmountAndPaidTicketCount(paramObject);
-    },(error: any) =>{  
-      console.log(error);  
+    }, (error: any) => {
+      console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
   }
 
   showMergeDialog() {
+    // Clear saved filter so when returning, all statuses will be shown
+    localStorage.removeItem('filterObj');
+    localStorage.removeItem('ticketPagination');
+
     this.dialogPopupVisible = true;
     this.newTicketVisible = false;
     this.ticketvisible = true;
@@ -639,9 +797,15 @@ export class TicketDashboardComponent implements OnInit {
       LocationId: this.locId
     };
     this.getAllsellersDetails(paramObject);
+    this.getAllCurrencies();
+    // this.getDefaultCurrencyForTicket();
   }
 
   addNewTicket() {
+    // Clear saved filter so when returning, all statuses will be shown
+    localStorage.removeItem('filterObj');
+    localStorage.removeItem('ticketPagination');
+
     this.dialogPopupVisible = true;
     this.newTicketVisible = true;
     this.ticketvisible = false;
@@ -651,6 +815,8 @@ export class TicketDashboardComponent implements OnInit {
       LocationId: this.locId
     };
     this.getAllsellersDetails(paramObject);
+    this.getAllCurrencies();
+    // this.getDefaultCurrencyForTicket();
   }
 
   getAllsellersDetails(paramObject: any) {
@@ -686,7 +852,7 @@ export class TicketDashboardComponent implements OnInit {
     console.log('Change Multiselect :: ');
     console.log(JSON.stringify(event));
     if (event.itemValue.name === 'ALL') {
-      if (event.originalEvent) {
+      if (event.value.some((item: any) => item.name === 'ALL')) {
         this.selectedTickets = this.ticketsTypes;
       } else {
         this.selectedTickets = this.defaultSelectedTicketsTypes;
@@ -694,7 +860,7 @@ export class TicketDashboardComponent implements OnInit {
     } else {
       // TO DO:: check item is selected or deselected by looking at no.of item in event.value
       // if less than 6, then remove item with All and bind remaining with this.selectedTickets
-      
+
     }
     this.pagination.PageNumber = 1;
     this.searchTickets();
@@ -708,17 +874,122 @@ export class TicketDashboardComponent implements OnInit {
   clickOnSeller(sellerId: any, sellerFullname: any, sellerType: any) {
     this.selectedSellerName = sellerFullname;
     this.selectedSellerId = sellerId;
+    this.selectedSellerType = sellerType;
+    const selectedSeller = this.sellers.find((s: any) => s.rowId === sellerId);
+
+    const selectedCurrencyObj = this.currencies.find(c => c.rowID === this.selectedCurrencyID);
+    const currencyCode = selectedCurrencyObj?.currencyCode ?? '';
+    const currencySymbol = selectedCurrencyObj?.currency ?? '';
     if (this.newTicketVisible == true) {
       if (sellerType == 'Business') {
-        this.newDriverScreenVisible = true;
-      } else {
-        this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${sellerId}/false`);
+        // this.newDriverScreenVisible = true;
+        this.checkPurchaseOrdersAndProceed(sellerId, sellerType);
+      } else { // sellerType == 'Personal'
+        if (selectedSeller && selectedSeller.isLicenseExpiry === true) {
+          this.selectedSellerForLicenseUpdate = selectedSeller;
+          this.licenseExpiryPopupVisible = true;
+        } else {
+          this.checkPurchaseOrdersAndProceed(sellerId, sellerType);
+          // if (this.IsMultiCurrencySupportEnabled) {
+          // this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${sellerId}/false?currencyCode=${currencyCode}&currencySymbol=${currencySymbol}`);
+          // } else {
+          // this.router.navigate([`/${this.orgName}/home/detail/new/${sellerId}/false`],{ queryParams: {currencyCode:'',currencySymbol:''
+
+          // }
+          //  }   
+          // );
+          // }
+        }
       }
     } else if (this.ticketvisible == true) {
       this.mergeTicketVisible = true;
       this.getAllTicketsBySellerId(sellerId);
     }
+  }
 
+  checkPurchaseOrdersAndProceed(customerId: number, sellerType: string) {
+    if (this.currentRole === 'Scale') {
+      this.proceedAfterPOcheck(customerId, sellerType);
+      return;
+    }
+    this.showPurchaseOrderPopup = false;
+    const params = {
+      CustomerID: customerId
+    };
+
+    this.commonService.GetPurchaseOrdersByCustomerID(params).subscribe(
+      (res: any) => {
+        this.purchaseOrdersByCustomer = res.body?.data || [];
+
+        if (this.purchaseOrdersByCustomer.length > 0) {
+          this.showPurchaseOrderPopup = true;
+        } else {
+          this.proceedAfterPOcheck(customerId, sellerType);
+        }
+      },
+      (err) => {
+        console.error('Error fetching purchase orders:', err);
+        this.purchaseOrdersByCustomer = [];
+        this.proceedAfterPOcheck(customerId, sellerType);
+      }
+    );
+  }
+
+
+  proceedAfterPOcheck(sellerId: any, sellerType: any) {
+    this.showPurchaseOrderPopup = false;
+    this.licenseExpiryPopupVisible = false;
+
+    const selectedCurrencyObj = this.currencies.find(c => c.rowID === this.selectedCurrencyID);
+    const currencyCode = selectedCurrencyObj?.currencyCode ?? '';
+    const currencySymbol = selectedCurrencyObj?.currency ?? '';
+
+    if (sellerType === 'Business') {
+      this.newDriverScreenVisible = true;
+    } else {
+      if (this.IsMultiCurrencySupportEnabled) {
+        this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${sellerId}/false?currencyCode=${currencyCode}&currencySymbol=${currencySymbol}`);
+      } else {
+        this.router.navigate([`/${this.orgName}/home/detail/new/${sellerId}/false`], { queryParams: { currencyCode: '', currencySymbol: '' } }
+        );
+      }
+    }
+  }
+
+  selectPurchaseOrderAndProceed(po: any) {
+    this.showPurchaseOrderPopup = false;
+    this.proceedAfterPOcheck(this.selectedSellerId, this.selectedSellerType);
+  }
+
+  onLicenseUpdate() {
+    this.licenseExpiryPopupVisible = false;
+    if (this.selectedSellerForLicenseUpdate) {
+
+      const sellerId = this.selectedSellerForLicenseUpdate.rowId;
+      const sellerType = this.selectedSellerForLicenseUpdate.sellerType;
+
+      // Continue the same logic that runs when license is NOT expired
+      if (this.IsMultiCurrencySupportEnabled) {
+        const selectedCurrencyObj = this.currencies.find(c => c.rowID === this.selectedCurrencyID);
+        const currencyCode = selectedCurrencyObj?.currencyCode ?? '';
+        const currencySymbol = selectedCurrencyObj?.currency ?? '';
+
+        this.router.navigateByUrl(
+          `/${this.orgName}/home/detail/new/${sellerId}/false?currencyCode=${currencyCode}&currencySymbol=${currencySymbol}`
+        );
+      } else {
+        this.router.navigate(
+          [`/${this.orgName}/home/detail/new/${sellerId}/false`],
+          { queryParams: { currencyCode: '', currencySymbol: '' } }
+        );
+      }
+    }
+    this.selectedSellerForLicenseUpdate = null;
+  }
+
+  onCancel() {
+    this.licenseExpiryPopupVisible = false;
+    // this.checkPurchaseOrdersAndProceed(this.selectedSellerId, this.selectedSellerType);
   }
 
   saveDriverInfo() {
@@ -726,14 +997,24 @@ export class TicketDashboardComponent implements OnInit {
     this.newDriverScreenVisible = false;
     this.dataService.setNewDriverDetail(this.driverDetails);
     this.driverDetails = new driver();
+    const selectedCurrencyObj = this.currencies.find(c => c.rowID === this.selectedCurrencyID);
+    const currencyCode = selectedCurrencyObj?.currencyCode ?? '';
+    const currencySymbol = selectedCurrencyObj?.currency ?? '';
     if (this.newTicketVisible == true) {
-      this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${this.selectedSellerId}/true`);
+      // this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${this.selectedSellerId}/true?currencyCode=${currencyCode}&currencySymbol=${currencySymbol}`);
+      if (this.IsMultiCurrencySupportEnabled) {
+        this.router.navigateByUrl(`/${this.orgName}/home/detail/new/${this.selectedSellerId}/true?currencyCode=${currencyCode}&currencySymbol=${currencySymbol}`);
+      } else {
+        this.router.navigate([`/${this.orgName}/home/detail/new/${this.selectedSellerId}/true`], { queryParams: { currencyCode: '', currencySymbol: '' } });
+      }
     }
   }
-  
+
 
   showTicketDetails(ticketData: any) {
-    this.selectedTicket = ticketData; 
+    console.log('TicketData', ticketData)
+    this.selectedTicket = ticketData;
+    this.parentRowId = ticketData.parentRowID;
     this.parentTicketId = ticketData.parentTicketID;
     this.tiketSelectedObj = ticketData;
     this.ticketId = ticketData.rowId;
@@ -741,8 +1022,9 @@ export class TicketDashboardComponent implements OnInit {
     this.customerId = ticketData.customerId;
     this.isBuniessUser = (ticketData.driverName && ticketData.driverName != '') ? true : false;
     if (this.parentTicketId) {
-      this.parentTicketIDVisible = true;
-      this.isParentTicketVisible = false;
+      // this.parentTicketIDVisible = true;
+      // this.isParentTicketVisible = false;
+      this.router.navigateByUrl(`/${this.orgName}/home/detail/${this.ticketId}/${this.customerId}/${this.isBuniessUser}`);
     } else if (this.isParent) {
       this.getAllTicketsByParentID(ticketData.rowId);
       this.parentTicketIDVisible = false;
@@ -773,7 +1055,7 @@ export class TicketDashboardComponent implements OnInit {
     // }
   }
 
- 
+
   getAllTicketsByParentID(parentTicketID: string) {
 
 
@@ -811,8 +1093,8 @@ export class TicketDashboardComponent implements OnInit {
         console.log(data);
         this.sellerTickets = data.body.data;
         this.sellerTickets = this.sellerTickets.filter((obj: any) => {
-          return obj.status === 'OPEN' || 
-          (obj.status === 'Partially Paid' && obj.isParent != true ) ;
+          return obj.status === 'OPEN' ||
+            (obj.status === 'Partially Paid' && obj.isParent != true);
         }).sort((a: any, b: any) => (a.title > b.title) ? 1 : -1);
       },
         (err: any) => {
@@ -829,25 +1111,57 @@ export class TicketDashboardComponent implements OnInit {
     this.mergeTicketVisible = false;
   }
 
-  mergeAndPaySelectedTickets() {
+  private async getHoldDetailsForTickets(tickets: any[]): Promise<{ isHold: boolean, holdObj: any[], holdAmount: number, heldMaterialNames: string[] }> {
+    let holdObj: any[] = [];
+    let holdAmount = 0;
+    let isHold = false;
+    let heldMaterialNames: string[] = [];
+
+    for (const ticket of tickets) {
+      try {
+        const detailsResponse: any = await this.commonService.GetTicketMaterialsDetailsByTicketId({
+          TicketId: ticket.rowId,
+          locid: this.locId
+        }).toPromise();
+
+        const materials = detailsResponse.body.data || [];
+        const heldMaterials = materials.filter((m: any) => m.isHold === true);
+
+        if (heldMaterials.length > 0) {
+          isHold = true;
+          holdObj.push(ticket);
+          holdAmount += heldMaterials.reduce((sum: number, mat: any) => sum + mat.amount, 0);
+        }
+        heldMaterials.forEach((mat: any) => {
+          heldMaterialNames.push(mat.materialName);
+        });
+      } catch (error) {
+        console.error(`Could not get details for ticket`, error);
+      }
+    }
+
+    return { isHold, holdObj, holdAmount, heldMaterialNames };
+  }
+
+  async mergeAndPaySelectedTickets() {
     if ((!this.selectedSellerTickets) || (this.selectedSellerTickets && this.selectedSellerTickets.length <= 1)) {
       this.messageAlert('Please select more than one ticket to merge!!!')
       return;
     }
-    
-    this.holdticketObj = null;
-    this.holdticketObj = this.selectedSellerTickets.filter((obj: any) => {
-      return obj.isHold === true
-    });
-    this.isHoldTrue = (this.holdticketObj.length > 0) ? true : false;
 
-    var totalbalanceAmount = this.selectedSellerTickets.reduce((totalAmount: any, item: any) => totalAmount + item.amount -item.adjustmentAmount, 0);
-        
-    const totalActualAmount = this.selectedSellerTickets.reduce(function (sum: any, tickets: any) {
-      return sum + (tickets.isAdjusmentSet ? tickets.amount * -1 : tickets.amount);
-    }, 0);
+    this.sellerTicketsloader = true;
 
-    this.ticketId = this.selectedSellerTickets.map((item: any) => item.ticketId).join(',');
+    const holdDetails = await this.getHoldDetailsForTickets(this.selectedSellerTickets);
+
+    this.isHoldTrue = holdDetails.isHold;
+    this.holdticketObj = holdDetails.holdObj;
+    this.totalHoldAmount = holdDetails.holdAmount;
+    this.heldMaterialNames = holdDetails.heldMaterialNames;
+
+    this.sellerTicketsloader = false;
+
+    var totalbalanceAmount = this.selectedSellerTickets.reduce((totalAmount: any, item: any) => totalAmount + item.amount - item.adjustmentAmount, 0);
+    this.ticketId = this.selectedSellerTickets.map((item: any) => item.rowId).join(',');
 
     this.totalAmount = Math.round(totalbalanceAmount);
 
@@ -863,13 +1177,13 @@ export class TicketDashboardComponent implements OnInit {
     // this.transactionPaymentType = [];
   }
 
-  
+
 
   showPayment(isReceiptPrint: boolean) {
     this.isReceiptPrint = isReceiptPrint;
     this.paymentVisible = true;
 
-    
+
     this.selectedSellerTicketsPaidAmount = this.selectedSellerTickets.reduce(function (sum: any, tickets: any) {
       return sum + tickets.paidAmount;
     }, 0);
@@ -888,21 +1202,19 @@ export class TicketDashboardComponent implements OnInit {
     this.checkNumber = '';
     this.ePaymentType = '';
 
+    // this.payAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount;
+    // this.remainingAmount = this.payAmount;
+
     if (this.isHoldTrue) {
-      this.totalHoldAmount = this.holdticketObj.reduce((acc: any, curr: any) => acc + curr.amount, 0);
-    }
-    switch (this.selectedHoldAmount) {
-      case 'Partial Pay Amount':
-        if (this.totalHoldAmount >= this.payAmount && (this.totalHoldAmount != 0 || this.payAmount != 0)) {
-          this.errorAlert(`Hold amount ( $${this.totalHoldAmount} ) is equal or more than total pay amount ( $${this.payAmount} )`);
-          this.payAmount = 0;
-        } else {
-          this.payAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount - this.totalHoldAmount;
-        }
-        break;
-      case 'Hold All Amount':
-        this.payAmount = 0;
-        break;
+      if (this.selectedHoldAmount === 'Partial Pay Amount') {
+        this.selectedPayAmount = this.payAmount - this.totalHoldAmount;
+      } else if (this.selectedHoldAmount === 'Hold All Amount') {
+        this.selectedPayAmount = 0;
+      } else { // Pay Total Amount
+        this.selectedPayAmount = this.remainingAmount;
+      }
+    } else {
+      this.selectedPayAmount = this.remainingAmount;
     }
   }
 
@@ -913,19 +1225,46 @@ export class TicketDashboardComponent implements OnInit {
   }
 
   addTransction() {
-
+    debugger;
     if (this.selectedPayAmount <= 0) {
- 
-      // this.messageAlert('Please Enter Amount')
-      // return;
-      const text = 'The amount is zero or less than zero. Do you want to continue?';
-      this.confirmationMessage(text, 'proceedWithZeroAmount', null);
+
+      this.confirmationService.confirm({
+        message: `This entered amount ₹${this.selectedPayAmount}will be added into the Cash Drawer?`,
+        header: 'Add Money',
+        icon: 'pi pi-info-circle',
+        acceptLabel: 'OK',
+
+        accept: () => {
+
+
+          this.activeSection = 'Cash';
+          this.transactionPaymentType = [{ typeofPayment: 'Cash', typeofAmount: this.selectedPayAmount }];
+          this.proceedWithAddTransaction();
+        },
+        reject: () => {
+
+          this.messageAlert('Operation cancelled.');
+        }
+      });
       return;
     }
-
     if (!this.isInputValid(this.selectedPayAmount)) {
       this.messageAlert('Add valid input')
       return;
+    }
+
+    if (this.isHoldTrue) {
+      const fullTicketBalance = this.totalAmount - this.selectedSellerTicketsPaidAmount;
+
+      let maxPayableNow = fullTicketBalance;
+      if (this.selectedHoldAmount === 'Partial Pay Amount') {
+        maxPayableNow = fullTicketBalance - this.totalHoldAmount;
+      }
+
+      if (Number(this.selectedPayAmount) > maxPayableNow) {
+        this.messageAlert(`Payment exceeds the maximum eligible amount of $${maxPayableNow.toFixed(2)}.`);
+        return;
+      }
     }
 
     const checkPrice = this.checkTotalAmount();
@@ -934,7 +1273,7 @@ export class TicketDashboardComponent implements OnInit {
       this.messageAlert('adding amount is greter than total amount')
       return;
     }
-    
+
     if (this.activeSection == 'Check') {
       if (this.checkNumber.length == 0) {
         this.messageAlert('Enter Check Number')
@@ -953,7 +1292,7 @@ export class TicketDashboardComponent implements OnInit {
     }
   }
 
-  
+
   confirmationMessage(msg: any, triggerPoint: any, additionData: any) {
     this.confirmationService.confirm({
       header: 'Confirmation',
@@ -963,27 +1302,30 @@ export class TicketDashboardComponent implements OnInit {
           this.proceedWithAddTransaction();
         } else if (triggerPoint == 'payAndSave') {
           this.proceedPayAndSave(additionData);
-        }else if (triggerPoint === 'proceedWithZeroAmount') {
-          this.proceedWithAddTransaction(); 
+        } else if (triggerPoint === 'proceedWithZeroAmount') {
+          this.proceedWithAddTransaction();
         }
       },
-      reject: () => {       
+      reject: () => {
         return false;
       },
     });
   }
-  
+
 
   proceedWithAddTransaction() {
     const findItemExist = this.transactionPaymentType.findIndex((item: any) => item.typeofPayment?.toLowerCase() == this.activeSection?.toLowerCase())
-    
+
     switch (this.selectedHoldAmount) {
       case 'Partial Pay Amount':
         const total = this.getTotal();
-        const eligiblePayAmount = this.totalAmount - total - this.totalHoldAmount;
-        if (this.selectedPayAmount > eligiblePayAmount) {
-          this.messageAlert('Exclude hold item amount');  
-          this.selectedPayAmount = eligiblePayAmount;
+        const eligiblePayAmount = (this.totalAmount - this.selectedSellerTicketsPaidAmount) - this.totalHoldAmount;
+        const currentPayments = this.getTotal();
+
+        if (this.selectedPayAmount > (eligiblePayAmount - currentPayments)) {
+          this.messageAlert('Exclude hold item amount');
+          // Correct the input to the max possible value
+          this.selectedPayAmount = eligiblePayAmount - currentPayments;
           return;
         }
         break;
@@ -1020,11 +1362,22 @@ export class TicketDashboardComponent implements OnInit {
       this.messageAlert('adding amount is greter than total amount')
       return false;
     }
+    if (this.isHoldTrue) {
+      const fullTicketBalance = this.totalAmount - this.selectedSellerTicketsPaidAmount;
+      const currentPayments = this.getTotal();
 
-    this.remainingAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount - this.getTotal();
-    this.selectedPayAmount = this.remainingAmount;
+      this.remainingAmount = fullTicketBalance - currentPayments;
 
+      if (this.selectedHoldAmount === 'Partial Pay Amount') {
+        this.selectedPayAmount = fullTicketBalance - this.totalHoldAmount - currentPayments;
+      } else { // Pay Total Amount
+        this.selectedPayAmount = fullTicketBalance - currentPayments;
+      }
 
+    } else {
+      this.remainingAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount - this.getTotal();
+      this.selectedPayAmount = this.remainingAmount;
+    }
   }
 
   getType() {
@@ -1054,7 +1407,7 @@ export class TicketDashboardComponent implements OnInit {
 
   removeItem(i: number) {
     this.transactionPaymentType.splice(i, 1);
-        
+
     this.remainingAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount - this.getTotal();
     this.selectedPayAmount = this.remainingAmount;
   }
@@ -1071,18 +1424,38 @@ export class TicketDashboardComponent implements OnInit {
   }
 
 
-  errorAlert(msg:any){
+  errorAlert(msg: any) {
     this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
   }
 
-  messageAlert(msg:any) {    
+  messageAlert(msg: any) {
     this.alertVisible = true;
     this.alertMessage = msg;
   }
 
+  resetPaymentPopup() {
+    this.transactionPaymentType = [];
+    this.selectedPayAmount = 0;
+    this.checkNumber = '';
+    this.ePaymentType = '';
+    this.payAmount = 0;
+    this.remainingAmount = 0;
+    this.selectedHoldAmount = '';
+    this.ticketId = '';
+    this.selectedSellerTickets = [];
+  }
+
+
   payAndSave(activeSection: string) {
-    if (this.transactionPaymentType.length > 1) {      
-      let text = 'You selected multiple payment mode please confirm ?';      
+
+    const cashDrawerStatus = localStorage.getItem('cashDrawerStatus');
+
+    if (cashDrawerStatus == 'CLOSE') {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'You must open the cash drawer before making a payment.' });
+      return;
+    }
+    if (this.transactionPaymentType.length > 1) {
+      let text = 'You selected multiple payment mode please confirm ?';
       this.confirmationMessage(text, 'payAndSave', activeSection);
     } else if (this.transactionPaymentType.length == 1) {
       this.proceedPayAndSave(activeSection);
@@ -1093,15 +1466,15 @@ export class TicketDashboardComponent implements OnInit {
 
     const payAmout = this.getTotal();
 
-    if (payAmout == 0 && this.selectedPayAmount> 0) {
+    if (payAmout == 0 && this.selectedPayAmount > 0) {
       console.log('directly click on Pay Tiket button');
       this.transactionPaymentType.push({
         typeofPayment: this.activeSection,
         typeofAmount: this.selectedPayAmount,
         paymentType: this.getType()
       });
-    } 
-      
+    }
+
     this.payAmount = this.getTotal();
 
     // if (!this.payAmount) {    
@@ -1142,11 +1515,28 @@ export class TicketDashboardComponent implements OnInit {
         return;
       }
     } else {
-      msg = 'You selected as Cash as payment mode, please confirm?';
-      this.messageAlert(msg);
+      // msg = 'You selected as Cash as payment mode, please confirm?';
+      // this.messageAlert(msg);
     }
+    const paramObject = {
+      LocationId: this.locId,
+      DrawerID: this.activeDrawerId
+    };
+    this.commonService.getCashDrawerAmountAndPaidTicketCount(paramObject).subscribe(
+      (data: any) => {
+        const cashDrawerBalance = data.body.cashDrawerbalance;
+        if (this.activeSection == 'Cash') {
+          if (cashDrawerBalance < payAmout) {
+            this.messageAlert('Cash Drawer balance is insufficient .');
+            return;
+          }
+        }
+        this.saveTransactionData(activeSection);
+        this.resetPaymentPopup();
+      }
+    );
 
-    this.saveTransactionData(activeSection);
+
   }
 
   saveTransactionData(activeSection: any) {
@@ -1160,7 +1550,7 @@ export class TicketDashboardComponent implements OnInit {
 
     this.transactionPaymentType.map((item: any) => {
 
-      if (item.typeofPayment == 'Cash') {  
+      if (item.typeofPayment == 'Cash') {
 
         payTransactionObj.push({
           localRowId: 1,
@@ -1171,6 +1561,8 @@ export class TicketDashboardComponent implements OnInit {
           updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
           ticketId: parseInt(ticketId),
           type: item.typeofPayment,
+          locID: this.locId,
+          drawerID: this.activeDrawerId,
           amount: parseFloat(item.typeofAmount),
           checkNumber: '',
           barCode: '',
@@ -1203,7 +1595,7 @@ export class TicketDashboardComponent implements OnInit {
         });
 
       } else if (item.typeofPayment == 'Electronic Payment') {
-        
+
         payTransactionObj.push({
           localRowId: 3,
           rowId: 0,
@@ -1229,7 +1621,7 @@ export class TicketDashboardComponent implements OnInit {
       isCheckPrint = true;
     }
 
-    if(this.ticketId.toString().indexOf(',') > -1) {
+    if (this.ticketId.toString().indexOf(',') > -1) {
       this.saveMergeTicketDetails(payTransactionObj, isCheckPrint);
     } else {
       this.savePaymentTransation(payTransactionObj, isCheckPrint);
@@ -1246,7 +1638,7 @@ export class TicketDashboardComponent implements OnInit {
     console.log(this.transactionPaymentType);
 
     const transactionObj = {
-      tickettransaction : {
+      tickettransaction: {
         localRowId: 0,
         rowId: 0,
         createdBy: this.logInUserId,
@@ -1255,6 +1647,8 @@ export class TicketDashboardComponent implements OnInit {
         updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         ticketId: this.ticketId,
         type: this.transactionPaymentType[0]?.typeofPayment,
+        locID: this.locId,
+        drawerID: this.activeDrawerId,
         amount: 0,
         checkNumber: '',
         barCode: '',
@@ -1262,10 +1656,10 @@ export class TicketDashboardComponent implements OnInit {
         dateClosed: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
         checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
       },
-      lstickettransaction : payTransactionObj
+      lstickettransaction: payTransactionObj
     };
 
-    this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {      
+    this.commonService.insertTicketTransactions(transactionObj).subscribe(data => {
       this.printTicket(this.ticketId, isCheckPrint);
     }, (error: any) => {
       console.log(error);
@@ -1275,18 +1669,18 @@ export class TicketDashboardComponent implements OnInit {
 
 
   saveMergeTicketDetails(payTransactionObj: any, isCheckPrint: boolean) {
-
     const newTicket = {
       rowId: 0,
       userID: this.logInUserId,
       date: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      ticketId: this.ticketId,
+      childRowId: this.ticketId,
       type: this.transactionPaymentType[0]?.typeofPayment,
       amount: 0,
       checkNumber: '',
       checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       customerID: this.selectedSellerId,
       locID: this.locId,
+      drawerID: this.activeDrawerId,
       lstTTicketTransactionDTO: payTransactionObj
     };
 
@@ -1298,13 +1692,21 @@ export class TicketDashboardComponent implements OnInit {
       this.messageAlert('Tickets merged successfully');
       this.mergeTicketVisible = false;
       this.dialogPopupVisible = false;
+      this.selectedSellerTickets = [];
+      this.ticketId = '';
+      this.generateSingleTicketReport(ticketId);
       this.printTicket(ticketId, isCheckPrint);
+      // Reset filter to show all statuses after merge
+      this.selectedTickets = [...this.ticketsTypes];
+      this.pagination.Status = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
+      this.getAllTicketsDetails(this.pagination);
     }, (error: any) => {
       console.log(error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
   }
   mergeAndSaveSelectedTickets() {
+    debugger;
     if (
       (!this.selectedSellerTickets) ||
       (this.selectedSellerTickets && this.selectedSellerTickets.length <= 1)
@@ -1312,32 +1714,38 @@ export class TicketDashboardComponent implements OnInit {
       this.messageAlert('Please select more than one ticket to merge!!!');
       return;
     }
-  
+
     this.ticketId = this.selectedSellerTickets
-      .map((item: any) => item.ticketId)
+      .map((item: any) => item.rowId)
       .join(',');
-  
+
     const newTicket = {
       rowId: 0,
       userID: this.logInUserId,
       date: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       ticketId: this.ticketId,
-      type: '', 
+      childRowId: this.ticketId,
+      type: '',
       amount: 0,
       checkNumber: '',
       checkDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       customerID: this.selectedSellerId,
       locID: this.locId,
-      lstTTicketTransactionDTO: null, 
+      lstTTicketTransactionDTO: null,
     };
-  
+
     console.log('New Merge ticketData :: ', newTicket);
-      this.commonService.insertUpdateMergeTickets(newTicket).subscribe(
+    this.commonService.insertUpdateMergeTickets(newTicket).subscribe(
       (data: any) => {
         console.log(data);
         this.messageAlert('Tickets merged and saved successfully');
         this.mergeTicketVisible = false;
         this.dialogPopupVisible = false;
+        this.selectedSellerTickets = [];
+        this.ticketId = '';
+        // Reset filter to show all statuses after merge
+        this.selectedTickets = [...this.ticketsTypes];
+        this.pagination.Status = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
         this.getAllTicketsDetails(this.pagination);
 
       },
@@ -1351,27 +1759,28 @@ export class TicketDashboardComponent implements OnInit {
       }
     );
   }
-  
 
-  printTicket(ticketId: any, isCheckPrint: boolean) {  
-    let isReceiptPrint = this.isReceiptPrint;  
-    if (this.isReceiptPrint) {      
+
+  printTicket(ticketId: any, isCheckPrint: boolean) {
+    let isReceiptPrint = this.isReceiptPrint;
+    if (this.isReceiptPrint) {
       let text = "Do you want to print receipt?";
       if (confirm(text) != true) {
         isReceiptPrint = false;
       }
     }
     const paramObject = {
-      LocationId: this.locId
+      LocationId: this.locId,
+      DrawerID: this.activeDrawerId
     };
     this.getCashDrawerAmountAndPaidTicketCount(paramObject);
     if (isReceiptPrint) {
       this.generateSingleTicketReport(ticketId);
-    } else {      
+    } else {
       this.checkPrintAction(isCheckPrint, ticketId);
     }
   }
-  
+
   private checkPrintAction(isCheckPrint: boolean, ticketId: any) {
     if (isCheckPrint) {
       this.messageAlert('Please insert Check into Printer!!!');
@@ -1380,7 +1789,7 @@ export class TicketDashboardComponent implements OnInit {
       const checkAmount = checkPaymentTransaction[0]?.typeofAmount;
       //const customerFullName = this.selectedSellerName;
 
-      const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
+      const selectedTicketDetail = this.tickets.filter((item: any) => item.rowId == this.ticketId);
       const customerFullName = selectedTicketDetail[0].customerName;
       // TO DO :: Open Pdf viewer          
       this.showDownload = true;
@@ -1396,36 +1805,87 @@ export class TicketDashboardComponent implements OnInit {
   getCashDrawerAmountAndPaidTicketCount(paramObject: any) {
     this.commonService.getCashDrawerAmountAndPaidTicketCount(paramObject)
       .subscribe((data: any) => {
-          console.log('getCashDrawerAmountAndPaidTicketCount :: ');
-          console.log(data);
-          // this.dataService.cashDrawerAmountAndPaidTicketCount(data);
-          const cashDrawerBalanceAmount = data.body.cashDrawerbalance;
-          const paidTicketCount = data.body.paidTicketCount;
-          this.dataService.setCashDrawerAmountDTO(cashDrawerBalanceAmount);
-          this.dataService.setPaidCount(paidTicketCount);
-        },
+        console.log('getCashDrawerAmountAndPaidTicketCount :: ');
+        console.log(data);
+        // this.dataService.cashDrawerAmountAndPaidTicketCount(data);
+        const cashDrawerBalanceAmount = data.body.cashDrawerbalance;
+        const paidTicketCount = data.body.paidTicketCount;
+        this.dataService.setCashDrawerAmountDTO(cashDrawerBalanceAmount);
+        this.dataService.setPaidCount(paidTicketCount);
+      },
         (err: any) => {
           // this.errorMsg = 'Error occured';
         }
       );
   }
 
-  payRemainder() {
-    const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
-    this.totalAmount = selectedTicketDetail.reduce((totalAmount: any, item: any) => totalAmount + item.amount - item.adjustmentAmount, 0);
+  async payRemainder() {
+    this.sellerTicketsloader = true;
+
+    const selectedTicket = this.tiketSelectedObj;
+
+    const holdDetails = await this.getHoldDetailsForTickets([selectedTicket]);
+
+    this.isHoldTrue = holdDetails.isHold;
+    this.holdticketObj = holdDetails.holdObj;
+    this.totalHoldAmount = holdDetails.holdAmount;
+    this.heldMaterialNames = holdDetails.heldMaterialNames;
+
+    this.sellerTicketsloader = false;
     // this.totalAmount = selectedTicketDetail[0].balanceAmount;
-    this.selectedSellerTicketsPaidAmount = selectedTicketDetail.reduce((paidAmount: any, item: any) => paidAmount + item.paidAmount, 0);
-    
-    this.paymentVisible = true;    
+    this.totalAmount = selectedTicket.amount - selectedTicket.adjustmentAmount;
+    this.selectedSellerTicketsPaidAmount = selectedTicket.paidAmount;
+
+    this.paymentVisible = true;
 
     this.selectedPayAmount = this.remainingAmount = this.payAmount = this.totalAmount - this.selectedSellerTicketsPaidAmount;
     this.showSection('Cash');
   }
 
+  onHoldAmountChange() {
+    if (this.selectedHoldAmount === 'Pay Total Amount' && this.isHoldTrue) {
+      const holdItemNames = this.heldMaterialNames.join(', ');
+      this.holdConfirmationMessage = `${holdItemNames} Material is on Hold. Are you sure you want to Pay Total Amount?`;
+      this.showHoldConfirmDialog = true;
+      return;
+    }
+    this.applyHoldAmountLogic();
+  }
+
+  confirmHoldAmount() {
+    this.showHoldConfirmDialog = false;
+    this.applyHoldAmountLogic();
+  }
+
+  cancelHoldAmount() {
+    this.showHoldConfirmDialog = false;
+    this.selectedHoldAmount = 'Partial Pay Amount';
+    this.applyHoldAmountLogic();
+  }
+
+
+  applyHoldAmountLogic() {
+    const totalDue = this.totalAmount - this.selectedSellerTicketsPaidAmount;
+
+    switch (this.selectedHoldAmount) {
+      case 'Partial Pay Amount':
+        this.selectedPayAmount = totalDue - this.totalHoldAmount;
+        break;
+      case 'Hold All Amount':
+        this.selectedPayAmount = 0;
+        break;
+      case 'Pay Total Amount':
+      default:
+        this.selectedPayAmount = totalDue;
+        break;
+    }
+    this.remainingAmount = this.selectedPayAmount;
+  }
+
   closePdfReport() {
     this.isParentTicketVisible = false;
     this.parentTicketIDVisible = false;
-    this.getAllTicketsDetails(this.pagination);    
+    this.getAllTicketsDetails(this.pagination);
   }
 
 
@@ -1437,14 +1897,16 @@ export class TicketDashboardComponent implements OnInit {
     let amount = checkAmount;
 
     var num = amount.toString().split(".");
-    let  doller = this.convertNumberToWords(num[0]);
+    let doller = this.convertNumberToWords(num[0]);
     let cent = '';
-    if (num.length>1) {
-      cent = this.convertNumberToWords(num[1])
+    if (num.length > 1) {
+      //cent = this.convertNumberToWords(num[1])
+      let centValue = num[1].padEnd(2, '0').substring(0, 2); // ensure exactly 2 digits
+      cent = this.convertNumberToWords(parseInt(centValue));
     }
-    let amountInWord = ((doller.length==0? 'Zero ' : doller) + 'DOLLARS AND ' + (cent.length==0? 'Zero' : cent) + ' CENTS ONLY').toUpperCase()
+    let amountInWord = ((doller.length == 0 ? 'Zero ' : doller) + 'DOLLARS AND ' + (cent.length == 0 ? 'Zero ' : cent) + 'CENTS ONLY').toUpperCase()
     console.info(amountInWord);
-    
+
     // const selectedTicketDetail = this.tickets.filter((item:any) => item.rowId == this.ticketId);
     // const customerFullName = selectedTicketDetail[0].customerName;       
 
@@ -1453,8 +1915,9 @@ export class TicketDashboardComponent implements OnInit {
       FullName: customerFullName.toUpperCase(),
       PrintDate: this.formatDate(new Date()),
       CheckDate: this.formatDate(this.selectedCheckDate),
-      CheckAmount: (Math.round(checkAmount*100)/100).toFixed(2),
-      AmountInWord: amountInWord
+      CheckAmount: (Math.round(checkAmount * 100) / 100).toFixed(2),
+      AmountInWord: amountInWord,
+      OrgName: this.orgName
     }
 
     this.commonService.getCheckPrintReport(param)
@@ -1474,39 +1937,45 @@ export class TicketDashboardComponent implements OnInit {
 
   generateSingleTicketReport(ticketId: any) {
     //this.isReportShow =true;
-    this.showLoaderReport = true; 
+    this.showLoaderReport = true;
     this.showDownload = true;
     const param = {
       TicketId: ticketId,
       LocationId: this.locId,
-      Type: localStorage.getItem('defaultPrintSize')
+      Type: localStorage.getItem('defaultPrintSize'),
+      Advertising: this.adminAdvertisement
     }
     //this.showLoaderReport = false;
     //this.showDownload = false;
 
-    this.commonService.getMergeTransactionsTicketReceipt(param)
-      .subscribe(data => {
-        console.log('generateSingleTicketReport :: ');
-        console.log(data);
-        this.fileDataObj = data.body.data;
+    const orgName = localStorage.getItem('orgName');
+
+    const apiCall = orgName === 'Sota Recycling'
+      ? this.commonService.getMergeTransactionsTicketReceiptSota(param)
+      : this.commonService.getMergeTransactionsTicketReceipt(param);
+
+    apiCall.subscribe(data => {
+      console.log('generateSingleTicketReport :: ');
+      console.log(data);
+      this.fileDataObj = data.body.data;
+      this.showLoaderReport = false;
+      //this.showDownload = false;
+
+      this.pdfViwerTitle = 'Ticket Receipt :: #' + ticketId;
+
+      if (this.checkTabView) {
+        this.helperService.downloadBase64Pdf(this.fileDataObj, this.pdfViwerTitle)
+      } else {
+        this.loadAndPrintBase64Pdf(this.fileDataObj)
+      }
+
+
+    },
+      (err: any) => {
         this.showLoaderReport = false;
-        //this.showDownload = false;
-       
-        this.pdfViwerTitle = 'Ticket Receipt :: #' + ticketId;
-
-        if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj, this.pdfViwerTitle)
-        }else{
-          this.loadAndPrintBase64Pdf(this.fileDataObj)
-        }
-
-
-      },
-        (err: any) => {
-          this.showLoaderReport = false;
-          // this.errorMsg = 'Error occured';
-        }
-      );
+        // this.errorMsg = 'Error occured';
+      }
+    );
   }
 
   loadAndPrintBase64Pdf(base64Data: string): void {
@@ -1517,7 +1986,7 @@ export class TicketDashboardComponent implements OnInit {
     const byteNumbers = new Array(byteCharacters.length);
 
     for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
 
     const byteArray = new Uint8Array(byteNumbers);
@@ -1527,7 +1996,7 @@ export class TicketDashboardComponent implements OnInit {
     iframe.src = blobUrl;
 
     iframe.onload = () => {
-       iframe.contentWindow?.print();
+      iframe.contentWindow?.print();
     };
   }
 
@@ -1535,7 +2004,7 @@ export class TicketDashboardComponent implements OnInit {
     const d = new Date(dateStr);
     return (d.getMonth() + 1).toString().padStart(2, '0') + '/' + d.getDate().toString().padStart(2, '0') + '/' + d.getFullYear();
   }
-  
+
   convertNumberToWords(amount: any) {
     var words = new Array();
     words[0] = 'Zero';
@@ -1572,48 +2041,48 @@ export class TicketDashboardComponent implements OnInit {
     var n_length = number.length;
     var words_string = "";
     if (n_length <= 9) {
-        var n_array = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
-        var received_n_array = new Array();
-        for (var i = 0; i < n_length; i++) {
-            received_n_array[i] = number.substr(i, 1);
+      var n_array = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
+      var received_n_array = new Array();
+      for (var i = 0; i < n_length; i++) {
+        received_n_array[i] = number.substr(i, 1);
+      }
+      for (var i = 9 - n_length, j = 0; i < 9; i++, j++) {
+        n_array[i] = received_n_array[j];
+      }
+      for (var i = 0, j = 1; i < 9; i++, j++) {
+        if (i == 0 || i == 2 || i == 4 || i == 7) {
+          if (n_array[i] == 1) {
+            n_array[j] = 10 + parseInt(n_array[j] as any);
+            n_array[i] = 0;
+          }
         }
-        for (var i = 9 - n_length, j = 0; i < 9; i++, j++) {
-            n_array[i] = received_n_array[j];
+      }
+      let value;
+      for (var i = 0; i < 9; i++) {
+        if (i == 0 || i == 2 || i == 4 || i == 7) {
+          value = n_array[i] * 10;
+        } else {
+          value = n_array[i];
         }
-        for (var i = 0, j = 1; i < 9; i++, j++) {
-            if (i == 0 || i == 2 || i == 4 || i == 7) {
-                if (n_array[i] == 1) {
-                    n_array[j] = 10 + parseInt(n_array[j] as any);
-                    n_array[i] = 0;
-                }
-            }
+        if (value != 0) {
+          words_string += words[value] + " ";
         }
-      let  value;
-        for (var i = 0; i < 9; i++) {
-            if (i == 0 || i == 2 || i == 4 || i == 7) {
-                value = n_array[i] * 10;
-            } else {
-                value = n_array[i];
-            }
-            if (value != 0) {
-                words_string += words[value] + " ";
-            }
-            if ((i == 1 && value != 0) || (i == 0 && value != 0 && n_array[i + 1] == 0)) {
-                words_string += "Crores ";
-            }
-            if ((i == 3 && value != 0) || (i == 2 && value != 0 && n_array[i + 1] == 0)) {
-                words_string += "Lakhs ";
-            }
-            if ((i == 5 && value != 0) || (i == 4 && value != 0 && n_array[i + 1] == 0)) {
-                words_string += "Thousand ";
-            }
-            if (i == 6 && value != 0 && (n_array[i + 1] != 0 && n_array[i + 2] != 0)) {
-                words_string += "Hundred ";
-            } else if (i == 6 && value != 0) {
-                words_string += "Hundred ";
-            }
+        if ((i == 1 && value != 0) || (i == 0 && value != 0 && n_array[i + 1] == 0)) {
+          words_string += "Crores ";
         }
-        words_string = words_string.split("  ").join(" ");
+        if ((i == 3 && value != 0) || (i == 2 && value != 0 && n_array[i + 1] == 0)) {
+          words_string += "Lakhs ";
+        }
+        if ((i == 5 && value != 0) || (i == 4 && value != 0 && n_array[i + 1] == 0)) {
+          words_string += "Thousand ";
+        }
+        if (i == 6 && value != 0 && (n_array[i + 1] != 0 && n_array[i + 2] != 0)) {
+          words_string += "Hundred ";
+        } else if (i == 6 && value != 0) {
+          words_string += "Hundred ";
+        }
+      }
+      words_string = words_string.split("  ").join(" ");
     }
     return words_string;
   }
@@ -1696,7 +2165,7 @@ export class TicketDashboardComponent implements OnInit {
   onSubmit() {
     const reqObj = {
       ...this.sellerForm.value,
-      ...{ 
+      ...{
         rowId: 0,
         locID: this.locId,
         createdBy: this.logInUserId,
@@ -1706,24 +2175,24 @@ export class TicketDashboardComponent implements OnInit {
       }
     }
     console.log(reqObj);
-    this.commonService.addSeller(reqObj).subscribe(data =>{
+    this.commonService.addSeller(reqObj).subscribe(data => {
       console.log(data);
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller updated Successfully' });
-        const sellerFullname = reqObj.firstName + (reqObj.middleName != '' ? ' ' + reqObj.middleName : '') 
-        + (reqObj.lastName != '' ? ' ' + reqObj.lastName : '') ;
-           
-        this.addSellerPopupVisible = false;
-        this.sellerForm.patchValue({
-          firstName: '',
-          middleName: '',
-          lastName: '',
-          streetAddress: '', 
-          idnumber: '',
-          cellNumber: '',
-          contactName: ''
-        });
-        this.clickOnSeller(data.body.insertedRow, sellerFullname, this.sellerType);
-      },(error: any) =>{
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller updated Successfully' });
+      const sellerFullname = reqObj.firstName + (reqObj.middleName != '' ? ' ' + reqObj.middleName : '')
+        + (reqObj.lastName != '' ? ' ' + reqObj.lastName : '');
+
+      this.addSellerPopupVisible = false;
+      this.sellerForm.patchValue({
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        streetAddress: '',
+        idnumber: '',
+        cellNumber: '',
+        contactName: ''
+      });
+      this.clickOnSeller(data.body.insertedRow, sellerFullname, this.sellerType);
+    }, (error: any) => {
       console.log(error);
     })
 
@@ -1741,14 +2210,14 @@ export class TicketDashboardComponent implements OnInit {
     return false;   // Add return false
   }
 
-  
 
-  showSelectedImage(imageUrl: string, selectionType:any) {
+
+  showSelectedImage(imageUrl: string, selectionType: any) {
     this.selectedImageUrl = imageUrl;
     this.showImage = true;
-    if(selectionType=='1') {
+    if (selectionType == '1') {
       this.showImageHeader = 'Show seller photo';
-    } 
+    }
   }
 
   cancelImage() {
@@ -1762,33 +2231,77 @@ export class TicketDashboardComponent implements OnInit {
 
   confirmUnlock() {
     if (this.selectedTicket) {
-        this.TicketEditMode(this.selectedTicket, false);
-        this.isUnlockConfirmModel = false;
+      this.TicketEditMode(this.selectedTicket, false);
+      this.isUnlockConfirmModel = false;
     }
   }
 
-  TicketEditMode(ticket: any, editFlag:boolean){
+  TicketEditMode(ticket: any, editFlag: boolean) {
     const paramObject = {
       TicketID: ticket.rowId,
-      Flag :editFlag,
+      Flag: editFlag,
       UserID: this.logInUserId,
-      Role:this.currentRole
+      Role: this.currentRole
     };
     this.commonService.ticketEditMode(paramObject).subscribe(data => {
-        console.log('ticketEditMode :: ');
-        console.log(data);
-       // alert('Unlock the ticket for editing !!!');
-        this.messageService.add({
-         severity: 'success',
-         summary: 'Success',
-         detail: editFlag ? 'Ticket is now in Edit Mode' : 'Ticket unlocked successfully'
-        });
-        this.refreshData();
-      },
+      console.log('ticketEditMode :: ');
+      console.log(data);
+      // alert('Unlock the ticket for editing !!!');
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: editFlag ? 'Ticket is now in Edit Mode' : 'Ticket unlocked successfully'
+      });
+      this.refreshData();
+    },
       (err: any) => {
         // this.errorMsg = 'Error occured';
       }
     );
+  }
+
+  getAllCurrencies() {
+    const paramObj = {
+      CurrencyID: 0
+    };
+    this.commonService.getAllCurrency(paramObj).subscribe({
+      next: (res: any) => {
+        this.currencies = res?.body?.data || [];
+        this.getDefaultCurrencyForTicket();
+      },
+      error: () => {
+        this.currencies = [];
+      }
+    });
+  }
+
+  getDefaultCurrencyForTicket() {
+    const params = {
+      ModuleName: 'Ticket',
+      LocID: this.locId
+    };
+
+    this.commonService.GetCurrencyByModule(params).subscribe({
+      next: (res: any) => {
+        const currencyData = res?.body?.data;
+        if (currencyData && currencyData.currencyID) {
+          this.selectedCurrencyID = currencyData.currencyID;
+        } else {
+          this.selectCurrencyFromLocalStorage();
+        }
+      },
+      error: () => {
+        this.selectCurrencyFromLocalStorage();
+      }
+    });
+  }
+
+  private selectCurrencyFromLocalStorage() {
+    const localCurrencyCode = localStorage.getItem('currencyCode') || 'USD';
+    const currency = this.currencies.find(c => c.currencyCode === localCurrencyCode);
+    if (currency) {
+      this.selectedCurrencyID = currency.rowID;
+    }
   }
 
   /** Seller pop up actions end */
@@ -1835,6 +2348,6 @@ export class TicketDashboardComponent implements OnInit {
 
   }
 
-  
+
 
 }

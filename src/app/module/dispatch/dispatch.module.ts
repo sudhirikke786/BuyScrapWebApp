@@ -11,6 +11,9 @@ import { DispatchLatestDetailsComponent } from './dispatch-latest-details/dispat
 import { DispatchOrderStatusComponent } from './dispatch-order-status/dispatch-order-status.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { DispatchLayoutComponent } from './dispatch-layout/dispatch-layout.component';
+import { DispatchMapComponent } from './dispatch-map/dispatch-map.component';
+import { GoogleMapsModule } from '@angular/google-maps';
+
 export const routes: Routes = [
   {
     path: '',
@@ -30,6 +33,10 @@ export const routes: Routes = [
   {
     path: 'dispatch-status',
     component: DispatchOrderStatusComponent
+  },
+  { 
+    path: 'map', 
+    component: DispatchMapComponent 
   }
 ]
 
@@ -40,7 +47,8 @@ export const routes: Routes = [
     FullCalnderDispatchComponent,
     DispatchLatestDetailsComponent,
     DispatchOrderStatusComponent,
-    DispatchLayoutComponent
+    DispatchLayoutComponent,
+    DispatchMapComponent
     ],
   imports: [
     CommonModule,
@@ -51,6 +59,7 @@ export const routes: Routes = [
     RouterModule.forChild(routes),
     NgxExtendedPdfViewerModule,
     PrimengModule,
+    GoogleMapsModule
   ],
   providers: [DatePipe],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

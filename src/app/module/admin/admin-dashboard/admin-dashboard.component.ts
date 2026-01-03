@@ -36,6 +36,17 @@ export class AdminDashboardComponent implements OnInit {
   userForm!:FormGroup;
   patternMsg:any = RegexPattern;
 
+  assignShiftDialog: boolean = false;
+  selectedUser: any;
+  ShiftStartTime: string = '';
+  ShiftEndTime: string = '';
+  assignedShifts: any[] = [];
+  editIndex: number | null = null;
+  originalShift: any = null;
+  currentShiftData: any = null; 
+  ShiftName: string = '';
+  isLoading = false;
+
 
 
   actionList = [
@@ -107,6 +118,8 @@ export class AdminDashboardComponent implements OnInit {
         lastName: ['',Validators.required],
         mobileNumber:['',Validators.required],
         emailID: ['',Validators.required],
+        isShiftUser: [false],
+        isGeoLocationEnable: [false],
     },{ 
       validator: ConfirmedValidator('password', 'confirmPassword')
     })
@@ -136,6 +149,13 @@ export class AdminDashboardComponent implements OnInit {
       this.userForm.get('mobileNumber')?.enable();
       this.userForm.get('emailID')?.enable();
     }
+
+    if (selectedRole === '1') {
+      this.userForm.get('isShiftUser')?.setValue(false);
+      this.userForm.get('isShiftUser')?.disable();
+    } else {
+      this.userForm.get('isShiftUser')?.enable();
+    }
   }
 
   submitForm() {
@@ -161,6 +181,8 @@ export class AdminDashboardComponent implements OnInit {
         "role":this.roleList.filter((item:any) => item.roleId == this.userForm.value.roleId)[0],
         "locID":this.locId,
         "isConfirm": true,
+        "isShiftUser": !!this.userForm.value.isShiftUser,
+        "isGeoLocationEnable": !!this.userForm.value.isGeoLocationEnable
       }
       const userObj = {...this.userForm.value,...req}
 
@@ -239,13 +261,22 @@ deleteUser(userObj: any) {
   }
 
   getAllUsers(){
+    this.isLoading = true;
     const reqObj = {
       LocationId: this.locId,
       UserID:0
     }
     this.commonService.GetAllUsers(reqObj).subscribe((res) =>{
       this.admins =  res?.body?.data;
-    })
+    },
+      (err: any) => {
+        this.isLoading = false;
+        console.error('Error fetching seller details:', err);
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
   }
 
   get f(){
@@ -257,5 +288,152 @@ deleteUser(userObj: any) {
       this.roleList =  res?.body?.data;
     })
   }
+
+  assignShift(user: any) {
+    this.selectedUser = user;
+    this.assignShiftDialog = true;
+    this.assignedShifts = []; 
+    this.ShiftStartTime = '';
+    this.ShiftEndTime = '';
+    this.currentShiftData = null;
+    this.GetUserShifts(user.rowId);
+  }
+
+  GetUserShifts(userId: number) {
+    const paramObj = { UserID: userId };
+
+    this.commonService.GetUserShifts(paramObj).subscribe({
+      next: (res) => {
+        const shifts = res?.body?.data || [];
+
+        this.assignedShifts = shifts.map((shift: any) => ({
+          rowID: shift.rowID,
+          startTime: shift.shiftStartTime?.substring(0, 5), 
+          endTime: shift.shiftEndTime?.substring(0, 5),
+          shiftName: shift.shiftName
+        }));
+      },
+      error: (err) => {
+        console.error('Error fetching shifts:', err);
+      }
+    });
+  }
+
+  saveShift() {
+    let isEdit = this.editIndex !== null;
+
+    const start = isEdit ? this.assignedShifts[this.editIndex!].startTime : this.ShiftStartTime;
+    const end = isEdit ? this.assignedShifts[this.editIndex!].endTime : this.ShiftEndTime;
+
+    const startTime = this.parseTime(start);
+    const endTime = this.parseTime(end);
+
+    if (endTime <= startTime) {
+      this.messageService.add({ severity: 'error', summary: 'Validation Error', detail: 'End time must be greater than start time'});
+      return;
+    }
+
+    const shiftData = isEdit ? this.assignedShifts[this.editIndex!] : {
+      startTime: this.ShiftStartTime,
+      endTime: this.ShiftEndTime,
+      shiftName: this.ShiftName,
+      rowID: 0
+    };
+
+    const requestObj = {
+      rowID: shiftData.rowID || 0,
+      UserID: this.selectedUser.rowId,
+      createdBy: this.logInUserId,
+      updatedBy: this.logInUserId,
+      shiftName: shiftData.shiftName,
+      shiftStartTime: this.formatTime(shiftData.startTime),
+      shiftEndTime: this.formatTime(shiftData.endTime),
+      isActive: true,
+      locID: this.locId
+    };
+
+    this.commonService.InsertUpdateUserShifts(requestObj).subscribe({
+      next: (response) => {
+        if (isEdit) {
+          this.assignedShifts[this.editIndex!] = {
+            ...shiftData,
+            rowID: response.rowID || shiftData.rowID,
+            shiftName: requestObj.shiftName
+          };
+          this.editIndex = null;
+          this.originalShift = null;
+          this.currentShiftData = null;
+        } else {
+          this.assignedShifts.push({
+            rowID: response.rowID || 0,
+            startTime: this.ShiftStartTime,
+            endTime: this.ShiftEndTime,
+            shiftName: this.ShiftName
+          });
+          this.ShiftName = '';
+          this.ShiftStartTime = '';
+          this.ShiftEndTime = '';
+        }
+
+        this.messageService.add({ severity: 'success', summary: 'success', detail: 'Shift Saved Successfully' });
+      },
+      error: (error) => {
+        console.error('Error while saving shift:', error);
+      }
+    });
+  }
+
+  parseTime(timeStr: string): number {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes; 
+  }
+
+  DeleteShift(index: number) {
+    const shiftToDelete = this.assignedShifts[index];
+    
+    const requestObj = {
+      rowID: shiftToDelete.rowID,
+      userID: this.selectedUser.rowId,
+      createdBy: this.logInUserId,
+      updatedBy: this.logInUserId,
+      shiftName: shiftToDelete.shiftName,
+      shiftStartTime: shiftToDelete.startTime,
+      shiftEndTime: shiftToDelete.endTime,
+      isActive: false, 
+      locID: this.locId
+    };
+
+    this.commonService.DeleteUserShiftDTO(requestObj).subscribe({
+      next: (response) => {
+        this.assignedShifts.splice(index, 1);
+        this.messageService.add({ severity: 'success', summary: 'success', detail: 'Shift Deleted Successfully' });
+      },
+      error: (error) => {
+        console.error('Error deleting shift:', error);
+      }
+    });
+  }
+
+  startEdit(index: number) {
+    this.editIndex = index;
+    this.originalShift = { ...this.assignedShifts[index] };
+    this.currentShiftData = { ...this.assignedShifts[index] };
+  }
+
+  cancelEdit() {
+    if (this.editIndex !== null && this.originalShift) {
+      this.assignedShifts[this.editIndex] = { ...this.originalShift };
+    }
+    this.editIndex = null;
+    this.originalShift = null;
+    this.currentShiftData = null;
+  }
+
+  private formatTime(time: string) {
+    if (!time) return null;
+    const [hours, minutes] = time.split(':');
+    return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
+  }
+
 
 }

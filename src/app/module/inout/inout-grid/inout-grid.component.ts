@@ -7,6 +7,8 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { DataService } from 'src/app/core/services/data.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { InoutService } from 'src/app/core/services/inout.service';
+
 
 @Component({
   selector: 'app-inout-grid',
@@ -27,8 +29,8 @@ export class InoutGridComponent implements OnInit{
     },
     {
       iconcode:'mdi-plus',
-      title:'New In-Out',
-      label:'New In-Out',
+      title:'New Internal-Transfer',
+      label:'New Internal-Transfer',
     }
   ];
 
@@ -85,16 +87,18 @@ export class InoutGridComponent implements OnInit{
   pagination: any = {
     SerachText: this.serachText,
     PageNumber: 1,
-    RowOfPage: 100,
+    RowOfPage: 10,
     LocationId: this.commonService.getProbablyNumberFromLocalStorage('locId'),
     first: 0,
   }
-
   currentPage = 1;
   pageSize = 10;
   first = 0;
   last = 0;
   pageTotal = 0;
+
+  isInoutMode = false;
+
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -103,7 +107,8 @@ export class InoutGridComponent implements OnInit{
     private messageService:MessageService,
     private confirmationService: ConfirmationService,
     public dataService: DataService,
-    public commonService: CommonService) { }
+    public commonService: CommonService,
+    public inoutService:InoutService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -111,8 +116,8 @@ export class InoutGridComponent implements OnInit{
     this.locationName = localStorage.getItem('locationName');    
     this.popupHeadertext = `Select Transfer To Location (From :: ${this.locationName})` ;
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
-
-    const savedPagination = JSON.parse(localStorage.getItem('inOutPagination_grid') || '{}');
+    
+    const savedPagination = JSON.parse(localStorage.getItem('inOutPagination') || '{}');
 
     this.first = savedPagination.first || 0;
     this.pageSize = savedPagination.rows || 10;
@@ -126,10 +131,48 @@ export class InoutGridComponent implements OnInit{
       LocationId: this.locId,
       first: 0
     }
+    this.inoutService.searchInOut$.subscribe(searchText => {
+      console.log("Search Text:", searchText); 
+      this.applyInOutSearch(searchText);
+    });
     
-    this.getAllInoutDetails(this.pagination);
+    this.inoutService.refreshInOut$.subscribe(refresh => {
+      console.log("Refresh Event Triggered:", refresh); 
+      if (refresh) {
+        this.refreshInOutData();
+      }
+    });
   }
 
+  applyInOutSearch(searchText: string) {
+    const pagination = {
+      SerachText: searchText,
+      PageNumber: 1,
+      RowOfPage: 10,
+      LocationId: this.locId,
+      first: 0
+    };
+  
+    this.getAllInoutDetails(pagination);
+  }
+  
+  refreshInOutData() {
+    this.serachText = '';
+    const pagination = {
+      SerachText: this.serachText,
+      PageNumber: 1,
+      RowOfPage: 10,
+      LocationId: this.locId,
+      first: 0
+    };
+  
+    this.getAllInoutDetails(pagination);
+  }
+
+ 
+
+
+  
   onPageChange(event: any) {
     this.currentPage = event.first / event.rows + 1;
     this.first = event.first ;
@@ -149,14 +192,13 @@ export class InoutGridComponent implements OnInit{
       rows: this.pageSize,
       searchText: this.searchLocationInput.replace(/ /g, "%")
     };
-    localStorage.setItem('inOutPagination_grid', JSON.stringify(paginationLocal));
+    localStorage.setItem('inOutPagination', JSON.stringify(paginationLocal));
 
   
     this.getAllInoutDetails(pagObj);
   }
 
   getAllInoutDetails(pagination: any = this.pagination) {   
-    pagination.SerachText = this.serachText;
     this.showLoader = true;
 
     this.commonService.getAllInoutDetails(pagination)
@@ -177,7 +219,7 @@ export class InoutGridComponent implements OnInit{
         }
       );
   }
-
+  
   getAllLocatoins() {
 
     this.showPageLoader = true;
@@ -259,11 +301,11 @@ export class InoutGridComponent implements OnInit{
   }
 
   showDetails(inoutId: any) {
-    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/show?view=grid`);
+    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/show?view=card`);
   }
 
   editDetails(inoutId: any) {
-    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/edit?view=grid`);
+    this.router.navigateByUrl(`${this.orgName}/inout/detail/${inoutId}/edit?view=card`);
   }
 
   inword(inoutId: any) {
@@ -271,7 +313,8 @@ export class InoutGridComponent implements OnInit{
   }
 
   deleteDetails(inoutId: any) {
-    alert('Delete action Triggered')
+    // alert('Delete action Triggered')
+    this.messageService.add({ severity: 'info', summary: 'Delete', detail: 'You have selected ' + inoutId + ' for delete' });
   }
 
 

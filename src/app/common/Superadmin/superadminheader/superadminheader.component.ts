@@ -32,4 +32,8 @@ export class SuperadminheaderComponent {
   click(){
     console.log("Button Clicked");
   }
+
+  tooChangePass(){
+    this.router.navigateByUrl(`/superadmin/syspref`);
+  }
 }

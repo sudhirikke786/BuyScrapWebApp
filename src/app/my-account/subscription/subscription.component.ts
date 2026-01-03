@@ -31,6 +31,7 @@ export class SubscriptionComponent implements OnInit {
   organizationPlanDetails:any;
 
   selectedPlan:any;
+  selectedPlanType: string = 'Monthly';
 
   monthlyObj: any[] = [];
   filtermonthlySelectd: any;
@@ -140,15 +141,20 @@ export class SubscriptionComponent implements OnInit {
     if (type == 1) {
       planName[0]['isSelcted'] = true;
       planName[1]['isSelcted'] = false;
+      this.selectedPlanType = 'Monthly';
     } else {
       planName[0]['isSelcted'] = false;
       planName[1]['isSelcted'] = true;
+      this.selectedPlanType = 'Yearly';
     }
-
-    //this.selectedTimePeriod  = planName
+    
+    // Update the selected plan cost if we have a selected plan
+    if (this.planSelectedObj) {
+      this.planSelectedObj.planCost = type == 1 ? 
+        this.planSelectedObj.planCostMonthly : 
+        this.planSelectedObj.planCostYearly;
+    }
   }
-
-
 
 
   // getSubscription() {
@@ -215,9 +221,15 @@ export class SubscriptionComponent implements OnInit {
     console.log(this.planObj);
 
    this.selectedPlan = res;
+    this.planSelectedObj = this.planObj.filter((item: any) => item.isselected)[0];
     
-   
-
+    if (this.planSelectedObj) {
+      const isMonthly = this.planSelectedObj.planDetails[0].isSelcted;
+      this.selectedPlanType = isMonthly ? 'Monthly' : 'Yearly';
+      this.planSelectedObj.planCost = isMonthly ? 
+        this.planSelectedObj.planCostMonthly : 
+        this.planSelectedObj.planCostYearly;
+    }
   }
 
 
@@ -272,6 +284,42 @@ export class SubscriptionComponent implements OnInit {
 
 
   // }
+
+  selectTicketPlan(ticketPlan: any) {
+    // Update selection status of all ticket plans
+    this.extraMOnthlyobj.forEach((plan:any) => {
+      plan.isSelected = (plan.extraTicketPlanId === ticketPlan.extraTicketPlanId);
+    });
+    
+    // Update the selected ticket plan
+    this.filtermonthlySelectd = ticketPlan;
+  }
+
+  calculateTotalCost(): number {
+    let total = 0;
+    
+    // base plan cost 
+    if (this.planSelectedObj?.isselected) {
+      total += this.planSelectedObj.planCost || 0;
+    }
+    
+    // tickets cost 
+    if (this.filtermonthlySelectd?.isSelected) {
+      total += (this.filtermonthlySelectd.extraAmount || 0);
+    }
+    
+    // users cost
+    if (this.organizationPlanDetails?.extraUserCount > 0) {
+      total += (this.organizationPlanDetails.defaultMonthPrice * this.organizationPlanDetails.extraUserCount);
+    }
+    
+    // locations cost
+    if (this.organizationPlanDetails?.extraUserLocation > 0) {
+      total += (this.organizationPlanDetails.defaultMonthPrice * this.organizationPlanDetails.extraUserLocation);
+    }
+    
+    return total;
+  }
 
   proccedCart() {
 

@@ -1,68 +1,746 @@
+// ============================================
+// Add Seller Component - Modern Responsive Design
+// ============================================
+
+// Variables - Consistent with application design system
+$primary-color: #0d6efd;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$secondary-color: #6c757d;
+$text-color: #495057;
+$text-muted: #6c757d;
+$border-color: #e9ecef;
+$card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+$transition-speed: 0.3s;
+$bg-light: #f8f9fa;
+
+// ============================================
+// Main Container Styling
+// ============================================
 .custom-height {
     max-height: calc(100vh - 150px);
     overflow: auto;
     height: calc(100vh - 150px);
+    scrollbar-width: thin;
+  
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #000;
+        border-radius: 3px;
+    }
 }
+
+// ============================================
+// Page Header Styling
+// ============================================
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #343a40;
+    margin: 0;
+}
+
+
+
+// Breadcrumb styling
+.b-links {
+    text-align: right;
+    font-size: 0.875rem;
+
+    a {
+        color: $text-muted;
+        text-decoration: none;
+        transition: color $transition-speed;
+
+        &:hover {
+            color: $primary-color;
+        }
+    }
+}
+
+// ============================================
+// Card Styling
+// ============================================
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: $card-shadow;
+    transition: box-shadow $transition-speed;
+    background: #fff;
+
+    &:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+}
+
+// ============================================
+// Image Upload Cards Section
+// ============================================
 .img-personal {
-     display: flex;
-     align-items: stretch; 
-    .col-sm-3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 16px;
+    margin-bottom: 24px;
+
+    h4 {
+        width: 100%;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #343a40;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid $border-color;
+    }
+
+    .col-md-3,
+    .col-sm-6 {
         flex: 1 !important;
+
         .card {
-          
-            .card-body{
+
+            .card-body {
                 padding-top: 0px !important;
                 padding-bottom: 0px !important;
             }
         }
-       
+
+    }
+
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform $transition-speed, box-shadow $transition-speed;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-body {
+            padding: 0 !important;
+        }
+
+        .small-header {
+            background: #02659d;
+            color: #fff;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0;
+
+            b {
+                font-weight: 600;
+            }
+        }
     }
 }
 
-.image-box{
-    height: auto;
+// Image Box Container
+.image-box {
+    height: 200px;
     min-height: 150px;
-     height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    margin: 0;
+    padding: 0;
 }
 
+// Image Styling
 .dl-img1 {
     width: 100%;
     height: 100%;
     display: block;
     margin-left: auto;
     margin-right: auto;
+    object-fit: cover;
 }
 
-.div-small {
-    width: 70%;
-    display: block !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+// Upload Options Toolbar - preserving original styling
+
+.mdi-white-color {
+    color: #fff;
 }
 
-.card-body {
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
-  }
+.mdi-cust-upload {
+    font-size: 1.2rem;
+}
 
-  .table {
+// ============================================
+// Tab Navigation Styling
+// ============================================
+.nav-tabs {
+    border-bottom: 2px solid $border-color;
+    gap: 8px;
+
+    .nav-item {
+        .nav-link {
+            border: none;
+            border-radius: 8px 8px 0 0;
+            padding: 12px 24px;
+            color: $text-muted;
+            font-weight: 500;
+            transition: all $transition-speed;
+            background: transparent;
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: transparent;
+                border-radius: 3px 3px 0 0;
+                transition: background $transition-speed;
+            }
+
+            span h5 {
+                margin: 0;
+                font-size: 0.95rem;
+                font-weight: 500;
+                color: inherit;
+            }
+
+            &:hover {
+                color: $primary-color;
+                background: rgba($primary-color, 0.05);
+            }
+
+            &.active {
+                color: #fff;
+                background: linear-gradient(135deg, #02659d 0%, #0d6efd 100%);
+                border-color: #02659d;
+                font-weight: 600;
+
+                &::after {
+                    background: #02659d;
+                }
+
+                span h5 {
+                    color: #fff !important;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+
+// ============================================
+// Form Styling
+// ============================================
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    font-weight: 500;
+    color: $text-color;
+    font-size: 0.875rem;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.dd-label {
+    min-width: 100px;
+    margin-right: 12px;
+    margin-bottom: 0;
+}
+
+.form-control {
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    transition: border-color $transition-speed, box-shadow $transition-speed;
+    background: #fff;
+
+    &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+        outline: none;
+    }
+
+    &::placeholder {
+        color: #adb5bd;
+    }
+}
+
+.form-select {
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    transition: border-color $transition-speed, box-shadow $transition-speed;
+    background-color: #fff;
+    cursor: pointer;
+
+    &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+        outline: none;
+    }
+}
+
+textarea.form-control {
+    min-height: 80px;
+    resize: vertical;
+}
+
+// Flex center for select with label
+.flex-center {
+    display: flex;
+    align-items: center;
+}
+
+// Button margin preserved from original
+button {
+    margin-right: 10px;
+}
+
+
+
+// Button container alignment
+.flt-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+// ============================================
+// Table Styling
+// ============================================
+.table {
     width: 100%;
     margin-top: 20px;
-    text-align: left;
-  }
-  
-  button {
-    margin-right: 10px;
-  }
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 
-  .nav-tabs .nav-link.active {
-    color: #fff; 
-    background-color: #02659d; 
-    border-color: #02659d;
-    font-weight: bold;
-}
-ul.nav-tabs .nav-link.active span h5{
-    color: #fff !important;
+    thead {
+        background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+
+        th {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: $text-color;
+            padding: 14px 12px;
+            border-bottom: 2px solid $border-color;
+        }
+    }
+
+    tbody {
+        tr {
+            transition: background-color $transition-speed;
+
+            &:hover {
+                background-color: rgba($primary-color, 0.04);
+            }
+
+            td {
+                padding: 12px;
+                vertical-align: middle;
+                font-size: 0.9rem;
+                color: $text-color;
+                border-bottom: 1px solid $border-color;
+            }
+        }
+    }
+
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
 }
 
-  
+// ============================================
+// Divider Styling
+// ============================================
+hr {
+    border: none;
+    border-top: 2px solid $border-color;
+    margin: 24px 0;
+}
+
+// ============================================
+// Clickable Image
+// ============================================
+.clickable-image {
+    cursor: pointer;
+    border-radius: 6px;
+    transition: transform $transition-speed, box-shadow $transition-speed;
+
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+}
+
+// ============================================
+// Dialog Styling
+// ============================================
+:host ::ng-deep {
+    .p-dialog {
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+
+        .p-dialog-header {
+            border-radius: 12px 12px 0 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            padding: 16px 24px;
+
+            .p-dialog-title {
+                font-weight: 600;
+                font-size: 1.1rem;
+            }
+        }
+
+        .p-dialog-content {
+            padding: 24px;
+        }
+    }
+}
+
+// ============================================
+// Opacity for disabled/locked features
+// ============================================
+.opacity-25 {
+    opacity: 0.25;
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+// Tablets and smaller desktops
+@media (max-width: 1199px) {
+    .img-personal {
+
+        .col-md-3,
+        .col-sm-6 {
+            min-width: 180px;
+            max-width: 250px;
+        }
+    }
+
+    .image-box {
+        height: 160px;
+        min-height: 120px;
+    }
+}
+
+// Medium devices (tablets)
+@media (max-width: 991px) {
+    .custom-height {
+        max-height: calc(100vh - 140px);
+        height: calc(100vh - 140px);
+    }
+
+    .page-title {
+        font-size: 1.25rem;
+    }
+
+    .card .card-body {
+        padding: 16px;
+    }
+
+    .img-personal {
+        gap: 12px;
+
+        h4 {
+            font-size: 1rem;
+        }
+
+        .col-md-3,
+        .col-sm-6 {
+            flex: 1 1 calc(50% - 12px);
+            min-width: 160px;
+            max-width: 50%;
+        }
+
+        .card .small-header {
+            padding: 10px;
+            font-size: 0.85rem;
+        }
+    }
+
+    .image-box {
+        height: 140px;
+        min-height: 100px;
+    }
+
+    .upload-options-ul {
+        padding: 10px;
+        gap: 6px;
+
+        li a {
+            width: 32px;
+            height: 32px;
+        }
+    }
+
+    .nav-tabs .nav-item .nav-link {
+        padding: 10px 16px;
+
+        span h5 {
+            font-size: 0.85rem;
+        }
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+// Small devices (landscape phones)
+@media (max-width: 767px) {
+    .custom-height {
+        max-height: calc(100vh - 130px);
+        height: auto;
+        min-height: calc(100vh - 130px);
+    }
+
+    .bdcmb {
+        padding: 10px 12px;
+
+        .row {
+            flex-direction: column;
+
+            .col-sm-6,
+            .col-6 {
+                width: 100%;
+
+                &:last-child {
+                    margin-top: 8px;
+                }
+            }
+        }
+    }
+
+    .b-links {
+        text-align: left;
+        font-size: 0.8rem;
+    }
+
+    .page-title {
+        font-size: 1.15rem;
+    }
+
+    .card .card-body {
+        padding: 14px;
+    }
+
+    .img-personal {
+        flex-direction: row;
+        justify-content: center;
+
+        h4 {
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .col-md-3,
+        .col-sm-6 {
+            flex: 1 1 calc(50% - 8px);
+            min-width: 140px;
+            max-width: calc(50% - 8px);
+        }
+    }
+
+    .image-box {
+        height: 120px;
+        min-height: 90px;
+    }
+
+    .nav-tabs {
+        flex-wrap: wrap;
+        gap: 4px;
+
+        .nav-item {
+            flex: 1;
+            min-width: auto;
+
+            .nav-link {
+                padding: 10px 12px;
+                text-align: center;
+                border-radius: 6px 6px 0 0;
+
+                span h5 {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    }
+
+    .flt-right {
+        justify-content: center;
+        margin-top: 8px;
+    }
+
+    .form-group.col-sm-3,
+    .form-group.col-sm-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .flex-center {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dd-label {
+        margin-bottom: 6px;
+        margin-right: 0;
+    }
+
+    .table {
+        font-size: 0.85rem;
+
+        thead th {
+            padding: 10px 8px;
+            font-size: 0.75rem;
+        }
+
+        tbody td {
+            padding: 10px 8px;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 0.75rem;
+        }
+    }
+}
+
+// Extra small devices (phones)
+@media (max-width: 575px) {
+    .page-title {
+        font-size: 1rem;
+    }
+
+    .b-links {
+        font-size: 0.75rem;
+    }
+
+    .card .card-body {
+        padding: 12px;
+    }
+
+    .img-personal {
+        gap: 8px;
+
+        .col-md-3,
+        .col-sm-6 {
+            flex: 1 1 calc(50% - 4px);
+            min-width: 120px;
+            max-width: calc(50% - 4px);
+        }
+
+        .card .small-header {
+            padding: 8px;
+            font-size: 0.75rem;
+        }
+    }
+
+    .image-box {
+        height: 100px;
+        min-height: 80px;
+    }
+
+    .upload-options-ul {
+        padding: 8px;
+        gap: 4px;
+
+        li a {
+            width: 28px;
+            height: 28px;
+
+            i {
+                font-size: 0.9rem;
+            }
+        }
+    }
+
+    .nav-tabs .nav-item .nav-link {
+        padding: 8px 10px;
+
+        span h5 {
+            font-size: 0.75rem;
+        }
+    }
+
+    .btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .form-control,
+    .form-select {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .form-label {
+        font-size: 0.8rem;
+    }
+
+    hr {
+        margin: 16px 0;
+    }
+}
+
+// Very small devices
+@media (max-width: 400px) {
+    .img-personal {
+
+        .col-md-3,
+        .col-sm-6 {
+            flex: 1 1 100%;
+            max-width: 100%;
+        }
+    }
+
+    .image-box {
+        height: 140px;
+    }
+
+    .flt-right {
+        flex-direction: column;
+        gap: 6px;
+
+        .btn {
+            width: 100%;
+        }
+    }
+
+    .table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

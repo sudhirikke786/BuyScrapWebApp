@@ -6,17 +6,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimengModule } from '../shared/primeng/primeng.module';
 import { CommonsharedModule } from '../shared/commonshared/commonshared.module';
 import { ContainerDashboardComponent } from './container-dashboard/container-dashboard.component';
+import { ContainerDetailsComponent } from './container-details/container-details.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: ContainerDashboardComponent
-  }
+  },
+  {
+    path:'detail/:containerId',
+    component: ContainerDetailsComponent
+  },
 ]
 
 @NgModule({
   declarations: [
-    ContainerDashboardComponent
+    ContainerDashboardComponent,
+    ContainerDetailsComponent
   ],
   imports: [
     CommonModule,

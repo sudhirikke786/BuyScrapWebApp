@@ -23,15 +23,16 @@
               <div class="row mt-2">
                 <div class="col-md-6 d-flex">
                   <input
-                    type="text"
-                    id="example-palaceholder"
-                    class="form-control"
-                    [(ngModel)]="searchInput"
-                    placeholder="Search.."
-                  />
+                  type="text"
+                  id="example-palaceholder"
+                  class="form-control"
+                  placeholder="Search.."
+                  [(ngModel)]="searchText"
+                  (keyup.enter)="performSearch()"
+                />
                 </div>
                 <div class="col-md-6 d-flex align-items-center">
-                    <app-actionbar [actions]="actionList" (iconAction)="getAction($event)"></app-actionbar>
+                  <app-actionbar [actions]="actionList" (iconAction)="getAction($event)"></app-actionbar>
                 
                     <div class="form-check form-switch ms-3">
                         <input 

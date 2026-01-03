@@ -45,9 +45,10 @@
 
                 <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Refresh"><i class="mdi mdi-cust mdi-refresh"></i></a>
 
-                <a (click)="addpoupOpen()" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location"><i class="mdi mdi-cust mdi-plus"></i> Add Location</a>
-                <a class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location"><i class="mdi mdi-cust mdi-plus"></i>Location Track</a>
+                <a (click)="addpoupOpen()" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location"> Add Location</a>
+                <a class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location">Location Track</a>
                 <a (click)=" getTicketTrack()" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location">Ticket Track</a>
+                <a (click)="openSystemPreferencesPopup()" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Syastem Prefrences">System Prefrences</a>
                 <a (click)="back()" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location" >Back</a>
             </div>
             
@@ -75,23 +76,27 @@
                                 <th>User Count</th>
                                 <th>Total Tickets</th>
                                 <th>Available Tickets</th>
+                                <th>Last Ticket Created</th>
                                 <th>Action</th>
+                                
                             </tr>
                         </ng-template>
 
                         
                         <ng-template pTemplate="body" let-location >
-                            <tr>
+                            <tr [ngClass]="{'table-danger': isTicketOlderThan15Days(location.lastTicketCreatedDate)}">
                                 <td>{{ location.locationName }}</td>
                                 <td>{{ location.userCount }}</td>
                                 <td>{{ location.ticketLimit }}</td>
                                 <td>{{ location.availableTickets }}</td>
+                                <td>{{ location.lastTicketCreatedDate | date: 'MM-dd-yyyy' }}</td>
                                 <td>
                                     <a (click)="editPopupOpen(location)" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
 
                                     <a (click)="getUserManagment(location.rowId)" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-account"></i> User Management</a>
                         
                                      </td>
+                                    
                             </tr>
                         </ng-template>
                         
@@ -133,8 +138,50 @@
         <form  [formGroup]="locationForm">
             
             <div class="form-group col-sm-12 mb-2">
-                <label for="simpleinput" class="form-label w-100">Location Name</label>
-                <input type="text" id="locationname" class="form-control" formControlName="locationName">
+                <div class="row align-items-end">
+                    <div class="form-group col-sm-12 mb-2">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label for="simpleinput" class="form-label w-100">Location Name</label>
+                                <input type="text" id="locationname" class="form-control" formControlName="locationName">
+                            </div>
+        
+                            <div class="form-group col-sm-4 mb-2">
+                                <label for="timezone" class="form-label w-100">Time Zone</label>
+                                <p-dropdown id="timezone" 
+                                            [options]="timeZones" 
+                                            formControlName="timeZoneID" 
+                                            [filter]="true" 
+                                            filterBy="timeZoneID,abbreviation"
+                                            placeholder="Select Time Zone" 
+                                            optionLabel="timeZoneID" 
+                                            optionValue="rowID"
+                                            for="timeZone">
+                                    <ng-template let-tz pTemplate="item">
+                                        {{tz.timeZoneID}} ({{tz.abbreviation}})
+                                    </ng-template>
+                                    <ng-template let-tz pTemplate="selectedItem">
+                                        {{tz.timeZoneID}} 
+                                    </ng-template>
+                                </p-dropdown>
+                            </div>
+                            
+                            <div class="form-group col-sm-4 mb-2">
+                                <label for="currency" class="form-label w-100">Currency</label>
+                                <p-dropdown id="currency" 
+                                            [options]="currencies" 
+                                            formControlName="currencyID" 
+                                            [filter]="true" 
+                                            filterBy="currencyCode"
+                                            placeholder="Select Currency" 
+                                            optionLabel="currencyCode" 
+                                            optionValue="rowID"
+                                            for="currencyCode">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group col-sm-12 mb-2">
@@ -178,6 +225,78 @@
     </div>
 </div> 
 </p-dialog>
+
+<p-dialog header="System Preferences" [(visible)]="systemPrefPopupVisible" [modal]="true" [style]="{ width: '60vw' }" [breakpoints]="{'767px': '100vw'}">
+
+    <div class="row mb-2">
+        <div class="col-sm-6 d-flex align-items-center">
+            <input type="text" class="form-control me-2" [(ngModel)]="searchValue" placeholder="Search System Preferences">
+            <button class="btn btn-primary me-1" (click)="searchBox()" title="Search">
+                <i class="pi pi-search"></i>
+            </button>
+            <button class="btn btn-secondary" (click)="refreshSettings()" title="Refresh">
+                <i class="pi pi-refresh"></i>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="row mt-3">
+        <p-table [value]="systemPrefFalseObj" [scrollable]="true" scrollHeight="40vh" [paginator]="false" [responsive]="true">
+        <ng-template pTemplate="header">
+            <tr>
+            <th>Key</th>
+            <th>Value</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+            <tr>
+                <td>{{ item.keys }}</td>
+                <td>
+                    <!-- Bool -->
+                    <div class="d-flex" *ngIf="item.type === 'Bool'">
+                        <div class="ms-1">Off</div>
+                        <div class="ms-1">
+                        <p-inputSwitch [(ngModel)]="item.isChecked" (onChange)="showConfirmation($event,rowIndex,item)">
+                        </p-inputSwitch>
+                        </div>
+                        <div class="ms-1">On</div>
+                    </div>
+
+                    <!-- Int / Number / Decimal -->
+                    <div *ngIf="item.type === 'Int' || item.type === 'Number' || item.type === 'Decimal'">
+                        <input type="number"
+                            class="form-control"
+                            [(ngModel)]="item.values"
+                            (keyup.enter)="saveNumericValue(item, rowIndex)"
+                            (blur)="saveNumericValue(item, rowIndex)"
+                            style="width: 120px;">
+                    </div>
+
+                    <!-- String -->
+                    <div *ngIf="item.type === 'String'">
+                        <input type="text"
+                            class="form-control"
+                            [(ngModel)]="item.values"
+                            (keyup.enter)="saveNumericValue(item, rowIndex)"
+                            (blur)="saveNumericValue(item, rowIndex)"
+                            style="width: 200px;">
+                    </div>
+
+                    <div *ngIf="item.type === 'Dropdown'">
+                        <input type="text" class="form-control" [(ngModel)]="item.values" (keyup.enter)="saveNumericValue(item, rowIndex)" (blur)="saveNumericValue(item, rowIndex)" style="width: 300px;">
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        </p-table>
+    </div>
+</p-dialog>
+
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
 
 
 

@@ -1,155 +1,650 @@
-/* Main Box for draggable items */
-
-
-
-.target-boxes-container {
-    display: flex;
-    overflow-x: auto; /* Enables horizontal scrolling */
-    scroll-snap-type: x mandatory; /* Optional: smooth snapping effect */
-    white-space: nowrap; /* Ensures children stay in a row */
-    scroll-behavior: smooth;
-    
-    margin-left: 10px;
-  }
-  
-  .target-boxes {
-    display: grid;
-    height:80vh;
-    grid-auto-flow: column; /* Lays out grid items in columns */
-    grid-auto-columns: minmax(300px, 1fr); /* Each column adapts to its content */
-    gap: 1rem; /* Adds space between grid items */
-  }
- 
-  .target-box {
-    flex: 0 0 auto; /* Prevents shrinking */
-    background-color: #f8f9fa;
-   
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    text-align: center;
-    text-transform: capitalize;
-    scroll-snap-align: start; /* Optional: aligns each box neatly on scroll */
-  }
-
-  .total-order{
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    background-color: blue;
-    color: #ffffff;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-  }
-
-  .target-box h3 {
-    position: sticky;
-    top: 0;
-    background: #fff;
-    z-index: 1;
-  }
-  
-  .dropped-item {
-    
-    padding: 0.5rem;
-    
-    border-radius: 5px;
-  }
-  
-
-
-
-
-
-.sr-pending{
-   
-    border-radius: 10px;
-    background-color: #e9ecef;
-
-     border-radius: 10px 10px 0px 0px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    
+/* CSS Variables for Theming */
+:root {
+  --primary-color: #0176B8;
+  --primary-gradient: linear-gradient(135deg, #0176B8 0%, #00a8e8 100%);
+  --success-gradient: linear-gradient(135deg, #28a745 0%, #34ce57 100%);
+  --warning-gradient: linear-gradient(135deg, #ffc107 0%, #ffda6a 100%);
+  --danger-gradient: linear-gradient(135deg, #dc3545 0%, #f86a74 100%);
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 20px rgba(1, 118, 184, 0.15);
+  --border-radius: 16px;
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
- /* Main Service Request Card */
- .service-request-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width:100%;
-    height: 100vh;
-    margin-right: 3px;
-    
+/* Page Header */
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.b-links {
+  text-align: right;
+  font-size: 0.875rem;
+}
+
+.b-links a {
+  color: #6c757d;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.b-links a:hover {
+  color: var(--primary-color);
+}
+
+.b-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary-gradient);
+  transition: width 0.3s ease;
+}
+
+.b-links a:hover::after {
+  width: 100%;
+}
+
+/* ============================================
+   INNOVATIVE KANBAN BOARD DESIGN
+   ============================================ */
+
+/* Target Boxes Container */
+.target-boxes-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  margin-left: 10px;
+  padding: 10px 0 20px 0;
+  gap: 16px;
+}
+
+/* Custom Scrollbar - Sleek Design */
+.target-boxes-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.target-boxes-container::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #f0f0f0, #e0e0e0);
+  border-radius: 10px;
+}
+
+.target-boxes-container::-webkit-scrollbar-thumb {
+  background: var(--primary-gradient);
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.target-boxes {
+  display: grid;
+  height: 80vh;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(300px, 1fr);
+  gap: 1.5rem;
+}
+
+/* INNOVATIVE DRIVER COLUMN CARD */
+.target-box {
+  flex: 0 0 auto;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: var(--border-radius);
+  text-align: center;
+  text-transform: capitalize;
+  scroll-snap-align: start;
+  box-shadow: var(--shadow-soft);
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative gradient top border */
+.target-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary-gradient);
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.target-box:hover {
+  box-shadow: var(--shadow-hover), var(--shadow-glow);
+  transform: translateY(-4px);
+}
+
+/* Total Order Badge - Solid Color for Clarity */
+.total-order {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  background-color: #0176B8 !important;
+  color: #ffffff !important;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 15px rgba(1, 118, 184, 0.4);
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(1, 118, 184, 0.4);
   }
 
-  /* Badge for Status */
-  .status-badge {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: white;
-    background-color: #ff6b6b;
-    border-radius: 10px;
-    padding: 5px 10px;
+  50% {
+    box-shadow: 0 4px 25px rgba(1, 118, 184, 0.6);
+  }
+}
+
+/* Column Header - Modern Glass Effect */
+.sr-pending {
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  background: linear-gradient(180deg, rgba(248, 249, 250, 0.95) 0%, rgba(233, 236, 239, 0.9) 100%);
+  backdrop-filter: blur(10px);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+/* Main Service Request Card - Unassigned Column */
+.service-request-card {
+  border: none;
+  border-radius: var(--border-radius);
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-soft);
+  width: 100%;
+  height: 100vh;
+  margin-right: 3px;
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative gradient accent */
+.service-request-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #dc3545, #ffc107, #28a745);
+}
+
+.service-request-card:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* ============================================
+   INNOVATIVE DISPATCH CARDS
+   ============================================ */
+
+/* Dispatch Item Card - 3D Floating Effect */
+.inner-card-wrapper {
+  margin-top: 10px;
+  cursor: grab;
+  perspective: 1000px;
+}
+
+.inner-card-wrapper>div,
+.dropped-item>div {
+  background: white;
+  border-radius: 12px;
+  padding: 14px 16px;
+  border-left: 4px solid;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.inner-card-wrapper>div::before,
+.dropped-item>div::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(1, 118, 184, 0.05), transparent);
+  border-radius: 0 12px 0 60px;
+}
+
+.inner-card-wrapper:hover>div,
+.dropped-item:hover>div {
+  transform: translateY(-6px) rotateX(2deg);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Active dragging state */
+.inner-card-wrapper:active>div,
+.dropped-item:active>div {
+  cursor: grabbing;
+  transform: scale(1.02) rotate(1deg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Pickup ID Badge */
+.inner-card-wrapper div[style*="font-weight: bold"]:first-child,
+.dropped-item div[style*="font-weight: bold"]:first-child {
+  display: inline-block;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+/* Item Container with Better Scrolling */
+.item-container {
+  height: calc(100vh - 210px);
+  overflow-y: auto;
+  padding: 12px;
+  scroll-behavior: smooth;
+}
+
+.item-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.item-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.item-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #c1c1c1, #a8a8a8);
+  border-radius: 10px;
+}
+
+/* Dropped Item */
+.dropped-item {
+  padding: 0;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+/* ============================================
+   INNOVATIVE MANAGE DRIVERS SIDEBAR
+   ============================================ */
+
+:host ::ng-deep .p-sidebar {
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+  border-left: none;
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+:host ::ng-deep .p-sidebar-header {
+  background: var(--primary-gradient);
+  padding: 20px 24px !important;
+  border-bottom: none;
+}
+
+:host ::ng-deep .p-sidebar-header .p-sidebar-close {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  transition: var(--transition-smooth);
+}
+
+:host ::ng-deep .p-sidebar-header .p-sidebar-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* Sidebar Header Title */
+.p-sidebar h3 {
+  color: #1a1a2e;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.5px;
+}
+
+/* Driver Table - Premium Styling */
+.p-2 {
+  padding: 0 !important;
+}
+
+.table {
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-hover tbody tr {
+  transition: var(--transition-smooth);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.table-hover tbody tr:hover {
+  background: linear-gradient(90deg, rgba(1, 118, 184, 0.08), rgba(1, 118, 184, 0.02));
+  transform: translateX(4px);
+}
+
+.table-light th {
+  background: linear-gradient(180deg, #f8f9fa, #e9ecef);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #495057;
+  padding: 14px 16px;
+  border: none;
+}
+
+.table tbody td {
+  padding: 14px 16px;
+  vertical-align: middle;
+  border: none;
+}
+
+/* Custom Checkbox - Modern Toggle Style */
+.form-check-input {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.form-check-input:checked {
+  background-color: #0176B8 !important;
+  border-color: #0176B8 !important;
+  box-shadow: 0 2px 8px rgba(1, 118, 184, 0.3);
+}
+
+.form-check-input:hover:not(:checked) {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(1, 118, 184, 0.1);
+}
+
+/* Select All Row - Highlighted */
+.bg-white {
+  background: linear-gradient(90deg, #f8f9fa, #ffffff) !important;
+  border-bottom: 2px solid rgba(1, 118, 184, 0.2) !important;
+}
+
+.bg-white .fw-bold {
+  color: var(--primary-color);
+  font-size: 0.95rem;
+}
+
+/* Button Styling - Premium */
+.btn {
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 10px 20px;
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background-color: #0176B8 !important;
+  border: none;
+  box-shadow: 0 4px 15px rgba(1, 118, 184, 0.3);
+  color: white !important;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(1, 118, 184, 0.4);
+  background-color: #015a8c !important;
+  color: white !important;
+}
+
+/* Ensure button text is visible */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  color: white !important;
+}
+
+/* Status Badge */
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  background: var(--danger-gradient);
+  border-radius: 20px;
+  padding: 5px 14px;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Service Title */
+.service-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.text-primary {
+  color: #0176B8 !important;
+  font-weight: 700;
+}
+
+/* Dragging State */
+.dragging {
+  opacity: 0.7;
+  cursor: grabbing;
+  transform: rotate(3deg) scale(1.05);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (min-width: 1900px) {
+  .target-boxes {
+    grid-auto-columns: minmax(340px, 1fr);
   }
 
-  /* Inner Card Style */
-  .inner-card {
-    margin-top:5px;
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    max-height:150px;
-    &:hover{
-      border:1px solid #0015fb
-    }
+  .service-request-card {
+    height: calc(100vh - 100px);
   }
 
-  .item-container{
-    height: calc(100vh - 210px); 
-    overflow-y: scroll;
+  .item-container {
+    height: calc(100vh - 230px);
+  }
+}
+
+@media (max-width: 1366px) {
+  .target-boxes {
+    grid-auto-columns: minmax(270px, 1fr);
+    height: 75vh;
+  }
+
+  .service-request-card {
+    height: 75vh;
+  }
+
+  .item-container {
+    height: calc(75vh - 180px);
+  }
+}
+
+@media (max-width: 991px) {
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .target-boxes {
+    grid-auto-columns: minmax(250px, 1fr);
+    height: 70vh;
+  }
+
+  .service-request-card {
+    height: 70vh;
+  }
+
+  .item-container {
+    height: calc(70vh - 170px);
+  }
+
+  .col-md-3 {
+    flex: 0 0 30%;
+    max-width: 30%;
+  }
+
+  .col-9 {
+    flex: 0 0 70%;
+    max-width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .bdcmb .row {
+    flex-direction: column;
+  }
+
+  .bdcmb .col-sm-6,
+  .bdcmb .col-6 {
+    width: 100%;
+  }
+
+  .b-links {
+    text-align: left;
+    margin-top: 5px;
+  }
+
+  .d-flex:has(.col-md-3) {
+    flex-direction: column;
+  }
+
+  .col-md-3,
+  .col-9 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .service-request-card {
+    height: auto;
+    max-height: 50vh;
+    margin-bottom: 15px;
+  }
+
+  .item-container {
+    height: 35vh;
+  }
+
+  .target-boxes {
+    height: 50vh;
+    grid-auto-columns: minmax(230px, 1fr);
+  }
+
+  .target-boxes-container {
+    margin-left: 0;
+    padding: 0 10px 15px 10px;
+  }
+
+  .btn {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  :host ::ng-deep .p-sidebar {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .target-boxes {
+    grid-auto-columns: minmax(200px, 1fr);
+    height: 45vh;
+  }
+
+  .service-request-card {
+    max-height: 45vh;
+    border-radius: 12px;
+  }
+
+  .item-container {
+    height: 30vh;
     padding: 8px;
   }
 
-  .ticket-detail {
-    font-size: 0.8em;
-    color: #555;
-    p {
-      line-height: 5px;
-    }
-  }
-  .ticket-detail-driver{
-
+  .sr-pending {
+    padding: 12px 14px;
   }
 
-
-  /* Title and Service Detail */
   .service-title {
-    font-size: 1rem;
-    
-    font-weight: 600;
-  }
-
-  .service-id {
     font-size: 0.9rem;
-    color: #6c757d;
   }
 
-  .service-detail {
-    font-size: 0.95rem;
-    color: #6c757d;
+  .total-order {
+    height: 30px;
+    width: 30px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .target-boxes {
+    grid-auto-columns: minmax(180px, 1fr);
+    height: 40vh;
   }
 
-  /* Looping Inner Cards */
-  .inner-card-wrapper {
-    margin-top: 20px;
+  .service-request-card {
+    max-height: 40vh;
   }
 
+  .item-container {
+    height: 25vh;
+  }
 
-  .dragging {
-    opacity: 0.5; /* Optional: make the dragged item semi-transparent */
-    cursor: grabbing;
+  .btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
 }

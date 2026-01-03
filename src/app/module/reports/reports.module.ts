@@ -25,6 +25,8 @@ import { InOutReportComponent } from './in-out-report/in-out-report.component';
 import { DispatchReportComponent } from './dispatch-report/dispatch-report.component';
 import { ContainerTrackingComponent } from './container-tracking/container-tracking.component';
 import { LeadsReportComponent } from './leads-report/leads-report.component';
+import { ProfitAndLossComponent } from './profit-and-loss/profit-and-loss.component';
+import { AdvanceReportComponentComponent } from './advance-report-component/advance-report-component.component';
 
 export const routes: Routes = [
   {
@@ -77,6 +79,10 @@ export const routes: Routes = [
     component:AccountingReportComponent
   },
   {
+    path:'profit-and-loss',
+    component:ProfitAndLossComponent
+  },
+  {
     path:'requisition-report',
     component:RequisitionReportComponent
   },
@@ -95,6 +101,10 @@ export const routes: Routes = [
   {
     path:'container-report',
     component:ContainerTrackingComponent
+  },
+  {
+    path:'advance-report',
+    component:AdvanceReportComponentComponent
   }
 
 ]
@@ -117,7 +127,9 @@ export const routes: Routes = [
     InOutReportComponent,
     DispatchReportComponent,
     ContainerTrackingComponent,
-    LeadsReportComponent
+    LeadsReportComponent,
+    ProfitAndLossComponent,
+    AdvanceReportComponentComponent
   ],
   imports: [
     CommonModule,

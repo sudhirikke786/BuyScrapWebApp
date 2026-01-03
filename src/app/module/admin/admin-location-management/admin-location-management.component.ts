@@ -46,8 +46,11 @@ export class AdminLocationManagementComponent implements OnInit {
     private fb:FormBuilder,
     private messageService: MessageService,
     private stroarge:StorageService,
-    public commonService: CommonService) { }
+    public commonService: CommonService,
+    ) { }
 
+
+    
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
@@ -60,7 +63,7 @@ export class AdminLocationManagementComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
   }
 
- 
+  
 
   addpoupOpen(){
     this.actionType = 'Add';
@@ -155,9 +158,9 @@ export class AdminLocationManagementComponent implements OnInit {
         lastName: ['',Validators.required],
         mobileNumber:['',Validators.required],
         emailID: ['',Validators.required],
-        contactName:['',Validators.required],
-        address:['',Validators.required],
-        phoneNo:['',Validators.required]
+        contactName:[''],
+        address:[''],
+        phoneNo:['']
     },{ 
       validator: ConfirmedValidator('password', 'confirmPassword')
     })
@@ -193,11 +196,14 @@ export class AdminLocationManagementComponent implements OnInit {
       contactName:[''],
       phoneNo:[''],
       timeZoneID: [''],  
-      currencyID: [''] 
+      currencyID: [''],
+      cashPaymentLimit: [0],          
+      checkOnlyPayment: [false],  
     })
 
   }
   submitLocation(){
+    this.loading = true;
     const datePipe = new DatePipe('en-US');
 
     const formObj =  this.locationForm.value;
@@ -225,15 +231,24 @@ export class AdminLocationManagementComponent implements OnInit {
       "contactName": formObj.contactName,
       "address": formObj.address,
       "phoneNo": formObj.phoneNo,
-      timezone: selectedTimeZone?.timeZoneID,   
-      currency: selectedCurrency?.currencyCode
+      "timezone": selectedTimeZone?.timeZoneID,   
+      "currencyCode": selectedCurrency?.currencyCode,
+      "currency": selectedCurrency?.currency, 
+      "cashPaymentLimit": formObj.cashPaymentLimit,
+      "checkOnlyPayment": formObj.checkOnlyPayment
     }
 
     this.commonService.InsertUpdateLocationDTO(reqObj).subscribe((res) =>{
-      
+      localStorage.setItem('currencyCode', selectedCurrency?.currencyCode || 'USD');
+
+      localStorage.setItem('cashPaymentLimit', formObj.cashPaymentLimit?.toString() || '0');
+      localStorage.setItem('checkOnlyPayment', formObj.checkOnlyPayment?.toString() || 'false');
+
       this.messageService.add({ severity: 'success', summary: 'success', detail: `${this.actionType} Location Successfully` });
        this.getAllLocatoins();
        this.hideLocationModel();
+      //  window.location.reload();
+       this.loading = false;
     })
   }
 

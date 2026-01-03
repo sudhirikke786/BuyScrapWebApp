@@ -9,4 +9,5 @@ export class CashDrawerTransaction {
     locID: number = 0;  
     type: string = '';
     ticketId: number = 0;  
+    drawerID: number = 0;
 }

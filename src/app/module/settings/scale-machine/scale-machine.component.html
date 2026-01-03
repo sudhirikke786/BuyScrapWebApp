@@ -1,0 +1,104 @@
+<div class="container-fluid">
+    <div class="bdcmb mt-2">
+        <div class="row">
+            <div class="col-sm-6 col-6">
+                <h4 class="page-title">Scale Machines</h4>
+            </div>
+
+            <div class="col-sm-6 col-6">
+                <div class="b-links">
+                    <a routerLink="/{{orgName}}/home">Home</a> / <a
+                        routerLink="/{{orgName}}/settings">Settings</a>/<a href="javscript:void()" routerLink="/{{orgName}}/settings/scale-machine">scale-machine</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                
+                    <div class="row mb-4">
+                        <div class="row mb-4">
+                            
+                        <div class="col-md-6 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary me-2" (click)="openAddRewardDialog()"> Add Scale Machines</button>
+                          
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead >
+                                        <tr>
+                                            <th>Scale Name</th>
+                                            <th>Description</th>
+                                              
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let scale of scaleList">
+                                        <td>{{ scale.scaleName }}</td>
+                                        <td>{{ scale.description }}</td>
+                                       
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-2" (click)="editScale(scale)">Edit</button>
+                                            <button class="btn btn-sm btn-danger me-2" (click)="deleteScale(scale)">Delete</button>
+                                          
+                                        </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog 
+  header="{{ isEditMode ? 'Edit Scale' : 'Add Scale' }}" 
+  [(visible)]="showAddRewardDialog" 
+  [modal]="true" 
+  [style]="{width: '600px'}" 
+  [closable]="true">
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="couponAmount" class="form-label">Scale Name</label>
+      <input 
+        type="text" 
+        id="couponAmount"
+        class="form-control" 
+        [(ngModel)]="rewardDTO.ScaleName"
+        placeholder="Enter Scale Machine">
+    </div>
+
+   
+    <div class="col-md-12 mb-3">
+      <label for="description" class="form-label">Coupon Description</label>
+      <textarea 
+        id="description" 
+        class="form-control" 
+        [(ngModel)]="rewardDTO.Description"
+        rows="3"
+        placeholder="Enter Description"></textarea>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button type="button" class="btn btn-primary" (click)="saveReward()">
+      {{ isEditMode ? 'Update' : 'Save' }}
+    </button>
+    <button type="button" class="btn btn-danger" (click)="cancelReward()">Cancel</button>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+

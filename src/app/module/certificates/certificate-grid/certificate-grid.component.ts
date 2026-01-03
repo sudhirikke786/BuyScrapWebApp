@@ -73,7 +73,6 @@ export class CertificateGridComponent implements OnInit {
   last: number = 0;
   currentPage: number = 1;
   pageSize: number = 10;
-  searchSellerInput: any;
 
 
   constructor(private route: ActivatedRoute,
@@ -82,29 +81,25 @@ export class CertificateGridComponent implements OnInit {
     private messageService: MessageService,
     private stroarge:StorageService,
     public helperService:HelperService,
-    public commonService: CommonService) { 
-      
-      this.orgName = localStorage.getItem('orgName');
-      this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
-
-      this.route.queryParams.subscribe(params => {
-      this.searchSellerInput = params['searchText'] || '';
-      this.getAllCODTickets({
-        PageNumber: this.currentPage,
-        RowOfPage: this.pageSize,
-        LocationId: this.locId
-      });
-      })
-
-
-     }
+    public commonService: CommonService) { }
 
   ngOnInit() {
-   
+    this.orgName = localStorage.getItem('orgName');
+    this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
     this.checkTabView = this.helperService.isTab();
+
+    this.route.queryParams.subscribe(params => {
+      const searchTerm = params['search'] || '';
+      this.getAllCODTickets({
+        PageNumber: this.currentPage,
+        RowOfPage: this.pageSize,
+        LocationId: this.locId,
+        SearchText: searchTerm 
+      });
+    });
 
     const storedPagination = localStorage.getItem('certificatesPaginationData_grid');
     if (storedPagination) {
@@ -118,7 +113,11 @@ export class CertificateGridComponent implements OnInit {
       this.first = 0;
     }
   
-   
+    this.getAllCODTickets({
+      PageNumber: this.currentPage,
+      RowOfPage: this.pageSize,
+      LocationId: this.locId
+    });
   }
 
 
@@ -206,6 +205,13 @@ export class CertificateGridComponent implements OnInit {
     this.cvisible = false;
   }
 
+  deleteImage(item: any) {
+  const index = this.certificatesImages.indexOf(item);
+  if (index !== -1) {
+    this.certificatesImages.splice(index, 1);
+  }
+  }
+
 
 
   
@@ -214,14 +220,26 @@ export class CertificateGridComponent implements OnInit {
       PageNumber: pagObj?.PageNumber,
       RowOfPage: pagObj?.RowOfPage,
       LocationId: this.locId,
-      SerachText: this.searchSellerInput,
-
+      SearchText: pagObj?.SearchText || '' 
     };
     this.showLoader = true;
   
     this.commonService.getAllCODTickets(paramObject).subscribe(
       data => {
-        this.certificates = data.body.data.map((item: any) => {
+          
+          let filteredData = data.body.data;
+        
+          if (paramObject.SearchText && !data.body.isSearchApplied) {
+            const searchLower = paramObject.SearchText.toLowerCase();
+            filteredData = data.body.data.filter((item: any) => {
+              const ticketIdMatch = item.ticketId?.toString().includes(paramObject.SearchText);
+              const customerNameMatch = item.customerName?.toLowerCase().includes(searchLower);
+              
+              return ticketIdMatch || customerNameMatch;
+            });
+          }
+          
+        this.certificates = filteredData.map((item: any) => {
           item.selected = item?.isCODDone ? true : false;
           return item;
         });

@@ -1,0 +1,21 @@
+<div>
+    <div style="justify-content: space-between; display: flex;">
+      <label for="typeSelect">Sellers Count: </label>
+      <select id="typeSelect" [(ngModel)]="selectedType" (change)="onTypeChange($event)" style="border-radius: 5px;">
+        <!-- <option value="Daily">Previous Day</option> -->
+        <option value="OneWeek">1 Week</option>
+        <option value="Daily">Currunt Month</option>
+        <option value="OneMonth">1 Month</option>
+        <!-- <option value="ThreeMonths">3 Months</option> -->
+        <option value="Monthly" selected>1 Year</option>
+        <!-- <option value="Yearly">Yearly</option> -->
+      </select>
+
+    </div>
+    <canvas baseChart
+      [data]="chartData"
+      [options]="chartOptions"
+      [type]="'bar'">
+    </canvas>
+</div>
+  

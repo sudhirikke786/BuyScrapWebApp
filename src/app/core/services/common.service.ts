@@ -152,6 +152,11 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Users/UserAuthentication', 'POST', requestObj);
   }
 
+  
+  UserLogout(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Users/UserLogout', 'POST', requestObj);
+  }
+
   GetSuperAdminAuthenticate(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Users/GetSuperAdminAuthenticate', 'GET', paramObj);
   }
@@ -167,7 +172,15 @@ export class CommonService {
   getAdminOrganisaction(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Organisations/GetAdminOrganisaction', 'GET', paramObj);
   }
-  
+
+  getRestoreOrganisation(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Organisations/RestoreOrganisation', 'GET', paramObj);
+  }
+
+  UpdateLastLoginDate(requestObj: any,postParams:any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Organisations/UpdateLastLoginDate', 'POST', requestObj, null , postParams);
+  }
+
   InsertUpdateSuperAdminDTO(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Users/InsertUpdateSuperAdminDTO', 'POST', requestObj);
   }
@@ -204,6 +217,26 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/CashDrawers/UpdateCashDrawerStatus', 'POST', requestObj, null , postParams);
   }
 
+  InsertMultipleCashDrawers(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/InsertMultipleCashDrawers', 'POST', requestObj);
+  }
+
+  GetAllCashDrawers(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/GetAllCashDrawers', 'GET', paramObj);
+  }
+
+  DeleteCashDrawerbyId(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/DeleteCashDrawerbyId', 'DELETE', requestObj);
+  }
+
+  InsertUpdateUSerCashDrawers(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/InsertUpdateUSerCashDrawers', 'POST', requestObj);
+  }
+
+  GetCashDrawerByUserID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/CashDrawers/GetCashDrawerByUserID', 'GET', paramObj);
+  }
+
   
   InsertUpdateMaterialDocuments(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/InsertUpdateMaterialDocuments', 'POST', requestObj);
@@ -211,6 +244,10 @@ export class CommonService {
 
   GetMaterialDocumnetsByID(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/GetMaterialDocumnetsByID', 'GET', paramObj);
+  }
+
+   DeleteMaterialCertificateId(params: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/DeleteMaterialCertificateId', 'DELETE', params);
   }
 
 
@@ -257,6 +294,14 @@ export class CommonService {
   UpdateIsMarkAsPaid(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Invoice/UpdateIsMarkAsPaid', 'POST', requestObj);
   }
+
+  GetAllInvoiceTypes(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Invoice/GetAllInvoiceTypes', 'GET', paramObj);
+  }
+
+  GetAllSearchInvoiceTypes(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Invoice/GetAllSearchInvoiceTypes', 'GET', paramObj);
+  }
   
   getAllTicketsByParentID(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsByParentID', 'GET', paramObj);
@@ -264,6 +309,18 @@ export class CommonService {
 
   getAllTicketsTransactionsByTicketId(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketsTransactionsByTicketId', 'GET', paramObj);
+  }
+
+  GetAllTicketTypes(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketTypes', 'GET', paramObj);
+  }
+
+  GetAllSearchTicketTypes(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllSearchTicketTypes', 'GET', paramObj);
+  }
+
+  GetAllTicketScaleTypes(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Tickets/GetAllTicketScaleTypes', 'GET', paramObj);
   }
 
   insertUpdateTickets(requestObj: any): Observable<any> {
@@ -294,6 +351,12 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Tickets/GetLeadsOnlineData', 'GET', paramObj);
   }
 
+
+  getCsvpaymentsData(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetCsvDataForPayments', 'GET', paramObj);
+  }
+
+
   getAllsellersDetails(pagination: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Sellerss/GetAllsellersDetails', 'GET', pagination);
   }
@@ -301,6 +364,19 @@ export class CommonService {
   getSellerById(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Sellerss/GetSellerById', 'GET', paramObj);
   }
+
+  GetCustomerAdvance(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Sellerss/GetCustomerAdvance', 'GET', paramObj);
+  }
+
+  FingerPrintandSignatureDownloadExe(paramObj: any): Observable<Blob> {
+    const params = new HttpParams({ fromObject: paramObj });
+    return this.http.get(environment.baseUrl + '/Sellerss/FingerPrintandSignatureDownloadExe', {
+      params,
+      responseType: 'blob' 
+    });
+  }
+
 
   InsertMultipleAddress(paramObj: any,postParams:any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/InsertMultipleAddress', 'POST',  paramObj, null , postParams);
@@ -355,6 +431,10 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Pickup/GetAllContainerLocations', 'GET', paramObj);
   }
 
+  GetContainerLocationsById(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Pickup/GetContainerLocationsById', 'GET', paramObj);
+  }
+
   UpdateDispatchDateDispatch(requestObj: any, postParams: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PickUp/UpdateDispatchDateDispatch', 'POST', requestObj, null , postParams);
   }
@@ -372,9 +452,18 @@ export class CommonService {
   DeleteSellerbyId(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Sellerss/DeleteSellerbyId', 'POST', null, localStorage.getItem('orgName') || "", paramObj);
   }
+
+  InsertCustomerAdvance(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Sellerss/InsertCustomerAdvance', 'POST', requestObj);
+  }
+
   
   GetTicketMaterialsDetailsByTicketId(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/TransactionMasters/GetTicketMaterialsDetailsByTicketId', 'GET', paramObj);
+  }
+
+  getAllPaymentType(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/TransactionMasters/GetAllPaymentsTypes', 'GET', paramObj);
   }
 
   getAllGroupMaterial(paramObj: any): Observable<any> {
@@ -406,12 +495,21 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Materialss/InsertUpdateMaterials', 'POST', requestObj);
   }
 
+  GetAllUOM(): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Materialss/GetAllUOM', 'GET');
+  }
+
+
   GetAllAdjustmentType(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Adjustments/GetAllAdjustmentType', 'GET', paramObj);
   }
 
   GetAllContainer(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Container/GetAllContainer', 'GET', paramObj);
+  }
+
+  GetAllSubContainersByContainerID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Container/GetAllSubContainersByContainerID', 'GET', paramObj);
   }
 
 
@@ -427,11 +525,18 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/PickUp/DispatchCloseDateUpdate', 'POST', requestObj, null , postParams);
   }
 
+  UpdateMaterialCompletedStatus(requestObj: any,postParams:any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PickUp/UpdateMaterialCompletedStatus', 'POST', requestObj, null , postParams);
+  }  
 
   
 
   InsertUpdateContainert(requestObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Container/InsertUpdateContainert', 'POST', requestObj);
+  }
+
+  InsertUpdateContainerMaster(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Container/InsertUpdateContainerMaster', 'POST', requestObj);
   }
 
   getAllShipOutDetails(pagination: any): Observable<any> {
@@ -529,6 +634,23 @@ export class CommonService {
     return this.callAPI(environment.baseUrl + '/Settingss/InsertUpdateTicketSettings', 'POST', requestObj);
   }
 
+  InsertUpdateCurrencyModule(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Settingss/InsertUpdateCurrencyModule', 'POST', requestObj);
+  }
+
+  GetAllCurrencyModule(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Settingss/GetAllCurrencyModule', 'GET', paramObj);
+  }
+
+  GetCurrencyByModule(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Settingss/GetCurrencyByModule', 'GET', paramObj);
+  }
+
+
+  DeleteCurrencyModuleById(params: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Settingss/DeleteCurrencyModuleById', 'DELETE', params);
+  }
+
   GetSystemPreferencesValue(paramObj: any){
     return this.callAPI(environment.baseUrl + '/SystemPreferences/GetSystemPreferencesValue', 'GET', paramObj);
   }
@@ -580,24 +702,36 @@ export class CommonService {
   }
 
   getAccountingReport(paramObj: any): Observable<any> {
-    return this.callAPI(environment.baseUrl + '/Reports/GetAccountReport', 'GET', paramObj);
+    return this.callAPI(environment.baseUrl + '/Reports/GetAccountingReportAverage', 'GET', paramObj);
   }
-//For ShipOut report
+  getProfitAndLossReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetProfitAndLossReport', 'GET', paramObj);
+  }
+
+  //For ShipOut report
   getShipOutReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Reports/GetAllShipOutReport', 'GET', paramObj);
   }
-//InOut report
-getInOutReport(paramObj: any): Observable<any> {
-  return this.callAPI(environment.baseUrl + '/Reports/GetAllInOutReport', 'GET', paramObj);
-}
-//Dispatch Report
-getDispatchReport(paramObj: any): Observable<any> {
-  return this.callAPI(environment.baseUrl + '/Reports/GetAllDispatchReport', 'GET', paramObj);
-}
-//For MAterial Price List
-getMaterialPriceList(paramObj: any): Observable<any> {
-  return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterial', 'GET', paramObj);
-}
+
+  //InOut report
+  getInOutReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllInOutReport', 'GET', paramObj);
+  }
+
+  //Dispatch Report
+  getDispatchReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllDispatchReport', 'GET', paramObj);
+  }
+
+  //For MAterial Price List
+  getMaterialPriceList(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Materialss/GetAllSubMaterial', 'GET', paramObj);
+  }
+
+  getAllAdvanceReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Reports/GetAllCustomerAdvanceReportData', 'GET', paramObj);
+  }
+  
   /** Pdf Reports */
 
   generateDailyTicketsReport(paramObj: any): Observable<any> {
@@ -609,6 +743,12 @@ getMaterialPriceList(paramObj: any): Observable<any> {
       return this.callAPI(environment.baseUrl + '/PdfReports/GetMergeTransactionsTicketReceipt', 'GET', paramObj);
     else 
       return this.callAPI(environment.baseUrl + '/PdfReports/GetTransactionsTicketReceipt', 'GET', paramObj);
+  }
+  generateSingleTicketReportSota(paramObj: any, isParent: boolean): Observable<any> {
+    if (isParent)
+      return this.callAPI(environment.baseUrl + '/PdfReports/GetMergeTicketDataSota', 'GET', paramObj);
+    else 
+      return this.callAPI(environment.baseUrl + '/PdfReports/GetSingleTicketDataSota', 'GET', paramObj);
   }
 
   generateInventoryReport(paramObj: any): Observable<any> {
@@ -623,12 +763,21 @@ getMaterialPriceList(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetCashDrawerReportData', 'GET', paramObj);
   }
 
+  GetCashDrawerCombinedReportData(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetCashDrawerCombinedReportData', 'GET', paramObj);
+  }
   generateContainerTrackingReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetAllContainerLocationsReportData', 'GET', paramObj);
   }
+  
   generateCustomerReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetCustomerData', 'GET', paramObj);
   }
+
+  GetMainAndSubMaterials(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Materialss/GetMainAndSubMaterials', 'GET', paramObj);
+  }
+  
 
   generateMaterialReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetMaterialReportData', 'GET', paramObj);
@@ -666,6 +815,10 @@ getMaterialPriceList(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetMergeTransactionsTicketReceipt', 'GET', paramObj);
   }
 
+  getMergeTransactionsTicketReceiptSota(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetMergeTicketDataSota', 'GET', paramObj);
+  }
+
   getCashdrawerReceipt(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetCashdrawerReceipt', 'GET', paramObj);
   }
@@ -685,10 +838,66 @@ getMaterialPriceList(paramObj: any): Observable<any> {
   getMaterialPricelistReport(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/PdfReports/GetMaterialPricelist', 'GET', paramObj);
   }
+  
+  getAccountingDataReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/AccountingDataReport', 'GET', paramObj);
+  }
+
+  getProfitAndLossDataReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/ProfitAndDataReport', 'GET', paramObj);
+  }
+
+  getPurchaseReportByID(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetPurchaseOrderDetailsByID', 'GET', paramObj);
+  }
 
   sendInvoice(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Invoice/SendInvoice', 'GET', paramObj);
   }
+
+  GetMaterialDetailsByBarcode(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetMaterialDetailsByBarcode', 'GET', paramObj);
+  }
+
+  GetCustomerAdvanceReceipt(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/GetCustomerAdvanceReceipt', 'GET', paramObj);
+  }
+  
+  GetAdvanceReport(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PdfReports/rptGetAllCustomerAdvanceReportData', 'GET', paramObj);
+  }
+  
+  /*
+  Reward Program
+  */ 
+ InsertUpdateRewards(requestObj: any): Observable<any> {
+  return this.callAPI(environment.baseUrl + '/Reward/InsertUpdateRewards', 'POST', requestObj);
+}
+GetAllRewards(paramObj: any): Observable<any> {
+  return this.callAPI(environment.baseUrl + '/Reward/GetAllRewards', 'GET', paramObj);
+}
+DeleteRewardbyId(requestObj: any): Observable<any> {
+  return this.callAPI(environment.baseUrl + '/Reward/DeleteRewardbyId', 'DELETE', requestObj);
+}
+GetCustomerRedemptionByID(paramObj: any): Observable<any> {
+  return this.callAPI(environment.baseUrl + '/Reward/GetCustomerRedemptionByID', 'GET', paramObj);
+}
+GiveCoupens(requestObj: any): Observable<any> {
+  return this.callAPI(environment.baseUrl + '/Reward/GiveCoupens', 'POST', requestObj);
+}
+
+/* Scale Machines */
+GetAllScales(paramObj: any): Observable<any> {
+  return this.callAPI(environment.baseUrl + '/ScaleMachines/GetAllScaleMachines', 'GET', paramObj);
+}
+InsertUpdateScales(requestObj: any): Observable<any> {
+  return this.callAPI(environment.baseUrl + '/ScaleMachines/InsertUpdateScaleMachines', 'POST', requestObj);
+}
+DeleteScalebyId(requestObj: any): Observable<any> {
+  return this.callAPI(environment.baseUrl + '/ScaleMachines/DeleteScalebyId', 'DELETE', requestObj);
+}
+
+
 
   /** Admin API */
 
@@ -704,12 +913,29 @@ getMaterialPriceList(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Users/InsertUpdateUserDTO', 'POST', requestObj);
   }
 
+  InsertUpdateUserShifts(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Users/InsertUpdateUserShifts', 'POST', requestObj);
+  }
+
+  GetUserShifts(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Users/GetUserShifts', 'GET', paramObj);
+  }
+
+  DeleteUserShiftDTO(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Users/DeleteUserShiftDTO', 'POST', requestObj);
+  }
+
+
   DeleteUserDTO(requestObj:any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Users/DeleteUserDTO', 'POST', requestObj);
   }
 
   GetLocations(paramObj: any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Locations/GetLocations', 'GET', paramObj);
+  }
+
+  UpdateLocationTimeZone(requestObj:any, postParams:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Locations/UpdateLocationTimeZone', 'POST', requestObj, null , postParams);
   }
 
   
@@ -729,7 +955,7 @@ getMaterialPriceList(paramObj: any): Observable<any> {
   }
 
   ExtractOCRData(requestObj:any): Observable<any>{
-    return this.http.post(environment.baseUrl + '/AWS/ExtractOCRData', requestObj);
+    return this.http.post(environment.ocrUrl + '/process-image/', requestObj);
   }
 
   /* Regrades API */  
@@ -761,6 +987,12 @@ getMaterialPriceList(paramObj: any): Observable<any> {
   paySubscriptionFee(requestObj: any): Observable<any> {
     requestObj.callbackUrl = this.buildCallbackUrl();
     return this.callAPI(environment.baseUrl + '/Payment/CreateCheckoutSession', 'POST', requestObj);
+  }
+
+
+  //Feed back and Sugession
+  getFeedbackSuggestions(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/FeedbackSuggestions/GetAllDetails', 'GET', paramObj);
   }
 
   redirectToCheckout(session: CheckoutSession) {
@@ -815,6 +1047,22 @@ getMaterialPriceList(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Master/GetAllTimeZones', 'GET', paramObj);
   }
 
+  GetAllCountry(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Master/GetAllCountry', 'GET', paramObj);
+  }
+
+  GetAllCity(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Master/GetAllCity', 'GET', paramObj);
+  }
+  
+  GetAllState(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Master/GetAllState', 'GET', paramObj);
+  }
+
+  GetAllModule(paramObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Master/GetAllModule', 'GET', paramObj);
+  }
+
   getAllOrganisationPlanName(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Organisations/GetOrganisactionPlanByName', 'GET', paramObj);
   }
@@ -834,6 +1082,33 @@ getMaterialPriceList(paramObj: any): Observable<any> {
 
   }
 
+  InsertOrganisationDTO(requestObj:any):Observable<any>{ 
+    return this.callAPI(environment.baseUrl + '/Organisations/InsertOrganisationDTO', 'POST', requestObj);
+
+  }
+
+  GetOrganisactionPasswordByName(paramObj:any):Observable<any>{ 
+    return this.callAPI(environment.baseUrl + '/Organisations/GetOrganisactionPasswordByName', 'GET', paramObj);
+
+  }
+  GetUserPassById(paramObj:any):Observable<any>{ 
+    return this.callAPI(environment.baseUrl + '/Users/GetUserPassById', 'GET', paramObj);
+
+  }
+
+  
+
+  UpdateOrganizationPassword(requestObj:any):Observable<any>{ 
+    return this.callAPI(environment.baseUrl + '/Organisations/updateOrganizationPassword', 'POST', requestObj);
+
+  }
+
+  UpdateUserPassword(requestObj:any):Observable<any>{ 
+    return this.callAPI(environment.baseUrl + '/Users/UpdateUserPassword', 'POST', requestObj);
+
+  }
+
+
   getAllCountry(paramObj: any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/Master/GetAllCountry', 'GET', paramObj);
   }
@@ -846,6 +1121,32 @@ getMaterialPriceList(paramObj: any): Observable<any> {
     return this.callAPI(environment.baseUrl + '/Master/GetAllCity', 'GET', paramObj);
   }
 
+  InsertUpdateCountry(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Master/InsertUpdateCountry', 'POST', requestObj);
+  }
+
+  InsertUpdateState(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Master/InsertUpdateStates', 'POST', requestObj);
+  }
+  
+  InsertUpdateCity(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Master/InsertUpdateCity', 'POST', requestObj);
+  }
+
+  InsertUpdateCurrency(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Master/InsertUpdateCurrency', 'POST', requestObj);
+  }
+
+  DeleteCurrencyId(params: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/Master/DeleteCurrencyId', 'DELETE', params);
+  }
+
+
+
+  getAllStateByCountryID(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/Master/GetStateByCountryID', 'GET', paramObj);
+  }
+
   InsertUpdatePriceKeySettings(requestObj:any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/PriceKeySettingss/InsertUpdatePriceKeySettings', 'POST', requestObj);
   }
@@ -853,8 +1154,76 @@ getMaterialPriceList(paramObj: any): Observable<any> {
   ValidatePriceKeySettings(requestObj:any): Observable<any>{
     return this.callAPI(environment.baseUrl + '/PriceKeySettingss/ValidatePriceKeySettings', 'POST', requestObj);
   }
+
+   InsertUpdateFeedbackandSuggestions(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/FeedbackSuggestions/InsertUpdateFeedbackandSuggestions', 'POST', requestObj);
+  }
+
+  //SalesOrder
+  InsertUpdateSalesOrder(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/SalesOrderAPI/InsertUpdateSalesOrder', 'POST', requestObj);
+  }
+
+  GetAllSalesOrders(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/SalesOrderAPI/GetAllSalesOrders', 'GET', paramObj);
+  }
+
+  GetSalesOrderById(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/SalesOrderAPI/GetSalesOrderById', 'GET', paramObj);
+  }
+
+  GetSalesOrdersByCustomer(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/SalesOrderAPI/GetSalesOrdersByCustomer', 'GET', paramObj);
+  }
+  GetSalesOrderMaterialsBySalesOrderID(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/SalesOrderAPI/GetSalesOrderMaterialsBySalesOrderID', 'GET', paramObj);
+  }  
+
+  GetSalesOrderMaterialsByCustomerAndMaterial(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/SalesOrderAPI/GetSalesOrderMaterialsByCustomerAndMaterial', 'GET', paramObj);
+  } 
   
+  GetShipOutsMaterialsBySalesOrderID(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/SalesOrderAPI/GetShipOutsMaterialsBySalesOrderID', 'GET', paramObj);
+  } 
+
+
+  DeleteSalesOrderbyId(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/SalesOrderAPI/DeleteSalesOrderbyId', 'DELETE', requestObj);
+  }
+
+  //PurchaseOrder
+  InsertUpdatePurchaseOrder(requestObj:any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/PurchaseOrderAPI/InsertUpdatePurchaseOrder', 'POST', requestObj);
+  }
+
+  GetAllPurchaseOrders(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/PurchaseOrderAPI/GetAllPurchaseOrders', 'GET', paramObj);
+  }
   
+  GetPurchaseOrderMaterialDetailsByPurchaseOrderID(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/PurchaseOrderAPI/GetPurchaseOrderMaterialDetailsByPurchaseOrderID', 'GET', paramObj);
+  }
+
+  GetPurchaseOrderById(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/PurchaseOrderAPI/GetPurchaseOrderById', 'GET', paramObj);
+  }
+
+  GetPurchaseOrdersByCustomerID(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/PurchaseOrderAPI/GetPurchaseOrdersByCustomerID', 'GET', paramObj);
+  }
+
+  GetPurchaseOrderMaterialsByCustomerAndMaterial(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/PurchaseOrderAPI/GetPurchaseOrderMaterialsByCustomerAndMaterial', 'GET', paramObj);
+  } 
+
+  GetTicketsMaterialsByPurchaseOrderID(paramObj: any): Observable<any>{
+    return this.callAPI(environment.baseUrl + '/PurchaseOrderAPI/GetTicketsMaterialsByPurchaseOrderID', 'GET', paramObj);
+  }
+
+  DeletePurchaseOrderbyId(requestObj: any): Observable<any> {
+    return this.callAPI(environment.baseUrl + '/PurchaseOrderAPI/DeletePurchaseOrderbyId', 'DELETE', requestObj);
+  }
   // http://18.222.119.98/process-image/
     
 
@@ -864,7 +1233,42 @@ getMaterialPriceList(paramObj: any): Observable<any> {
 // {{BaseURL}}/Master/GetAllCity?CountryID=1&StateID=1&CityID=0
 
 
-  
+  /**
+   * Sends an image file to the ML model for material prediction.
+   * @param formData The form data containing the image file to be predicted.
+   * @returns An observable with the prediction results from the ML model.
+   */
+  predictMaterial(formData: FormData): Observable<any> {
+    // This URL points to your Python ML model.
+    // It is highly recommended to move this URL into your environment.ts file.
+    const mlModelUrl = 'http://localhost:8000/predict/';
+
+    // We use a direct HttpClient call here because the Content-Type needs to be 'multipart/form-data'.
+    // The generic `callAPI` method in this service is configured for 'application/json'.
+    // HttpClient will automatically set the correct Content-Type header when the body is a FormData object.
+    return this.http.post<any>(mlModelUrl, formData).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error from ML prediction API:', error);
+        // Returning of(null) to be consistent with the service's existing error handling pattern,
+        // which prevents the error from crashing the subscription.
+        return of(null);
+      })
+    );
+  }
+
+  /**
+   * Fetches the full details of a material by its name.
+   * This is used after getting a prediction from the ML model to get pricing, group, etc.
+   * @param paramObj An object containing the materialName and LocationId. e.g., { materialName: 'Aluminium', LocationId: 1 }
+   * @returns An observable with the material's details.
+   */
+  getMaterialByName(paramObj: any): Observable<any> {
+    // NOTE: The backend endpoint '/Materialss/GetMaterialByName' is an assumption based on your other API paths.
+    // You will need to implement this endpoint in your backend application.
+    // It should be able to find and return a material's data based on its name and location.
+    return this.callAPI(environment.baseUrl + '/Materialss/GetMaterialByName', 'GET', paramObj);
+  }
+
   
     
 }

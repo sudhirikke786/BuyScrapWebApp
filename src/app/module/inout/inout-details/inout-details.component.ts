@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 
 
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -51,6 +51,7 @@ export class InoutDetailsComponent implements OnInit {
   locationName: any;
   locationToName: any;
   isInwardUpdating = false;
+  adminAdvertisement!:  string | null;
 
   ticketData:any = {};
   inoutDetails: any;
@@ -106,6 +107,9 @@ export class InoutDetailsComponent implements OnInit {
   isReportShow = false;
   isLoading = false;
   checkTabView: boolean = false;
+  showConfirmLeavePopup: boolean = false;
+  pendingNavigationUrl: string | null = null;
+
   @ViewChild(MaterialCalculatorComponent) materialCalculatorComponent!: MaterialCalculatorComponent;
  
   constructor(private route: ActivatedRoute,
@@ -123,12 +127,15 @@ export class InoutDetailsComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
+    this.adminAdvertisement = localStorage.getItem('adminAdvertisement');
     this.checkTabView = this.helperService.isTab();
     this.route.params.subscribe((param)=>{
       this.inoutId = param["inoutId"];
       this.inoutAction = param["action"];
       if (this.inoutAction == 'edit') {
+        this.isEditModeOn = true;
         this.editTicketDetails();
+        
       }
       if (parseInt(this.inoutId)) {
         this.getInoutDetailsByID();
@@ -152,10 +159,34 @@ export class InoutDetailsComponent implements OnInit {
       }
     });
 
+    this.router.events.subscribe(event => {
+      if(event instanceof NavigationStart){
+        if(this.isEditModeOn && !this.showConfirmLeavePopup){
+          this.showConfirmLeavePopup = true;
+          this.pendingNavigationUrl = event.url;
+          this.router.navigateByUrl(this.router.url, { replaceUrl: true });
+        }
+      }
+    })
     
   }
 
+  proceedWithNavigation() {
+    this.showConfirmLeavePopup = false;
+    this.isEditModeOn = false;
   
+    if (this.pendingNavigationUrl) {
+      this.router.navigateByUrl(this.pendingNavigationUrl);
+      this.pendingNavigationUrl = null;
+    }
+  }
+
+  cancelNavigation() {
+    this.showConfirmLeavePopup = false;
+    this.pendingNavigationUrl = null;
+  }
+
+
   private processDataBasedOnTicketId() {
     if (parseInt(this.inoutId)) {
       this.getInoutMaterialbyID();
@@ -260,6 +291,7 @@ export class InoutDetailsComponent implements OnInit {
           console.log(data);
           this.inoutDetails = data.body.data; 
           this.inoutDetails.inoutmaterial = null; 
+          this.inOutID = this.inoutDetails.inOutID ;
           const userId = data.body.data.createdBy;
           this.getAllUsers(userId);
         },
@@ -275,6 +307,7 @@ export class InoutDetailsComponent implements OnInit {
 
   
   getInoutMaterialbyID() {
+    this.isLoading = true;
     const paramObject = {
       RowID: this.inoutId
     };
@@ -288,6 +321,10 @@ export class InoutDetailsComponent implements OnInit {
         },
         (err: any) => {
           // this.errorMsg = 'Error occured';
+          this.isLoading = false;
+        },
+        () => {
+          this.isLoading = false;
         }
       );
   }
@@ -405,18 +442,20 @@ inwardStatusUpdate() {
   this.isInwardUpdating = true; 
   const paramObject = {
     RowID: this.inoutId,
-    InwardDate: new Date().toISOString()
+    //InwardDate: new Date().toISOString()
+    LocID: this.locId
   };
   const reqparam = {
     RowID: this.inoutId,
-    InwardDate: new Date().toISOString()
+    //InwardDate: new Date().toISOString()
+    LocID: this.locId
   };
 
   this.commonService.UpdateInoutStatus(paramObject,reqparam).subscribe(
     (response) => {
       console.log('Inward status updated successfully:', response);
       this.inoutDetails.status = 'In';
-      this.inoutDetails.inwarddate = paramObject.InwardDate;
+      //this.inoutDetails.inwarddate = paramObject.InwardDate;
       this.isInwardUpdating = false;
     },
     (error) => {
@@ -457,7 +496,7 @@ inwardStatusUpdate() {
       }
       console.log(data); 
       this.inoutId = data.body;
-
+      this.isEditModeOn = false;
     
       
       if (this.isReceiptPrint) {
@@ -645,7 +684,8 @@ inwardStatusUpdate() {
 
     const param = {
       InoutId: this.inoutId,
-      LocationId: this.locId
+      LocationId: this.locId,
+      Advertising: this.adminAdvertisement
     }
 
     this.commonService.getInoutReportByID(param)

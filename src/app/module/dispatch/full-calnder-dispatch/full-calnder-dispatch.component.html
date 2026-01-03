@@ -33,3 +33,19 @@
 </div>
 </div>
 <p-toast></p-toast>
+<ng-container *ngIf="!checkTabView">
+
+  <p-dialog header="Dispatch Report" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+       
+    <div *ngIf="showLoaderReport">
+      <app-page-loader type="reportloader"></app-page-loader>
+    </div>
+
+    <div class="row" >
+      <div style="height: 500px;" *ngIf="!showLoaderReport">                
+        <ngx-extended-pdf-viewer #pdfViewer [base64Src]="fileDataObj" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
+      </div>
+    </div>
+
+  </p-dialog>
+  </ng-container> 

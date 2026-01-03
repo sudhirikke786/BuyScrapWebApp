@@ -30,4 +30,14 @@ export class TicketItem {
      codDescription: string = '';
      codImagePath: string = '';
      materialDocumentsImages: string = '';  
+     itemLocalRowID: number = 0;
+     documentDescription: string = '';
+     holdDays?: number;
+     holdReleaseDate?: string | null;
+     purchaseOrderMaterialsDropdown?: any[]; 
+     purchaseOrderMaterialID?: number; 
+     purchaseOrderID?: number; 
+     ticketMaterialDocumentsList: any;
+     // barcodeNumber!: string; 
+
 }

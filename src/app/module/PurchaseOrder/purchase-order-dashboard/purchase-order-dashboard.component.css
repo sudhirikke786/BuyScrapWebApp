@@ -1,0 +1,491 @@
+/* ============================================
+   Purchase Order Dashboard - Modern Design Styles
+   ============================================ */
+
+/* Variables */
+:root {
+    --primary-color: #0176B8;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --text-muted: #6c757d;
+    --border-color: #e9ecef;
+    --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    --card-hover-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    --transition-speed: 0.3s;
+}
+
+/* Page Container */
+.content-page {
+    padding: 0;
+}
+
+.content-page .content {
+    padding: 0 15px;
+}
+
+.container-fluid {
+    padding: 0 10px;
+}
+
+/* Page Header */
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #343a40;
+    margin: 0;
+}
+
+/* Breadcrumb styling */
+.b-links {
+    text-align: right;
+    font-size: 0.875rem;
+}
+
+.b-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+.b-links a:hover {
+    color: var(--primary-color);
+}
+
+/* Search and Action Bar - Ticket Card Row */
+.ticket-card {
+    gap: 15px;
+    align-items: center;
+}
+
+.ticket-card .col-xs-12,
+.ticket-card .col-md-4,
+.ticket-card .col-lg-3 {
+    padding-right: 10px;
+}
+
+/* Search and Action Bar */
+.search-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.form-control {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+    font-size: 0.9rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(1, 118, 184, 0.15);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: #adb5bd;
+}
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    transition: box-shadow var(--transition-speed);
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: var(--card-hover-shadow);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Table Enhancements */
+:host ::ng-deep .p-datatable .p-datatable-header {
+    background: transparent;
+    border: none;
+    padding: 0 0 16px 0;
+}
+
+/* Table wrapper - proper height to push paginator down */
+:host ::ng-deep .p-datatable-wrapper {
+    max-height: calc(100vh - 320px) !important;
+    min-height: 300px;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead>tr>th {
+    background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+    border: none;
+    border-bottom: 2px solid var(--border-color);
+    color: #495057;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 14px 12px;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr {
+    transition: background-color var(--transition-speed);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr:hover {
+    background-color: rgba(1, 118, 184, 0.04);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 14px 12px;
+    vertical-align: middle;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+/* Paginator - positioned at bottom */
+:host ::ng-deep .p-paginator {
+    background: transparent;
+    border: none;
+    padding: 12px 0;
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+}
+
+:host ::ng-deep .p-paginator .p-paginator-current {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+    border-radius: 8px;
+    margin: 0 2px;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Action Buttons */
+.btn-grid {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all var(--transition-speed);
+    white-space: nowrap;
+}
+
+.btn-grid i {
+    font-size: 0.9rem;
+}
+
+.btn-grid.btn-success {
+    background: linear-gradient(135deg, #28a745, #1e7e34);
+    border: none;
+    color: white;
+}
+
+.btn-grid.btn-success:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.btn-grid.btn-primary {
+    background: linear-gradient(135deg, #0176B8, #015a8c);
+    border: none;
+    color: white;
+}
+
+.btn-grid.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(1, 118, 184, 0.4);
+}
+
+.btn-grid.btn-danger {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    border: none;
+    color: white;
+}
+
+.btn-grid.btn-danger:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+/* Standard Buttons */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: all var(--transition-speed);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background-color: #0176B8;
+    border: none;
+    box-shadow: 0 2px 8px rgba(1, 118, 184, 0.3);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #015a8c;
+    box-shadow: 0 4px 12px rgba(1, 118, 184, 0.4);
+    color: white;
+}
+
+/* Status Badges */
+.status-deleted {
+    background-color: #f8d7da !important;
+}
+
+.status-deleted td {
+    color: #721c24 !important;
+}
+
+.bg-danger {
+    background-color: #f8d7da !important;
+}
+
+.bg-danger.text-white {
+    color: #721c24 !important;
+}
+
+/* Profile Images */
+.ticket-particulars-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.ticket-particulars-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.default-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    background-color: #f8f9fa;
+}
+
+/* Paginator Container */
+.paginator-container {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+/* Tablet (991px) */
+@media (max-width: 991px) {
+    .page-title {
+        font-size: 1.25rem;
+    }
+
+    .btn-grid {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+    }
+
+    .btn-grid i {
+        font-size: 0.8rem;
+    }
+
+    :host ::ng-deep .p-datatable .p-datatable-thead>tr>th,
+    :host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile Landscape (768px) */
+@media (max-width: 768px) {
+    .bdcmb .row {
+        flex-direction: column;
+    }
+
+    .bdcmb .col-sm-6 {
+        width: 100%;
+    }
+
+    .bdcmb .col-sm-6:last-child {
+        margin-top: 8px;
+    }
+
+    .b-links {
+        text-align: left;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .btn-grid {
+        padding: 6px 8px;
+    }
+
+    /* Hide button text on smaller screens */
+    .btn-grid span:not(.mdi) {
+        display: none;
+    }
+
+    :host ::ng-deep .p-datatable-wrapper {
+        overflow-x: auto;
+    }
+
+    :host ::ng-deep .p-paginator {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    :host ::ng-deep .p-paginator .p-paginator-current {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+}
+
+/* Mobile Portrait (576px) */
+@media (max-width: 576px) {
+    .page-title {
+        font-size: 1.1rem;
+    }
+
+    .form-control {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+
+    .card {
+        border-radius: 8px;
+        margin: 0 -10px;
+    }
+
+    .card-body {
+        padding: 12px;
+    }
+
+    .ticket-particulars-img,
+    .default-img {
+        width: 38px;
+        height: 38px;
+    }
+
+    :host ::ng-deep .p-datatable .p-datatable-thead>tr>th {
+        font-size: 0.75rem;
+        padding: 8px 6px;
+    }
+
+    :host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+        font-size: 0.8rem;
+        padding: 8px 6px;
+    }
+}
+
+/* Extra Small (480px) */
+@media (max-width: 480px) {
+    .row.mt-2 .col-md-6 {
+        margin-bottom: 10px;
+    }
+
+    .btn-grid {
+        padding: 5px 6px;
+        font-size: 0.7rem;
+        border-radius: 4px;
+    }
+}
+
+/* Large Screens (2000px+) */
+@media (min-width: 2000px) {
+    .page-title {
+        font-size: 1.75rem;
+    }
+
+    .card-body {
+        padding: 28px;
+    }
+
+    :host ::ng-deep .p-datatable .p-datatable-thead>tr>th {
+        font-size: 0.95rem;
+        padding: 18px 16px;
+    }
+
+    :host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+        font-size: 1rem;
+        padding: 18px 16px;
+    }
+
+    .btn-grid {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Dialog Styling */
+:host ::ng-deep .p-dialog {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+    background: linear-gradient(135deg, #0176B8, #015a8c);
+    color: white;
+    padding: 16px 20px;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-title {
+    font-weight: 600;
+    color: white;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon {
+    color: white;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+    padding: 24px;
+}
+
+/* Dialog responsive */
+@media (max-width: 767px) {
+    :host ::ng-deep .p-dialog {
+        width: 95vw !important;
+        max-width: 95vw !important;
+    }
+
+    :host ::ng-deep .p-dialog .p-dialog-content {
+        padding: 15px;
+    }
+}

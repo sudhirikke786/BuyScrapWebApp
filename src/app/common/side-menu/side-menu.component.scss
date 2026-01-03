@@ -1,0 +1,26 @@
+.app-menu {
+  
+@media only screen and (min-width: 2400px) and (max-width: 3000px) {
+    .dash-icons {
+      width: 28px !important;
+      height: 28px !important;
+      margin-right: 10px !important; 
+    }
+    
+    .menu-icon {
+      margin-right: 10px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+    }
+    
+    .menu-links-text {
+      font-size: 13px !important;
+    }
+    
+    .menu-item .menu-link {
+      padding: 8px 16px !important;
+      align-items: center !important;
+    }
+  }
+
+}

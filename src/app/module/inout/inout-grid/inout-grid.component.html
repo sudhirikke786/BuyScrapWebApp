@@ -75,7 +75,7 @@
                           class="btn btn-grid btn-success waves-effect waves-light me-1">
                             <i class="mdi mdi-eye"></i> Show
                         </a>
-                        <a *ngIf="!inout.isDeleted && inout.status != 'In' && inout.status != 'InTransient'" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editDetails(inout.rowId)"
+                        <a *ngIf="!inout.isDeleted && inout.status != 'In' && inout.status != 'InTransient' && !inout.inwardDate" data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editDetails(inout.rowId)"
                         class="btn btn-grid btn-primary waves-effect waves-light me-1">
                             <i class="mdi mdi-pencil"></i> Edit
                         </a>                       

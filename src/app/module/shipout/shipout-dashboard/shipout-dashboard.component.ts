@@ -113,6 +113,15 @@ export class ShipoutDashboardComponent implements OnInit {
   addressID:any;
   customerId:any;
   
+  IsCustomerFacePictureEnabled:boolean = false;
+  IsMultiCurrencySupportEnabled: boolean = false;
+
+  selectedCurrencyID: any = null;
+  currencies: any[] = [];
+
+  salesOrdersByCustomer: any[] = [];  
+  showSalesOrderPopup: boolean = false;
+  
   
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -124,6 +133,15 @@ export class ShipoutDashboardComponent implements OnInit {
     public commonService: CommonService) { }
 
   ngOnInit() {
+     const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
+    if (_dataObj) {
+      const isCustomerFacePicture = _dataObj.find((item: any) => item?.keys?.toLowerCase() === 'iscustomerfacepicture');
+      this.IsCustomerFacePictureEnabled = String(isCustomerFacePicture?.values).toLowerCase() === 'true';
+
+      const isMultiCurrencySupport = _dataObj.find((item: any) => item?.keys?.toLowerCase() === 'ismulticurrencysupport');
+      this.IsMultiCurrencySupportEnabled = String(isMultiCurrencySupport?.values).toLowerCase() === 'true';
+
+    }
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
@@ -236,13 +254,43 @@ export class ShipoutDashboardComponent implements OnInit {
   showDialog() {    
     this.visible =  true;
     this.getAllsellersDetails();
+    this.getAllCurrencies();
   }
 
   showCustomerModel(seller: any){
     // alert(sellerId);
-    this.newDriverScreenVisible = true;
+    // this.newDriverScreenVisible = true;
     this.selectedSeller = seller;
+    this.getSalesOrdersByCustomer(this.selectedSeller.rowId);
     
+  }
+
+  getSalesOrdersByCustomer(customerId: number) {
+    const params = { 
+      CustomerID: customerId 
+    };
+    this.commonService.GetSalesOrdersByCustomer(params).subscribe(
+      (res: any) => {
+        this.salesOrdersByCustomer = res.body?.data || [];
+
+        if (this.salesOrdersByCustomer.length > 0) {
+          this.showSalesOrderPopup = true;
+        } else {
+          this.openDriverPopup();
+        }
+      },
+      (err) => {
+        console.error('Error fetching sales orders:', err);
+        this.salesOrdersByCustomer = [];
+        this.openDriverPopup();
+      }
+    );
+  }
+
+
+  openDriverPopup() {
+    this.showSalesOrderPopup = false;
+    this.newDriverScreenVisible = true; 
   }
 
   saveDriverInfo() {
@@ -278,13 +326,26 @@ export class ShipoutDashboardComponent implements OnInit {
     newShipOut.shipoutmaterial = [];
 
     this.dataService.setNewShipOut(newShipOut);
+     const selectedCurrencyObj = this.currencies.find(c => c.rowID === this.selectedCurrencyID);
+     const currencyCode = selectedCurrencyObj?.currencyCode ?? '';
+     const currencySymbol = selectedCurrencyObj?.currency ?? '';
     
     // this.router.navigateByUrl(`/${this.orgName}/ship-out/detail/new/new`);
    // this.router.navigate([`/${this.orgName}/ship-out/detail/new/new`], { queryParams: { customerId: this.selectedSeller.rowId } });
    if (this.actionType === 'newShipOut') {
+    // this.router.navigate([`/${this.orgName}/ship-out/detail/new/new`], {
+    //   queryParams: { customerId: this.selectedSeller.rowId,currencyCode:currencyCode,currencySymbol:currencySymbol },
+    // });
+    if (this.IsMultiCurrencySupportEnabled) {
     this.router.navigate([`/${this.orgName}/ship-out/detail/new/new`], {
-      queryParams: { customerId: this.selectedSeller.rowId },
+      queryParams: { customerId: this.selectedSeller.rowId,currencyCode:currencyCode,currencySymbol:currencySymbol },
     });
+    } else {
+      this.router.navigate([`/${this.orgName}/ship-out/detail/new/new`],
+        { queryParams: { customerId: this.selectedSeller.rowId, currencyCode:'',currencySymbol:'' } }   
+      );
+    }
+
   } else if (this.actionType === 'bulkShipOut') {
     this.bulkShipOutVisible = true;
   }
@@ -303,11 +364,11 @@ export class ShipoutDashboardComponent implements OnInit {
 
   showDetails(shipoutId: any, customerId: any) {
     console.log('Navigating to:', `${this.orgName}/ship-out/detail/${shipoutId}/show`);
-  console.log('With customerId:', customerId);
-  this.router.navigate([`${this.orgName}/ship-out/detail/${shipoutId}/show`], {
-    queryParams: { customerId: customerId }
-  });
-}
+    console.log('With customerId:', customerId);
+    this.router.navigate([`${this.orgName}/ship-out/detail/${shipoutId}/show`], {
+      queryParams: { customerId: customerId }
+    });
+  }
 
   // editDetails(shipoutId: any) {
   //   this.router.navigateByUrl(`${this.orgName}/ship-out/detail/${shipoutId}/edit`);
@@ -320,7 +381,8 @@ export class ShipoutDashboardComponent implements OnInit {
   }
 
   deleteDetails(shipoutId: any) {
-    alert('Delete action Triggered')
+    // alert('Delete action Triggered')
+    this.messageService.add({ severity: 'info', summary: 'Delete', detail: 'You have selected ' + shipoutId + ' for delete' });
   }
 
 
@@ -421,13 +483,13 @@ export class ShipoutDashboardComponent implements OnInit {
   const selectedMaterials = this.materials.filter(material => material.isSelected);
 
   if (selectedMaterials.length === 0) {
-    alert('Please select at least one material.');
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please select at least one material.' });
     return;
   }
 
   for (let material of selectedMaterials) {
     if (material.shipOutNet > material.net || material.shipOutNet <= 0) {
-      alert('Ship Out Weight cannot exceed Net Weight or be less than or equal to zero.');
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ship Out Weight cannot exceed Net Weight or be less than or equal to zero.' });
       return;
     }
   }
@@ -484,7 +546,7 @@ export class ShipoutDashboardComponent implements OnInit {
     },
     (error) => {
       console.error('Error saving materials:', error);
-      alert('Error saving materials');
+      this.messageService.add({ severity: 'error', summary: 'error', detail: 'Error saving materials' });
     }
   );
 }
@@ -495,6 +557,51 @@ export class ShipoutDashboardComponent implements OnInit {
     this.messageService.add({ severity: 'error', summary: 'error', detail: 'Ship Out Weight cannot exceed Net Weight.' });
 
    }
+  }
+
+   getAllCurrencies() {
+    const paramObj = { 
+      CurrencyID: 0 
+    };
+    this.commonService.getAllCurrency(paramObj).subscribe({
+      next: (res: any) => {
+        this.currencies = res?.body?.data || [];
+
+        this.getDefaultCurrencyForTicket();
+      },
+      error: () => {
+        this.currencies = [];
+      }
+    });
+  }
+
+  getDefaultCurrencyForTicket() {
+    const params = { 
+      ModuleName: 'Shipout', 
+      LocID: this.locId 
+    };
+    
+    this.commonService.GetCurrencyByModule(params).subscribe({
+      next: (res: any) => {
+        const currencyData = res?.body?.data;
+        if (currencyData && currencyData.currencyID) {
+          this.selectedCurrencyID = currencyData.currencyID;
+        } else {
+          this.selectCurrencyFromLocalStorage();
+        }
+      },
+      error: () => {
+        this.selectCurrencyFromLocalStorage();
+      }
+    });
+  }
+
+  private selectCurrencyFromLocalStorage() {
+    const localCurrencyCode = localStorage.getItem('currencyCode') || 'USD';
+    const currency = this.currencies.find(c => c.currencyCode === localCurrencyCode);
+    if (currency) {
+      this.selectedCurrencyID = currency.rowID;
+    }
   }
 
 

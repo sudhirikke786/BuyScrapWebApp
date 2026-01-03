@@ -68,7 +68,7 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
     this.availableNetInput = this.itemAvailableNet;
     if (this.inputBox1) {
       this.renderer.selectRootElement(this.inputBox1.nativeElement).focus();
-    }   
+    }  
 
     if(this.checkTabView){
       this.isVirtual = true;
@@ -265,10 +265,10 @@ export class MaterialCalculatorComponent  implements OnInit, AfterViewInit {
   enter() {    
     const tareInputVar = (isNaN(this.tareInput) || this.tareInput == '') ? 0 : this.tareInput;
       
-    if ((this.grossInput - tareInputVar) > this.availableNetInput) {
-      alert('Shipout Net is more than Available net.');
-      return;
-    }
+    // if ((this.grossInput - tareInputVar) > this.availableNetInput) {
+    //   alert('Shipout Net is more than Available net.');
+    //   return;
+    // }
 
     this.changeFocus();
     console.log(this.currentFocusIndex);

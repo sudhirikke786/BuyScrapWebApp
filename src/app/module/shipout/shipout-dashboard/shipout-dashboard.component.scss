@@ -1,16 +1,417 @@
+// ============================================
+// ShipOut Dashboard - Modern Design Styles
+// ============================================
+
+// Variables
+$primary-color: #0176B8;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$info-color: #17a2b8;
+$warning-color: #ffc107;
+$text-muted: #6c757d;
+$border-color: #e9ecef;
+$card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+$card-hover-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+$transition-speed: 0.3s;
+
+// Page Container
+.content-page {
+  padding: 0;
+
+  .content {
+    padding: 0 15px;
+  }
+}
+
+// Page Header
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #343a40;
+  margin: 0;
+}
+
+// Breadcrumb styling
+.b-links {
+  text-align: right;
+  font-size: 0.875rem;
+
+  a {
+    color: $text-muted;
+    text-decoration: none;
+    transition: color $transition-speed;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}
+
+// Search and Action Bar
+.search-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.form-control {
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 10px 14px;
+  transition: border-color $transition-speed, box-shadow $transition-speed;
+  font-size: 0.9rem;
+
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #adb5bd;
+  }
+}
+
+// Card Styling
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: $card-shadow;
+  transition: box-shadow $transition-speed;
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: $card-hover-shadow;
+  }
+}
+
+.card-body {
+  padding: 20px;
+}
+
+// Table Enhancements
+:host ::ng-deep {
+  .p-datatable {
+    .p-datatable-header {
+      background: transparent;
+      border: none;
+      padding: 0 0 16px 0;
+    }
+
+    .p-datatable-thead>tr>th {
+      background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+      border: none;
+      border-bottom: 2px solid $border-color;
+      color: #495057;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 14px 12px;
+    }
+
+    .p-datatable-tbody>tr {
+      transition: background-color $transition-speed;
+
+      &:hover {
+        background-color: rgba($primary-color, 0.04);
+      }
+
+      >td {
+        border: none;
+        border-bottom: 1px solid $border-color;
+        padding: 14px 12px;
+        vertical-align: middle;
+        font-size: 0.9rem;
+        color: #495057;
+      }
+    }
+  }
+
+  // Paginator
+  .p-paginator {
+    background: transparent;
+    border: none;
+    padding: 16px 0;
+
+    .p-paginator-current {
+      color: $text-muted;
+      font-size: 0.875rem;
+    }
+
+    .p-paginator-pages .p-paginator-page {
+      border-radius: 8px;
+      margin: 0 2px;
+
+      &.p-highlight {
+        background: $primary-color;
+        color: white;
+      }
+    }
+  }
+}
+
+// Action Buttons in Table
+.btn-grid {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all $transition-speed;
+  white-space: nowrap;
+
+  i {
+    font-size: 0.9rem;
+  }
+
+  &.btn-success {
+    background: linear-gradient(135deg, $success-color, darken($success-color, 8%));
+    border: none;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($success-color, 0.4);
+    }
+  }
+
+  &.btn-primary {
+    background: linear-gradient(135deg, $primary-color, darken($primary-color, 8%));
+    border: none;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+    }
+  }
+
+  &.btn-danger {
+    background: linear-gradient(135deg, $danger-color, darken($danger-color, 8%));
+    border: none;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($danger-color, 0.4);
+    }
+  }
+}
+
+// Status Badge for Deleted Items - Light red background like Regrade
+.status-deleted {
+  background-color: #f8d7da !important;
+
+  td {
+    color: #721c24 !important;
+  }
+}
+
+// Deleted row styling - Light red background (for bg-danger class)
+.bg-danger {
+  background-color: #f8d7da !important;
+
+  &.text-white {
+    color: #721c24 !important;
+  }
+}
+
+// Profile Images
 .ticket-particulars-img {
-    width: 50px; 
-    height: 50px; 
-    border-radius: 50%; 
-    object-fit: contain; 
-    border: 2px solid #ddd; 
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid $border-color;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform $transition-speed, box-shadow $transition-speed;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
-  
+}
+
+.default-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid $border-color;
+  background-color: #f8f9fa;
+}
+
+// Paginator Container
+.paginator-container {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid $border-color;
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+// Tablet (768px)
+@media (max-width: 991px) {
+  .page-title {
+    font-size: 1.25rem;
+
+    &::before {
+      height: 20px;
+    }
+  }
+
+  .btn-grid {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+
+    i {
+      font-size: 0.8rem;
+    }
+  }
+
+  :host ::ng-deep {
+
+    .p-datatable .p-datatable-thead>tr>th,
+    .p-datatable .p-datatable-tbody>tr>td {
+      padding: 10px 8px;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+// Mobile Landscape (768px)
+@media (max-width: 768px) {
+  .bdcmb {
+    .row {
+      flex-direction: column;
+
+      .col-sm-6 {
+        width: 100%;
+
+        &:last-child {
+          margin-top: 8px;
+        }
+      }
+    }
+  }
+
+  .b-links {
+    text-align: left;
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+
+  .btn-grid {
+    padding: 6px 8px;
+
+    // Hide button text on smaller screens, show only icons
+    span:not(.mdi) {
+      display: none;
+    }
+  }
+
+  :host ::ng-deep {
+    .p-datatable-wrapper {
+      overflow-x: auto;
+    }
+
+    .p-paginator {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+
+      .p-paginator-current {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+// Mobile Portrait (576px)
+@media (max-width: 576px) {
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .form-control {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .card {
+    border-radius: 8px;
+    margin: 0 -10px;
+  }
+
+  .card-body {
+    padding: 12px;
+  }
+
+  .ticket-particulars-img,
   .default-img {
-    width: 50px; 
-    height: 50px;
-    border-radius: 50%;
-    object-fit: contain; 
-    border: 2px solid #ddd;
+    width: 38px;
+    height: 38px;
   }
-  
+
+  :host ::ng-deep {
+    .p-datatable .p-datatable-thead>tr>th {
+      font-size: 0.75rem;
+      padding: 8px 6px;
+    }
+
+    .p-datatable .p-datatable-tbody>tr>td {
+      font-size: 0.8rem;
+      padding: 8px 6px;
+    }
+  }
+}
+
+// Extra Small (480px)
+@media (max-width: 480px) {
+  .row.mt-2 {
+    .col-md-6 {
+      margin-bottom: 10px;
+    }
+  }
+
+  .btn-grid {
+    padding: 5px 6px;
+    font-size: 0.7rem;
+    border-radius: 4px;
+  }
+}
+
+// Dialog Styling
+:host ::ng-deep {
+  .p-dialog {
+    .p-dialog-header {
+      background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+      color: white;
+      border-radius: 12px 12px 0 0;
+
+      .p-dialog-title {
+        font-weight: 600;
+      }
+
+      .p-dialog-header-icon {
+        color: white;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+
+    .p-dialog-content {
+      padding: 24px;
+    }
+  }
+}

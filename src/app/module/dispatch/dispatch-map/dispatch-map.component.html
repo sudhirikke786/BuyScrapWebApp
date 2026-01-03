@@ -1,0 +1,30 @@
+<div class="card p-2" style="height: 100%;">
+   <div class="bdcmb mt-2">
+      <div class="row">
+        <div class="col-sm-6 col-6">
+          <h4 class="page-title">Dispatch Map</h4>
+        </div>
+
+        <div class="col-sm-6 col-6">
+          <div class="b-links">
+            <a routerLink="/{{orgName}}/home">Home</a> / <a href="javascript:void(0)"
+              routerLink="/{{orgName}}/map">Map</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+
+  <google-map height="80vh" width="100%"
+      [center]="center"
+      [zoom]="zoom">
+
+      <map-marker *ngFor="let c of containers"
+        [position]="{lat: c.lat, lng: c.lng}"
+        [label]="c.name"
+        [title]="c.name">
+      </map-marker>
+
+  </google-map>
+  </div>
+</div>

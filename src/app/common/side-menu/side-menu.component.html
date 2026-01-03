@@ -4,13 +4,13 @@
     <!-- Brand Logo -->
     <div class="logo-box">
         <!-- Brand Logo Light -->
-        <a class="logo-light" [routerLink]="['/',orgName, 'dashboard']">
+        <a class="logo-light" [routerLink]="(currentRole === 'Administrator' || currentRole === 'Cashier') ? ['/',orgName, 'dashboard'] : null">
             <img src="/assets/images/custom/logo-buyscrapapp1.png" alt="BUYSCRAPAPP Logo" class="logo-lg">
             <img src="/assets/images/custom/logo-buyscrapapp1.png" alt="BUYSCRAPAPP Logo" class="logo-sm">
         </a>
 
         <!-- Brand Logo Dark -->
-        <a class="logo-dark" [routerLink]="['/',orgName, 'dashboard']">
+        <a class="logo-dark" [routerLink]="(currentRole === 'Administrator' || currentRole === 'Cashier') ? ['/',orgName, 'dashboard'] : null">
             <img src="/assets/images/custom/logo-buyscrapapp2.png" alt="BUYSCRAPAPP Logo" class="logo-lg">
             <img src="/assets/images/custom/logo-buyscrapapp2.png" alt="BUYSCRAPAPP Logo" class="logo-sm">
         </a>

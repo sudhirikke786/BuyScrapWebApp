@@ -1,0 +1,332 @@
+/* ============================================
+   Redemption Program - Modern Design Styles
+   ============================================ */
+
+/* Page Header */
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #343a40;
+    margin: 0;
+}
+
+/* Breadcrumb styling */
+.b-links {
+    text-align: right;
+    font-size: 0.875rem;
+}
+
+.b-links a {
+    color: #6c757d;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.b-links a:hover {
+    color: #0176B8;
+}
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-body {
+    padding: 24px;
+}
+
+/* Form Styling */
+.form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-control:focus {
+    border-color: #0176B8;
+    box-shadow: 0 0 0 3px rgba(1, 118, 184, 0.15);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: #adb5bd;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Button Styling */
+.btn-primary {
+    background: linear-gradient(135deg, #0176B8 0%, #015a8c 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(1, 118, 184, 0.4);
+    background: linear-gradient(135deg, #0176B8 0%, #015a8c 100%);
+}
+
+.btn-secondary {
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+}
+
+.btn-danger {
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+}
+
+/* Table Styling */
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+    border-bottom: 2px solid #e9ecef;
+    color: #495057;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 14px 12px;
+}
+
+.table tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(1, 118, 184, 0.04);
+}
+
+.table tbody td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    font-size: 0.9rem;
+    color: #495057;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* Dialog/Popup Styling */
+:host ::ng-deep .p-dialog {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+    background: linear-gradient(135deg, #0176B8 0%, #015a8c 100%);
+    color: white;
+    padding: 16px 20px;
+    border-bottom: none;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: white;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon {
+    color: white;
+    width: 2rem;
+    height: 2rem;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+    padding: 24px;
+    background: #ffffff;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+/* Tablet (991px) */
+@media (max-width: 991px) {
+    .page-title {
+        font-size: 1.25rem;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile Landscape (768px) */
+@media (max-width: 768px) {
+    .bdcmb .row {
+        flex-direction: column;
+    }
+
+    .bdcmb .col-sm-6,
+    .bdcmb .col-6 {
+        width: 100%;
+    }
+
+    .bdcmb .col-sm-6:last-child {
+        margin-top: 8px;
+    }
+
+    .b-links {
+        text-align: left;
+    }
+
+    .card-body {
+        padding: 16px;
+    }
+
+    /* Stack form inputs in dialog */
+    :host ::ng-deep .p-dialog .row .col-md-6 {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    :host ::ng-deep .p-dialog {
+        width: 95vw !important;
+        max-width: 95vw !important;
+    }
+}
+
+/* Mobile Portrait (576px) */
+@media (max-width: 576px) {
+    .page-title {
+        font-size: 1.1rem;
+    }
+
+    .card {
+        border-radius: 8px;
+        margin: 0 -10px;
+    }
+
+    .card-body {
+        padding: 12px;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .btn-sm {
+        padding: 5px 8px;
+        font-size: 0.75rem;
+    }
+
+    /* Stack action buttons in table */
+    .table tbody td:last-child {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .table tbody td:last-child .btn {
+        flex: 1 1 auto;
+        min-width: fit-content;
+    }
+
+    :host ::ng-deep .p-dialog .p-dialog-content {
+        padding: 15px;
+    }
+
+    :host ::ng-deep .p-dialog .p-dialog-footer {
+        padding: 12px 15px;
+        flex-wrap: wrap;
+    }
+}
+
+/* Extra Small (480px) */
+@media (max-width: 480px) {
+    .form-control {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .table thead th {
+        font-size: 0.75rem;
+        padding: 10px 8px;
+    }
+
+    .table tbody td {
+        font-size: 0.8rem;
+        padding: 10px 8px;
+    }
+}
+
+/* Large screens (2000px+) */
+@media (min-width: 2000px) {
+    .page-title {
+        font-size: 1.75rem;
+    }
+
+    .card-body {
+        padding: 32px;
+    }
+
+    .form-control {
+        padding: 14px 18px;
+        font-size: 1rem;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        padding: 12px 24px;
+        font-size: 1rem;
+    }
+}

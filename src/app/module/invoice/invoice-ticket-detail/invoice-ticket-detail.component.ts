@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 
 
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -58,6 +58,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   orgName: any;
   sellerId: any;
   invoiceId: any;
+  invoicesInvoiceID:any;
   shipOutID:any;
   locId: any;
   logInUserId: any;
@@ -92,6 +93,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   webcamImage: WebcamImage | undefined;
   imageUrl: any;
   isChangeItemOn = false;
+  adminAdvertisement!:  string | null;
 
 
   itemRowId: number = 0;
@@ -202,7 +204,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   checkVisible = false;
   
   numberFormat: string = '1.3-3';
-  currencySymbol: string = 'USD';
+  defaultCurrencyCode: string = 'USD';
+  currencyCode: string = '';
 
   copyMaterialData:any[]  = [];
   copySubMaterialData:any[]  = [];
@@ -249,6 +252,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
   ngOnInit() {    
     window.addEventListener('afterprint', this.afterPrintHandler);
     this.currentRole = this.authService.userCurrentRole();
+    this.adminAdvertisement = localStorage.getItem('adminAdvertisement');
 
     this.route.url.subscribe(url => {
       this.currentRoute = url.join('/');
@@ -282,7 +286,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
 
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
-    this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
+    this.defaultCurrencyCode = localStorage.getItem('currencyCode') || 'USD';
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.locationName = localStorage.getItem('locationName');
     this.route.params.subscribe((param) => {
@@ -312,6 +316,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
      this.shipOutID=params['shipOutID'];
      this.customerID = params['customerID'];
     console.log('Customer ID:', this.customerID);
+     this.currencyCode = params['currencyCode'];
+     this.currencySymbol = params['currencySymbol'];
      
 
 
@@ -326,8 +332,40 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     if ((this.shipOutID)) {
       this.getShipOutMaterialbyID(); 
     }
+    if (this.invoiceData) {
+      this.invoiceData.currencyCode = this.currencyCode;
+      this.invoiceData.currencySymbol = this.currencySymbol;
+    }
+    const code = this.invoiceData?.currencyCode || this.defaultCurrencyCode;
+    this.currencySymbol = this.getCurrencySymbol(code);
+
+    this.router.events.subscribe(event => {
+      if(event instanceof NavigationStart){
+        if(this.isEditModeOn && !this.showConfirmLeavePopup){
+          this.showConfirmLeavePopup = true;
+          this.pendingNavigationUrl = event.url;
+          this.router.navigateByUrl(this.router.url, { replaceUrl: true });
+        }
+      }
+    })
 
   }
+
+  proceedWithNavigation() {
+    this.showConfirmLeavePopup = false;
+    this.isEditModeOn = false;
+  
+    if (this.pendingNavigationUrl) {
+      this.router.navigateByUrl(this.pendingNavigationUrl);
+      this.pendingNavigationUrl = null;
+    }
+  }
+
+  cancelNavigation() {
+    this.showConfirmLeavePopup = false;
+    this.pendingNavigationUrl = null;
+  }
+
 
   getShipOutMaterialbyID() {
     const paramObject = {
@@ -680,7 +718,7 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
 
   getAllInvoicesDetails() {
-    this.isLoading = true;
+    // this.isLoading = true;
     const paramObject = {
       LocationId: this.locId,
       SerachText: this.invoiceId,
@@ -730,11 +768,11 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         this.getAllUsers(userId);
       },
         error: (err: any) => {
-          this.isLoading = false;
+          // this.isLoading = false;
           // this.errorMsg = 'Error occured';
         },
         complete: () => {
-          this.isLoading = false;
+          // this.isLoading = false;
         }
       });
   }, 0); 
@@ -934,33 +972,42 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
 
 
   GetInvoiceMaterialsDetailsByInvoiceId() {
-    const paramObject = {
-      InvoiceId: this.invoiceId,
-      locid: this.locId,
-      IsCOD: false,
-      IsCODDone: false
-    };
-    this.commonService.GetInvoiceMaterialsDetailsByInvoiceId(paramObject)
-      .subscribe(data => {
-        console.log('GetInvoiceMaterialsDetailsByInvoiceId :: ');
-        console.log(data);
-        this.invoiceObj = data.body.data.map((item: any) => {
-          item.isSelected = false;
-          return item
-        });
+    this.isLoading = true;
+    setTimeout(() => {
+      const paramObject = {
+        InvoiceId: this.invoiceId,
+        locid: this.locId,
+        IsCOD: false,
+        IsCODDone: false
+      };
+      this.commonService.GetInvoiceMaterialsDetailsByInvoiceId(paramObject)
+        .subscribe({
+          next: (data) => {
+            console.log('GetInvoiceMaterialsDetailsByInvoiceId :: ');
+            console.log(data);
+            this.invoiceObj = data.body.data.map((item: any) => {
+              item.isSelected = false;
+              this.invoicesInvoiceID = data.body.data[0].invoicesInvoiceID; 
+              return item
+            });
 
-        this.holdinvoiceObj = null;
-        this.holdinvoiceObj = data.body.data.filter((obj: any) => {
-          return obj.isHold === true
-        });
-        this.isHoldTrue = (this.holdinvoiceObj.length > 0) ? true : false;
+            this.holdinvoiceObj = null;
+          this.holdinvoiceObj = data.body.data.filter((obj: any) => {
+            return obj.isHold === true
+          });
+          this.isHoldTrue = (this.holdinvoiceObj.length > 0) ? true : false;
 
-        this.calculateTotal(this.invoiceObj);
-      },
-        (err: any) => {
-          // this.errorMsg = 'Error occured';
-        }
-      );
+            this.calculateTotal(this.invoiceObj);
+          },
+          error: (err: any) => {
+            this.isLoading = false;
+            // this.errorMsg = 'Error occured';
+          },
+          complete: () => {
+            this.isLoading = false;
+          }
+        });
+    }, 300);
   }
 
   calculateTotal(invoices: any) {
@@ -1173,7 +1220,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     switch (this.selectedHoldAmount) {
       case 'Partial Pay Amount':
         if (this.totalHoldAmount >= this.payAmount && (this.totalHoldAmount != 0 || this.payAmount != 0)) {
-          alert(`Hold amount ( $${this.totalHoldAmount} ) is equal or more than total pay amount ( $${this.payAmount} )`);
+          // alert(`Hold amount ( $${this.totalHoldAmount} ) is equal or more than total pay amount ( $${this.payAmount} )`);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: `Hold amount ( $${this.totalHoldAmount} ) is equal or more than total pay amount ( $${this.payAmount} )` });
           this.payAmount = 0;
         } else {
           this.payAmount = this.totalAmount - this.invoiceData?.paidAmount - this.totalHoldAmount;
@@ -1479,6 +1527,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
       newInvoice.shippingCharges = parseFloat(Number(this.shippingCharges).toFixed(2)); // K parseFloat(this.shippingCharges);
       newInvoice.discount =  parseFloat(Number(this.discount).toFixed(2));
       newInvoice.dueDate = this.dueDate;
+      newInvoice.currencyCode = this.currencyCode;
+      newInvoice.currencySymbol = this.currencySymbol;
       
 
       this.invoiceData = newInvoice;
@@ -1950,7 +2000,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
     const param = {
       InvoiceId: invoiceId,
       LocationId: this.locId,
-      Type: localStorage.getItem('defaultPrintSize')
+      Type: localStorage.getItem('defaultPrintSize'),
+      Advertising: this.adminAdvertisement
     }
     //this.showLoaderReport = false;
 
@@ -2008,7 +2059,8 @@ export class InvoiceTicketDetailComponent implements OnInit , AfterViewInit {
         //alert('1111');
         setTimeout(checkPrintStatus, 1000);
       } else {
-        alert('Tiket Receipt Print');
+        // alert('Tiket Receipt Print');
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tiket Receipt Print' });
         this.afterPrintHandler();
         // Add your post-print logic here
       }

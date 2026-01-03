@@ -7,6 +7,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { DataService } from 'src/app/core/services/data.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { InoutService } from 'src/app/core/services/inout.service';
 @Component({
   selector: 'app-inout-layout',
   templateUrl: './inout-layout.component.html',
@@ -104,7 +105,8 @@ export class InoutLayoutComponent implements OnInit {
     private messageService:MessageService,
     private confirmationService: ConfirmationService,
     public dataService: DataService,
-    public commonService: CommonService) { }
+    public commonService: CommonService,
+  public inoutService: InoutService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -124,6 +126,42 @@ export class InoutLayoutComponent implements OnInit {
     this.navigateToInitialView();
 
   }
+  searchInOut() {
+    const pagination = {
+      SerachText: this.serachText, 
+      PageNumber: 1,        // Reset to first page for new search
+      RowOfPage: 10,       // Set number of rows per page
+      LocationId: this.locId,
+      first: 0             // Set the initial starting index
+    };
+  
+    // Emit search event if needed for other components
+    this.inoutService.updateSearchInOut(this.serachText);
+  
+    // Call the method to fetch filtered data based on the search
+    this.getAllInoutDetails(pagination);
+  }
+  
+  
+  refreshInOutData() {
+    this.serachText = ''; // Reset the search text to empty
+    const pagination = {
+      SerachText: this.serachText,  // Empty search text to fetch all records
+      PageNumber: 1,                // Reset to first page
+      RowOfPage: 10,                // Number of rows per page
+      LocationId: this.locId,
+      first: 0                      // Reset the starting index
+    };
+  
+    // Emit the refresh event if needed
+    this.inoutService.updateRefreshInOut();
+  
+    // Call the method to fetch all data
+    this.getAllInoutDetails(pagination);
+  }
+  
+  
+  
 
   navigateToInitialView() {
     const currentUrl = this.router.url;
@@ -356,11 +394,11 @@ export class InoutLayoutComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.getAllInoutDetails(this.pagination);
+        this.searchInOut()
         break;
       case 'mdi-refresh':
         this.serachText = '';
-        this.getAllInoutDetails(this.pagination);
+        this.refreshInOutData()
         break;
       case 'mdi-plus':
         this.showDialog();

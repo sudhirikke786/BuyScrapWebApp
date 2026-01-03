@@ -3,18 +3,18 @@
 <!-- ============================================================== -->
 
 <div class="content-page" *ngIf="!showLoader">
-  <!-- <div class="content"> -->
+  <div class="content">
     <!-- Start Content-->
-    <!-- <div class="container-fluid"> -->
-      <!-- <div class="bdcmb mt-2"> -->
-        <!-- <div class="row align-items-center"> -->
+    <div class="container-fluid">
+      <div class="bdcmb mt-2">
+        <div class="row align-items-center">
           <!-- Page Title -->
-          <!-- <div class="col-sm-6">
+          <div class="col-sm-6">
             <h4 class="page-title">Certificates of Destruction</h4>
-          </div> -->
-      
+          </div>
+
           <!-- Breadcrumb Links -->
-          <!-- <div class="col-sm-6 text-sm-end text-start">
+          <div class="col-sm-6 text-sm-end text-start">
             <div class="b-links">
               <a routerLink="/{{orgName}}/home" class="breadcrumb-link">Home</a>
               <span class="breadcrumb-separator">/</span>
@@ -22,91 +22,189 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <div class="row mt-2">
-        <!-- <div class="col-md-6 d-flex">
-          <input
-            type="text"
-            id="example-palaceholder"
-            class="form-control"
-            placeholder="Search.."
-          />
-        </div> -->
-        <!-- <div class="col-md-6">
-          <app-actionbar [actions]="actionList"></app-actionbar>
-        </div> -->
+        <div class="col-md-6 d-flex">
+          <input type="text" id="example-palaceholder" class="form-control" placeholder="Search.."
+            [(ngModel)]="searchText" (keyup.enter)="performSearch()" />
+        </div>
+        <div class="col-md-6 d-flex align-items-center">
+          <app-actionbar [actions]="actionList" (iconAction)="getAction($event)"></app-actionbar>
+          <div class="view-toggle-container ms-3">
+            <input type="radio" id="cardViewToggle" name="viewToggle" [checked]="isCardView"
+              (change)="isCardView = true; onToggleChange()">
+            <label for="cardViewToggle" class="toggle-option">Card</label>
+
+            <input type="radio" id="gridViewToggle" name="viewToggle" [checked]="!isCardView"
+              (change)="isCardView = false; onToggleChange()">
+            <label for="gridViewToggle" class="toggle-option">Grid</label>
+          </div>
+        </div>
       </div>
       <!-- end page title -->
 
-      <div class="row mt-2">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <div class="certificates-scrollable">
-                <div class="certificates-card-container">
-                  <div *ngFor="let certificate of certificates; let rowIndex = index" class="col-certificate-card">
-                    <div class="certificates-card" [ngClass]="{'selected-card': certificate.selected, 'unselected-card': !certificate.selected}">
-                      <div class="certificate-card-header">
-                        <div class="certificate-id-circle" [ngClass]="{'selected-circle': certificate.selected, 'unselected-circle': !certificate.selected}">
-                          <span>{{ certificate.rowId }}</span>
+      <div class="content-page" *ngIf="isCardView">
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="certificates-scrollable">
+                  <div class="certificates-card-container">
+                    <div *ngFor="let certificate of certificates; let rowIndex = index" class="col-certificate-card">
+                      <div class="certificates-card"
+                        [ngClass]="{'selected-card': certificate.selected, 'unselected-card': !certificate.selected}">
+                        <div class="certificate-card-header">
+                          <div class="certificate-id-circle"
+                            [ngClass]="{'selected-circle': certificate.selected, 'unselected-circle': !certificate.selected}">
+                            <span>{{ certificate.ticketId }}</span>
+                          </div>
+                          <div class="certificate-checkbox">
+                            <p-checkbox [binary]="true" [(ngModel)]="certificate.selected"
+                              (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
+                          </div>
                         </div>
-                        <div class="certificate-checkbox">
-                          <p-checkbox [binary]="true" [(ngModel)]="certificate.selected" (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
+                        <div class="certificate-card-body">
+                          <div class="cert-info-row">
+                            <span class="cert-label">Date Created:</span>
+                            <span class="cert-value">{{ certificate?.dateOpened | date: 'MM/dd/yyyy' }}</span>
+                          </div>
+                          <div class="cert-info-row">
+                            <span class="cert-label">Ticket Amount:</span>
+                            <span class="cert-value">{{ certificate?.ticketAmount }}</span>
+                          </div>
+                          <div class="cert-info-row">
+                            <span class="cert-label">Seller:</span>
+                            <span class="cert-value">{{ certificate.customerName }}</span>
+                          </div>
+                          <div class="cert-info-row">
+                            <span class="cert-label">Date Closed:</span>
+                            <span class="cert-value" *ngIf="certificate?.isCODDone">{{ certificate?.dateClosed | date:
+                              'MM/dd/yyyy' }}</span>
+                            <span class="cert-value" *ngIf="!certificate?.isCODDone">-</span>
+                          </div>
                         </div>
-                      </div>
-                      <div class="certificate-card-body">
-                        <div class="cert-info-row">
-                          <span class="cert-label">Date Created:</span>
-                          <span class="cert-value">{{ certificate?.dateOpened | date: 'MM/dd/yyyy' }}</span>
-                        </div>
-                        <div class="cert-info-row">
-                          <span class="cert-label">Ticket Amount:</span>
-                          <span class="cert-value">{{ certificate?.ticketAmount }}</span>
-                        </div>
-                        <div class="cert-info-row">
-                          <span class="cert-label">Seller:</span>
-                          <span class="cert-value">{{ certificate.customerName }}</span>
-                        </div>
-                        <div class="cert-info-row">
-                          <span class="cert-label">Date Closed:</span>
-                          <span class="cert-value" *ngIf="certificate?.isCODDone">{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</span>
-                          <span class="cert-value" *ngIf="!certificate?.isCODDone">-</span>
-                        </div>
-                      </div>
-                      <div class="certificate-card-footer">
-                        <div *ngIf="certificate?.isCODDone">
-                          <a (click)="getCODImagesbyID(certificate,'show')" class="btn btn-sm btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i>Open</a>
-                          <a (click)="generateCODReport(certificate.rowId)" class="btn btn-sm btn-success waves-effect waves-light me-1"><i class="mdi mdi-printer"></i> Print</a>
-                        </div>
-                        <div *ngIf="!certificate?.isCODDone">
-                          <a (click)="getCODImagesbyID(certificate,'cod')" class="btn btn-sm btn-danger waves-effect waves-light"><i class="mdi mdi-certificate"></i>Edit COD</a>
-                          <!-- <a data-bs-target="" data-bs-toggle="modal" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-close"></i> Close</a> -->
+                        <div class="certificate-card-footer">
+                          <div *ngIf="certificate?.isCODDone">
+                            <a (click)="getCODImagesbyID(certificate,'show')"
+                              class="btn btn-sm btn-success waves-effect waves-light me-1"><i
+                                class="mdi mdi-eye"></i>Open</a>
+                            <a (click)="generateCODReport(certificate.rowId)"
+                              class="btn btn-sm btn-success waves-effect waves-light me-1"><i
+                                class="mdi mdi-printer"></i> Print</a>
+                          </div>
+                          <div *ngIf="!certificate?.isCODDone">
+                            <a (click)="getCODImagesbyID(certificate,'cod')"
+                              class="btn btn-sm btn-danger waves-effect waves-light"><i
+                                class="mdi mdi-certificate"></i>Edit COD</a>
+                            <!-- <a data-bs-target="" data-bs-toggle="modal" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-close"></i> Close</a> -->
 
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              
-              <div class="paginator-container" *ngIf="certificates?.length > 0">
-                <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true" (onPageChange)="onPageChange($event)"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator>
-                <!-- <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" (onPageChange)="onPageChange($event)" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator> -->
+
+                <div class="paginator-container" *ngIf="certificates?.length > 0">
+                  <p-paginator class="serverside-paginator" [showCurrentPageReport]="true"
+                    (onPageChange)="onPageChange($event)"
+                    currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" [first]="first"
+                    [last]="last" [rows]="pageSize" [totalRecords]="pageTotal"
+                    [rowsPerPageOptions]="commonService.tableConfig?.pageOptions"></p-paginator>
+                  <!-- <p-paginator class="serverside-paginator"  [showCurrentPageReport]="true"  currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries" (onPageChange)="onPageChange($event)" [rowsPerPageOptions]="commonService.tableConfig?.pageOptions" ></p-paginator> -->
 
 
+                </div>
               </div>
-            </div> 
-            <!-- end card body-->
-          </div> 
-          <!-- end card -->
+              <!-- end card body-->
+            </div>
+            <!-- end card -->
+          </div>
+          <!-- end col-->
         </div>
-        <!-- end col-->
+      </div>
+
+      <!-- Grid View -->
+      <div class="content-page" *ngIf="!isCardView">
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <p-table [value]="certificates" [paginator]="false" [scrollable]="true" scrollHeight="50vh"
+                  [showCurrentPageReport]="false" [tableStyle]="{ 'min-width': '50rem' }">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th></th>
+                      <th>Ticket ID</th>
+                      <th>Date Created</th>
+                      <th>Ticket Amount</th>
+                      <th>Seller</th>
+                      <th>Date Closed</th>
+                      <th>Action</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-certificate let-rowIndex="rowIndex">
+                    <tr>
+                      <td>
+                        <!-- <p-tableCheckbox [value]="product" [disabled]="isOutOfStock(product)"></p-tableCheckbox> -->
+
+                        <!-- <p-tableCheckbox   [disabled]="certificate.selected" id="{{'pp'+ rowIndex}}"  (onChange)="onCheckboxChange(certificate)" >
+                        </p-tableCheckbox> -->
+
+                        <p-checkbox [binary]="true" [(ngModel)]="certificate.selected"
+                          (ngModelChange)="setChecked(certificate, rowIndex)"></p-checkbox>
+                        <!-- <p-tableCheckbox  [(ngModel)]="certificate.selected" (onChange)="onCheckboxChange(certificate)"></p-tableCheckbox> -->
+
+
+
+                      </td>
+                      <td>{{ certificate.ticketId }}</td>
+                      <td>{{ certificate?.dateOpened | date: 'MM/dd/yyyy' }}</td>
+                      <td>{{ certificate?.ticketAmount }}</td>
+                      <td>{{ certificate.customerName }}</td>
+                      <td>{{ certificate?.dateClosed | date: 'MM/dd/yyyy' }}</td>
+                      <td *ngIf="certificate?.isCODDone">
+                        <a (click)="getCODImagesbyID(certificate,'show')"
+                          class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-eye"></i>
+                          Show</a>
+
+                        <a (click)="generateCODReport(certificate.rowId)"
+                          class="btn btn-grid btn-success waves-effect waves-light me-1"><i class="mdi mdi-printer"></i>
+                          Print</a>
+
+                        <!-- <a href="" class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-restore"></i> Restore</a>  -->
+                      </td>
+                      <td *ngIf="!certificate?.isCODDone">
+                        <a (click)="getCODImagesbyID(certificate,'cod')"
+                          class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-certificate"></i>
+                          COD</a>
+
+                        <!-- <a data-bs-target="" data-bs-toggle="modal" class="btn btn-grid btn-danger waves-effect waves-light"><i class="mdi mdi-close"></i> Close</a> -->
+                      </td>
+                    </tr>
+                  </ng-template>
+
+                </p-table>
+                <div class="paginator-container mt-3" *ngIf="certificates?.length > 0">
+                  <p-paginator class="serverside-paginator" [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [first]="first"
+                    [last]="last" [rows]="pageSize" [totalRecords]="pageTotal"
+                    [rowsPerPageOptions]="commonService.tableConfig?.pageOptions"
+                    (onPageChange)="onPageChange($event)"></p-paginator>
+                </div>
+              </div>
+              <!-- end card body-->
+            </div>
+            <!-- end card -->
+          </div>
+          <!-- end col-->
+        </div>
       </div>
       <!-- end row-->
-    <!-- </div> -->
+    </div>
     <!-- container -->
-  <!-- </div> -->
+  </div>
   <!-- content -->
 
 
@@ -120,7 +218,7 @@
 
   <app-page-loader type="ftable"></app-page-loader>
 
-  
+
 </div>
 
 
@@ -132,140 +230,132 @@
 <!-- End Page content -->
 <!-- ============================================================== -->
 
-<p-dialog [modal]="true" 
-  header="New Regrade"
-  [(visible)]="visible"
-  [style]="{ width: '60vw' }"
-  [breakpoints]="{'767px': '100vw'}"
->
+<p-dialog [modal]="true" header="New Regrade" [(visible)]="visible" [style]="{ width: '60vw' }"
+  [breakpoints]="{'767px': '100vw'}">
   <ng-template pTemplate="header">
     <div class="d-flex justify-content-between col-10">
-      <div >   
+      <div>
         <a (click)="visible = false" class="btn btn-primary ">
           <i class="mdi mdi-keyboard-backspace"></i>
         </a>
       </div>
     </div>
-  
+
 
     <!-- <h5 class="modal-title ml-10" id="myLargeModalLabel">
       Please enter detailed description of material being processed
     </h5> -->
 
-    
+
   </ng-template>
 
   <div class="row" *ngIf="!ivisible">
     <div class="col-md-12">
-      <div class="d-block fz-14">Please enter detailed description of material being processed  </div>
-      <input
-        type="text"
-        id="example-palaceholder"
-        class="form-control"
-        [(ngModel)]="materialDesc" 
-      />
+      <div class="d-block fz-14">Please enter detailed description of material being processed </div>
+      <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="materialDesc" />
     </div>
 
     <div class="col-md-12 mt-1">
-    
-    <div class="d-block fz-14">
-  
-      <div class="d-flex justify-content-between">
-        <div>   Add Description Photo below </div>
 
-        <div  class="d-flex justify-content-end mb-1">  <a (click)="showCaptureModel()" class="btn btn-grid btn-primary waves-effect waves-light ml-10">
-          Capture Image
-        </a>
-        <a (click)="showItemViewModel()" class="btn btn-grid btn-primary waves-effect waves-light ml-10">
-          View Item
-        </a></div>
-      
-      </div>
-    </div>
-    <div class="d-block fz-14  pd-imgs-box mt-1 border border-secoundary px-2 py-2  d-flex flex-wrap" *ngIf="!certificateLoader">
-    <ng-container  *ngFor="let item of certificatesImages">
-      <div class="col-sm-3">
-        <div class="pd-imgs" tabindex="1">
-          <img src="{{item?.codImagePath}}" style="min-height: 150px;" alt="My COD added in role based data" class="img-responsive" />
+      <div class="d-block fz-14">
+
+        <div class="d-flex justify-content-between">
+          <div> Add Description Photo below </div>
+
+          <div class="d-flex justify-content-end mb-1"> <a (click)="showCaptureModel()"
+              class="btn btn-grid btn-primary waves-effect waves-light ml-10">
+              Capture Image
+            </a>
+            <a (click)="showItemViewModel()" class="btn btn-grid btn-primary waves-effect waves-light ml-10">
+              View Item
+            </a>
+          </div>
+
         </div>
       </div>
-    </ng-container>
-  </div>
+      <div class="d-block fz-14  pd-imgs-box mt-1 border border-secoundary px-2 py-2  d-flex flex-wrap"
+        *ngIf="!certificateLoader">
+        <ng-container *ngFor="let item of certificatesImages">
+          <div class="col-sm-3 position-relative mb-2">
+            <div class="pd-imgs" tabindex="1" style="position: relative;">
+              <img src="{{item?.codImagePath}}" style="min-height: 150px;" alt="Uploaded image"
+                class="img-responsive w-100" />
+              <button type="button" class="btn btn-danger btn-sm delete-btn" (click)="deleteImage(item)"
+                style="position: absolute; top: 5px; right: 5px; border-radius: 50%;">
+                &times;
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
 
     </div>
   </div>
-  
- 
+
+
 
   <div class="row pd-imgs-box mt-2" *ngIf="certificateLoader">
-   
+
     <app-page-loader type="table"></app-page-loader>
   </div>
 
 
   <div class="row mt-3 text-center" *ngIf="!ivisible">
     <div class="col-sm-2">
-      <a
-        href="javascript:void(0)"
-        class="btn btn-grid btn-primary waves-effect waves-light btn-display-block"
-        (click)="saveCOD()"
-        >Save</a
-      >
+      <a href="javascript:void(0)" class="btn btn-grid btn-primary waves-effect waves-light btn-display-block"
+        (click)="saveCOD()">Save</a>
     </div>
   </div>
 
 
   <div class="row" *ngIf="ivisible">
     <div class="card-ticket-table mt-2">
-        <p-table class="ticket-table parent-table" #dt1 [value]="ticketObj" 
-            [paginator]="false" 
-            [rows]="10"    
-            [showCurrentPageReport]="false"
-            [scrollable]="true" 
-            >
-            <ng-template pTemplate="header">
-                <tr>                                                    
-                    <th>Material Name</th>
-                    <th>Gross(M)</th>
-                    <th>Tare</th>
-                    <th>Net</th>
-                    <th>Price</th>
-                    <th>Amount</th>
-                    <th>Image</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-ticket let-rowIndex="rowIndex">
-                <ng-container>
+      <p-table class="ticket-table parent-table" #dt1 [value]="ticketObj" [paginator]="false" [rows]="10"
+        [showCurrentPageReport]="false" [scrollable]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Material Name</th>
+            <th>Gross(M)</th>
+            <th>Tare</th>
+            <th>Net</th>
+            <th>Price</th>
+            <th>Amount</th>
+            <th>Image</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-ticket let-rowIndex="rowIndex">
+          <ng-container>
 
-                    <tr class="border-tr" [ngClass]="{'border-tr': ticket.materialNote ==''}" >
-                        <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD" >
-                            <td class="cod-item" style="width: 25%;">{{ ticket.materialName }}</td>
-                            <td class="cod-item"></td>
-                            <td class="cod-item"></td>
-                            <td class="cod-item"></td>
-                            <td class="cod-item"></td>
-                            <td class="cod-item">{{ ticket.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}</td>
-                        </ng-container>
-                        <ng-template #otherThanCOD >
-                            <td style="width: 25%;">{{ ticket.materialName }}</td>
-                            <td>{{ ticket.gross  }}</td>
-                            <td>{{ ticket.tare }}</td>
-                            <td>{{ ticket.net }}</td>
-                            <td>{{ ticket.price | currency: currencySymbol :'symbol': numberFormat}}</td>
-                            <td>{{ ticket.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
-                        </ng-template>
-                        <td>
-                            <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img" (click)="showSelectedImage(ticket.imagePath)"></a>
-                        </td>                        
-                    </tr>
-                    <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}"  *ngIf="ticket.materialNote != ''">
-                        <td colspan="7">
-                            Note : {{ ticket.materialNote }}
-                        </td>
-                    </tr>
-                </ng-container>              
-            </ng-template>            
-      </p-table>    
+            <tr class="border-tr" [ngClass]="{'border-tr': ticket.materialNote ==''}">
+              <ng-container *ngIf="ticket.isAdjusmentSet; else otherThanCOD">
+                <td class="cod-item" style="width: 25%;">{{ ticket.materialName }}</td>
+                <td class="cod-item"></td>
+                <td class="cod-item"></td>
+                <td class="cod-item"></td>
+                <td class="cod-item"></td>
+                <td class="cod-item">{{ ticket.amount * -1 | currency: currencySymbol :'symbol': numberFormat}}</td>
+              </ng-container>
+              <ng-template #otherThanCOD>
+                <td style="width: 25%;">{{ ticket.materialName }}</td>
+                <td>{{ ticket.gross }}</td>
+                <td>{{ ticket.tare }}</td>
+                <td>{{ ticket.net }}</td>
+                <td>{{ ticket.price | currency: currencySymbol :'symbol': numberFormat}}</td>
+                <td>{{ ticket.amount | currency: currencySymbol :'symbol': numberFormat}}</td>
+              </ng-template>
+              <td>
+                <a><img src="{{ticket.imagePath}}" class="ticket-particulars-img"
+                    (click)="showSelectedImage(ticket.imagePath)"></a>
+              </td>
+            </tr>
+            <tr [ngClass]="{'no-border-tr': ticket.materialNote !=''}" *ngIf="ticket.materialNote != ''">
+              <td colspan="7">
+                Note : {{ ticket.materialNote }}
+              </td>
+            </tr>
+          </ng-container>
+        </ng-template>
+      </p-table>
     </div>
   </div>
 
@@ -274,68 +364,67 @@
 
 <p-dialog [modal]="true" [header]="showImageHeader" (onHide)="cancelImage()" [(visible)]="showImage">
 
-    <div class="over-flow-300 image-center img-profile">
-        <img [src]="selectedImageUrl" style="height: 100%; width: 100%;">
-    </div>
-    <div class="mt-2">        
-        <a class="btn btn-primary " [href]="selectedImageUrl" target="_self" download><i class="mdi"> Download </i></a>
-    </div>
+  <div class="over-flow-300 image-center img-profile">
+    <img [src]="selectedImageUrl" style="height: 100%; width: 100%;">
+  </div>
+  <div class="mt-2">
+    <a class="btn btn-primary " [href]="selectedImageUrl" target="_self" download><i class="mdi"> Download </i></a>
+  </div>
 </p-dialog>
 
 <ng-container *ngIf="cvisible">
-  <p-dialog [modal]="true" 
-  header="New Regrade"
-  [(visible)]="cvisible"
-  [style]="{ width: '80vw' }"
-  [breakpoints]="{'767px': '100vw'}"
->
-  <ng-template pTemplate="header">
-    <a (click)="hideCaptureModel()" class="btn btn-primary "
-      ><i class="mdi mdi-keyboard-backspace"></i
-    ></a>
+  <p-dialog [modal]="true" header="New Regrade" [(visible)]="cvisible" [style]="{ width: '80vw' }"
+    [breakpoints]="{'767px': '100vw'}">
+    <ng-template pTemplate="header">
+      <a (click)="hideCaptureModel()" class="btn btn-primary "><i class="mdi mdi-keyboard-backspace"></i></a>
 
-    <h4 class="modal-title ml-10" id="myLargeModalLabel">Capture Image</h4>
-  </ng-template>
+      <h4 class="modal-title ml-10" id="myLargeModalLabel">Capture Image</h4>
+    </ng-template>
 
-  <div class="row" *ngIf="cvisible">
-    <app-camera (getPicture)="handleImage($event)"></app-camera>
-  </div>
+    <div class="row" *ngIf="cvisible">
+      <app-camera (getPicture)="handleImage($event)"></app-camera>
+    </div>
 
-  <!-- <div class="row mt-3">
+    <!-- <div class="row mt-3">
     <div class="col-sm-12">
       <div id="image-preview"></div>
     </div>
   </div> -->
 
-  <div class="row mt-3">
-    <div class="col-sm-12 d-flex">
-      <div class="form-group">
-        <select class="form-select" id="example-select" [(ngModel)]="selectedImageType" (change)="changeType(selectedImageType)">
-          <option value="ID">ID</option>
-          <option value="Driving Licence">Driver License</option>
-          <option value="Passport">Passport</option>
-        </select>
+    <div class="row mt-3">
+      <div class="col-sm-12 d-flex">
+        <div class="form-group">
+          <select class="form-select" id="example-select" [(ngModel)]="selectedImageType"
+            (change)="changeType(selectedImageType)">
+            <option value="ID">ID</option>
+            <option value="Driving Licence">Driver License</option>
+            <option value="Passport">Passport</option>
+          </select>
+        </div>
+
+        <button class="btn btn-grid btn-primary waves-effect waves-light ml-10 " (click)="SaveImage()">Save
+          Image</button>
+
+        <button class="btn btn-grid btn-primary waves-effect waves-light ml-10"
+          (click)="cvisible = false">Close</button>
       </div>
-
-      <button class="btn btn-grid btn-primary waves-effect waves-light ml-10 " (click)="SaveImage()">Save Image</button>
-
-      <button  class="btn btn-grid btn-primary waves-effect waves-light ml-10" (click)="cvisible = false">Close</button>
     </div>
-  </div>
-</p-dialog>
+  </p-dialog>
 </ng-container>
 
 
 
-<p-dialog header="Header" [(visible)]="isConfirmModel" [modal]="true" [style]="{ width: '40rem' }" [breakpoints]="{'767px': '100vw'}">
+<p-dialog header="Header" [(visible)]="isConfirmModel" [modal]="true" [style]="{ width: '40rem' }"
+  [breakpoints]="{'767px': '100vw'}">
   <ng-template pTemplate="header">
-      <div class="inline-flex align-items-center justify-content-center gap-2">
-          
-          <span class="font-bold white-space-nowrap">Confirm COD</span>
-      </div>
+    <div class="inline-flex align-items-center justify-content-center gap-2">
+
+      <span class="font-bold white-space-nowrap">Confirm COD</span>
+    </div>
   </ng-template>
   <div class="m-0">
-      <h3>{{ checkOBj?.selected ? 'Do you need to confirm ticket for COD?' : 'Do you want to cancel confirm ticket for COD?' }}</h3>
+    <h3>{{ checkOBj?.selected ? 'Do you need to confirm ticket for COD?' : 'Do you want to cancel confirm ticket for
+      COD?' }}</h3>
   </div>
   <ng-template pTemplate="footer">
     <button class="btn btn-primary" (click)="confirmData()">Confirm</button>
@@ -347,22 +436,19 @@
 
 <ng-container *ngIf="!checkTabView">
 
-  <p-dialog header="COD Receipt Report" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
-    
+  <p-dialog header="COD Receipt Report" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true"
+    [style]="{ width: '70vw' }">
+
     <div *ngIf="!showDownload">
       <app-page-loader type="reportloader"></app-page-loader>
     </div>
-    <div class="row" >
-      <div style="height: 500px;" *ngIf="showDownload">             
-        <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
+    <div class="row">
+      <div style="height: 500px;" *ngIf="showDownload">
+        <ngx-extended-pdf-viewer [base64Src]="fileDataObj"
+          [filenameForDownload]="'Certificate Of Destruction'+ ' '+'ID_' + certificateID + '.pdf'"></ngx-extended-pdf-viewer>
       </div>
     </div>
   </p-dialog>
-  </ng-container>
-      
+</ng-container>
+
 <p-toast></p-toast>
-
-
-
-
-

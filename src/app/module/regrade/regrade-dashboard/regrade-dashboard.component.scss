@@ -1,4 +1,424 @@
-.form-label{
-    min-width:200px;
-    width:auto
+// ============================================
+// Regrade Dashboard - Modern Design Styles
+// ============================================
+
+// Variables
+$primary-color: #0d6efd;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$text-muted: #6c757d;
+$border-color: #e9ecef;
+$card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+$transition-speed: 0.3s;
+
+// Form label styling (preserve existing)
+.form-label {
+    min-width: 200px;
+    width: auto;
+    font-weight: 500;
+    color: #495057;
+}
+
+// Page Header
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #343a40;
+    margin: 0;
+}
+
+// Breadcrumb styling
+.b-links {
+    text-align: right;
+    font-size: 0.875rem;
+
+    a {
+        color: $text-muted;
+        text-decoration: none;
+        transition: color $transition-speed;
+
+        &:hover {
+            color: $primary-color;
+        }
+    }
+}
+
+// Search and Form Controls
+.form-control {
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: border-color $transition-speed, box-shadow $transition-speed;
+    font-size: 0.9rem;
+
+    &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+        outline: none;
+    }
+
+    &::placeholder {
+        color: #adb5bd;
+    }
+}
+
+// Card Styling
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: $card-shadow;
+    transition: box-shadow $transition-speed;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+// Override table scroll height to leave room for paginator
+:host ::ng-deep {
+    .p-datatable-wrapper {
+        max-height: calc(100vh - 320px) !important;
+    }
+}
+
+// Deleted row styling - Light red background
+.bg-danger {
+    background-color: #f8d7da !important;
+
+    &.text-white {
+        color: #721c24 !important;
+    }
+}
+
+// Table Enhancements
+:host ::ng-deep {
+    .p-datatable {
+        .p-datatable-thead>tr>th {
+            background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+            border: none;
+            border-bottom: 2px solid $border-color;
+            color: #495057;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 14px 12px;
+        }
+
+        .p-datatable-tbody>tr {
+            transition: background-color $transition-speed;
+
+            &:hover {
+                background-color: rgba($primary-color, 0.04);
+            }
+
+            >td {
+                border: none;
+                border-bottom: 1px solid $border-color;
+                padding: 14px 12px;
+                vertical-align: middle;
+                font-size: 0.9rem;
+                color: #495057;
+            }
+        }
+    }
+}
+
+// Button Styling
+.btn-grid {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all $transition-speed;
+    white-space: nowrap;
+
+    i {
+        font-size: 0.9rem;
+    }
+
+    &.btn-success {
+        border: none;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba($success-color, 0.4);
+        }
+    }
+
+    &.btn-primary {
+        border: none;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+        }
+    }
+
+    &.btn-danger {
+        border: none;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba($danger-color, 0.4);
+        }
+    }
+}
+
+// Dialog/Popup Styling
+:host ::ng-deep {
+    .p-dialog {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+
+        .p-dialog-header {
+            background: linear-gradient(135deg, #0176B8 0%, #015a8c 100%);
+            color: white;
+            padding: 16px 20px;
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+
+            .p-dialog-title {
+                font-weight: 600;
+                font-size: 1.1rem;
+                color: white;
+            }
+
+            .p-dialog-header-icon {
+                color: white;
+                width: 2rem;
+                height: 2rem;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                    border-radius: 50%;
+                }
+            }
+        }
+
+        .p-dialog-content {
+            padding: 24px;
+            background: #ffffff;
+        }
+
+        // Form label and input spacing
+        .form-group.d-flex {
+            gap: 15px;
+
+            .form-label {
+                flex-shrink: 0;
+                margin-bottom: 0;
+                display: flex;
+                align-items: center;
+            }
+
+            .form-control,
+            .form-select {
+                flex: 1;
+            }
+        }
+
+        // Form styling in popup
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+
+            &:focus {
+                border-color: #0176B8;
+                box-shadow: 0 0 0 3px rgba(1, 118, 184, 0.15);
+            }
+        }
+
+        .form-floating label {
+            color: #6c757d;
+        }
+
+        .form-check-input:checked {
+            background-color: #0176B8;
+            border-color: #0176B8;
+        }
+
+        // Button container - right aligned but NOT full width
+        .col-3 {
+            text-align: right;
+        }
+
+        // Form should align button content to the right
+        form {
+            text-align: right;
+
+            // Regrade Now button - not full width
+            >a.btn-primary {
+                display: inline-block;
+                width: auto;
+                margin-top: 10px;
+            }
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0176B8 0%, #015a8c 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(1, 118, 184, 0.4);
+            }
+        }
+
+        .btn-secondary,
+        .btn-danger {
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        // Save button parent container - right align
+        .col-3 {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            max-width: 100%;
+            flex: 0 0 100%;
+            margin-top: 15px;
+        }
+    }
+}
+
+// Select styling
+.form-select,
+select.form-control {
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    padding: 8px 12px;
+    transition: border-color $transition-speed, box-shadow $transition-speed;
+
+    &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+        outline: none;
+    }
+}
+
+// Textarea styling
+textarea {
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    padding: 10px 12px;
+    transition: border-color $transition-speed;
+    width: 100%;
+
+    &:focus {
+        border-color: $primary-color;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+    }
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+@media (max-width: 991px) {
+    .page-title {
+        font-size: 1.25rem;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .btn-grid {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+    }
+
+    :host ::ng-deep {
+
+        .p-datatable .p-datatable-thead>tr>th,
+        .p-datatable .p-datatable-tbody>tr>td {
+            padding: 10px 8px;
+            font-size: 0.85rem;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .bdcmb {
+        .row {
+            flex-direction: column;
+
+            .col-sm-6 {
+                width: 100%;
+
+                &:last-child {
+                    margin-top: 8px;
+                }
+            }
+        }
+    }
+
+    .b-links {
+        text-align: left;
+    }
+
+    .row.mt-2>.col-md-6:first-child {
+        margin-bottom: 10px;
+    }
+
+    .card-body {
+        padding: 12px;
+    }
+
+    :host ::ng-deep {
+        .p-datatable-wrapper {
+            overflow-x: auto;
+        }
+    }
+}
+
+@media (max-width: 575px) {
+    .page-title {
+        font-size: 1.1rem;
+    }
+
+    .btn-grid {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+        border-radius: 4px;
+    }
+
+    .form-label {
+        min-width: 120px;
+    }
+
+    :host ::ng-deep {
+        .p-datatable .p-datatable-thead>tr>th {
+            font-size: 0.75rem;
+            padding: 8px 6px;
+        }
+
+        .p-datatable .p-datatable-tbody>tr>td {
+            font-size: 0.8rem;
+            padding: 8px 6px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .row.mt-2 {
+        .col-md-6 {
+            margin-bottom: 10px;
+        }
+    }
 }

@@ -1,57 +1,78 @@
-<div class="content" *ngIf="!isLoading">
+<div class="content-page" *ngIf="!isLoading">
+    <div class="content">
+        <!-- Start Content-->
+        <div class="container-fluid">
 
-    <!-- Start Content-->
-    <div class="container-fluid">
+            <div class="bdcmb mt-2">
+                <div class="row">
+                    <div class="col-sm-6 col-6">
+                        <h4 class="page-title">Ticket</h4>
+                    </div>
 
-        <div class="bdcmb">
-            <div class="row">
-                <div class="col-sm-6 col-6">
-                    <h4 class="page-title">Ticket </h4>
-                </div>
-
-                <div class="col-sm-6 col-6">
-                    <div class="b-links">
-                        <a routerLink="/{{orgName}}/home">Home</a>
+                    <div class="col-sm-6 col-6">
+                        <div class="b-links">
+                            <a routerLink="/{{orgName}}/home">Home</a> / <a href="javascript:void(0)"
+                                routerLink="/{{orgName}}/tickets">Tickets</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- <div class="row mt-2">
+            <!-- <div class="row mt-2">
                     <div class="col text-center">
                         <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> New Ticket</button> 
                         <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> Merge Ticket and Pay</button>
                     </div>
                     
                 </div> -->
-        <div class="row mt-2" >
-            <div class="ticket-card col-md-12 d-flex  display-mobile flex-wrap">
-                <div class="col-xs-12 col-md-4 col-lg-3  mb-1">
-                    <p-multiSelect [class.fixed-multiselect]="true"   [options]="ticketsTypes" [style]="{'minWidth':'100%'}"
-                        [(ngModel)]="selectedTickets"  [maxSelectedLabels]="maxItem" defaultLabel="You can choose  ..."
-                        optionLabel="name" display="chip" (onChange)="addRemoveStatus($event)">
-                    
-                    </p-multiSelect>
-                </div>
-                <div class="col-xs-12 col-md-3 col-lg-2  mb-1">
-                    <select class="form-control" id="example-select" [(ngModel)]="searchOrder">
-                        <option value="All">All</option>
-                        <option value="TicketId">Ticket ID</option>
-                        <option value="DateCreatedLatest">Date Created : Latest</option>
-                        <option value="DateCreatedOldest">Date Created : Oldest</option>
-                        <option value="LowTicketAmount">Low Ticket Amount</option>
-                        <option value="HighTicketAmount">High Ticket Amount</option>
-                        <option value="Status">Status</option>
-                    </select>
-                </div>
-                <div class="col-xs-12 col-md-4 col-lg-3  mb-1">
-                    <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText" (keyup.enter)="searchTickets()" placeholder="Search">
-                </div>
-                <div class="col">
-                    <div  class="d-flex justify-content-between">
-                        <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
+            <div class="row mt-2">
+                <div class="ticket-card col-md-12 d-flex  display-mobile flex-wrap">
+                    <div class="col-xs-12 col-md-3 col-lg-2 col-xl-2 mb-1">
+                        <p-multiSelect [class.fixed-multiselect]="true" [options]="ticketsTypes"
+                            [style]="{'minWidth':'100%'}" [(ngModel)]="selectedTickets" [maxSelectedLabels]="maxItem"
+                            defaultLabel="You can choose  ..." optionLabel="name" display="chip"
+                            (onChange)="addRemoveStatus($event)">
+
+                        </p-multiSelect>
                     </div>
-                    <!-- <div class="d-flex justify-content-between align-items-start">
+
+                    <div class="col-xs-12 col-md-2 col-lg-2 col-xl-2 mb-1">
+                        <select class="form-control" id="example-select" [(ngModel)]="searchOrder">
+                            <option *ngFor="let item of searchTicketTypes" [value]="item.value">
+                                {{ item.label }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-xs-12 col-md-3 col-lg-2 col-xl-2 mb-1">
+                        <input type="text" id="example-palaceholder" class="form-control" [(ngModel)]="serachText"
+                            (keyup.enter)="searchTickets()" placeholder="Search">
+                    </div>
+                    <div class="col">
+                        <div class="d-flex align-items-center">
+                            <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
+                            <div class="toggle-container ms-2">
+                                <input type="radio" id="sea" name="toggle" value="Business"
+                                    [(ngModel)]="selectedSellerType" (change)="onSellerTypeChange()" checked>
+                                <label for="sea" class="toggle-option">Business</label>
+
+                                <input type="radio" id="land" value="All" name="toggle" [(ngModel)]="selectedSellerType"
+                                    (change)="onSellerTypeChange()">
+                                <label for="land" class="toggle-option">All</label>
+
+                                <input type="radio" id="air" value="Personal" name="toggle"
+                                    [(ngModel)]="selectedSellerType" (change)="onSellerTypeChange()">
+                                <label for="air" class="toggle-option">Personal</label>
+                            </div>
+
+                            <div class="d-flex align-items-center ms-2">
+                                <input type="checkbox" class="form-check-input" id="chkMerge"
+                                    [(ngModel)]="pagination.IsMergeTicket" (change)="getAllTicketsDetails(pagination)">
+                                <label class="form-check-label ms-1 text-nowrap" for="chkMerge">Merged Ticket</label>
+                            </div>
+                        </div>
+
+                        <!-- <div class="d-flex justify-content-between align-items-start">
                         <a  type="button" (click)="addNewTicket()" 
                         class="btn btn-primary me-1  cursor-pointer" >
                          New Ticket
@@ -61,28 +82,27 @@
                             Merge Ticket
                         </a>
                     </div> -->
-                   
-    
-                   
+
+
+
+                    </div>
                 </div>
+
+
             </div>
-         
+            <!-- end page title -->
 
-        </div>
-        <!-- end page title -->
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
 
-        <div class="row mt-2">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
 
-                      
                             <div class="row">
                                 <div class="col-sm-12">
                                     <p-table #dt1 [value]="tickets" [paginator]="false" [rows]="pageSize"
-                                        [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" 
-                                          scrollHeight="calc(100vh - 290px)"
-                                         [loading]="isLoading"
+                                        [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true"
+                                        scrollHeight="calc(100vh - 290px)" [loading]="isLoading"
                                         [globalFilterFields]="['ticket.rowId', 'ticket.createdDate', 'ticket.status', 'ticket.ticketAmount', 'ticket.customerName']">
                                         <ng-template pTemplate="header">
                                             <tr>
@@ -96,34 +116,45 @@
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="body" let-ticket>
-                                            <tr (contextmenu)="onRightClick($event)" [ngClass]="{'bg-info': ticket.isParent}">
-                                                <td>{{ ticket?.rowId }}</td>
+                                            <tr (contextmenu)="onRightClick($event)"
+                                                [ngClass]="{'bg-info': ticket.isParent, 'truckscale-highlight': ticket.scaleTypeID > 0, 'future-tag-hold': isFutureTagHold(ticket.tagHoldDate)}">
+                                                <td>{{ ticket?.ticketId }}</td>
                                                 <td>{{ ticket?.createdDate | date: 'MM/dd/yyyy' }}</td>
-                                                <td><span class="status-badge" [ngClass]="'status-' + (ticket?.status ? ticket.status.toLowerCase().replace(' ', '_') : '')">{{ ticket?.status | uppercase }}</span></td>
-                                                <td>{{ ticket?.ticketAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                                <td pTooltip="{{ ticket?.paymentTypes }}" tooltipPosition="top"><span
+                                                        class="status-badge"
+                                                        [ngClass]="'status-' + (ticket?.status ? ticket.status.toLowerCase().replaceAll(' ', '_') : '')">{{
+                                                        ticket?.status | uppercase }}</span></td>
+                                                <td>{{ ticket?.ticketAmount | currency: (ticket?.currencyCode ?
+                                                    ticket.currencyCode : defaultCurrencyCode) : 'symbol': numberFormat
+                                                    }}</td>
                                                 <td>{{ ticket?.customerName }}</td>
-                                                <td>{{ ticket?.dateClosed ? (ticket?.dateClosed | date: 'MM/dd/yyyy') : ''}}</td>
+                                                <td>{{ ticket?.dateClosed ? (ticket?.dateClosed | date: 'MM/dd/yyyy') :
+                                                    ''}}</td>
                                                 <td>
                                                     <div class="d-flex no-wrap">
                                                         <ng-container *ngIf="currentRole!== 'Scale'">
-                                                            <a *ngIf="ticket?.status !== 'VOIDED'" type="button" (click)="showVoideCancelCopy(ticket)"
+                                                            <a *ngIf="ticket?.status !== 'VOIDED'" type="button"
+                                                                (click)="showVoideCancelCopy(ticket)"
                                                                 class="btn btn-grid btn-danger  me-1">
                                                                 <i class="mdi mdi-trash-can-outline pe-1"></i> Void
                                                             </a>
-                                                            <a *ngIf="ticket?.status == 'VOIDED'" type="button" (click)="showRestoreTicket(ticket)"
+                                                            <a *ngIf="ticket?.status == 'VOIDED'" type="button"
+                                                                (click)="showRestoreTicket(ticket)"
                                                                 class="btn btn-grid btn-success  me-1">
                                                                 <i class="mdi mdi-restore pe-1"></i> Restore
                                                             </a>
 
                                                         </ng-container>
-                                                       
+
                                                         <a class="btn btn-grid btn-success me-1"
                                                             (click)="showTicketDetails(ticket)">
-                                                            <i class="mdi mdi-eye pe-1"></i> Open Ticket
+                                                            <i class="mdi mdi-eye pe-1"></i> {{ ticket.parentRowID ?
+                                                            'Child Ticket of ' + ticket.parentRowID : 'Open Ticket' }}
                                                         </a>
-                                                       
-                                                        <a *ngIf="currentRole == 'Administrator' && ticket.isEditMode == true" class="btn btn-grid btn-success"
-                                                        (click)="openUnlockConfirm(ticket)">
+
+                                                        <a *ngIf="currentRole == 'Administrator' && ticket.isEditMode == true"
+                                                            class="btn btn-grid btn-success"
+                                                            (click)="openUnlockConfirm(ticket)">
                                                             <i class="mdi mdi-eye pe-1"></i> Unlock Ticket
                                                         </a>
 
@@ -135,247 +166,259 @@
 
 
                                     </p-table>
-                                 
+
 
                                 </div>
                                 <div class="col-sm-12">
-                                <div *ngIf="tickets?.length > 0">
-                                    <p-paginator class="serverside-paginator" [showCurrentPageReport]="true"
-                                        (onPageChange)="onPageChange($event)"
-                                        currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries"
-                                        [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal"
-                                        [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions"></p-paginator>
-                                </div>
+                                    <div class="paginator-container" *ngIf="tickets?.length > 0">
+                                        <p-paginator class="serverside-paginator" [showCurrentPageReport]="true"
+                                            (onPageChange)="onPageChange($event)"
+                                            currentPageReportTemplate=" Showing {first} to {last} of {totalRecords} entries"
+                                            [first]="first" [last]="last" [rows]="pageSize" [totalRecords]="pageTotal"
+                                            [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions"
+                                            dropdownAppendTo="body"></p-paginator>
+                                    </div>
                                 </div>
                             </div>
-                    
-                    </div> <!-- end card -->
-                </div><!-- end col-->
-            </div>
-            <!-- end row-->
 
-        </div> <!-- container -->
+                        </div> <!-- end card -->
+                    </div><!-- end col-->
+                </div>
+                <!-- end row-->
 
+            </div> <!-- container -->
 
-      
-    </div> <!-- content -->
-
+        </div> <!-- content -->
+    </div> <!-- content-page -->
 </div>
 
 <div class="content" *ngIf="isLoading">
     <app-page-loader type="ftable"></app-page-loader>
-  </div>
-  
+</div>
 
 
 
 
-    <p-dialog [modal]="true" 
-        [header]="newTicketVisible ? 'New Ticket' : ( ticketvisible ? 'Merge Ticket and Pay' : '' )"
-        [(visible)]="dialogPopupVisible" [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
+
+<p-dialog [modal]="true" [header]="newTicketVisible ? 'New Ticket' : ( ticketvisible ? 'Merge Ticket and Pay' : '' )"
+    [(visible)]="dialogPopupVisible" [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}">
 
 
-       
 
-        <div class="row" *ngIf="sellerLoader">
-         
-                <app-page-loader type="ftable"></app-page-loader>
-           
+
+    <div class="row" *ngIf="sellerLoader">
+
+        <app-page-loader type="ftable"></app-page-loader>
+
+    </div>
+
+
+    <div class="row" *ngIf="!sellerLoader">
+        <div [ngClass]="IsMultiCurrencySupportEnabled ? 'col-md-4' : 'col-md-6'">
+            <input type="text" #searchBox id="example-palaceholder" (keydown)="onKeydown($event, searchBox.value)"
+                [(ngModel)]="searchSellerInput" class="form-control"
+                placeholder="Search for Sellers, Address, License and License Plate">
         </div>
+        <div [ngClass]="IsMultiCurrencySupportEnabled ? 'col-md-4' : 'col-md-6'">
+            <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newTicketList"></app-actionbar>
 
-
-        <div class="row" *ngIf="!sellerLoader">
-
-            <div class="col-md-6">
-                <input type="text" #searchBox id="example-palaceholder"  (keydown)="onKeydown($event, searchBox.value)"  [(ngModel)]="searchSellerInput" class="form-control"
-                    placeholder="Search for Sellers, Address, License and License Plate">
-            </div>
-            <div class="col-md-6">
-                <app-actionbar (iconAction)="getSellerAction($event)" [actions]="newTicketList"></app-actionbar>
-
-                <!-- <a  type="button" (click)="addNewSeller()" 
+            <!-- <a  type="button" (click)="addNewSeller()" 
                 class="btn btn-primary me-1 px-1 py-1 cursor-pointer" style="font-size: 16px !important;padding: 5px !important;">
                 New Customer
                 </a> -->
-            </div>
-
         </div>
 
-        <div class="row mt-3"  *ngIf="!sellerLoader">
+        <div *ngIf="IsMultiCurrencySupportEnabled" class="col-md-4">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <label class="form-label mb-0"><strong>Currency:</strong></label>
+                </div>
+                <div class="col">
+                    <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrencyID" optionLabel="currencyCode"
+                        optionValue="rowID" placeholder="Select Currency" [filter]="true" filterBy="currencyCode"
+                        filterPlaceholder="Search currency..." [style]="{'width': '100%'}">
+                    </p-dropdown>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <p-table [value]="sellers" [scrollable]="true" scrollHeight="40vh" [paginator]="true" [rows]="10"
-                [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
+    <div class="row mt-3" *ngIf="!sellerLoader">
+
+        <p-table [value]="sellers" [scrollable]="true" scrollHeight="40vh" [paginator]="true" [rows]="10"
+            [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="commonService?.tableConfig?.pageOptions">
 
 
 
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th></th>
-                        <th>Seller</th>
-                        <th>Driver's License</th>
-                        <th>Address</th>
-                        <!-- <th>Action</th> -->
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-seller>
-                    <tr style="cursor: pointer;" (click)="clickOnSeller(seller.rowId, seller.fullName, seller.sellerType)">
-                        <td>
-                            <!-- <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" (click)="showSelectedImage(seller.idfaceShotImage, '1')"></a> -->
-                            <a *ngIf="seller.idfaceShotImage"><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" ></a>
-                            <img *ngIf="!seller.idfaceShotImage" src="/assets/images/custom/icons/user.png" class="default-img">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th></th>
+                    <th>Seller</th>
+                    <th>Driver's License</th>
+                    <th>Address</th>
+                    <!-- <th>Action</th> -->
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-seller>
+                <tr style="cursor: pointer;" (click)="clickOnSeller(seller.rowId, seller.fullName, seller.sellerType)">
+                    <td>
+                        <!-- <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" (click)="showSelectedImage(seller.idfaceShotImage, '1')"></a> -->
+                        <a *ngIf="!IsCustomerFacePictureEnabled && seller.idfaceShotImage"><img
+                                src="{{seller.idfaceShotImage}}" class="ticket-particulars-img"></a>
+                        <img *ngIf="IsCustomerFacePictureEnabled || !seller.idfaceShotImage"
+                            src="/assets/images/custom/icons/user.png" class="default-img">
 
-                        </td>
-                        <td>{{ seller.fullName }}</td>
-                        <td>{{ seller.driverLicenseNumber }}</td>
-                        <td>{{ seller.streetAddress }}</td>
-                        <!-- <td>                                                           
+                    </td>
+                    <td>{{ seller.fullName }}</td>
+                    <td>{{ seller.driverLicenseNumber }}</td>
+                    <td>{{ seller.streetAddress }}</td>
+                    <!-- <td>                                                           
                             <a class="btn btn-grid btn-success"
                                 (click)="clickOnSeller(seller.rowId, seller.fullName)" >
                                 <i class="mdi mdi-eye pe-1"></i> Select
                             </a>
                         </td> -->
+                </tr>
+            </ng-template>
+
+        </p-table>
+
+    </div>
+
+</p-dialog>
+
+
+<p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Child Ticket" [(visible)]="parentTicketIDVisible"
+    [style]="{ width: '30vw' }">
+    <p>
+        Selected Ticket is child ticket of {{parentRowId}}. Please select parent ticket to perform action on the
+        same.
+    </p>
+    <ng-template pTemplate="footer">
+        <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="closeChildTicketMessage()">OK</a>
+    </ng-template>
+</p-dialog>
+
+
+<p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Child Ticket" [(visible)]="isParentTicketVisible"
+    [style]="{ width: '70vw' }">
+    <div class="row">
+        <div class="col-md-12" *ngIf="!childTicketsLoader">
+            <p-table #dt1 [value]="childTickets" [paginator]="false" [rows]="10" [showCurrentPageReport]="true"
+                [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[ 5, 10, 20, 50]" [scrollable]="true"
+                scrollHeight="80vh" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Date Created</th>
+                        <th>Status</th>
+                        <th>Ticket Amount</th>
+                        <th>Seller</th>
+                        <th>Date Closed</th>
+                        <th>Action</th>
                     </tr>
                 </ng-template>
-              
-            </p-table>
-       
-        </div>
-     
-    </p-dialog>
+                <ng-template pTemplate="body" let-childTicket>
+                    <tr>
+                        <td>{{ childTicket?.ticketId }}</td>
+                        <td>{{ childTicket?.createdDate | date: 'MM/dd/yyyy' }}</td>
+                        <td>{{ childTicket?.status }}</td>
+                        <td>{{ childTicket?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                        <td>{{ childTicket?.customerName }}</td>
+                        <td>{{ childTicket?.dateClosed ? (childTicket?.dateClosed | date: 'MM/dd/yyyy') : '' }}</td>
+                        <td>
+                            <a class="btn btn-grid btn-success" (click)="showTicketDetails(childTicket)">
+                                <i class="mdi mdi-eye pe-1"></i> Open Ticket
+                            </a>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <div class="d-flex">
+                        <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Pay Remainder"
+                            (click)="payRemainder()" *ngIf="selectedTicket?.status !== 'PAID'"> Pay Remainder </a>
+                        <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Print"
+                            (click)="generateSingleTicketReport(ticketId)"> Print </a>
+                        <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Close"
+                            (click)="isParentTicketVisible = false;"> Close </a>
 
-
-    <p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Child Ticket" [(visible)]="parentTicketIDVisible" [style]="{ width: '30vw' }">
-        <p>
-            Selected Ticket is child ticket of {{parentTicketId}}. Please select parent ticket to perform action on the
-            same.
-        </p>
-        <ng-template pTemplate="footer">
-            <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close"
-                (click)="closeChildTicketMessage()">OK</a>
-        </ng-template>
-    </p-dialog>
-
-
-    <p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Child Ticket" [(visible)]="isParentTicketVisible" [style]="{ width: '70vw' }">
-        <div class="row">
-            <div class="col-md-12" *ngIf="!childTicketsLoader">
-                <p-table #dt1 [value]="childTickets" [paginator]="false" [rows]="10" [showCurrentPageReport]="true"
-                    [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[ 5, 10, 20, 50]" [scrollable]="true"
-                    scrollHeight="80vh" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>Ticket ID</th>
-                            <th>Date Created</th>
-                            <th>Status</th>
-                            <th>Ticket Amount</th>
-                            <th>Seller</th>
-                            <th>Date Closed</th>
-                            <th>Action</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-childTicket>
-                        <tr>
-                            <td>{{ childTicket?.rowId }}</td>
-                            <td>{{ childTicket?.createdDate | date: 'MM/dd/yyyy' }}</td>
-                            <td>{{ childTicket?.status }}</td>
-                            <td>{{ childTicket?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
-                            <td>{{ childTicket?.customerName }}</td>
-                            <td>{{ childTicket?.dateClosed ? (childTicket?.dateClosed | date: 'MM/dd/yyyy') : '' }}</td>
-                            <td>                                
-                                <a class="btn btn-grid btn-success"
-                                    (click)="showTicketDetails(childTicket)">
-                                    <i class="mdi mdi-eye pe-1"></i> Open Ticket
-                                </a>
-                            </td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="footer">
-                        <div class="d-flex">
-                            <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Pay Remainder" (click)="payRemainder()"  *ngIf="selectedTicket?.status !== 'PAID'"
-                            > Pay Remainder </a>
-                        <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Print" (click)="generateSingleTicketReport(ticketId)"
-                            > Print </a>
-                        <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Close" (click)="isParentTicketVisible = false;"
-                            > Close </a>
-                        
                         <a type="button" (click)="showVoideForPartiallyPaid(tiketSelectedObj)"
                             class="btn btn-danger me-1">
                             <i class="mdi mdi-trash-can-outline"></i> Void
                         </a>
-                        <a type="button" 
-                        class="btn btn-success me-1" (click)="showParentTicketDetails(ticketId)">
-                        <i class="mdi mdi-eye pe-1"></i> Open Parent Ticket
-                    </a>
-                        </div>
-                        
-                    </ng-template>
+                        <a type="button" class="btn btn-success me-1" (click)="showParentTicketDetails(ticketId)">
+                            <i class="mdi mdi-eye pe-1"></i> Open Parent Ticket
+                        </a>
+                    </div>
 
-                </p-table>
-            </div>
+                </ng-template>
 
-            <div class="col-md-12" *ngIf="childTicketsLoader">
-                <app-page-loader type="ftable"></app-page-loader>
-            </div>
-
+            </p-table>
         </div>
-    </p-dialog>
 
-
-    <p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Select Tickets For Merge" [(visible)]="mergeTicketVisible"
-        [style]="{ width: '70vw' }">
-        <div class="row">
-            <div class="col-md-12" *ngIf="!sellerTicketsloader">
-                <p-table #dt1 [value]="sellerTickets" [paginator]="false" [showCurrentPageReport]="true"
-                    [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" scrollHeight="50vh"
-                    [(selection)]="selectedSellerTickets"
-                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
-                            <th>Ticket ID</th>
-                            <th>Date Created</th>
-                            <th>Amount</th>
-                            <th>Balance</th>
-                            <th>Status</th>
-                            <th>Seller</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-sellerTicket>
-                        <tr>
-                            <td>
-                                <p-tableCheckbox [value]="sellerTicket">
-                                </p-tableCheckbox>
-                            </td>
-                            <td>{{ sellerTicket?.rowId }}</td>
-                            <td>{{ sellerTicket?.createdDate | date: 'MM/dd/yyyy' }}</td>
-                            <td>{{ sellerTicket?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
-                            <td>{{ sellerTicket?.balanceAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
-                            <td>{{ sellerTicket?.status }}</td>
-                            <td>{{ sellerTicket?.customerName }}</td>
-                        </tr>
-                    </ng-template>
-
-                </p-table>
-            </div>
-
-            <div class="col-md-12" *ngIf="sellerTicketsloader">
-                <app-page-loader type="table"></app-page-loader>
-            </div>
+        <div class="col-md-12" *ngIf="childTicketsLoader">
+            <app-page-loader type="ftable"></app-page-loader>
         </div>
-        <ng-template pTemplate="footer">
-            <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Close"
-                (click)="closeMergeAndPayTickets()">Close</a>
-            <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close"
-                (click)="mergeAndPaySelectedTickets()">Merge And Pay Selected Tickets</a>
-            <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close"
+
+    </div>
+</p-dialog>
+
+
+<p-dialog [modal]="true" [breakpoints]="{'767px': '100vw'}" header="Select Tickets For Merge"
+    [(visible)]="mergeTicketVisible" [style]="{ width: '70vw' }">
+    <div class="row">
+        <div class="col-md-12" *ngIf="!sellerTicketsloader">
+            <p-table #dt1 [value]="sellerTickets" [paginator]="false" [showCurrentPageReport]="true"
+                [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" scrollHeight="50vh"
+                [(selection)]="selectedSellerTickets"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+                        <th>Ticket ID</th>
+                        <th>Date Created</th>
+                        <th>Amount</th>
+                        <th>Balance</th>
+                        <th>Status</th>
+                        <th>Seller</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-sellerTicket>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="sellerTicket">
+                            </p-tableCheckbox>
+                        </td>
+                        <td>{{ sellerTicket?.ticketId }}</td>
+                        <td>{{ sellerTicket?.createdDate | date: 'MM/dd/yyyy' }}</td>
+                        <td>{{ sellerTicket?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                        <td>{{ sellerTicket?.balanceAmount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                        <td>{{ sellerTicket?.status }}</td>
+                        <td>{{ sellerTicket?.customerName }}</td>
+                    </tr>
+                </ng-template>
+
+            </p-table>
+        </div>
+
+        <div class="col-md-12" *ngIf="sellerTicketsloader">
+            <app-page-loader type="table"></app-page-loader>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <a class="btn btn-primary me-1" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeMergeAndPayTickets()">Close</a>
+        <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close"
+            (click)="mergeAndPaySelectedTickets()">Merge And Pay Selected Tickets</a>
+        <a class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close"
             (click)="mergeAndSaveSelectedTickets()">Merge And Save Selected Tickets</a>
-        </ng-template>
+    </ng-template>
 
-    </p-dialog>
+</p-dialog>
 
 <!-- 
     <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" header="Pay Tickets" [(visible)]="paymentVisible" [style]="{ width: '30vw' }">
@@ -438,45 +481,50 @@
 
 
 
-    <p-dialog  [breakpoints]="{'767px': '100vw'}" [modal]="true" header="Void Options" [(visible)]="showVoid"
+<p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" header="Void Options" [(visible)]="showVoid"
     [style]="{ width: '40vw' }">
-    
+
     <div class="d-flex justify-content-center">
-      <div><button class="btn btn-success justify-content-center   equal-h me-2" (click)="showVoidCancel()">Void & Cancel</button></div>
-       <div><button *ngIf="!isParent" class="btn  btn-primary justify-content-center  equal-h me-2" (click)="showVoidCopy()">Void & Copy</button></div>
+        <div><button class="btn btn-success justify-content-center   equal-h me-2" (click)="showVoidCancel()">Void &
+                Cancel</button></div>
+        <div><button *ngIf="!isParent" class="btn  btn-primary justify-content-center  equal-h me-2"
+                (click)="showVoidCopy()">Void & Copy</button></div>
     </div>
     <div class="d-flex justify-content-center mt-2">
-        <div> <button class="btn btn-danger justify-content-center  equal-h me-2"  (click)="showVoid=false">Close</button></div>
-     </div>
+        <div> <button class="btn btn-danger justify-content-center  equal-h me-2"
+                (click)="showVoid=false">Close</button></div>
+    </div>
 
 
 
-    </p-dialog>
+</p-dialog>
 
-    <p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true" [header]="isVoidOrRestore.indexOf('Void') >= 0 ? (isVoidOrRestore == 'VoidCopy' ? 'Void & Copy Ticket' : 'Void & Cancel Ticket') : 'Restore Ticket'"
+<p-dialog [breakpoints]="{'767px': '100vw'}" [modal]="true"
+    [header]="isVoidOrRestore.indexOf('Void') >= 0 ? (isVoidOrRestore == 'VoidCopy' ? 'Void & Copy Ticket' : 'Void & Cancel Ticket') : 'Restore Ticket'"
     [(visible)]="showVoidDialogBox" [style]="{ width: '40vw' }">
-    
+
     <div class="row">
         <div class="col-12">
-            
+
             <form class="d-flex">
                 <div class="col">
                     <div class="mb-3 d-flex" style="align-items: center;">
-                        <label for="" class="form-label mb-0">Please enter reason</label>                        
-                        <input type="text" id="voidReason" name="voidReason" [(ngModel)]="voidReason" class="form-control" placeholder="Enter reason">
+                        <label for="" class="form-label mb-0">Please enter reason</label>
+                        <input type="text" id="voidReason" name="voidReason" [(ngModel)]="voidReason"
+                            class="form-control" placeholder="Enter reason">
                     </div>
                 </div>
             </form>
-          
+
 
         </div>
     </div>
-    <div class="row" *ngIf="showPartially" >
+    <div class="row" *ngIf="showPartially">
 
         <div class="col-12">
             <div class="card">
                 <div class="card-body px-1 py-1">
-                    
+
                     <p-table #dt1 [value]="ticketsTransactions" [paginator]="false">
 
                         <ng-template pTemplate="header">
@@ -491,7 +539,8 @@
                             <tr>
                                 <td># </td>
                                 <td>{{ ticketsTransaction?.type }}</td>
-                                <td>{{ ticketsTransaction?.amount | currency: currencySymbol :'symbol': numberFormat }}</td>
+                                <td>{{ ticketsTransaction?.amount | currency: currencySymbol :'symbol': numberFormat }}
+                                </td>
                                 <td>{{ ticketsTransaction?.checkNumber }}</td>
                             </tr>
                         </ng-template>
@@ -499,15 +548,15 @@
                     </p-table>
                 </div>
             </div>
-          
+
         </div>
     </div>
-    <div class="row" *ngIf="showOpen" >
+    <div class="row" *ngIf="showOpen">
 
         <div class="col-12">
 
             <div class="alert alert-success" role="alert">
-                       
+
                 No transactions found
             </div>
         </div>
@@ -515,28 +564,34 @@
 
     <div class="row">
         <div class="d-flex justify-content-end mt-2">
-            <button class="btn w-110 btn-success justify-content-center  me-2" *ngIf="isVoidOrRestore == 'Void'" (click)="voidTicket()">Void</button>
-            <button class="btn w-110 btn-success justify-content-center  me-2" *ngIf="isVoidOrRestore == 'VoidCopy'" (click)="voidCopyTicket()">Void</button>
-            <button class="btn w-110 btn-success justify-content-center  me-2" *ngIf="isVoidOrRestore !== 'Void' && isVoidOrRestore !== 'VoidCopy'" (click)="restoreTicket()">Restore</button>
-            <button class="btn w-110  btn-danger justify-content-center" (click)="showVoidDialogBox=false">Close</button>
-          </div>
-     
+            <button class="btn w-110 btn-success justify-content-center  me-2" *ngIf="isVoidOrRestore == 'Void'"
+                (click)="voidTicket()">Void</button>
+            <button class="btn w-110 btn-success justify-content-center  me-2" *ngIf="isVoidOrRestore == 'VoidCopy'"
+                (click)="voidCopyTicket()">Void</button>
+            <button class="btn w-110 btn-success justify-content-center  me-2"
+                *ngIf="isVoidOrRestore !== 'Void' && isVoidOrRestore !== 'VoidCopy'"
+                (click)="restoreTicket()">Restore</button>
+            <button class="btn w-110  btn-danger justify-content-center"
+                (click)="showVoidDialogBox=false">Close</button>
+        </div>
+
     </div>
-   
-
-     
-    </p-dialog>
 
 
 
+</p-dialog>
 
-    
 
-<p-dialog header="Header" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [modal]="true" [(visible)]="paymentVisible" (onHide)="closePaymentPopup()">
+
+
+
+
+<p-dialog header="Header" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [modal]="true"
+    [(visible)]="paymentVisible" (onHide)="closePaymentPopup()">
     <ng-template pTemplate="header">
-        <a  class="btn btn-primary " (click)="paymentVisible=false">
+        <a class="btn btn-primary " (click)="paymentVisible=false">
             <i _ class="mdi mdi-keyboard-backspace">
-            Back
+                Back
             </i>
         </a>
     </ng-template>
@@ -548,152 +603,170 @@
     </div>
 
     <div class="d-flex justify-content-between" *ngIf="isHoldTrue">
-        <div> <div class="form-check equal-h  form-check-inline">
-            <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdamount" value="Pay Total Amount">
-            <label class="form-check-label" for="">Pay Total Amount</label>
-          </div></div>
+        <div>
+            <div class="form-check equal-h  form-check-inline">
+                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount"
+                    id="holdamount" value="Pay Total Amount" (change)="onHoldAmountChange()">
+                <label class="form-check-label" for="">Pay Total Amount</label>
+            </div>
+        </div>
         <div>
 
             <div class="form-check equal-h  form-check-inline">
-                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="phamount" value="Partial Pay Amount">
+                <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount"
+                    id="phamount" value="Partial Pay Amount" (change)="onHoldAmountChange()">
                 <label class="form-check-label" for="">Partial Pay Amount <br>
                     (Exclude Hold Items Amount)
-                
+
                 </label>
-              </div>
+            </div>
 
         </div>
         <div>
 
-            <div class="form-check equal-h form-check-inline">
+            <!-- <div class="form-check equal-h form-check-inline">
                 <input class="form-check-input" type="radio" [(ngModel)]="selectedHoldAmount" name="holdamount" id="holdallamount" value="Hold All Amount">
                 <label class="form-check-label" for="">Hold All Amount</label>
-              </div> 
+            </div>  -->
         </div>
-    </div>  
+    </div>
     <div class="row">
         <div class="col-sm-12">
             <div class="d-flex justify-content-between  mb-2 mt-2">
-                <div class="text-xl font-bold"  style="font-size: 1rem;">Total Amount
+                <div class="text-xl font-bold" style="font-size: 1rem;">Total Amount
                 </div>
-                <div class="font-bold" style="font-size: 1rem;">{{payAmount | currency: currencySymbol :'symbol': numberFormat}}</div>    
+                <div class="font-bold" style="font-size: 1rem;">{{totalAmount | currency: currencySymbol :'symbol':
+                    numberFormat}}</div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
             <div class="d-flex justify-content-between  mb-2 mt-2">
-                <div class="text-xl font-bold"  style="font-size: 1rem;">Remaining Amount
+                <div class="text-xl font-bold" style="font-size: 1rem;">Remaining Amount
                 </div>
-                <div class="font-bold" style="font-size: 1rem;">{{remainingAmount | currency: currencySymbol :'symbol': numberFormat}}</div>    
+                <div class="font-bold" style="font-size: 1rem;">{{remainingAmount | currency: currencySymbol :'symbol':
+                    numberFormat}}</div>
             </div>
         </div>
     </div>
-   
+
     <div class="row">
         <div class="col-sm-12">
             <div class="d-flex justify-content-start">
-              
-                <div><button class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Cash'}" (click)="showSection('Cash');">Cash</button></div>
-                <div><button  class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Check'}" (click)="showSection('Check');" >Check</button></div>
-                <div ><button   *ngIf="systemInfo =='True'" class="btn btn-info justify-content-center equal-h me-2" [ngClass]="{'btn-success': activeSection === 'Electronic Payment'}"  (click)="showSection('Electronic Payment');">Electronic Payment</button></div>
-            </div>        
+
+                <div><button class="btn btn-info justify-content-center equal-h me-2"
+                        [ngClass]="{'btn-success': activeSection === 'Cash'}"
+                        (click)="showSection('Cash');">Cash</button></div>
+                <ng-container *ngIf="selectedPayAmount >= 0">
+                    <div><button class="btn btn-info justify-content-center equal-h me-2"
+                            [ngClass]="{'btn-success': activeSection === 'Check'}"
+                            (click)="showSection('Check');">Check</button></div>
+                    <div><button *ngIf="systemInfo =='True'" class="btn btn-info justify-content-center equal-h me-2"
+                            [ngClass]="{'btn-success': activeSection === 'Electronic Payment'}"
+                            (click)="showSection('Electronic Payment');">Electronic Payment</button></div>
+                </ng-container>
+            </div>
             <div>
                 <div class="row">
-        
+
                     <form class="d-flex flex-wrap mt-2">
                         <div class="col-sm-5">
                             <div class="mb-3">
                                 <label for="" class="form-label">Amount</label>
-                                <input type="text" name="selectedPayAmount" id="selectedPayAmount" pattern="/^-?\d+(\.\d+)?$/" [(ngModel)]="selectedPayAmount" class="form-control"  aria-describedby="helpId">
+                                <input type="text" name="selectedPayAmount" id="selectedPayAmount"
+                                    pattern="/^-?\d+(\.\d+)?$/" [(ngModel)]="selectedPayAmount" class="form-control"
+                                    aria-describedby="helpId">
                             </div>
                         </div>
                         <div class="col-sm-5 ms-2" *ngIf="activeSection === 'Check'">
                             <div class="mb-3">
                                 <label for="" class="form-label">Check</label>
-                                <input type="text" name="checkNumber" id="checkNumber" [(ngModel)]="checkNumber" class="form-control" placeholder="" aria-describedby="helpId">
+                                <input type="text" name="checkNumber" id="checkNumber" [(ngModel)]="checkNumber"
+                                    class="form-control" placeholder="" aria-describedby="helpId">
                             </div>
                         </div>
                         <div class="col-sm-5 ms-2" *ngIf="activeSection === 'Electronic Payment'">
                             <div class="mb-3">
                                 <label for="" class="form-label">Electronic Payment Type</label>
-                                <input type="text" name="ePaymentType" id="" [(ngModel)]="ePaymentType" class="form-control" placeholder="" aria-describedby="helpId">
+                                <input type="text" name="ePaymentType" id="" [(ngModel)]="ePaymentType"
+                                    class="form-control" placeholder="" aria-describedby="helpId">
                             </div>
                         </div>
                         <div class="col-sm-5 form-group" *ngIf="activeSection === 'Check'">
                             <label for="floatingInput">Check Date</label>
-        
-                            <input type="date" name="selectedCheckDate" id="selectedCheckDate" [min]="selectedCheckDate" [(ngModel)]="selectedCheckDate" class="form-control" placeholder="Check Date">
+
+                            <input type="date" name="selectedCheckDate" id="selectedCheckDate" [min]="selectedCheckDate"
+                                [(ngModel)]="selectedCheckDate" class="form-control" placeholder="Check Date">
                         </div>
                     </form>
-        
-                
+
+
                 </div>
-              
-        
+
+
             </div>
-        
+
         </div>
 
     </div>
     <div class="col-12" *ngIf="transactionPaymentType?.length > 0">
 
-        <p-table class="ticket-table" [value]="transactionPaymentType" 
-        [paginator]="false" 
-        [rows]="3"
-        [loading]="isLoading"
-        [showCurrentPageReport]="false"
-        [scrollable]="false" 
-        >
+        <p-table class="ticket-table" [value]="transactionPaymentType" [paginator]="false" [rows]="3"
+            [loading]="isLoading" [showCurrentPageReport]="false" [scrollable]="false">
 
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 30%;"> Type </th>
-                <th style="width:30%;"> Amount </th>
-                <th style="width:30%;"> SubType / Check </th>
-                <th style="width:30%;"> Action </th>
-                <!-- <th style="width:30%;"> Action </th> -->
-           </tr>
-           
-        </ng-template>
-        <ng-template pTemplate="body" let-type let-rowIndex="rowIndex">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 30%;"> Type </th>
+                    <th style="width:30%;"> Amount </th>
+                    <th style="width:30%;"> SubType / Check </th>
+                    <th style="width:30%;"> Action </th>
+                    <!-- <th style="width:30%;"> Action </th> -->
+                </tr>
 
-            <tr>
-                <td>{{type?.typeofPayment}}</td>
-                <td>{{type?.typeofAmount}}</td>
-                <td>{{type?.paymentType}}</td>
-                <td> <a class="btn btn-danger" (click)="removeItem(rowIndex)">Delete</a> </td>
-            </tr>      
+            </ng-template>
+            <ng-template pTemplate="body" let-type let-rowIndex="rowIndex">
 
-          
-        </ng-template>
-        
-    </p-table>     
+                <tr>
+                    <td>{{type?.typeofPayment}}</td>
+                    <td>{{type?.typeofAmount}}</td>
+                    <td>{{type?.paymentType}}</td>
+                    <td> <a class="btn btn-danger" (click)="removeItem(rowIndex)">Delete</a> </td>
+                </tr>
+
+
+            </ng-template>
+
+        </p-table>
 
     </div>
     <div class="d-flex justify-content-left mt-2">
 
-        <div><button type="submit" class="btn btn-primary justify-content-center  me-2"  (click)="addTransction()">Add Payment</button></div>
+        <div><button type="submit" class="btn btn-primary justify-content-center  me-2" (click)="addTransction()">Add
+                Payment</button></div>
 
-        <div><button class="btn btn-primary justify-content-center me-2" (click)="payAndSave(activeSection)">Pay Ticket</button></div>
+        <div><button class="btn btn-primary justify-content-center me-2" (click)="payAndSave(activeSection)">Pay
+                Ticket</button></div>
     </div>
-    
+
 </p-dialog>
 
 <ng-container *ngIf="!checkTabView">
 
-<p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
-   
-    <div *ngIf="showLoaderReport">
-        <app-page-loader type="reportloader"></app-page-loader>
-    </div>
-   
-    <div class="row" >
-      <div style="height: 500px;" *ngIf="!showLoaderReport">                
-        <ngx-extended-pdf-viewer #pdfViewer [base64Src]="fileDataObj" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
-      </div>
-    </div>
-</p-dialog>
+    <p-dialog [header]="pdfViwerTitle" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true"
+        [style]="{ width: '70vw' }">
+
+        <div *ngIf="showLoaderReport">
+            <app-page-loader type="reportloader"></app-page-loader>
+        </div>
+
+        <div class="row">
+            <div style="height: 500px;" *ngIf="!showLoaderReport">
+                <ngx-extended-pdf-viewer #pdfViewer [base64Src]="fileDataObj" [pageChangeOnScrolling]="true"
+                    [showScrollbar]="false"></ngx-extended-pdf-viewer>
+            </div>
+        </div>
+    </p-dialog>
 </ng-container>
 
 <iframe id="pdfFrame" #pdfFrame style="display: none;"></iframe>
@@ -702,7 +775,8 @@
 <p-confirmDialog></p-confirmDialog>
 
 
-<p-dialog header="Header" [(visible)]="alertVisible" [modal]="true" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}">
+<p-dialog header="Header" [(visible)]="alertVisible" [modal]="true"
+    [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}">
     <ng-template pTemplate="header">
         <div class="inline-flex align-items-center justify-content-center gap-2">
             <span class="font-bold white-space-nowrap">Information</span>
@@ -717,108 +791,110 @@
 </p-dialog>
 
 
-<p-dialog header="Header" [(visible)]="addSellerPopupVisible" [modal]="true" [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [style]="{width: '500'}">
+<p-dialog header="Header" [(visible)]="addSellerPopupVisible" [modal]="true"
+    [breakpoints]="{'1024px': '50vw','1080px': '60vw','767px': '100vw'}" [style]="{width: '500'}">
     <ng-template pTemplate="header">
         <div class="inline-flex align-items-center justify-content-center gap-2">
             <span class="font-bold white-space-nowrap">Add New Customer</span>
         </div>
     </ng-template>
-        <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()">
-            <div class="row" style="min-width: 500px;">
-                <div class="d-flex row align-items-center">
-                    <div class="col-sm-3">
-                     <label for="example-select" class="form-label">Select Type</label></div>
+    <form [formGroup]="sellerForm" (ngSubmit)="onSubmit()">
+        <div class="row" style="min-width: 500px;">
+            <div class="d-flex row align-items-center">
+                <div class="col-sm-3">
+                    <label for="example-select" class="form-label">Select Type</label>
+                </div>
 
-                    <div class="form-group" >
-                           <select formControlName="sellerType" class="form-select" id="example-select"
+                <div class="form-group">
+                    <select formControlName="sellerType" class="form-select" id="example-select"
                         (change)="changeSellerType()">
                         <option>Personal</option>
                         <option>Business</option>
-                    </select> 
-                 </div>
-                </div>
-                
-            </div>
-            <hr>
-            <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
-                <h4>Personal Information</h4>
-
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="firstName" class="form-control"
-                            id="firstname" placeholder="First Name">
-                        <label for="floatingInput">First Name</label>
-                    </div>
-                </div>
-
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="middleName" class="form-control"
-                            id="middlename" placeholder="Middle Name">
-                        <label for="floatingInput">Middle Name</label>
-                    </div>
-                </div>
-
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" formControlName="lastName" id="lastname"
-                            placeholder="Last Name">
-                        <label for="floatingInput">Last Name</label>
-                    </div>
+                    </select>
                 </div>
             </div>
 
-            <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
-                <h4>Business Information</h4>
-            
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="firstName" class="form-control"
-                            id="bfirstName" placeholder="Business Name">
-                        <label for="floatingInput">Business Name</label>
-                    </div>
-                </div>
-            
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="streetAddress" class="form-control"
-                            id="streetAddress" placeholder="Street Address">
-                        <label for="streetAddress">Business Address</label>
-                    </div>
-                </div>
-            
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="cellNumber" class="form-control"
-                            id="cellNumber" placeholder="Cell Number">
-                        <label for="cellNumber">Phone Number</label>
-                    </div>
-                </div>
-            
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="idnumber" class="form-control"
-                            id="taxIdNumber" placeholder="Tax ID Number">
-                        <label for="taxIdNumber">Tax ID Number</label>
-                    </div>
-                </div>
-            
-                <div class="form-group col-sm-4 mt-1">
-                    <div class="form-floating">
-                        <input type="text" formControlName="contactName" class="form-control"
-                            id="contactName" placeholder="Contact Name">
-                        <label for="contactName">Contact Name</label>
-                    </div>
+        </div>
+        <hr>
+        <div class="row mt-2" *ngIf="this.sellerType == 'Personal'">
+            <h4>Personal Information</h4>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="firstName" class="form-control" id="firstname"
+                        placeholder="First Name">
+                    <label for="floatingInput">First Name</label>
                 </div>
             </div>
-            
-            
-            
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="middleName" class="form-control" id="middlename"
+                        placeholder="Middle Name">
+                    <label for="floatingInput">Middle Name</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" class="form-control" formControlName="lastName" id="lastname"
+                        placeholder="Last Name">
+                    <label for="floatingInput">Last Name</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2" *ngIf="this.sellerType == 'Business'">
+            <h4>Business Information</h4>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="firstName" class="form-control" id="bfirstName"
+                        placeholder="Business Name">
+                    <label for="floatingInput">Business Name</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="streetAddress" class="form-control" id="streetAddress"
+                        placeholder="Street Address">
+                    <label for="streetAddress">Business Address</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="cellNumber" class="form-control" id="cellNumber"
+                        placeholder="Cell Number">
+                    <label for="cellNumber">Phone Number</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="idnumber" class="form-control" id="taxIdNumber"
+                        placeholder="Tax ID Number">
+                    <label for="taxIdNumber">Tax ID Number</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4 mt-1">
+                <div class="form-floating">
+                    <input type="text" formControlName="contactName" class="form-control" id="contactName"
+                        placeholder="Contact Name">
+                    <label for="contactName">Contact Name</label>
+                </div>
+            </div>
+        </div>
 
 
-          
 
-            <!-- <div class="row">
+
+
+
+
+        <!-- <div class="row">
                 <div class="form-group col-sm-6 d-flex flex-center">
                 </div>
 
@@ -828,138 +904,113 @@
                     </div>
                 </div>
             </div> -->
-        </form>
-    
-        <ng-template pTemplate="footer">
-            <button class="btn btn-primary me-1" (click)="onSubmit()">Save</button>
-        </ng-template>
+    </form>
+
+    <ng-template pTemplate="footer">
+        <button class="btn btn-primary me-1" (click)="onSubmit()">Save</button>
+    </ng-template>
 </p-dialog>
 
 
-  
+
 <p-dialog [modal]="true" [header]="showImageHeader" (onHide)="cancelImage()" [(visible)]="showImage">
-  
+
     <div class="over-flow-300 image-center img-profile">
         <img [src]="selectedImageUrl" style="height: 100%; width: 100%;">
     </div>
-    <div class="mt-2">        
+    <div class="mt-2">
         <a class="btn btn-primary " [href]="selectedImageUrl" target="_self" download><i class="mdi"> Download </i></a>
     </div>
 </p-dialog>
 
 
-<p-dialog [modal]="true" 
-  header="New Driver"
-  [(visible)]="newDriverScreenVisible"
-  [style]="{width: '70vw'}" [breakpoints]="{'767px': '100vw'}"
->
+<p-dialog [modal]="true" header="New Driver" [(visible)]="newDriverScreenVisible" [style]="{width: '70vw'}"
+    [breakpoints]="{'767px': '100vw'}">
 
-  <div class="row mt-3">
-    <h4>Driver Personal Information</h4>
+    <div class="row mt-3">
+        <h4>Driver Personal Information</h4>
 
-    <div class="form-group col-sm-6">
-      <div class="form-floating">
-        <input
-          type="text"
-          class="form-control"
-          id="carrier" name="carrier" [(ngModel)]="driverDetails.carrier" 
-          placeholder="Carrier"
-        />
-        <label for="floatingInput">Carrier</label>
-      </div>
-    </div>
-    
-    <div class="form-group col-sm-3">
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control"
-            id="driverlicense" name="driverlicense" [(ngModel)]="driverDetails.driverlicense" 
-            placeholder="Driver License"
-          />
-          <label for="floatingInput">Driver License</label>
+        <div class="form-group col-sm-6">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="carrier" name="carrier" [(ngModel)]="driverDetails.carrier"
+                    placeholder="Carrier" />
+                <label for="floatingInput">Carrier</label>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-3">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="driverlicense" name="driverlicense"
+                    [(ngModel)]="driverDetails.driverlicense" placeholder="Driver License" />
+                <label for="floatingInput">Driver License</label>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-3">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="licenseplate" name="licenseplate"
+                    [(ngModel)]="driverDetails.licenseplate" placeholder="License Plate" />
+                <label for="floatingInput">License Plate</label>
+            </div>
         </div>
     </div>
-    
-    <div class="form-group col-sm-3">
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control"
-            id="licenseplate" name="licenseplate" [(ngModel)]="driverDetails.licenseplate" 
-            placeholder="License Plate"
-          />
-          <label for="floatingInput">License Plate</label>
+
+    <div class="row mt-2">
+        <div class="form-group col-sm-3">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="truck" name="truck" [(ngModel)]="driverDetails.truck"
+                    placeholder="Truck" />
+                <label for="floatingInput">Truck Type</label>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-3">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="make" name="make" [(ngModel)]="driverDetails.make"
+                    placeholder="Make" />
+                <label for="floatingInput">Make</label>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-3">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="model" name="model" [(ngModel)]="driverDetails.model"
+                    placeholder="Model" />
+                <label for="floatingInput">Model</label>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-3">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="driverName" name="driverName"
+                    [(ngModel)]="driverDetails.driverName" placeholder="Driver Name" />
+                <label for="floatingInput">Driver Name</label>
+            </div>
         </div>
     </div>
-  </div>
 
-  <div class="row mt-2">
-    <div class="form-group col-sm-3">
-      <div class="form-floating">
-        <input
-          type="text"
-          class="form-control"
-          id="truck" name="truck" [(ngModel)]="driverDetails.truck" 
-          placeholder="Truck"
-        />
-        <label for="floatingInput">Truck Type</label>
-      </div>
+
+    <div class="row mt-2">
+
+        <div class="form-group class=mb-3 col-sm-6">
+            <div class="form-floating">
+                <textarea type="text" class="form-control" id="note" name="note" [(ngModel)]="driverDetails.note"
+                    placeholder="Note"
+                    style="height: 100px; resize: vertical; width: 100%; min-height: 100px; box-sizing: border-box;"></textarea>
+                <label for="floatingInput">Note</label>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group col-sm-3">
-      <div class="form-floating">
-        <input type="text" class="form-control" id="make" name="make" [(ngModel)]="driverDetails.make" 
-        placeholder="Make" />
-        <label for="floatingInput">Make</label>
-      </div>
+    <div class="row mt-3">
+        <div class="col-sm-12">
+            <a class="btn btn-primary " (click)="saveDriverInfo()">Save</a>
+        </div>
     </div>
-
-    <div class="form-group col-sm-3">
-      <div class="form-floating">
-        <input
-          type="text"
-          class="form-control"
-          id="model" name="model" [(ngModel)]="driverDetails.model" 
-          placeholder="Model"
-        />
-        <label for="floatingInput">Model</label>
-      </div>
-    </div>
-
-    <div class="form-group col-sm-3">
-      <div class="form-floating">
-        <input
-          type="text"
-          class="form-control"
-          id="driverName" name="driverName" [(ngModel)]="driverDetails.driverName" 
-          placeholder="Driver Name"
-        />
-        <label for="floatingInput">Driver Name</label>
-      </div>
-    </div>
-  </div>
-
- 
-  <div class="row mt-2">
-
-    <div class="form-group class=mb-3 col-sm-6">
-      <div class="form-floating">
-        <textarea type="text" class="form-control" id="note" name="note" [(ngModel)]="driverDetails.note" 
-         placeholder="Note"  style="height: 100px; resize: vertical; width: 100%; min-height: 100px; box-sizing: border-box;"></textarea>
-        <label for="floatingInput">Note</label>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mt-3">
-    <div class="col-sm-12">
-      <a class="btn btn-primary " (click)="saveDriverInfo()" >Save</a>
-    </div>
-  </div>
 </p-dialog>
 
-<p-dialog header="Unlock Ticket" [(visible)]="isUnlockConfirmModel" [modal]="true" [style]="{ width: '40rem' }" [breakpoints]="{'767px': '100vw'}">
+<p-dialog header="Unlock Ticket" [(visible)]="isUnlockConfirmModel" [modal]="true" [style]="{ width: '40rem' }"
+    [breakpoints]="{'767px': '100vw'}">
     <ng-template pTemplate="header">
         <div class="inline-flex align-items-center justify-content-center gap-2">
             <span>Unlock Ticket Confirmation</span>
@@ -969,7 +1020,63 @@
         <h3>The ticket is in edit mode. Do you still want to unlock it?</h3>
     </div>
     <ng-template pTemplate="footer">
-      <button class="btn btn-primary" (click)="confirmUnlock()">Yes</button>
-      <button type="button" class="btn btn-danger" (click)="isUnlockConfirmModel=false">No</button>
+        <button class="btn btn-primary" (click)="confirmUnlock()">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="isUnlockConfirmModel=false">No</button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog header="Confirmation" [(visible)]="showHoldConfirmDialog" [modal]="true" [closable]="false"
+    [style]="{width: '400px'}">
+
+    <p>{{ holdConfirmationMessage }}</p>
+
+    <ng-template pTemplate="footer">
+        <button class="btn btn-primary me-1" (click)="confirmHoldAmount()">Yes</button>
+        <button class="btn btn-danger" (click)="cancelHoldAmount()">No</button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [modal]="true" header="License Update Required" [(visible)]="licenseExpiryPopupVisible"
+    [style]="{width: '400px'}" [closable]="false">
+
+    <div class="text-center">
+        <p style="font-size: 16px;">
+            License is expired. Please update the License Expiry Date to proceed the ticket creation
+        </p>
+        <button type="button" class="btn btn-primary me-1" (click)="onLicenseUpdate()">OK</button>
+        <button type="button" class="btn btn-danger " (click)="onCancel()">Cancel</button>
+    </div>
+</p-dialog>
+
+<p-dialog [modal]="true" header="Purchase Orders" [(visible)]="showPurchaseOrderPopup" [style]="{ width: '80vw' }">
+    <div class="row">
+        <div class="col-12">
+            <p-table [value]="purchaseOrdersByCustomer" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Purchase Order ID</th>
+                        <th>Material Name</th>
+                        <th>Total Quantity</th>
+                        <th>Balance Quantity</th>
+                        <th>Status</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-po>
+                    <tr>
+                        <td>{{ po.rowID }}</td>
+                        <td>{{ po.materialName }}</td>
+                        <td>{{ po.totalQuantity }}</td>
+                        <td>{{ po.balanceQuantity }}</td>
+                        <td>{{ po.status }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <button (click)=" proceedAfterPOcheck(selectedSellerId, selectedSellerType);"
+            class="btn btn-primary">OK</button>
     </ng-template>
 </p-dialog>

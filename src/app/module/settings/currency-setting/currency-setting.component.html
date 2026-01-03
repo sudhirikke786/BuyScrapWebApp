@@ -1,0 +1,62 @@
+<div class="currency-setting-container p-3">
+  <div class="form-section mb-4">
+    <div class="row align-items-end">
+
+      <div class="col-md-5 mb-3">
+        <label for="currency" class="form-label"><strong>Currency</strong></label>
+        <p-dropdown id="currency" [options]="currencies" [(ngModel)]="selectedCurrency" placeholder="Select Currency"
+          optionLabel="currencyCode" optionValue="rowID" [filter]="true" filterBy="currencyCode" [style]="{'width': '100%'}"
+          appendTo="body">
+        </p-dropdown>
+      </div>
+
+      <div class="col-md-5 mb-3">
+        <label for="module" class="form-label"><strong>Module</strong></label>
+        <p-dropdown id="module" [options]="modules" [(ngModel)]="selectedModule" placeholder="Select Module"
+          optionLabel="moduleName" optionValue="rowID" [filter]="true" filterBy="moduleName" [style]="{'width': '100%'}"
+          appendTo="body">
+        </p-dropdown>
+      </div>
+
+      <div class="col-md-2 mb-3 d-flex">
+        <button class="btn btn-success" [ngClass]="editingEntry ? 'btn-primary' : 'btn-success'" (click)="addUpdateCurrency()">
+          {{ editingEntry ? 'UPDATE' : 'ADD' }}
+        </button>
+
+        <button *ngIf="editingEntry" class="btn btn-secondary ms-2" (click)="resetForm()">
+        Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p-table [value]="currencyMappingList" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Currency</th>
+        <th>Module</th>
+        <th style="width: 10rem; text-align: center;">Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-entry let-i="rowIndex">
+      <tr>
+        <td>{{ entry.selectedCurrency }}</td>
+        <td>{{ entry.selectedModule }}</td>
+        <td class="text-center">
+          <button class="btn btn-primary me-2" (click)="editCurrency(entry)">Edit</button>
+          <button class="btn btn-danger"  (click)="deleteCurrency(entry, i)">Delete</button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>
+<p-toast></p-toast>
+<p-confirmDialog
+  key="deleteCurrencyDialog"
+  header="Delete Confirmation"
+  icon="pi pi-exclamation-triangle"
+  message="Are you sure you want to delete this currency?"
+  acceptLabel="Yes"
+  rejectLabel="No">
+</p-confirmDialog>

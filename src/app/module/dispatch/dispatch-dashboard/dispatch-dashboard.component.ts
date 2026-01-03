@@ -4,8 +4,8 @@ import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DispatchModule } from '../dispatch.module';
-import { FormGroup,FormBuilder,Validators } from '@angular/forms';
-import { MessageService,ConfirmationService } from 'primeng/api';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DatePipe } from '@angular/common';
@@ -28,18 +28,21 @@ export class DispatchDashboardComponent implements OnInit {
   orgName!: string | null;
   showLoader = false;
   isConfirmModel = false;
-  rowID:any;
-  sellerID:any;
-  ticketId:number=0;
-  selectedRowId: number=0;
+  rowID: any;
+  sellerID: any;
+  ticketId: number = 0;
+  selectedRowId: number = 0;
+  currentDispatchId: number = 0;
+  confirmIncompletePopup: boolean = false;
 
   showCompletePopup: boolean = false;
   completionNote: string = '';
-  selectedDriverId: number=0;
+  selectedDriverId: number = 0;
   isChecked: boolean = false;
+  adminAdvertisement!: string | null;
 
-  dispatchRes : any = [
-    
+  dispatchRes: any = [
+
   ];
 
   actionList = [
@@ -62,7 +65,7 @@ export class DispatchDashboardComponent implements OnInit {
   {
     iconcode: 'mdi-account',
     title: 'New Customer',
-    label:'New Customer'
+    label: 'New Customer'
   }
   ];
 
@@ -102,19 +105,19 @@ export class DispatchDashboardComponent implements OnInit {
   tiketSelectedObj: any;
   currentRole: any;
   sellerLoader: boolean = false;
-  
+
   alertVisible = false;
   alertMessage: any;
 
   addSellerPopupVisible = false;
   sellerForm!: FormGroup;
   sellerType: string = 'Personal';
-  
+
   showImage = false;
   showImageHeader = 'Show image';
   selectedImageUrl: any;
 
-  checkVisible =  false;
+  checkVisible = false;
   newDriverScreenVisible = false;
 
   fileDataObj: any;
@@ -124,40 +127,42 @@ export class DispatchDashboardComponent implements OnInit {
   isLoading = false;
   checkTabView: boolean = false;
 
-  expandedRows: { [key: number]: boolean } = {}; 
+  expandedRows: { [key: number]: boolean } = {};
 
+  currentFromDate: string = '';
+  currentToDate: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     public commonService: CommonService,
-    public helperService:HelperService,
-   private datePipe: DatePipe,
-   private fb: FormBuilder,
-   private messageService:MessageService,
-   private confirmationService:ConfirmationService,
-   private authService:AuthService,
+    public helperService: HelperService,
+    private datePipe: DatePipe,
+    private fb: FormBuilder,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private authService: AuthService,
     private stroarge: StorageService,
 
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.currentRole = this.authService.userCurrentRole();
-
+    this.adminAdvertisement = localStorage.getItem('adminAdvertisement');
     this.orgName = localStorage.getItem('orgName');
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
-    this.route.params.subscribe((params)=>{
+    this.route.params.subscribe((params) => {
       this.sellerID = params["sellerID"];
       this.rowID = params["rowID"];
     });
 
-
     this.route.queryParams.subscribe(params => {
-      this.searchSellerInput = params['searchText'] || '';
-      this.getAllCODTickets();
-    })
-
+      const searchTerm = params['search'] || '';
+      this.currentFromDate = params['fromDate'] || this.getDefaultFromDate();
+      this.currentToDate = params['toDate'] || this.getDefaultToDate();
+      this.getAllCODTickets(searchTerm);
+    });
 
     const storedPagination = localStorage.getItem('dispatchPaginationData_grid');
     if (storedPagination) {
@@ -170,67 +175,104 @@ export class DispatchDashboardComponent implements OnInit {
       this.pageSize = 10;
       this.first = 0;
     }
-  
 
-   
+
+    this.getAllCODTickets();
   }
 
-  getAllCODTickets() {
+  private getDefaultFromDate(): string {
+    const today = new Date();
+    const fifteenDaysAgo = new Date(today);
+    fifteenDaysAgo.setDate(today.getDate() - 15);
+    return this.formatDate(fifteenDaysAgo);
+  }
+
+  private getDefaultToDate(): string {
+    const today = new Date();
+    return this.formatDate(today);
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  getAllCODTickets(searchText: string = '') {
     const paramObject = {
-      PageNumber: 1,
-      RowOfPage: 1000,
+      PageNumber: this.currentPage,
+      RowOfPage: this.pageSize,
       LocationId: this.locId,
-      SerachText: this.searchSellerInput
+      SerachText: '',
+      FromDate: this.currentFromDate,
+      ToDate: this.currentToDate
     };
     this.isLoading = true;
-  
+
     this.commonService.GetAllPickUpDetails(paramObject).subscribe(
-      
+
       (data: any) => {
         //console.log('API Response:', data); 
         console.log('getAllCODTickets :: ', data);
         if (data && data.body && data.body.data) {
+          let filteredData = data.body.data;
+          if (searchText.trim()) {
+            const searchLower = searchText.trim().toLowerCase();
+            filteredData = data.body.data.filter((item: any) => {
+              const customerNameMatch = item.sellerName?.toLowerCase().includes(searchLower);
+              const pickupIdMatch = item.rowID?.toString().includes(searchText.trim());
+
+              return customerNameMatch || pickupIdMatch;
+            });
+          }
+
           if (this.currentRole === 'Driver' && this.logInUserId) {
-            this.dispatchRes = data.body.data.filter((item: any) => item.driverID === this.logInUserId).map((item: any) => {
+            this.dispatchRes = filteredData.filter((item: any) => item.driverID === this.logInUserId).map((item: any) => {
               return {
                 rowId: item.rowID,
                 pickUpDate: item.pickUpDate,
                 closedDate: item.closedDate,
                 customerName: item.customerName,
                 sellerName: item.sellerName,
-                sellerID:item.sellerID,
-                ticketRowID:item.ticketRowID,
+                sellerID: item.sellerID,
+                ticketRowID: item.ticketRowID,
                 charges: item.charges,
                 isCompleted: item.isCompleted,
                 selected: item.closedDate ? true : false,
                 ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
                 sellerAddress: item.streetAddress,
                 driverID: item.driverID,
-                driverNotes: item.driverNotes
+                driverNotes: item.driverNotes,
+                pickupID: item.pickupID
               };
             });
           } else {
-            this.dispatchRes = data.body.data.map((item: any) => {
+            this.dispatchRes = filteredData.map((item: any) => {
               //console.log('Mapped item:', item.ticketRowID);
               return {
-                rowId: item.rowID,       
+                rowId: item.rowID,
                 pickUpDate: item.pickUpDate,
                 closedDate: item.closedDate,
                 customerName: item.customerName,
                 sellerName: item.sellerName,
-                sellerID:item.sellerID,
-                ticketRowID:item.ticketRowID,
+                sellerID: item.sellerID,
+                ticketRowID: item.ticketRowID,
                 charges: item.charges,
                 isCompleted: item.isCompleted,
                 selected: item.closedDate ? true : false,
                 ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
                 sellerAddress: item.streetAddress,
                 driverID: item.driverID,
-                driverNotes: item.driverNotes         
+                driverNotes: item.driverNotes,
+                pickupID: item.pickupID
               };
             });
+
+
             this.pageTotal = data?.body?.totalRecord;
             this.last = data?.body?.totalIndex;
+
 
             localStorage.setItem('dispatchPaginationData_grid', JSON.stringify({
               PageNumber: this.currentPage,
@@ -253,14 +295,14 @@ export class DispatchDashboardComponent implements OnInit {
       }
     );
     this.sellerForm = this.fb.group({
-      firstName : ['',Validators.required],
-      sellerType:[this.sellerType],
-      middleName : [''],
-      lastName : [''],
-      streetAddress : [],
-      idnumber : [''],
-      cellNumber : [''],
-      contactName : ['']
+      firstName: ['', Validators.required],
+      sellerType: [this.sellerType],
+      middleName: [''],
+      lastName: [''],
+      streetAddress: [],
+      idnumber: [''],
+      cellNumber: [''],
+      contactName: ['']
 
     });
   }
@@ -269,72 +311,106 @@ export class DispatchDashboardComponent implements OnInit {
     this.currentPage = event.first / event.rows + 1;
     this.first = event.first;
     this.pageSize = event.rows;
-  
+
     this.getAllCODTickets();
   }
-  
+
   openCompletePopup(rowId: number, driverID?: number, isChecked?: boolean) {
     console.log(`Popup opened for RowID: ${rowId}, DriverID: ${driverID}, Checked: ${isChecked}`);
-  
     if (!driverID || driverID == 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'No driver assigned to this pickup!' });
       setTimeout(() => {
         const selectedRow = this.dispatchRes.find(
           (item: any) => item.rowId === rowId
         ) as any;
-      
         if (selectedRow) {
           selectedRow.isCompleted = false;
         }
       });
-        return;
+      return;
     }
-  
-      this.selectedRowId = rowId;
-      this.selectedDriverId = driverID;
-      this.isChecked = isChecked ?? false;
-    // this.completionNote = '';
-    const selectedCertificate = this.dispatchRes.find((item:any) => (item as any).rowId == rowId) as any;
-    this.completionNote = selectedCertificate?.driverNotes || '';
 
-      this.showCompletePopup = true;
-    }
-  
+    const paramObject = {
+      RowID: rowId
+    };
+
+    this.commonService.GetAllPickUpMaterialByID(paramObject).subscribe({
+      next: (response: any) => {
+        const materials = response?.body?.data || [];
+        const allMaterialsCompleted = materials.length === 0 || materials.every((material: any) => material.isCompleted === true);
+        this.selectedRowId = rowId;
+        this.selectedDriverId = driverID;
+        this.isChecked = isChecked ?? false;
+        this.completionNote = '';
+        const selectedCertificate = this.dispatchRes.find((item: any) => (item as any).rowId == rowId) as any;
+        this.completionNote = selectedCertificate?.driverNotes || '';
+        if (allMaterialsCompleted) {
+          // console.log('All materials are complete. Opening popup.');
+          // this.selectedRowId = rowId;
+          // this.selectedDriverId = driverID;
+          // this.isChecked = isChecked ?? false;         
+          // // this.completionNote = '';
+          // const selectedCertificate = this.dispatchRes.find((item:any) => (item as any).rowId == rowId) as any;
+          // this.completionNote = selectedCertificate?.driverNotes || '';
+
+          this.showCompletePopup = true;
+
+        } else {
+          this.confirmIncompletePopup = true;
+        }
+      },
+      error: (err) => {
+        console.error('API Error fetching material status:', err);
+      }
+    });
+  }
+
+  cancelIncomplete() {
+    this.confirmIncompletePopup = false;
+    const selectedRow = this.dispatchRes.find((item: any) => item.rowId === this.selectedRowId);
+    if (selectedRow) selectedRow.isCompleted = false;
+  }
+
+  proceedIncomplete() {
+    this.confirmIncompletePopup = false;
+    this.showCompletePopup = true;
+  }
 
   closePopup(rowId: number) {
-    console.log(`Closing popup for RowID: ${rowId}`);  
+    console.log(`Closing popup for RowID: ${rowId}`);
     this.showCompletePopup = false;
-  
+
     const selectedRow = this.dispatchRes.find(
       (item: any) => item.rowId === rowId
     ) as any;
-  
+
     if (selectedRow) {
       selectedRow.isCompleted = false;
     }
   }
-  
+
   saveCompletion() {
     const requestObj = {
       PickUpID: this.selectedRowId,
-      IsCompleted: this.isChecked,  
+      IsCompleted: this.isChecked,
       notes: this.completionNote,
-      driverID: this.selectedDriverId  
+      driverID: this.selectedDriverId
     };
-  
+
     const postParams = {
       PickUpID: this.selectedRowId,
-      IsCompleted: this.isChecked,  
+      IsCompleted: this.isChecked,
       notes: this.completionNote,
-      driverID: this.selectedDriverId  
+      driverID: this.selectedDriverId,
+      LocID: this.locId
     };
-  
+
     this.commonService.DispatchCloseDateUpdate(requestObj, postParams).subscribe(
       (response) => {
         console.log('API Response:', response);
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Dispatch status updated successfully!' });
         this.closePopup(this.selectedRowId);
-        this.getAllCODTickets(); 
+        this.getAllCODTickets();
       },
       (error) => {
         console.error('Error saving note:', error);
@@ -342,35 +418,37 @@ export class DispatchDashboardComponent implements OnInit {
       }
     );
   }
-  
-  clickOnSeller(sellerId: string | number, sellerName: string,sellerAddress: string) {
-   
-    this.router.navigate([`/${this.orgName}/dispatch/dispatch-detail`,'New',sellerId,'new']);
+
+  clickOnSeller(sellerId: string | number, sellerName: string, sellerAddress: string) {
+
+    this.router.navigate([`/${this.orgName}/dispatch/dispatch-detail`, 'New', sellerId, 'new']);
   }
 
-  convertToTicket(sellerID: any, rowId:any) {
+  convertToTicket(sellerID: any, rowId: any, pickupID: any) {
     this.router.navigate([`/${this.orgName}/home/detail/new/${sellerID}/false`], {
-        queryParams: { dispatchID: rowId},
+      queryParams: { dispatchID: rowId, PickupID: pickupID },
     });
-    
+
   }
 
   showTicketclick(ticketRowID: any, sellerID: any) {
     this.router.navigate([`/${this.orgName}/home/detail/${ticketRowID}/${sellerID}/false`])
-      
+
   }
 
   closePdfReport() {
-    this.showDownload = false;    
+    this.showDownload = false;
   }
 
   generateDispatchReport(rowId: any) {
-    this.isReportShow =true;
+    this.isReportShow = true;
     this.showLoaderReport = true;
+    this.currentDispatchId = rowId;
 
     const param = {
       PickUpID: rowId,
-      LocationId: this.locId
+      LocationId: this.locId,
+      Advertising: this.adminAdvertisement
     }
 
     this.commonService.getDispatchReportData(param)
@@ -380,8 +458,8 @@ export class DispatchDashboardComponent implements OnInit {
         this.fileDataObj = data.body.data;
         this.showLoaderReport = false;
 
-        if(this.checkTabView) {
-          this.helperService.downloadBase64Pdf(this.fileDataObj,"Dispatch Report " + rowId);
+        if (this.checkTabView) {
+          this.helperService.downloadBase64Pdf(this.fileDataObj, "Dispatch Report " + rowId);
         }
       },
         (err: any) => {
@@ -389,7 +467,7 @@ export class DispatchDashboardComponent implements OnInit {
         }
       );
   }
-  
+
 
   setChecked(item: any, rowIndex: any): void {
     this.currentIndex = rowIndex;
@@ -411,7 +489,7 @@ export class DispatchDashboardComponent implements OnInit {
     console.log('Toggle All Selection invoked');
   }
 
-    onKeydown(event: KeyboardEvent, searchValue: string): void {
+  onKeydown(event: KeyboardEvent, searchValue: string): void {
     if (event.key === 'Enter') {
       this.searchSeller()
       // Add your search logic here
@@ -429,7 +507,7 @@ export class DispatchDashboardComponent implements OnInit {
         console.log('Search action triggered');
         break;
       case 'mdi-refresh':
-        this.getAllCODTickets(); 
+        this.getAllCODTickets();
         break;
       case 'mdi-calendar':
         this.showDialog();
@@ -438,7 +516,7 @@ export class DispatchDashboardComponent implements OnInit {
         this.openAddUpdateEvent();
         break;
       case 'mdi-add':
-          this.gotoDriverPage();
+        this.gotoDriverPage();
         break;
       default:
         console.warn('Unknown action triggered');
@@ -448,7 +526,7 @@ export class DispatchDashboardComponent implements OnInit {
 
 
 
-  gotoDriverPage(){
+  gotoDriverPage() {
     this.router.navigateByUrl(`/${this.orgName}/dispatch/dispatch-status`)
   }
 
@@ -466,109 +544,109 @@ export class DispatchDashboardComponent implements OnInit {
   }
 
 
-  showDialog(){
+  showDialog() {
     this.router.navigateByUrl(`/${this.orgName}/dispatch/meeting`)
   }
 
-getAllsellersDetails(paramObject: any) {
-  this.sellerLoader = true;
-  this.commonService.getAllsellersDetails(paramObject)
-    .subscribe(data => {
-      console.log('getAllsellersDetails :: ');
-      console.log(data);
-      this.sellers = data.body.data;
-    },
-      (err: any) => {
-        // this.errorMsg = 'Error occured';
-        this.sellerLoader = false;
+  getAllsellersDetails(paramObject: any) {
+    this.sellerLoader = true;
+    this.commonService.getAllsellersDetails(paramObject)
+      .subscribe(data => {
+        console.log('getAllsellersDetails :: ');
+        console.log(data);
+        this.sellers = data.body.data;
       },
-      () => {
-        this.sellerLoader = false;
-      }
-    );
-}
-getSellerAction(actionCode: any) {
-
-  switch (actionCode?.iconcode) {
-    case 'mdi-magnify':
-      this.searchSeller();
-      break;
-    case 'mdi-refresh':
-      this.refreshSellerData();
-      break;
-    case 'mdi-account':
-      this.addNewSeller();
-      break;
-    default:
-      break;
+        (err: any) => {
+          // this.errorMsg = 'Error occured';
+          this.sellerLoader = false;
+        },
+        () => {
+          this.sellerLoader = false;
+        }
+      );
   }
+  getSellerAction(actionCode: any) {
 
-}
-searchSeller() {
-  if (!this.searchSellerInput.trim()) {
-    console.warn('Search input is empty, skipping API call');
-    return;
-  }
-
-  const paramObject = {
-    PageNumber: 1,
-    RowOfPage: 1000,
-    LocationId: this.locId,
-    SerachText: this.searchSellerInput.replace(/ /g, "%")
-  };
-  this.getAllsellersDetails(paramObject);
-}
-
-refreshSellerData() {
-  this.searchSellerInput = '';
-  const paramObject = {
-    PageNumber: 1,
-    RowOfPage: 1000,
-    LocationId: this.locId
-  };
-  this.getAllsellersDetails(paramObject);
-}
-addNewSeller() {
-  // this.router.navigateByUrl(${this.orgName}/sellers-buyers/add-seller);
-  this.addSellerPopupVisible = true;
-}
-
-onSubmit() {
-  const reqObj = {
-    ...this.sellerForm.value,
-    ...{ 
-      rowId: 0,
-      locID: this.locId,
-      createdBy: this.logInUserId,
-      createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
-      updatedBy: this.logInUserId,
-      updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+    switch (actionCode?.iconcode) {
+      case 'mdi-magnify':
+        this.searchSeller();
+        break;
+      case 'mdi-refresh':
+        this.refreshSellerData();
+        break;
+      case 'mdi-account':
+        this.addNewSeller();
+        break;
+      default:
+        break;
     }
+
   }
-  console.log(reqObj);
-  this.commonService.addSeller(reqObj).subscribe(data =>{
-    console.log(data);
+  searchSeller() {
+    if (!this.searchSellerInput.trim()) {
+      console.warn('Search input is empty, skipping API call');
+      return;
+    }
+
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId,
+      SerachText: this.searchSellerInput.replace(/ /g, "%")
+    };
+    this.getAllsellersDetails(paramObject);
+  }
+
+  refreshSellerData() {
+    this.searchSellerInput = '';
+    const paramObject = {
+      PageNumber: 1,
+      RowOfPage: 1000,
+      LocationId: this.locId
+    };
+    this.getAllsellersDetails(paramObject);
+  }
+  addNewSeller() {
+    // this.router.navigateByUrl(${this.orgName}/sellers-buyers/add-seller);
+    this.addSellerPopupVisible = true;
+  }
+
+  onSubmit() {
+    const reqObj = {
+      ...this.sellerForm.value,
+      ...{
+        rowId: 0,
+        locID: this.locId,
+        createdBy: this.logInUserId,
+        createdDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
+        updatedBy: this.logInUserId,
+        updatedDate: this.datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS')
+      }
+    }
+    console.log(reqObj);
+    this.commonService.addSeller(reqObj).subscribe(data => {
+      console.log(data);
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller updated Successfully' });
-      const sellerFullname = reqObj.firstName + (reqObj.middleName != '' ? ' ' + reqObj.middleName : '') 
-      + (reqObj.lastName != '' ? ' ' + reqObj.lastName : '') ;
-         
+      const sellerFullname = reqObj.firstName + (reqObj.middleName != '' ? ' ' + reqObj.middleName : '')
+        + (reqObj.lastName != '' ? ' ' + reqObj.lastName : '');
+
       this.addSellerPopupVisible = false;
       this.sellerForm.patchValue({
         firstName: '',
         middleName: '',
         lastName: '',
-        streetAddress: '', 
+        streetAddress: '',
         idnumber: '',
         cellNumber: '',
         contactName: ''
       });
       this.clickOnSeller(data.body.insertedRow, sellerFullname, this.sellerType);
-    },(error: any) =>{
-    console.log(error);
-  })
+    }, (error: any) => {
+      console.log(error);
+    })
 
-}
- changeSellerType() {
+  }
+  changeSellerType() {
     if (this.sellerType == 'Personal') {
       this.sellerType = 'Business';
     } else {
@@ -580,9 +658,9 @@ onSubmit() {
 
 
   deletePickup(rowID: number): void {
-    this.selectedRowId = rowID; 
+    this.selectedRowId = rowID;
     this.confirmationService.confirm({
-      key: 'deleteDialog', 
+      key: 'deleteDialog',
       accept: () => this.confirmDelete(),
       reject: () => this.cancelDelete(),
     });
@@ -612,7 +690,7 @@ onSubmit() {
     );
   }
   removeFromList(rowID: number): void {
-    const index = this.dispatchRes.findIndex((item:any) => item && (item as any).rowId === rowID);
+    const index = this.dispatchRes.findIndex((item: any) => item && (item as any).rowId === rowID);
     if (index > -1) {
       this.dispatchRes.splice(index, 1);
     }

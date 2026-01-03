@@ -22,6 +22,7 @@ export class UserLoginComponent implements OnInit {
   organizationName: any;  
   OrgId: any;
   logInUserId: any;
+  orgName: any;
 
   locations: any;
   selectedLocation: any;
@@ -59,7 +60,25 @@ export class UserLoginComponent implements OnInit {
   consetData: any;
   
   consentLoading = false;
+ 
 
+  timeZones: any[] = [];
+  currency:any [] = [];
+  selectedTimeZone: any = null;
+  selectedCurrency:any = null;
+  showTimezonePopup: boolean = false;
+  IsLocationSet: boolean = false;
+
+  showCashDrawerSelection: boolean = false;
+  availableCashDrawers: any[] = [];
+  selectedCashDrawer: any = null;
+  MultiCashDrawerEnabled: boolean = false;
+  MultiScaleEnabled: boolean = false;
+
+  showScaleSelection: boolean = false;
+  availableScales: any[] = [];
+  selectedScaleMachine: any = null;
+   isLoading: boolean = false;  
   constructor(private route: ActivatedRoute,
               private router: Router,
               private http:HttpClient,
@@ -67,17 +86,30 @@ export class UserLoginComponent implements OnInit {
               private fb:FormBuilder,
               private messageService: MessageService,
               private confirmationService: ConfirmationService,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+            private stroarge:StorageService) { }
 
   ngOnInit() {
     this.user.macID = "defaultMacId"
-
+    this.orgName = localStorage.getItem('orgName');
     const userObjectExist = this.localService.getLocalStorage('userObj');
+   
     if(userObjectExist){
-      this.router.navigateByUrl(`/${this.organizationName}/home`);
+      this.redirectToHome();
+      // this.router.navigateByUrl(`/${this.organizationName}/home`);
     }
     this.getIPAddress();
     this.getConsetInfo();
+
+    const _dataObj: any = this.stroarge.getLocalStorage('systemInfo');
+    if (_dataObj) {
+
+      const MultiCashDrawerEnabled = _dataObj.find((item: any) => item?.keys?.toLowerCase() === 'ismulticashdrawersupport');
+      this.MultiCashDrawerEnabled = String(MultiCashDrawerEnabled?.values).toLowerCase() === 'true';
+
+      const MultiScaleEnabled = _dataObj.find((item: any) => item?.keys?.toLowerCase() === 'ismultiplescale'); 
+      this.MultiScaleEnabled = String(MultiScaleEnabled?.values).toLowerCase() === 'true';
+    }
 
     this.OrgId = this.commonService.getProbablyNumberFromLocalStorage('orgId');
     this.logInUserId = 1;
@@ -86,8 +118,9 @@ export class UserLoginComponent implements OnInit {
       this.organizationName = param["orgName"];
       this.getOrgLocation();
     });
-    if(userObjectExist){
-      this.router.navigateByUrl(`/${this.organizationName}/home`);
+    if(userObjectExist){      
+      this.redirectToHome();
+      // this.router.navigateByUrl(`/${this.organizationName}/home`);
     }
     this.getGetOrganisationConsent();
   
@@ -112,7 +145,31 @@ export class UserLoginComponent implements OnInit {
     });
 
   }
+  getAllScales() {
+    this.showScaleSelection = true;  
+    this.commonService.GetAllScales({}).subscribe({
+      next: (res: any) => {
+        this.availableScales = res?.body?.data || [];
+      },
+      error: (err: any) => {
+        console.error('Error fetching scales:', err);
+      }
+    });
+  }
 
+  confirmScaleSelection() {
+    if (this.selectedScaleMachine) {
+      localStorage.setItem('selectedScaleMachine', JSON.stringify(this.selectedScaleMachine));
+      
+    }
+
+    this.showScaleSelection = false;
+    this.router.navigateByUrl(`/${this.organizationName}/home`);
+  }
+
+  cancelScaleSelection() {
+    this.showScaleSelection = false;
+  }
   // Check if the button should be enabled
   isSubmitEnabled(): boolean {
     return this.consentForm.get('consent1')?.value && this.consentForm.get('consent2')?.value;
@@ -133,11 +190,7 @@ export class UserLoginComponent implements OnInit {
   
   
   btnClick(): void {
-  
-  //  this.localService.setLocalStorage('locId', this.locationId); 
     this.validateUser();
-    
-    // this.router.navigateByUrl(`/${this.organizationName}/home`);
   };
 
   changeInput() {
@@ -145,9 +198,17 @@ export class UserLoginComponent implements OnInit {
   }
 
   backToOrgLogin() {
+    const materialCam = localStorage.getItem('metarialCamera');
+    const defaultCam = localStorage.getItem('defualtCamera');
+
     localStorage.clear();
+
+    if (materialCam) localStorage.setItem('metarialCamera', materialCam);
+    if (defaultCam) localStorage.setItem('defualtCamera', defaultCam);
+
     this.router.navigateByUrl(`/organization-login`);
   }
+
   
   getIPAddress(){
     this.http.get("https://api.ipify.org/?format=json").subscribe((res:any)=>{
@@ -184,14 +245,27 @@ export class UserLoginComponent implements OnInit {
           console.log('getOrgLocation :: ');
           console.log(data);
           this.locations = data.body.data;
-          this.selectedLocation = this.locations[0];
-          this.locationId =  this.locations[0].rowId;
-          this.user.locID = this.locations[0].rowId;
-          this.user.locationName = this.locations[0].locationName;
-          this.loginForm.patchValue(this.user)
+          // this.selectedLocation = this.locations[0];
+          // this.locationId =  this.locations[0].rowId;
+          // this.user.locID = this.locations[0].rowId;
+          // this.user.locationName = this.locations[0].locationName;
+          // this.loginForm.patchValue(this.user)
+          const savedLocId = Number(localStorage.getItem('locId'));
+          this.selectedLocation = this.locations.find((loc: any) => loc.rowId === savedLocId) || this.locations[0];
+
+          this.locationId = this.selectedLocation.rowId;
+          this.user.locID = this.selectedLocation.rowId;
+          this.user.locationName = this.selectedLocation.locationName;
+          this.loginForm.patchValue(this.user);
+
+          localStorage.setItem('isLocationSet', this.selectedLocation.isLocationSet.toString());
+          localStorage.setItem('cashPaymentLimit', this.selectedLocation.cashPaymentLimit?.toString() ?? '0');
+          localStorage.setItem('checkOnlyPayment', this.selectedLocation.checkOnlyPayment?.toString() ?? 'false');
+
         },
         (err: any) => {
           this.isShow = false;
+          this.backToOrgLogin();
           // this.errorMsg = 'Error occured';
         }
       );
@@ -200,20 +274,41 @@ export class UserLoginComponent implements OnInit {
   changeLocationChange(locationId: any) {
     // alert(locationId);
     this.selectedLocation = this.locations.filter((item:any) => item.rowId == locationId)[0];
+      
+    this.loginForm.patchValue({
+        locationName: this.selectedLocation.locationName
+    });   
     // alert(JSON.stringify(this.selectedLocation));
+    localStorage.setItem('isLocationSet', this.selectedLocation.isLocationSet.toString());
+    localStorage.setItem('cashPaymentLimit', this.selectedLocation.cashPaymentLimit?.toString() ?? '0');
+    localStorage.setItem('checkOnlyPayment', this.selectedLocation.checkOnlyPayment?.toString() ?? 'false');
+
   }
   
   validateUser() { 
     this.isSubmit =  false;
+     this.isLoading = true; 
     if(this.loginForm.invalid){
       this.isSubmit =  true;
+      this.isLoading = false;
       return false;
     }    
     const req = {...this.loginForm.value,locID:Number(this.loginForm.value.locID)};
     this.commonService.validateUserCredentials(req).subscribe((data) => {
+    this.isLoading = false; 
+          if (data?.body?.issuccess === false) {
+            const errorMessage = data.body.message || 'Login failed';
+            this.messageService.add({ severity: 'error', summary: 'Access Denied', detail: errorMessage });
+            return;
+          }
           if (data?.body.token!='' && data?.body.userdto.userName) {
             this.logInUserId = data?.body.userdto.rowId;
+            localStorage.setItem('isLocationSet', this.selectedLocation.isLocationSet.toString());
+            localStorage.setItem('userRowID', data?.body.userdto.rowId);
+            localStorage.setItem('userRole', data?.body.userdto.role);
+            
             this.displayOrganisationConsent(data);
+            this.updateLatestLoginDate();
           } else {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid credentials or No user found.' });
           }          
@@ -222,6 +317,7 @@ export class UserLoginComponent implements OnInit {
           this.messageService.add({ severity: 'error', summary: 'error', detail: 'Invalid User Credentials' });
         
           this.errorMsg = 'Error occured';
+          this.isLoading = false; 
         }
       );
   }
@@ -261,6 +357,22 @@ export class UserLoginComponent implements OnInit {
     } else {
       this.redirectToHomePage(data);
     }
+  }
+
+  updateLatestLoginDate(){
+    const orgName = this.orgName
+    const requestObj = { OrgName: orgName };
+    this.commonService.UpdateLastLoginDate(null,requestObj).subscribe(
+      (response: any) => {
+        console.log('API Response:', response);
+        const adminAd = response?.body?.adminAdvertisement || '';
+      localStorage.setItem('adminAdvertisement', adminAd);
+      },
+      (error) => {
+        console.error('API Error:', error);
+        alert('Error updating user data!');
+      }
+    );
   }
 
 
@@ -324,11 +436,13 @@ export class UserLoginComponent implements OnInit {
       "consentGivenDate": datePipe.transform(new Date(), 'YYYY-MM-ddTHH:mm:ss.SSS'),
       "consentGivenBy": this.logInUserId
     }
-    this.commonService.insertConsentdetail(reqgObj).subscribe((res) =>{      
-      this.router.navigateByUrl(`/${this.organizationName}/home`);
+    this.commonService.insertConsentdetail(reqgObj).subscribe((res) =>{        
+      this.redirectToHome();    
+      // this.router.navigateByUrl(`/${this.organizationName}/home`);
     },
     (err: any) => {
-      this.router.navigateByUrl(`/${this.organizationName}/home`);
+      this.redirectToHome();
+      // this.router.navigateByUrl(`/${this.organizationName}/home`);
     });
     
   }
@@ -356,6 +470,7 @@ export class UserLoginComponent implements OnInit {
   }
 
   redirectToHomePage(data: any) {    
+   
     // // Convert the string to a Date object
     // let date = new Date(this.acceptanceDate);
 
@@ -376,6 +491,8 @@ export class UserLoginComponent implements OnInit {
     localStorage.setItem('locationName',locationName);
     localStorage.setItem('currencyCode',this.selectedLocation?.currencyCode || 'USD'); 
     this.localService.setLocalStorage('userObj', data?.body);
+    localStorage.setItem('cashPaymentLimit', this.selectedLocation?.cashPaymentLimit?.toString() ?? '0');
+    localStorage.setItem('checkOnlyPayment', this.selectedLocation?.checkOnlyPayment?.toString() ?? 'false');
 
     let reqObj = {
       Key:'',
@@ -391,19 +508,230 @@ export class UserLoginComponent implements OnInit {
         this.insertConsentdetail();
       } else {
         if (this.isMandatoryConsentAccepted || this.byPassConsent) {
-          this.router.navigateByUrl(`/${this.organizationName}/home`);
+          this.redirectToHome();
+          // this.router.navigateByUrl(`/${this.organizationName}/home`);
         } else {
           this.insertConsentdetail();
         }
       }
     },
     (err: any) => {
-      this.router.navigateByUrl(`/${this.organizationName}/home`);
+      this.redirectToHome();
+      // this.router.navigateByUrl(`/${this.organizationName}/home`);
     });
 
   }
    
 
+  getAllCurrency() {
+    const params = { currencyId: 0 }; 
+    this.commonService.getAllCurrency(params).subscribe({
+      next: (response: any) => {
+        this.currency = response?.body?.data || response?.data || [];
+        console.log('Currency loaded:', this.currency);
+      },
+      error: (error) => {
+        console.error('Error loading time zones:', error);
+      }
+    });
+  }
+
   
+  getTimeZones() {
+    const params = { TimeZoneID: 0 }; 
+    this.commonService.getAllTimeZones(params).subscribe({
+      next: (response: any) => {
+        this.timeZones = response?.body?.data || response?.data || [];
+        console.log('TimeZones loaded:', this.timeZones);
+      },
+      error: (error) => {
+        console.error('Error loading time zones:', error);
+      }
+    });
+  }
+
+
+  
+  
+  saveTimezone() {
+    const selectedTimezone = this.timeZones.find(tz => tz.rowID === this.selectedTimeZone);
+    const selectedCurrency = this.currency.find(c => c.rowID === this.selectedCurrency);
+   
+    if (selectedTimezone) {
+      const requestObj = null; 
+      
+      const postParams = {
+        locationId: this.selectedLocation.rowId,
+        timeZone: selectedTimezone.timeZoneID,
+        currency:  selectedCurrency.currency,
+        currencyCode: selectedCurrency.currencyCode
+      };
+    
+      this.commonService.UpdateLocationTimeZone(requestObj, postParams).subscribe({
+        next: (response: any) => {
+          console.log('Timezone updated successfully:', response);
+          localStorage.setItem('isTimezoneSelected', 'true');
+          this.IsLocationSet = true;
+          console.log('IsLocationSet after update:', this.IsLocationSet);
+          localStorage.setItem('currencyCode', selectedCurrency?.currencyCode || 'USD');
+
+          this.showTimezonePopup = false;
+          this.router.navigateByUrl(`/${this.organizationName}/home`);
+        },
+        error: (error) => {
+          console.error('Error updating timezone:', error);
+          // this.router.navigateByUrl(`/${this.organizationName}/home`);
+           this.checkRoleAndProceed();
+        }
+      });
+    }
+  }
+
+  
+
+  redirectToHome(): void {    
+    const isLocationSet = localStorage.getItem('isLocationSet');    
+    this.getTimeZones();
+    this.getAllCurrency();
+    if (isLocationSet !== 'true') {
+      this.showTimezonePopup = true;
+    } else {
+      this.showTimezonePopup = false;
+      // this.router.navigateByUrl(`/${this.organizationName}/home`);
+      this.checkRoleAndProceed();
+    }
+  }
+
+
+  checkRoleAndProceed() {
+    const userRole = localStorage.getItem('userRole');
+    if (userRole === 'Scale' && this.MultiScaleEnabled) {    
+      this.getAllScales();
+      return;
+    }
+    if (this.MultiCashDrawerEnabled) {
+      if (userRole === 'Cashier') {
+        this.showCashDrawerSelectionPopup();
+      }
+     else if (userRole === 'Administrator') {
+        // For Admin, check if a drawer is already selected. If not, set a default.
+        const existingDrawerId = localStorage.getItem('selectedCashDrawerId');
+        if (!existingDrawerId) {
+          this.setDefaultCashDrawerForAdmin();
+        } else {
+          this.router.navigateByUrl(`/${this.organizationName}/home`);
+        }
+      } else {
+        this.router.navigateByUrl(`/${this.organizationName}/home`);
+      }
+    } else {
+      const existingDrawerId = localStorage.getItem('selectedCashDrawerId');
+
+      if (!existingDrawerId) {
+        const defaultDrawer = {
+          rowId: 1,
+          drawerName: 'Default Drawer'
+        };
+        localStorage.setItem('selectedCashDrawer', JSON.stringify(defaultDrawer));
+        localStorage.setItem('selectedCashDrawerId', '1');
+      }
+
+      this.router.navigateByUrl(`/${this.organizationName}/home`);
+    }
+  }
+
+  setDefaultCashDrawerForAdmin() {
+    const locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
+    const paramObj = {
+      locID: locId
+    };
+
+    this.commonService.GetAllCashDrawers(paramObj).subscribe({
+      next: (res: any) => {
+        const cashDrawers = res?.body?.data || [];
+        if (cashDrawers.length > 0) {
+          const firstDrawer = cashDrawers[0];
+          console.log(`Setting default drawer for Admin to: ${firstDrawer.drawerName} (ID: ${firstDrawer.rowId})`);
+          
+          localStorage.setItem('selectedCashDrawerId', firstDrawer.rowId.toString());
+        } else {
+          console.warn('No cash drawers found for this location.');
+        }
+        this.router.navigateByUrl(`/${this.organizationName}/home`);
+      },
+      error: (err: any) => {
+        console.error('Failed to fetch cash drawers to set a default for admin.', err);
+        this.router.navigateByUrl(`/${this.organizationName}/home`);
+      }
+    });
+  }
+
+   showCashDrawerSelectionPopup() {
+    // this.logInUserId = localStorage.getItem('userRowID'); 
+    this.GetCashDrawerByUserID();
+    this.showCashDrawerSelection = true;
+  }
+
+  GetCashDrawerByUserID() {
+      const paramObj = {
+        userID: this.logInUserId,
+        locID: this.commonService.getProbablyNumberFromLocalStorage('locId')
+      };
+
+      this.commonService.GetCashDrawerByUserID(paramObj).subscribe(
+        (response: any) => {
+          if (response && response.body && response.body.data) {
+            this.availableCashDrawers = response.body.data;
+
+            if (this.availableCashDrawers.length === 1) {
+              // If there's only one drawer, auto-select it 
+              this.selectedCashDrawer = this.availableCashDrawers[0];
+              console.log('Only one cash drawer found. Auto-selecting:', this.selectedCashDrawer);
+              this.confirmCashDrawerSelection(); 
+            } else if (this.availableCashDrawers.length > 1) {
+              // If there are multiple drawers, show the popup for selection.
+              const defaultDrawer = this.availableCashDrawers.find(drawer => drawer.isDefault);
+              if (defaultDrawer) {
+                this.selectedCashDrawer = defaultDrawer;
+              } else {
+                // Pre-select the first one if no default is set
+                this.selectedCashDrawer = this.availableCashDrawers[0];
+              }
+              this.showCashDrawerSelection = true;
+            } else {
+              // No cash drawers are assigned to this user.
+              this.messageService.add({ severity: 'warn', summary: 'No Cash Drawer', detail: 'No cash drawer is assigned to your account. Proceeding without one.' });
+              this.router.navigateByUrl(`/${this.organizationName}/home`);
+            }
+          } else {
+            this.messageService.add({ severity: 'warn', summary: 'No Cash Drawer', detail: 'No cash drawer is assigned to your account.' });
+            this.router.navigateByUrl(`/${this.organizationName}/home`);
+          }
+        },
+        (error: any) => {
+          console.error('Error loading cash drawers:', error);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not load cash drawers.' });
+          this.router.navigateByUrl(`/${this.organizationName}/home`);
+        }
+      );
+    }
+
+   confirmCashDrawerSelection() {
+    if (!this.selectedCashDrawer) {
+      this.messageService.add({severity:'error', summary:'Error', detail:'Please select a cash drawer'});
+      return;
+    }
+
+    console.log('Selected Cash Drawer:', this.selectedCashDrawer);  
+    localStorage.setItem('selectedCashDrawer', JSON.stringify(this.selectedCashDrawer)); 
+    this.showCashDrawerSelection = false;
+    this.router.navigateByUrl(`/${this.organizationName}/home`);
+  }
+
+  cancelCashDrawerSelection() {
+    this.showCashDrawerSelection = false;
+    this.router.navigateByUrl(`/${this.organizationName}/home`);
+  }
+
 
 }

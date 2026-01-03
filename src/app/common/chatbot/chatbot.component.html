@@ -1,1 +1,190 @@
-<p>chatbot works!</p>
+<div class="chatbot-container" *ngIf="shouldShowChat" [class.modal-open]="isUploadModalVisible || isDetailModalVisible">
+  <!-- Chat Icon -->
+  <button class="chat-icon" (click)="toggleChat()" *ngIf="!isChatOpen" aria-label="Open Chat">
+    <i class="fas fa-comments"></i>
+  </button>
+
+  <!-- Chat Window -->
+  <div class="chat-window" *ngIf="isChatOpen" [class.history-closed]="!isHistoryPanelOpen">
+    
+    <!-- Chat History Panel (Sidebar) -->
+    <div class="chat-history-panel">
+      <div class="history-header">
+        <button class="new-chat-btn" (click)="createNewChat()">
+          <i class="fas fa-plus"></i> New Chat
+        </button>
+      </div>
+      <div class="history-list">
+        <div *ngFor="let chat of allChats" 
+             class="history-item" 
+             [class.active]="chat.id === activeChat?.id"
+             (click)="selectChat(chat.id)"
+             title="{{ chat.title }}">
+          <span class="history-item-title">{{ chat.title }}</span>
+          <button class="delete-chat-btn" (click)="deleteChat(chat.id, $event)" title="Delete Chat">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Chat Area -->
+    <div class="chat-main-area">
+      <div class="chat-header">
+        <button class="header-btn toggle-history-btn" (click)="toggleHistoryPanel()" title="Toggle History">
+          <i class="fas" [ngClass]="isHistoryPanelOpen ? 'fa-chevron-left' : 'fa-bars'"></i>
+        </button>
+
+        <h3>BuyScrapApp ChartBot</h3>
+        
+        <div>
+          <button *ngIf="isAuthorizedOrg && isAuthorizedUser" class="header-btn" (click)="onFileUploadClick()" title="Upload PDF">
+            <i class="fas fa-upload"></i>
+          </button>
+          <button class="header-btn" (click)="toggleChat()" title="Close Chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Area -->
+      <div class="chat-messages" #messageContainer>
+        <div *ngFor="let msg of activeChat?.messages" class="message-wrapper" [ngClass]="{'user': msg.isUser, 'bot': !msg.isUser}">
+          <div class="message-bubble" 
+               [ngClass]="{ 'chart-bubble': msg.type === 'chart', 'table-bubble': msg.type === 'table', 'clickable': msg.type === 'chart' || msg.type === 'table' }"
+               (click)="openDetailModal(msg)">
+
+            <div [ngSwitch]="msg.type">
+              <ng-container *ngIf="msg.type === 'text'">
+                <div class="message-content" [innerHTML]="sanitizeHtml(msg.text)"></div>
+              </ng-container>
+              <ng-container *ngIf="msg.type === 'chart'">
+                <div class="chart-container">
+                  <canvas baseChart [data]="msg.chartData" [options]="msg.chartOptions" [type]="msg.chartType"></canvas>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="msg.type === 'table'">
+                <div class="table-container">
+                  <table>
+                    <thead><tr><th *ngFor="let header of msg.tableData.headers">{{ header }}</th></tr></thead>
+                    <tbody><tr *ngFor="let row of msg.tableData.rows"><td *ngFor="let cell of row">{{ cell }}</td></tr></tbody>
+                  </table>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="message-timestamp">
+            {{ msg.timestamp | date:'shortTime' }}
+          </div>
+        </div>
+        <div *ngIf="isLoading" class="message-wrapper bot">
+          <div class="message-bubble">
+            <div class="typing-indicator"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <!-- <div class="chat-input-area">
+        <input #chatInput type="text" [(ngModel)]="currentMessage" (keyup.enter)="sendMessage()" [disabled]="isLoading" placeholder="Ask a question...">
+        <button (click)="sendMessage()" [disabled]="!currentMessage.trim() || isLoading" aria-label="Send Message">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div> -->
+      <div class="chat-input-area">
+  
+        <!-- New Microphone Button -->
+        <button class="mic-btn" 
+                (click)="toggleVoiceInput()" 
+                [class.listening]="isListening" 
+                title="Voice Input">
+          <i class="fas" [ngClass]="isListening ? 'fa-stop' : 'fa-microphone'"></i>
+        </button>
+
+        <input #chatInput 
+              type="text" 
+              [(ngModel)]="currentMessage" 
+              (keyup.enter)="sendMessage()" 
+              [disabled]="isLoading" 
+              placeholder="Ask a question... or click mic">
+              
+        <button (click)="sendMessage()" 
+                [disabled]="!currentMessage.trim() || isLoading" 
+                aria-label="Send Message">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Detail Modal for Charts and Tables -->
+<div *ngIf="isDetailModalVisible" class="detail-modal-overlay" (click)="closeDetailModal()">
+  <div class="detail-modal-content" (click)="$event.stopPropagation()">
+    
+    <!-- MODIFIED HEADER START -->
+    <div class="detail-modal-header">
+      <h3>{{ modalContent?.title || 'Details' }}</h3>
+      
+      <div class="modal-header-actions">
+        <!-- New Download Button -->
+        <button *ngIf="modalContent?.type === 'table'" 
+                class="download-btn" 
+                (click)="downloadTableAsCsv()" 
+                title="Download as CSV"
+                style="margin-right: 10px; cursor: pointer; background: none; border: none; color: #007bff; font-size: 1.1rem;">
+          <i class="fas fa-file-csv"></i> Download CSV
+        </button>
+
+        <button class="close-modal-btn" (click)="closeDetailModal()" title="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <!-- MODIFIED HEADER END -->
+
+    <div class="detail-modal-body" *ngIf="modalContent" [ngSwitch]="modalContent.type">
+      <div *ngSwitchCase="'chart'" class="modal-chart-container">
+        <canvas baseChart
+                [data]="modalContent.data.chartData"
+                [options]="modalContent.data.chartOptions"
+                [type]="modalContent.data.chartType"></canvas>
+      </div>
+      <div *ngSwitchCase="'table'" class="modal-table-container">
+        <div class="table-container">
+            <table>
+            <thead>
+                <tr><th *ngFor="let header of modalContent.data.headers">{{ header }}</th></tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of modalContent.data.rows">
+                <td *ngFor="let cell of row">{{ cell }}</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PDF Upload Modal -->
+<div *ngIf="isUploadModalVisible" class="modal-overlay">
+  <div class="modal-content">
+    <h3>Upload Training PDF</h3>
+    <form (ngSubmit)="submitUploadForm()">
+      <div class="form-group">
+        <label for="file">Choose PDF file:</label>
+        <input type="file" #fileInput id="file" accept="application/pdf" (change)="onFileSelected($event)" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Enter Password:</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" required />
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="closeUploadModal()">Cancel</button>
+        <button type="submit" class="btn-upload">Upload</button>
+      </div>
+    </form>
+  </div>
+</div>

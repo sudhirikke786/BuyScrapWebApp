@@ -18,20 +18,10 @@ export const routes: Routes = [
   //   path: '',
   //   component: InoutDashboardComponent
   // },
-  {
-        path: '',
-        component: InoutLayoutComponent, 
-        children: [
-          {
-            path:'',
-            component:InoutDashboardComponent
-          },
-          {
-            path: 'grid',
-            component: InoutGridComponent, 
-          }
-        ]
-      },
+  {    
+    path:'',
+    component:InoutDashboardComponent
+  },
   {
     path:'detail/:inoutId/:action',
     component: InoutDetailsComponent

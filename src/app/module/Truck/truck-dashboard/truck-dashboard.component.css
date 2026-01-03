@@ -1,0 +1,35 @@
+.my-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 1rem 1.25rem;             
+  align-items: start;
+  padding: 0.5rem 0;             
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field input[pInputText],
+.form-field ::ng-deep .p-dropdown,
+.form-field p-dropdown {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-field label {
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.form-field.full {
+  grid-column: 1 / -1; 
+}
+
+@media (max-width: 640px) {
+  .my-form-grid {
+    grid-template-columns: 1fr;
+  }
+}

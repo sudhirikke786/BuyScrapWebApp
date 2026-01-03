@@ -135,6 +135,7 @@ export class AdjustmentDashboardComponent implements OnInit {
       this.isEditModeOn = true;
       this.adjustmentData = adjustmentData;
       this.form.patchValue(adjustmentData)
+      this.form.patchValue({ locID: this.locId }); 
     } else {
       this.headerTitle = 'Add Adjustment';
       this.isEditModeOn = false;

@@ -1,0 +1,180 @@
+  <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page" *ngIf="!showLoader">
+
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <div class="bdcmb mt-2">
+                            <div class="row">
+                                <div class="col-sm-6 col-6">
+                                    <h4 class="page-title">Truck</h4>
+                                </div>
+
+                                <div class="col-sm-6 col-6">
+                                    <div class="b-links">
+                                        <a routerLink="/{{orgName}}/home">Home</a> / <a href="javscript:void()" routerLink="/{{orgName}}/truck">Truck</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-2">
+                            <div class="col-md-6 d-flex">
+                                <input type="text" id="example-palaceholder" class="form-control" placeholder="Search Truck" [(ngModel)]="searchText">
+                            </div>
+                            <div class="col-md-6"> 
+                                <app-actionbar (iconAction)="getAction($event)"  [actions]="actionList"></app-actionbar>
+                            </div>
+                            
+                        </div>  
+                        <div class="row mt-3">
+                            <div class="col-12">
+
+                                <table class="table table-bordered table-hover custom-truck-table">
+                                <thead>
+                                    <tr>
+                                    <th>Truck ID</th>
+                                    <th>Truck Name</th>
+                                    <th>Status</th>
+                                    <th>Truck Type</th>
+                                    <th>Plate State</th>
+                                    <th>License Plate</th>
+                                    <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>TRK001</td>
+                                        <td>Volvo Hauler</td>
+                                        <td>Inventory</td>
+                                        <td>Flatbed</td>
+                                        <td>CA</td>
+                                        <td>ABC1234</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>TRK002</td>
+                                        <td>Freightliner</td>
+                                        <td>Inventory</td>
+                                        <td>Refrigerated</td>
+                                        <td>NY</td>
+                                        <td>NY98GH2</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>TRK003</td>
+                                        <td>Tata Cargo</td>
+                                        <td>Inventory</td>
+                                        <td>Box Truck</td>
+                                        <td>TX</td>
+                                        <td>TX56LK9</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>TRK004</td>
+                                        <td>Ashok Leyland</td>
+                                        <td>Inventory</td>
+                                        <td>Flatbed</td>
+                                        <td>FL</td>
+                                        <td>FL22AB7</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-primary me-2">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody> 
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <!-- end page title --> 
+
+                        <!-- end row-->     
+                        
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+              
+
+
+
+            </div>
+
+            <div class="content" *ngIf="showLoader">
+                <app-page-loader type="image"></app-page-loader>
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+            <p-dialog [modal]="true" [header]="headerTitle" [(visible)]="visible" [style]="{width: '600px'}">
+                <div class="my-form-grid">
+
+                    <!-- Row 1 -->
+                    <div class="form-field">
+                    <label>Truck Name</label>
+                    <input pInputText type="text" placeholder="Enter Truck Name" />
+                    </div>
+
+                    <div class="form-field">
+                    <label>Status</label>
+                    <p-dropdown
+                        [options]="statusOptions"
+                        optionLabel="label"
+                        optionValue="value"
+                        placeholder="Select Status">
+                    </p-dropdown>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="form-field">
+                    <label>Truck Type</label>
+                    <p-dropdown
+                        [options]="truckTypeOptions"
+                        optionLabel="label"
+                        optionValue="value"
+                        placeholder="Select Truck Type">
+                    </p-dropdown>
+                    </div>
+
+                    <div class="form-field">
+                    <label>Plate State</label>
+                    <input pInputText type="text" placeholder="Enter Plate State" />
+                    </div>
+
+                    <!-- Row 3: License Plate spans both columns -->
+                    <div class="form-field full">
+                    <label>License Plate</label>
+                    <input pInputText type="text" placeholder="Enter License Plate" />
+                    </div>
+
+                </div>
+
+                <ng-template pTemplate="footer">
+                    <button pButton label="Cancel" class="p-button-text" (click)="visible = false"></button>
+                    <button pButton label="Save"></button>
+                </ng-template>
+            </p-dialog>
+
+            <p-toast></p-toast>

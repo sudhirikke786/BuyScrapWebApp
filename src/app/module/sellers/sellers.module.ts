@@ -17,19 +17,10 @@ import { SellerGridComponent } from './seller-grid/seller-grid.component';
 
 
 export const routes: Routes = [
+  
   {
     path: '',
-    component: SellerLayoutComponent, 
-    children: [
-      {
-        path: '',
-        component: SellersBuyersDashboardComponent, 
-      },
-      {
-        path: 'grid',
-        component: SellerGridComponent, 
-      }
-    ]
+    component: SellersBuyersDashboardComponent, 
   },
   {
     path:'add-seller',

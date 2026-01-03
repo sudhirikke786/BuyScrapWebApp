@@ -11,7 +11,8 @@
 
                 <div class="col-sm-6 col-6">
                     <div class="b-links">
-                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/ship-out">Ship Out</a> / <a href="javscript:void()">Ship Out Details</a>
+                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/ship-out">Ship Out</a>
+                        / <a href="javscript:void()">Ship Out Details</a>
                     </div>
                 </div>
             </div>
@@ -22,103 +23,109 @@
                 <div class="card">
                     <div class="card-body" style="height:calc(100vh - 147px)">
 
-                      
+
 
                         <div class="row">
-                            <div [ngClass]="!isEditModeOn && !editItemCloseImageCapture? 'col-sm-12' : 'col-sm-6'">
+                            <div [ngClass]="!isEditModeOn && !editItemCloseImageCapture? 'col-sm-12' : 'col-sm-6'"
+                                class="d-flex flex-column h-100">
 
                                 <div class="row">
                                     <div class="col-sm-12">
-        
+
                                         <div class="row">
-                                           <div class="col-sm-6 d-flex">
-                                                <h4 class="ticket-number me-1">Ship-out # - {{shipoutId}}</h4>
+                                            <div class="col-sm-6 d-flex">
+                                                <h4 class="ticket-number me-1">Ship-out # - {{shipoutID}}</h4>
                                                 <!-- <a href="javascript:void(0)" class="btn btn-grid btn-primary waves-effect waves-light ms-1 mb-1">
                                                     <i class="mdi mdi-plus"></i>  COD Required
                                                 </a> -->
-                                           </div>
-        
-                                           <div class="col-sm-6 d-flex justify-content-end">
-                                            <a  class="btn  btn-primary waves-effect waves-light ticket-edit me-1" routerLink="/{{orgName}}/ship-out">
-                                                Back
-                                            </a>
-                                            <!-- <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
+                                            </div>
+
+                                            <div class="col-sm-6 d-flex justify-content-end">
+                                                <a class="btn  btn-primary waves-effect waves-light ticket-edit me-1"
+                                                    routerLink="/{{orgName}}/ship-out">
+                                                    Back
+                                                </a>
+                                                <!-- <a *ngIf="!isEditModeOn && ticketData.status == 'OPEN'" class="btn  btn-primary waves-effect waves-light ticket-edit flt-right" (click)="editTicketDetails()">
                                                 <i class="mdi mdi-pencil"></i> Edit
                                             </a> -->
-                                            <div *ngIf="isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
-                                                <!-- <a class="btn btn-danger me-1" (click)="cancelEditTicket()">Cancel</a> -->
-                                                <a class="btn btn-primary" (click)="confirmSave()">Save</a>
+                                                <div *ngIf="isEditModeOn"
+                                                    class="waves-effect waves-light ticket-edit flt-right">
+                                                    <!-- <a class="btn btn-danger me-1" (click)="cancelEditTicket()">Cancel</a> -->
+                                                    <a class="btn btn-primary" (click)="confirmSave()">Save</a>
+                                                </div>
+
+
+                                                <div *ngIf="!isEditModeOn"
+                                                    class="waves-effect waves-light ticket-edit flt-right">
+                                                    <a class="btn btn-primary"
+                                                        (click)="generateShipOutReport()">Print</a>
+                                                </div>
+
                                             </div>
-        
-                                            
-                                            <div *ngIf="!isEditModeOn" class="waves-effect waves-light ticket-edit flt-right">
-                                                <a class="btn btn-primary" (click)="generateShipOutReport()">Print</a>
-                                            </div>
-        
-                                           </div> 
                                         </div>
-        
+
                                         <table class="seller-view-tbl">
                                             <tbody>
-                                            <tr>
-                                                <td>ShipTo : {{shipOutDetails?.customerName}}</td>
-                                                <td class="w-25"><b>Address:</b>
+                                                <tr>
+                                                    <td>ShipTo : {{shipOutDetails?.customerName}}</td>
+                                                    <td class="w-25"><b>Address:</b>
 
 
-                                                    <ng-container *ngIf="isBusiness; else personalAddress">
-                                                        <select class="text-truncate" *ngIf="!selectedBusinessAddressID && currentRoute.includes('detail/new/new')" [(ngModel)]="addressId">
-                                                            <option *ngFor="let address of addresses" [value]="address.rowId">
-                                                              {{ address.streetAddress }}
-                                                            </option>
-                                                          </select>
-                                                      <!-- <select class="text-truncate" *ngIf="selectedBusinessAddressID != 0" [(ngModel)]="selectedBusinessAddressID" disabled>
+                                                        <ng-container *ngIf="isBusiness; else personalAddress">
+                                                            <select class="text-truncate"
+                                                                *ngIf="!selectedBusinessAddressID && currentRoute.includes('detail/new/new')"
+                                                                [(ngModel)]="addressId">
+                                                                <option *ngFor="let address of addresses"
+                                                                    [value]="address.rowId">
+                                                                    {{ address.streetAddress }}
+                                                                </option>
+                                                            </select>
+                                                            <!-- <select class="text-truncate" *ngIf="selectedBusinessAddressID != 0" [(ngModel)]="selectedBusinessAddressID" disabled>
                                                         <option *ngFor="let address of addresses" [value]="address.rowId">
                                                           {{ address.streetAddress }}
                                                         </option>
                                                       </select> -->
-                                                      <label *ngIf="!currentRoute.includes('detail/new/new')">
-                                                        {{ getAddressLabel(selectedBusinessAddressID) }}
-                                                      </label>
-                                                      
-                                                    </ng-container>
-                                                    <ng-template #personalAddress>
-                                                      <span class="text-truncate">{{ customer?.streetAddress }}</span>
-                                                    </ng-template>
-                                                  </td>
-                                                <td>Driver : {{shipOutDetails?.driverName}}</td>
-                                            </tr>
-        
-                                            <tr>
-                                                <td>DL# - {{shipOutDetails?.rowId}}</td>
-                                                <td>Truck - {{shipOutDetails?.truck}}</td>
-                                                <td>By - <label>{{user?.firstName}} {{user?.lastName}}</label></td>
-                                                <td>Created Date - {{shipOutDetails?.createdDate | date:'yyyy-MM-dd'}}</td>
-                                            </tr>
-                                        </tbody></table>
+                                                            <label *ngIf="!currentRoute.includes('detail/new/new')">
+                                                                {{ getAddressLabel(selectedBusinessAddressID) }}
+                                                            </label>
+
+                                                        </ng-container>
+                                                        <ng-template #personalAddress>
+                                                            <span class="text-truncate">{{ customer?.streetAddress
+                                                                }}</span>
+                                                        </ng-template>
+                                                    </td>
+                                                    <td>Driver : {{shipOutDetails?.driverName}}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>DL# - {{shipOutDetails?.rowId}}</td>
+                                                    <td>Truck - {{shipOutDetails?.truck}}</td>
+                                                    <td>By - <label>{{user?.firstName}} {{user?.lastName}}</label></td>
+                                                    <td>Created Date - {{shipOutDetails?.createdDate |
+                                                        date:'yyyy-MM-dd'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-        
+
                                 <hr>
-        
+
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <h4 class="title-plus-border">Particulars</h4>                                                
+                                        <h4 class="title-plus-border">Particulars</h4>
                                     </div>
                                 </div>
 
 
-                                
+
                                 <div class="row">
-                                    <div style="overflow-y: scroll;height:calc(100vh - 425px);">
-                                        <p-table class="ticket-table" #dt1 [value]="ticketObj" 
-                                            [paginator]="false" 
-                                            [rows]="10"
-                                            [loading]="isLoading"
-                                            [responsive]="true"
-                                            [showCurrentPageReport]="false"
-                                            [scrollable]="true" 
-                                            >
-                
+                                    <div style="overflow-y: scroll; height:calc(100vh - 425px); padding-bottom: 140px;">
+                                        <p-table class="ticket-table" #dt1 [value]="ticketObj" [paginator]="false"
+                                            [rows]="10" [loading]="isLoading" [responsive]="true"
+                                            [showCurrentPageReport]="false" [scrollable]="flex">
+
                                             <ng-template pTemplate="header">
                                                 <tr>
                                                     <th style="width: 40%;">Material</th>
@@ -127,6 +134,8 @@
                                                     <th>Net</th>
                                                     <th>Price</th>
                                                     <th>Amount</th>
+                                                    <!-- <th *ngIf="isEditModeOn"></th> -->
+                                                    <!-- <th>SalesOrderMaterial</th> -->
                                                     <th *ngIf="isEditModeOn">Action</th>
                                                 </tr>
                                             </ng-template>
@@ -134,29 +143,49 @@
 
                                                 <ng-container *ngIf="isEditModeOn">
                                                     <tr class='border-tr'>
-                                                        
+
                                                         <td style="width: 40%;">{{ ticket.materialName }}</td>
-                                                        <td>{{ ticket.gross  }}</td>
+                                                        <td>{{ ticket.gross }}</td>
                                                         <td>{{ ticket.tare }}</td>
                                                         <td>{{ ticket.net }}</td>
                                                         <td>{{ ticket.price }}</td>
-                                                        <td>{{ ticket.net * ticket.price }}</td>
-                                                        <td *ngIf="isEditModeOn">                                                            
-                                                            <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="editItem(ticket)"
-                                                            class="btn btn-grid btn-primary waves-effect waves-light me-1">
+                                                        <td>{{ (ticket.net * ticket.price) |
+                                                            currency:(shipOutDetails?.currencyCode ?
+                                                            shipOutDetails.currencyCode :
+                                                            defaultCurrencyCode):'symbol':'1.2-2' }}</td>
+                                                        <!-- <td style="width: 40%;">
+                                                            <select
+                                                                *ngIf="ticket.salesOrderMaterialsDropdown?.length > 0"
+                                                                [(ngModel)]="ticket.salesOrderMaterialID"
+                                                                (change)="onSalesMaterialChange(ticket)">
+                                                                <option [value]="0">Select Material</option>
+                                                                <option
+                                                                    *ngFor="let item of ticket.salesOrderMaterialsDropdown"
+                                                                    [value]="item.salesOrderMaterialID">
+                                                                    (SO ID: {{ item.salesOrderID }}- Bal
+                                                                    Qty:{{item.balanceMaterialQty}})
+                                                                </option>
+                                                            </select>
+                                                        </td> -->
+                                                        <td *ngIf="isEditModeOn">
+                                                            <a data-bs-toggle="modal" data-bs-target="#capture-image"
+                                                                (click)="editItem(ticket)"
+                                                                class="btn btn-grid btn-primary waves-effect waves-light me-1">
                                                                 <i class="mdi mdi-pencil"></i> Edit
-                                                            </a> 
+                                                            </a>
                                                             <!-- <a data-bs-toggle="modal" data-bs-target="#capture-image" (click)="false && editItem(ticket)"
                                                             class="btn btn-grid btn-primary waves-effect waves-light me-1" [ngClass]="{'opacity-25': 1==1}">
                                                                 <i class="mdi mdi-pencil"></i> Edit
                                                             </a>  -->
-                                                            
-                                                            <a class="btn btn-grid btn-danger waves-effect waves-light" (click)="deleteItem(rowIndex)">
+
+                                                            <a class="btn btn-grid btn-danger waves-effect waves-light"
+                                                                (click)="deleteItem(rowIndex)">
                                                                 <i class="mdi mdi-trash-can-outline"></i> Delete
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                    <tr [ngClass]="{'no-border-tr': ticket.note !=''}"  *ngIf="ticket.note && ticket.note != ''">
+                                                    <tr [ngClass]="{'no-border-tr': ticket.note !=''}"
+                                                        *ngIf="ticket.note && ticket.note != ''">
                                                         <!-- <td class="cod-item">
                                                             {{ ticket?.codNote }}
                                                         </td> -->
@@ -166,16 +195,25 @@
                                                     </tr>
                                                 </ng-container>
 
-                                                <ng-container *ngIf="!isEditModeOn" >
+                                                <ng-container *ngIf="!isEditModeOn">
                                                     <tr class="border-tr">
                                                         <td style="width: 40%;">{{ ticket.materialName }}</td>
-                                                        <td>{{ ticket.gross  }}</td>
+                                                        <td>{{ ticket.gross }}</td>
                                                         <td>{{ ticket.tare }}</td>
                                                         <td>{{ ticket.net }}</td>
-                                                        <td>{{ ticket.price }}</td>                                                        
-                                                        <td>{{ ticket.net * ticket.price }}</td>                                                        
+                                                        <td>{{ ticket.price }}</td>
+                                                        <td>{{ (ticket.net * ticket.price) |
+                                                            currency:(shipOutDetails?.currencyCode ?
+                                                            shipOutDetails.currencyCode :
+                                                            defaultCurrencyCode):'symbol':'1.2-2' }}</td>
+                                                        <td style="width: 40%;">
+                                                            <ng-container *ngIf="ticket.salesOrderMaterialID">
+                                                                {{ getSelectedSalesOrderMaterialDisplay(ticket) }}
+                                                            </ng-container>
+                                                        </td>
                                                     </tr>
-                                                    <tr [ngClass]="{'no-border-tr': ticket.note !=''}"  *ngIf="ticket.note != ''">
+                                                    <tr [ngClass]="{'no-border-tr': ticket.note !=''}"
+                                                        *ngIf="ticket.note != ''">
                                                         <!-- <td class="cod-item">
                                                             {{ ticket.codNote }}
                                                         </td> -->
@@ -184,20 +222,21 @@
                                                         </td>
                                                     </tr>
                                                 </ng-container>
-                                              
+
                                             </ng-template>
-                                            
+
                                         </p-table>
                                     </div>
                                 </div>
-                                
+
                                 <div class="row">
-                                    <div style="position: absolute; bottom: 10px; right: 5px; left: 5px;"  [class]="isEditModeOn && !editItemCloseImageCapture? 'col-sm-6' : 'col-sm-12'">
+                                    <div style="position: absolute; bottom: 10px; right: 5px; left: 5px;"
+                                        [class]="isEditModeOn && !editItemCloseImageCapture? 'col-sm-6' : 'col-sm-12'">
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
-        
+
                                                 <p class="ticket-details-p fz-14"><b>Total LBS</b></p>
-        
+
                                                 <table class="ticket-details-tbl">
                                                     <thead>
                                                         <tr>
@@ -206,88 +245,87 @@
                                                             <th style="width: 15%;">Tare</th>
                                                             <th style="width: 20%;">Net</th>
                                                             <th style="width: 25%;">Total Amount</th>
-                                                    </tr></thead>        
-                                                    <tbody> 
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
                                                         <tr>
                                                             <td>{{totalNoOfMaterial}}</td>
                                                             <td>{{totalGross}}</td>
                                                             <td>{{totalTare}}</td>
                                                             <td>{{totalNet}}</td>
-                                                            <td>{{totalPrice}}</td>
-                                                        </tr>                                                     
+                                                            <td>{{totalPrice | currency:(shipOutDetails?.currencyCode ?
+                                                                shipOutDetails.currencyCode :
+                                                                defaultCurrencyCode):'symbol':'1.2-2' }}</td>
+                                                        </tr>
                                                     </tbody>
-                                                    
+
                                                 </table>
                                             </div>
-                                        
+
                                         </div>
-                                        
-                                        <div class="row mt-2">   
-                                          
+
+                                        <div class="row mt-2">
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
 
-                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture">    
-                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row" style="height:calc(100vh - 160px)">
+
+                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture">
+                                <div *ngIf="mainMaterialsVisible" id="mainbox" class="mainbox-row"
+                                    style="height:calc(100vh - 160px)">
                                     <h4 class="materials-heading">Materials</h4>
 
                                     <div>
-                                        <input
-                                         type="text"
-                                         id="searchMaterialInput"
-                                         #searchMaterialInput
-                                         (keyup)="searchMaterial($event)"
-                                        class="form-control w-100"
-                                        placeholder="Search  Material"
-                                        aria-describedby="helpId"/>
-                                        
-                                    </div>
-  
-                                    <ul class="main-ul mt-1">
-                                      
-                                      <ng-container  *ngFor="let item of materialList" >
-                                          <li>
-                                            <a id="showInnerDiv1" class="btn custom-lh"  
-                                            placeholder="Bottom"
-                                              (click)="getSubMaterials(item.rowId, item.groupName, false)">
-                                                  {{item.groupName}}
-                                              </a>
-                                          </li>
-                                      </ng-container>
-                                    </ul>
-                                    
-                                </div>
-  
-                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row" style="height:calc(100vh - 160px)">
-                                    <h1 class="materials-heading">
-                                      <span>
-                                          <a id="backToMainBox1" class="btn btn-primary " (click)="backToMainMaterials()"><i class="mdi mdi-keyboard-backspace"></i></a>
-                                      </span>
-                                      <div class="main-material"> Main Material - {{selectedMaterial}}</div>
-                                  </h1>
+                                        <input type="text" id="searchMaterialInput" #searchMaterialInput
+                                            (keyup)="searchMaterial($event)" class="form-control w-100"
+                                            placeholder="Search  Material" aria-describedby="helpId" />
 
-                                  <div>
-                                    <input type="text"                                     
-                                    #searchsubMaterialInput
-                                    (keyup)="searchSubMaterial($event)"
-                                    class="form-control w-100"
-                                    placeholder="Search  Material"
-                                    aria-describedby="helpId" />                                    
-                                  </div>
-                       
+                                    </div>
+
                                     <ul class="main-ul mt-1">
-                                      <ng-container  *ngFor="let item of subMaterialList" >
-                                          <li>
-                                              <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.availableStock, item.scrapPrice)"
-                                              pTooltip="{{item.materialName}}" tooltipPosition="bottom" placeholder="Bottom"
-                                              class="btn  custom-lh">{{item.materialName}}</a>
-                                          </li>
-                                      </ng-container>                                     
+
+                                        <ng-container *ngFor="let item of materialList">
+                                            <li>
+                                                <a id="showInnerDiv1" class="btn custom-lh" placeholder="Bottom"
+                                                    (click)="getSubMaterials(item.rowId, item.groupName, false)">
+                                                    {{item.groupName}}
+                                                </a>
+                                            </li>
+                                        </ng-container>
                                     </ul>
-  
+
+                                </div>
+
+                                <div *ngIf="!mainMaterialsVisible" id="innerdiv1" class="mainbox-row"
+                                    style="height:calc(100vh - 160px)">
+                                    <h1 class="materials-heading">
+                                        <span>
+                                            <a id="backToMainBox1" class="btn btn-primary "
+                                                (click)="backToMainMaterials()"><i
+                                                    class="mdi mdi-keyboard-backspace"></i></a>
+                                        </span>
+                                        <div class="main-material"> Main Material - {{selectedMaterial}}</div>
+                                    </h1>
+
+                                    <div>
+                                        <input type="text" #searchsubMaterialInput (keyup)="searchSubMaterial($event)"
+                                            class="form-control w-100" placeholder="Search  Material"
+                                            aria-describedby="helpId" />
+                                    </div>
+
+                                    <ul class="main-ul mt-1">
+                                        <ng-container *ngFor="let item of subMaterialList">
+                                            <li>
+                                                <a (click)="addItem(item.rowId, item.materialName, selectedMaterial, item.availableStock, item.scrapPrice)"
+                                                    pTooltip="{{item.materialName}}" tooltipPosition="bottom"
+                                                    placeholder="Bottom"
+                                                    class="btn  custom-lh">{{item.materialName}}</a>
+                                            </li>
+                                        </ng-container>
+                                    </ul>
+
                                 </div>
                             </div>
 
@@ -302,46 +340,50 @@
                                 </div>
                             </div> -->
                         </div>
-                    
+
                     </div> <!-- end card body-->
                 </div> <!-- end card -->
             </div><!-- end col-->
 
         </div>
-        <!-- end row-->     
-        
+        <!-- end row-->
+
     </div> <!-- container -->
 
 </div>
 
 
 <div class="content" *ngIf="isLoading">
-  <app-page-loader type="ftable"></app-page-loader>
+    <app-page-loader type="ftable"></app-page-loader>
 </div>
 
 <ng-container *ngIf="!checkTabView">
 
 
-<!-- <p-dialog header="Shipout Report" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
+    <!-- <p-dialog header="Shipout Report" [(visible)]="showDownload" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
     <div class="row" >
       <div style="height: 500px;" *ngIf="showDownload">                
         <ngx-extended-pdf-viewer   [base64Src]="fileDataObj"></ngx-extended-pdf-viewer>
       </div>
     </div>
 </p-dialog> -->
-<p-dialog header="Shipout Report" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true" [style]="{ width: '70vw' }">
-   
-    <div *ngIf="showLoaderReport">
-    <app-page-loader type="reportloader"></app-page-loader>
-  </div>
+    <p-dialog header="Shipout Report" [(visible)]="isReportShow" (onHide)="closePdfReport()" [modal]="true"
+        [style]="{ width: '70vw' }">
+
+        <div *ngIf="showLoaderReport">
+            <app-page-loader type="reportloader"></app-page-loader>
+        </div>
 
 
-<div class="row" >
-  <div style="height: 500px;" *ngIf="!showLoaderReport">                
-    <ngx-extended-pdf-viewer *ngIf="!showLoaderReport" #pdfViewer [base64Src]="fileDataObj" [useBrowserLocale]="false" [PageViewMode]="Single" [pageChangeOnScrolling]="true" [showScrollbar]="false" ></ngx-extended-pdf-viewer>
-  </div>
-</div>
-</p-dialog>
+        <div class="row">
+            <div style="height: 500px;" *ngIf="!showLoaderReport">
+                <ngx-extended-pdf-viewer *ngIf="!showLoaderReport" #pdfViewer [base64Src]="fileDataObj"
+                    [useBrowserLocale]="false" [PageViewMode]="Single" [pageChangeOnScrolling]="true"
+                    [showScrollbar]="false"
+                    [filenameForDownload]="'Shipout Report'+ ' '+'ID_' + shipoutId + '.pdf'"></ngx-extended-pdf-viewer>
+            </div>
+        </div>
+    </p-dialog>
 
 </ng-container>
 
@@ -350,12 +392,21 @@
 <p-confirmDialog></p-confirmDialog>
 <div *ngIf="isEditModeOn && editItemCloseImageCapture">
     <p-sidebar [style]="{'width':'60%'}" [(visible)]="isEditModeOn && editItemCloseImageCapture" position="right">
-      
-        <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()"
-        [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" [itemPrice]="itemPrice" (backClose)="changeItem()" 
-        [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote" 
-        [itemMaterialPrice]="itemMaterialPrice" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
-    </app-material-calculator>
 
-</p-sidebar>
+        <app-material-calculator style="height: 100%;" (calculateObj)="calculation($event)"
+            (changeItemEvent)="changeItem()" [itemAvailableNet]="itemAvailableNet" [itemNet]="itemNet"
+            [itemTare]="itemTare" [itemGross]="itemGross" [itemPrice]="itemPrice" (backClose)="changeItem()"
+            [itemGroupName]="itemGroupName" [itemMaterialName]="itemMaterialName" [materialNote]="materialNote"
+            [itemMaterialPrice]="itemMaterialPrice" [itemImagePath]="itemImagePath?itemImagePath:itemDefaultImagePath">
+        </app-material-calculator>
+
+    </p-sidebar>
 </div>
+<p-dialog [(visible)]="showConfirmLeavePopup" [modal]="true" [closable]="false" header="Confirmation"
+    [style]="{ width: '400px' }">
+    <p>ShipOut details have not been saved. Do you want to continue?</p>
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-secondary me-2" (click)="cancelNavigation()">No</button>
+        <button class="btn btn-primary" (click)="proceedWithNavigation()">Yes</button>
+    </div>
+</p-dialog>

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, LOCALE_ID  } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { getCurrencySymbol } from '@angular/common';
+
 
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -41,7 +43,9 @@ export class MaterialsDetailsComponent implements OnInit {
     {name: 'Lb', value: 1},
     {name: 'Kg', value: 2},
     {name: 'Ounce', value: 3},
-    {name: 'Gram', value: 4}
+    {name: 'Gram', value: 4},
+    {name: 'Ton', value: 5},
+    {name: 'Pound', value: 6}
   ];
   
   submitted = false;
@@ -57,17 +61,29 @@ export class MaterialsDetailsComponent implements OnInit {
     materialName: '',
     marketPrice: 0,
     scrapPrice: 0,
+    priceMapWithMarket: false,
+    percentageOnMarketPrice: 0,
     dealerPrice1: 0,
     dealerPrice2: 0,
     dealerPrice3: 0,
+    dealerPrice4: 0,
+    dealerPrice5: 0,
+    dealerType1: 'P', 
+    dealerType2: 'P', 
+    dealerType3: 'P', 
+    dealerType4: 'P', 
+    dealerType5: 'P', 
     availableStock: 0,
-    isEnable: false,
+    isEnable: true,
+    isExpense: false,
     uomId: 1,
     uom: 'Lb',
     locID: 0,
     isHold: false,
     isCRV: false,
-    holdDays: 0
+    holdDays: 0,
+    tag: false,            
+    holdPeriod: 0  
   });
 
   visible: boolean = false;
@@ -98,7 +114,8 @@ export class MaterialsDetailsComponent implements OnInit {
     private authService:AuthService,
     private stroarge:StorageService,
     private messageService: MessageService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+   @Inject(LOCALE_ID) public locale: string) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -107,8 +124,8 @@ export class MaterialsDetailsComponent implements OnInit {
     this.locId = this.commonService.getProbablyNumberFromLocalStorage('locId');
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     const datePipe = new DatePipe('en-US');
-    this.currencySymbol = localStorage.getItem('currencyCode') || 'USD';
-    
+    const currencyCode = localStorage.getItem('currencyCode') || 'USD';
+    this.currencySymbol = getCurrencySymbol(currencyCode, 'wide', this.locale);    
     this.form = this.formBuilder.group({
       rowId: 0,
       createdBy: this.logInUserId,
@@ -120,17 +137,48 @@ export class MaterialsDetailsComponent implements OnInit {
       materialName: '',
       marketPrice: 0,
       scrapPrice: 0,
+      priceMapWithMarket: false,
+      percentageOnMarketPrice: 0,
       dealerPrice1: 0,
       dealerPrice2: 0,
       dealerPrice3: 0,
+      dealerPrice4: 0,
+      dealerPrice5: 0,
+      dealerType1: 'P', 
+      dealerType2: 'P', 
+      dealerType3: 'P', 
+      dealerType4: 'P', 
+      dealerType5: 'P', 
       availableStock: 0,
-      isEnable: false,
+      isEnable: true,
+      isExpense: false,
       uomId: 1,
       uom: 'Lb',
       locID: this.locId,
       isHold: false,
       isCRV: false,
-      holdDays: 0
+      holdDays: 0,
+      tag: false,             
+      holdPeriod: 0  
+    });
+     this.form.get('isHold')?.valueChanges.subscribe(isHold => {
+        if (isHold) {
+            if (this.form.get('holdDays')?.value === 0) {
+                this.form.get('holdDays')?.setValue(1);
+            }
+        } else {
+            this.form.get('holdDays')?.setValue(0);
+        }
+    });
+
+    this.form.get('tag')?.valueChanges.subscribe(tag => {
+      if (tag) {
+        if (this.form.get('holdPeriod')?.value === 0) {
+          this.form.get('holdPeriod')?.setValue(1);
+        }
+      } else {
+        this.form.get('holdPeriod')?.setValue(0);
+      }
     });
 
     this.systemPerfForm = this.formBuilder.group({
@@ -144,7 +192,9 @@ export class MaterialsDetailsComponent implements OnInit {
         this.defaultMaterialId = param['materialId'];
         this.getSubMaterials(param['materialId']);
       } else {
-        alert('Required material id')
+        // alert('Required material id')
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Required material id.' }); 
+        
       }
     });
     this.getAllGroupMaterial();
@@ -243,6 +293,20 @@ disablePriceItem(){
   this.form.controls['dealerPrice1']?.disable();
   this.form.controls['dealerPrice2']?.disable();
   this.form.controls['dealerPrice3']?.disable();
+  this.form.controls['dealerPrice4']?.disable();
+  this.form.controls['dealerPrice5']?.disable();
+  this.form.controls['dealerType1']?.disable();
+  this.form.controls['dealerType2']?.disable();
+  this.form.controls['dealerType3']?.disable();
+  this.form.controls['dealerType4']?.disable();
+  this.form.controls['dealerType5']?.disable();
+  this.form.controls['priceMapWithMarket']?.disable();
+  this.form.controls['percentageOnMarketPrice']?.disable();
+  this.form.controls['isHold']?.disable();
+  this.form.controls['holdPeriod']?.disable();
+  this.form.controls['tag']?.disable();
+  this.form.controls['holdDays']?.disable();
+
 }
 
 enablePriceItem(){
@@ -251,6 +315,19 @@ enablePriceItem(){
   this.form.controls['dealerPrice1']?.enable();
   this.form.controls['dealerPrice2']?.enable();
   this.form.controls['dealerPrice3']?.enable();
+  this.form.controls['dealerPrice4']?.enable();
+  this.form.controls['dealerPrice5']?.enable();
+  this.form.controls['dealerType1']?.enable();
+  this.form.controls['dealerType2']?.enable();
+  this.form.controls['dealerType3']?.enable();
+  this.form.controls['dealerType4']?.enable();
+  this.form.controls['dealerType5']?.enable();
+  this.form.controls['priceMapWithMarket']?.enable();
+  this.form.controls['percentageOnMarketPrice']?.enable();
+  this.form.controls['isHold']?.enable();
+  this.form.controls['holdPeriod']?.enable();
+  this.form.controls['tag']?.enable();
+  this.form.controls['holdDays']?.enable();
 }
   showDialog(materialData?: any){
     if (materialData) {
@@ -278,17 +355,29 @@ enablePriceItem(){
         materialName: '',
         marketPrice: 0,
         scrapPrice: 0,
+        priceMapWithMarket: false,
+        percentageOnMarketPrice: 0,
         dealerPrice1: 0,
         dealerPrice2: 0,
         dealerPrice3: 0,
+        dealerPrice4: 0,
+        dealerPrice5: 0,
+        dealerType1: 'P', 
+        dealerType2: 'P', 
+        dealerType3: 'P', 
+        dealerType4: 'P', 
+        dealerType5: 'P', 
         availableStock: 0,
-        isEnable: false,
+        isEnable: true,
+        isExpense: false,
         uomId: 1,
         uom: 'Lb',
         locID: this.locId,
         isHold: false,
         isCRV: false,
-        holdDays: 0
+        holdDays: 0,
+        tag: false,             
+        holdPeriod: 0
       });
 
     }
@@ -317,8 +406,22 @@ enablePriceItem(){
     returnedTarget.dealerPrice1 = returnedTarget.dealerPrice1 ? parseFloat(returnedTarget.dealerPrice1) : 0;
     returnedTarget.dealerPrice2 = returnedTarget.dealerPrice2 ? parseFloat(returnedTarget.dealerPrice2) : 0;
     returnedTarget.dealerPrice3 = returnedTarget.dealerPrice3 ? parseFloat(returnedTarget.dealerPrice3) : 0;
+    returnedTarget.dealerPrice4 = returnedTarget.dealerPrice4 ? parseFloat(returnedTarget.dealerPrice4) : 0;
+    returnedTarget.dealerPrice5 = returnedTarget.dealerPrice5 ? parseFloat(returnedTarget.dealerPrice5) : 0;
+    returnedTarget.priceMapWithMarket = returnedTarget.priceMapWithMarket || false;
+    returnedTarget.percentageOnMarketPrice = returnedTarget.percentageOnMarketPrice ? parseFloat(returnedTarget.percentageOnMarketPrice) : 0;
     returnedTarget.updatedBy = this.logInUserId;
+    returnedTarget.locID = this.locId
+    if (returnedTarget.isHold) {
+        returnedTarget.holdDays = returnedTarget.holdDays >= 1 ? returnedTarget.holdDays : 1;
+    } else {
+        returnedTarget.holdDays = 0;
+    }    
+    returnedTarget.tag = returnedTarget.tag ? true : false;
+    returnedTarget.holdPeriod = returnedTarget.holdPeriod ? parseInt(returnedTarget.holdPeriod) : 0;
+
     // alert(JSON.stringify(returnedTarget));
+    
     
     this.commonService.insertUpdateMaterials(returnedTarget).subscribe(data =>{    
       console.log(data); 
@@ -326,7 +429,8 @@ enablePriceItem(){
       this.isEditModeOn = false;
       this.materialData = null;
       this.visible = false;      
-      alert('Sub Material data Inserted/ updated successfully');
+      // alert('Sub Material data Inserted/ updated successfully');
+      this.messageService.add({ severity: 'success', summary: 'success', detail: 'Sub Material data Inserted/ updated successfully' });
       
       this.getSubMaterials(this.defaultMaterialId);
     },(error: any) =>{  
@@ -335,6 +439,22 @@ enablePriceItem(){
     });
 
   }
+
+  onPriceMapWithMarketChange() {
+    const priceMapEnabled = this.form.get('priceMapWithMarket')?.value;
+    if (priceMapEnabled) {
+      this.calculateScrapPriceFromMarket();
+    }
+  }
+
+  calculateScrapPriceFromMarket() {
+    const marketPrice = parseFloat(this.form.get('marketPrice')?.value || 0);
+    const percentage = parseFloat(this.form.get('percentageOnMarketPrice')?.value || 0);
+    const calculatedPrice = (marketPrice * percentage) / 100;
+
+    this.form.get('scrapPrice')?.setValue(calculatedPrice.toFixed(2));
+  }
+
 
   showBulkDialog(){
     this.bulkvisible = true;

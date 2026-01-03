@@ -3,228 +3,234 @@
 
 
     <!-- ========== Menu ========== -->
-<div class="app-menu menuitem-active">
+    <div class="app-menu">
 
-    <!-- Brand Logo -->
-    <div class="logo-box">
-        <!-- Brand Logo Light -->
-        <a class="logo-light" [routerLink]="['/','superadmin', '/home']">
-            <img src="/assets/images/custom/logo-buyscrapapp1.png" alt="BUYSCRAPAPP Logo" class="logo-lg">
-            <img src="/assets/images/custom/logo-buyscrapapp1.png" alt="BUYSCRAPAPP Logo" class="logo-sm">
-        </a>
-
-        <!-- Brand Logo Dark -->
-        <a class="logo-dark" [routerLink]="['/','superadmin', '/home']">
-            <img src="/assets/images/custom/logo-buyscrapapp2.png" alt="BUYSCRAPAPP Logo" class="logo-lg">
-            <img src="/assets/images/custom/logo-buyscrapapp2.png" alt="BUYSCRAPAPP Logo" class="logo-sm">
-        </a>
-        <span class="pro-user-name ml-1 color-white"></span>
-    </div>
-
-    <!-- menu-left -->
-    <div class="scrollbar">
-        <div class="simplebar-wrapper">
-          
-            <div class="simplebar-mask">
-                <div class="simplebar-offset">
-                    <div class="simplebar-content-wrapper">
-                        <div class="simplebar-content">
-
-                            <!-- User box -->
-                            <div class="user-box text-center">
-                              
-                                <div class="dropdown">
-                                    
-                                    <div class="dropdown-menu user-pro-dropdown">
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <i class="fe-user me-1"></i>
-                                            <span>My Account</span>
-                                        </a>
-
-                                        <!-- item-->
-                                        <a href="settings.html" class="dropdown-item notify-item">
-                                            <i class="fe-settings me-1"></i>
-                                            <span>Settings</span>
-                                        </a>
-
-                                        <!-- item-->
-                                        <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <i class="fe-lock me-1"></i>
-                                            <span>Lock Screen</span>
-                                        </a> -->
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <i class="fe-log-out me-1"></i>
-                                            <span>Logout</span>
-                                        </a>
-
-                                    </div>
-                                </div>
-                              
-                            </div>
-
-                            <!--- Menu -->
-                            <ul class="menu">
-                                <ng-container *ngFor="let item of menuList">
-
+        <!-- Brand Logo -->
+        <div class="logo-box">
+            <!-- Brand Logo Light -->
+            <a class="logo-light">
+                <img src="/assets/images/custom/logo-buyscrapapp1.png" alt="BUYSCRAPAPP Logo" class="logo-lg">
+                <img src="/assets/images/custom/logo-buyscrapapp1.png" alt="BUYSCRAPAPP Logo" class="logo-sm">
+            </a>
+    
+            <!-- Brand Logo Dark -->
+            <a class="logo-dark">
+                <img src="/assets/images/custom/logo-buyscrapapp2.png" alt="BUYSCRAPAPP Logo" class="logo-lg">
+                <img src="/assets/images/custom/logo-buyscrapapp2.png" alt="BUYSCRAPAPP Logo" class="logo-sm">
+            </a>
+            <span class="pro-user-name ml-1 color-white"></span>
+        </div>
+    
+        <!-- menu-left -->
+        <div class="scrollbar">
+            <div class="simplebar-wrapper">
+              
+                <div class="simplebar-mask">
+                    <div class="simplebar-offset">
+                        <div class="simplebar-content-wrapper">
+                            <div class="simplebar-content">
+    
+                                <!-- User box -->
+                                <div class="user-box text-center">
                                   
-                                        <li class="menu-item d-none d-md-block">
+                                    <div class="dropdown">
+                                        
+                                        <div class="dropdown-menu user-pro-dropdown">
+    
+                                            <!-- item-->
+                                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                                <i class="fe-user me-1"></i>
+                                                <span>My Account</span>
+                                            </a>
+    
+                                            <!-- item-->
+                                            <a href="settings.html" class="dropdown-item notify-item">
+                                                <i class="fe-settings me-1"></i>
+                                                <span>Settings</span>
+                                            </a>
+    
+                                            <!-- item-->
+                                            <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                                <i class="fe-lock me-1"></i>
+                                                <span>Lock Screen</span>
+                                            </a> -->
+    
+                                            <!-- item-->
+                                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                                <i class="fe-log-out me-1"></i>
+                                                <span>Logout</span>
+                                            </a>
+    
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+    
+                                <!--- Menu -->
+                                <ul class="menu">
+                                    <ng-container *ngFor="let item of menuList">
+     
+                                        <ng-container>
+                                            <li class="menu-item d-none d-md-block">
+                                                <a  (click)="navigatePage(item)"
+                                                    routerLinkActive="active" class="menu-link">,
+                                                    <span class="menu-icon">
+                                                        <img src="{{item.icon}}" class="dash-icons"> 
+                                                    </span>
+                                                    <span class="menu-text menu-links-text">{{item.title}}</span>
+                                                </a>
+                                            </li>
+                                        </ng-container>
+                                       
+                                        <ng-container >
+                                        <li class="menu-item d-sm-block d-md-none">
                                             <a  (click)="navigatePage(item)"
                                                 routerLinkActive="active" class="menu-link">,
-                                                <span class="menu-icon">
-                                                    <img src="{{item.icon}}" class="dash-icons"> 
-                                                </span>
+                                                <span class="menu-icon"><img src="{{item.icon}}" class="dash-icons"></span>
                                                 <span class="menu-text menu-links-text">{{item.title}}</span>
                                             </a>
                                         </li>
-                         
-                                   
-                                   
-                                    <li class="menu-item d-sm-block d-md-none">
-                                        <a  (click)="navigatePage(item)"
-                                            routerLinkActive="active" class="menu-link">,
-                                            <span class="menu-icon"><img src="{{item?.icon}}" class="dash-icons"></span>
-                                            <span class="menu-text menu-links-text">{{item?.title}}</span>
+                                        </ng-container>
+    
+                                    </ng-container>
+    
+    
+    
+    
+                                    <li class="menu-item app-version">
+                                        <a class="menu-link">
+                                            <span class="menu-text menu-links-text">App Version - 2.17</span>
                                         </a>
                                     </li>
-                              
-                            </ng-container>
-
-
-
-                                <li class="menu-item app-version">
-                                    <a class="menu-link">
-                                        <span class="menu-text menu-links-text">App Version - 2.17</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                            <!--- End Menu -->
-                            <div class="clearfix"></div>
+    
+                                </ul>
+                                <!--- End Menu -->
+                                <div class="clearfix"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                
             </div>
-            
-        </div>
-        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
-            <div class="simplebar-scrollbar simplebar-visible" style="width: 0px; display: none;"></div>
-        </div>
-        <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
-            <div class="simplebar-scrollbar simplebar-visible"
-                style="height: 39px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+            <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                <div class="simplebar-scrollbar simplebar-visible" style="width: 0px; display: none;"></div>
+            </div>
+            <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+                <div class="simplebar-scrollbar simplebar-visible"
+                    style="height: 39px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+            </div>
         </div>
     </div>
-</div>
-<!-- ========== Left menu End ========== -->
-<div class="content-page">
-    <div class="navbar-custom">
-        <div class="topbar">
-            <div class="topbar-menu d-flex align-items-center gap-1">
-    
-                <!-- Topbar Brand Logo -->
-                <div class="logo-box">
-                    <!-- Brand Logo Light -->
-                    <a href="/" class="logo-light">
-                        <img src="/assets/images/custom/logo-buyscrapapp1.jpg" alt="" height="50">
-                        <!-- <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="" height="50"> -->
-                    </a>
-    
-                    <!-- Brand Logo Dark -->
-                    <a href="/" class="logo-dark">
-                        <!-- <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="" height="50">
-                        <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="" height="50">-->
-                    </a>
-                </div>
-    
-                <!-- Sidebar Menu Toggle Button -->
-                <button class="button-toggle-menu" (click)="commonService.showHidePanel('header')">
-                    <i class="mdi mdi-menu"></i>
-                </button>
-                <div class="d-flex">
-                    <div class="text-white">{{this.organizationName}}</div>
-                   
-    
-                </div>
-            </div>
-    
-            <ul class="topbar-menu d-flex align-items-center">
-                
-             
-    
-                <!-- User Dropdown -->
-                <li class="dropdown">
-                    <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <img src="/assets/images/custom/user-icon.png" alt="user-image" class="rounded-circle" >
-                        <span class="pro-user-name ml-1 color-white d-none d-sm-none d-md-block">
-                        {{'Buyscrapadmin'}} <i class="mdi mdi-chevron-down"></i> 
-                        </span>
-    
-                       
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end profile-dropdown">
-                        <!-- item-->
-                        <div class="dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">Welcome !</h6>
-                        </div>
-    
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="fe-user"></i>
-                            <span>My Account</span>
-                        </a>
-    
-                        <!-- item-->
-                        <a routerLink="/superadmin/settings" routerLinkActive="router-link-active"  class="dropdown-item notify-item">
-                            <i class="fe-settings"></i>
-                            <span>Settings</span>
-                        </a>
-                  
-                        <a routerLink="/superadmin/my-account/change-password" routerLinkActive="router-link-active" class="dropdown-item notify-item">
-                            <i class="fe-lock"></i>
-                            <span>Change Password</span>
-                        </a>
-    
-                        <a routerLink="/superadmin/my-account/change-location" routerLinkActive="router-link-active" class="dropdown-item notify-item">
-                            <i class="bi bi-geo-alt-fill"></i>
-                            <span>Change Location</span>
-                        </a>
-    
-                    
-                       
-    
-                        <!-- item-->
-                        <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="fe-lock"></i>
-                            <span>Lock Screen</span>
-                        </a> -->
-    
-                        <div class="dropdown-divider"></div>
-    
-                        <!-- item-->
-                        <a href="javascript:void(0);" (click)="backToUserLogin()"  class="dropdown-item notify-item">
-                            <i class="fe-log-out"></i>
-                            <span>Logout</span>
-                        </a>
-    
-                    </div>
-                </li>
-                
-            </ul>
-        </div>
-    
+    <!-- ========== Left menu End ========== -->
+
+    <div class="content-page">
         
-    
+        <!-- ========== Top Header End ========== -->
+        <div class="navbar-custom">
+            <div class="topbar">
+                <div class="topbar-menu d-flex align-items-center gap-1">
+        
+                    <!-- Topbar Brand Logo -->
+                    <div class="logo-box">
+                        <!-- Brand Logo Light -->
+                        <a href="/" class="logo-light">
+                            <img src="/assets/images/custom/logo-buyscrapapp1.jpg" alt="" height="50">
+                            <!-- <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="" height="50"> -->
+                        </a>
+        
+                        <!-- Brand Logo Dark -->
+                        <a href="/" class="logo-dark">
+                            <!-- <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="" height="50">
+                            <img src="/assets/images/custom/logo-buyscrapapp.jpg" alt="" height="50">-->
+                        </a>
+                    </div>
+        
+                    <!-- Sidebar Menu Toggle Button -->
+                    <button class="button-toggle-menu" (click)="commonService.showHidePanel('header')">
+                        <i class="mdi mdi-menu"></i>
+                    </button>
+                    <div class="d-flex">
+                        <div class="text-white">{{this.orgName}}</div>
+                    
+        
+                    </div>
+                </div>
+        
+                <ul class="topbar-menu d-flex align-items-center">
+        
+                
+        
+                    <!-- User Dropdown -->
+                    <li class="dropdown">
+                        <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                            <img src="/assets/images/custom/user-icon.png" alt="user-image" class="rounded-circle" >
+                            <span class="pro-user-name ml-1 color-white d-none d-sm-none d-md-block">
+                            {{'Buyscrapadmin'}} <i class="mdi mdi-chevron-down"></i> 
+                            </span>
+        
+                        
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end profile-dropdown">
+                            <!-- item-->
+                            <div class="dropdown-header noti-title">
+                                <h6 class="text-overflow m-0">Welcome !</h6>
+                            </div>
+        
+                            <!-- item-->
+                            <a (click)="tooChangePass()" href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-user"></i>
+                                <span>My Account</span>
+                            </a>
+        
+                            <!-- item-->
+                            <!-- <a routerLink="/superadmin/settings" routerLinkActive="router-link-active"  class="dropdown-item notify-item">
+                                <i class="fe-settings"></i>
+                                <span>Settings</span>
+                            </a>
+                    
+                            <a routerLink="/superadmin/my-account/change-password" routerLinkActive="router-link-active" class="dropdown-item notify-item">
+                                <i class="fe-lock"></i>
+                                <span>Change Password</span>
+                            </a>
+        
+                            <a routerLink="/superadmin/my-account/change-location" routerLinkActive="router-link-active" class="dropdown-item notify-item">
+                                <i class="bi bi-geo-alt-fill"></i>
+                                <span>Change Location</span>
+                            </a> -->
+        
+                        
+                        
+        
+                            <!-- item-->
+                            <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-lock"></i>
+                                <span>Lock Screen</span>
+                            </a> -->
+        
+                            <div class="dropdown-divider"></div>
+        
+                            <!-- item-->
+                            <a href="javascript:void(0);" (click)="backToUserLogin()"  class="dropdown-item notify-item">
+                                <i class="fe-log-out"></i>
+                                <span>Logout</span>
+                            </a>
+        
+                        </div>
+                    </li>
+                    
+                </ul>
+            </div>
+        
+            
+        
+        </div>
+        <!-- ========== Top Header End ========== -->
+
+        <router-outlet></router-outlet>
+
+        <app-footer></app-footer>
+
     </div>
-
-    <router-outlet></router-outlet>
-
-    <app-footer></app-footer>
-
-</div>
  
     
 </div>

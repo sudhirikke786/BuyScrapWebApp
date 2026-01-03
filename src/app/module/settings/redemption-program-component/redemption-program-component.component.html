@@ -1,0 +1,152 @@
+<div class="container-fluid">
+    <div class="bdcmb mt-2">
+        <div class="row">
+            <div class="col-sm-6 col-6">
+                <h4 class="page-title">Redemption Program</h4>
+            </div>
+
+            <div class="col-sm-6 col-6">
+                <div class="b-links">
+                    <a routerLink="/{{orgName}}/home">Home</a> / <a
+                        routerLink="/{{orgName}}/settings">Settings</a>/<a href="javscript:void()" routerLink="/{{orgName}}/settings/redemption-program-component">redemption-program-component</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                
+                    <div class="row mb-4">
+                        <div class="row mb-4">
+                            
+                        <div class="col-md-6 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary me-2" (click)="openAddRewardDialog()"> Add Rewards</button>
+                          
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead >
+                                        <tr>
+                                            <th>Reward Description</th>
+                                            <th>Coupen Amount</th>
+                                                <th>Eligibal Amount</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let reward of cashRewardsList">
+                                        <td>{{ reward.coupenDescription }}</td>
+                                        <td>{{ reward.couponAmount }}</td>
+                                        <td>{{ reward.eligibalAmount }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-2" (click)="editReward(reward)">Edit</button>
+                                            <button class="btn btn-sm btn-danger me-2" (click)="deleteReward(reward)">Delete</button>
+                                          
+                                        </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog 
+  header="Assign Cashier" 
+  [(visible)]="showAssignDialog" 
+  [modal]="true" 
+  [style]="{width: '600px'}" 
+  [closable]="true">
+  
+  <div class="table-responsive" style="max-height:300px; overflow:auto;">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>User Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of admins">
+          <td>
+            <p-checkbox 
+              [binary]="true"
+              [ngModel]="selectedUsers.includes(user.rowId)" 
+              (onChange)="toggleUserSelection(user, $event.checked)">
+            </p-checkbox>
+          </td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.userName }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button  type="button" class="btn btn-primary" (click)="saveAssignCashier()">Save</button>
+    <button  type="button" class="btn btn-danger" (click)="cancelAssignCashier()">Cancel</button>
+  </ng-template>
+</p-dialog>
+<p-dialog 
+  header="{{ isEditMode ? 'Edit Reward' : 'Add Reward' }}" 
+  [(visible)]="showAddRewardDialog" 
+  [modal]="true" 
+  [style]="{width: '600px'}" 
+  [closable]="true">
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="couponAmount" class="form-label">Coupon Amount</label>
+      <input 
+        type="number" 
+        id="couponAmount"
+        class="form-control" 
+        [(ngModel)]="rewardDTO.CouponAmount"
+        placeholder="Enter Coupon Amount">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="eligibalAmount" class="form-label">Eligible Amount</label>
+      <input 
+        type="number" 
+        id="eligibalAmount"
+        class="form-control" 
+        [(ngModel)]="rewardDTO.EligibalAmount"
+        placeholder="Enter Eligible Amount">
+    </div>
+
+    <div class="col-md-12 mb-3">
+      <label for="description" class="form-label">Coupon Description</label>
+      <textarea 
+        id="description" 
+        class="form-control" 
+        [(ngModel)]="rewardDTO.CoupenDescription"
+        rows="3"
+        placeholder="Enter Description"></textarea>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button type="button" class="btn btn-primary" (click)="saveReward()">
+      {{ isEditMode ? 'Update' : 'Save' }}
+    </button>
+    <button type="button" class="btn btn-danger" (click)="cancelReward()">Cancel</button>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+

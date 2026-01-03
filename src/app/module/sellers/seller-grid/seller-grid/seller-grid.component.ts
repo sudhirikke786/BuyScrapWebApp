@@ -67,7 +67,6 @@ export class SellerGridComponent implements OnInit {
     this.logInUserId = this.commonService.getNumberFromLocalStorage(this.stroarge.getLocalStorage('userObj').userdto?.rowId);
     this.route.queryParams.subscribe(params => {
       this.selectedSellerType = params['sellerType'] || '';
-      this.searchSellerInput = params['searchText'] || '';
       this.filterSellers(this.selectedSellerType);
     });
 

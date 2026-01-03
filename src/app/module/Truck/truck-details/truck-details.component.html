@@ -1,0 +1,43 @@
+    <!-- ============================================================== -->
+    <!-- Start Page Content here -->
+    <!-- ============================================================== -->
+
+        <div class="content-page" *ngIf="!showLoader">
+            <div class="content">
+                <!-- Start Content-->
+                <div class="container-fluid">
+                    <div class="bdcmb mt-2">
+                        <div class="row">
+                            <div class="col-sm-6 col-6">
+                                <h4 class="page-title">Truck Deatils</h4>
+                            </div>
+                            <div class="col-sm-6 col-6">
+                                <div class="b-links">
+                                    <a routerLink="/{{orgName}}/home">Home</a> / <a href="javascript:void()" routerLink="/{{orgName}}/truck">Truck</a>/ <a href="javascript:void()" routerLink="/{{orgName}}/container/detail">Truck Deatils</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="row mt-2">
+                        <div class="col-md-6 d-flex">
+                            <input type="text" id="example-palaceholder" class="form-control" placeholder="Search Sub Container" [(ngModel)]="searchText">
+                        </div>
+                        <div class="col-md-6"> 
+                            <app-actionbar (iconAction)="getAction($event)" [actions]="actionList"></app-actionbar>
+                        </div>
+                    </div>    -->
+                </div> <!-- container -->
+            </div> <!-- content -->
+        </div>
+
+        <div class="content" *ngIf="showLoader">
+            <app-page-loader type="image"></app-page-loader>
+        </div>
+
+<!-- ============================================================== -->
+<!-- End Page content -->
+<!-- ============================================================== -->
+
+
+<p-toast></p-toast>

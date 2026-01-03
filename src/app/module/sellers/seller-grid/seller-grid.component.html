@@ -61,11 +61,11 @@
                                                 </tr>
                                             </ng-template>
                                             <ng-template pTemplate="body" let-seller>
-                                                <tr>                                                    
+                                                <tr [ngClass]="{'license-expired': seller.isLicenseExpiry && seller.sellerType === 'Personal'}">                                                    
                                                     <td>
                                                         <!-- <a><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" (click)="showSelectedImage(seller.idfaceShotImage, '1')"></a> -->
-                                                        <a *ngIf="seller.idfaceShotImage"><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" ></a>
-                                                        <img *ngIf="!seller.idfaceShotImage" src="/assets/images/custom/icons/user.png" class="default-img">
+                                                        <a *ngIf="!IsCustomerFacePictureEnabled && seller.idfaceShotImage"><img src="{{seller.idfaceShotImage}}" class="ticket-particulars-img" ></a>
+                                                        <img *ngIf="IsCustomerFacePictureEnabled || !seller.idfaceShotImage" src="/assets/images/custom/icons/user.png" class="default-img">
                             
                                                     </td>
                                                     <td>{{ seller.fullName }}</td>
@@ -76,7 +76,15 @@
                                                         type="button" class="btn btn-grid btn-success waves-effect waves-light me-1 "><i class="mdi mdi-eye pe-1"></i> Show</a> 
                                                         <a routerLink = "/{{orgName}}/sellers-buyers/edit-seller/{{seller?.rowId}}"   [queryParams]="{ view: 'grid' }"
                                                         class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
-                                                        <a class="btn btn-grid btn-danger waves-effect waves-light" (click)="deleteSeller(seller)"><i class="mdi mdi-trash-can-outline pe-1"></i> Delete</a>
+                                                        <a class="btn btn-grid btn-danger waves-effect waves-light me-1" (click)="deleteSeller(seller)"><i class="mdi mdi-trash-can-outline pe-1"></i> Delete</a>
+                                                        <button
+                                                            *ngIf="IsCustomerAdvanceEnabled"
+                                                            type="button"
+                                                            class="btn btn-grid btn-success waves-effect waves-light "
+                                                            (click)="openAdvancePopup(seller)"
+                                                            >
+                                                            Advance
+                                                        </button>
 													</td>
                                                 </tr>
                                             </ng-template>
@@ -145,5 +153,64 @@
           <a class="btn btn-primary " [href]="selectedImageUrl" target="_self" download><i class="mdi"> Download </i></a>
       </div>
   </p-dialog>
+
+  <p-dialog     
+    header="Customer Advance"     
+    [(visible)]="displayAdvanceDialog"     
+    [style]="{width: '450px', minHeight: '300px'}"     
+    [modal]="true"     
+    [closable]="true"    
+    [draggable]="false"    
+    [resizable]="false">    
+    
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 15px; margin-top: -10px;">
+        <div style="background: #e8f5e8; border: 1px solid #28a745; border-radius: 4px; padding: 8px 12px; font-size: 13px; font-weight: 600;">
+            <span style="color: #155724;">Total Current Advance: </span>
+            <span style="color: #28a745;">${{selectedSeller?.totalAdvance || 0 | number:'1.2-2'}}</span>
+        </div>
+    </div>
+    
+    <div style="padding: 20px 0;">        
+        <div style="margin-bottom: 20px;">            
+            <label for="advanceAmount" style="display: block; margin-bottom: 8px; font-weight: 500;">Advance Amount</label>            
+            <input                 
+                type="number"                 
+                pInputText                 
+                id="advanceAmount"                 
+                [(ngModel)]="advanceAmount"                
+                placeholder="Enter advance amount"                
+                style="width: 100%; padding: 8px;">        
+        </div>                 
+        
+        <div style="margin-bottom: 20px;">            
+            <label for="reason" style="display: block; margin-bottom: 8px; font-weight: 500;">Reason</label>            
+            <textarea                 
+                pInputTextarea                 
+                id="reason"                 
+                [(ngModel)]="reason"                
+                rows="4"                
+                placeholder="Enter reason for advance"                
+                style="width: 100%; padding: 8px; resize: vertical;">            
+            </textarea>        
+        </div>    
+    </div>         
+    
+    <ng-template pTemplate="footer">        
+        <div style="text-align: right; padding-top: 15px;">            
+            <p-button                 
+                label="Cancel"                 
+                styleClass="p-button-danger"                 
+                (onClick)="closeAdvancePopup()"                
+                style="margin-right: 10px;">            
+            </p-button>            
+            <p-button                 
+                label="Save"                 
+                styleClass="p-button-primary"                
+                (onClick)="saveAdvance(selectedSeller)">            
+            </p-button>        
+        </div>    
+    </ng-template>
+</p-dialog>
+
   
   <p-toast></p-toast>

@@ -1,0 +1,138 @@
+<div class="content">
+
+    <!-- Start Content-->
+    <div class="container-fluid">
+
+        <!-- <div class="row mt-2">
+            <div class="col text-center">
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> New Ticket</button> 
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-spl"><i class="mdi mdi-plus"></i> Merge Ticket and Pay</button>
+            </div>
+            
+        </div> -->
+
+        <div class="bdcmb mt-2">
+            <div class="row">
+                <div class="col-sm-6 col-6">
+                    <h4 class="page-title">City</h4>
+                </div>
+
+                <div class="col-sm-6 col-6">
+                    <div class="b-links">
+                        <a [routerLink]="['/superadmin/home']">Home</a>/ <a [routerLink]="['/superadmin/country']">Country</a>/<a [routerLink]="['/superadmin/country/superadmin-state']">State</a>/<a >City</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-2 d-flex align-items-center">
+            
+
+            <div class="col-md-6 d-flex">
+                <input type="text" [(ngModel)]="searchText" style="min-width:250px; width:auto" id="example-palaceholder" class="form-control" placeholder="Search City">
+
+                <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Search" (click)="getAllCity(searchText)"><i class="mdi mdi-cust mdi-magnify"></i></a>
+
+                <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Refresh" (click)="refreshCountryList()"><i class="mdi mdi-cust mdi-refresh"></i></a>
+                <a (click)="back()" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location" >Back</a>
+                <a  type="button" label="Add/Edit System Preference" (click)="openDialog()" 
+                    class="btn btn-primary me-1 px-1 py-1 cursor-pointer ml-10" style="font-size: 14px !important;padding: 5px !important;">
+                    Add New City
+                    </a>
+            </div>
+            
+        </div>  
+        <!-- end page title --> 
+
+        <div class="row mt-2" >
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <p-table [value]="country" [scrollable]="true" 
+                        scrollHeight="50vh" [paginator]="true" [rows]="10"
+                        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [rowsPerPageOptions]="commonService.tableConfig.pageOptions" 
+                      
+                        >
+
+                       
+                        
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>City Name</th>
+                                <th>Prefix</th>
+                                <th>Action</th>
+                            </tr>
+                        </ng-template>
+
+                        
+                        <ng-template pTemplate="body" let-country >
+                            <tr>
+                                <td>{{country.name}}</td>
+                                <td>{{country.prefix}}</td>
+                               
+                                <td>
+                                    <a  (click)="editSysPref(country)" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
+                                   
+                                     </td>
+                            </tr>
+                        </ng-template>
+                        
+                    </p-table>
+
+
+
+
+
+                     
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div>
+
+
+     
+
+</div>
+<p-dialog [modal]="true" [header]="selectedSysPrefEntity ? 'Add City' : 'Edit City'" [(visible)]="sysPrefModalVisible" 
+    [style]="{width: '40vw'}" [breakpoints]="{'767px': '100vw'}" (onHide)="onDialogHide()">
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <form>
+                
+                <!-- Key Input -->
+                <div class="form-group col-sm-12 mb-2">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="Enter City Name"  [(ngModel)]="selectedSysPrefEntity.name" name="key"/>
+                        <label>City Name</label>
+                    </div>
+                </div>
+
+                <!-- Value Input -->
+                <div class="form-group col-sm-12 mb-2">
+                    <div class="form-floating">
+                        <textarea class="form-control" rows="3" placeholder="Enter Prefix" [(ngModel)]="selectedSysPrefEntity.prefix" name="value"></textarea>
+                        <label>Prefix</label>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div *ngIf="errorMsgVisibility" class="text-danger">
+                    {{ errorMsg }}
+                </div>
+
+                <!-- Save Button -->
+                <div class="text-center mt-3">
+                    <button type="button" class="btn btn-primary" (click)="saveCountry()">Save</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</p-dialog>
+
+

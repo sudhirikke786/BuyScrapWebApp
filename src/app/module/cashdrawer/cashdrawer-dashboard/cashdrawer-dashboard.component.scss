@@ -1,7 +1,512 @@
-.form-label{
+// ============================================
+// CashDrawer Dashboard - Modern Design Styles
+// Responsive across all screen sizes
+// ============================================
+
+// Variables
+$primary-color: #0176B8;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$info-color: #17a2b8;
+$warning-color: #ffc107;
+$text-muted: #6c757d;
+$border-color: #e9ecef;
+$card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+$card-hover-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+$transition-speed: 0.3s;
+
+// Preserve existing form-label styling
+.form-label {
     margin-bottom: 0px !important;
+    font-weight: 500;
+    color: #495057;
 }
 
-.p-dialog .p-dialog-content{
-    padding-top:0.3rem !important;
+// Page Container
+.content-page {
+    padding: 0;
+
+    .content {
+        padding: 0 15px;
+    }
+}
+
+// Page Header
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #343a40;
+    margin: 0;
+}
+
+// Breadcrumb styling
+.b-links {
+    text-align: right;
+    font-size: 0.875rem;
+
+    a {
+        color: $text-muted;
+        text-decoration: none;
+        transition: color $transition-speed;
+
+        &:hover {
+            color: $primary-color;
+        }
+    }
+}
+
+// Card Styling
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: $card-shadow;
+    transition: box-shadow $transition-speed;
+    overflow: hidden;
+
+    &:hover {
+        box-shadow: $card-hover-shadow;
+    }
+}
+
+.card-body {
+    padding: 20px;
+
+    h3 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #343a40;
+        margin: 0;
+    }
+
+    h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 12px;
+    }
+}
+
+// Balance Display Box
+.bg-light-grey {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid $border-color;
+    transition: all $transition-speed;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $card-shadow;
+    }
+
+    h3 {
+        color: $primary-color;
+        font-size: 1.5rem;
+    }
+}
+
+// Money Buttons - Enhanced Styling
+.money-button {
+    display: block;
+    width: 100%;
+    padding: 20px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 10px;
+    transition: all $transition-speed;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    &:hover {
+        transform: translateY(-3px);
+        text-decoration: none;
+
+        &::before {
+            left: 100%;
+        }
+    }
+
+    &:active {
+        transform: translateY(-1px);
+    }
+}
+
+.money-button-red {
+    background: linear-gradient(135deg, #f07167, #e85d52);
+    color: white;
+    box-shadow: 0 4px 15px rgba(240, 113, 103, 0.3);
+
+    &:hover {
+        box-shadow: 0 8px 25px rgba(240, 113, 103, 0.4);
+        color: white;
+    }
+}
+
+.money-button-green {
+    background: linear-gradient(135deg, $success-color, darken($success-color, 10%));
+    color: white;
+    box-shadow: 0 4px 15px rgba($success-color, 0.3);
+
+    &:hover {
+        box-shadow: 0 8px 25px rgba($success-color, 0.4);
+        color: white;
+    }
+}
+
+.money-button-blue {
+    background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+    color: white;
+    box-shadow: 0 4px 15px rgba($primary-color, 0.3);
+
+    &:hover {
+        box-shadow: 0 8px 25px rgba($primary-color, 0.4);
+        color: white;
+    }
+}
+
+// Grid spacing
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+// Form Control Styling
+.form-control {
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: border-color $transition-speed, box-shadow $transition-speed;
+    font-size: 0.9rem;
+
+    &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+        outline: none;
+    }
+
+    &::placeholder {
+        color: #adb5bd;
+    }
+}
+
+// ============================================
+// Dialog Styling
+// ============================================
+:host ::ng-deep {
+    .p-dialog {
+        border-radius: 12px;
+        overflow: hidden;
+
+        .p-dialog-header {
+            background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+            color: white;
+            padding: 16px 20px;
+
+            .p-dialog-title {
+                font-weight: 600;
+                font-size: 1.1rem;
+                color: white;
+            }
+
+            .p-dialog-header-icon {
+                color: white;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+            }
+
+            // Custom header content styling
+            .d-flex {
+                align-items: center;
+
+                // Back button in dialog header
+                .btn-primary {
+                    background: rgba(255, 255, 255, 0.95) !important;
+                    color: $primary-color !important;
+                    border: none !important;
+                    padding: 6px 12px;
+                    border-radius: 6px;
+                    transition: all $transition-speed;
+
+                    &:hover {
+                        background: white !important;
+                        transform: translateY(-1px);
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    }
+
+                    i {
+                        color: $primary-color;
+                    }
+                }
+
+                // Modal title inside custom header
+                .modal-title,
+                h4 {
+                    color: white !important;
+                    font-weight: 600;
+                    font-size: 1.1rem;
+                    margin: 0;
+                }
+            }
+        }
+
+        .p-dialog-content {
+            padding: 20px;
+            padding-top: 0.3rem !important;
+        }
+
+        .p-dialog-footer {
+            padding: 16px 20px;
+            border-top: 1px solid $border-color;
+            background: #f8f9fa;
+        }
+    }
+}
+
+// Button styling in dialogs
+.btn-primary {
+    background: linear-gradient(135deg, $primary-color, darken($primary-color, 8%));
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all $transition-speed;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+    }
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+// Tablet (991px)
+@media (max-width: 991px) {
+    .page-title {
+        font-size: 1.25rem;
+    }
+
+    .card-body {
+        padding: 15px;
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        h4 {
+            font-size: 0.95rem;
+        }
+    }
+
+    .bg-light-grey {
+        padding: 15px;
+
+        h3 {
+            font-size: 1.25rem;
+        }
+    }
+
+    .money-button {
+        padding: 16px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+// Mobile Landscape (768px)
+@media (max-width: 768px) {
+    .bdcmb {
+        .row {
+            flex-direction: column;
+
+            .col-sm-6,
+            .col-6 {
+                width: 100%;
+
+                &:last-child {
+                    margin-top: 8px;
+                }
+            }
+        }
+    }
+
+    .b-links {
+        text-align: left;
+    }
+
+    .card-body {
+        padding: 12px;
+    }
+
+    // Stack balance boxes vertically
+    .row .col-sm-6 {
+        margin-bottom: 10px;
+    }
+
+    .bg-light-grey {
+        padding: 12px;
+
+        h3 {
+            font-size: 1.1rem;
+        }
+    }
+
+    .money-button {
+        padding: 14px 18px;
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+
+    .mb-20 {
+        margin-bottom: 12px;
+    }
+
+    // Dialog form adjustments
+    :host ::ng-deep {
+        .p-dialog {
+            .p-dialog-content {
+                padding: 15px;
+            }
+        }
+    }
+
+    .form-group.col-sm-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+// Mobile Portrait (576px)
+@media (max-width: 576px) {
+    .page-title {
+        font-size: 1.1rem;
+    }
+
+    .card {
+        border-radius: 8px;
+        margin: 0 -10px;
+    }
+
+    .card-body {
+        padding: 10px;
+
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        h4 {
+            font-size: 0.9rem;
+        }
+    }
+
+    .bg-light-grey {
+        padding: 10px;
+
+        h3 {
+            font-size: 1rem;
+        }
+    }
+
+    .money-button {
+        padding: 12px 16px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+    }
+
+    .mb-20 {
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+
+    // Full width form fields on mobile
+    .form-group.col-sm-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+// Extra Small (480px)
+@media (max-width: 480px) {
+    .money-button {
+        padding: 10px 14px;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+    }
+
+    .card-body h2 {
+        font-size: 1.25rem;
+    }
+
+    :host ::ng-deep {
+        .p-dialog {
+            .p-dialog-footer {
+                flex-direction: column;
+                gap: 10px;
+
+                .d-flex {
+                    flex-wrap: wrap;
+                    justify-content: center !important;
+                }
+            }
+        }
+    }
+}
+
+// Large screens (2000px+)
+@media (min-width: 2000px) {
+    .page-title {
+        font-size: 1.75rem;
+    }
+
+    .card-body {
+        padding: 28px;
+
+        h3 {
+            font-size: 2rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+        }
+    }
+
+    .bg-light-grey {
+        padding: 24px;
+
+        h3 {
+            font-size: 1.75rem;
+        }
+    }
+
+    .money-button {
+        padding: 24px 32px;
+        font-size: 1.15rem;
+        border-radius: 12px;
+    }
+
+    .mb-20 {
+        margin-bottom: 24px;
+    }
 }

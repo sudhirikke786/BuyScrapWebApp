@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { CommonService } from 'src/app/core/services/common.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-change-location',
@@ -14,7 +15,9 @@ export class ChangeLocationComponent implements OnInit {
   selectedLocation: any;
   orgName :any;
   locationId:any;
-  constructor(private router:Router,private commonService:CommonService){
+  constructor(private router:Router,private commonService:CommonService,
+    private messageService: MessageService
+  ){
 
   }
 
@@ -42,12 +45,15 @@ export class ChangeLocationComponent implements OnInit {
 
       localStorage.setItem('locationName', newLocationName);
       localStorage.setItem('currencyCode', this.selectedLocation?.currencyCode);
+      localStorage.setItem('cashPaymentLimit', this.selectedLocation?.cashPaymentLimit?.toString() ?? '0');
+      localStorage.setItem('checkOnlyPayment', this.selectedLocation?.checkOnlyPayment?.toString() ?? 'false');
 
       const URl  = window.location.href;
       console.log(URl);
       this.router.navigateByUrl(`${this.orgName}/home`);
     } else {
-      alert('Please select a valid location.');
+      // alert('Please select a valid location.');
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please select a valid location.' });
     }
 
 

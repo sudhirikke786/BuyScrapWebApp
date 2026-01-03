@@ -19,86 +19,93 @@
 
                 <div class="col-sm-6 col-6">
                     <div class="b-links">
-                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/admin">Admin</a> / <a href="javscript:void()" routerLink="/{{orgName}}/admin/admin-location">Location Management</a>
+                        <a routerLink="/{{orgName}}/home">Home</a> / <a routerLink="/{{orgName}}/admin">Admin</a> / <a
+                            href="javscript:void()" routerLink="/{{orgName}}/admin/admin-location">Location
+                            Management</a>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="row mt-2 d-flex align-items-center">
             <div class="col-sm-2 col-xs-6 ">
                 <h5>Total Users : {{locationObj?.userCount}}</h5>
             </div>
 
             <div class="col-sm-2 col-xs-6">
-                <h5>Total Tickets :  {{locationObj?.availableTickets}}</h5>
+                <h5>Total Tickets : {{locationObj?.availableTickets}}</h5>
             </div>
 
             <div class="col-sm-2">
-                <h5>Total Locations :  {{locationObj?.userCount}}</h5>
+                <h5>Total Locations : {{locationObj?.userCount}}</h5>
             </div>
 
             <div class="col-md-6 d-flex">
-                <input type="text" style="min-width:250px; width:auto" id="example-palaceholder" class="form-control" placeholder="Search Locations">
+                <input type="text" style="min-width:250px; width:auto" id="example-palaceholder" class="form-control"
+                    placeholder="Search Locations">
 
-                <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Search"><i class="mdi mdi-cust mdi-magnify"></i></a>
+                <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Search"><i
+                        class="mdi mdi-cust mdi-magnify"></i></a>
 
-                <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Refresh"><i class="mdi mdi-cust mdi-refresh"></i></a>
+                <a type="button" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Refresh"><i
+                        class="mdi mdi-cust mdi-refresh"></i></a>
 
-                <a (click)="addpoupOpen()" class="btn btn-square-less-padd btn-primary waves-light ml-10" title="Add Location"><i class="mdi mdi-cust mdi-plus"></i> Add Location</a>
+                <a (click)="addpoupOpen()" class="btn btn-square-less-padd btn-primary waves-light ml-10"
+                    title="Add Location"><i class="mdi mdi-cust mdi-plus"></i> Add Location</a>
             </div>
-            
-        </div>  
-        <!-- end page title --> 
+
+        </div>
+        <!-- end page title -->
 
         <div class="row mt-2" *ngIf="!loading">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
 
-                        <p-table [value]="locObj"  [scrollable]="true" 
-                        scrollHeight="50vh" [paginator]="true" [rows]="10"
-                        [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        [rowsPerPageOptions]="commonService.tableConfig.pageOptions" 
-                      
-                        >
-
-                       
-                        
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th>Location Name</th>
-                                <th>User Count</th>
-                                <th>Total Tickets</th>
-                                <th>Available Tickets</th>
-                                <th>Action</th>
-                            </tr>
-                        </ng-template>
-
-                        
-                        <ng-template pTemplate="body" let-admin>
-                            <tr>
-                                <td>{{ admin.locationName }}</td>
-                                <td>{{ admin.userCount }}</td>
-                                <td>{{ admin.totalTickets }}</td>
-                                <td>{{ admin.availableTickets }}</td>
-                                <td>
-                                    <a (click)="editPopupOpen(admin)" class="btn btn-grid btn-primary waves-effect waves-light me-1"><i class="mdi mdi-pencil"></i> Edit</a>
-
-                                    <a (click)="showUserModel(admin)"  class="btn btn-grid btn-success waves-effect waves-light"><i class="mdi mdi-account"></i> User Management</a>
-                        
-                                     </td>
-                            </tr>
-                        </ng-template>
-                        
-                    </p-table>
+                        <p-table [value]="locObj" [scrollable]="true" scrollHeight="50vh" [paginator]="true" [rows]="10"
+                            [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            [rowsPerPageOptions]="commonService.tableConfig.pageOptions">
 
 
 
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Location Name</th>
+                                    <th>User Count</th>
+                                    <th>Total Tickets</th>
+                                    <th>Available Tickets</th>
+                                    <th>Action</th>
+                                </tr>
+                            </ng-template>
 
 
-                     
+                            <ng-template pTemplate="body" let-admin>
+                                <tr>
+                                    <td>{{ admin.locationName }}</td>
+                                    <td>{{ admin.userCount }}</td>
+                                    <td>{{ admin.totalTickets }}</td>
+                                    <td>{{ admin.availableTickets }}</td>
+                                    <td>
+                                        <a (click)="editPopupOpen(admin)"
+                                            class="btn btn-grid btn-primary waves-effect waves-light me-1"><i
+                                                class="mdi mdi-pencil"></i> Edit</a>
+
+                                        <a (click)="showUserModel(admin)"
+                                            class="btn btn-grid btn-success waves-effect waves-light"><i
+                                                class="mdi mdi-account"></i> User Management</a>
+
+                                    </td>
+                                </tr>
+                            </ng-template>
+
+                        </p-table>
+
+
+
+
+
+
                     </div> <!-- end card body-->
                 </div> <!-- end card -->
             </div><!-- end col-->
@@ -107,11 +114,11 @@
 
         <div class="content" *ngIf="loading">
             <app-page-loader type="ftable"></app-page-loader>
-          </div>
-  
-          
-        <!-- end row-->     
-        
+        </div>
+
+
+        <!-- end row-->
+
     </div> <!-- container -->
 
 </div>
@@ -124,214 +131,254 @@
 <!-- content -->
 
 <ng-container *ngIf="visible">
-<p-dialog [modal]="true" 
-header="Add User"
-[(visible)]="visible"
-[style]="{ width: '80vw' }">
+    <p-dialog [modal]="true" header="Add User" [(visible)]="visible" [style]="{ width: '80vw' }">
 
 
-<div class="row">
-<div class="col-sm-12">
-    
-    <form [formGroup]="userForm">
-                                
         <div class="row">
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100" >First Name<span class="text-danger">*</span></label>
-                <input type="text" formControlName="firstName" id="fistname" class="form-control" [ngClass]="{'border-danger': isSubmit &&  f.firstName.invalid }"  placeholder="First Name">
-                <app-form-error-message msg=" Name is required" *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.required)"></app-form-error-message>
-                <app-form-error-message [msg]="patternMsg?.alphabetPattern[1]" *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.pattern)"></app-form-error-message>
-            </div>
+            <div class="col-sm-12">
 
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Last Name <span class="text-danger">*</span></label>
-                <input type="text" formControlName="lastName" id="lastname" class="form-control" placeholder="Last Name" [ngClass]="{'border-danger': isSubmit &&  f.lastName.invalid}">
-                <app-form-error-message msg="Last Name is required" *ngIf="(isSubmit && userForm?.get('lastName')?.errors?.required)"></app-form-error-message>
+                <form [formGroup]="userForm">
+
+                    <div class="row">
+                        <div class="form-group col-sm-6 mb-2">
+                            <label for="simpleinput" class="form-label w-100">First Name<span
+                                    class="text-danger">*</span></label>
+                            <input type="text" formControlName="firstName" id="fistname" class="form-control"
+                                [ngClass]="{'border-danger': isSubmit &&  f.firstName.invalid }"
+                                placeholder="First Name">
+                            <app-form-error-message msg=" Name is required"
+                                *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.required)"></app-form-error-message>
+                            <app-form-error-message [msg]="patternMsg?.alphabetPattern[1]"
+                                *ngIf="(isSubmit && userForm?.get('firstName')?.errors?.pattern)"></app-form-error-message>
+                        </div>
+
+                        <div class="form-group col-sm-6 mb-2">
+                            <label for="simpleinput" class="form-label w-100">Last Name <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" formControlName="lastName" id="lastname" class="form-control"
+                                placeholder="Last Name" [ngClass]="{'border-danger': isSubmit &&  f.lastName.invalid}">
+                            <app-form-error-message msg="Last Name is required"
+                                *ngIf="(isSubmit && userForm?.get('lastName')?.errors?.required)"></app-form-error-message>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-sm-6 mb-2">
+                            <label for="simpleinput" class="form-label w-100"
+                                [ngClass]="{'border-danger': f.roleId.touched && f.role?.invalid}">Select Role <span
+                                    class="text-danger">*</span></label>
+                            <select formControlName="roleId" class="form-select" id="selectrole">
+                                <option disabled value="null">Select Role</option>
+                                <option *ngFor="let item of roleList" [value]="item?.rowId">{{item?.role}}</option>
+
+                            </select>
+                            <app-form-error-message msg="Role Name is required"
+                                *ngIf="isSubmit && userForm?.get('roleId')?.errors?.required"></app-form-error-message>
+
+                        </div>
+
+                        <div class="form-group col-sm-6 mb-2">
+                            <label for="simpleinput" class="form-label w-100">Username <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" formControlName="userName" id="username" class="form-control"
+                                [ngClass]="{'border-danger': isSubmit && f.userName?.invalid}"
+                                placeholder="Enter Username">
+                            <app-form-error-message msg="UserName Name is required"
+                                *ngIf="isSubmit && userForm?.get('userName')?.errors?.required"></app-form-error-message>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-sm-6 mb-2">
+                            <label for="simpleinput" class="form-label w-100">Password <span
+                                    class="text-danger">*</span></label>
+                            <input formControlName="password" type="password" id="password" class="form-control"
+                                [ngClass]="{'border-danger': isSubmit && f.password?.invalid}"
+                                placeholder="Enter Your Password">
+
+                            <app-form-error-message msg="Password is required"
+                                *ngIf="isSubmit && userForm?.get('password')?.errors?.required"></app-form-error-message>
+
+                        </div>
+
+                        <div class="form-group col-sm-6 mb-2">
+                            <label for="simpleinput" class="form-label w-100">Confirm Password <span
+                                    class="text-danger">*</span> </label>
+                            <input type="password" formControlName="confirmPassword" id="confirmpassword"
+                                class="form-control "
+                                [ngClass]="{'border-danger': isSubmit && f.confirmPassword?.invalid}"
+                                placeholder="Enter Your Password">
+
+
+                            <div *ngIf="isSubmit &&  f.confirmPassword?.invalid">
+                                <app-form-error-message msg="Confirm Password is required"
+                                    *ngIf="isSubmit && userForm?.get('confirmPassword')?.errors?.required"></app-form-error-message>
+                                <app-form-error-message msg="Password and Confirm Password must be match."
+                                    *ngIf="userForm?.get('confirmPassword')?.errors?.confirmedValidator"></app-form-error-message>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-sm-6 mb-2">
+                            <label for="simpleinput" class="form-label w-100">Mobile No <span
+                                    class="text-danger">*</span></label>
+                            <input formControlName="mobileNumber" type="mobileNumber" id="mobileNumber"
+                                class="form-control" [ngClass]="{'border-danger': isSubmit && f.mobileNumber?.invalid}"
+                                placeholder="Enter Mobile No">
+                            <app-form-error-message msg="Mobile Number is required"
+                                *ngIf="isSubmit && userForm?.get('mobileNumber')?.errors?.required"></app-form-error-message>
+
+                        </div>
+                        <div class="form-group col-sm-6 mb-2">
+                            <label for="simpleinput" class="form-label w-100">Mail ID <span
+                                    class="text-danger">*</span></label>
+                            <input formControlName="emailID" type="email" id="mailid" class="form-control"
+                                [ngClass]="{'border-danger': isSubmit &&  f.emailID?.invalid}"
+                                placeholder="Enter Mail ID">
+                            <app-form-error-message msg="Email is required"
+                                *ngIf="isSubmit && userForm?.get('emailID')?.errors?.required"></app-form-error-message>
+
+                        </div>
+                    </div>
+
+                    <div class="text-end mt-3">
+                        <button class="btn btn-primary " (click)="submitForm()">Save</button>
+                    </div>
+                </form>
+
 
             </div>
         </div>
 
-        <div class="row">
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100" [ngClass]="{'border-danger': f.roleId.touched && f.role?.invalid}">Select Role <span class="text-danger">*</span></label>
-                <select formControlName="roleId" class="form-select" id="selectrole">
-                    <option disabled value="null">Select Role</option>
-                    <option *ngFor="let item of roleList" [value]="item?.rowId">{{item?.role}}</option>
-                   
-                </select>
-                <app-form-error-message msg="Role Name is required" *ngIf="isSubmit && userForm?.get('roleId')?.errors?.required"></app-form-error-message>
-
-            </div>
-
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Username <span class="text-danger">*</span></label>
-                <input type="text" formControlName="userName" id="username" class="form-control" [ngClass]="{'border-danger': isSubmit && f.userName?.invalid}" placeholder="Enter Username">
-                <app-form-error-message msg="UserName Name is required" *ngIf="isSubmit && userForm?.get('userName')?.errors?.required"></app-form-error-message>
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Password <span class="text-danger">*</span></label>
-                <input formControlName="password" type="password"  id="password" class="form-control"  [ngClass]="{'border-danger': isSubmit && f.password?.invalid}" placeholder="Enter Your Password">
-                
-                 <app-form-error-message msg="Password is required" *ngIf="isSubmit && userForm?.get('password')?.errors?.required"></app-form-error-message>
-
-            </div>
-
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Confirm Password <span class="text-danger">*</span> </label>
-                <input type="password" formControlName="confirmPassword" id="confirmpassword" class="form-control "  [ngClass]="{'border-danger': isSubmit && f.confirmPassword?.invalid}" placeholder="Enter Your Password">
-               
-
-                <div *ngIf="isSubmit &&  f.confirmPassword?.invalid">
-                    <app-form-error-message msg="Confirm Password is required" *ngIf="isSubmit && userForm?.get('confirmPassword')?.errors?.required"></app-form-error-message>
-                    <app-form-error-message msg="Password and Confirm Password must be match." *ngIf="userForm?.get('confirmPassword')?.errors?.confirmedValidator"></app-form-error-message>
-                   
-                </div>
-                
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Mobile No <span class="text-danger">*</span></label>
-                <input formControlName="mobileNumber" type="mobileNumber" id="mobileNumber" class="form-control" [ngClass]="{'border-danger': isSubmit && f.mobileNumber?.invalid}"  placeholder="Enter Mobile No">
-                <app-form-error-message msg="Mobile Number is required" *ngIf="isSubmit && userForm?.get('mobileNumber')?.errors?.required"></app-form-error-message>
-
-           </div>
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Mail ID <span class="text-danger">*</span></label>
-                <input formControlName="emailID" type="email" id="mailid" class="form-control" [ngClass]="{'border-danger': isSubmit &&  f.emailID?.invalid}" placeholder="Enter Mail ID">
-                <app-form-error-message msg="Email is required" *ngIf="isSubmit && userForm?.get('emailID')?.errors?.required"></app-form-error-message>
-
-            </div>
-        </div>
-
-        <button class="btn btn-primary " (click)="submitForm()">Save</button>
-    </form>
-
-
-</div>
-</div> 
-
-</p-dialog>
+    </p-dialog>
 </ng-container>
 
 
 
 
-<p-dialog [modal]="true" 
-[header]="actionType"
-[(visible)]="locationVisble"
-[style]="{ width: '80vw' }"
->
-<ng-template pTemplate="header">
-    <div class="d-flex">
-        <a (click)="hideLocationModel()" class="btn btn-primary" title="Back to Location"><i class="mdi mdi-keyboard-backspace"></i></a>
-        <h4 class="modal-title ml-10" id="myLargeModalLabel">{{actionType + ' Locations'}}</h4>
-    </div>
-  
-</ng-template>
+<p-dialog [modal]="true" [header]="actionType" [(visible)]="locationVisble" [style]="{ width: '80vw' }">
+    <ng-template pTemplate="header">
+        <div class="d-flex">
+            <a (click)="hideLocationModel()" class="btn btn-primary" title="Back to Location"><i
+                    class="mdi mdi-keyboard-backspace"></i></a>
+            <h4 class="modal-title ml-10" id="myLargeModalLabel">{{actionType + ' Locations'}}</h4>
+        </div>
 
-<div class="row">
-    <div class="col-sm-12">
-        
-        <form  [formGroup]="locationForm">
-            
-            <div class="form-group col-sm-12 mb-2">
-                <div class="row align-items-end">
-                    <div class="form-group col-sm-12 mb-2">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <label for="simpleinput" class="form-label w-100">Location Name</label>
-                                <input type="text" id="locationname" class="form-control" formControlName="locationName">
-                            </div>
-        
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="timezone" class="form-label w-100">Time Zone</label>
-                                <p-dropdown id="timezone" 
-                                            [options]="timeZones" 
-                                            formControlName="timeZoneID" 
-                                            [filter]="true" 
-                                            filterBy="timeZoneID,abbreviation"
-                                            placeholder="Select Time Zone" 
-                                            optionLabel="timeZoneID" 
-                                            optionValue="rowID"
-                                            for="timeZone">
-                                    <ng-template let-tz pTemplate="item">
-                                        {{tz.timeZoneID}} ({{tz.abbreviation}})
-                                    </ng-template>
-                                    <ng-template let-tz pTemplate="selectedItem">
-                                        {{tz.timeZoneID}} 
-                                    </ng-template>
-                                </p-dropdown>
-                            </div>
-                            
-                            <div class="form-group col-sm-4 mb-2">
-                                <label for="currency" class="form-label w-100">Currency</label>
-                                <p-dropdown id="currency" 
-                                            [options]="currencies" 
-                                            formControlName="currencyID" 
-                                            [filter]="true" 
-                                            filterBy="currencyCode"
-                                            placeholder="Select Currency" 
-                                            optionLabel="currencyCode" 
-                                            optionValue="rowID"
-                                            for="currencyCode">
-                                </p-dropdown>
+    </ng-template>
+
+    <div class="row" *ngIf="!loading">
+        <div class="col-sm-12">
+
+            <form [formGroup]="locationForm">
+
+                <div class="form-group col-sm-12 mb-2">
+                    <div class="row align-items-end">
+                        <div class="form-group col-sm-12 mb-2">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="simpleinput" class="form-label w-100">Location Name</label>
+                                    <input type="text" id="locationname" class="form-control"
+                                        formControlName="locationName">
+                                </div>
+
+                                <div class="form-group col-sm-4 mb-2">
+                                    <label for="timezone" class="form-label w-100">Time Zone</label>
+                                    <p-dropdown id="timezone" [options]="timeZones" formControlName="timeZoneID"
+                                        [filter]="true" filterBy="timeZoneID,abbreviation"
+                                        placeholder="Select Time Zone" optionLabel="timeZoneID" optionValue="rowID"
+                                        for="timeZone">
+                                        <ng-template let-tz pTemplate="item">
+                                            {{tz.timeZoneID}} ({{tz.abbreviation}})
+                                        </ng-template>
+                                        <ng-template let-tz pTemplate="selectedItem">
+                                            {{tz.timeZoneID}}
+                                        </ng-template>
+                                    </p-dropdown>
+                                </div>
+
+                                <div class="form-group col-sm-4 mb-2">
+                                    <label for="currency" class="form-label w-100">Currency</label>
+                                    <p-dropdown id="currency" [options]="currencies" formControlName="currencyID"
+                                        [filter]="true" filterBy="currencyCode" placeholder="Select Currency"
+                                        optionLabel="currencyCode" optionValue="rowID" for="currencyCode">
+                                    </p-dropdown>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group col-sm-12 mb-2">
-                <label for="simpleinput" class="form-label w-100">Address</label>
-                <input type="text" id="address" class="form-control" formControlName="address">
-            </div>
-        
-        <div class="row">
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Contact Name</label>
-                <input type="text" id="contactName" class="form-control" formControlName="contactName">
-            </div>
-    
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Phone No</label>
-                <input type="text" id="phoneNo" class="form-control" formControlName="phoneNo">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Set User Counts for Location</label>
-                <input type="number" min="0" id="usercount" class="form-control" formControlName="userCount">
-            </div>
-    
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Set Employee Counts for Location</label>
-                <input type="number" min="0" id="employeecount" class="form-control" formControlName="employeeCount">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Ticket Limits</label>
-                <input type="number" min="0" id="employeecount" class="form-control" formControlName="ticketLimit">
-            </div>
-    
-            <div class="form-group col-sm-6 mb-2">
-                <label for="simpleinput" class="form-label w-100">Available Tickets</label>
-                <input type="number" min="0"  class="form-control" formControlName="availableTickets">
-            </div>
-        </div>
+                <div class="form-group col-sm-12 mb-2">
+                    <label for="simpleinput" class="form-label w-100">Address</label>
+                    <input type="text" id="address" class="form-control" formControlName="address">
+                </div>
 
-            <a class="btn btn-primary " (click)="submitLocation()">{{ actionType == 'Add' ? 'Save' : 'Update' }}</a>
-        </form>
+                <div class="row">
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Contact Name</label>
+                        <input type="text" id="contactName" class="form-control" formControlName="contactName">
+                    </div>
 
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Phone No</label>
+                        <input type="text" id="phoneNo" class="form-control" formControlName="phoneNo">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Set User Counts for Location</label>
+                        <input type="number" min="0" id="usercount" class="form-control" formControlName="userCount">
+                    </div>
+
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Set Employee Counts for Location</label>
+                        <input type="number" min="0" id="employeecount" class="form-control"
+                            formControlName="employeeCount">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Ticket Limits</label>
+                        <input type="number" min="0" id="employeecount" class="form-control"
+                            formControlName="ticketLimit">
+                    </div>
+
+                    <div class="form-group col-sm-6 mb-2">
+                        <label for="simpleinput" class="form-label w-100">Available Tickets</label>
+                        <input type="number" min="0" class="form-control" formControlName="availableTickets">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6 mb-2">
+                        <div class="d-flex align-items-center">
+                            <label for="cashPaymentLimit" class="form-label me-2 mb-0">Cash Payment Limit:</label>
+                            <input type="number" id="cashPaymentLimit" min="0" class="form-control"
+                                style="width: 150px;" formControlName="cashPaymentLimit">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-sm-6 mb-2">
+                        <label class="form-label w-100 d-flex align-items-center">
+                            <input type="checkbox" class="form-check-input me-2"
+                                formControlName="checkOnlyPayment">Allow Only Check Payment </label>
+                    </div>
+                </div>
+
+                <div class="text-end mt-3">
+                    <a class="btn btn-primary " (click)="submitLocation()">{{ actionType == 'Add' ? 'Save' : 'Update'
+                        }}</a>
+                </div>
+            </form>
+
+        </div>
     </div>
-</div> 
 </p-dialog>
 
 <p-toast></p-toast>

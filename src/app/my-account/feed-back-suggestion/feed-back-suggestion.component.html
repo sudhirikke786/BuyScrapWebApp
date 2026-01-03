@@ -1,0 +1,71 @@
+<div class="container-fluid">
+    <div class="bdcmb">
+        <div class="row">
+            <div class="col-sm-6 col-6">
+                <h4 class="page-title">Feedback&Suggestion</h4>
+            </div>
+            <div class="col-sm-6 col-6">
+                <div class="b-links">
+                    <a routerLink="/{{orgName}}/home">Home</a> / <a href="javascript:void(0)" routerLink="/{{orgName}}/home/feedback">Feedback&Suggestion</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-3">
+        <div class="col-8">
+            <div class="page-title-box">
+                <h4 class="page-title"></h4>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3 d-flex justify-content-start">
+                        <div class="form-check form-check-inline mb-0">
+                            <input class="form-check-input" type="radio" id="feedbackRadio" name="contentType" value="Feedback" [(ngModel)]="selectedContentType">
+                            <label class="form-check-label" for="feedbackRadio">Feedback</label>
+                        </div>
+                        <div class="form-check form-check-inline mb-0">
+                            <input class="form-check-input" type="radio" id="suggestionRadio" name="contentType" value="Suggestion" [(ngModel)]="selectedContentType">
+                            <label class="form-check-label" for="suggestionRadio">Suggestion</label>
+                        </div>
+                    </div>
+                    <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+                        <div class="mb-3">
+                            <label for="userName" class="form-label">User Name</label>
+                            <input type="text" class="form-control" id="userName" formControlName="userName">
+                            <div *ngIf="feedbackForm.get('userName')?.touched && feedbackForm.get('userName')?.invalid" class="text-danger">
+                                User Name is required
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="userMailId" class="form-label">User Mail Id</label>
+                            <input type="email" class="form-control" id="userMailId" formControlName="userMailId">
+                            <div *ngIf="feedbackForm.get('userMailId')?.touched && feedbackForm.get('userMailId')?.invalid" class="text-danger">
+                                <span *ngIf="feedbackForm.get('userMailId')?.errors?.['required']">Email is required</span>
+                                <span *ngIf="feedbackForm.get('userMailId')?.errors?.['email']">Please enter a valid email</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="feedback" class="form-label">{{ selectedContentType }}</label>
+                            <textarea class="form-control" id="feedback" rows="5" formControlName="feedback"></textarea>
+                            <div *ngIf="feedbackForm.get('feedback')?.touched && feedbackForm.get('feedback')?.invalid" class="text-danger">
+                                {{ selectedContentType }} is required
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary px-5">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

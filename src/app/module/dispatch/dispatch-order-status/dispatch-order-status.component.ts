@@ -33,6 +33,10 @@ export class DispatchOrderStatusComponent implements OnInit {
   pendingIndexbox: any;
   draggedFrom!: string;
   boxindex !: number;
+
+  displayDriverSidebar: boolean = false;
+  masterDriverList: any[] = []; 
+  groupedTicketsData: any = {}; 
   constructor( public commonService: CommonService, private messageService: MessageService,){
 
   }
@@ -163,6 +167,106 @@ onDropToPending(event: any): void {
 
 
 
+  // getAllCODTickets() {
+  //   const paramObject = {
+  //     PageNumber: 1,
+  //     RowOfPage: 1000,
+  //     LocationId: this.locId,
+  //     SerachText: ''
+  //   };
+
+  //   this.isLoading =  true;
+
+  //   this.commonService.GetAllPickUpDetails(paramObject).subscribe(
+      
+  //     (data: any) => {
+
+  //       this.isLoading =  false;
+
+  //       //console.log('API Response:', data); 
+  //       let _filterUnassignTicket = [];
+  //       let _driverList = [];
+  //       if (data && data.body && data.body.data) {
+  //         _filterUnassignTicket = data?.body?.data.filter((item:any) => !item.driverFirstName);
+  //         _driverList = data?.body?.data.filter((item:any) => item.driverID);
+  //         console.log("driverlist",_driverList)
+  //       }
+
+  //       if (data && data.body && data.body.data) {
+  //         const _mainItems = _filterUnassignTicket.map((item: any,index:number) => {
+  //           //console.log('Mapped item:', item.ticketRowID);
+  //           return {
+  //             rowID: item.rowID, 
+  //             id: index,     
+  //             pickUpDate: item.pickUpDate,
+  //             customerName: item.customerName,
+  //             sellerName: item.sellerName,
+  //             sellerID:item.sellerID,
+  //             ticketRowID:item.ticketRowID,
+  //             charges: item.charges,
+  //             typeID:item.typeID,
+  //             type:item.type,
+  //             driverName:item.driverFirstName,
+  //             ticketStatus:this.addStatus(item),
+  //             colorStatus:this.addColorStatus(item),
+  //             selected: item.closedDate ? true : false,
+  //             ticketId: item.ticketRowID > 0 ? item.ticketRowID : 0,
+  //             sellerAddress: item.streetAddress         
+  //           };
+  //         });
+  //         this.mainItems = _mainItems.filter((item:any) => {
+  //           return item.closedDate==null
+  //         });
+  //         console.log(this.mainItems)
+          
+
+  //       } else {
+  //         console.error('No data found or incorrect response structure.');
+  //       }
+
+  //       this.targetBoxes = [];
+  //       let  groupedData:any = [];
+  //       _driverList.forEach((item:any) => {
+  //         item.ticketStatus = this.addStatus(item);
+  //         item.driverID = item.driverID;
+  //         item.colorStatus = this.addColorStatus(item);
+  //           if(!groupedData[item.driverID]) {
+  //             groupedData[item.driverID] = [];
+  //           }
+  //          groupedData[item.driverID].push(item);
+  //       });
+
+  //       console.log(groupedData);
+
+
+  //       // this.targetBoxes =  driverData.map((element:any) => {
+  //       //   element.items = [];
+  //       //   element.orderCount = 5;
+  //       //   return element;
+  //       // });
+
+  //       this.targetBoxes =  this.driverList.map((element:any,index:number) => {
+  //         element.items =  groupedData[element.rowId] ? groupedData[element.rowId] : [] ;
+  //         element.id = index;
+  //         element.driverID = element.rowId;
+  //         element.driverFullName = element.driverFullName;
+  //         return element
+  //       });
+        
+        
+      
+  //     },
+  //     (err: any) => {
+       
+      
+  //       console.error('Error fetching COD tickets:', err);
+  //     },
+    
+       
+  //   );
+    
+  // }
+
   getAllCODTickets() {
     const paramObject = {
       PageNumber: 1,
@@ -193,6 +297,7 @@ onDropToPending(event: any): void {
             //console.log('Mapped item:', item.ticketRowID);
             return {
               rowID: item.rowID, 
+              pickupID:item.pickupID,
               id: index,     
               pickUpDate: item.pickUpDate,
               customerName: item.customerName,
@@ -221,40 +326,23 @@ onDropToPending(event: any): void {
         }
 
         this.targetBoxes = [];
-        let  groupedData:any = [];
+        this.groupedTicketsData = {}; 
+
         _driverList.forEach((item:any) => {
           item.ticketStatus = this.addStatus(item);
           item.driverID = item.driverID;
           item.colorStatus = this.addColorStatus(item);
-            if(!groupedData[item.driverID]) {
-              groupedData[item.driverID] = [];
-            }
-           groupedData[item.driverID].push(item);
+          
+          if (!this.groupedTicketsData[item.driverID]) {
+            this.groupedTicketsData[item.driverID] = [];
+          }
+          this.groupedTicketsData[item.driverID].push(item);
         });
 
-        console.log(groupedData);
-
-
-        // this.targetBoxes =  driverData.map((element:any) => {
-        //   element.items = [];
-        //   element.orderCount = 5;
-        //   return element;
-        // });
-
-        this.targetBoxes =  this.driverList.map((element:any,index:number) => {
-          element.items =  groupedData[element.rowId] ? groupedData[element.rowId] : [] ;
-          element.id = index;
-          element.driverID = element.rowId;
-          element.driverFullName = element.driverFullName;
-          return element
-        });
-        
-        
-      
+        this.updateBoardColumns();
       },
       (err: any) => {
-       
-      
+        this.isLoading = false; 
         console.error('Error fetching COD tickets:', err);
       },
     
@@ -271,8 +359,19 @@ onDropToPending(event: any): void {
       UserID:0
     }
     this.commonService.GetAllUsers(reqObj).subscribe((res) =>{
-     this.driverList =  res?.body?.data.filter((item:any) =>item.role.toLowerCase() == 'driver');
+      const rawDrivers = res?.body?.data.filter((item:any) =>item.role.toLowerCase() == 'driver');
+      const savedDrivers = JSON.parse(localStorage.getItem("selectedDrivers") || "[]");
+      
+      this.masterDriverList = rawDrivers.map((driver: any) => {
+      return { 
+        ...driver, 
+        selected: savedDrivers.includes(driver.rowId)  // restore saved state
+      }; 
+    });
+
+
       this.getAllCODTickets()
+      this.updateBoardColumns(); 
     })
   }
 
@@ -319,6 +418,34 @@ onDropToPending(event: any): void {
     
 
    
+  }
+
+  toggleDriverSidebar() {
+    this.displayDriverSidebar = true;
+  }
+
+  toggleAllDrivers(event:any) {
+    const isChecked = event.target.checked;
+    this.masterDriverList.forEach(d => d.selected = isChecked);
+    this.updateBoardColumns();
+  }
+
+  updateBoardColumns() {
+    const activeDrivers = this.masterDriverList.filter((d: any) => d.selected);
+    const ids = activeDrivers.map((d: any) => d.rowId);
+    localStorage.setItem("selectedDrivers", JSON.stringify(ids));
+
+    this.targetBoxes = activeDrivers.map((element: any, index: number) => {
+      let newBox = { ...element }; 
+      newBox.items = this.groupedTicketsData[element.rowId] ? this.groupedTicketsData[element.rowId] : [];
+      newBox.id = index;
+      newBox.driverID = element.rowId;
+      return newBox;
+    });
+  }
+
+  isAllSelected() {
+     return this.masterDriverList.every(d => d.selected);
   }
 
 

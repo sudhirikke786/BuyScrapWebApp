@@ -118,10 +118,12 @@ export class AuthInterceptor implements HttpInterceptor {
     'GetAllSubscriptionPlan','OTP','GetAllCountry','GetAllState','GetAllCity', 'CreateCheckoutSession','ExtractOCRData',
     'GetOrganisationConsent','GetConsentDetails','AskQuery','GetSuperAdminAuthenticate','GetAllOrganisations','GetAllDeletedOrganisations','GetAdminOrganisaction'
   ,'InsertUpdateLocationDTO','GetAllUsers','GetAllTicketsForDailyReport','GetAllUsersRoles','InsertUpdateUserDTO','DeleteUserDTO','InsertUpdateSuperAdminDTO','GetSystemPreferencesValue'
-  ,'GetLocations']
+  ,'GetLocations','GetAllDetails','GetAllTimeZones','GetAllCurrency','UpdateLastLoginDate','InsertUpdateSystemPreferences']
 
     var isExcludeRoute = excludesRoutes.some(function(el: any) {
-      return (req.url.indexOf(el) > -1);
+      const routePattern = new RegExp(el + '($|\\?)');
+      return routePattern.test(req.url);
+      // return (req.url.indexOf(el) > -1);
     });
 
     if ( (req.url.indexOf('token') > 0 && this.callToken !== false) || (this.callToken === false) || (isExcludeRoute)) {

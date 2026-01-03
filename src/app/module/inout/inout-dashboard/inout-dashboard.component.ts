@@ -7,6 +7,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { DataService } from 'src/app/core/services/data.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { InoutService } from 'src/app/core/services/inout.service';
 
 @Component({
   selector: 'app-inout-dashboard',
@@ -96,6 +97,7 @@ export class InoutDashboardComponent implements OnInit {
   pageTotal = 0;
 
   isInoutMode = false;
+  isCardView = true;
 
   
   constructor(private route: ActivatedRoute,
@@ -105,7 +107,8 @@ export class InoutDashboardComponent implements OnInit {
     private messageService:MessageService,
     private confirmationService: ConfirmationService,
     public dataService: DataService,
-    public commonService: CommonService) { }
+    public commonService: CommonService,
+    public inoutService:InoutService) { }
 
   ngOnInit() {
     this.orgName = localStorage.getItem('orgName');
@@ -129,10 +132,20 @@ export class InoutDashboardComponent implements OnInit {
       first: 0
     }
     this.getAllInoutDetails(pagination);
+
   }
 
- 
+ applyInOutSearch(searchText: string = this.serachText) {
+  const pagination = {
+    SerachText: searchText,
+    PageNumber: 1,
+    RowOfPage: 10,
+    LocationId: this.locId,
+    first: 0
+  };
 
+  this.getAllInoutDetails(pagination);
+}
 
   
   onPageChange(event: any) {
@@ -158,6 +171,19 @@ export class InoutDashboardComponent implements OnInit {
 
   
     this.getAllInoutDetails(pagObj);
+  }
+
+  determineViewMode() {
+    this.isCardView = true; 
+  }
+
+  onToggleChange() {
+    if (this.isCardView) {
+        this.router.navigate([`/${this.orgName}/inout`]);
+      } else {
+        this.router.navigate([`/${this.orgName}/inout`]);
+    }
+    this.getAllInoutDetails(this.pagination);
   }
 
   getAllInoutDetails(pagination: any = this.pagination) {   
@@ -275,7 +301,8 @@ export class InoutDashboardComponent implements OnInit {
   }
 
   deleteDetails(inoutId: any) {
-    alert('Delete action Triggered')
+    // alert('Delete action Triggered')
+    this.messageService.add({ severity: 'info', summary: 'Delete', detail: 'You have selected ' + inoutId + ' for delete' });
   }
 
 
@@ -360,7 +387,7 @@ export class InoutDashboardComponent implements OnInit {
 
     switch (actionCode?.iconcode) {
       case 'mdi-magnify':
-        this.getAllInoutDetails(this.pagination);
+        this.applyInOutSearch(this.serachText);
         break;
       case 'mdi-refresh':
         this.serachText = '';

@@ -9,6 +9,8 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DataService } from 'src/app/core/services/data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { InvoiceService } from 'src/app/core/services/invoice.service';
+
 
 @Component({
   selector: 'app-invoice-layout',
@@ -66,17 +68,11 @@ export class InvoiceLayoutComponent implements OnInit {
 
   ];
 
-  ticketsTypes = [
-    { name: 'ALL', code: 'ALL' , },
-    { name: 'OPEN', code: 'OPEN' },
-    // { name: 'Partially Paid', code: 'Partially Paid' },
-    { name: 'PAID', code: 'PAID' },
-    { name: 'VOIDED', code: 'VOIDED' }
-  ];
+  ticketsTypes = [];
 
 
   defaultSelectedTicketsTypes = [
-    { name: 'OPEN', code: 'OPEN' },
+    
     // { name: 'Partially Paid', code: 'Partially Paid' }
   ];
 
@@ -174,6 +170,7 @@ export class InvoiceLayoutComponent implements OnInit {
   isLoading = false;
   childTicketsLoader: boolean = false;
   sellerLoader: boolean = false;
+  searchOptions: any[] = [];
   
   alertVisible = false;
   alertMessage: any;
@@ -184,6 +181,11 @@ export class InvoiceLayoutComponent implements OnInit {
   
   numberFormat: string = '1.3-3';
   currencySymbol: string = 'USD';
+
+  selectedCurrencyID: any = null;
+  currencies: any[] = [];
+  IsMultiCurrencySupportEnabled: boolean = false;
+
 
   isConfirmModel: boolean = false;
   selectedTicket: any;
@@ -203,7 +205,8 @@ export class InvoiceLayoutComponent implements OnInit {
     private datePipe: DatePipe,
     private dataService: DataService,
     private messageService: MessageService,
-    public commonService: CommonService) {
+    public commonService: CommonService,
+    public invoiceService:InvoiceService) {
      // this.setPageSize();
       this.route.params.subscribe((res) =>{
         this.pagination = {
@@ -241,6 +244,9 @@ export class InvoiceLayoutComponent implements OnInit {
     if (_dataObj) {
       const isElectronic = _dataObj.filter((item: any) => item?.keys?.toLowerCase() == 'iselectronicpayment')[0];
       this.systemInfo = isElectronic?.values;
+
+      const isMultiCurrencySupport = _dataObj.find((item: any) => item?.keys?.toLowerCase() === 'ismulticurrencysupport');
+      this.IsMultiCurrencySupportEnabled = String(isMultiCurrencySupport?.values).toLowerCase() === 'true';
     }
 
     this.orgName = localStorage.getItem('orgName');
@@ -274,8 +280,81 @@ export class InvoiceLayoutComponent implements OnInit {
       contactName : ['']
     });
     this.navigateToInitialView();
+    this.loadInvoiceTypes();
+    this.loadSearchOptions();
 
   }
+
+
+  loadInvoiceTypes() {
+    this.commonService.GetAllInvoiceTypes({}).subscribe(
+      (data: any) => {
+        const rawData = data.body.data || [];
+        this.ticketsTypes = rawData.map((item: any) => ({
+          name: item.types,
+          code: item.rowId
+        }));
+        this.defaultSelectedTicketsTypes = this.ticketsTypes.filter((t: any) => t.name !== '');
+        this.selectedTickets = this.defaultSelectedTicketsTypes;
+      },
+      (error) => {
+        console.error('Error fetching invoice types:', error);
+      }
+    );
+  }
+  
+
+  loadSearchOptions() {
+    const paramObj = {}; 
+    this.commonService.GetAllSearchInvoiceTypes(paramObj).subscribe(
+      (data) => {
+        console.log('Chekcing search dae',data)
+        if (data) {
+          const rawsearchData = data.body.data
+          console.log('Chekcing rawsearchData dae',rawsearchData)
+          this.searchOptions = rawsearchData.map((item: any) => ({
+            value: item.rowId, 
+            label: item.searchTypes  
+          }));
+          console.log('Mapped options:', this.searchOptions);
+             const allOption = this.searchOptions.find(o => o.label === 'ALL');
+             this.searchOrder = allOption ? allOption.value : null;
+        }
+      },
+      (err) => {
+        console.error('Failed to load search options:', err);
+      }
+    );
+  }
+
+  searchTickets() {
+    const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
+    this.pagination.Status = result;
+    this.pagination.SerachText = this.serachText;
+    this.pagination.SearchOrder = this.searchOrder;
+    this.pagination.currentPage = 1;
+  
+    // Emit search text
+    this.invoiceService.updateSearchInvoice(this.serachText);
+  }
+
+  refreshData() {
+    this.isParentTicketVisible = false;
+    this.selectedTickets = this.defaultSelectedTicketsTypes;
+    this.serachText = '';
+    this.searchOrder = 'All';
+    
+    const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
+    this.pagination.Status = result;
+    this.pagination.SerachText = this.serachText;
+    this.pagination.SearchOrder = this.searchOrder;
+  
+    // Emit refresh signal
+    this.invoiceService.updateRefreshInvoice();
+  }
+  
+
+
 
   navigateToInitialView() {
     const currentUrl = this.router.url;
@@ -607,19 +686,21 @@ export class InvoiceLayoutComponent implements OnInit {
       // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'error while inserting/updating Tickect' });
     });
   }
-
-  refreshData() {
-    // this.parentTicketIDVisible = true;
-    this.isParentTicketVisible = false;
-    this.selectedTickets = this.defaultSelectedTicketsTypes;
-    this.serachText = '';
-    this.searchOrder = 'All';
-    const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
-    this.pagination.Status = result;
-    this.pagination.SerachText = this.serachText,
-    this.pagination.SearchOrder = this.searchOrder
-    // this.getAllTicketsDetails(this.pagination);
-  }
+  // refreshData() {
+  //   this.isParentTicketVisible = false;
+  //   this.selectedTickets = this.defaultSelectedTicketsTypes;
+  //   this.serachText = '';
+  //   this.searchOrder = 'All';
+    
+  //   const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
+  //   this.pagination.Status = result;
+  //   this.pagination.SerachText = this.serachText;
+  //   this.pagination.SearchOrder = this.searchOrder;
+  
+  //   // Emit refresh signal
+  //   this.invoiceService.updateRefreshInvoice();
+  // }
+  
 
   showMergeDialog() {
     this.dialogPopupVisible = true;
@@ -643,6 +724,8 @@ export class InvoiceLayoutComponent implements OnInit {
       LocationId: this.locId
     };
     this.getAllsellersDetails(paramObject);
+    this.getAllCurrencies();
+
   }
 
   getAllsellersDetails(paramObject: any) {
@@ -663,16 +746,16 @@ export class InvoiceLayoutComponent implements OnInit {
       );
   }
 
-  searchTickets() {
-    console.log('selectedTickets :: ' + JSON.stringify(this.selectedTickets));
-    const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
-    this.pagination.Status = result;
-    this.pagination.SerachText = this.serachText,
-      this.pagination.SearchOrder = this.searchOrder,
-      this.pagination.currentPage = 1;
-
-    // this.getAllTicketsDetails(this.pagination);
-  }
+  // searchTickets() {
+  //   const result = this.selectedTickets.reduce((acc: any, cur: any) => ((acc.push(cur.name)), acc), []).join(',');
+  //   this.pagination.Status = result;
+  //   this.pagination.SerachText = this.serachText;
+  //   this.pagination.SearchOrder = this.searchOrder;
+  //   this.pagination.currentPage = 1;
+  
+  //   // Emit search text
+  //   this.invoiceService.updateSearchInvoice(this.serachText);
+  // }
 
   // addRemoveStatus(event: any) {
   //   console.log('Change Multiselect :: ');
@@ -691,7 +774,7 @@ export class InvoiceLayoutComponent implements OnInit {
     let selectedStatus = this.selectedTickets.map((item: any) => item.name).join(',');
   
     if (event.itemValue.name === 'ALL') {
-      if (event.originalEvent) {
+      if (event.value.some((item:any)=> item.name ==='ALL')) {
         this.selectedTickets = this.ticketsTypes;
         selectedStatus = 'ALL';
       } else {
@@ -712,8 +795,11 @@ export class InvoiceLayoutComponent implements OnInit {
   clickOnSeller(sellerId: any, sellerFullname: any) {
     this.selectedSellerName = sellerFullname;
     this.selectedSellerId = sellerId;
+    const selectedCurrencyObj = this.currencies.find(c => c.rowID === this.selectedCurrencyID);
+     const currencyCode = selectedCurrencyObj?.currencyCode ?? '';
+     const currencySymbol = selectedCurrencyObj?.currency ?? '';
     if (this.newTicketVisible == true) {
-      this.router.navigateByUrl(`/${this.orgName}/invoice/detail/new/${sellerId}`);
+      this.router.navigateByUrl(`/${this.orgName}/invoice/detail/new/${sellerId}?currencyCode=${currencyCode}&currencySymbol=${currencySymbol}`);
     } else if (this.ticketvisible == true) {
       this.mergeTicketVisible = true;
       this.getAllTicketsBySellerId(sellerId);
@@ -1606,6 +1692,50 @@ export class InvoiceLayoutComponent implements OnInit {
 
   payTickets() {
 
+  }
+
+   getAllCurrencies() {
+    const paramObj = { 
+      CurrencyID: 0 
+    };
+    this.commonService.getAllCurrency(paramObj).subscribe({
+      next: (res: any) => {
+        this.currencies = res?.body?.data || [];
+
+        this.getDefaultCurrencyForTicket();
+      },
+      error: () => {
+        this.currencies = [];
+      }
+    });
+  }
+
+  getDefaultCurrencyForTicket() {
+    const params = { 
+      ModuleName: 'Invoice', 
+      LocID: this.locId };
+    
+    this.commonService.GetCurrencyByModule(params).subscribe({
+      next: (res: any) => {
+        const currencyData = res?.body?.data;
+        if (currencyData && currencyData.currencyID) {
+          this.selectedCurrencyID = currencyData.currencyID;
+        } else {
+          this.selectCurrencyFromLocalStorage();
+        }
+      },
+      error: () => {
+        this.selectCurrencyFromLocalStorage();
+      }
+    });
+  }
+
+  private selectCurrencyFromLocalStorage() {
+    const localCurrencyCode = localStorage.getItem('currencyCode') || 'USD';
+    const currency = this.currencies.find(c => c.currencyCode === localCurrencyCode);
+    if (currency) {
+      this.selectedCurrencyID = currency.rowID;
+    }
   }
 
 

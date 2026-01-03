@@ -47,6 +47,9 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
 
   submitted  =  false;
 
+  organisationId: number = 0;
+  isDatabaseCreated: boolean = false; 
+
 
   countryState: any;
   countryId: any;
@@ -288,7 +291,12 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedPlan = res;
     console.log(this.selectedPlan);
 
-
+    setTimeout(() => {
+      const summaryElement = document.querySelector('.pricing-plan-name-summary');
+      if (summaryElement) {
+        summaryElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   }
 
   addCrossMark(descp: any) {
@@ -346,6 +354,7 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
+  if (this.registrationForm.invalid) return;
 
     const req = this.registrationForm.value;
 
@@ -401,12 +410,32 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       "UpdatedDate" : "2024-03-30T03:47:54.367Z"
   }
 
+    if (this.isDatabaseCreated) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Already Created',
+        detail: 'Database already created. You can proceed to login.'
+      });
+      return;
+    }
+
+    if (this.organisationId !== 0) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Organisation Exists',
+        detail: 'Organisation already exists. Please proceed to payment again.'
+      });
+      return;
+    }
+
 
 
 
   this.commonService.createOrganisationViaWeb(ReqObj).subscribe((res) =>{
     console.log('successs');
     if (res.body.data != 0) {
+      this.organisationId = res.body.data;
+
       const organisationPlanReqObj = {
         "RowId" : 0,
         "organisationPlanDetailId" : 0,
@@ -435,28 +464,61 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
         "UpdatedDate" : "2024-03-30T03:47:54.367Z"
       }
 
-      this.checkoutSubscription(organisationPlanReqObj);
+      this.checkoutSubscription(organisationPlanReqObj, ReqObj);
+    }else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Failed',
+        detail: 'Organisation creation failed. Please try again.'
+      });
     }
   }, (error) =>{
-    console.log(error)
-  })
-
-
-  
-
+    console.error(error);
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Something went wrong during organisation creation.'
+    });
+  });
   }
 
-  private checkoutSubscription(reqObj: any) {
-    this.commonService.paySubscriptionFee(reqObj).subscribe(session => {
+
+  private checkoutSubscription(paymentReqObj: any, orgReqObj: any) {
+    this.commonService.paySubscriptionFee(paymentReqObj).subscribe((session) => {
       console.log("session details :: ");
       console.log(session);
+      this.commonService.InsertOrganisationDTO(orgReqObj).subscribe(
+      (insertRes) => {
+        this.isDatabaseCreated = true;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Database created successfully. Proceed to login.'
+        });
+      console.log('Database finalization success:', insertRes);
       this.commonService.redirectToCheckout(session.body);
-      // this.htmlToAdd = session;
-      // window.location.href = session;
-      // return session;
-    }, (error: any) => {
-      console.log(error);
-    });
+        },
+        (insertError) => {
+          console.error('Database finalization failed:', insertError);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Warning',
+            detail: 'Organisation created but database setup incomplete'
+          });
+        }
+        );
+      },
+      (paymentError) => {
+        console.log('Payment failed:', paymentError);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Payment processing failed. Please try again.'
+        });
+        
+      }
+    );
+    
   }
 
   sendOtp() {

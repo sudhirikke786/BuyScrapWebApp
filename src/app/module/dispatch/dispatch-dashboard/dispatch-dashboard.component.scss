@@ -1,0 +1,407 @@
+// ============================================
+// Dispatch Dashboard - Modern Design Styles
+// ============================================
+
+// Variables - Using existing application colors
+$primary-color: #0d6efd;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$text-muted: #6c757d;
+$border-color: #e9ecef;
+$card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+$card-hover-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+$transition-speed: 0.3s;
+
+// Page Header
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #343a40;
+    margin: 0;
+}
+
+// Breadcrumb styling
+.b-links {
+    text-align: right;
+    font-size: 0.875rem;
+
+    a {
+        color: $text-muted;
+        text-decoration: none;
+        transition: color $transition-speed;
+
+        &:hover {
+            color: $primary-color;
+        }
+    }
+}
+
+// Search and Action Bar
+.form-control {
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: border-color $transition-speed, box-shadow $transition-speed;
+    font-size: 0.9rem;
+
+    &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+        outline: none;
+    }
+
+    &::placeholder {
+        color: #adb5bd;
+    }
+}
+
+// Card Styling
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: $card-shadow;
+    transition: box-shadow $transition-speed;
+    overflow: visible;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+}
+
+// Table Enhancements
+:host ::ng-deep {
+    .p-datatable {
+        .p-datatable-header {
+            background: transparent;
+            border: none;
+            padding: 0 0 16px 0;
+        }
+
+        .p-datatable-thead>tr>th {
+            background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+            border: none;
+            border-bottom: 2px solid $border-color;
+            color: #495057;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 14px 12px;
+        }
+
+        .p-datatable-tbody>tr {
+            transition: background-color $transition-speed;
+
+            &:hover {
+                background-color: rgba($primary-color, 0.04);
+            }
+
+            >td {
+                border: none;
+                border-bottom: 1px solid $border-color;
+                padding: 14px 12px;
+                vertical-align: middle;
+                font-size: 0.9rem;
+                color: #495057;
+            }
+        }
+    }
+
+    // Checkbox styling
+    .p-checkbox .p-checkbox-box {
+        border-radius: 4px;
+        transition: all $transition-speed;
+
+        &.p-highlight {
+            background: $success-color;
+            border-color: $success-color;
+        }
+    }
+
+    // Paginator
+    .p-paginator {
+        background: transparent;
+        border: none;
+        padding: 16px 0;
+
+        .p-paginator-current {
+            color: $text-muted;
+            font-size: 0.875rem;
+        }
+
+        .p-paginator-pages .p-paginator-page {
+            border-radius: 8px;
+            margin: 0 2px;
+
+            &.p-highlight {
+                background: $primary-color;
+                color: white;
+            }
+        }
+    }
+}
+
+// Paginator Container
+.paginator-container {
+    flex-shrink: 0;
+    background-color: white;
+    padding: 12px 15px;
+    border-top: 1px solid $border-color;
+    margin-top: auto;
+    position: relative;
+    z-index: 10;
+}
+
+// Action Buttons - Preserving existing colors
+.btn {
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all $transition-speed;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    i {
+        font-size: 0.9rem;
+    }
+
+    &.btn-primary {
+        border: none;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+        }
+    }
+
+    &.btn-success {
+        background: linear-gradient(135deg, $success-color, darken($success-color, 8%));
+        border: none;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba($success-color, 0.4);
+        }
+    }
+
+    &.btn-danger {
+        background: linear-gradient(135deg, $danger-color, darken($danger-color, 8%));
+        border: none;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba($danger-color, 0.4);
+        }
+    }
+}
+
+// Grid action buttons
+.btn-grid {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all $transition-speed;
+    white-space: nowrap;
+
+    i {
+        font-size: 0.9rem;
+    }
+}
+
+// Dialog Styling
+:host ::ng-deep {
+    .p-dialog {
+        border-radius: 12px;
+
+        .p-dialog-header {
+            background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+            color: white;
+            border-radius: 12px 12px 0 0;
+
+            .p-dialog-title {
+                font-weight: 600;
+            }
+
+            .p-dialog-header-icon {
+                color: white;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+            }
+        }
+
+        .p-dialog-content {
+            padding: 24px;
+        }
+    }
+
+    // Confirm Dialog
+    .p-confirm-dialog {
+        .p-dialog-content {
+            padding: 24px;
+
+            .p-confirm-dialog-icon {
+                color: #f59e0b;
+                font-size: 2rem;
+            }
+
+            .p-confirm-dialog-message {
+                margin-left: 1rem;
+                font-size: 1rem;
+                color: #495057;
+            }
+        }
+    }
+}
+
+// Image styling
+.ticket-particulars-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid $border-color;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform $transition-speed, box-shadow $transition-speed, border-color $transition-speed;
+
+    &:hover {
+        transform: scale(1.08);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-color: $primary-color;
+    }
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+@media (max-width: 991px) {
+    .page-title {
+        font-size: 1.25rem;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+
+    :host ::ng-deep {
+
+        .p-datatable .p-datatable-thead>tr>th,
+        .p-datatable .p-datatable-tbody>tr>td {
+            padding: 10px 8px;
+            font-size: 0.85rem;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .bdcmb {
+        .row {
+            flex-direction: column;
+
+            .col-sm-6 {
+                width: 100%;
+
+                &:last-child {
+                    margin-top: 8px;
+                }
+            }
+        }
+    }
+
+    .b-links {
+        text-align: left;
+    }
+
+    .card-body {
+        padding: 12px;
+    }
+
+    :host ::ng-deep {
+        .p-datatable-wrapper {
+            overflow-x: auto;
+        }
+
+        .p-paginator {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+
+            .p-paginator-current {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 8px;
+            }
+        }
+    }
+
+    .d-flex.align-items-center {
+        flex-wrap: wrap;
+        gap: 4px;
+
+        .btn {
+            margin-bottom: 4px;
+        }
+    }
+}
+
+@media (max-width: 575px) {
+    .page-title {
+        font-size: 1.1rem;
+    }
+
+    .btn {
+        padding: 5px 8px;
+        font-size: 0.75rem;
+        border-radius: 4px;
+    }
+
+    .ticket-particulars-img {
+        width: 36px;
+        height: 36px;
+    }
+
+    :host ::ng-deep {
+        .p-datatable .p-datatable-thead>tr>th {
+            font-size: 0.75rem;
+            padding: 8px 6px;
+        }
+
+        .p-datatable .p-datatable-tbody>tr>td {
+            font-size: 0.8rem;
+            padding: 8px 6px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .row.mt-2 {
+        .col-md-6 {
+            margin-bottom: 10px;
+        }
+    }
+
+    .d-flex.align-items-center {
+        flex-direction: column;
+        align-items: flex-start !important;
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+            margin-right: 0 !important;
+        }
+    }
+}
