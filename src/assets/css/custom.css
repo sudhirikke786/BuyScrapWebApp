@@ -1217,8 +1217,10 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) .app-menu .m
 .seller-view-tbl tr td {
   border: 1px solid #dee2e6;
   padding: 2px 5px;
-  font-size: 0.9rem
+  font-size: 0.7rem
 }
+
+
 
 .ticket-details-tbl tr td {
   border: 1px solid #dee2e6;
@@ -2238,7 +2240,7 @@ select optgroup option {
 
 
 
-@media screen and (min-width: 1920px) {
+@media (min-width: 1920px) {
 
 
   .card-ticket-table {
@@ -2262,7 +2264,7 @@ select optgroup option {
   }
 
   table tr td {
-    font-size: 1.5rem !important
+    font-size: clamp(1.3rem, 0.8vw, 1.4rem) !important;
   }
 
   .p-datatable .p-datatable-thead>tr>th {
@@ -2284,7 +2286,7 @@ select optgroup option {
   }
 
   .payment-ticket {
-    bottom: 90px !important;
+    bottom:140px !important;
   }
 
 
@@ -2324,6 +2326,10 @@ select optgroup option {
 
    .fz-16 {
     font-size: 1.5rem;
+  }
+
+  .seller-view-tbl tr td{
+    font-size: clamp(1rem, 0.8vw, 1.4rem) !important;
   }
 
 }
@@ -2990,7 +2996,7 @@ h1 {
 
 .bdcmb {
   background-color: #f8f9fa; /* Light background for the breadcrumb section */
-  padding:5px 15px;
+  padding: 0px 5px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   margin-top: 10px;

@@ -28,7 +28,7 @@
 
                         <div class="row">
 
-                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  ticketData?.status?.toUpperCase()=='OPEN' ? 'col-sm-12' : 'col-sm-6'">
+                            <div  [ngClass]="!isEditModeOn && !editItemCloseImageCapture  &&  ticketData?.status?.toUpperCase()=='OPEN' ? 'col' : 'col'">
                                 
                                 <div class="row">
                                     <div class="col-sm-2 d-flex justify-content-center align-items-center">
@@ -370,7 +370,7 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98 p-open' : 'col-sm-6 p-close'" >
+                                    <div class="payment-ticket" [ngClass]="!isEditModeOn && !editItemCloseImageCapture && ticketData?.status?.toUpperCase() =='OPEN'? 'w-98 p-open' : 'col-sm-7 p-close'" >
                                         <div class="row" style="background: var(--ct-card-bg);">
                                             <div class="col-sm-12 px-10 py-10">
                                                 <!-- <p class="ticket-details-p fz-14"><b>Adjustment : {{(totalAdjustment * -1) | currency: currencySymbol :'symbol': numberFormat}}</b></p> -->
@@ -492,7 +492,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
+                            <div class="col-sm-5" *ngIf="!isEditModeOn && !editItemCloseImageCapture &&  ticketData?.status?.toUpperCase()!='OPEN'">
 
                                 <!-- <div class="col-12">  -->
                                 <div id="mainbox" class="mainbox-row" style="height:calc(100vh - 200px)">
@@ -594,7 +594,7 @@
                                 </div>
                             </div> -->
 
-                            <div class="col-sm-6 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture">
+                            <div class="col-sm-5 pl-0" *ngIf="isEditModeOn && !editItemCloseImageCapture">
 
     <!-- 1. TOGGLE SWITCH HEADER -->
     <!-- <div class="d-flex justify-content-between align-items-center mb-2 px-2" *ngIf="mainMaterialsVisible">
