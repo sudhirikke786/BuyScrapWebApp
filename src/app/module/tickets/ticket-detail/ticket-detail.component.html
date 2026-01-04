@@ -687,7 +687,7 @@
 
 </div>
 
-                            <div class="col-lg-6 col-xs-12 col-sm-6 position-releative" *ngIf="isEditModeOn && editItemCloseImageCapture">
+                            <div class="col-lg-5 col-xs-12 col-sm-5 position-releative" *ngIf="isEditModeOn && editItemCloseImageCapture">
                                 <div  pDraggable dragHandle=".p-panel-header">
                                     <app-price-calculator  (calculateObj)="calculation($event)" (changeItemEvent)="changeItem()" (changeImageEvent)="changeImage()" (backClose)="backToChangeItemMainMaterials()"
                                         [itemPrice]="itemPrice" [itemNet]="itemNet" [itemTare]="itemTare" [itemGross]="itemGross" 
